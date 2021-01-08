@@ -23,7 +23,7 @@ public class HomeViewModel extends AndroidViewModel {
         super(application);
 
         syncDAO = new SyncDAO();
-        stringLiveData = syncDAO.syncLiveData(application);
+        stringLiveData = syncDAO.pullData_Background(application);
 
     }
 

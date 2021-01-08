@@ -83,110 +83,11 @@ public class SyncDAO {
         return isSynced;
 
     }
+    
+    //LiveData return type to be sent to the ViewModel.
+    public LiveData<String> pullData_Background(final Context context) {
 
-    public LiveData<String> syncLiveData(Context context)  {
-
-        if(var_mutableLiveData == null) {
-            var_mutableLiveData = new MutableLiveData<>();
-
-            mDbHelper = new InteleHealthDatabaseHelper(context);
-            db = mDbHelper.getWritableDatabase();
-
-            sessionManager = new SessionManager(context);
-            String encoded = sessionManager.getEncoded();
-            String oldDate = sessionManager.getPullExcutedTime();
-            String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-//        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
-            Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
-            Logger.logD("Start pull request", "Started");
-
-            //api
-            middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
-                @Override
-                public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-                    // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
-                    if (response.body() != null && response.body().getData() != null) {
-                        sessionManager.setPulled(response.body().getData().getPullexecutedtime());
-                    }
-                    if (response.isSuccessful()) {
-
-                        // SyncDAO syncDAO = new SyncDAO();
-                        boolean sync = false;
-                        try {
-                            sync = SyncData(response.body());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                        if (sync) {
-                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
-
-                            var_mutableLiveData.setValue(sessionManager.getLastSyncDateTime());
-
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
-
-                        }
-                        //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
-                        else {
-
-                        }
-                        //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
-
-                        if (sessionManager.getTriggerNoti().equals("yes")) {
-                            if (response.body().getData() != null) {
-                                ArrayList<String> listPatientUUID = new ArrayList<String>();
-                                List<VisitDTO> listVisitDTO = new ArrayList<>();
-                                ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-                                for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
-                                    if (response.body().getData().getEncounterDTO().get(i)
-                                            .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
-                                        encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
-                                    }
-                                }
-                                listVisitDTO.addAll(response.body().getData().getVisitDTO());
-                                for (int i = 0; i < encounterVisitUUID.size(); i++) {
-                                    for (int j = 0; j < listVisitDTO.size(); j++) {
-                                        if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
-                                            listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
-                                        }
-                                    }
-                                }
-
-                                if (listPatientUUID.size() > 0) {
-                                    triggerVisitNotification(listPatientUUID);
-                                }
-                            }
-                        } else {
-                            sessionManager.setTriggerNoti("yes");
-                        }
-                    }
-
-                    Logger.logD("End Pull request", "Ended");
-                    sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
-
-                    //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
-                /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
-                IntelehealthApplication.getAppContext().startService(intent);*/
-                }
-
-                @Override
-                public void onFailure(Call<ResponseDTO> call, Throwable t) {
-                    Logger.logD("pull data", "exception" + t.getMessage());
-                }
-            });
-//api-end
-
-            sessionManager.setPullSyncFinished(true);
-
-            return var_mutableLiveData;
-        }
-        return var_mutableLiveData;
-    }
-
-
-    public boolean pullData_Background(final Context context) {
+        var_mutableLiveData = new MutableLiveData<>();
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
         db = mDbHelper.getWritableDatabase();
@@ -216,6 +117,8 @@ public class SyncDAO {
                     }
                     if (sync) {
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+
+                        var_mutableLiveData.setValue(sessionManager.getLastSyncDateTime());
 
 //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -272,7 +175,7 @@ public class SyncDAO {
             }
         });
         sessionManager.setPullSyncFinished(true);
-        return true;
+        return var_mutableLiveData;
     }
 
 
