@@ -1,7 +1,6 @@
 package app.intelehealth.client.database.dao;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -18,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import app.intelehealth.client.services.LastSyncIntentService;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.NotificationID;
 import app.intelehealth.client.utilities.PatientsFrameJson;

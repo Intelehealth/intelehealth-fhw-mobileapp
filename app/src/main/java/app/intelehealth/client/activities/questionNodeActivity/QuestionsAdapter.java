@@ -2,18 +2,12 @@ package app.intelehealth.client.activities.questionNodeActivity;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import android.opengl.Visibility;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,26 +16,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import app.intelehealth.client.R;
-import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
-import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.activities.questionNodeActivity.adapters.AssociatedSysAdapter;
 import app.intelehealth.client.app.IntelehealthApplication;
@@ -277,7 +264,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
 
-            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms")) {
+            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase("Associated symptoms") || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")) {
                 associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(associatedSysAdapter);
 
@@ -331,7 +318,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             Node groupNode = mGroupNode.getOption(mGroupPos);
 
-            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || thisNode.isSelected()) {
+            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
             } else {
@@ -345,7 +332,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 public void onClick(View v) {
                     if (groupNode.getText() != null) {
                         //null checking to avoid weird crashes.
-                        if (groupNode.getText().equalsIgnoreCase("Associated symptoms")) {
+                        if (groupNode.getText().equalsIgnoreCase("Associated symptoms") || groupNode.getText().equalsIgnoreCase("जुड़े लक्षण")) {
                             MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
                             confirmDialog.setTitle(R.string.have_symptom);
                             confirmDialog.setCancelable(false);

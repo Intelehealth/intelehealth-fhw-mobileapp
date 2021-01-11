@@ -92,6 +92,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 import app.intelehealth.client.R;
@@ -456,7 +457,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
 
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
@@ -952,7 +955,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, VisitSummaryActivity.this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity.this, mFileName)));
             }
@@ -1796,7 +1801,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -1843,6 +1850,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
                 mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+            }
+        } else {
+
+        }
+
+        if (mComplaint.contains("जुड़े लक्षण")) {
+            String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
             }
         } else {
 
@@ -2115,7 +2131,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(mFileName, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, mFileName)));
             }//Load the config file
@@ -2161,6 +2179,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
                 mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+            }
+        } else {
+
+        }
+
+        if (mComplaint.contains("जुड़े लक्षण")) {
+            String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
+            for (String compla : cc) {
+                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
             }
         } else {
 
@@ -2399,7 +2426,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //            PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 //
-//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+//            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
 //            String fileName = visitUUID +".pdf";
 //            File dir = new File(path);
 //            if (!dir.exists())
@@ -2464,7 +2491,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
           /*  PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = visitUUID +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2529,7 +2556,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             /*PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = visitUUID +".pdf";
             File dir = new File(path);
             if (!dir.exists())
@@ -2596,7 +2623,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
            /* PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/EkalArogya_PDF/";
             String fileName = visitUUID +".pdf";
             File dir = new File(path);
             if (!dir.exists())

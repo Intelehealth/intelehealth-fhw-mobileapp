@@ -12,9 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import app.intelehealth.client.app.AppConstants;
 import okhttp3.ResponseBody;
-
-import static app.intelehealth.client.app.AppConstants.IMAGE_PATH;
 
 public class DownloadFilesUtils {
 
@@ -23,7 +22,7 @@ public class DownloadFilesUtils {
     public void saveToDisk(ResponseBody body, String filename) {
         try {
 
-            File destinationFile = new File(IMAGE_PATH, filename + ".jpg");
+            File destinationFile = new File(AppConstants.IMAGE_PATH, filename + ".jpg");
 
             InputStream inputStream = null;
             OutputStream outputStream = null;

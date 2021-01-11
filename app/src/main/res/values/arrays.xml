@@ -2,15 +2,17 @@
 
 
     <string-array name="language_names">
+        <item>Hindi</item>
         <item>English</item>
 <!--        <item>Odiya</item>-->
 <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
+        <item>hi</item>
         <item>en</item>
-        <item>or</item>
-        <item>cb</item>
+<!--        <item>or</item>-->
+<!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">

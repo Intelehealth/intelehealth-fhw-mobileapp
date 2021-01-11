@@ -1,7 +1,6 @@
 package app.intelehealth.client.app;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
-import app.intelehealth.client.BuildConfig;
 import app.intelehealth.client.R;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
 import app.intelehealth.client.utilities.SessionManager;

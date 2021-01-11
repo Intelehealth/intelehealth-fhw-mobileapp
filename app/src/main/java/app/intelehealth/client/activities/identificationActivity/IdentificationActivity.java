@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -20,11 +19,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.text.TextWatcher;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,14 +53,12 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
@@ -76,14 +70,12 @@ import app.intelehealth.client.database.dao.ImagesPushDAO;
 import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.database.dao.SyncDAO;
 import app.intelehealth.client.models.Patient;
-import app.intelehealth.client.models.Resource;
 import app.intelehealth.client.models.dto.PatientAttributesDTO;
 import app.intelehealth.client.models.dto.PatientDTO;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.EditTextUtils;
 import app.intelehealth.client.utilities.FileUtils;
 import app.intelehealth.client.utilities.IReturnValues;
-import app.intelehealth.client.utilities.InputFilterMinMax;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidGenerator;
@@ -277,11 +269,12 @@ public class IdentificationActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
+                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
 
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
-
             }
 
             //Display the fields on the Add Patient screen as per the config file
@@ -1351,7 +1344,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if(mPhoneNum.getText().toString().trim().length() > 0) {
             if(mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
-                mPhoneNum.setError("Enter 10 digits");
+                mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
             }
         }

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -67,6 +66,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
         setContentView(R.layout.activity_active_patient);
+        setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 
 

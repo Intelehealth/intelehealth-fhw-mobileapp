@@ -340,9 +340,9 @@
     <string name="hide_text">HIDE</string>
     <string name="show_text">SHOW</string>
 
-    <string name="new_patient" translatable="false">New Patient</string>
-    <string name="find_patient" translatable="false">Find Patients</string>
-    <string name="video_library" translatable="false">Video Library</string>
+    <string name="new_patient">New Patient</string>
+    <string name="find_patient">Find Patients</string>
+    <string name="video_library">Video Library</string>
 
     <string name="error_no_sd" translatable="false">This feature is only available to devices with SD cards.</string>
     <string name="error_admin_password" translatable="false">Admin Password Wrong</string>

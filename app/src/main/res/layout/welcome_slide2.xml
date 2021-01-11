@@ -20,6 +20,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_ayu_logo_svg"
+        android:layout_marginTop="120dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -29,7 +30,7 @@
         android:text="@string/hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen"
         android:layout_below="@id/ayu_logo"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="45dp"
         android:fontFamily="@font/lato_regular"
         android:textSize="18sp"
         android:layout_marginStart="44dp"

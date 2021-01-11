@@ -1,9 +1,7 @@
 package app.intelehealth.client.utilities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
