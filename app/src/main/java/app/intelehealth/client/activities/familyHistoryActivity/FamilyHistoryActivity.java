@@ -107,22 +107,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-            visitUuid = intent.getStringExtra("visitUuid");
-            state = intent.getStringExtra("state");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            edit_FamHist = intent.getStringExtra("edit_FamHist");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-            patientName = intent.getStringExtra("name");
-            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
-            intentTag = intent.getStringExtra("tag");
-
-            if(edit_FamHist == null)
-                new_result = getFamilyHistoryVisitData();
-        }
 
         boolean past = sessionManager.isReturning();
         if (past && edit_FamHist == null) {
@@ -208,7 +192,21 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
-           
+
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            state = intent.getStringExtra("state");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            edit_FamHist = intent.getStringExtra("edit_FamHist");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            intentTag = intent.getStringExtra("tag");
+        }
+        
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
@@ -268,27 +266,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 return false;
             }
         });*/
-    }
-
-    private String getFamilyHistoryVisitData() {
-        String result = "";
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-
-        String[] columns = {"value", " conceptuuid"};
-
-        try {
-            String famHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-            String[] famHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
-            Cursor famHistCursor = localdb.query("tbl_obs", columns, famHistSelection, famHistArgs, null, null, null);
-            famHistCursor.moveToLast();
-            result = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
-            famHistCursor.close();
-        } catch (CursorIndexOutOfBoundsException e) {
-            result = ""; // if family history does not exist
-        }
-
-        db.close();
-        return result;
     }
 
     private void onListClick(View v, int groupPosition, int childPosition) {

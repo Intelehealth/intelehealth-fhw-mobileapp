@@ -121,23 +121,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        e = sharedPreferences.edit();
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-            visitUuid = intent.getStringExtra("visitUuid");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            edit_PatHist = intent.getStringExtra("edit_PatHist");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-            state = intent.getStringExtra("state");
-            patientName = intent.getStringExtra("name");
-            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
-            intentTag = intent.getStringExtra("tag");
-
-            if(edit_PatHist == null)
-                new_result = getPastMedicalVisitData();
-        }
-
         boolean past = sessionManager.isReturning();
         if (past && edit_PatHist == null) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
@@ -222,7 +205,20 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         }
 
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            edit_PatHist = intent.getStringExtra("edit_PatHist");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            state = intent.getStringExtra("state");
+            patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
+            intentTag = intent.getStringExtra("tag");
 
+        }
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -551,29 +547,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             v.startAnimation(bottomUp);
         }
 
-    }
-
-    private String getPastMedicalVisitData() {
-        String result = "";
-
-        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-       // String[] columns = {"value"};
-
-        String[] columns = {"value", " conceptuuid"};
-        try {
-            String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-            String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
-            Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
-            medHistCursor.moveToLast();
-            result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-            medHistCursor.close();
-        } catch (CursorIndexOutOfBoundsException e) {
-            result = ""; // if medical history does not exist
-        }
-
-        db.close();
-
-        return result;
     }
 }
 
