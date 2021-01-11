@@ -69,7 +69,7 @@
     <string name="button_find_pt" translatable="false">Find Patient</string>
     <string name="button_diagnostic_tests" translatable="false">Diagnostic Tests</string>
     <string name="button_active_pt" translatable="false">Active Patients</string>
-    <string name="menu_option_sync" translatable="false">Sync Data</string>
+    <string name="menu_option_sync" translatable="false">Refresh Data</string>
     <string name="menu_option_settings" translatable="false">Settings</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
@@ -238,7 +238,7 @@
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
+    <string name="pref_header_data_sync" translatable="false">Data &amp; Refresh</string>
 
     <string name="pref_title_server_url" translatable="false">Server URL</string>
     <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>
@@ -356,7 +356,7 @@
     <string name="patient_upload_error" translatable="false">Patient has not been uploaded</string>
     <string name="patient_not_registered" translatable="false">Patient not registered</string>
 
-    <string name="action_sync_all" translatable="false">Sync Data</string>
+    <string name="action_sync_all" translatable="false">Refresh Data</string>
 
     <!-- Vitals Screen Error-->
 
@@ -431,7 +431,7 @@
 
     <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
     <string name="title_activity_home" translatable="false">HomeActivity</string>
-    <string name="title_activity_sync" translatable="false">ActivitySync</string>
+    <string name="title_activity_sync" translatable="false">ActivityRefresh</string>
     <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
     <string name="title_activity_visit_summary" translatable="false">VisitSummaryActivity</string>
     <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
@@ -440,7 +440,7 @@
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
     <string name="temperature_f">Temperature (F)</string>
-    <string name="sync_now">Sync Now</string>
+    <string name="sync_now">Refresh Now</string>
     <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
@@ -453,7 +453,7 @@
     <string name="invalid_url">Invalid URL</string>
     <string name="years">years</string>
     <string name="months">months</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
+    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
     <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
@@ -476,7 +476,7 @@
     <string name="health_worker">Health worker</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
-    <string name="sync">Sync</string>
+    <string name="sync">Refresh</string>
     <string name="update_protocols">Update Protocols</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
@@ -488,17 +488,17 @@
     <string name="active">Active</string>
     <string name="closed">Closed</string>
 
-    <string name="syncInProgress">Sync in progress</string>
+    <string name="syncInProgress">Refresh in progress</string>
     <string name="please_wait">Please wait...</string>
-    <string name="sync_notif_title">sync</string>
-    <string name="sync_background_completed">syncBackground Completed</string>
-    <string name="sync_not_available">Sync not available</string>
+    <string name="sync_notif_title">refresh</string>
+    <string name="sync_background_completed">refreshBackground Completed</string>
+    <string name="sync_not_available">Refresh not available</string>
     <string name="please_connect_to_internet">Please connect to an internet connection!</string>
     <string name="image_upload">ImageUpload</string>
     <string name="image_upload_failed">ImageUpload failed</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
-    <string name="lastsync_normal">Last sync</string>
+    <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
     <string name="error">Error</string>
@@ -523,15 +523,15 @@
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
-    <string name="syncing_visitDialog">Syncing</string>
-    <string name="successfully_synced_notif">Successfully synced</string>
+    <string name="syncing_visitDialog">Refreshing</string>
+    <string name="successfully_synced_notif">Successfully refreshed</string>
     <string name="languages">Languages</string>
     <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
-    <string name="last_synced">Last Synced - </string>
+    <string name="last_synced">Last Refreshed - </string>
     <string name="today_visits">Today\'s Visits</string>
     <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
@@ -539,8 +539,8 @@
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
-    <string name="successfully_synced">Successfully synced</string>
-    <string name="failed_synced"><![CDATA[Failed synced, check your internet connection]]></string>
+    <string name="successfully_synced">Successfully refreshed</string>
+    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
@@ -644,5 +644,6 @@
     <string name="download_presc_before_sharing">Download prescription first before sharing</string>
     <string name="please_select_specialization">Please select specialization</string>
     <string name="setup">Setup</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
