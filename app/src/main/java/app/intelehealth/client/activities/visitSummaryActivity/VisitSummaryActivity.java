@@ -1,9 +1,7 @@
 package app.intelehealth.client.activities.visitSummaryActivity;
 
-import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,7 +29,6 @@ import android.print.PrintManager;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.text.HtmlCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -45,7 +42,6 @@ import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -81,7 +77,6 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -100,8 +95,6 @@ import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeAct
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActivity;
-import app.intelehealth.client.activities.setupActivity.LocationArrayAdapter;
-import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;

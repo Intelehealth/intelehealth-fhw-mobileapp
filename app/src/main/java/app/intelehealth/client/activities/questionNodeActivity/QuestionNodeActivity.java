@@ -62,7 +62,7 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
-import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+import app.intelehealth.client.database.dao.PatientsDAO;
 
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
@@ -483,7 +483,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             currentNode = complaintsNodes.get(complaintIndex);
         }
 
-        mgender = fetch_gender(patientUuid);
+        mgender = PatientsDAO.fetch_gender(patientUuid);
 
         if (mgender.equalsIgnoreCase("M")) {
             currentNode.fetchItem("0");
@@ -580,7 +580,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             currentNode = assoSympNode;
 
-            mgender = fetch_gender(patientUuid);
+            mgender = PatientsDAO.fetch_gender(patientUuid);
 
             if (mgender.equalsIgnoreCase("M")) {
                 currentNode.fetchItem("0");

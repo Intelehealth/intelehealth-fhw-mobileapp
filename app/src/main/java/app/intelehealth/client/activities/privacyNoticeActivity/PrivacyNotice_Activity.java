@@ -3,6 +3,7 @@ package app.intelehealth.client.activities.privacyNoticeActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -10,8 +11,6 @@ import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,48 +74,40 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         //Check for license key and load the correct config file
         try {
             JSONObject obj = null;
-            if (hasLicense)
-            {
+            if (hasLicense) {
                 obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
 
-            } else
-                {
+            } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
-                }
+            }
 
 //            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
 //            if(sharedPreferences.getAll().values().contains("cb"))
             Locale current = getResources().getConfiguration().locale;
-            if(current.toString().equals("cb"))
-            {
-                String privacy_string = obj.getString("privacyNoticeText_Cebuano");
-                if(privacy_string.isEmpty())
-                {
-                    privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                }
-                else
-                {
-                    privacy_textview.setText(privacy_string);
-                }
-
-            }
-            else if(current.toString().equals("or"))
-            {
+//            if(current.toString().equals("cb"))
+//            {
+//                String privacy_string = obj.getString("privacyNoticeText_Cebuano");
+//                if(privacy_string.isEmpty())
+//                {
+//                    privacy_string = obj.getString("privacyNoticeText");
+//                    privacy_textview.setText(privacy_string);
+//                }
+//                else
+//                {
+//                    privacy_textview.setText(privacy_string);
+//                }
+//
+//            }
+            if (current.toString().equals("or")) {
                 String privacy_string = obj.getString("privacyNoticeText_Odiya");
-                if(privacy_string.isEmpty())
-                {
+                if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
                     privacy_textview.setText(privacy_string);
-                }
-                else
-                {
+                } else {
                     privacy_textview.setText(privacy_string);
                 }
 
-            }
-            else
-            {
+            } else {
                 String privacy_string = obj.getString("privacyNoticeText");
                 privacy_textview.setText(privacy_string);
             }
@@ -164,8 +155,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 //            });
 
 
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
@@ -174,21 +164,16 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
 
-        if(checkBox_cho.isChecked() && v.getId() == R.id.button_accept)
-        {
+        if (checkBox_cho.isChecked() && v.getId() == R.id.button_accept) {
             Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
-            intent.putExtra("privacy",accept.getText().toString()); //privacy value send to identificationActivity
-            Log.d("Privacy", "selected radio: "+accept.getText().toString());
+            intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
+            Log.d("Privacy", "selected radio: " + accept.getText().toString());
             startActivity(intent);
-        }
-        else if(checkBox_cho.isChecked() && v.getId() == R.id.button_reject)
-        {
+        } else if (checkBox_cho.isChecked() && v.getId() == R.id.button_reject) {
             Toast.makeText(PrivacyNotice_Activity.this,
                     getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();
             finish();
-        }
-        else
-        {
+        } else {
             Toast.makeText(PrivacyNotice_Activity.this,
                     R.string.please_read_out_consent, Toast.LENGTH_SHORT).show();
         }

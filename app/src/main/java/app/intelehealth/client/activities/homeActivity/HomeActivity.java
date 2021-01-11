@@ -57,7 +57,6 @@ import app.intelehealth.client.activities.privacyNoticeActivity.PrivacyNotice_Ac
 import app.intelehealth.client.activities.searchPatientActivity.SearchPatientActivity;
 import app.intelehealth.client.activities.settingsActivity.SettingsActivity;
 import app.intelehealth.client.activities.todayPatientActivity.TodayPatientActivity;
-import app.intelehealth.client.activities.videoLibraryActivity.VideoLibraryActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.models.CheckAppUpdateRes;

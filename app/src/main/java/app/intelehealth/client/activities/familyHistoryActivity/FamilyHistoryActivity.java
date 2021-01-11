@@ -1,6 +1,5 @@
 package app.intelehealth.client.activities.familyHistoryActivity;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,7 +46,6 @@ import java.util.List;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
-import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;

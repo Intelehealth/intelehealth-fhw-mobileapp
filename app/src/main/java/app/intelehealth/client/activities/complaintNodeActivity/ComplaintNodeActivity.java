@@ -2,7 +2,6 @@ package app.intelehealth.client.activities.complaintNodeActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,7 +25,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -56,7 +53,7 @@ import app.intelehealth.client.utilities.SessionManager;
 
 import app.intelehealth.client.utilities.exception.DAOException;
 
-import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+import app.intelehealth.client.database.dao.PatientsDAO;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
@@ -173,7 +170,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
             }
             //remove items from complaints array here...
-            mgender = fetch_gender(patientUuid);
+            mgender = PatientsDAO.fetch_gender(patientUuid);
 
             for (int i = 0; i < complaints.size(); i++) {
                 if (mgender.equalsIgnoreCase("M") &&
@@ -224,7 +221,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
 
                 //remove items from complaints array here...
-                mgender = fetch_gender(patientUuid);
+                mgender = PatientsDAO.fetch_gender(patientUuid);
 
                 for (int i = 0; i < complaints.size(); i++) {
                     if (mgender.equalsIgnoreCase("M") &&

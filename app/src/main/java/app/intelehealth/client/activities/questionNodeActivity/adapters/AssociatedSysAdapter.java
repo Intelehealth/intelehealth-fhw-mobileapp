@@ -1,31 +1,22 @@
 package app.intelehealth.client.activities.questionNodeActivity.adapters;
 
 import android.content.Context;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import app.intelehealth.client.R;
-import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
-import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.knowledgeEngine.Node;
 /**
  * Created by Shubham mittal

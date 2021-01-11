@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -38,7 +37,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.common.collect.Table;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 

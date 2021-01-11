@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-import static app.intelehealth.client.app.AppConstants.JSON_FOLDER;
+import app.intelehealth.client.app.AppConstants;
 
 public class FileUtils {
     public static String TAG = FileUtils.class.getSimpleName();
@@ -26,7 +26,7 @@ public class FileUtils {
         Log.i(TAG, "Reading from file");
 
         try {
-            File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + JSON_FOLDER + File.separator + FILENAME);
+            File myDir = new File(context.getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER + File.separator + FILENAME);
             FileInputStream fileIn = new FileInputStream(myDir);
             InputStreamReader InputRead = new InputStreamReader(fileIn);
             final int READ_BLOCK_SIZE = 100;

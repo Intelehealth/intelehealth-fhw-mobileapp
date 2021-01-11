@@ -21,7 +21,6 @@ import app.intelehealth.client.R;
 import app.intelehealth.client.knowledgeEngine.Node;
 
 
-
 public class VideoLibraryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;

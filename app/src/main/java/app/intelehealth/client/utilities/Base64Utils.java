@@ -10,7 +10,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
-import static app.intelehealth.client.app.AppConstants.IMAGE_JPG_QUALITY;
+import app.intelehealth.client.app.AppConstants;
 
 public class Base64Utils {
     private String TAG = Base64Utils.class.getSimpleName();
@@ -29,7 +29,7 @@ public class Base64Utils {
         try {
             bmp = BitmapFactory.decodeFile(path);
             baos = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.JPEG, IMAGE_JPG_QUALITY, baos);
+            bmp.compress(Bitmap.CompressFormat.JPEG, AppConstants.IMAGE_JPG_QUALITY, baos);
             baat = baos.toByteArray();
             encodeString = Base64.encodeToString(baat, Base64.DEFAULT);
         } catch (Exception e) {

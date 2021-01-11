@@ -69,7 +69,7 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
-import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+import app.intelehealth.client.database.dao.PatientsDAO;
 
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
@@ -251,7 +251,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
       Commented to avoid crash...
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
 
-        mgender = fetch_gender(patientUuid);
+        mgender = PatientsDAO.fetch_gender(patientUuid);
 
         if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");

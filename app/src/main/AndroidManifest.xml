@@ -164,7 +164,7 @@
             </intent-filter>
 
             <meta-data
-                android:name="android.app.searchable"
+                android:name="android.org.searchable"
                 android:resource="@xml/searchable" />
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

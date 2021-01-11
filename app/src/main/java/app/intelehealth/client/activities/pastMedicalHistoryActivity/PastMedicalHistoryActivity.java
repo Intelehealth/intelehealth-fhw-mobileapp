@@ -1,7 +1,6 @@
 package app.intelehealth.client.activities.pastMedicalHistoryActivity;
 
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -52,7 +51,6 @@ import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
-import app.intelehealth.client.database.dao.PatientsDAO;
 import app.intelehealth.client.knowledgeEngine.Node;
 import app.intelehealth.client.models.dto.ObsDTO;
 import app.intelehealth.client.utilities.FileUtils;
@@ -65,7 +63,7 @@ import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActiv
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
-import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+import app.intelehealth.client.database.dao.PatientsDAO;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -273,7 +271,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         historyListView.setAdapter(adapter);*/
 
 
-        mgender = fetch_gender(patientUuid);
+        mgender = PatientsDAO.fetch_gender(patientUuid);
 
         if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
