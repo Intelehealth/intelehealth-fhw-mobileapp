@@ -86,7 +86,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String imageName;
     File filePath;
 
-    SQLiteDatabase localdb;
+    SQLiteDatabase localdb, db;
     String mgender;
 
     boolean hasLicense = false;
