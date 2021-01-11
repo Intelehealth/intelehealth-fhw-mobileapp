@@ -272,23 +272,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         chipList.add(node.getOptionsList().get(i));
                     }
                 }
-               /* if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
-                    int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
-                    if (childOptionCount > 8) {
-                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
-                        chipList.addAll(spiltList.get(pos));
-                    } else {
-                        Node node = currentNode.getOptionsList().get(0);
-                        for (int i = 0; i < node.getOptionsList().size(); i++) {
-                            chipList.add(node.getOptionsList().get(i));
-                        }
-                    }
-                } else {
-                    Node node = currentNode.getOptionsList().get(pos);
-                    for (int i = 0; i < node.getOptionsList().size(); i++) {
-                        chipList.add(node.getOptionsList().get(i));
-                    }
-                }*/
             }
 
 

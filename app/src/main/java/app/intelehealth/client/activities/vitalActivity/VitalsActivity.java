@@ -54,7 +54,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
-
+    private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
@@ -77,6 +77,7 @@ public class VitalsActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
@@ -1019,6 +1020,7 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         }

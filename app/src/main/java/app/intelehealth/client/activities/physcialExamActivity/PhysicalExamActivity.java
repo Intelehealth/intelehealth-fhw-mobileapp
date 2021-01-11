@@ -70,6 +70,8 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
     // private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -81,6 +83,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> selectedExamsList;
 
@@ -104,6 +107,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
+    String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
 
 
@@ -143,10 +147,12 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
-            if (selectedExams != null) selectedExamsList.addAll(selectedExams);
+            if (selectedExams != null)
+                selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
 
@@ -160,7 +166,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
             Log.d(TAG, selectedExamsList.toString());
-            for (String string : selectedExamsList) Log.d(TAG, string);
+            for (String string : selectedExamsList)
+                Log.d(TAG, string);
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -177,6 +184,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 }
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
+
+
+
             }
         }
 
@@ -242,6 +252,21 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
       /*
       Commented to avoid crash...
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
+
+        mgender = fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
+            physicalExamMap.fetchItem("0");
+        }
+        else if(mgender.equalsIgnoreCase("F")) {
+            physicalExamMap.fetchItem("1");
+        }
+        physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
+
+        // flaoting value of age is passed to Node for comparison...
+        physicalExamMap.fetchAge(float_ageYear_Month);
+        physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
+
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);
@@ -294,6 +319,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
 
@@ -313,6 +339,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", intentTag);
+                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent1.putExtra("hasPrescription", "false");
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
