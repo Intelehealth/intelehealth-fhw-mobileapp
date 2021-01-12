@@ -15,7 +15,7 @@
         android:layout_above="@+id/ll_center"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:src="@drawable/ic_round_app" />
+        android:src="@drawable/intelehealth_i_icon_only" />
 
     <LinearLayout
         android:id="@+id/ll_center"
