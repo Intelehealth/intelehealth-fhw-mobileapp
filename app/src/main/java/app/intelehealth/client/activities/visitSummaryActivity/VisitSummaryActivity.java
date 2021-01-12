@@ -781,7 +781,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
 //                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
@@ -789,9 +789,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     try {
 //                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
 //                                (speciality_selected, visitUuid);
-                        isUpdateVisitDone = speciality_attributes
-                                .insertVisitAttributes(visitUuid, speciality_selected);
-
+                        if (!isVisitSpecialityExists) {
+                            isUpdateVisitDone = speciality_attributes
+                                    .insertVisitAttributes(visitUuid, speciality_selected);
+                        }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -799,7 +800,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
 
                     Log.d("visitUUID", "upload_click: " + visitUUID);
-                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+//                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                     if (isVisitSpecialityExists)
                         speciality_spinner.setEnabled(false);
 
