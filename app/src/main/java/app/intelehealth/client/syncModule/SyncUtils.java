@@ -25,17 +25,7 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
-        // Checking if Specialty is added or not in visit
-        PushRequestApiCall pushRequestApiCall;
-        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
-        pushRequestApiCall = patientsFrameJson.frameJson();
-
-        for (int i = 0; i < pushRequestApiCall.getVisits().size(); i++) {
-            if (pushRequestApiCall.getVisits().get(i).getAttributes().size() > 0) {
-                syncDAO.pushDataApi();
-            }
-        }
-
+        syncDAO.pushDataApi();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
         imagesPushDAO.patientProfileImagesPush();
@@ -80,20 +70,8 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
 
-        // Checking if Specialty is added or not in visit
-        PushRequestApiCall pushRequestApiCall;
-        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
-        pushRequestApiCall = patientsFrameJson.frameJson();
-
-        for (int i = 0; i < pushRequestApiCall.getVisits().size(); i++) {
-            if (pushRequestApiCall.getVisits().get(i).getAttributes().size() > 0) {
-                isSynced = syncDAO.pushDataApi();
-            }
-        }
-
-//      isSynced = syncDAO.pushDataApi();
+        isSynced = syncDAO.pushDataApi();
         Logger.logD(TAG, "Push ended");
-
 
 //        need to add delay for pulling the obs correctly
         final Handler handler = new Handler();

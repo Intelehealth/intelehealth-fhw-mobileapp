@@ -1,5 +1,7 @@
 package app.intelehealth.client.utilities;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
@@ -9,6 +11,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
 import app.intelehealth.client.database.dao.ObsDAO;
@@ -121,7 +124,11 @@ public class PatientsFrameJson {
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
             visit.setAttributes(visitDTO.getAttributes());
-            visitList.add(visit);
+//            visitList.add(visit);
+
+            if (visitDTO.getAttributes().size() > 0) {
+                visitList.add(visit);
+            }
 
         }
 
@@ -168,7 +175,12 @@ public class PatientsFrameJson {
 
             encounter.setLocation(session.getLocationUuid());
 
-            encounterList.add(encounter);
+//            encounterList.add(encounter);
+
+            if (speciality_row_exist_check(encounter.getVisit())){
+                encounterList.add(encounter);
+            }
+
         }
 
 
@@ -181,5 +193,28 @@ public class PatientsFrameJson {
 
 
         return pushRequestApiCall;
+    }
+
+    /**
+     * @param uuid the visit uuid of the patient visit records is passed to the function.
+     * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
+     */
+    private boolean speciality_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
+                new String[]{uuid});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
     }
 }
