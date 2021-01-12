@@ -28,6 +28,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -117,7 +118,9 @@ public class VitalsActivity extends AppCompatActivity {
             JSONObject obj = null;
 //            #633 #632
             if (!sessionManager.getLicenseKey().isEmpty()) {
-                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }//Load the config file
