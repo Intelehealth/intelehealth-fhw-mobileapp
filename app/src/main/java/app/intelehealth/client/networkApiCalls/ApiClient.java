@@ -34,7 +34,7 @@ public class ApiClient {
     public static <S> S createService(Class<S> serviceClass) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
         client.connectTimeout(70, TimeUnit.SECONDS);
         client.readTimeout(70, TimeUnit.SECONDS);
