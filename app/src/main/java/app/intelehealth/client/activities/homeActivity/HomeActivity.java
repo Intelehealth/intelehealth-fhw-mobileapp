@@ -48,6 +48,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
@@ -125,6 +126,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
+
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -133,6 +135,7 @@ public class HomeActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
@@ -158,25 +161,31 @@ public class HomeActivity extends AppCompatActivity {
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);
+
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
+
         todaysVisits_textview = findViewById(R.id.todaysVisits_textview);
         todaysVisits_textview.setText(R.string.today_visits);
+
         activeVisits_textview = findViewById(R.id.activeVisits_textview);
         activeVisits_textview.setText(R.string.active_visits);
+
         videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
         videoLibrary_textview.setText(R.string.video_library);
+
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
-        manualSyncButton.setText(R.string.sync_now);
 
+
+        manualSyncButton.setText(R.string.refresh);
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String phoneNumberWithCountryCode = "+917005308163";
                 String message =
-                        getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
                                 /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
@@ -295,7 +304,9 @@ public class HomeActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
+                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
 
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));

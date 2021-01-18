@@ -3,4 +3,8 @@
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
     <string name="setup">Setup</string>
+    <string name="refresh">Refresh</string>
+    <string name="gujarati_hello_thankyou_for_using_myteledoc_">"હેલ્લો, માયટેલીડોકનો ઉપયોગ કરવા બદલ આભાર. તમારૂં દવાનું પ્રિસ્ક્રીપ્શન મેળવવા અહીં પર ક્લિક કરો, "</string>
+    <string name="gujarati_and_enter_your_patient_id">" અને તમારો પેશન્ટ ઓળખનંબર "</string>
+    <string name="gujarati_end_statement">" દાખલ કરો."</string>
 </resources>

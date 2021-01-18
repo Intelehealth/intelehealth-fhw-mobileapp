@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
@@ -75,7 +76,9 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse(
+                        FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                        String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
 
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
@@ -84,22 +87,27 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 //            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
 //            if(sharedPreferences.getAll().values().contains("cb"))
             Locale current = getResources().getConfiguration().locale;
-//            if(current.toString().equals("cb"))
-//            {
+//            if (current.toString().equals("cb")) {
 //                String privacy_string = obj.getString("privacyNoticeText_Cebuano");
-//                if(privacy_string.isEmpty())
-//                {
+//                if (privacy_string.isEmpty()) {
 //                    privacy_string = obj.getString("privacyNoticeText");
 //                    privacy_textview.setText(privacy_string);
-//                }
-//                else
-//                {
+//                } else {
 //                    privacy_textview.setText(privacy_string);
 //                }
 //
-//            }
-            if (current.toString().equals("or")) {
-                String privacy_string = obj.getString("privacyNoticeText_Odiya");
+//            } else if (current.toString().equals("or")) {
+//                String privacy_string = obj.getString("privacyNoticeText_Odiya");
+//                if (privacy_string.isEmpty()) {
+//                    privacy_string = obj.getString("privacyNoticeText");
+//                    privacy_textview.setText(privacy_string);
+//                } else {
+//                    privacy_textview.setText(privacy_string);
+//                }
+//
+//            } else
+            if (current.toString().equals("hi")) {
+                String privacy_string = obj.getString("privacyNoticeText_Hindi");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
                     privacy_textview.setText(privacy_string);

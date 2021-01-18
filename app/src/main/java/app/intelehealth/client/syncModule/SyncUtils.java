@@ -1,6 +1,5 @@
 package app.intelehealth.client.syncModule;
 
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -58,9 +57,6 @@ public class SyncUtils {
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)
                 .enqueue();
-
-       /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
-        IntelehealthApplication.getAppContext().startService(intent);*/
 
     }
 

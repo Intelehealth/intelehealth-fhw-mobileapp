@@ -32,8 +32,8 @@
     <string name="permission_denied">Permission Denied\n</string>
     <string name="reject_permission_results"><![CDATA[If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]]]></string>
     <string name="current_time"><![CDATA[\"Current time => \"]]></string>
-    <string name="temperature_C">"Temperature(C): "</string>
-    <string name="temperature_F">"Temperature(F): "</string>
+    <string name="temperature_C">\"Temperature(C): \"</string>
+    <string name="temperature_F">\"Temperature(F): \"</string>
     <string name="no_history_family_found">No history of illness in family provided.</string>
     <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
     <string name="dr_registration_no">\"Registration No: \"</string>
@@ -72,4 +72,8 @@
     <string name="download_presc_before_sharing">Download prescription first before sharing</string>
     <string name="please_select_specialization">Please select specialization</string>
     <string name="setup">Setup</string>
+    <string name="refresh">Refresh</string>
+    <string name="gujarati_hello_thankyou_for_using_myteledoc_">"હેલ્લો, માયટેલીડોકનો ઉપયોગ કરવા બદલ આભાર. તમારૂં દવાનું પ્રિસ્ક્રીપ્શન મેળવવા અહીં પર ક્લિક કરો, "</string>
+    <string name="gujarati_and_enter_your_patient_id">" અને તમારો પેશન્ટ ઓળખનંબર "</string>
+    <string name="gujarati_end_statement">" દાખલ કરો."</string>
 </resources>

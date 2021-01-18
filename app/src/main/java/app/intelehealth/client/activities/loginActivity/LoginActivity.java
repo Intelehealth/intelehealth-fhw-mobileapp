@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         icLogo = findViewById(R.id.iv_logo);
-        setLogo();
+//        setLogo();
 
         // Set up the login form.
         mUsernameView = findViewById(R.id.et_email);

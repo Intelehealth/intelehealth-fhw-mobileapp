@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.visitSummaryActivity.VisitSummaryActivity"
+    tools:context="app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity"
     tools:showIn="@layout/activity_visit_summary">
     <!-- TODO: Replace hard-coded strings with @string resources-->
 
@@ -1403,7 +1403,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="35dp"
-                    android:paddingVertical="10dp" app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
+                    android:paddingVertical="10dp"
+                    app:srcCompat="@drawable/ic_icons8_whatsapp_purple">
                 </ImageView>
 
             </RelativeLayout>

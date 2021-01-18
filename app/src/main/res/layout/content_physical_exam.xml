@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.physcialExamActivity.PhysicalExamActivity"
+    tools:context="app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity"
     tools:showIn="@layout/activity_physical_exam">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

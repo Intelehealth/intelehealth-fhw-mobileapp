@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.homeActivity.HomeActivity">
+    tools:context="app.intelehealth.client.activities.homeActivity.HomeActivity">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activities.homeActivity.HomeActivity"
+        tools:context="app.intelehealth.client.activities.homeActivity.HomeActivity"
         tools:showIn="@layout/activity_home">
 
         <ScrollView
@@ -292,8 +292,10 @@
                             android:layout_alignParentEnd="true"
                             android:background="@drawable/button_layerlist"
                             android:clickable="true"
+                            android:drawableLeft="@drawable/ic_baseline_refresh_24"
+                            android:drawablePadding="5dp"
                             android:paddingHorizontal="10dp"
-                            android:text="@string/sync_now"
+                            android:text="@string/refresh"
                             android:textColor="@color/colorPrimary"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_regular"
