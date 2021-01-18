@@ -24,12 +24,14 @@ import app.intelehealth.client.activities.patientDetailActivity.PatientDetailAct
  * Github : @dbarretto
  */
 
-public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
+public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.BaseViewHolder> {
 
     List<ActivePatientModel> activePatientModels;
     Context context;
-    LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    int VIEW_TYPE_ITEM = 1;
+    int VIEW_TYPE_LOADING = 2;
+
 
     public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
         this.activePatientModels = activePatientModels;
@@ -38,89 +40,98 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     }
 
     @Override
-    public ActivePatientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (layoutInflater == null) {
-            layoutInflater = LayoutInflater.from(parent.getContext());
+    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View root = null;
+        if (viewType == VIEW_TYPE_ITEM) {
+            root = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_active_patient, parent, false);
+            return new ActivePatientViewHolder(root);
+        } else {
+            root = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_active_patient_progress, parent, false);
+            return new ProgressViewHolder(root);
         }
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.list_item_active_patient, parent, false);
-        ActivePatientViewHolder viewHolder = new ActivePatientViewHolder(row);
-        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ActivePatientViewHolder holder, int position) {
-        final ActivePatientModel activePatientModel = activePatientModels.get(position);
-        String header;
-        if (activePatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
-                    activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+
+        if( holder instanceof ActivePatientViewHolder)
+        {
+            final ActivePatientModel activePatientModel = activePatientModels.get(position);
+            String header;
+            if (activePatientModel.getOpenmrs_id() != null) {
+                header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
+                        activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
 
 //            holder.getTv_not_uploaded().setVisibility(View.GONE);
-        } else {
-            header = String.format("%s %s", activePatientModel.getFirst_name(),
-                    activePatientModel.getLast_name());
+            } else {
+                header = String.format("%s %s", activePatientModel.getFirst_name(),
+                        activePatientModel.getLast_name());
 
 //            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
 //            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
 //            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
-        }
+            }
 
-        if (activePatientModel.getSync().equalsIgnoreCase("0")){
-            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
-            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
-            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
-        } else {
-            holder.getTv_not_uploaded().setVisibility(View.GONE);
-        }
+            if (activePatientModel.getSync().equalsIgnoreCase("0")){
+                ((ActivePatientViewHolder) holder).getTv_not_uploaded().setVisibility(View.VISIBLE);
+                ((ActivePatientViewHolder) holder).getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
+                ((ActivePatientViewHolder) holder).getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+            } else {
+                ((ActivePatientViewHolder) holder).getTv_not_uploaded().setVisibility(View.GONE);
+            }
 
 
 //        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
 
-        //get date of birth and convert it into years and months
-        String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
-        String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = context.getString(R.string.identification_screen_prompt_age) + "" + age;
+            //get date of birth and convert it into years and months
+            String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
+            String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
+            String body = context.getString(R.string.identification_screen_prompt_age) + "" + age;
 
 
-        holder.getHeadTextView().setText(header);
-        holder.getBodyTextView().setText(body);
-        if (activePatientModel.getEnddate() == null) {
-            holder.getIndicatorTextView().setText(R.string.active);
-            holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
-        } else {
-            holder.getIndicatorTextView().setText(R.string.closed);
-            holder.getIndicatorTextView().setBackgroundColor(Color.RED);
-        }
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
-                intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "");
+            ((ActivePatientViewHolder) holder).getHeadTextView().setText(header);
+            ((ActivePatientViewHolder) holder).getBodyTextView().setText(body);
+            if (activePatientModel.getEnddate() == null) {
+                ((ActivePatientViewHolder) holder).getIndicatorTextView().setText(R.string.active);
+                ((ActivePatientViewHolder) holder).getIndicatorTextView().setBackgroundColor(Color.GREEN);
+            } else {
+                ((ActivePatientViewHolder) holder).getIndicatorTextView().setText(R.string.closed);
+                ((ActivePatientViewHolder) holder).getIndicatorTextView().setBackgroundColor(Color.RED);
+            }
+            ((ActivePatientViewHolder) holder).getRootView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String patientStatus = "returning";
+                    Intent intent = new Intent(context, PatientDetailActivity.class);
+                    intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", "");
 
-                if (holder.ivPriscription.getTag().equals("1")) {
-                    intent.putExtra("hasPrescription", "true");
-                } else {
-                    intent.putExtra("hasPrescription", "false");
+                    if (((ActivePatientViewHolder) holder).ivPriscription.getTag().equals("1")) {
+                        intent.putExtra("hasPrescription", "true");
+                    } else {
+                        intent.putExtra("hasPrescription", "false");
+                    }
+                    context.startActivity(intent);
                 }
-                context.startActivity(intent);
-            }
-        });
+            });
 
-        for (int i = 0; i < listPatientUUID.size(); i++) {
-            if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
-                holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
-                holder.ivPriscription.setTag("1");
+            for (int i = 0; i < listPatientUUID.size(); i++) {
+                if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+                    ((ActivePatientViewHolder) holder).ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
+                    ((ActivePatientViewHolder) holder).ivPriscription.setTag("1");
+                }
             }
         }
+
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        if(activePatientModels.get(position) != null)
+            return VIEW_TYPE_ITEM;
+        else
+            return VIEW_TYPE_LOADING;
     }
 
     @Override
@@ -128,7 +139,22 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         return activePatientModels.size();
     }
 
-    public class ActivePatientViewHolder extends RecyclerView.ViewHolder {
+    public void addNullData() {
+        activePatientModels.add(null);
+        notifyItemInserted(activePatientModels.size()-1);
+    }
+
+    public void removeNull() {
+        activePatientModels.remove(activePatientModels.size() - 1);
+        notifyItemRemoved(activePatientModels.size());
+    }
+
+    public void addData(List<ActivePatientModel> activePatientModelList) {
+        activePatientModels.addAll(activePatientModelList);
+        notifyDataSetChanged();
+    }
+
+    public class ActivePatientViewHolder extends BaseViewHolder {
         private TextView headTextView;
         private TextView bodyTextView;
         private TextView indicatorTextView;
@@ -180,6 +206,18 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         public void setTv_not_uploaded(TextView tv_not_uploaded) {
             this.tv_not_uploaded = tv_not_uploaded;
+        }
+    }
+
+    class ProgressViewHolder extends BaseViewHolder { public ProgressViewHolder (View itemView)
+        {
+            super(itemView);
+        }
+    }
+    class BaseViewHolder extends RecyclerView.ViewHolder {
+
+        public BaseViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
