@@ -220,9 +220,9 @@
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <service
-            android:name=".services.OnClearFromRecentService"
-            android:stopWithTask="false" />
+<!--        <service-->
+<!--            android:name=".services.OnClearFromRecentService"-->
+<!--            android:stopWithTask="false" />-->
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
