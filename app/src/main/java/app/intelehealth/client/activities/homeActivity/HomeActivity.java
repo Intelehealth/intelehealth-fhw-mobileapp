@@ -176,7 +176,8 @@ public class HomeActivity extends AppCompatActivity {
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
-        manualSyncButton.setText(R.string.sync_now);
+       // manualSyncButton.setText(R.string.sync_now);
+        manualSyncButton.setText(R.string.refresh);
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {

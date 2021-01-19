@@ -184,7 +184,7 @@
     <string name="picture_taken">Hulagway nga Gigamit</string>
     <string name="please_wait_progress">Palihog hulat</string>
     <string name="pref_default_display_name">John Smith</string>
-    <string name="pref_header_data_sync">Data sync</string>
+    <string name="pref_header_data_sync">Data refresh</string>
     <string name="pref_header_general">Kadaghanan</string>
     <string name="pref_header_notifications">Pahibalo</string>
     <string name="pref_ringtone_silent">Hilom</string>
@@ -319,7 +319,7 @@
     <string name="accept">Dawaton</string>
     <string name="reject">Isalikway</string>
     <string name="next">Next</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
+    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
     <string name="which_server_would_you_like_to_connect_to">Which server would you like to connect to?</string>
     <string name="enter_url">I-sulod ang URL</string>
     <string name="choose_a_location_to_login">Choose a location to login</string>
@@ -333,7 +333,7 @@
     <string name="health_worker">Kawani sa panglawas</string>
     <string name="priority">Prayoridad</string>
     <string name="server_url">Server url</string>
-    <string name="sync">Sync</string>
+    <string name="sync">Refresh</string>
     <string name="update_protocols">I-update ang protokol</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Pagsala sa tighimo</string>
@@ -344,16 +344,16 @@
     <string name="upload_before_end_visit_active">Palihug pag-upload sa pag-bisita usa musuway sa paghuman sa pag-bisita.</string>
     <string name="active">Aktibo</string>
     <string name="closed">Sirado</string>
-    <string name="syncInProgress">Sync in progress</string>
+    <string name="syncInProgress">Refresh in progress</string>
     <string name="please_wait">Please wait...</string>
-    <string name="sync_notif_title">sync</string>
+    <string name="sync_notif_title">refresh</string>
     <string name="sync_background_completed">Kumpleto na ang pag-sync sa bakrawon</string>
     <string name="sync_not_available">Di magamit ang sync</string>
     <string name="please_connect_to_internet">Palihug ug konekta sa koneksyon sa internet!</string>
     <string name="image_upload">Pag-upload sa imahe</string>
     <string name="image_upload_failed">Di malampuson ang pag-upload sa imahe</string>
     <string name="sure_to_exit">Sigurado ka nga gusto ka mugawas ?</string>
-    <string name="lastsync_normal">Last sync</string>
+    <string name="lastsync_normal">Last refresh</string>
     <string name="update_patient_identification">I-update ang pasyente</string>
     <string name="are_you_want_go_back">Sigurado ka nga gusto ka mubalik?</string>
     <string name="error">Sayup</string>
@@ -394,8 +394,8 @@
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
-    <string name="successfully_synced">Successfully synced</string>
-    <string name="failed_synced"><![CDATA[Failed synced, check your internet connection]]></string>
+    <string name="successfully_synced">Successfully refreshed</string>
+    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
     <string name="title_activity_today_patient">"Mga Pasyente Karon adlawa"</string>
     <string name="title_activity_active_patient">Aktibo nga mga Pasyente</string>
 
@@ -473,5 +473,6 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="share">Share</string>
     <string name="view_print">View/Print</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

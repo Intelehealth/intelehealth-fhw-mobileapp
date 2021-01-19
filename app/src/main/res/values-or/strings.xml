@@ -489,5 +489,6 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="share">Share</string>
     <string name="view_print">View/Print</string>
+    <string name="refresh">Refresh</string>
 
 </resources>
