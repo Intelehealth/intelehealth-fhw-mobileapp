@@ -106,7 +106,9 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mAdminPasswordView;
     private EditText mUrlField;
     private Button mLoginButton;
-    private Spinner mDropdownLocation;
+   // private Spinner mDropdownLocation;
+    private Spinner spinner_state, spinner_district,
+           spinner_sanch, spinner_village;
     private TextView mAndroidIdTextView;
     private RadioButton r1;
     private RadioButton r2;
@@ -155,7 +157,12 @@ public class SetupActivity extends AppCompatActivity {
         Button submitButton = findViewById(R.id.setup_submit_button);
 
         mUrlField = findViewById(R.id.editText_URL);
-        mDropdownLocation = findViewById(R.id.spinner_location);
+     //   mDropdownLocation = findViewById(R.id.spinner_location);
+        spinner_state = findViewById(R.id.spinner_state);
+        spinner_district = findViewById(R.id.spinner_district);
+        spinner_sanch = findViewById(R.id.spinner_sanch);
+        spinner_village = findViewById(R.id.spinner_village);
+
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -193,7 +200,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 isLocationFetched = false;
                 LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
-                mDropdownLocation.setAdapter(adapter);
+               // mDropdownLocation.setAdapter(adapter);
+                spinner_state.setAdapter(adapter);
             }
 
             @Override
@@ -277,12 +285,12 @@ public class SetupActivity extends AppCompatActivity {
         }
         Location location = null;
 
-        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
-            cancel = true;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
-        } else {
-            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
-        }
+//        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
+//            cancel = true;
+//            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
+//        } else {
+//            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
+//        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -343,7 +351,8 @@ public class SetupActivity extends AppCompatActivity {
                                 mLocations = locationList.getResults();
                                 List<String> items = getLocationStringList(locationList.getResults());
                                 LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-                                mDropdownLocation.setAdapter(adapter);
+                             //   mDropdownLocation.setAdapter(adapter);
+                                spinner_state.setAdapter(adapter);
                                 isLocationFetched = true;
                             } else {
                                 isLocationFetched = false;

@@ -311,4 +311,20 @@
         <item>@color/dot_dark_screen4</item>
     </array>
 
+    <string-array name="location_state">
+        <item>Choose State</item>
+    </string-array>
+
+    <string-array name="location_district">
+        <item>Choose District</item>
+    </string-array>
+
+    <string-array name="location_sanch">
+        <item>Choose Sanch</item>
+    </string-array>
+
+    <string-array name="location_village">
+        <item>Choose Village</item>
+    </string-array>
+
 </resources>
