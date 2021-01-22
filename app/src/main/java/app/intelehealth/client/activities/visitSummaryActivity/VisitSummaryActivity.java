@@ -556,14 +556,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
-//                                        String whatsappMessage = getString(
-//                                                R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) +
-//                                                whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                                        String whatsappMessage = getString(
+                                                R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) +
+                                                whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
                                         //gujarati_static_translation_morbi_project...
-                                        String whatsappMessage = getString(R.string.gujarati_hello_thankyou_for_using_myteledoc_) +
-                                                whatsapp_url + getString(R.string.gujarati_and_enter_your_patient_id) +
-                                                idView.getText().toString() + getString(R.string.gujarati_end_statement);
+//                                        String whatsappMessage = getString(R.string.gujarati_hello_thankyou_for_using_myteledoc_) +
+//                                                whatsapp_url + getString(R.string.gujarati_and_enter_your_patient_id) +
+//                                                idView.getText().toString() + getString(R.string.gujarati_end_statement);
 
                                         //Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
