@@ -1,0 +1,168 @@
+Index: app/src/main/res/layout/activity_active_patient.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.coordinatorlayout.widget.CoordinatorLayout\r\n    xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".activities.activePatientsActivity.ActivePatientActivity\">\r\n\r\n        <com.google.android.material.appbar.AppBarLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:theme=\"@style/AppTheme.AppBarOverlay\">\r\n\r\n            <androidx.appcompat.widget.Toolbar\r\n                android:id=\"@+id/toolbar\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"?attr/actionBarSize\"\r\n                android:background=\"?attr/colorPrimary\"\r\n                app:popupTheme=\"@style/AppTheme.PopupOverlay\" />\r\n\r\n        </com.google.android.material.appbar.AppBarLayout>\r\n\r\n        <!--<include layout=\"@layout/content_active_patient\" />-->\r\n\r\n        <RelativeLayout\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            app:layout_behavior=\"@string/appbar_scrolling_view_behavior\"\r\n            tools:context=\".activities.today_patient_activity.TodayPatientActivity\"\r\n            tools:showIn=\"@layout/activity_today_patient\">\r\n\r\n            <TextView\r\n                android:id=\"@+id/ttt\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"\r\n                android:visibility=\"gone\"\r\n                android:textStyle=\"bold\"\r\n                android:textAlignment=\"center\"\r\n                android:layout_centerInParent=\"true\"\r\n                android:includeFontPadding=\"false\"\r\n                android:gravity=\"center_horizontal\"\r\n                android:fontFamily=\"@font/lato_regular\"\r\n                android:layout_marginTop=\"70dp\"\r\n                android:textSize=\"18sp\"\r\n                android:layout_marginHorizontal=\"5sp\"\r\n                />\r\n\r\n            <TextView\r\n                android:id=\"@+id/textviewmessage\"\r\n                android:layout_width=\"wrap_content\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_centerInParent=\"true\"\r\n                android:textSize=\"18sp\"\r\n                android:gravity=\"center_horizontal\"\r\n                android:includeFontPadding=\"false\"\r\n                android:fontFamily=\"@font/lato_regular\"\r\n                android:text=\"@string/please_wait_till_sync_is_completed\"\r\n                android:visibility=\"visible\" />\r\n\r\n            <androidx.recyclerview.widget.RecyclerView\r\n                android:id=\"@+id/today_patient_recycler_view\"\r\n                android:layout_width=\"match_parent\"\r\n                android:layout_height=\"match_parent\"\r\n                android:layout_marginTop=\"5dp\"\r\n                android:visibility=\"gone\" />\r\n        </RelativeLayout>\r\n\r\n\r\n    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/activity_active_patient.xml	(revision 537961036e42e3be195be2497a77f1ce38d4faf7)
++++ app/src/main/res/layout/activity_active_patient.xml	(date 1611554424602)
+@@ -23,13 +23,13 @@
+ 
+         <!--<include layout="@layout/content_active_patient" />-->
+ 
++
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+             tools:context=".activities.today_patient_activity.TodayPatientActivity"
+             tools:showIn="@layout/activity_today_patient">
+-
+             <TextView
+                 android:id="@+id/ttt"
+                 android:layout_width="match_parent"
+@@ -66,5 +66,4 @@
+                 android:visibility="gone" />
+         </RelativeLayout>
+ 
+-
+     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"JDK\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 537961036e42e3be195be2497a77f1ce38d4faf7)
++++ .idea/misc.xml	(date 1611554440101)
+@@ -5,7 +5,7 @@
+       <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+     </configurations>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_12" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/build/classes" />
+   </component>
+   <component name="ProjectType">
+Index: app/src/main/java/app/intelehealth/client/activities/activePatientsActivity/ActivePatientActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package app.intelehealth.client.activities.activePatientsActivity;\r\n\r\nimport android.content.DialogInterface;\r\nimport android.content.Intent;\r\nimport android.database.Cursor;\r\nimport android.database.SQLException;\r\nimport android.database.sqlite.SQLiteDatabase;\r\nimport android.graphics.Color;\r\nimport android.graphics.drawable.Drawable;\r\nimport android.os.Bundle;\r\n\r\nimport androidx.core.content.ContextCompat;\r\nimport androidx.appcompat.app.AlertDialog;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.recyclerview.widget.DividerItemDecoration;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\nimport androidx.appcompat.widget.Toolbar;\r\n\r\nimport android.util.Log;\r\nimport android.view.Menu;\r\nimport android.view.MenuInflater;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.TextView;\r\n\r\n\r\nimport com.google.android.material.dialog.MaterialAlertDialogBuilder;\r\nimport com.google.firebase.crashlytics.FirebaseCrashlytics;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.Date;\r\nimport java.util.HashSet;\r\nimport java.util.List;\r\n\r\nimport app.intelehealth.client.R;\r\nimport app.intelehealth.client.app.AppConstants;\r\nimport app.intelehealth.client.app.IntelehealthApplication;\r\nimport app.intelehealth.client.database.dao.EncounterDAO;\r\nimport app.intelehealth.client.database.dao.ProviderDAO;\r\nimport app.intelehealth.client.database.dao.VisitsDAO;\r\nimport app.intelehealth.client.models.ActivePatientModel;\r\nimport app.intelehealth.client.models.dto.EncounterDTO;\r\nimport app.intelehealth.client.models.dto.VisitDTO;\r\nimport app.intelehealth.client.utilities.Logger;\r\nimport app.intelehealth.client.utilities.SessionManager;\r\n\r\nimport app.intelehealth.client.activities.homeActivity.HomeActivity;\r\nimport app.intelehealth.client.utilities.StringUtils;\r\nimport app.intelehealth.client.utilities.exception.DAOException;\r\n\r\npublic class ActivePatientActivity extends AppCompatActivity {\r\n    private static final String TAG = ActivePatientActivity.class.getSimpleName();\r\n    private SQLiteDatabase db;\r\n    SessionManager sessionManager = null;\r\n    Toolbar mToolbar;\r\n    RecyclerView mActivePatientList;\r\n    TextView textView;\r\n    RecyclerView recyclerView;\r\n    MaterialAlertDialogBuilder dialogBuilder;\r\n\r\n    private ArrayList<String> listPatientUUID = new ArrayList<String>();\r\n\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n//        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);\r\n        setContentView(R.layout.activity_active_patient);\r\n        mToolbar = findViewById(R.id.toolbar);\r\n\r\n\r\n        Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),\r\n                R.drawable.ic_sort_white_24dp);\r\n//        mToolbar.setOverflowIcon(drawable);\r\n\r\n        mActivePatientList = findViewById(R.id.today_patient_recycler_view);\r\n\r\n        setSupportActionBar(mToolbar);\r\n        mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);\r\n        mToolbar.setTitleTextColor(Color.WHITE);\r\n        getSupportActionBar().setDisplayHomeAsUpEnabled(true);\r\n        getSupportActionBar().setDisplayShowTitleEnabled(true);\r\n\r\n        textView = findViewById(R.id.textviewmessage);\r\n        recyclerView = findViewById(R.id.today_patient_recycler_view);\r\n        sessionManager = new SessionManager(this);\r\n        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();\r\n        if (sessionManager.isPullSyncFinished()) {\r\n            textView.setVisibility(View.GONE);\r\n            recyclerView.setVisibility(View.VISIBLE);\r\n            doQuery();\r\n        }\r\n\r\n        getVisits();\r\n    }\r\n\r\n    private void getVisits() {\r\n\r\n        ArrayList<String> encounterVisitUUID = new ArrayList<String>();\r\n        HashSet<String> hsPatientUUID = new HashSet<String>();\r\n\r\n        //Get all Visits\r\n        VisitsDAO visitsDAO = new VisitsDAO();\r\n        List<VisitDTO> visitsDTOList = visitsDAO.getAllVisits();\r\n\r\n        //Get all Encounters\r\n        EncounterDAO encounterDAO = new EncounterDAO();\r\n        List<EncounterDTO> encounterDTOList = encounterDAO.getAllEncounters();\r\n\r\n        //Get Visit Complete Encounters only, visit complete encounter id - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e\r\n        if (encounterDTOList.size() > 0) {\r\n            for (int i = 0; i < encounterDTOList.size(); i++) {\r\n                if (encounterDTOList.get(i).getEncounterTypeUuid().equalsIgnoreCase(\"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e\")) {\r\n                    encounterVisitUUID.add(encounterDTOList.get(i).getVisituuid());\r\n                }\r\n            }\r\n        }\r\n\r\n        //Get patientUUID from visitList\r\n        for (int i = 0; i < encounterVisitUUID.size(); i++) {\r\n\r\n            for (int j = 0; j < visitsDTOList.size(); j++) {\r\n\r\n                if (encounterVisitUUID.get(i).equalsIgnoreCase(visitsDTOList.get(j).getUuid())) {\r\n                    listPatientUUID.add(visitsDTOList.get(j).getPatientuuid());\r\n                }\r\n            }\r\n        }\r\n\r\n        if (listPatientUUID.size() > 0) {\r\n\r\n            hsPatientUUID.addAll(listPatientUUID);\r\n            listPatientUUID.clear();\r\n            listPatientUUID.addAll(hsPatientUUID);\r\n\r\n        }\r\n    }\r\n\r\n    /**\r\n     * This method retrieves visit details about patient for a particular date.\r\n     *\r\n     * @return void\r\n     */\r\n    private void doQuery() {\r\n        List<ActivePatientModel> activePatientList = new ArrayList<>();\r\n        Date cDate = new Date();\r\n        String query = \"SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  \" +\r\n                \"FROM tbl_visit a, tbl_patient b \" +\r\n                \"WHERE a.patientuuid = b.uuid \" +\r\n                \"AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC\";\r\n        final Cursor cursor = db.rawQuery(query, null);\r\n\r\n        if (cursor != null) {\r\n            if (cursor.moveToFirst()) {\r\n                do {\r\n                    try {\r\n                        activePatientList.add(new ActivePatientModel(\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"uuid\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"patientuuid\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"startdate\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"enddate\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"openmrs_id\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"first_name\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"middle_name\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"last_name\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"date_of_birth\")),\r\n                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(\"patientuuid\")))),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"sync\")))\r\n                        );\r\n                    } catch (DAOException e) {\r\n                        e.printStackTrace();\r\n                    }\r\n                } while (cursor.moveToNext());\r\n            }\r\n        }\r\n        if (cursor != null) {\r\n            cursor.close();\r\n        }\r\n\r\n        if (!activePatientList.isEmpty()) {\r\n            for (ActivePatientModel activePatientModel : activePatientList)\r\n                Logger.logD(TAG, activePatientModel.getFirst_name() + \" \" + activePatientModel.getLast_name());\r\n\r\n            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);\r\n            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);\r\n            recyclerView.setLayoutManager(linearLayoutManager);\r\n           /* recyclerView.addItemDecoration(new\r\n                    DividerItemDecoration(this,\r\n                    DividerItemDecoration.VERTICAL));*/\r\n            recyclerView.setAdapter(mActivePatientAdapter);\r\n        }\r\n\r\n    }\r\n\r\n    @Override\r\n    public boolean onCreateOptionsMenu(Menu menu) {\r\n        MenuInflater inflater = getMenuInflater();\r\n        inflater.inflate(R.menu.menu_today_patient, menu);\r\n        inflater.inflate(R.menu.today_filter, menu);\r\n        return super.onCreateOptionsMenu(menu);\r\n    }\r\n\r\n    @Override\r\n    public boolean onOptionsItemSelected(MenuItem item) {\r\n        switch (item.getItemId()) {\r\n            case android.R.id.home:\r\n                finish();\r\n                return true;\r\n            case R.id.summary_endAllVisit:\r\n                endAllVisit();\r\n\r\n            case R.id.action_filter:\r\n                //function call\r\n                displaySingleSelectionDialog();\r\n            default:\r\n                return super.onOptionsItemSelected(item);\r\n        }\r\n    }\r\n\r\n\r\n    private void displaySingleSelectionDialog() {\r\n\r\n        ProviderDAO providerDAO = new ProviderDAO();\r\n        ArrayList selectedItems = new ArrayList<>();\r\n        String[] creator_names = null;\r\n        String[] creator_uuid = null;\r\n        try {\r\n            creator_names = providerDAO.getProvidersList().toArray(new String[0]);\r\n            Log.d(\"PRAJWAL\", \"CREATOR PRAJWAL: \" + creator_names.length);\r\n            creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);\r\n        } catch (DAOException e) {\r\n            e.printStackTrace();\r\n        }\r\n        dialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);\r\n        dialogBuilder.setTitle(getString(R.string.filter_by_creator));\r\n\r\n        String[] finalCreator_names = creator_names;\r\n        String[] finalCreator_uuid = creator_uuid;\r\n        dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {\r\n\r\n\r\n            @Override\r\n            public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {\r\n                Logger.logD(TAG, \"multichoice\" + which + isChecked);\r\n                if (isChecked) {\r\n                    // If the user checked the item, add it to the selected items\r\n                    selectedItems.add(finalCreator_uuid[which]);\r\n                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);\r\n                } else if (selectedItems.contains(which)) {\r\n                    // Else, if the item is already in the array, remove it\r\n                    selectedItems.remove(finalCreator_uuid[which]);\r\n                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);\r\n                }\r\n            }\r\n        });\r\n\r\n        dialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {\r\n            @Override\r\n            public void onClick(DialogInterface dialogInterface, int i) {\r\n                //display filter query code on list menu\r\n                Logger.logD(TAG, \"onclick\" + i);\r\n                doQueryWithProviders(selectedItems);\r\n            }\r\n        });\r\n\r\n        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);\r\n        //dialogBuilder.show();\r\n        AlertDialog alertDialog = dialogBuilder.create();\r\n        alertDialog.show();\r\n\r\n        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);\r\n        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));\r\n\r\n        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);\r\n        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));\r\n        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);\r\n\r\n    }\r\n\r\n\r\n    private void endAllVisit() {\r\n\r\n        int failedUploads = 0;\r\n\r\n        String query = \"SELECT tbl_visit.patientuuid, tbl_visit.enddate, tbl_visit.uuid,\" +\r\n                \"tbl_patient.first_name, tbl_patient.middle_name, tbl_patient.last_name FROM tbl_visit, tbl_patient WHERE\" +\r\n                \" tbl_visit.patientuid = tbl_patient.uuid AND tbl_visit.enddate IS NULL OR tbl_visit.enddate = ''\";\r\n\r\n        final Cursor cursor = db.rawQuery(query, null);\r\n\r\n        if (cursor != null) {\r\n            if (cursor.moveToFirst()) {\r\n                do {\r\n                    boolean result = endVisit(\r\n                            cursor.getString(cursor.getColumnIndexOrThrow(\"patientuuid\")),\r\n                            cursor.getString(cursor.getColumnIndexOrThrow(\"first_name\")) + \" \" +\r\n                                    cursor.getString(cursor.getColumnIndexOrThrow(\"last_name\")),\r\n                            cursor.getString(cursor.getColumnIndexOrThrow(\"uuid\"))\r\n                    );\r\n                    if (!result) failedUploads++;\r\n                } while (cursor.moveToNext());\r\n            }\r\n        }\r\n        cursor.close();\r\n\r\n        if (failedUploads == 0) {\r\n            Intent intent = new Intent(this, HomeActivity.class);\r\n            startActivity(intent);\r\n        } else {\r\n            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);\r\n            //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);\r\n            alertDialogBuilder.setMessage(getString(R.string.unable_to_end) + failedUploads +\r\n                    getString(R.string.upload_before_end_visit_active));\r\n            alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {\r\n                @Override\r\n                public void onClick(DialogInterface dialog, int which) {\r\n                    dialog.dismiss();\r\n                }\r\n            });\r\n            AlertDialog alertDialog = alertDialogBuilder.create();\r\n            alertDialog.show();\r\n            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);\r\n        }\r\n\r\n    }\r\n\r\n    private boolean endVisit(String patientUuid, String patientName, String visitUUID) {\r\n\r\n        return visitUUID != null;\r\n\r\n    }\r\n\r\n    private void doQueryWithProviders(List<String> providersuuids) {\r\n        List<ActivePatientModel> activePatientList = new ArrayList<>();\r\n        String query = \"select  distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth \" +\r\n                \"from tbl_visit a,tbl_encounter b ,tbl_patient c \" +\r\n                \"where b.visituuid=a.uuid and b.provider_uuid in ('\" + StringUtils.convertUsingStringBuilder(providersuuids) + \"')  \" +\r\n                \"and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC\";\r\n        Logger.logD(TAG, query);\r\n        final Cursor cursor = db.rawQuery(query, null);\r\n\r\n        if (cursor != null) {\r\n            if (cursor.moveToFirst()) {\r\n                do {\r\n                    try {\r\n                        activePatientList.add(new ActivePatientModel(\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"uuid\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"patientuuid\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"startdate\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"enddate\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"openmrs_id\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"first_name\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"middle_name\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"last_name\")),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"date_of_birth\")),\r\n                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow(\"patientuuid\")))),\r\n                                cursor.getString(cursor.getColumnIndexOrThrow(\"sync\")))\r\n                        );\r\n                    } catch (DAOException e) {\r\n                        e.printStackTrace();\r\n                    }\r\n                } while (cursor.moveToNext());\r\n            }\r\n        } else {\r\n            // activePatientList.clear();\r\n            //Toast.makeText(this, \"No patients where looked by this health worker!\", Toast.LENGTH_SHORT).show();\r\n        }\r\n        if (cursor != null) {\r\n            cursor.close();\r\n        }\r\n\r\n        if (!activePatientList.isEmpty()) {\r\n            for (ActivePatientModel activePatientModel : activePatientList)\r\n                Logger.logD(TAG, activePatientModel.getFirst_name() + \" \" + activePatientModel.getLast_name());\r\n\r\n            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);\r\n            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);\r\n            recyclerView.setLayoutManager(linearLayoutManager);\r\n            /*recyclerView.addItemDecoration(new\r\n                    DividerItemDecoration(this,\r\n                    DividerItemDecoration.VERTICAL));\r\n            recyclerView.setAdapter(mActivePatientAdapter);*/\r\n            recyclerView.setVisibility(View.VISIBLE);\r\n            TextView t = findViewById(R.id.ttt);\r\n            t.setVisibility(View.GONE);\r\n        } else {\r\n            TextView t = findViewById(R.id.ttt);\r\n            t.setVisibility(View.VISIBLE);\r\n            t.setHint(getString(R.string.no_data_active_patients));\r\n            recyclerView.setVisibility(View.GONE);\r\n            //recyclerView.addView(t);\r\n            // Intent i = new Intent(this, HomeActivity.class);\r\n            //startActivity(i);\r\n            //recyclerView.setVisibility(View.GONE);\r\n        }\r\n\r\n    }\r\n\r\n    private String phoneNumber(String patientuuid) throws DAOException {\r\n        String phone = null;\r\n        Cursor idCursor = db.rawQuery(\"SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' \", new String[]{patientuuid});\r\n        try {\r\n            if (idCursor.getCount() != 0) {\r\n                while (idCursor.moveToNext()) {\r\n\r\n                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow(\"value\"));\r\n\r\n                }\r\n            }\r\n        } catch (SQLException s) {\r\n            FirebaseCrashlytics.getInstance().recordException(s);\r\n        }\r\n        idCursor.close();\r\n\r\n        return phone;\r\n    }\r\n\r\n}\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/app/intelehealth/client/activities/activePatientsActivity/ActivePatientActivity.java	(revision 537961036e42e3be195be2497a77f1ce38d4faf7)
++++ app/src/main/java/app/intelehealth/client/activities/activePatientsActivity/ActivePatientActivity.java	(date 1611554424626)
+@@ -17,6 +17,7 @@
+ import androidx.recyclerview.widget.RecyclerView;
+ import androidx.appcompat.widget.Toolbar;
+ 
++import android.os.Handler;
+ import android.util.Log;
+ import android.view.Menu;
+ import android.view.MenuInflater;
+@@ -50,18 +51,23 @@
+ import app.intelehealth.client.utilities.StringUtils;
+ import app.intelehealth.client.utilities.exception.DAOException;
+ 
+-public class ActivePatientActivity extends AppCompatActivity {
++public class ActivePatientActivity extends AppCompatActivity implements InfiniteScrollListener.OnLoadMoreListener{
+     private static final String TAG = ActivePatientActivity.class.getSimpleName();
+     private SQLiteDatabase db;
+     SessionManager sessionManager = null;
+     Toolbar mToolbar;
+-    RecyclerView mActivePatientList;
+     TextView textView;
+     RecyclerView recyclerView;
+     MaterialAlertDialogBuilder dialogBuilder;
+ 
+     private ArrayList<String> listPatientUUID = new ArrayList<String>();
+ 
++    InfiniteScrollListener infiniteScrollListener;
++    ActivePatientAdapter mActivePatientAdapter;
++    LinearLayoutManager linearLayoutManager;
++    List<ActivePatientModel> activePatientList;
++
++
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -74,7 +80,7 @@
+                 R.drawable.ic_sort_white_24dp);
+ //        mToolbar.setOverflowIcon(drawable);
+ 
+-        mActivePatientList = findViewById(R.id.today_patient_recycler_view);
++
+ 
+         setSupportActionBar(mToolbar);
+         mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+@@ -83,7 +89,9 @@
+         getSupportActionBar().setDisplayShowTitleEnabled(true);
+ 
+         textView = findViewById(R.id.textviewmessage);
++        activePatientList = new ArrayList<>();
+         recyclerView = findViewById(R.id.today_patient_recycler_view);
++        linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+         sessionManager = new SessionManager(this);
+         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+         if (sessionManager.isPullSyncFinished()) {
+@@ -143,14 +151,13 @@
+      * @return void
+      */
+     private void doQuery() {
+-        List<ActivePatientModel> activePatientList = new ArrayList<>();
++
+         Date cDate = new Date();
+         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
+                 "FROM tbl_visit a, tbl_patient b " +
+                 "WHERE a.patientuuid = b.uuid " +
+                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+         final Cursor cursor = db.rawQuery(query, null);
+-
+         if (cursor != null) {
+             if (cursor.moveToFirst()) {
+                 do {
+@@ -181,16 +188,15 @@
+         if (!activePatientList.isEmpty()) {
+             for (ActivePatientModel activePatientModel : activePatientList)
+                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
+-
+-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+             recyclerView.setLayoutManager(linearLayoutManager);
++            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
++            recyclerView.addOnScrollListener(infiniteScrollListener);
++
+            /* recyclerView.addItemDecoration(new
+                     DividerItemDecoration(this,
+                     DividerItemDecoration.VERTICAL));*/
+             recyclerView.setAdapter(mActivePatientAdapter);
+         }
+-
+     }
+ 
+     @Override
+@@ -397,6 +403,20 @@
+ 
+     }
+ 
++    @Override
++    public void onLoadMore() {
++        mActivePatientAdapter.addNullData();
++        new Handler().postDelayed(new Runnable() {
++            @Override
++            public void run() {
++                mActivePatientAdapter.removeNull();
++                doQuery();
++                infiniteScrollListener.setLoaded();
++            }
++        }, 2000);
++    }
++
++
+     private String phoneNumber(String patientuuid) throws DAOException {
+         String phone = null;
+         Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});

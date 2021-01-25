@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,17 +50,24 @@ import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-public class ActivePatientActivity extends AppCompatActivity {
+public class ActivePatientActivity extends AppCompatActivity implements InfiniteScrollListener.OnLoadMoreListener{
     private static final String TAG = ActivePatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     Toolbar mToolbar;
-    RecyclerView mActivePatientList;
     TextView textView;
     RecyclerView recyclerView;
     MaterialAlertDialogBuilder dialogBuilder;
-
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
+
+    InfiniteScrollListener infiniteScrollListener;
+    ActivePatientAdapter mActivePatientAdapter;
+    LinearLayoutManager linearLayoutManager;
+    List<ActivePatientModel> activePatientList;
+    List<ActivePatientModel> newPatientList;
+    int ITEMS_PER_PAGE = 50;
+    int i= ITEMS_PER_PAGE+1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +76,9 @@ public class ActivePatientActivity extends AppCompatActivity {
         setContentView(R.layout.activity_active_patient);
         setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
-
-
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.ic_sort_white_24dp);
 //        mToolbar.setOverflowIcon(drawable);
-
-        mActivePatientList = findViewById(R.id.today_patient_recycler_view);
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -83,13 +87,17 @@ public class ActivePatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         textView = findViewById(R.id.textviewmessage);
+        activePatientList = new ArrayList<>();
         recyclerView = findViewById(R.id.today_patient_recycler_view);
+        linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+        infiniteScrollListener = new InfiniteScrollListener(linearLayoutManager, this);
+        infiniteScrollListener.setLoaded();
         sessionManager = new SessionManager(this);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-            doQuery();
+            doInitialQuery();
         }
 
         getVisits();
@@ -142,15 +150,14 @@ public class ActivePatientActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private void doQuery() {
-        List<ActivePatientModel> activePatientList = new ArrayList<>();
+    private void doInitialQuery()
+    {
         Date cDate = new Date();
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC LIMIT "+ ITEMS_PER_PAGE +" OFFSET 0";
         final Cursor cursor = db.rawQuery(query, null);
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -181,16 +188,69 @@ public class ActivePatientActivity extends AppCompatActivity {
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
-
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
             recyclerView.setLayoutManager(linearLayoutManager);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            recyclerView.addOnScrollListener(infiniteScrollListener);
+
            /* recyclerView.addItemDecoration(new
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(mActivePatientAdapter);
         }
+    }
 
+    private void doQuery()
+    {
+        newPatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC LIMIT " + ITEMS_PER_PAGE + " OFFSET " + i;
+        i = i+20;
+        final Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        newPatientList.add(new ActivePatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                        );
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+    }
+    private void populateData()
+    {
+        if (!activePatientList.isEmpty()) {
+            for (ActivePatientModel activePatientModel : activePatientList)
+                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
+            recyclerView.setLayoutManager(linearLayoutManager);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            recyclerView.addOnScrollListener(infiniteScrollListener);
+
+           /* recyclerView.addItemDecoration(new
+                    DividerItemDecoration(this,
+                    DividerItemDecoration.VERTICAL));*/
+            recyclerView.setAdapter(mActivePatientAdapter);
+        }
     }
 
     @Override
@@ -396,6 +456,21 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onLoadMore() {
+        mActivePatientAdapter.addNullData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mActivePatientAdapter.removeNull();
+                doQuery();
+                mActivePatientAdapter.addData(newPatientList);
+                infiniteScrollListener.setLoaded();
+            }
+        }, 2000);
+    }
+
 
     private String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
