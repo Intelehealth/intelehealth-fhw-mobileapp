@@ -121,7 +121,7 @@
                                     android:layout_height="wrap_content"
                                     android:nextFocusForward="@+id/spinner_district"
                                     android:entries="@array/location_state"
-                                    android:focusable="true"
+                                    android:alpha="0.4"
                                     />
 
                                 <android.widget.Space
@@ -135,6 +135,7 @@
                                     android:nextFocusForward="@+id/spinner_sanch"
                                     android:entries="@array/location_district"
                                     android:focusable="true"
+                                    android:alpha="0.4"
                                     />
 
                                 <android.widget.Space
@@ -148,6 +149,7 @@
                                     android:nextFocusForward="@+id/spinner_village"
                                     android:entries="@array/location_sanch"
                                     android:focusable="true"
+                                    android:alpha="0.4"
                                     />
 
                                 <android.widget.Space
@@ -161,6 +163,7 @@
                                     android:nextFocusForward="@+id/demoMindmap"
                                     android:entries="@array/location_village"
                                     android:focusable="true"
+                                    android:alpha="0.4"
                                     />
 
                                 <android.widget.Space

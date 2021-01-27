@@ -163,6 +163,11 @@ public class SetupActivity extends AppCompatActivity {
         spinner_sanch = findViewById(R.id.spinner_sanch);
         spinner_village = findViewById(R.id.spinner_village);
 
+        spinner_state.setEnabled(false);
+        spinner_district.setEnabled(false);
+        spinner_sanch.setEnabled(false);
+        spinner_village.setEnabled(false);
+
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
