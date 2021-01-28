@@ -130,6 +130,7 @@ public class SetupActivity extends AppCompatActivity {
     HashMap<String, String> hashMap;
     boolean value = false;
     String base_url;
+    Map.Entry<String, String> village_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,6 +321,30 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+        //to fetch village and pass as locations to location-api
+        spinner_village.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //village wise locations...
+                if (value && parent.getSelectedItemPosition() > 0) {
+                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                        String list = entry.getValue();
+                        // Do things with the list
+                        if(list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+                            //send value to the login api...
+                            village_name = entry;
+                        }
+                    }
+                   // value = getLocationFromServer_District(base_url, village_name, "sanch");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         showProgressbar();
     }
@@ -372,7 +397,7 @@ public class SetupActivity extends AppCompatActivity {
             focusView = mEmailView;
 
         }
-        Location location = null;
+       // Location location = null;
 
         //add state wise here...
 
@@ -391,10 +416,16 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            if (location != null) {
-                Log.i(TAG, location.getDisplay());
+//            if (location != null) {
+//                Log.i(TAG, location.getDisplay());
+//                String urlString = mUrlField.getText().toString();
+//                TestSetup(urlString, email, password, admin_password, location);
+//                Log.d(TAG, "attempting setup");
+//            }
+
+            if(village_name != null) {
                 String urlString = mUrlField.getText().toString();
-                TestSetup(urlString, email, password, admin_password, location);
+                TestSetup(urlString, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -804,7 +835,7 @@ public class SetupActivity extends AppCompatActivity {
      * If successful cretes a new {@link Account}
      * If unsuccessful details are saved in SharedPreferences.
      */
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Location location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
 
         ProgressDialog progress;
 
@@ -853,9 +884,9 @@ public class SetupActivity extends AppCompatActivity {
                                           /*  final Account account = new Account(USERNAME, "io.intelehealth.openmrs");
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
-                                            sessionManager.setLocationName(location.getDisplay());
-                                            sessionManager.setLocationUuid(location.getUuid());
-                                            sessionManager.setLocationDescription(location.getDescription());
+                                            sessionManager.setLocationName(location.getValue());
+                                            sessionManager.setLocationUuid(location.getKey());
+                                          //  sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
                                             sessionManager.setServerUrlRest(BASE_URL);
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
