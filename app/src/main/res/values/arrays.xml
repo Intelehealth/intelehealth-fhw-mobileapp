@@ -312,19 +312,19 @@
     </array>
 
     <string-array name="location_state">
-        <item>Choose State</item>
+        <item>Select State</item>
     </string-array>
 
     <string-array name="location_district">
-        <item>Choose District</item>
+        <item>Select District</item>
     </string-array>
 
     <string-array name="location_sanch">
-        <item>Choose Sanch</item>
+        <item>Select Sanch</item>
     </string-array>
 
     <string-array name="location_village">
-        <item>Choose Village</item>
+        <item>Select Village</item>
     </string-array>
 
 </resources>

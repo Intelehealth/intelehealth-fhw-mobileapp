@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.webkit.URLUtil;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +49,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
@@ -58,6 +61,10 @@ import app.intelehealth.client.models.Location;
 import app.intelehealth.client.models.Results;
 import app.intelehealth.client.models.loginModel.LoginModel;
 import app.intelehealth.client.models.loginProviderModel.LoginProviderModel;
+import app.intelehealth.client.models.statewise_location.ChildLocation;
+import app.intelehealth.client.models.statewise_location.District_Sanch_Village;
+import app.intelehealth.client.models.statewise_location.Result;
+import app.intelehealth.client.models.statewise_location.State;
 import app.intelehealth.client.networkApiCalls.ApiClient;
 import app.intelehealth.client.networkApiCalls.ApiInterface;
 import app.intelehealth.client.utilities.AdminPassword;
@@ -75,6 +82,7 @@ import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -119,6 +127,9 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
+    HashMap<String, String> hashMap;
+    boolean value = false;
+    String base_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,7 +217,7 @@ public class SetupActivity extends AppCompatActivity {
                 isLocationFetched = false;
                 LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
                // mDropdownLocation.setAdapter(adapter);
-                spinner_state.setAdapter(adapter);
+                //spinner_state.setAdapter(adapter);
             }
 
             @Override
@@ -226,8 +237,9 @@ public class SetupActivity extends AppCompatActivity {
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                             String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
-                                getLocationFromServer(BASE_URL);
+                                value = getLocationFromServer(BASE_URL); //state wise locations...
                             else
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                         }
@@ -236,6 +248,78 @@ public class SetupActivity extends AppCompatActivity {
             };
 
         });
+
+        spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //district wise locations...
+                String state_uuid = "";
+                if (value && parent.getSelectedItemPosition() > 0) {
+                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                        String list = entry.getValue();
+                        // Do things with the list
+                        if(list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+                            state_uuid = entry.getKey();
+                        }
+                    }
+                    value = getLocationFromServer_District(base_url, state_uuid, "state");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //this will give Sanch...
+        spinner_district.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //district wise locations...
+                String district_uuid = "";
+                if (value && parent.getSelectedItemPosition() > 0) {
+                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                        String list = entry.getValue();
+                        // Do things with the list
+                        if(list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+                            district_uuid = entry.getKey();
+                        }
+                    }
+                    value = getLocationFromServer_District(base_url, district_uuid, "district");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //this will give Villages...
+        spinner_sanch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //sanch wise locations...
+                String sanch_uuid = "";
+                if (value && parent.getSelectedItemPosition() > 0) {
+                    for (Map.Entry<String, String> entry : hashMap.entrySet()) {
+                        String list = entry.getValue();
+                        // Do things with the list
+                        if(list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+                            sanch_uuid = entry.getKey();
+                        }
+                    }
+                    value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         showProgressbar();
     }
@@ -290,6 +374,8 @@ public class SetupActivity extends AppCompatActivity {
         }
         Location location = null;
 
+        //add state wise here...
+
 //        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
 //            cancel = true;
 //            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
@@ -335,53 +421,205 @@ public class SetupActivity extends AppCompatActivity {
         return password.length() > 4;
     }
 
+    private boolean getLocationFromServer_District(String url, String state_uuid, String location_wise) {
+        value = false;
+        String encoded = "";
+        ApiClient.changeApiBaseUrl(url);
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        encoded = base64Utils.encoded("admin", "IHUser#1");
+
+        try {
+            Observable<District_Sanch_Village> district_sanch_villageObservable =
+                    apiService.DISTRICT_SANCH_VILLAGE_OBSERVABLE(state_uuid, "Basic "+encoded);
+            district_sanch_villageObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<District_Sanch_Village>() {
+                        @Override
+                        public void onNext(@NonNull District_Sanch_Village district_sanch_village) {
+                            if(district_sanch_village.getChildLocations() != null) {
+
+
+                                if(location_wise.equalsIgnoreCase("state")) {
+                                    List<String> district_locations = getLocation_district(district_sanch_village.getChildLocations(), "state");
+                                    LocationArrayAdapter locationArrayAdapter =
+                                            new LocationArrayAdapter(SetupActivity.this, district_locations);
+
+                                    spinner_district.setEnabled(true);
+                                    spinner_district.setAlpha(1);
+                                    spinner_district.setAdapter(locationArrayAdapter);
+                                    isLocationFetched = true;
+
+                                    hashMap.clear(); //to clear the previous data...
+                                    hashMap = new HashMap<>();
+                                    for (int i = 0; i < district_sanch_village.getChildLocations().size(); i++) {
+                                        hashMap.put(district_sanch_village.getChildLocations().get(i).getUuid(),
+                                                district_sanch_village.getChildLocations().get(i).getDisplay());
+                                    }
+
+                                }
+                                else if (location_wise.equalsIgnoreCase("district")) {
+                                    List<String> district_locations = getLocation_district(district_sanch_village.getChildLocations(), "district");
+                                    LocationArrayAdapter locationArrayAdapter =
+                                            new LocationArrayAdapter(SetupActivity.this, district_locations);
+
+                                    spinner_sanch.setEnabled(true);
+                                    spinner_sanch.setAlpha(1);
+                                    spinner_sanch.setAdapter(locationArrayAdapter);
+                                    isLocationFetched = true;
+
+                                    hashMap.clear(); //to clear the previous data...
+                                    hashMap = new HashMap<>();
+                                    for (int i = 0; i < district_sanch_village.getChildLocations().size(); i++) {
+                                        hashMap.put(district_sanch_village.getChildLocations().get(i).getUuid(),
+                                                district_sanch_village.getChildLocations().get(i).getDisplay());
+                                    }
+                                }
+                                else if (location_wise.equalsIgnoreCase("sanch")) {
+                                    List<String> district_locations = getLocation_district(district_sanch_village.getChildLocations(), "sanch");
+                                    LocationArrayAdapter locationArrayAdapter =
+                                            new LocationArrayAdapter(SetupActivity.this, district_locations);
+
+                                    spinner_village.setEnabled(true);
+                                    spinner_village.setAlpha(1);
+                                    spinner_village.setAdapter(locationArrayAdapter);
+                                    isLocationFetched = true;
+
+                                    hashMap.clear(); //to clear the previous data...
+                                    hashMap = new HashMap<>();
+                                    for (int i = 0; i < district_sanch_village.getChildLocations().size(); i++) {
+                                        hashMap.put(district_sanch_village.getChildLocations().get(i).getUuid(),
+                                                district_sanch_village.getChildLocations().get(i).getDisplay());
+                                    }
+                                }
+
+                                value = true;
+                            }
+                            else{
+                                value = false;
+                                isLocationFetched = false;
+                                Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            value = false;
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            value = true;
+                        }
+                    });
+        }
+        catch (Exception e)  {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            mUrlField.setError(getString(R.string.url_invalid));
+        }
+
+        return value;
+    }
+
+
     /**
      * Parse locations fetched through api and provide the appropriate dropdown.
      *
      * @param url string of url.
      */
-    private void getLocationFromServer(String url) {
+    private boolean getLocationFromServer(String url) {
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+
         try {
-            Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
-            resultsObservable
+            Observable<State> stateObservable = apiService.STATE_OBSERVABLE();
+            stateObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<Results<Location>>() {
+                    .subscribe(new DisposableObserver<State>() {
                         @Override
-                        public void onNext(Results<Location> locationResults) {
-                            if (locationResults.getResults() != null) {
-                                Results<Location> locationList = locationResults;
-                                mLocations = locationList.getResults();
-                                List<String> items = getLocationStringList(locationList.getResults());
-                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
-                             //   mDropdownLocation.setAdapter(adapter);
-                                spinner_state.setAdapter(adapter);
+                        public void onNext(@NonNull State state) {
+                            if(state.getResults() != null) {
+                                List<String> state_locations = getLocation(state.getResults());
+                                LocationArrayAdapter locationArrayAdapter =
+                                        new LocationArrayAdapter(SetupActivity.this, state_locations);
+
+                                spinner_state.setEnabled(true);
+                                spinner_state.setAlpha(1);
+                                spinner_state.setAdapter(locationArrayAdapter);
                                 isLocationFetched = true;
-                            } else {
+
+                                hashMap = new HashMap<>();
+                                for (int i = 0; i < state.getResults().size(); i++) {
+                                    hashMap.put(state.getResults().get(i).getUuid(),
+                                            state.getResults().get(i).getDisplay());
+                                }
+
+                                value = true;
+                            }
+                            else{
+                                value = false;
                                 isLocationFetched = false;
-                                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
-                        public void onError(Throwable e) {
-                            isLocationFetched = false;
-                            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
-
+                        public void onError(@NonNull Throwable e) {
+                            value = false;
                         }
 
                         @Override
                         public void onComplete() {
-
+                            value = true;
                         }
                     });
-        } catch (IllegalArgumentException e) {
+        }
+        catch (Exception e)  {
             FirebaseCrashlytics.getInstance().recordException(e);
             mUrlField.setError(getString(R.string.url_invalid));
         }
 
+//        try {
+//            Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
+//            resultsObservable
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new DisposableObserver<Results<Location>>() {
+//                        @Override
+//                        public void onNext(Results<Location> locationResults) {
+//                            if (locationResults.getResults() != null) {
+//                                Results<Location> locationList = locationResults;
+//                                mLocations = locationList.getResults();
+//                                List<String> items = getLocationStringList(locationList.getResults());
+//                                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, items);
+//                             //   mDropdownLocation.setAdapter(adapter);
+//                                //spinner_state.setAdapter(adapter);
+//                                isLocationFetched = true;
+//                            } else {
+//                                isLocationFetched = false;
+//                                Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            isLocationFetched = false;
+//                            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_fetched), Toast.LENGTH_SHORT).show();
+//
+//                        }
+//
+//                        @Override
+//                        public void onComplete() {
+//
+//                        }
+//                    });
+//        } catch (IllegalArgumentException e) {
+//            FirebaseCrashlytics.getInstance().recordException(e);
+//            mUrlField.setError(getString(R.string.url_invalid));
+//        }
+
+        return value;
     }
 
 
@@ -398,6 +636,30 @@ public class SetupActivity extends AppCompatActivity {
         for (int i = 0; i < locationList.size(); i++) {
             list.add(locationList.get(i).getDisplay());
         }
+        return list;
+    }
+
+    private List<String> getLocation(List<Result> resultList) {
+        List<String> list = new ArrayList<>();
+        list.add("Select State");
+        for (int i = 0; i < resultList.size(); i++) {
+            list.add(resultList.get(i).getDisplay());
+        }
+
+        return list;
+    }
+
+    private List<String> getLocation_district(List<ChildLocation> childLocationList, String location_wise) {
+        List<String> list = new ArrayList<>();
+
+        if(location_wise.equalsIgnoreCase("state")) { list.add("Select District"); }
+        else if(location_wise.equalsIgnoreCase("district")) { list.add("Select Sanch"); }
+        else if(location_wise.equalsIgnoreCase("sanch")) { list.add("Select Village"); }
+
+        for (int i = 0; i < childLocationList.size(); i++) {
+            list.add(childLocationList.get(i).getDisplay());
+        }
+
         return list;
     }
 
