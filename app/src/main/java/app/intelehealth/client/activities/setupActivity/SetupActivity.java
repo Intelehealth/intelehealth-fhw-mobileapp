@@ -216,9 +216,33 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 isLocationFetched = false;
-                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
-               // mDropdownLocation.setAdapter(adapter);
-                //spinner_state.setAdapter(adapter);
+                List<String> list_state = new ArrayList<>();
+                list_state.add("Select State");
+                spinner_state.setEnabled(false);
+                spinner_state.setAlpha(0.4F);
+                LocationArrayAdapter adapter_state = new LocationArrayAdapter(SetupActivity.this, list_state);
+                spinner_state.setAdapter(adapter_state);
+
+                List<String> list_district = new ArrayList<>();
+                list_district.add("Select District");
+                spinner_district.setEnabled(false);
+                spinner_district.setAlpha(0.4F);
+                LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
+                spinner_district.setAdapter(adapter_district);
+
+                List<String> list_sanch = new ArrayList<>();
+                list_sanch.add("Select Sanch");
+                spinner_sanch.setEnabled(false);
+                spinner_sanch.setAlpha(0.4F);
+                LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
+                spinner_sanch.setAdapter(adapter_sanch);
+
+                List<String> list_village = new ArrayList<>();
+                list_village.add("Select Village");
+                spinner_village.setEnabled(false);
+                spinner_village.setAlpha(0.4F);
+                LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
+                spinner_village.setAdapter(adapter_village);
             }
 
             @Override
