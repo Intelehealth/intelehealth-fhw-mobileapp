@@ -477,6 +477,7 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private boolean getLocationFromServer_District(String url, String state_uuid, String location_wise) {
+        customProgressDialog.show();
         value = false;
         String encoded = "";
         ApiClient.changeApiBaseUrl(url);
@@ -492,10 +493,11 @@ public class SetupActivity extends AppCompatActivity {
                     .subscribe(new DisposableObserver<District_Sanch_Village>() {
                         @Override
                         public void onNext(@NonNull District_Sanch_Village district_sanch_village) {
-                            if(district_sanch_village.getChildLocations() != null) {
+                            if(!district_sanch_village.getChildLocations().isEmpty()) {
 
 
                                 if(location_wise.equalsIgnoreCase("state")) {
+                                    customProgressDialog.dismiss();
                                     List<String> district_locations = getLocation_district(district_sanch_village.getChildLocations(), "state");
                                     LocationArrayAdapter locationArrayAdapter =
                                             new LocationArrayAdapter(SetupActivity.this, district_locations);
@@ -514,6 +516,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                 }
                                 else if (location_wise.equalsIgnoreCase("district")) {
+                                    customProgressDialog.dismiss();
                                     List<String> district_locations = getLocation_district(district_sanch_village.getChildLocations(), "district");
                                     LocationArrayAdapter locationArrayAdapter =
                                             new LocationArrayAdapter(SetupActivity.this, district_locations);
@@ -531,6 +534,7 @@ public class SetupActivity extends AppCompatActivity {
                                     }
                                 }
                                 else if (location_wise.equalsIgnoreCase("sanch")) {
+                                    customProgressDialog.dismiss();
                                     List<String> district_locations = getLocation_district(district_sanch_village.getChildLocations(), "sanch");
                                     LocationArrayAdapter locationArrayAdapter =
                                             new LocationArrayAdapter(SetupActivity.this, district_locations);
@@ -551,26 +555,42 @@ public class SetupActivity extends AppCompatActivity {
                                 value = true;
                             }
                             else{
+                                customProgressDialog.dismiss();
                                 value = false;
                                 isLocationFetched = false;
-                                Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
+
+                                switch (location_wise) {
+                                    case "state":
+                                        Toast.makeText(SetupActivity.this, "No District found", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case "district":
+                                        Toast.makeText(SetupActivity.this, "No Sanch found", Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case "sanch":
+                                        Toast.makeText(SetupActivity.this, "No Village found", Toast.LENGTH_SHORT).show();
+                                        break;
+                                }
+                                //Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
+                            customProgressDialog.dismiss();
                         }
 
                         @Override
                         public void onComplete() {
                             value = true;
+                            customProgressDialog.dismiss();
                         }
                     });
         }
         catch (Exception e)  {
             FirebaseCrashlytics.getInstance().recordException(e);
             mUrlField.setError(getString(R.string.url_invalid));
+            customProgressDialog.dismiss();
         }
 
         return value;
@@ -583,6 +603,7 @@ public class SetupActivity extends AppCompatActivity {
      * @param url string of url.
      */
     private boolean getLocationFromServer(String url) {
+        customProgressDialog.show();
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
 
@@ -595,6 +616,7 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onNext(@NonNull State state) {
                             if(state.getResults() != null) {
+                                customProgressDialog.dismiss();
                                 List<String> state_locations = getLocation(state.getResults());
                                 LocationArrayAdapter locationArrayAdapter =
                                         new LocationArrayAdapter(SetupActivity.this, state_locations);
@@ -613,6 +635,7 @@ public class SetupActivity extends AppCompatActivity {
                                 value = true;
                             }
                             else{
+                                customProgressDialog.dismiss();
                                 value = false;
                                 isLocationFetched = false;
                                 Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
@@ -622,17 +645,20 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
+                            customProgressDialog.dismiss();
                         }
 
                         @Override
                         public void onComplete() {
                             value = true;
+                            customProgressDialog.dismiss();
                         }
                     });
         }
         catch (Exception e)  {
             FirebaseCrashlytics.getInstance().recordException(e);
             mUrlField.setError(getString(R.string.url_invalid));
+            customProgressDialog.dismiss();
         }
 
 //        try {
