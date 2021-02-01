@@ -523,7 +523,7 @@ public class SetupActivity extends AppCompatActivity {
         String encoded = "";
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
-        encoded = base64Utils.encoded("admin", "IHUser#1");
+        encoded = base64Utils.encoded("sysnurse", "IHNurse#1");
 
         try {
             Observable<District_Sanch_Village> district_sanch_villageObservable =
