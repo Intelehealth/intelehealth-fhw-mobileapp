@@ -421,6 +421,47 @@ public class SetupActivity extends AppCompatActivity {
             focusView = mEmailView;
 
         }
+
+        //spinner...
+        if(spinner_state.getSelectedItemPosition() <= 0) {
+            cancel = true;
+            focusView = spinner_state;
+            TextView t = (TextView) spinner_state.getSelectedView();
+            t.setError("Select State");
+            t.setTextColor(Color.RED);
+            Toast.makeText(SetupActivity.this, "Select State from dropdown", Toast.LENGTH_LONG).show();
+        }
+
+        else if(spinner_district.getSelectedItemPosition() <= 0) {
+            cancel = true;
+            focusView = spinner_district;
+            TextView t = (TextView) spinner_district.getSelectedView();
+            t.setError("Select District");
+            t.setTextColor(Color.RED);
+            Toast.makeText(SetupActivity.this, "Select District from dropdown", Toast.LENGTH_LONG).show();
+        }
+
+        else if(spinner_sanch.getSelectedItemPosition() <= 0) {
+            cancel = true;
+            focusView = spinner_sanch;
+            TextView t = (TextView) spinner_sanch.getSelectedView();
+            t.setError("Select Sanch");
+            t.setTextColor(Color.RED);
+            Toast.makeText(SetupActivity.this, "Select Sanch from dropdown", Toast.LENGTH_LONG).show();
+        }
+
+        else if(spinner_village.getSelectedItemPosition() <= 0) {
+            cancel = true;
+            focusView = spinner_village;
+            TextView t = (TextView) spinner_village.getSelectedView();
+            t.setError("Select Village");
+            t.setTextColor(Color.RED);
+            Toast.makeText(SetupActivity.this, "Select Village from dropdown", Toast.LENGTH_LONG).show();
+        }
+
+
+        //spinner-end...
+
        // Location location = null;
 
         //add state wise here...

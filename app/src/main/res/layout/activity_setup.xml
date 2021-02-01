@@ -122,6 +122,7 @@
                                     android:nextFocusForward="@+id/spinner_district"
                                     android:entries="@array/location_state"
                                     android:alpha="0.4"
+                                    android:focusable="true"
                                     />
 
                                 <android.widget.Space
