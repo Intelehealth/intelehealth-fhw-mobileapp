@@ -79,7 +79,8 @@
                                     android:hint="@string/enter_url"
                                     android:textSize="14sp"
                                     android:fontFamily="@font/lato_regular"
-                                    android:inputType="textUri" />
+                                    android:inputType="textUri"
+                                    android:focusable="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
