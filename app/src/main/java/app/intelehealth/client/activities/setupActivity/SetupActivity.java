@@ -728,6 +728,7 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
+                            Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             customProgressDialog.dismiss();
                         }
 
@@ -796,6 +797,7 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onError(@NonNull Throwable e) {
                             value = false;
+                            Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             customProgressDialog.dismiss();
                         }
 
