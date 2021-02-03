@@ -109,6 +109,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
     ImageButton editbtn;
+    ImageButton ib_addFamilyMember;
     Button newVisit;
     IntentFilter filter;
     Myreceiver reMyreceive;
@@ -162,6 +163,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         editbtn = findViewById(R.id.edit_button);
+        ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,6 +173,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
         });
+        ib_addFamilyMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
+                i.putExtra("privacy","Accept");
+                startActivity(i);
+            }
+        });
+
         setDisplay(patientUuid);
 
         if (newVisit.isEnabled()) {
@@ -1024,7 +1035,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                         if (visitValue != null && !visitValue.isEmpty()) {
 
-                            visitValue = visitValue.replace("?<b>",Node.bullet_arrow);
+                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
 
                             String[] complaints = StringUtils.split(visitValue, Node.bullet_arrow);
 

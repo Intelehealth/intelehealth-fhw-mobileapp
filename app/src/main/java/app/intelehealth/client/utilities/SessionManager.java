@@ -49,6 +49,7 @@ public class SessionManager {
     private static final String OFFLINE_OPENMRSID = "OFFLINE_OPENMRSID";
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
+    private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -188,6 +189,15 @@ public class SessionManager {
 
     public void setServerUrl(String serverUrl) {
         editor.putString(KEY_PREF_SERVER_URL, serverUrl);
+        editor.commit();
+    }
+
+    public String getHouseholdUuid() {
+        return pref.getString(HOUSEHOLD_UUID, "");
+    }
+
+    public void setHouseholdUuid(String UUID) {
+        editor.putString(HOUSEHOLD_UUID, UUID);
         editor.commit();
     }
 

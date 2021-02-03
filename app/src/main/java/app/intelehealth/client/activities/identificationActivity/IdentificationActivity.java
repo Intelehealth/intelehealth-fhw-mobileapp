@@ -103,7 +103,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
     private int mAgeDays = 0;
-    private String country1,state;
+    private String country1, state;
     PatientsDAO patientsDAO = new PatientsDAO();
     EditText mFirstName;
     EditText mMiddleName;
@@ -148,7 +148,6 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerYear;
     private int retainPickerMonth;
     private int retainPickerDate;
-
 
 
     @Override
@@ -621,11 +620,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
                 //get years months days
-                String [] frtData = age.split("-");
+                String[] frtData = age.split("-");
 
-                String [] yearData = frtData[0].split(" ");
-                String [] monthData = frtData[1].split(" ");
-                String [] daysData = frtData[2].split(" ");
+                String[] yearData = frtData[0].split(" ");
+                String[] monthData = frtData[1].split(" ");
+                String[] daysData = frtData[2].split(" ");
 
                 mAgeYears = Integer.valueOf(yearData[0]);
                 mAgeMonths = Integer.valueOf(monthData[1]);
@@ -644,13 +643,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
         //if patient update then age will be set
-        if (patientID_edit != null)
-        {
+        if (patientID_edit != null) {
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
-            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(),context);
+            String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
-            String [] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
+            String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth()).split(" ");
             mAgeYears = Integer.valueOf(ymdData[0]);
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
@@ -704,7 +702,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onReturnValue(String value) {
                         mAgeYears = Integer.valueOf(value);
                     }
-                },yearText);
+                }, yearText);
 
                 //month
                 EditTextUtils.returnEditextValues(new IReturnValues() {
@@ -712,7 +710,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onReturnValue(String value) {
                         mAgeMonths = Integer.valueOf(value);
                     }
-                },monthText);
+                }, monthText);
 
                 //day
                 EditTextUtils.returnEditextValues(new IReturnValues() {
@@ -720,11 +718,11 @@ public class IdentificationActivity extends AppCompatActivity {
                     public void onReturnValue(String value) {
                         mAgeDays = Integer.valueOf(value);
                     }
-                },dayText);
+                }, dayText);
                 mAgePicker.setPositiveButton(R.string.generic_ok, (dialog, which) -> {
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
-                                       mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
-                                       mAgeDays + getString(R.string.days);
+                            mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
+                            mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
 
 
@@ -1056,8 +1054,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if(mPhoneNum.getText().toString().trim().length() > 0) {
-            if(mPhoneNum.getText().toString().trim().length() < 10) {
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
+            if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
@@ -1236,6 +1234,31 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
+            //House Hold Registration
+            if (sessionManager.getHouseholdUuid().equals("")){
+
+                String HouseHold_UUID = UUID.randomUUID().toString();
+                sessionManager.setHouseholdUuid(HouseHold_UUID);
+
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("householdID"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+
+            } else {
+
+                String HouseHold_UUID = sessionManager.getHouseholdUuid();
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("householdID"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+
+            }
+
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
             patientdto.setPatientAttributesDTOList(patientAttributesDTOList);
@@ -1336,8 +1359,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if(mPhoneNum.getText().toString().trim().length() > 0) {
-            if(mPhoneNum.getText().toString().trim().length() < 10) {
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
+            if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError("Enter 10 digits");
                 return;
@@ -1516,6 +1539,37 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
+
+
+            //House Hold Registration
+            if (sessionManager.getHouseholdUuid().equals("")){
+
+                String HouseHold_UUID = UUID.randomUUID().toString();
+                sessionManager.setHouseholdUuid(HouseHold_UUID);
+
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("householdID"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+
+            } else {
+
+                String HouseHold_UUID = sessionManager.getHouseholdUuid();
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("householdID"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+
+            }
+
+
+
+//            patientAttributesDTOList.add(patientAttributesDTO);
+
 
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
