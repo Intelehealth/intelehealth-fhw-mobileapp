@@ -284,8 +284,8 @@ public class SetupActivity extends AppCompatActivity {
                         value = getLocationFromServer_District(base_url, state_uuid, "state");
                     }
                 } else {
-                   // Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
-                  //  mUrlField.getText().clear();
+                    // Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
+                    //  mUrlField.getText().clear();
                     empty_spinner("state");
                     if (value && parent.getSelectedItemPosition() > 0) {
                         for (Map.Entry<String, String> entry : hashMap1.entrySet()) {
@@ -464,7 +464,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private void empty_spinner(String value) {
 
-        if(value.equalsIgnoreCase("state")) {
+        if (value.equalsIgnoreCase("state")) {
             List<String> list_district = new ArrayList<>();
             list_district.add("Select District");
 //            spinner_district.setEnabled(false);
@@ -485,9 +485,7 @@ public class SetupActivity extends AppCompatActivity {
 //            spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
-        }
-
-        else if(value.equalsIgnoreCase("district")) {
+        } else if (value.equalsIgnoreCase("district")) {
             List<String> list_sanch = new ArrayList<>();
             list_sanch.add("Select Sanch");
 //            spinner_sanch.setEnabled(false);
@@ -500,19 +498,17 @@ public class SetupActivity extends AppCompatActivity {
 //            spinner_village.setEnabled(false);
 //            spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
-            spinner_village.setAdapter(adapter_village);}
-
-        else if(value.equalsIgnoreCase("sanch")) {  List<String> list_village = new ArrayList<>();
+            spinner_village.setAdapter(adapter_village);
+        } else if (value.equalsIgnoreCase("sanch")) {
+            List<String> list_village = new ArrayList<>();
             list_village.add("Select Village");
 //            spinner_village.setEnabled(false);
 //            spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
-            spinner_village.setAdapter(adapter_village);}
-
-        else if(value.equalsIgnoreCase("village")) {
+            spinner_village.setAdapter(adapter_village);
+        } else if (value.equalsIgnoreCase("village")) {
             //do nothing
-            }
-        else {
+        } else {
             List<String> list_state = new ArrayList<>();
             list_state.add("Select State");
             spinner_state.setEnabled(false);
@@ -726,8 +722,12 @@ public class SetupActivity extends AppCompatActivity {
                                     spinner_district.setAdapter(locationArrayAdapter);
                                     isLocationFetched = true;
 
-                                    if(hashMap2 != null) { hashMap2.clear();} //to clear the previous data...
-                                    else { hashMap2 = new HashMap<>();}
+                                    if (hashMap2 != null) {
+                                        hashMap2.clear();
+                                    } //to clear the previous data...
+                                    else {
+                                        hashMap2 = new HashMap<>();
+                                    }
 
                                     for (int i = 0; i < district_sanch_village.getChildLocations().size(); i++) {
                                         hashMap2.put(district_sanch_village.getChildLocations().get(i).getUuid(),
@@ -745,8 +745,12 @@ public class SetupActivity extends AppCompatActivity {
                                     spinner_sanch.setAdapter(locationArrayAdapter);
                                     isLocationFetched = true;
 
-                                    if(hashMap3 != null) { hashMap3.clear();} //to clear the previous data...
-                                    else { hashMap3 = new HashMap<>();}
+                                    if (hashMap3 != null) {
+                                        hashMap3.clear();
+                                    } //to clear the previous data...
+                                    else {
+                                        hashMap3 = new HashMap<>();
+                                    }
 
                                     for (int i = 0; i < district_sanch_village.getChildLocations().size(); i++) {
                                         hashMap3.put(district_sanch_village.getChildLocations().get(i).getUuid(),
@@ -763,8 +767,12 @@ public class SetupActivity extends AppCompatActivity {
                                     spinner_village.setAdapter(locationArrayAdapter);
                                     isLocationFetched = true;
 
-                                    if(hashMap4 != null) { hashMap4.clear();} //to clear the previous data...
-                                    else { hashMap4 = new HashMap<>();}
+                                    if (hashMap4 != null) {
+                                        hashMap4.clear();
+                                    } //to clear the previous data...
+                                    else {
+                                        hashMap4 = new HashMap<>();
+                                    }
 
                                     for (int i = 0; i < district_sanch_village.getChildLocations().size(); i++) {
                                         hashMap4.put(district_sanch_village.getChildLocations().get(i).getUuid(),
@@ -893,7 +901,7 @@ public class SetupActivity extends AppCompatActivity {
             mUrlField.setError(getString(R.string.url_invalid));
             customProgressDialog.dismiss();
         }
-        
+
         return value;
     }
 
