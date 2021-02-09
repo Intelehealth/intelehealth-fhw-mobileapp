@@ -1,8 +1,15 @@
 package app.intelehealth.client.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class FamilyMemberRes {
 
+    @SerializedName("openMRSID")
+    @Expose
     private String openMRSID;
+    @SerializedName("name")
+    @Expose
     private String name;
 
     public String getOpenMRSID() {
