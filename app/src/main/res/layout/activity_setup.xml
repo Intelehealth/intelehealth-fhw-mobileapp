@@ -291,8 +291,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_password"
-                            android:imeActionId="@+id/admin_password"
-                            android:imeOptions="actionNext"
+                            android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:singleLine="true"
@@ -306,13 +305,14 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@id/admin_password"
+                            android:id="@+id/admin_password"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_admin_password"
                             android:imeActionLabel="@string/action_sign_in_short"
                             android:imeOptions="actionUnspecified"
                             android:inputType="textPassword"
+                            android:visibility="gone"
                             android:maxLines="1"
                             android:singleLine="true"
                             android:textSize="14sp"
