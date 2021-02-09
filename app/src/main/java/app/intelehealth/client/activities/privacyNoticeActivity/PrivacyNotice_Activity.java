@@ -122,46 +122,6 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
             accept.setOnClickListener(this);
             reject.setOnClickListener(this);
 
-
-//            txt_next.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//
-//                    int selected_radio = radiogrp.getCheckedRadioButtonId();
-//                    radiobtn = findViewById(selected_radio);
-//
-//
-//                    if (checkBox_cho.isChecked() & (radio_acc.isChecked() || radio_rej.isChecked()))
-//                    {
-//                        if(radio_acc.isChecked())
-//                        {
-//                            Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
-//                            intent.putExtra("privacy",radiobtn.getText()); //privacy value send to identificationActivity
-//                            Log.d("Privacy", "selected radio: "+radiobtn.getText().toString());
-//                            startActivity(intent);
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(PrivacyNotice_Activity.this, getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();
-//                            finish();
-//                        }
-//                    }
-//                    else if((radio_acc.isChecked() || radio_rej.isChecked()) & !checkBox_cho.isChecked())
-//                    {
-//
-//                        radiogrp.clearCheck();
-//                        Toast.makeText(PrivacyNotice_Activity.this, "Please read out the Privacy Consent first.", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else
-//                    {
-//                        Toast.makeText(getApplicationContext(),getString(R.string.privacy_toast), Toast.LENGTH_SHORT).show();
-//                    }
-//
-//
-//                }
-//            });
-
-
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -172,6 +132,10 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
     public void onClick(View v) {
 
         if (checkBox_cho.isChecked() && v.getId() == R.id.button_accept) {
+
+            //Clear HouseHold UUID from Session for new registration
+            sessionManager.setHouseholdUuid("");
+
             Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
             intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
             Log.d("Privacy", "selected radio: " + accept.getText().toString());
@@ -185,9 +149,5 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     getString(R.string.please_read_out_privacy_consent_first), Toast.LENGTH_SHORT).show();
         }
 
-//        if(v.getId() == R.id.button_accept)
-//            Toast.makeText(this, "Accept", Toast.LENGTH_SHORT).show();
-//        else if(v.getId() == R.id.button_reject)
-//            Toast.makeText(this, "Reject", Toast.LENGTH_SHORT).show();
     }
 }

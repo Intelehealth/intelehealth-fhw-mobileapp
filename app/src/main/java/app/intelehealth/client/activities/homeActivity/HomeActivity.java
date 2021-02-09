@@ -203,6 +203,9 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
                     startActivity(intent);
                 } else {
+                    //Clear HouseHold UUID from Session for new registration
+                    sessionManager.setHouseholdUuid("");
+
                     Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
                     startActivity(intent);
                 }

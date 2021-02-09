@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".activities.patientDetailActivity.PatientDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -462,7 +459,6 @@
                                 android:text="@string/economic_status"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
-
                             <TextView
                                 android:id="@+id/textView_economic_status"
                                 android:layout_width="match_parent"
@@ -475,7 +471,6 @@
                             <androidx.legacy.widget.Space
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content" />
-
 
                         </TableRow>
 
@@ -543,6 +538,85 @@
 
                     </TableLayout>
 
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView_familymember"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/padding_card"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/titleBar_cardview">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:includeFontPadding="false"
+                            android:padding="10dp"
+                            android:paddingStart="20dp"
+                            android:paddingTop="@dimen/padding_card_title_text"
+                            android:text="@string/family_member"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/card_content_text_size" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:orientation="horizontal"
+                            android:visibility="visible">
+
+                            <ImageButton
+                                android:id="@+id/ic_addFamilyMember"
+                                style="@style/SelectableItemBackground"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:background="@null"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:padding="10dp"
+                                app:srcCompat="@drawable/ic_add_24dp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_nofamilymember"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:includeFontPadding="false"
+                        android:padding="10dp"
+                        android:paddingStart="20dp"
+                        android:paddingTop="@dimen/padding_card_title_text"
+                        android:text="@string/no_family_member_registered"
+                        android:textColor="@color/font_black_0"
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_familymember"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

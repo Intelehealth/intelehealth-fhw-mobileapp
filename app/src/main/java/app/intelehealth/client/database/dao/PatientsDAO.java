@@ -12,6 +12,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.intelehealth.client.activities.patientDetailActivity.FamilyMemberAdapter;
+import app.intelehealth.client.models.FamilyMemberRes;
 import app.intelehealth.client.services.MyIntentService;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.Logger;
@@ -220,6 +222,81 @@ public class PatientsDAO {
 
         }
         return patientAttributesList;
+    }
+
+    //Fetch householdID value using Patient UUID
+    public String getHouseHoldValue(String patientuuid) throws DAOException {
+        String houseHoldID = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
+
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    houseHoldID = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+        return houseHoldID;
+    }
+
+    //Fetch all patient UUID's from HouseHoldValue
+    public List<String> getPatientUUIDs(String houseHoldValue) throws DAOException {
+        List<String> patientUUIDs = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND sync='0' COLLATE NOCASE", new String[]{houseHoldValue});
+
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    patientUUIDs.add(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage());
+        } finally {
+            db.endTransaction();
+        }
+        return patientUUIDs;
+    }
+
+    public List<FamilyMemberRes> getPatientName(String patientuuid) throws DAOException {
+
+        List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    FamilyMemberRes familyMemberRes = new FamilyMemberRes();
+                    familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    listPatientNames.add(familyMemberRes);
+//                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
+        }
+        return listPatientNames;
     }
 
     public String getAttributesName(String attributeuuid) throws DAOException {
@@ -443,7 +520,7 @@ public class PatientsDAO {
         Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
                 new String[]{patientUuid}, null, null, null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 gender = cursor.getString(cursor.getColumnIndexOrThrow("gender"));
             }
@@ -453,7 +530,6 @@ public class PatientsDAO {
 
         return gender;
     }
-
 
 
 }
