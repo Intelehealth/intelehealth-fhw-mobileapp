@@ -629,5 +629,7 @@
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
     <string name="refresh">Refresh</string>
+    <string name="family_member">Family Member</string>
+    <string name="no_family_member_registered">No Family Member Registered</string>
 
 </resources>

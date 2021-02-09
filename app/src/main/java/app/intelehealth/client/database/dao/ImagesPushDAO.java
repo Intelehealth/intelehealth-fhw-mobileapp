@@ -98,7 +98,7 @@ public class ImagesPushDAO {
             //pass it like this
             File file = null;
             file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
-            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+            RequestBody requestFile = RequestBody.create(MediaType.parse("application/json"), file);
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 

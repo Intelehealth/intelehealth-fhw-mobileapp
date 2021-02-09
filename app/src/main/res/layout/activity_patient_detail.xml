@@ -459,7 +459,6 @@
                                 android:text="@string/economic_status"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
-
                             <TextView
                                 android:id="@+id/textView_economic_status"
                                 android:layout_width="match_parent"
@@ -472,7 +471,6 @@
                             <androidx.legacy.widget.Space
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content" />
-
 
                         </TableRow>
 
@@ -572,7 +570,7 @@
                             android:padding="10dp"
                             android:paddingStart="20dp"
                             android:paddingTop="@dimen/padding_card_title_text"
-                            android:text="Family Member"
+                            android:text="@string/family_member"
                             android:textColor="@color/white"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -591,7 +589,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:background="@null"
-                                android:contentDescription="TODO"
                                 android:foreground="?android:attr/selectableItemBackground"
                                 android:padding="10dp"
                                 app:srcCompat="@drawable/ic_add_24dp" />
@@ -601,6 +598,7 @@
                     </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tv_nofamilymember"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_bold"
@@ -608,9 +606,17 @@
                         android:padding="10dp"
                         android:paddingStart="20dp"
                         android:paddingTop="@dimen/padding_card_title_text"
-                        android:text="No Family Member"
+                        android:text="@string/no_family_member_registered"
                         android:textColor="@color/font_black_0"
-                        android:textSize="@dimen/card_content_text_size" />
+                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_familymember"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

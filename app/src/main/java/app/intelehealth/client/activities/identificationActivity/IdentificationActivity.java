@@ -1565,11 +1565,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
             }
-
-
-
-//            patientAttributesDTOList.add(patientAttributesDTO);
-
+//          patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());

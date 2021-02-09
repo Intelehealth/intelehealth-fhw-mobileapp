@@ -153,7 +153,7 @@ public class DateAndTimeUtils {
         if(period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
-        age = " "+tyears + " " + tmonth + " " + tdays;
+        age = tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
