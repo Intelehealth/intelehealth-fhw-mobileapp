@@ -209,8 +209,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         }
     }
-
-
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -234,8 +232,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             fab = itemView.findViewById(R.id.fab);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
-
-
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             rvChips.setLayoutManager(linearLayoutManager);
             rvChips.setHasFixedSize(true);

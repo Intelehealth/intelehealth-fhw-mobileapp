@@ -625,7 +625,8 @@
     <string name="enter_10_digits">10 अंक दर्ज करें</string>
     <string name="please_read_out_privacy_consent_first">कृपया पहले गोपनीयता सहमति पढ़ें।</string>
     <string name="view_print">देखें / प्रिंट करें</string>
-    <string name="family_member">Family Member</string>
-    <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="refresh">पुनश्चर्या</string>
+    <string name="family_member">परिवार सदस्य</string>
+    <string name="no_family_member_registered">कोई परिवार का सदस्य पंजीकृत नहीं</string>
 
 </resources>

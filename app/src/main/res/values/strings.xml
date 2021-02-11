@@ -524,7 +524,7 @@
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
-    <string name="successfully_synced_notif">Successfully refreshed</string>
+    <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
     <string name="current_language">Current Language</string>
 

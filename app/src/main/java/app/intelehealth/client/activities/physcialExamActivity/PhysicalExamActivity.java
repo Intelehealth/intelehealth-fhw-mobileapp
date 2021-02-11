@@ -119,7 +119,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setTitle(R.string.wash_hands);
+        alertDialogBuilder.setTitle(getResources().getString(R.string.wash_hands));
         LayoutInflater factory = LayoutInflater.from(this);
         final View view = factory.inflate(R.layout.hand_wash, null);
         alertDialogBuilder.setView(view);
@@ -156,7 +156,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             filePath = new File(AppConstants.IMAGE_PATH);
         }
 
-
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
@@ -184,21 +183,15 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 }
             } else {
                 physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
-
-
-
             }
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
-
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         if (getSupportActionBar() != null) {
@@ -221,7 +214,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }*/
-
         /*TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(15);
 
@@ -248,7 +240,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         });
 
          */
-
       /*
       Commented to avoid crash...
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
@@ -447,7 +438,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(R.string.question_answer_all_phy_exam);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.question_answer_all_phy_exam));
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
