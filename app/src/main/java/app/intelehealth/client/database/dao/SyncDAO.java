@@ -45,10 +45,15 @@ public class SyncDAO {
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
+    String appLanguage;
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
         PatientsDAO patientsDAO = new PatientsDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -214,7 +219,7 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getResources().getString(R.string.successfully_synced_notif), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
@@ -224,7 +229,6 @@ public class SyncDAO {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-
                     } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
@@ -284,6 +288,15 @@ public class SyncDAO {
         });
         sessionManager.setPullSyncFinished(true);
         return true;
+    }
+
+    public void setLocale(String appLanguage)
+    {
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        IntelehealthApplication.getAppContext().getResources().updateConfiguration(config, IntelehealthApplication.getAppContext().getResources().getDisplayMetrics());
     }
 
     private void triggerVisitNotification(ArrayList<String> listPatientUUID) {

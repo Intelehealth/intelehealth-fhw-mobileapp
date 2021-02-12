@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="successfully_synced">Successfully refreshed</string>
 </resources>
