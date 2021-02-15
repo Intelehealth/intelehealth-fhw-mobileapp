@@ -6,10 +6,10 @@
     <string name="hint_required" translatable="false">अपेक्षित</string>
     <string name="hint_optional" translatable="false">ऐच्छिक</string>
     <string name="tag_optional" translatable="false">ऐच्छिक</string>
-    <string name="generic_ok" translatable="false">ठीक</string>
-    <string name="generic_cancel" translatable="false">रद्द करना</string>
-    <string name="generic_yes" translatable="false">हाँ</string>
-    <string name="generic_no" translatable="false">नहीं</string>
+    <string name="generic_ok" >ठीक</string>
+    <string name="generic_cancel">रद्द करना</string>
+    <string name="generic_yes">हाँ</string>
+    <string name="generic_no">नहीं</string>
     <string name="generic_back" translatable="false">वापस</string>
     <string name="generic_coming_soon" translatable="false">जल्द आ रहा है .....</string>
     <string name="action_print" translatable="false">छाप</string>
@@ -202,7 +202,7 @@
     <string name="title_activity_diagnostic_tests_list" translatable="false">निदान जांच चुने</string>
 
     //Physical Exam Dialog
-    <string name="wash_hands" translatable="false">याद से अपना हाथ धोएं</string>
+    <string name="wash_hands">याद से अपना हाथ धोएं</string>
 
 
     //Patient Detail Screen

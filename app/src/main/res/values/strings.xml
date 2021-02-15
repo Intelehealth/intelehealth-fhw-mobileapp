@@ -6,10 +6,10 @@
     <string name="hint_required" translatable="false">Required</string>
     <string name="hint_optional" translatable="false">Optional</string>
     <string name="tag_optional" translatable="false">optional</string>
-    <string name="generic_ok" translatable="false">OK</string>
-    <string name="generic_cancel" translatable="false">Cancel</string>
-    <string name="generic_yes" translatable="false">Yes</string>
-    <string name="generic_no" translatable="false">No</string>
+    <string name="generic_ok">OK</string>
+    <string name="generic_cancel">Cancel</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
     <string name="generic_back" translatable="false">Back</string>
     <string name="generic_coming_soon" translatable="false">Coming Soon.....</string>
     <string name="action_print" translatable="false">Print</string>
@@ -202,7 +202,7 @@
     <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
 
     //Physical Exam Dialog
-    <string name="wash_hands" translatable="false">Remember to wash your hands</string>
+    <string name="wash_hands">Remember to wash your hands</string>
 
 
     //Patient Detail Screen
