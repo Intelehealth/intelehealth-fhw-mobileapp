@@ -466,7 +466,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
+            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else
                 mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -475,12 +475,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
+            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else
                 mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste().equals(getString(R.string.not_provided)))
+            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mCaste.setSelection(0);
             else
                 mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));

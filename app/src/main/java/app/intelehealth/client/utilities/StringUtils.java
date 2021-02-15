@@ -131,11 +131,11 @@ public final class StringUtils {
     public static String getProvided(Spinner spinner) {
         String val = "";
         if (spinner.getSelectedItemPosition() == 0)
-            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+            val = IntelehealthApplication.getAppContext().getResources().getString(R.string.not_provided);
 
         else if(spinner.getSelectedItem() == null)
         {
-            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+            val = IntelehealthApplication.getAppContext().getResources().getString(R.string.not_provided);
         }
         else
         {
