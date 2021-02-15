@@ -68,7 +68,16 @@
         <item>Graduation &amp; Higher</item>
     </string-array>
 
-    <string-array name="caste">
+    <string-array name="education_hi">
+        <item> चयन करें</item>
+        <item>अशिक्षित</item>
+        <item>प्रथम</item>
+        <item>माध्यमिक</item>
+        <item>उच्च माध्यमिक</item>
+        <item>स्नातक और उच्चतर</item>
+    </string-array>
+
+    <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
         <item>OBC</item>
@@ -77,12 +86,20 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_hi">
+        <item>चयन करें</item>
+        <item>सामान्य</item>
+        <item>अन्य पिछड़ा वर्ग</item>
+        <item>अनुसूचित जाति</item>
+        <item>अनुसूचित जनजाति</item>
+        <item>अन्य</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
-
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
@@ -94,6 +111,12 @@
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_hi">
+        <item>चयन करें</item>
+        <item>गरीबी रेखा से ऊपर</item>
+        <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
     <string-array name="states_india">

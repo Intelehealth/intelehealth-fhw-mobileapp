@@ -88,6 +88,7 @@ public class IdentificationActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter;
+    private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -389,12 +390,25 @@ public class IdentificationActivity extends AppCompatActivity {
         //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
-        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
-                R.array.caste, R.layout.custom_spinner);
-        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCaste.setAdapter(casteAdapter);
+//        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.caste, R.layout.custom_spinner);
+//        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mCaste.setAdapter(casteAdapter);
         try {
-            String economicLanguage = "economic_" + Locale.getDefault().getLanguage();
+            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
+            int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
+            if (castes != 0) {
+                casteAdapter = ArrayAdapter.createFromResource(this,
+                        castes, R.layout.custom_spinner);
+
+            }
+            mCaste.setAdapter(casteAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+        try {
+            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
             int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(this,
@@ -407,7 +421,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
         try {
-            String educationLanguage = "education_" + Locale.getDefault().getLanguage();
+            String educationLanguage = "education_" + sessionManager.getAppLanguage();
             int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
             if (educations != 0) {
                 educationAdapter = ArrayAdapter.createFromResource(this,
