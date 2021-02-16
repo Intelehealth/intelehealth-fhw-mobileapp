@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import app.intelehealth.client.activities.patientDetailActivity.FamilyMemberAdapter;
@@ -251,6 +253,7 @@ public class PatientsDAO {
     //Fetch all patient UUID's from HouseHoldValue
     public List<String> getPatientUUIDs(String houseHoldValue) throws DAOException {
         List<String> patientUUIDs = new ArrayList<>();
+        LinkedHashSet<String> patientUUIDs_hashset = new LinkedHashSet<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -258,7 +261,7 @@ public class PatientsDAO {
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
-                    patientUUIDs.add(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                    patientUUIDs_hashset.add(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
                 }
             }
             cursor.close();
@@ -268,6 +271,8 @@ public class PatientsDAO {
         } finally {
             db.endTransaction();
         }
+
+        patientUUIDs.addAll(patientUUIDs_hashset);
         return patientUUIDs;
     }
 
