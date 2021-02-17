@@ -494,5 +494,6 @@
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
     <string name="family_member">Family Member</string>
     <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="document_">"Document - "</string>
 
 </resources>

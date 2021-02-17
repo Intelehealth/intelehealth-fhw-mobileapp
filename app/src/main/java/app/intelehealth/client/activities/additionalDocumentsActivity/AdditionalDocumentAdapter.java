@@ -77,7 +77,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
 //        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         holder.getDocumentNameTextView().setText
-                ("Document - " + (position + 1));
+                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 
