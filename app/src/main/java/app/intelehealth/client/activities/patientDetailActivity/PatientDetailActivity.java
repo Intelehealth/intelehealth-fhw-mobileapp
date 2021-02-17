@@ -609,9 +609,30 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
-        education_statusView.setText(patient_new.getEducation_level());
-        economic_statusView.setText(patient_new.getEconomic_status());
-        casteView.setText(patient_new.getCaste());
+
+        //english = en
+        //hindi = hi
+        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            education_statusView.setText("नहीं दिया गया");
+        } else {
+            education_statusView.setText(patient_new.getEducation_level());
+        }
+
+        if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            economic_statusView.setText("नहीं दिया गया");
+        } else {
+            economic_statusView.setText(patient_new.getEconomic_status());
+        }
+
+        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            casteView.setText("नहीं दिया गया");
+        } else {
+            casteView.setText(patient_new.getCaste());
+        }
+
 //
         if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
             sdwView.setText(patient_new.getSdw());
