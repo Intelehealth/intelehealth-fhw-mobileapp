@@ -1981,7 +1981,7 @@ public class Node implements Serializable {
         Log.i(TAG, "formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = "Question not answered" + next_line;
+            mLanguage = IntelehealthApplication.getAppContext().getResources().getString(R.string.question_not_answered) + next_line;
         }
 
         return mLanguage;

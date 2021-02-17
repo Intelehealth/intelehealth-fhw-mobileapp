@@ -631,5 +631,6 @@
     <string name="refresh">Refresh</string>
     <string name="family_member">Family Member</string>
     <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="question_not_answered">Question not answered</string>
 
 </resources>

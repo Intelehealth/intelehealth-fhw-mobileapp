@@ -178,7 +178,6 @@ public class PatientsFrameJson {
 
     }
 
-
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);
