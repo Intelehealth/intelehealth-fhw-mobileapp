@@ -152,7 +152,7 @@ public final class StringUtils {
         return val;
     }
 
-    private static String switch_hi_education(String val) {
+    public static String switch_hi_education(String val) {
         switch (val) {
             case "अशिक्षित":
                 val = "Illiterate";
@@ -175,8 +175,30 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_hi_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "अशिक्षित";
+                break;
+            case "Primary":
+                val = "प्रथम";
+                break;
+            case "Secondary":
+                val = "माध्यमिक";
+                break;
+            case "Higher Secondary":
+                val = "उच्च माध्यमिक";
+                break;
+            case "Graduation &amp; Higher":
+                val = "स्नातक और उच्चतर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
-    private static String switch_hi_economic(String val) {
+    public static String switch_hi_economic(String val) {
         switch (val) {
             case "गरीबी रेखा से ऊपर":
                 val = "APL";
@@ -190,7 +212,22 @@ public final class StringUtils {
         return val;
     }
 
-    private static String switch_hi_caste(String val) {
+    public static String switch_hi_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "गरीबी रेखा से ऊपर";
+                break;
+            case "BPL":
+                val = "गरीबी रेखा से नीचे";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_caste(String val) {
         switch (val) {
             case "सामान्य":
                 val = "General";
@@ -206,6 +243,29 @@ public final class StringUtils {
                 break;
             case "अन्य":
                 val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "सामान्य";
+                break;
+            case "OBC":
+                val = "अन्य पिछड़ा वर्ग";
+                break;
+            case "SC":
+                val = "अनुसूचित जाति";
+                break;
+            case "ST":
+                val = "अनुसूचित जनजाति";
+                break;
+            case "others":
+                val = "अन्य";
                 break;
             default:
                 return val;
