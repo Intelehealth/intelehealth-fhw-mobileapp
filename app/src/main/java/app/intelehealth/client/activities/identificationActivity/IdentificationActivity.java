@@ -483,7 +483,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mCaste.setSelection(0);
             else
-                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste())); //edit...
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }

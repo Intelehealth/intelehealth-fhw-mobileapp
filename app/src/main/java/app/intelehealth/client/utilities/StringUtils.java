@@ -142,7 +142,74 @@ public final class StringUtils {
             val = spinner.getSelectedItem().toString();
         }
 
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            val = switch_hi_caste(val);
+            val = switch_hi_economic(val);
+            val = switch_hi_education(val);
+        }
 
+        return val;
+    }
+
+    private static String switch_hi_education(String val) {
+        switch (val) {
+            case "अशिक्षित":
+                val = "Illiterate";
+                break;
+            case "प्रथम":
+                val = "Primary";
+                break;
+            case "माध्यमिक":
+                val = "Secondary";
+                break;
+            case "उच्च माध्यमिक":
+                val = "Higher Secondary";
+                break;
+            case "स्नातक और उच्चतर":
+                val = "Graduation &amp; Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    private static String switch_hi_economic(String val) {
+        switch (val) {
+            case "गरीबी रेखा से ऊपर":
+                val = "APL";
+                break;
+            case "गरीबी रेखा से नीचे":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    private static String switch_hi_caste(String val) {
+        switch (val) {
+            case "सामान्य":
+                val = "General";
+                break;
+            case "अन्य पिछड़ा वर्ग":
+                val = "OBC";
+                break;
+            case "अनुसूचित जाति":
+                val = "SC";
+                break;
+            case "अनुसूचित जनजाति":
+                val = "ST";
+                break;
+            case "अन्य":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
         return val;
     }
 

@@ -69,12 +69,12 @@
     </string-array>
 
     <string-array name="education_hi">
-        <item>Select</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
+        <item> चयन करें</item>
+        <item>अशिक्षित</item>
+        <item>प्रथम</item>
+        <item>माध्यमिक</item>
+        <item>उच्च माध्यमिक</item>
+        <item>स्नातक और उच्चतर</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -87,12 +87,12 @@
     </string-array>
 
     <string-array name="caste_hi">
-        <item>Select</item>
-        <item>General</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
+        <item>चयन करें</item>
+        <item>सामान्य</item>
+        <item>अन्य पिछड़ा वर्ग</item>
+        <item>अनुसूचित जाति</item>
+        <item>अनुसूचित जनजाति</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="economic_en">
@@ -114,9 +114,9 @@
     </string-array>
 
     <string-array name="economic_hi">
-        <item>Select</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>चयन करें</item>
+        <item>गरीबी रेखा से ऊपर</item>
+        <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
     <string-array name="states_india">
