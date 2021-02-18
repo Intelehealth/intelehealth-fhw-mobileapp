@@ -612,8 +612,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String a = currentNode.formQuestionAnswer(0);
+            Log.d("tag", a);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-            .replace("Question not answered", "सवाल का जवाब नहीं दिया")));
+            .replace("Question not answered", "सवाल का जवाब नहीं दिया")
+            .replace("Patient reports -", "पेशेंट ने सूचित किया -")
+            .replace("Patient denies -", "पेशेंट ने मना कर दिया -")));
         }
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
