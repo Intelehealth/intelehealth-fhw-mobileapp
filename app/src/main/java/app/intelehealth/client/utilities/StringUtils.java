@@ -167,7 +167,7 @@ public final class StringUtils {
                 val = "Higher Secondary";
                 break;
             case "स्नातक और उच्चतर":
-                val = "Graduation &amp; Higher";
+                val = "Graduation & Higher";
                 break;
             default:
                 return val;
@@ -189,7 +189,7 @@ public final class StringUtils {
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
                 break;
-            case "Graduation &amp; Higher":
+            case "Graduation & Higher":
                 val = "स्नातक और उच्चतर";
                 break;
             default:

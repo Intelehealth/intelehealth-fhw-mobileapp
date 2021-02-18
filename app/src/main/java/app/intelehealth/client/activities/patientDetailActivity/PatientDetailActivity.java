@@ -89,6 +89,10 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_economic_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_education_edit;
+
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
@@ -622,7 +626,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             education_statusView.setText(patient_new.getEducation_level());
         }
         else {
-            education_statusView.setText(patient_new.getEducation_level());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String education = switch_hi_education_edit(patient_new.getEducation_level());
+                education_statusView.setText(education);
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                education_statusView.setText(patient_new.getEducation_level());
+            }
+            else {
+                education_statusView.setText(patient_new.getEducation_level());
+            }
+           // education_statusView.setText(patient_new.getEducation_level());
         }
 
         //economic
@@ -635,7 +649,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             economic_statusView.setText(patient_new.getEconomic_status());
         }
         else {
-            economic_statusView.setText(patient_new.getEconomic_status());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String economic = switch_hi_economic_edit(patient_new.getEconomic_status());
+                economic_statusView.setText(economic);
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                economic_statusView.setText(patient_new.getEconomic_status());
+            }
+            else {
+                economic_statusView.setText(patient_new.getEconomic_status());
+            }
+           // economic_statusView.setText(patient_new.getEconomic_status());
         }
 
         //caste
@@ -648,7 +672,17 @@ public class PatientDetailActivity extends AppCompatActivity {
             casteView.setText(patient_new.getCaste());
         }
         else {
-            casteView.setText(patient_new.getCaste());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String caste = switch_hi_caste_edit(patient_new.getCaste());
+                casteView.setText(caste);
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                casteView.setText(patient_new.getCaste());
+            }
+            else {
+                casteView.setText(patient_new.getCaste());
+            }
+           // casteView.setText(patient_new.getCaste());
         }
 
 //
