@@ -608,7 +608,20 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+
+        //language ui
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+            .replace("Question not answered", "सवाल का जवाब नहीं दिया")));
+        }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        }
+        else {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        }
+
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
