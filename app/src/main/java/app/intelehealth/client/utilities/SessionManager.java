@@ -103,7 +103,7 @@ public class SessionManager {
     }
 
     public String getAppLanguage() {
-        return pref.getString(APP_LANGUAGE, "");
+        return pref.getString(APP_LANGUAGE, "en");
     }
 
     public void setAppLanguage(String pullExcutedTime) {
