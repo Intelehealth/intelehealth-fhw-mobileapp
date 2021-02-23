@@ -594,6 +594,17 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(patient_new.getGender());
                 }
             }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                if(patient_new.getGender().equalsIgnoreCase("M")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_male));
+                }
+                else if(patient_new.getGender().equalsIgnoreCase("F")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                }
+                else {
+                    genderView.setText(patient_new.getGender());
+                }
+            }
             else {
                 genderView.setText(patient_new.getGender());
             }
