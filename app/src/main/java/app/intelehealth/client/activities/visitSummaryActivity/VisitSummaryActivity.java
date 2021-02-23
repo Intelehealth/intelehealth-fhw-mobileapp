@@ -1894,6 +1894,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
+            Log.d("font", "font: "+objClsDoctorDetails.getFontOfSign());
             if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
@@ -1901,14 +1902,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("siganature")) {
+            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("signature")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Siganature-z8Xm0.otf');";
             }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("margareta")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Margareta-VGqP0.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Margareta-VGqP0.ttf');";
             }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
             }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("terecia")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Terecia-X3qMP.otf');";
@@ -2238,6 +2239,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
+            Log.d("font", "font: "+objClsDoctorDetails.getFontOfSign());
             if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
@@ -2245,14 +2247,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("siganature")) {
+            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("signature")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Siganature-z8Xm0.otf');";
             }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("margareta")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Margareta-VGqP0.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Margareta-VGqP0.ttf');";
             }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
             }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("terecia")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Terecia-X3qMP.otf');";
