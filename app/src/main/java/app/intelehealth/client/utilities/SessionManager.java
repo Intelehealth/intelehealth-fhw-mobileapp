@@ -220,8 +220,8 @@ public class SessionManager {
     }
 
     public String getCurrentLang() {
-        return pref.getString(CURRENT_LANG, "");
-    }
+        return pref.getString(CURRENT_LANG, "en");
+    }  //setting default language as english
 
     public void setCurrentLang(String lang) {
         editor.putString(CURRENT_LANG, lang);

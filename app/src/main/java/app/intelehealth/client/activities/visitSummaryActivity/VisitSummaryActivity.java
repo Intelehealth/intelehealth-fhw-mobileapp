@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
@@ -267,7 +268,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String mFileName = "config.json";
     public static String prescription1;
     public static String prescription2;
-    SessionManager sessionManager;
+    SessionManager sessionManager,sessionManager1;
     String encounterUuid;
     String encounterVitals;
   //  Boolean isreturningWhatsapp = true;
@@ -286,6 +287,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageView ivPrescription;
     private String hasPrescription = "";
     private boolean isRespiratory = false;
+    String appLanguage;
 
 
     @Override
@@ -379,14 +381,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(R.string.end_visit_msg);
-                    alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
+                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                         }
                     });
-                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -400,8 +402,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 } else {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(R.string.error_no_data);
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
+                    alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -422,6 +424,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
+        sessionManager1 = new SessionManager(this);
+        appLanguage = sessionManager1.getAppLanguage();
+        if(!appLanguage.equalsIgnoreCase(""))
+        {
+            setLocale(appLanguage);
+        }
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -1508,6 +1516,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return isExists;
     }
 
+    public void setLocale(String appLanguage)
+    {
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+    }
 
     private String convertCtoF(String temperature) {
 
