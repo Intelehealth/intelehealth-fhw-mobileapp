@@ -465,6 +465,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView patinetName = findViewById(R.id.textView_name);
         TextView dobView = findViewById(R.id.textView_DOB);
         TextView ageView = findViewById(R.id.textView_age);
+        TextView genderView = findViewById(R.id.textView_gender);
         TextView addr1View = findViewById(R.id.textView_address_1);
         TableRow addr2Row = findViewById(R.id.tableRow_addr2);
         TextView addr2View = findViewById(R.id.textView_address2);
@@ -581,6 +582,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         dobView.setText(dob);
+        if(patient_new.getGender() != null) {
+            genderView.setText(patient_new.getGender());
+        }
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);
         } else {

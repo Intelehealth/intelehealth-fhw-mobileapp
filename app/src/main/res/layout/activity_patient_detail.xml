@@ -256,6 +256,36 @@
 
                         </TableRow>
 
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:text="Gender"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                            <TextView
+                                android:id="@+id/textView_gender"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content" />
+
+
+                        </TableRow>
+
 
                         <TableRow
                             android:layout_width="match_parent"
