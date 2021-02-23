@@ -627,5 +627,6 @@
     <string name="family_member">परिवार सदस्य</string>
     <string name="no_family_member_registered">कोई परिवार का सदस्य पंजीकृत नहीं</string>
     <string name="document_">"डाक्यूमेंट - "</string>
+    <string name="gender">लिंग</string>
 
 </resources>

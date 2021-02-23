@@ -61,5 +61,6 @@
     <string name="family_member">Family Member</string>
     <string name="successfully_synced">Successfully refreshed</string>
     <string name="document_">"Document - "</string>
+    <string name="gender">Gender</string>
 
 </resources>
