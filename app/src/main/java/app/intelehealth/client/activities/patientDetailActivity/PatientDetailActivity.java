@@ -583,7 +583,20 @@ public class PatientDetailActivity extends AppCompatActivity {
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         dobView.setText(dob);
         if(patient_new.getGender() != null) {
-            genderView.setText(patient_new.getGender());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if(patient_new.getGender().equalsIgnoreCase("M")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_male));
+                }
+                else if(patient_new.getGender().equalsIgnoreCase("F")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                }
+                else {
+                    genderView.setText(patient_new.getGender());
+                }
+            }
+            else {
+                genderView.setText(patient_new.getGender());
+            }
         }
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);
