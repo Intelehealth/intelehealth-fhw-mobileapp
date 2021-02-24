@@ -1902,17 +1902,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("signature")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Siganature-z8Xm0.otf');";
-            }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("margareta")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Margareta-VGqP0.ttf');";
-            }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
-            }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("terecia")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Terecia-X3qMP.otf');";
             }
         }
         String font_face = "<style>" +
@@ -2247,17 +2238,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("signature")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Siganature-z8Xm0.otf');";
-            }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("margareta")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Margareta-VGqP0.ttf');";
-            }
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
-            }
-            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("terecia")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Terecia-X3qMP.otf');";
             }
         }
         String font_face = "<style>" +
