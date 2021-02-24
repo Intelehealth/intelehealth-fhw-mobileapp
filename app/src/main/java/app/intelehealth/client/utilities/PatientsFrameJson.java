@@ -124,7 +124,11 @@ public class PatientsFrameJson {
             visit.setVisitType(visitDTO.getVisitTypeUuid());
             visit.setStopDatetime(visitDTO.getEnddate());
             visit.setAttributes(visitDTO.getAttributes());
-            visitList.add(visit);
+//            visitList.add(visit);
+
+            if (visitDTO.getAttributes().size() > 0) {
+                visitList.add(visit);
+            }
 
         }
 
