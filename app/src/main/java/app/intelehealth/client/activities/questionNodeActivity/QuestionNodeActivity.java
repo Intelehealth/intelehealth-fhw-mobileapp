@@ -620,7 +620,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             .replace("Patient denies -", "पेशेंट ने मना कर दिया -")));
         }
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
-            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
+                    .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
+                    .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
