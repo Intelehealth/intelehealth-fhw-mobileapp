@@ -132,6 +132,7 @@ public class SetupActivity extends AppCompatActivity {
     String base_url;
     Map.Entry<String, String> village_name;
     int state_count = 0, district_count = 0, sanch_count = 0, village_count = 0;
+    private String selectedState = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,6 +260,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
                 String state_uuid = "";
+
+                selectedState = spinner_state.getSelectedItem().toString();
 
                 if (state_count == 0) {
                     if (value && parent.getSelectedItemPosition() > 0) {
@@ -545,11 +548,6 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void attemptLogin() {
 
-//        if (mAuthTask != null) {
-//            return;
-//        }
-
-
         // Reset errors.
         mUrlField.setError(null);
         mEmailView.setError(null);
@@ -592,7 +590,6 @@ public class SetupActivity extends AppCompatActivity {
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
-
         }
 
         //spinner...
@@ -627,20 +624,6 @@ public class SetupActivity extends AppCompatActivity {
             Toast.makeText(SetupActivity.this, "Select Village from dropdown", Toast.LENGTH_LONG).show();
         }
 
-
-        //spinner-end...
-
-        // Location location = null;
-
-        //add state wise here...
-
-//        if (mDropdownLocation.getSelectedItemPosition() <= 0) {
-//            cancel = true;
-//            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
-//        } else {
-//            location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
-//        }
-
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -649,18 +632,9 @@ public class SetupActivity extends AppCompatActivity {
                     mUrlField.requestFocus();
                     mUrlField.setError("Enter Url");
                 }
-
                 focusView.requestFocus();
             }
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-//            if (location != null) {
-//                Log.i(TAG, location.getDisplay());
-//                String urlString = mUrlField.getText().toString();
-//                TestSetup(urlString, email, password, admin_password, location);
-//                Log.d(TAG, "attempting setup");
-//            }
 
             if (village_name != null) {
                 String urlString = mUrlField.getText().toString();
@@ -671,9 +645,7 @@ public class SetupActivity extends AppCompatActivity {
     }
 
     private void showProgressbar() {
-
-
-// instantiate it within the onCreate method
+        // instantiate it within the onCreate method
         mProgressDialog = new ProgressDialog(SetupActivity.this);
         mProgressDialog.setMessage(getString(R.string.download_protocols));
         mProgressDialog.setIndeterminate(true);
@@ -1148,6 +1120,9 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
+
+                                            //Storing State Name
+                                            sessionManager.setStateName(selectedState);
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);

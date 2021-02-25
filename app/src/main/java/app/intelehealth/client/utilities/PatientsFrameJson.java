@@ -11,6 +11,7 @@ import java.util.List;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
@@ -112,7 +113,6 @@ public class PatientsFrameJson {
                 patient.setIdentifiers(identifierList);
                 patientList.add(patient);
 
-
             }
         }
         for (VisitDTO visitDTO : visitDTOList) {
@@ -146,9 +146,9 @@ public class PatientsFrameJson {
             List<EncounterProvider> encounterProviderList = new ArrayList<>();
             EncounterProvider encounterProvider = new EncounterProvider();
             encounterProvider.setEncounterRole("73bbb069-9781-4afc-a9d1-54b6b2270e04");
-          //  encounterProvider.setProvider(session.getProviderID());
+            //  encounterProvider.setProvider(session.getProviderID());
             encounterProvider.setProvider(encounterDTO.getProvideruuid());
-            Log.d("DTO","DTO:frame "+ encounterProvider.getProvider());
+            Log.d("DTO", "DTO:frame " + encounterProvider.getProvider());
             encounterProviderList.add(encounterProvider);
             encounter.setEncounterProviders(encounterProviderList);
 
@@ -176,20 +176,18 @@ public class PatientsFrameJson {
             encounter.setLocation(session.getLocationUuid());
 
             // encounterList.add(encounter);
-            if (speciality_row_exist_check(encounter.getVisit())){
+            if (speciality_row_exist_check(encounter.getVisit())) {
                 encounterList.add(encounter);
             }
 
-    }
-
+        }
 
         pushRequestApiCall.setPatients(patientList);
         pushRequestApiCall.setPersons(personList);
         pushRequestApiCall.setVisits(visitList);
         pushRequestApiCall.setEncounters(encounterList);
         Gson gson = new Gson();
-        Log.d("OBS: ","OBS: "+gson.toJson(pushRequestApiCall));
-
+        Log.d("OBS: ", "OBS: " + gson.toJson(pushRequestApiCall));
 
         return pushRequestApiCall;
     }

@@ -158,4 +158,44 @@ public class VisitAttributeListDAO {
         Log.d("isInserted", "isInserted: "+isInserted);
         return isInserted;
     }
+
+    //Inserting Selected State in Visit Attribute
+    public boolean insertVisitAttributesState(String visitUuid, String state) throws
+            DAOException {
+
+        boolean isInserted = false;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try
+        {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", state);
+            values.put("visit_attribute_type_uuid", "0e798578-96c1-450b-9927-52e45485b151");
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null,
+                    values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            if(count != -1)
+                isInserted = true;
+
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e)
+        {
+            isInserted = false;
+            throw new DAOException(e.getMessage(), e);
+        }
+        finally {
+            db.endTransaction();
+        }
+
+        Log.d("isInserted", "isInserted: "+isInserted);
+        return isInserted;
+
+    }
 }
