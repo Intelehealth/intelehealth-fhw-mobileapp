@@ -86,7 +86,7 @@ public class CameraActivity extends AppCompatActivity {
     private final String TAG = CameraActivity.class.getSimpleName();
     private CameraView mCameraView;
     private FloatingActionButton mFab;
-    private int mCurrentFlash;
+    private int mCurrentFlash = 0;
 
     private Handler mBackgroundHandler;
 
@@ -319,6 +319,7 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (mCameraView != null) {
+                        mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]); // default flash as 0: FLASH_OFF
                         mCameraView.takePicture();
                     }
                 }
