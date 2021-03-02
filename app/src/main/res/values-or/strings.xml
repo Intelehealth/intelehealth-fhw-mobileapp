@@ -496,5 +496,10 @@
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="document_">"Document - "</string>
     <string name="gender">Gender</string>
+    <string name="are_you_head_of_the_family">Are you Head of the Family?</string>
+    <string name="what_is_your_occupation">What is your occupation?</string>
+    <string name="do_you_have_a_bank_account">Do you have a bank account?</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?</string>
 
 </resources>

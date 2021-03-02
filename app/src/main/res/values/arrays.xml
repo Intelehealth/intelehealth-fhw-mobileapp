@@ -338,6 +338,10 @@
         <item>Select State</item>
     </string-array>
 
+    <string-array name="general_patient_registration">
+        <item>Select</item>
+    </string-array>
+
     <string-array name="location_district">
         <item>Select District</item>
     </string-array>

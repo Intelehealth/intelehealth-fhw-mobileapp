@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.identificationActivity.IdentificationActivity">
+    tools:context=".activities.identificationActivity.IdentificationActivity"
+    android:layout_marginTop="-700dp">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -802,6 +803,123 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <!-- Here we will add Occupation UI which is common fields for all -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_general"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="3dp"
+                    app:cardPreventCornerOverlap="false">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/what_is_your_occupation"/>
+
+                            <Spinner
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/general_patient_registration"/>
+
+                            <Space
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/do_you_have_a_bank_account"/>
+
+                            <Spinner
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/general_patient_registration"/>
+
+                            <Space
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/what_kind_of_mobile_phone_do_you_personally_own" />
+
+                            <Spinner
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/general_patient_registration"/>
+
+                            <Space
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/do_you_or_any_of_your_family_member_use_whatsapp"/>
+
+                            <Spinner
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/general_patient_registration"/>
+
+                            <Space
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- End of Occupation UI -->
+
+                <!-- Here we will add the Cardview and Checkbox for Head Of Household -->
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/are_you_head_of_the_family"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp">
+
+                </com.google.android.material.checkbox.MaterialCheckBox>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_household"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10sp"
+                app:cardElevation="3dp"
+                app:cardPreventCornerOverlap="false">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+            </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+                <!-- End of HOH -->
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
