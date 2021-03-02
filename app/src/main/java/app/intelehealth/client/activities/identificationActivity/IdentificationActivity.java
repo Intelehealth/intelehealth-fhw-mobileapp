@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -154,6 +155,11 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerYear;
     private int retainPickerMonth;
     private int retainPickerDate;
+    Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner,
+            source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
+            toilet_facility_spinner, structure_of_house_spinner;
+    RadioButton time_distance_declined, time_distance_enterTime, land_own_declined, land_own_enterNumber;
+    MaterialCheckBox familyhead_checkbox;
 
 
     @Override
@@ -235,6 +241,27 @@ public class IdentificationActivity extends AppCompatActivity {
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
+
+        //Spinner
+        occupation_spinner = findViewById(R.id.occupation_spinner);
+        bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
+        mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
+        whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
+        source_of_water_spinner = findViewById(R.id.source_of_water_spinner);
+        howtomake_water_safe_spinner = findViewById(R.id.howtomake_water_safe_spinner);
+        water_availability_spinner = findViewById(R.id.water_availability_spinner);
+        toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
+        structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
+
+        //HOH - Checkbox
+        familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
+
+        //RadioButton
+        time_distance_declined = findViewById(R.id.time_distance_declined);
+        time_distance_enterTime = findViewById(R.id.time_distance_enterTime);
+        land_own_declined = findViewById(R.id.land_own_declined);
+        land_own_enterNumber = findViewById(R.id.land_own_enterNumber);
+
 //Initialize the local database to store patient information
 
         Intent intent = this.getIntent(); // The intent was passed to the activity

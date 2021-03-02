@@ -831,6 +831,7 @@
                                 android:text="@string/what_is_your_occupation"/>
 
                             <Spinner
+                                android:id="@+id/occupation_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:entries="@array/general_patient_registration"/>
@@ -845,6 +846,7 @@
                                 android:text="@string/do_you_have_a_bank_account"/>
 
                             <Spinner
+                                android:id="@+id/bankaccount_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:entries="@array/general_patient_registration"/>
@@ -859,6 +861,7 @@
                                 android:text="@string/what_kind_of_mobile_phone_do_you_personally_own" />
 
                             <Spinner
+                                android:id="@+id/mobilephone_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:entries="@array/general_patient_registration"/>
@@ -873,6 +876,7 @@
                                 android:text="@string/do_you_or_any_of_your_family_member_use_whatsapp"/>
 
                             <Spinner
+                                android:id="@+id/whatsapp_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:entries="@array/general_patient_registration"/>
@@ -889,6 +893,7 @@
 
                 <!-- Here we will add the Cardview and Checkbox for Head Of Household -->
                 <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/familyhead_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/are_you_head_of_the_family"
@@ -921,6 +926,7 @@
                     android:text="@string/total_number_of_members_in_the_household"/>
 
                 <EditText
+                    android:id="@+id/no_of_member_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enter_number"/>
@@ -935,6 +941,7 @@
                     android:text="@string/how_many_members_usually_live_in_your_household_or_are_staying_with_you_now"/>
 
                 <EditText
+                    android:id="@+id/no_of_staying_members_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/enter_number"/>
@@ -949,6 +956,7 @@
                     android:text="@string/what_is_the_main_source_of_drinking_water_for_members_of_your_household"/>
 
                 <Spinner
+                    android:id="@+id/source_of_water_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
@@ -963,6 +971,7 @@
                     android:text="@string/what_do_you_do_to_make_drinking_water_safer"/>
 
                 <Spinner
+                    android:id="@+id/howtomake_water_safe_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
@@ -977,15 +986,18 @@
                     android:text="@string/how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip"/>
 
                 <RadioGroup
+                    android:id="@+id/time_distance_radiogrp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <RadioButton
+                        android:id="@+id/time_distance_declined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/declined"/>
 
                     <RadioButton
+                        android:id="@+id/time_distance_enterTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/enter_time"/>
@@ -1001,6 +1013,7 @@
                     android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"/>
 
                 <Spinner
+                    android:id="@+id/water_availability_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
@@ -1015,6 +1028,7 @@
                     android:text="@string/what_kind_of_toilet_facility_do_members_of_your_household_usually_use"/>
 
                 <Spinner
+                    android:id="@+id/toilet_facility_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
@@ -1029,6 +1043,7 @@
                     android:text="@string/select_the_structure_of_house"/>
 
                 <Spinner
+                    android:id="@+id/structure_of_house_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
@@ -1043,15 +1058,18 @@
                     android:text="@string/how_much_hectars_of_cultivable_land_your_family_owns"/>
 
                 <RadioGroup
+                    android:id="@+id/land_own_radiogrp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <RadioButton
+                        android:id="@+id/land_own_declined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/declined"/>
 
                     <RadioButton
+                        android:id="@+id/land_own_enterNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/enter_number"/>
@@ -1062,7 +1080,6 @@
             </androidx.cardview.widget.CardView>
 
                 <!-- End of HOH -->
-
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab"
