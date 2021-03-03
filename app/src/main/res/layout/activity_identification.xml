@@ -845,8 +845,8 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="15dp"
                                 android:background="?android:attr/listDivider"/>
 
                             <TextView
@@ -868,8 +868,8 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="15dp"
                                 android:background="?android:attr/listDivider"/>
 
                             <TextView
@@ -892,8 +892,8 @@
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
-                                android:layout_marginTop="15dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="15dp"
                                 android:background="?android:attr/listDivider"/>
 
                             <TextView
@@ -959,6 +959,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/total_number_of_members_in_the_household"/>
 
                 <EditText
@@ -976,6 +977,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/how_many_members_usually_live_in_your_household_or_are_staying_with_you_now"/>
 
                 <EditText
@@ -993,7 +995,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/what_is_the_main_source_of_drinking_water_for_members_of_your_household"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <Spinner
                     android:id="@+id/source_of_water_spinner"
@@ -1001,15 +1008,23 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="?android:attr/listDivider"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/what_do_you_do_to_make_drinking_water_safer"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <Spinner
                     android:id="@+id/howtomake_water_safe_spinner"
@@ -1017,15 +1032,23 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="?android:attr/listDivider"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <RadioGroup
                     android:id="@+id/time_distance_radiogrp"
@@ -1048,15 +1071,23 @@
                         />
                 </RadioGroup>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="?android:attr/listDivider"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <Spinner
                     android:id="@+id/water_availability_spinner"
@@ -1064,15 +1095,23 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="?android:attr/listDivider"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/what_kind_of_toilet_facility_do_members_of_your_household_usually_use"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <Spinner
                     android:id="@+id/toilet_facility_spinner"
@@ -1080,15 +1119,23 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="?android:attr/listDivider"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/select_the_structure_of_house"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <Spinner
                     android:id="@+id/structure_of_house_spinner"
@@ -1096,15 +1143,23 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/general_patient_registration"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="?android:attr/listDivider"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:paddingStart="5dp"
                     android:text="@string/how_much_hectars_of_cultivable_land_your_family_owns"/>
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="10dp" />
 
                 <RadioGroup
                     android:id="@+id/land_own_radiogrp"
