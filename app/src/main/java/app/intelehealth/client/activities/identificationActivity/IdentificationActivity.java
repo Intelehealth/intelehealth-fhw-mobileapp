@@ -159,8 +159,8 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner,
             source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
             toilet_facility_spinner, structure_of_house_spinner;
-    RadioButton time_distance_declined, time_distance_enterTime, land_own_declined, land_own_enterNumber;
-    MaterialCheckBox familyhead_checkbox;
+    MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
+    EditText time_water_editText, hectars_land_editText;
     CardView cardview_household;
 
     @Override
@@ -256,13 +256,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //HOH - Checkbox
         familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
+        time_water_checkbox = findViewById(R.id.time_water_checkbox);
+        hectars_land_checkbox = findViewById(R.id.hectars_land_checkbox);
 
-        //RadioButton
-        time_distance_declined = findViewById(R.id.time_distance_declined);
-        time_distance_enterTime = findViewById(R.id.time_distance_enterTime);
-        land_own_declined = findViewById(R.id.land_own_declined);
-        land_own_enterNumber = findViewById(R.id.land_own_enterNumber);
+        //EditText
+        time_water_editText = findViewById(R.id.time_water_editText);
+        hectars_land_editText = findViewById(R.id.hectars_land_editText);
 
+        //Cardview
         cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
