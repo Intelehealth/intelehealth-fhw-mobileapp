@@ -18,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -160,7 +161,7 @@ public class IdentificationActivity extends AppCompatActivity {
             toilet_facility_spinner, structure_of_house_spinner;
     RadioButton time_distance_declined, time_distance_enterTime, land_own_declined, land_own_enterNumber;
     MaterialCheckBox familyhead_checkbox;
-
+    CardView cardview_household;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,6 +262,8 @@ public class IdentificationActivity extends AppCompatActivity {
         time_distance_enterTime = findViewById(R.id.time_distance_enterTime);
         land_own_declined = findViewById(R.id.land_own_declined);
         land_own_enterNumber = findViewById(R.id.land_own_enterNumber);
+
+        cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -850,6 +853,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientUpdateClicked(patient1);
             } else {
                 onPatientCreateClicked();
+            }
+        });
+
+        familyhead_checkbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(familyhead_checkbox.isChecked())
+                    cardview_household.setVisibility(View.VISIBLE);
+                else
+                    cardview_household.setVisibility(View.GONE);
             }
         });
     }
