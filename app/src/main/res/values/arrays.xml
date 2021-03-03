@@ -338,8 +338,92 @@
         <item>Select State</item>
     </string-array>
 
-    <string-array name="general_patient_registration">
+    <string-array name="occupation_spinner">
         <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Government job</item>
+        <item>Large scale to medium scale industry</item>
+        <item>Professional job in private sector</item>
+        <item>Small scale industry</item>
+        <item>Big shop owner</item>
+        <item>Technician/craftsman</item>
+        <item>Small shop owner</item>
+        <item>Large scale farmer</item>
+        <item>Daily wage earner</item>
+        <item>Small scale farmer/farm worker</item>
+        <item>Unemployed</item>
+        <item>Housewife</item>
+        <item>Other skills (driver,mason etc)</item>
+        <item>[Describe]</item>
+    </string-array>
+
+    <string-array name="bank_account_spinner">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="mobilephone_spinner">
+        <item>Select</item>
+        <item>Basic Phone</item>
+        <item>Smartphone</item>
+        <item>Does not own mobile phone</item>
+    </string-array>
+
+    <string-array name="familymember_whatsapp">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="sourcewater_spinner">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Chapakal/Hand Pump</item>
+        <item>Wells</item>
+        <item>Boring</item>
+        <item>Rivers/ponds</item>
+        <item>Tanker water</item>
+        <item>Any other</item>
+    </string-array>
+
+    <string-array name="howtomake_water_safe">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Nothing</item>
+        <item>Boil</item>
+        <item>Alum</item>
+        <item>Add Bleach/Chlorine tablets</item>
+        <item>Strain through cloth</item>
+        <item>Use water filter(ceramic/sand/composite)etc</item>
+        <item>Use electronic filter</item>
+        <item>Other[Enter]</item>
+    </string-array>
+
+    <string-array name="water_availability_spinner">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Yes</item>
+        <item>No</item>
+        <item>Don\'t know</item>
+    </string-array>
+
+    <string-array name="toiletFacility_spinner">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>No facility /uses open space or field</item>
+        <item>Own toilet</item>
+        <item>Community toilet</item>
+        <item>Shared toilet with other household</item>
+        <item>Other [Enter]</item>
+    </string-array>
+
+    <string-array name="structure_house">
+        <item>Select</item>
+        <item>Kutcha House</item>
+        <item>Pakka House</item>
+        <item>Homeless</item>
     </string-array>
 
     <string-array name="location_district">

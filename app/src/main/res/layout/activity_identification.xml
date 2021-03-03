@@ -839,7 +839,7 @@
                                 android:id="@+id/occupation_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:entries="@array/general_patient_registration"/>
+                                android:entries="@array/occupation_spinner"/>
 
 
                             <View
@@ -863,7 +863,7 @@
                                 android:id="@+id/bankaccount_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:entries="@array/general_patient_registration"/>
+                                android:entries="@array/bank_account_spinner"/>
 
                             <View
                                 android:layout_width="match_parent"
@@ -887,7 +887,7 @@
                                 android:id="@+id/mobilephone_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:entries="@array/general_patient_registration"/>
+                                android:entries="@array/mobilephone_spinner"/>
 
                             <View
                                 android:layout_width="match_parent"
@@ -911,7 +911,7 @@
                                 android:id="@+id/whatsapp_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:entries="@array/general_patient_registration"/>
+                                android:entries="@array/mobilephone_spinner"/>
 
 
                             <Space
@@ -1006,7 +1006,7 @@
                     android:id="@+id/source_of_water_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/general_patient_registration"/>
+                    android:entries="@array/sourcewater_spinner"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -1030,7 +1030,7 @@
                     android:id="@+id/howtomake_water_safe_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/general_patient_registration"/>
+                    android:entries="@array/howtomake_water_safe"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -1095,7 +1095,7 @@
                     android:id="@+id/water_availability_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/general_patient_registration"/>
+                    android:entries="@array/water_availability_spinner"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -1119,7 +1119,7 @@
                     android:id="@+id/toilet_facility_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/general_patient_registration"/>
+                    android:entries="@array/toiletFacility_spinner"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -1143,7 +1143,7 @@
                     android:id="@+id/structure_of_house_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/general_patient_registration"/>
+                    android:entries="@array/structure_house"/>
 
                 <View
                     android:layout_width="match_parent"
