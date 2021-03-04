@@ -27,6 +27,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -152,24 +153,29 @@ public class SetupActivity extends AppCompatActivity {
         mEmailView = findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
 
+
+        mPasswordView = findViewById(R.id.password);
+
+        mAdminPasswordView = findViewById(R.id.admin_password);
+        mUrlField = findViewById(R.id.editText_URL);
+
         mLoginButton = findViewById(R.id.setup_submit_button);
+
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(),0);
                 attemptLogin();
+
             }
         });
 
         r1 = findViewById(R.id.demoMindmap);
         r2 = findViewById(R.id.downloadMindmap);
 
-        mPasswordView = findViewById(R.id.password);
-
-        mAdminPasswordView = findViewById(R.id.admin_password);
-
         Button submitButton = findViewById(R.id.setup_submit_button);
 
-        mUrlField = findViewById(R.id.editText_URL);
         mDropdownLocation = findViewById(R.id.spinner_location);
 //        spinner_state = findViewById(R.id.spinner_state);
 //        spinner_district = findViewById(R.id.spinner_district);
@@ -199,6 +205,8 @@ public class SetupActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(submitButton.getWindowToken(),0);
                 attemptLogin();
                 //progressBar.setVisibility(View.VISIBLE);
                 //progressBar.setProgress(0);

@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -24,13 +26,20 @@ import android.preference.RingtonePreference;
 import androidx.core.app.NavUtils;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -226,6 +235,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         setTitle(R.string.menu_option_settings);
         sessionManager = new SessionManager(this);
         setupActionBar();
+
     }
 
     /**
@@ -262,10 +272,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
      * {@inheritDoc}
      */
+
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<PreferenceActivity.Header> target) {
+    public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
+
+        //code for adding version text on the bottom of the screen: By Nishita
+
+        RelativeLayout lContainerLayout = new RelativeLayout(this);
+        RelativeLayout.LayoutParams rlayout = new RelativeLayout.LayoutParams( RelativeLayout.LayoutParams.WRAP_CONTENT , RelativeLayout.LayoutParams.WRAP_CONTENT );
+        lContainerLayout.setLayoutParams(rlayout);
+        Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_light);
+        TextView mCustomView = new TextView(this);
+        mCustomView.setText(getResources().getString(R.string.version_settings));
+        mCustomView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        mCustomView.setTextColor(Color.BLACK);
+        mCustomView.setTypeface(typeface);
+        RelativeLayout.LayoutParams lParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lParams.bottomMargin=10;
+        mCustomView.setLayoutParams(lParams);
+        lContainerLayout.addView(mCustomView);
+        addContentView(lContainerLayout, lParams);
     }
 
     /**

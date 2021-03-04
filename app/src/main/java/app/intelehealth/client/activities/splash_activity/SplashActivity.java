@@ -37,11 +37,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_activity);
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
-
       //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
-
-
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
             Locale.setDefault(locale);
@@ -67,25 +64,24 @@ public class SplashActivity extends AppCompatActivity {
 //                TempDialog.setCancelable(false);
 //                TempDialog.setProgress(i);
 //                TempDialog.show();
-
                 if (sessionManager.isMigration()) {
-                    nextActivity();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() { //Do something after 100ms
+                            nextActivity();
+                        }
+                    }, 2000);
                 } else {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
-                        public void run() {
-                            //Do something after 100ms
+                        public void run() { //Do something after 100ms
                             SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
                             boolean smoothupgrade = smoothUpgrade.checkingDatabase();
                             if (smoothupgrade) {
-//                                TempDialog.dismiss();
-                                nextActivity();
-                            } else {
-//                                TempDialog.dismiss();
                                 nextActivity();
                             }
-
                         }
                     }, 2000);
                 }
