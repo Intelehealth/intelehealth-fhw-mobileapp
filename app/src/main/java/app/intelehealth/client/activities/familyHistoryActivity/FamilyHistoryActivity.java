@@ -1,6 +1,5 @@
 package app.intelehealth.client.activities.familyHistoryActivity;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;

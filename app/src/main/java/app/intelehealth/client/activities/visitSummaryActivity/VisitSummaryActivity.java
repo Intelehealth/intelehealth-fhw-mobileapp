@@ -1,9 +1,7 @@
 package app.intelehealth.client.activities.visitSummaryActivity;
 
-import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,8 +54,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -68,7 +64,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -80,7 +75,6 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -100,8 +94,6 @@ import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeAct
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActivity;
-import app.intelehealth.client.activities.setupActivity.LocationArrayAdapter;
-import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
@@ -553,8 +545,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
 
                     //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
-                    alertDialog.setPositiveButton(getResources().getString(R.string.share),
+                    alertDialog.setMessage(getString(R.string.enter_mobile_number_to_share_prescription));
+                    alertDialog.setPositiveButton(getString(R.string.share),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 

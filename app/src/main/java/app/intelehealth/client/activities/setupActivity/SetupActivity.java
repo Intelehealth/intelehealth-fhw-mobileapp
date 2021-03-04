@@ -58,7 +58,6 @@ import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.models.DownloadMindMapRes;
 import app.intelehealth.client.models.Location;
-import app.intelehealth.client.models.Results;
 import app.intelehealth.client.models.loginModel.LoginModel;
 import app.intelehealth.client.models.loginProviderModel.LoginProviderModel;
 import app.intelehealth.client.models.statewise_location.ChildLocation;

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.knowledgeEngine.Node;
+
 /**
  * Created by Shubham mittal
  */

@@ -44,7 +44,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -422,21 +421,21 @@ public class Node implements Serializable {
                 }
 
             }
-            case "cb": {
-                //Log.i(TAG, "findDisplay: cb");
-                if (display_cebuno != null && !display_cebuno.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: cb ");
-                    return display_cebuno;
-                } else {
-                    if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
-                        return text;
-                    } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
-                        return display;
-                    }
-                }
-            }
+//            case "cb": {
+//                //Log.i(TAG, "findDisplay: cb");
+//                if (display_cebuno != null && !display_cebuno.isEmpty()) {
+//                    //Log.i(TAG, "findDisplay: cb ");
+//                    return display_cebuno;
+//                } else {
+//                    if (display == null || display.isEmpty()) {
+//                        //Log.i(TAG, "findDisplay: eng/o txt");
+//                        return text;
+//                    } else {
+//                        //Log.i(TAG, "findDisplay: eng/o dis");
+//                        return display;
+//                    }
+//                }
+//            }
             case "hi": {
                 //Log.i(TAG, "findDisplay: cb");
                 if (display_hindi != null && !display_hindi.isEmpty()) {

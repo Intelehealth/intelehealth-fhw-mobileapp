@@ -53,7 +53,7 @@ import app.intelehealth.client.utilities.SessionManager;
 
 import app.intelehealth.client.utilities.exception.DAOException;
 
-import static app.intelehealth.client.database.dao.PatientsDAO.fetch_gender;
+import app.intelehealth.client.database.dao.PatientsDAO;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
     final String TAG = "Complaint Node Activity";
@@ -170,7 +170,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 }
             }
             //remove items from complaints array here...
-            mgender = fetch_gender(patientUuid);
+            mgender = PatientsDAO.fetch_gender(patientUuid);
 
             for (int i = 0; i < complaints.size(); i++) {
                 if (mgender.equalsIgnoreCase("M") &&
@@ -220,7 +220,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     complaints.add(currentNode);
                 }
                 //remove items from complaints array here...
-                mgender = fetch_gender(patientUuid);
+                mgender = PatientsDAO.fetch_gender(patientUuid);
 
                 for (int i = 0; i < complaints.size(); i++) {
                     if (mgender.equalsIgnoreCase("M") &&

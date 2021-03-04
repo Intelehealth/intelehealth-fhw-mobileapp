@@ -83,7 +83,6 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
-import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_economic_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_education_edit;

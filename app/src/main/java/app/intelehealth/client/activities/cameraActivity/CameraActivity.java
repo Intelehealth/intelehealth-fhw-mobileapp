@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.cameraActivity.CameraActivityPermissionsDispatcher;
+
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import permissions.dispatcher.NeedsPermission;

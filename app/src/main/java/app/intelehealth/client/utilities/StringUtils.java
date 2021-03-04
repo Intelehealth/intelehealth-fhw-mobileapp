@@ -20,7 +20,6 @@ import java.io.File;
 import java.util.List;
 
 import app.intelehealth.client.app.IntelehealthApplication;
-import app.intelehealth.client.R;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 import app.intelehealth.client.app.AppConstants;
-import app.intelehealth.client.models.dto.ProviderAttributeListDTO;
 import app.intelehealth.client.models.dto.VisitAttributeDTO;
 import app.intelehealth.client.utilities.exception.DAOException;
 

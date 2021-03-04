@@ -10,11 +10,9 @@ import android.database.sqlite.SQLiteDatabase;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import app.intelehealth.client.activities.patientDetailActivity.FamilyMemberAdapter;
 import app.intelehealth.client.models.FamilyMemberRes;
 import app.intelehealth.client.services.MyIntentService;
 import app.intelehealth.client.utilities.DateAndTimeUtils;

@@ -12,8 +12,6 @@ import java.util.List;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.models.Uuid_Value;
 import app.intelehealth.client.models.dto.ProviderAttributeListDTO;
-import app.intelehealth.client.models.dto.ProviderDTO;
-import app.intelehealth.client.models.dto.VisitDTO;
 import app.intelehealth.client.utilities.exception.DAOException;
 
 /**
