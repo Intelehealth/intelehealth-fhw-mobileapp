@@ -585,6 +585,16 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //Houselhold Head...
+            if(sessionManager.getHOH_checkbox()) {
+                familyhead_checkbox.setChecked(true);
+                cardview_household.setVisibility(View.VISIBLE);
+                //sessionManager.setHOH_checkbox(false);
+            }
+            else {
+                familyhead_checkbox.setChecked(false);
+                cardview_household.setVisibility(View.GONE);
+            }
+
             if(patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
                 int spinner_position = occupation_adapt.getPosition(patient1.getOccupation());
                 occupation_spinner.setSelection(spinner_position);
@@ -1637,7 +1647,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 }
 
-            } //end of checking if the family head checkbox is checked or not...
+                sessionManager.setHOH_checkbox(true);
+                Log.d("session", "session_create: "+ sessionManager.getHOH_checkbox());
+
+            }
+            else {
+                sessionManager.setHOH_checkbox(false);
+                Log.d("session", "session_create: "+ sessionManager.getHOH_checkbox());
+            }
+            //end of checking if the family head checkbox is checked or not...
 
  //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2107,7 +2125,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 }
 
-            } //end of checking if the family head checkbox is checked or not...
+                sessionManager.setHOH_checkbox(true);
+                Log.d("session", "session_update: "+ sessionManager.getHOH_checkbox());
+
+            }
+            else {
+                sessionManager.setHOH_checkbox(false);
+                Log.d("session", "session_update: "+ sessionManager.getHOH_checkbox());
+            }
+            //end of checking if the family head checkbox is checked or not...
 
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());
