@@ -127,7 +127,7 @@ public class IdentificationActivity extends AppCompatActivity {
     RadioButton mGenderM;
     RadioButton mGenderF;
     EditText mRelationship;
-    EditText mOccupation;
+  //  EditText mOccupation;
     EditText countryText;
     EditText stateText;
     EditText casteText;
@@ -162,6 +162,8 @@ public class IdentificationActivity extends AppCompatActivity {
     MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
     EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext;
     CardView cardview_household;
+    ArrayAdapter<String> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
+    sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,8 +229,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        mOccupation = findViewById(R.id.identification_occupation);
-        mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
+       // mOccupation = findViewById(R.id.identification_occupation);
+       // mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
@@ -369,11 +371,11 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mRelationship.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("mOccupation")) {
-                mOccupation.setVisibility(View.VISIBLE);
-            } else {
-                mOccupation.setVisibility(View.GONE);
-            }
+//            if (obj.getBoolean("mOccupation")) {
+//                mOccupation.setVisibility(View.VISIBLE);
+//            } else {
+//                mOccupation.setVisibility(View.GONE);
+//            }
             if (obj.getBoolean("casteLayout")) {
                 casteLayout.setVisibility(View.VISIBLE);
             } else {
@@ -417,7 +419,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity.setText(patient1.getCity_village());
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
-        mOccupation.setText(patient1.getOccupation());
+       // mOccupation.setText(patient1.getOccupation());
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -472,6 +474,32 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+
+        //Household Head
+        occupation_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.occupation_spinner));
+        bankaccount_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.bank_account_spinner));
+        mobile_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.mobilephone_spinner));
+        whatsapp_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.familymember_whatsapp));
+        sourcewater_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.sourcewater_spinner));
+        watersafe_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.howtomake_water_safe));
+        availa_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.water_availability_spinner));
+        toiletfacility_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.toiletFacility_spinner));
+        structure_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                getResources().getStringArray(R.array.structure_house));
+
+        //editText values values are set for the household fields ...
+        no_of_member_edittext.setText(patient1.getNo_of_family_members());
+        no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
+        time_water_editText.setText(patient1.getTime_travel_water());
+        hectars_land_editText.setText(patient1.getHectars_land());
 
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
@@ -555,10 +583,51 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
 
             }
+
+            //Houselhold Head...
+            if(patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
+                int spinner_position = occupation_adapt.getPosition(patient1.getOccupation());
+                occupation_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getBank_account() != null && !patient1.getBank_account().equalsIgnoreCase("")) {
+                int spinner_position = bankaccount_adapt.getPosition(patient1.getBank_account());
+                bankaccount_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getMobile_type() != null && !patient1.getMobile_type().equalsIgnoreCase("")) {
+                int spinner_position = mobile_adapt.getPosition(patient1.getMobile_type());
+                mobilephone_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getWhatsapp_mobile() != null && !patient1.getWhatsapp_mobile().equalsIgnoreCase("")) {
+                int spinner_position = whatsapp_adapt.getPosition(patient1.getWhatsapp_mobile());
+                whatsapp_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getSource_of_water() != null && !patient1.getSource_of_water().equalsIgnoreCase("")) {
+                int spinner_position = sourcewater_adapt.getPosition(patient1.getSource_of_water());
+                source_of_water_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getWater_safe() != null && !patient1.getWater_safe().equalsIgnoreCase("")) {
+                int spinner_position = watersafe_adapt.getPosition(patient1.getWater_safe());
+                howtomake_water_safe_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getWater_availability() != null && !patient1.getWater_availability().equalsIgnoreCase("")) {
+                int spinner_position = availa_adapt.getPosition(patient1.getWater_availability());
+                water_availability_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getToilet_facility() != null && !patient1.getToilet_facility().equalsIgnoreCase("")) {
+                int spinner_position = toiletfacility_adapt.getPosition(patient1.getToilet_facility());
+                toilet_facility_spinner.setSelection(spinner_position);
+            }
+            if(patient1.getStructure_house() != null && !patient1.getStructure_house().equalsIgnoreCase("")) {
+                int spinner_position = structure_adapt.getPosition(patient1.getStructure_house());
+                structure_of_house_spinner.setSelection(spinner_position);
+            }
+
                 //mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste())); //edit...
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
+
+
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -1002,8 +1071,20 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
-                patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+//                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
+//                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
+//                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
+//                patient1.setNo_of_family_members(idCursor.getString(idCursor.getColumnIndexOrThrow("Total Family Members")));
+//                patient1.setNo_of_family_currently_live(idCursor.getString(idCursor.getColumnIndexOrThrow("Total Family Members Staying")));
+//                patient1.setSource_of_water(idCursor.getString(idCursor.getColumnIndexOrThrow("Drinking Water Source")));
+//                patient1.setWater_safe(idCursor.getString(idCursor.getColumnIndexOrThrow("Safe Drinking Water")));
+//                patient1.setTime_travel_water(idCursor.getString(idCursor.getColumnIndexOrThrow("Time Drinking Water Source")));
+//                patient1.setWater_availability(idCursor.getString(idCursor.getColumnIndexOrThrow("Drinking Water Availability")));
+//                patient1.setToilet_facility(idCursor.getString(idCursor.getColumnIndexOrThrow("Toilet Facility")));
+//                patient1.setStructure_house(idCursor.getString(idCursor.getColumnIndexOrThrow("House Structure")));
+//                patient1.setHectars_land(idCursor.getString(idCursor.getColumnIndexOrThrow("Family Cultivable Land")));
 
             } while (idCursor.moveToNext());
             idCursor.close();
@@ -1033,11 +1114,47 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient1.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Son/wife/daughter")) {
+                    patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("occupation")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("Son/wife/daughter")) {
-                    patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("Bank Account")) {
+                    patient1.setBank_account(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Mobile Phone Type")) {
+                    patient1.setMobile_type(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Use WhatsApp")) {
+                    patient1.setWhatsapp_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Total Family Members")) {
+                    patient1.setNo_of_family_members(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Total Family Members Staying")) {
+                    patient1.setNo_of_family_currently_live(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Drinking Water Source")) {
+                    patient1.setSource_of_water(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Safe Drinking Water")) {
+                    patient1.setWater_safe(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Time Drinking Water Source")) {
+                    patient1.setTime_travel_water(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Drinking Water Availability")) {
+                    patient1.setWater_availability(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Toilet Facility")) {
+                    patient1.setToilet_facility(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("House Structure")) {
+                    patient1.setStructure_house(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Family Cultivable Land")) {
+                    patient1.setHectars_land(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1309,12 +1426,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1397,69 +1514,70 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: "+ whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            //Total no of members in household  ...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Total Family Members"));
-            patientAttributesDTO.setValue(StringUtils.getValue(no_of_member_edittext.getText().toString()));
-            Log.d("HOH", "total family meme: "+ no_of_member_edittext.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
+            //Check first if Are you Head of Household checkbox is checked or not...
+            if(familyhead_checkbox.isChecked()) {
+                //Total no of members in household  ...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Total Family Members"));
+                patientAttributesDTO.setValue(StringUtils.getValue(no_of_member_edittext.getText().toString()));
+                Log.d("HOH", "total family meme: " + no_of_member_edittext.getText().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
 
-            //Total no of members living in household  ...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("Total Family Members Staying"));
-            patientAttributesDTO.setValue(StringUtils.getValue(no_of_staying_members_edittext.getText().toString()));
-            Log.d("HOH", "Total family stay: "+ no_of_staying_members_edittext.getText().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Main source of drinking water...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("Drinking Water Source"));
-            patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
-            Log.d("HOH", "source of water: "+ source_of_water_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //How do you make Drinking water Safe?
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("Safe Drinking Water"));
-            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-            Log.d("HOH", "water safe: "+ howtomake_water_safe_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Time taken to get water...
-            if(time_water_checkbox.isChecked()) {
+                //Total no of members living in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("Time Drinking Water Source"));
-                patientAttributesDTO.setValue(time_water_checkbox.getText().toString());
-                Log.d("HOH", "time to bring water: "+ time_water_checkbox.getText().toString());
+                        .getUuidForAttribute("Total Family Members Staying"));
+                patientAttributesDTO.setValue(StringUtils.getValue(no_of_staying_members_edittext.getText().toString()));
+                Log.d("HOH", "Total family stay: " + no_of_staying_members_edittext.getText().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-            }
-            else {
-                //User enters value here...
+
+                //Main source of drinking water...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Time Drinking Water Source"));
-                patientAttributesDTO.setValue(time_water_editText.getText().toString());
-                Log.d("HOH", "time to bring water value entered: "+ time_water_editText.getText().toString());
+                        .getUuidForAttribute("Drinking Water Source"));
+                patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
+                Log.d("HOH", "source of water: " + source_of_water_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-            }
 
-            //            patientAttributesDTO = new PatientAttributesDTO();
+                //How do you make Drinking water Safe?
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Safe Drinking Water"));
+                patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Time taken to get water...
+                if (time_water_checkbox.isChecked()) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Time Drinking Water Source"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
+                    Log.d("HOH", "time to bring water: " + time_water_checkbox.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                } else {
+                    //User enters value here...
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Time Drinking Water Source"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_editText.getText().toString()));
+                    Log.d("HOH", "time to bring water value entered: " + time_water_editText.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+
+                //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);
 //            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
@@ -1467,58 +1585,61 @@ public class IdentificationActivity extends AppCompatActivity {
 //            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
 //            patientAttributesDTOList.add(patientAttributesDTO);
 
-            //Drinking water availability...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("Drinking Water Availability"));
-            patientAttributesDTO.setValue(water_availability_spinner.getSelectedItem().toString());
-            Log.d("HOH", "Water availability: " + water_availability_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //Toilet Facility...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("Toilet Facility"));
-            patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
-            Log.d("HOH", "Toilet: "+ toilet_facility_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            //House Structure...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                    .getUuidForAttribute("House Structure"));
-            patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
-            Log.d("HOH", "Structure: "+ structure_of_house_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
-
-            // Hectars of Land...
-            if(hectars_land_checkbox.isChecked()) {
+                //Drinking water availability...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Family Cultivable Land"));
-                patientAttributesDTO.setValue(hectars_land_checkbox.getText().toString());
-                Log.d("HOH", "Hectars: "+ hectars_land_checkbox.getText().toString());
+                        .getUuidForAttribute("Drinking Water Availability"));
+                patientAttributesDTO.setValue(water_availability_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Water availability: " + water_availability_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-            }
-            else {
+
+                //Toilet Facility...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Family Cultivable Land"));
-                patientAttributesDTO.setValue(hectars_land_editText.getText().toString());
-                Log.d("HOH", "Hectars value entered: "+ hectars_land_editText.getText().toString());
+                        .getUuidForAttribute("Toilet Facility"));
+                patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-            }//            patientAttributesDTO = new PatientAttributesDTO();
+                //House Structure...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("House Structure"));
+                patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Hectars of Land...
+                if (hectars_land_checkbox.isChecked()) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Family Cultivable Land"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
+                    Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                } else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Family Cultivable Land"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_editText.getText().toString()));
+                    Log.d("HOH", "Hectars value entered: " + hectars_land_editText.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                }
+
+            } //end of checking if the family head checkbox is checked or not...
+
+ //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
 //            patientAttributesDTO.setPatientuuid(uuid);
 //            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
@@ -1782,12 +1903,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+//            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
+//            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1835,6 +1956,158 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 //          patientAttributesDTOList.add(patientAttributesDTO);
+            //Occupation ...
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
+            Log.d("HOH", "Occupation: "+ occupation_spinner.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Bank Account...
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Bank Account"));
+            patientAttributesDTO.setValue(bankaccount_spinner.getSelectedItem().toString());
+            Log.d("HOH", "Bankacc: "+ bankaccount_spinner.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Mobile Phone own...
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
+            patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
+            Log.d("HOH", "mobile phone type: "+ mobilephone_spinner.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //WhatsApp Family member ...
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Use WhatsApp"));
+            patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
+            Log.d("HOH", "Whatsapp use: "+ whatsapp_spinner.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //Check first if Are you Head of Household checkbox is checked or not...
+            if(familyhead_checkbox.isChecked()) {
+                //Total no of members in household  ...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Total Family Members"));
+                patientAttributesDTO.setValue(StringUtils.getValue(no_of_member_edittext.getText().toString()));
+                Log.d("HOH", "total family meme: " + no_of_member_edittext.getText().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //Total no of members living in household  ...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Total Family Members Staying"));
+                patientAttributesDTO.setValue(StringUtils.getValue(no_of_staying_members_edittext.getText().toString()));
+                Log.d("HOH", "Total family stay: " + no_of_staying_members_edittext.getText().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //Main source of drinking water...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Drinking Water Source"));
+                patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
+                Log.d("HOH", "source of water: " + source_of_water_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //How do you make Drinking water Safe?
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Safe Drinking Water"));
+                patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Time taken to get water...
+                if (time_water_checkbox.isChecked()) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Time Drinking Water Source"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
+                    Log.d("HOH", "time to bring water: " + time_water_checkbox.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                } else {
+                    //User enters value here...
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Time Drinking Water Source"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_editText.getText().toString()));
+                    Log.d("HOH", "time to bring water value entered: " + time_water_editText.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+
+                //Drinking water availability...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Drinking Water Availability"));
+                patientAttributesDTO.setValue(water_availability_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Water availability: " + water_availability_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //Toilet Facility...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("Toilet Facility"));
+                patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                //House Structure...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                        .getUuidForAttribute("House Structure"));
+                patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+
+                // Hectars of Land...
+                if (hectars_land_checkbox.isChecked()) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Family Cultivable Land"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
+                    Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                } else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Family Cultivable Land"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_editText.getText().toString()));
+                    Log.d("HOH", "Hectars value entered: " + hectars_land_editText.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                }
+
+            } //end of checking if the family head checkbox is checked or not...
 
             patientAttributesDTOList.add(patientAttributesDTO);
             Logger.logD(TAG, "PatientAttribute list size" + patientAttributesDTOList.size());

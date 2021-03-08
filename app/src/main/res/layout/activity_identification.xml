@@ -651,6 +651,7 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+<!--
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -676,6 +677,7 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+-->
 
 
                         <Space
@@ -911,7 +913,7 @@
                                 android:id="@+id/whatsapp_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:entries="@array/mobilephone_spinner"/>
+                                android:entries="@array/familymember_whatsapp"/>
 
 
                             <Space
