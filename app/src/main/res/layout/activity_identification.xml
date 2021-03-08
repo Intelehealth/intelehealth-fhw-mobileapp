@@ -966,6 +966,7 @@
                     android:id="@+id/no_of_member_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:hint="@string/enter_number"/>
 
@@ -984,6 +985,7 @@
                     android:id="@+id/no_of_staying_members_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:hint="@string/enter_number"/>
 
@@ -1073,7 +1075,7 @@
                         android:freezesText="true"
                         android:hint="@string/enter_time"
                         android:imeOptions="actionUnspecified"
-                        android:inputType=""
+                        android:inputType="number"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textSize="@dimen/card_content_sub_text_size" />
@@ -1185,7 +1187,7 @@
                         android:freezesText="true"
                         android:hint="@string/enter_number"
                         android:imeOptions="actionUnspecified"
-                        android:inputType=""
+                        android:inputType="number"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textSize="@dimen/card_content_sub_text_size" />
