@@ -162,10 +162,12 @@ public class IdentificationActivity extends AppCompatActivity {
             source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
             toilet_facility_spinner, structure_of_house_spinner;
     MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
-    EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext;
+    EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
+            occupation_edittext, watersafe_edittext, toiletfacility_edittext;
     CardView cardview_household;
     ArrayAdapter<String> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
     sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
+    String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,13 +251,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //Spinner
         occupation_spinner = findViewById(R.id.occupation_spinner);
+        occupation_edittext = findViewById(R.id.occupation_edittext);
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
         whatsapp_spinner = findViewById(R.id.whatsapp_spinner);
         source_of_water_spinner = findViewById(R.id.source_of_water_spinner);
         howtomake_water_safe_spinner = findViewById(R.id.howtomake_water_safe_spinner);
+        watersafe_edittext = findViewById(R.id.watersafe_edittext);
         water_availability_spinner = findViewById(R.id.water_availability_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
+        toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
         structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
 
         //HOH - Checkbox
@@ -480,6 +485,22 @@ public class IdentificationActivity extends AppCompatActivity {
         //Household Head
         occupation_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.occupation_spinner));
+
+        occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getSelectedItem().toString().equalsIgnoreCase("[Describe]")) {
+                    occupation_edittext.setVisibility(View.VISIBLE);
+                    //occupation_edittext_value = occupation_edittext.getText().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         bankaccount_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.bank_account_spinner));
         mobile_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
@@ -490,10 +511,42 @@ public class IdentificationActivity extends AppCompatActivity {
                 getResources().getStringArray(R.array.sourcewater_spinner));
         watersafe_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.howtomake_water_safe));
+
+        howtomake_water_safe_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getSelectedItem().toString().equalsIgnoreCase("Other[Enter]")) {
+                    watersafe_edittext.setVisibility(View.VISIBLE);
+                    //occupation_edittext_value = occupation_edittext.getText().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         availa_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.water_availability_spinner));
         toiletfacility_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.toiletFacility_spinner));
+
+        toilet_facility_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getSelectedItem().toString().equalsIgnoreCase("Other [Enter]")) {
+                    toiletfacility_edittext.setVisibility(View.VISIBLE);
+                    //occupation_edittext_value = occupation_edittext.getText().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         structure_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.structure_house));
 
@@ -642,7 +695,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
                 int spinner_position = occupation_adapt.getPosition(patient1.getOccupation());
-                occupation_spinner.setSelection(spinner_position);
+                if(spinner_position >= 0) {
+                    occupation_spinner.setSelection(spinner_position); //user selected value items from spinner
+                }
+                //since here we will show the value of the dynamic occupation value...
+                else {
+                    occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
+                    occupation_edittext.setVisibility(View.VISIBLE);
+                    occupation_edittext.setText(patient1.getOccupation());
+                }
+
             }
             if(patient1.getBank_account() != null && !patient1.getBank_account().equalsIgnoreCase("")) {
                 int spinner_position = bankaccount_adapt.getPosition(patient1.getBank_account());
@@ -663,7 +725,18 @@ public class IdentificationActivity extends AppCompatActivity {
             if(patient1.getWater_safe() != null && !patient1.getWater_safe().equalsIgnoreCase("")) {
                 int spinner_position = watersafe_adapt.getPosition(patient1.getWater_safe());
                 howtomake_water_safe_spinner.setSelection(spinner_position);
+
+                if(spinner_position >= 0) {
+                    howtomake_water_safe_spinner.setSelection(spinner_position); //user selected value items from spinner
+                }
+                //sicne we will have to show our dynamuic values here..
+                else {
+                    howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
+                    watersafe_edittext.setVisibility(View.VISIBLE);
+                    watersafe_edittext.setText(patient1.getWater_safe());
+                }
             }
+
             if(patient1.getWater_availability() != null && !patient1.getWater_availability().equalsIgnoreCase("")) {
                 int spinner_position = availa_adapt.getPosition(patient1.getWater_availability());
                 water_availability_spinner.setSelection(spinner_position);
@@ -671,7 +744,18 @@ public class IdentificationActivity extends AppCompatActivity {
             if(patient1.getToilet_facility() != null && !patient1.getToilet_facility().equalsIgnoreCase("")) {
                 int spinner_position = toiletfacility_adapt.getPosition(patient1.getToilet_facility());
                 toilet_facility_spinner.setSelection(spinner_position);
+
+                if(spinner_position >= 0) {
+                    toilet_facility_spinner.setSelection(spinner_position); //user selected value items from spinner
+                }
+                //sicne we will have to show our dynamic values here..
+                else {
+                    toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
+                    toiletfacility_edittext.setVisibility(View.VISIBLE);
+                    toiletfacility_edittext.setText(patient1.getWater_safe());
+                }
             }
+
             if(patient1.getStructure_house() != null && !patient1.getStructure_house().equalsIgnoreCase("")) {
                 int spinner_position = structure_adapt.getPosition(patient1.getStructure_house());
                 structure_of_house_spinner.setSelection(spinner_position);
@@ -1449,6 +1533,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if(occupation_edittext.getVisibility() == View.VISIBLE && occupation_edittext.getText().toString().isEmpty() &&
+                occupation_edittext.getText().toString().equalsIgnoreCase("") &&
+                occupation_edittext.getText().toString() != null) {
+
+            occupation_edittext.setError("Select");
+            focusView = occupation_edittext;
+            cancel = true;
+            return;
+        }
+
          if(bankaccount_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bankaccount_spinner.getSelectedView();
             t.setError("Select");
@@ -1514,6 +1608,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            if(watersafe_edittext.getVisibility() == View.VISIBLE && watersafe_edittext.getText().toString().isEmpty() &&
+                    watersafe_edittext.getText().toString().equalsIgnoreCase("") &&
+                    watersafe_edittext.getText().toString() != null) {
+
+                watersafe_edittext.setError("Select");
+                focusView = watersafe_edittext;
+                cancel = true;
+                return;
+            }
+
             if(!time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
             time_water_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
@@ -1553,6 +1657,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            if(toiletfacility_edittext.getVisibility() == View.VISIBLE && toiletfacility_edittext.getText().toString().isEmpty() &&
+                    toiletfacility_edittext.getText().toString().equalsIgnoreCase("") &&
+                    toiletfacility_edittext.getText().toString() != null) {
+
+                toiletfacility_edittext.setError("Select");
+                focusView = toiletfacility_edittext;
+                cancel = true;
+                return;
+            }
+
             if(structure_of_house_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) structure_of_house_spinner.getSelectedView();
                 t.setError("Select");
@@ -1562,28 +1676,28 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
-//            if(!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
-//                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
-//                //checks if both the fields are not selected...
-//                hectars_land_checkbox.setError("Select");
-//
-//                focusView = hectars_land_checkbox;
-//                focusView = hectars_land_editText;
-//                cancel = true;
-//                return;
-//
-//            }
+            if(!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
+                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
+                //checks if both the fields are not selected...
+                hectars_land_checkbox.setError("Select");
+
+                focusView = hectars_land_checkbox;
+                focusView = hectars_land_editText;
+                cancel = true;
+                return;
+
+            }
 
 
-                if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
-                        hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
-                    //checks that checkbox is checked but editTExt is empty...
-                    hectars_land_editText.setError("Select");
-                    hectars_land_editText.setTextColor(Color.RED);
-                    focusView = hectars_land_editText;
-                    cancel = true;
-                    return;
-                }
+//                if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
+//                        hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
+//                    //checks that checkbox is checked but editTExt is empty...
+//                    hectars_land_editText.setError("Select");
+//                    hectars_land_editText.setTextColor(Color.RED);
+//                    focusView = hectars_land_editText;
+//                    cancel = true;
+//                    return;
+//                }
 
         }
 
@@ -1682,13 +1796,25 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //Occupation ...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
-            Log.d("HOH", "Occupation: "+ occupation_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
+            if(occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
+            !occupation_edittext.getText().toString().equalsIgnoreCase("")) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+                patientAttributesDTO.setValue(StringUtils.getValue(occupation_edittext.getText().toString()));
+                Log.d("HOH", "Occupation: " + occupation_edittext.getText().toString() );
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+            else {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+                patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             //Bank Account...
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1749,14 +1875,27 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //How do you make Drinking water Safe?
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Safe Drinking Water"));
-                patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-                Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if(watersafe_edittext.getVisibility() == View.VISIBLE && !watersafe_edittext.getText().toString()
+                        .isEmpty() && !watersafe_edittext.getText().toString().equalsIgnoreCase("")) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Safe Drinking Water"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(watersafe_edittext.getText().toString()));
+                    Log.d("HOH", "water safe: " + watersafe_edittext.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO); //edit text is visible...
+                }
+                else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Safe Drinking Water"));
+                    patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                    Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
 
                 // Time taken to get water...
                 if (time_water_checkbox.isChecked()) {
@@ -1799,14 +1938,29 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Toilet Facility...
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Toilet Facility"));
-                patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
-                Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if(toiletfacility_edittext.getVisibility() == View.VISIBLE && !toiletfacility_edittext
+                        .getText().toString().isEmpty() && !toiletfacility_edittext.getText()
+                        .toString().equalsIgnoreCase("")) {
+
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Toilet Facility"));
+                    patientAttributesDTO.setValue(toiletfacility_edittext.getText().toString());
+                    Log.d("HOH", "Toilet: " + toiletfacility_edittext.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+                else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Toilet Facility"));
+                    patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
+                    Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
 
                 //House Structure...
                 patientAttributesDTO = new PatientAttributesDTO();
@@ -2084,6 +2238,17 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if(occupation_edittext.getVisibility() == View.VISIBLE && occupation_edittext.getText().toString().isEmpty() &&
+                occupation_edittext.getText().toString().equalsIgnoreCase("") &&
+                occupation_edittext.getText().toString() != null) {
+
+            occupation_edittext.setError("Select");
+            focusView = occupation_edittext;
+            cancel = true;
+            return;
+        }
+
+
         if(bankaccount_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bankaccount_spinner.getSelectedView();
             t.setError("Select");
@@ -2149,6 +2314,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            if(watersafe_edittext.getVisibility() == View.VISIBLE && watersafe_edittext.getText().toString().isEmpty() &&
+                    watersafe_edittext.getText().toString().equalsIgnoreCase("") &&
+                    watersafe_edittext.getText().toString() != null) {
+
+                watersafe_edittext.setError("Select");
+                focusView = watersafe_edittext;
+                cancel = true;
+                return;
+            }
+
             if(!time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
                     time_water_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
@@ -2188,6 +2363,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            if(toiletfacility_edittext.getVisibility() == View.VISIBLE && toiletfacility_edittext.getText().toString().isEmpty() &&
+                    toiletfacility_edittext.getText().toString().equalsIgnoreCase("") &&
+                    toiletfacility_edittext.getText().toString() != null) {
+
+                toiletfacility_edittext.setError("Select");
+                focusView = toiletfacility_edittext;
+                cancel = true;
+                return;
+            }
+
             if(structure_of_house_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) structure_of_house_spinner.getSelectedView();
                 t.setError("Select");
@@ -2197,28 +2382,28 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
-//            if(!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
-//                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
-//                //checks if both the fields are not selected...
-//                hectars_land_checkbox.setError("Select");
-//
-//                focusView = hectars_land_checkbox;
-//                focusView = hectars_land_editText;
-//                cancel = true;
-//                return;
-//
-//            }
-
-
-            if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
+            if(!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
                     hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
-                //checks that checkbox is checked but editTExt is empty...
-                hectars_land_editText.setError("Select");
-                hectars_land_editText.setTextColor(Color.RED);
+                //checks if both the fields are not selected...
+                hectars_land_checkbox.setError("Select");
+
+                focusView = hectars_land_checkbox;
                 focusView = hectars_land_editText;
                 cancel = true;
                 return;
+
             }
+
+
+//            if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
+//                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
+//                //checks that checkbox is checked but editTExt is empty...
+//                hectars_land_editText.setError("Select");
+//                hectars_land_editText.setTextColor(Color.RED);
+//                focusView = hectars_land_editText;
+//                cancel = true;
+//                return;
+//            }
 
         }
 
@@ -2318,13 +2503,25 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 //          patientAttributesDTOList.add(patientAttributesDTO);
             //Occupation ...
-            patientAttributesDTO = new PatientAttributesDTO();
-            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-            patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
-            Log.d("HOH", "Occupation: "+ occupation_spinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
+            if(occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
+                    !occupation_edittext.getText().toString().equalsIgnoreCase("")) {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+                patientAttributesDTO.setValue(StringUtils.getValue(occupation_edittext.getText().toString()));
+                Log.d("HOH", "Occupation: " + occupation_edittext.getText().toString() );
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+            else {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+                patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
+                Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             //Bank Account...
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2385,14 +2582,27 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //How do you make Drinking water Safe?
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Safe Drinking Water"));
-                patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
-                Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if(watersafe_edittext.getVisibility() == View.VISIBLE && !watersafe_edittext.getText().toString()
+                        .isEmpty() && !watersafe_edittext.getText().toString().equalsIgnoreCase("")) {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Safe Drinking Water"));
+                    patientAttributesDTO.setValue(StringUtils.getValue(watersafe_edittext.getText().toString()));
+                    Log.d("HOH", "water safe: " + watersafe_edittext.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO); //edit text is visible...
+                }
+                else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Safe Drinking Water"));
+                    patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                    Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
 
                 // Time taken to get water...
                 if (time_water_checkbox.isChecked()) {
@@ -2427,14 +2637,29 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTOList.add(patientAttributesDTO);
 
                 //Toilet Facility...
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
-                        .getUuidForAttribute("Toilet Facility"));
-                patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
-                Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+                if(toiletfacility_edittext.getVisibility() == View.VISIBLE && !toiletfacility_edittext
+                        .getText().toString().isEmpty() && !toiletfacility_edittext.getText()
+                        .toString().equalsIgnoreCase("")) {
+
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Toilet Facility"));
+                    patientAttributesDTO.setValue(toiletfacility_edittext.getText().toString());
+                    Log.d("HOH", "Toilet: " + toiletfacility_edittext.getText().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
+                else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+                            .getUuidForAttribute("Toilet Facility"));
+                    patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
+                    Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
 
                 //House Structure...
                 patientAttributesDTO = new PatientAttributesDTO();

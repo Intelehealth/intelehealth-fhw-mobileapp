@@ -843,6 +843,15 @@
                                 android:layout_height="wrap_content"
                                 android:entries="@array/occupation_spinner"/>
 
+                            <EditText
+                                android:id="@+id/occupation_edittext"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:hint="Enter Occupation"
+                                android:visibility="gone"
+                                tools:visibility="visible"/>
+
 
                             <View
                                 android:layout_width="match_parent"
@@ -1036,6 +1045,15 @@
                     android:layout_height="wrap_content"
                     android:entries="@array/howtomake_water_safe"/>
 
+                <EditText
+                    android:id="@+id/watersafe_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/card_content_sub_text_size"
+                    android:hint="Enter Answer"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -1124,6 +1142,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/toiletFacility_spinner"/>
+
+                <EditText
+                    android:id="@+id/toiletfacility_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/card_content_sub_text_size"
+                    android:hint="Enter Answer"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
                 <View
                     android:layout_width="match_parent"
