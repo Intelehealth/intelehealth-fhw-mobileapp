@@ -71,6 +71,7 @@
     <string name="identification_screen_error_data_fields">ସେବକକୁ ଅପଲୋର୍ଡ଼ କରିବା</string>
     <string name="identification_screen_prompt_address">ଠିକଣା</string>
     <string name="identification_screen_prompt_age">ବୟସ*</string>
+    <string name="identification_screen_prompt_time">Time:</string>
     <string name="identification_screen_prompt_birthday">ଜନ୍ମ ତିଥି*</string>
     <string name="identification_screen_prompt_country">ଦେଶ *</string>
     <string name="identification_screen_prompt_city">ଗ୍ରାମ/ସହର/ନଗର *</string>
@@ -390,7 +391,9 @@
     <string name="identification_screen_text_years" translatable="false">ବର୍ଡ</string>
     <string name="identification_screen_text_months" translatable="false">ମାସ</string>
     <string name="identification_screen_picker_years" translatable="false">"ବର୍ଡ "</string>
+    <string name="identification_screen_picker_hours" translatable="false">hours</string>
     <string name="identification_screen_picker_months" translatable="false">ମାସ</string>
+    <string name="identification_screen_picker_minute" translatable="false">minute</string>
     <string name="title_activity_question_node" translatable="false">ପ୍ରଶନସନାର୍ଗତବିଧ</string>
     <string name="title_activity_setup" translatable="false">ବନିୟାସ</string>
     <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
@@ -496,5 +499,25 @@
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="document_">"Document - "</string>
     <string name="gender">Gender</string>
+    <string name="are_you_head_of_the_family">Are you Head of the Family?</string>
+    <string name="what_is_your_occupation">What is your occupation?</string>
+    <string name="do_you_have_a_bank_account">Do you have a bank account?</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?</string>
+    <string name="total_number_of_members_in_the_household">Total number of members in the household</string>
+    <string name="enter_number">Enter Number</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">What do you do to make drinking water safer?</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?</string>
+    <string name="declined">Declined to answer</string>
+    <string name="enter_time">Enter Time</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks, was the water from this source not available for at least one full day?</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
+    <string name="select_the_structure_of_house">Select the structure of house</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?</string>
+    <string name="enter_answer">Enter Answer</string>
+    <string name="enter_occupation">Enter Occupation</string>
+    <string name="select">Select</string>
 
 </resources>

@@ -76,6 +76,15 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void setHOH_checkbox(boolean value) {
+        editor.putBoolean("HOH", value);
+        editor.commit();
+    }
+
+    public boolean getHOH_checkbox() {
+        return pref.getBoolean("HOH", false);
+    }
+
     public String getBaseUrl() {
         return pref.getString(BASE_URL, "https://openmrs.intelehealth.io");
     }
