@@ -848,7 +848,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/card_content_sub_text_size"
-                                android:hint="Enter Occupation"
+                                android:hint="@string/enter_occupation"
                                 android:visibility="gone"
                                 tools:visibility="visible"/>
 
@@ -1050,7 +1050,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
-                    android:hint="Enter Answer"
+                    android:hint="@string/enter_answer"
                     android:visibility="gone"
                     tools:visibility="visible"/>
 
@@ -1148,7 +1148,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/card_content_sub_text_size"
-                    android:hint="Enter Answer"
+                    android:hint="@string/enter_answer"
                     android:visibility="gone"
                     tools:visibility="visible"/>
 
