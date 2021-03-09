@@ -510,6 +510,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         parent.getSelectedItem().toString().equalsIgnoreCase("वर्णन करे")) {
                     occupation_edittext.setVisibility(View.VISIBLE);
                 }
+                else {
+                    occupation_edittext.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -615,6 +618,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]")) {
                     watersafe_edittext.setVisibility(View.VISIBLE);
                 }
+                else {
+                    watersafe_edittext.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -666,6 +672,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(parent.getSelectedItem().toString().equalsIgnoreCase("Other [Enter]") ||
                         parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]")) {
                     toiletfacility_edittext.setVisibility(View.VISIBLE);
+                }
+                else {
+                    toiletfacility_edittext.setVisibility(View.GONE);
                 }
             }
 
