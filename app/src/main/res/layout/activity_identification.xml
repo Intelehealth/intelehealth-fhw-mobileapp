@@ -840,8 +840,7 @@
                             <Spinner
                                 android:id="@+id/occupation_spinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/occupation_spinner"/>
+                                android:layout_height="wrap_content" />
 
                             <EditText
                                 android:id="@+id/occupation_edittext"
@@ -873,8 +872,7 @@
                             <Spinner
                                 android:id="@+id/bankaccount_spinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/bank_account_spinner"/>
+                                android:layout_height="wrap_content" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -897,8 +895,7 @@
                             <Spinner
                                 android:id="@+id/mobilephone_spinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/mobilephone_spinner"/>
+                                android:layout_height="wrap_content" />
 
                             <View
                                 android:layout_width="match_parent"
@@ -921,8 +918,7 @@
                             <Spinner
                                 android:id="@+id/whatsapp_spinner"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/familymember_whatsapp"/>
+                                android:layout_height="wrap_content" />
 
 
                             <Space
@@ -1018,8 +1014,7 @@
                 <Spinner
                     android:id="@+id/source_of_water_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/sourcewater_spinner"/>
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:layout_width="match_parent"
@@ -1042,8 +1037,7 @@
                 <Spinner
                     android:id="@+id/howtomake_water_safe_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/howtomake_water_safe"/>
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/watersafe_edittext"
@@ -1116,8 +1110,7 @@
                 <Spinner
                     android:id="@+id/water_availability_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/water_availability_spinner"/>
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:layout_width="match_parent"
@@ -1140,8 +1133,7 @@
                 <Spinner
                     android:id="@+id/toilet_facility_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/toiletFacility_spinner"/>
+                    android:layout_height="wrap_content" />
 
                 <EditText
                     android:id="@+id/toiletfacility_edittext"
@@ -1173,8 +1165,7 @@
                 <Spinner
                     android:id="@+id/structure_of_house_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:entries="@array/structure_house"/>
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:layout_width="match_parent"
