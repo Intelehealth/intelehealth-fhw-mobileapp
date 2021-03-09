@@ -515,6 +515,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(isChecked) {
                     time_water_checkbox.setError(null);
                     time_water_editText.setError(null);
+                    time_water_editText.setVisibility(View.GONE);
+                }
+                else {
+                    time_water_editText.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -522,8 +526,14 @@ public class IdentificationActivity extends AppCompatActivity {
         hectars_land_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                hectars_land_checkbox.setError(null);
-                hectars_land_editText.setError(null);
+                if(isChecked) {
+                    hectars_land_checkbox.setError(null);
+                    hectars_land_editText.setError(null);
+                    hectars_land_editText.setVisibility(View.GONE);
+                }
+                else {
+                    hectars_land_editText.setVisibility(View.VISIBLE);
+                }
             }
         });
 
