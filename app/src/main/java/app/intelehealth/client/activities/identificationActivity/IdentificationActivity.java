@@ -1779,7 +1779,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // TODO: Add validations for all Spinners here...
         if(occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = occupation_spinner;
             cancel = true;
@@ -1790,7 +1790,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 occupation_edittext.getText().toString().equalsIgnoreCase("") &&
                 occupation_edittext.getText().toString() != null) {
 
-            occupation_edittext.setError("Select");
+            occupation_edittext.setError(getString(R.string.select));
             focusView = occupation_edittext;
             cancel = true;
             return;
@@ -1798,7 +1798,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
          if(bankaccount_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bankaccount_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = bankaccount_spinner;
             cancel = true;
@@ -1807,7 +1807,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if(mobilephone_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) mobilephone_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = mobilephone_spinner;
             cancel = true;
@@ -1816,7 +1816,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if(whatsapp_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) whatsapp_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = whatsapp_spinner;
             cancel = true;
@@ -1827,7 +1827,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
             no_of_member_edittext.getText().toString().isEmpty()) {
-                no_of_member_edittext.setError("Select");
+                no_of_member_edittext.setError(getString(R.string.select));
                // no_of_member_edittext.setTextColor(Color.RED);
                 focusView = no_of_member_edittext;
                 cancel = true;
@@ -1836,7 +1836,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(no_of_staying_members_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_staying_members_edittext.getText().toString().isEmpty()) {
-                no_of_staying_members_edittext.setError("Select");
+                no_of_staying_members_edittext.setError(getString(R.string.select));
                // no_of_staying_members_edittext.setTextColor(Color.RED);
                 focusView = no_of_staying_members_edittext;
                 cancel = true;
@@ -1845,7 +1845,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(source_of_water_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) source_of_water_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = source_of_water_spinner;
                 cancel = true;
@@ -1854,7 +1854,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(howtomake_water_safe_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) howtomake_water_safe_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = howtomake_water_safe_spinner;
                 cancel = true;
@@ -1865,7 +1865,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     watersafe_edittext.getText().toString().equalsIgnoreCase("") &&
                     watersafe_edittext.getText().toString() != null) {
 
-                watersafe_edittext.setError("Select");
+                watersafe_edittext.setError(getString(R.string.select));
                 focusView = watersafe_edittext;
                 cancel = true;
                 return;
@@ -1874,7 +1874,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if(!time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
             time_water_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
-                time_water_checkbox.setError("Select");
+                time_water_checkbox.setError(getString(R.string.select));
 
                 focusView = time_water_checkbox;
                 focusView = time_water_editText;
@@ -1894,7 +1894,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(water_availability_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) water_availability_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = water_availability_spinner;
                 cancel = true;
@@ -1903,7 +1903,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(toilet_facility_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) toilet_facility_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = toilet_facility_spinner;
                 cancel = true;
@@ -1914,7 +1914,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     toiletfacility_edittext.getText().toString().equalsIgnoreCase("") &&
                     toiletfacility_edittext.getText().toString() != null) {
 
-                toiletfacility_edittext.setError("Select");
+                toiletfacility_edittext.setError(getString(R.string.select));
                 focusView = toiletfacility_edittext;
                 cancel = true;
                 return;
@@ -1922,7 +1922,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(structure_of_house_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) structure_of_house_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = structure_of_house_spinner;
                 cancel = true;
@@ -1932,7 +1932,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if(!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
                     hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
-                hectars_land_checkbox.setError("Select");
+                hectars_land_checkbox.setError(getString(R.string.select));
 
                 focusView = hectars_land_checkbox;
                 focusView = hectars_land_editText;
@@ -2495,7 +2495,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // TODO: Add validations for all Spinners here...
         if(occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = occupation_spinner;
             cancel = true;
@@ -2506,7 +2506,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 occupation_edittext.getText().toString().equalsIgnoreCase("") &&
                 occupation_edittext.getText().toString() != null) {
 
-            occupation_edittext.setError("Select");
+            occupation_edittext.setError(getString(R.string.select));
             focusView = occupation_edittext;
             cancel = true;
             return;
@@ -2515,7 +2515,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if(bankaccount_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bankaccount_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = bankaccount_spinner;
             cancel = true;
@@ -2524,7 +2524,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if(mobilephone_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) mobilephone_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = mobilephone_spinner;
             cancel = true;
@@ -2533,7 +2533,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if(whatsapp_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) whatsapp_spinner.getSelectedView();
-            t.setError("Select");
+            t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = whatsapp_spinner;
             cancel = true;
@@ -2544,7 +2544,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_member_edittext.getText().toString().isEmpty()) {
-                no_of_member_edittext.setError("Select");
+                no_of_member_edittext.setError(getString(R.string.select));
                 // no_of_member_edittext.setTextColor(Color.RED);
                 focusView = no_of_member_edittext;
                 cancel = true;
@@ -2553,7 +2553,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(no_of_staying_members_edittext.getText().toString().equalsIgnoreCase("") &&
                     no_of_staying_members_edittext.getText().toString().isEmpty()) {
-                no_of_staying_members_edittext.setError("Select");
+                no_of_staying_members_edittext.setError(getString(R.string.select));
                 // no_of_staying_members_edittext.setTextColor(Color.RED);
                 focusView = no_of_staying_members_edittext;
                 cancel = true;
@@ -2562,7 +2562,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(source_of_water_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) source_of_water_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = source_of_water_spinner;
                 cancel = true;
@@ -2571,7 +2571,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(howtomake_water_safe_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) howtomake_water_safe_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = howtomake_water_safe_spinner;
                 cancel = true;
@@ -2582,7 +2582,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     watersafe_edittext.getText().toString().equalsIgnoreCase("") &&
                     watersafe_edittext.getText().toString() != null) {
 
-                watersafe_edittext.setError("Select");
+                watersafe_edittext.setError(getString(R.string.select));
                 focusView = watersafe_edittext;
                 cancel = true;
                 return;
@@ -2591,7 +2591,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if(!time_water_checkbox.isChecked() && time_water_editText.getText().toString().isEmpty() &&
                     time_water_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
-                time_water_checkbox.setError("Select");
+                time_water_checkbox.setError(getString(R.string.select));
 
                 focusView = time_water_checkbox;
                 focusView = time_water_editText;
@@ -2611,7 +2611,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(water_availability_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) water_availability_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = water_availability_spinner;
                 cancel = true;
@@ -2620,7 +2620,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(toilet_facility_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) toilet_facility_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = toilet_facility_spinner;
                 cancel = true;
@@ -2631,7 +2631,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     toiletfacility_edittext.getText().toString().equalsIgnoreCase("") &&
                     toiletfacility_edittext.getText().toString() != null) {
 
-                toiletfacility_edittext.setError("Select");
+                toiletfacility_edittext.setError(getString(R.string.select));
                 focusView = toiletfacility_edittext;
                 cancel = true;
                 return;
@@ -2639,7 +2639,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if(structure_of_house_spinner.getSelectedItemPosition() == 0) {
                 TextView t = (TextView) structure_of_house_spinner.getSelectedView();
-                t.setError("Select");
+                t.setError(getString(R.string.select));
                 t.setTextColor(Color.RED);
                 focusView = structure_of_house_spinner;
                 cancel = true;
@@ -2649,7 +2649,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if(!hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
                     hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
                 //checks if both the fields are not selected...
-                hectars_land_checkbox.setError("Select");
+                hectars_land_checkbox.setError(getString(R.string.select));
 
                 focusView = hectars_land_checkbox;
                 focusView = hectars_land_editText;

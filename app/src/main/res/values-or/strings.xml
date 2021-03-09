@@ -515,5 +515,6 @@
     <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?</string>
     <string name="enter_answer">Enter Answer</string>
     <string name="enter_occupation">Enter Occupation</string>
+    <string name="select">Select</string>
 
 </resources>
