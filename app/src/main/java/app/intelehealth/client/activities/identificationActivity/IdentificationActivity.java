@@ -851,7 +851,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 //since here we will show the value of the dynamic occupation value...
                 else {
-                    occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("वर्णन करे"));
+                    }
+                    else {
+                        occupation_spinner.setSelection(occupation_adapt.getPosition("[Describe]"));
+                    }
+
                     occupation_edittext.setVisibility(View.VISIBLE);
                     occupation_edittext.setText(patient1.getOccupation());
                 }
@@ -926,7 +932,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 //sicne we will have to show our dynamuic values here..
                 else {
-                    howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("अन्य [दर्ज करें]"));
+                    }
+                    else {
+                        howtomake_water_safe_spinner.setSelection(watersafe_adapt.getPosition("Other[Enter]"));
+                    }
+
                     watersafe_edittext.setVisibility(View.VISIBLE);
                     watersafe_edittext.setText(patient1.getWater_safe());
                 }
@@ -963,9 +975,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(spinner_position >= 0) {
                     toilet_facility_spinner.setSelection(spinner_position); //user selected value items from spinner
                 }
-                //sicne we will have to show our dynamic values here..
+                //since we will have to show our dynamic values here..
                 else {
-                    toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
+                    //on edit the spinner value will be selected based on the current app lang...
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("अन्य [दर्ज करें]"));
+                    }
+                    else {
+                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
+                    }
+
                     toiletfacility_edittext.setVisibility(View.VISIBLE);
                     toiletfacility_edittext.setText(patient1.getToilet_facility());
                 }
