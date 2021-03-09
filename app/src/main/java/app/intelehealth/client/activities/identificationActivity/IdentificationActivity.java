@@ -500,8 +500,23 @@ public class IdentificationActivity extends AppCompatActivity {
         //editText values values are set for the household fields ...
         no_of_member_edittext.setText(patient1.getNo_of_family_members());
         no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
-        time_water_editText.setText(patient1.getTime_travel_water());
-        hectars_land_editText.setText(patient1.getHectars_land());
+
+        if(patient1.getTime_travel_water() != null || patient1.getHectars_land() != null) {
+            if (patient1.getTime_travel_water().equalsIgnoreCase("Declined")) {
+                time_water_editText.setVisibility(View.GONE);
+                time_water_checkbox.setChecked(true);
+            } else {
+                time_water_editText.setVisibility(View.VISIBLE);
+                time_water_editText.setText(patient1.getTime_travel_water());
+            }
+            if (patient1.getHectars_land().equalsIgnoreCase("Declined")) {
+                hectars_land_editText.setVisibility(View.GONE);
+                hectars_land_checkbox.setChecked(true);
+            } else {
+                hectars_land_editText.setVisibility(View.VISIBLE);
+                hectars_land_editText.setText(patient1.getHectars_land());
+            }
+        }
 
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
