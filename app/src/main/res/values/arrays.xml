@@ -338,7 +338,7 @@
         <item>Select State</item>
     </string-array>
 
-    <string-array name="occupation_spinner">
+    <string-array name="occupation_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
         <item>Government job</item>
@@ -377,7 +377,7 @@
         <item>वर्णन करे</item>
     </string-array>
 
-    <string-array name="bank_account_spinner">
+    <string-array name="bank_account_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
         <item>Yes</item>
@@ -391,7 +391,7 @@
         <item>नहीं</item>
     </string-array>
 
-    <string-array name="mobilephone_spinner">
+    <string-array name="mobilephone_spinner_en">
         <item>Select</item>
         <item>Basic Phone</item>
         <item>Smartphone</item>
@@ -405,7 +405,7 @@
         <item>मोबाइल फोन नहीं है</item>
     </string-array>
 
-    <string-array name="familymember_whatsapp">
+    <string-array name="familymember_whatsapp_en">
         <item>Select</item>
         <item>Yes</item>
         <item>No</item>
@@ -418,7 +418,7 @@
     </string-array>
 
 
-    <string-array name="sourcewater_spinner">
+    <string-array name="sourcewater_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
         <item>Chapakal/Hand Pump</item>
@@ -440,7 +440,7 @@
         <item>कोई और</item>
     </string-array>
 
-    <string-array name="howtomake_water_safe">
+    <string-array name="howtomake_water_safe_en">
         <item>Select</item>
         <item>Declined to answer</item>
         <item>Nothing</item>
@@ -466,7 +466,7 @@
         <item>अन्य [दर्ज करें]</item>
     </string-array>
 
-    <string-array name="water_availability_spinner">
+    <string-array name="water_availability_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
         <item>Yes</item>
@@ -482,7 +482,7 @@
         <item>पता नहीं</item>
     </string-array>
 
-    <string-array name="toiletFacility_spinner">
+    <string-array name="toiletFacility_spinner_en">
         <item>Select</item>
         <item>Declined to answer</item>
         <item>No facility /uses open space or field</item>
@@ -502,7 +502,7 @@
         <item>अन्य [दर्ज करें]</item>
     </string-array>
 
-    <string-array name="structure_house">
+    <string-array name="structure_house_en">
         <item>Select</item>
         <item>Kutcha House</item>
         <item>Pakka House</item>
