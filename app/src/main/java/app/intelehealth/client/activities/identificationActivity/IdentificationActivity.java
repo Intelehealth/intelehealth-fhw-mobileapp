@@ -2394,7 +2394,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-
 //            if(hectars_land_checkbox.isChecked() && hectars_land_editText.getText().toString().isEmpty() &&
 //                    hectars_land_editText.getText().toString().equalsIgnoreCase("")) {
 //                //checks that checkbox is checked but editTExt is empty...
