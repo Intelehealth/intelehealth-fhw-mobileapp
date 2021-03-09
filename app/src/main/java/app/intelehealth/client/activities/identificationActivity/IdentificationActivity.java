@@ -752,7 +752,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                     toiletfacility_edittext.setVisibility(View.VISIBLE);
-                    toiletfacility_edittext.setText(patient1.getWater_safe());
+                    toiletfacility_edittext.setText(patient1.getToilet_facility());
                 }
             }
 
