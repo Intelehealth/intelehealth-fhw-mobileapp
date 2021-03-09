@@ -189,6 +189,26 @@ public final class StringUtils {
         return val;
     }
 
+
+
+    public static String switch_hi_housestructure_edit(String val) {
+        switch (val) {
+            case "Kutcha House":
+                val = "कच्चा घर";
+                break;
+            case "Pakka House":
+                val = "पक्का घर";
+                break;
+            case "Homeless":
+                val = "घर नहीं है";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
     public static String switch_hi_en_housestructure(String val) {
         switch (val) {
             case "कच्चा घर":
@@ -199,6 +219,33 @@ public final class StringUtils {
                 break;
             case "घर नहीं है":
                 val = "Homeless";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_toiletfacil_edit(String val) {
+        switch (val) {
+            case "Declined to answer":
+                val = "जवाब देने के लिए मना कर दिया";
+                break;
+            case "No facility /uses open space or field":
+                val = "कोई सुविधा नहीं / खुली जगह या क्षेत्र का उपयोग करते हैं";
+                break;
+            case "Own toilet":
+                val = "खुद का शौचालय";
+                break;
+            case "Community toilet":
+                val = "सामुदायिक शौचालय";
+                break;
+            case "Shared toilet with other household":
+                val = "अन्य घर के साथ साझा शौचालय";
+                break;
+            case "Other [Enter]":
+                val = "अन्य [दर्ज करें]";
                 break;
             default:
                 return val;
@@ -518,6 +565,198 @@ public final class StringUtils {
                 return val;
         }
         return val;
+    }
+
+    public static String switch_hi_bankaccount_edit(String val) {
+        switch (val) {
+            case "Declined to answer":
+                val = "जवाब देने के लिए मना कर दिया";
+                break;
+            case "Yes":
+                val = "हाँ";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_mobiletype_edit(String val) {
+        switch (val) {
+            case "Basic Phone":
+                val = "साधारण फोन";
+                break;
+            case "Smartphone":
+                val = "स्मार्टफोन";
+                break;
+            case "Does not own mobile phone":
+                val = "मोबाइल फोन नहीं है";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_watersource_edit(String val){
+        switch (val) {
+            case "Declined to answer":
+                val = "जवाब देने के लिए मना कर दिया";
+                break;
+            case "Chapakal/Hand Pump":
+                val = "चापाकल/हैण्ड पंप";
+                break;
+            case "Wells":
+                val = "कुंवा";
+                break;
+            case "Boring":
+                val = "बोरिंग";
+                break;
+            case "Rivers/ponds":
+                val = "नदी/तालाब";
+                break;
+            case "Tanker water":
+                val = "टैंकर का पानी";
+                break;
+            case "Any other":
+                val = "कोई और";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_wateravail_edit(String val) {
+        switch (val) {
+            case "Declined to answer":
+                val = "जवाब देने के लिए मना कर दिया";
+                break;
+            case "Yes":
+                val = "हाँ";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            case "Don\'t know":
+                val = "पता नहीं";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_watersafe_edit(String val) {
+        switch (val) {
+            case "Declined to answer":
+                val = "जवाब देने के लिए मना कर दिया";
+                break;
+            case "Nothing":
+                val = "कुछ भी नहीं";
+                break;
+            case "Boil":
+                val = "उबलना";
+                break;
+            case "Alum":
+                val = "अलम";
+                break;
+            case "Add Bleach/Chlorine tablets":
+                val = "ब्लीच / क्लोरीन गोलियाँ जोड़ें";
+                break;
+            case "Strain through cloth":
+                val = "कपड़े के माध्यम";
+                break;
+            case "Use water filter(ceramic/sand/composite)etc":
+                val = "पानी फिल्टर (सिरेमिक / रेत / समग्र) आदि का उपयोग करें";
+                break;
+            case "Use electronic filter":
+                val = "इलेक्ट्रॉनिक फ़िल्टर का उपयोग करें";
+                break;
+            case "Other[Enter]":
+                val = "अन्य [दर्ज करें]";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_whatsapp_edit(String val) {
+        switch (val) {
+            case "Yes":
+                val = "हाँ";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_hi_occupation_edit(String val) {
+        switch (val) {
+            case "Declined to answer":
+                val = "जवाब देने के लिए मना कर दिया";
+                break;
+            case "सरकारी नौकरी":
+                val = "सरकारी नौकरी";
+                break;
+            case "Large scale to medium scale industry":
+                val = "बड़ा या मध्यम उद्योग";
+                break;
+            case "Professional job in private sector":
+                val = "निजी क्षेत्र में नौकरी";
+                break;
+            case "Small scale industry":
+                val = "छोटा उद्योग";
+                break;
+            case "Big shop owner":
+                val = "बड़ी दूकान के मालिक";
+                break;
+            case "Technician/craftsman":
+                val = "तकनीशियन";
+                break;
+            case "Small shop owner":
+                val = "छोटे दूकान का मालिक";
+                break;
+            case "Large scale farmer":
+                val = "बड़ा किसान";
+                break;
+            case "Daily wage earner":
+                val = "दैनिक मजदूर";
+                break;
+            case "Small scale farmer/farm worker":
+                val = "छोटे किसान/ दुसरे के खेत में काम करने वाले";
+                break;
+            case "Unemployed":
+                val = "बेरोजगार";
+                break;
+            case "Housewife":
+                val = "ग्रहिणी";
+                break;
+            case "Other skills (driver,mason etc)":
+                val = "अन्य कुशलता (ड्राईवर,राज मिस्त्री)";
+                break;
+            case "[Describe]":
+                val = "वर्णन करे";
+                break;
+            default:
+                return val;
+        }
+        return val;
+
     }
 
     public static String switch_hi_caste_edit(String val) {

@@ -837,7 +837,15 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             if(patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
-                int spinner_position = occupation_adapt.getPosition(patient1.getOccupation());
+                String occupation_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    occupation_Transl = StringUtils.switch_hi_occupation_edit(patient1.getOccupation());
+                }
+                else {
+                    occupation_Transl = patient1.getOccupation();
+                }
+
+                int spinner_position = occupation_adapt.getPosition(occupation_Transl);
                 if(spinner_position >= 0) {
                     occupation_spinner.setSelection(spinner_position); //user selected value items from spinner
                 }
@@ -850,23 +858,67 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             if(patient1.getBank_account() != null && !patient1.getBank_account().equalsIgnoreCase("")) {
-                int spinner_position = bankaccount_adapt.getPosition(patient1.getBank_account());
+                String bankacc_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    bankacc_Transl = StringUtils.switch_hi_bankaccount_edit(patient1.getBank_account());
+                }
+                else {
+                    bankacc_Transl = patient1.getBank_account();
+                }
+
+                int spinner_position = bankaccount_adapt.getPosition(bankacc_Transl);
                 bankaccount_spinner.setSelection(spinner_position);
             }
             if(patient1.getMobile_type() != null && !patient1.getMobile_type().equalsIgnoreCase("")) {
-                int spinner_position = mobile_adapt.getPosition(patient1.getMobile_type());
+                String mobile_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    mobile_Transl = StringUtils.switch_hi_mobiletype_edit(patient1.getMobile_type());
+                }
+                else {
+                    mobile_Transl = patient1.getMobile_type();
+                }
+
+                int spinner_position = mobile_adapt.getPosition(mobile_Transl);
                 mobilephone_spinner.setSelection(spinner_position);
             }
-            if(patient1.getWhatsapp_mobile() != null && !patient1.getWhatsapp_mobile().equalsIgnoreCase("")) {
-                int spinner_position = whatsapp_adapt.getPosition(patient1.getWhatsapp_mobile());
+            if(patient1.getWhatsapp_mobile() != null && !patient1.getWhatsapp_mobile()
+                    .equalsIgnoreCase("")) {
+                String whatsapp_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    whatsapp_Transl = StringUtils.switch_hi_whatsapp_edit(patient1.getWhatsapp_mobile());
+                }
+                else {
+                    whatsapp_Transl = patient1.getWhatsapp_mobile();
+                }
+
+                int spinner_position = whatsapp_adapt.getPosition(whatsapp_Transl);
                 whatsapp_spinner.setSelection(spinner_position);
             }
-            if(patient1.getSource_of_water() != null && !patient1.getSource_of_water().equalsIgnoreCase("")) {
-                int spinner_position = sourcewater_adapt.getPosition(patient1.getSource_of_water());
+            if(patient1.getSource_of_water() != null && !patient1.getSource_of_water()
+                    .equalsIgnoreCase("")) {
+
+                String watersource_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    watersource_Transl = StringUtils.switch_hi_watersource_edit(patient1.getSource_of_water());
+                }
+                else {
+                    watersource_Transl = patient1.getSource_of_water();
+                }
+
+                int spinner_position = sourcewater_adapt.getPosition(watersource_Transl);
                 source_of_water_spinner.setSelection(spinner_position);
             }
             if(patient1.getWater_safe() != null && !patient1.getWater_safe().equalsIgnoreCase("")) {
-                int spinner_position = watersafe_adapt.getPosition(patient1.getWater_safe());
+
+                String watersafe_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    watersafe_Transl = StringUtils.switch_hi_watersafe_edit(patient1.getWater_safe());
+                }
+                else {
+                    watersafe_Transl = patient1.getWater_safe();
+                }
+
+                int spinner_position = watersafe_adapt.getPosition(watersafe_Transl);
                 howtomake_water_safe_spinner.setSelection(spinner_position);
 
                 if(spinner_position >= 0) {
@@ -880,12 +932,32 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-            if(patient1.getWater_availability() != null && !patient1.getWater_availability().equalsIgnoreCase("")) {
-                int spinner_position = availa_adapt.getPosition(patient1.getWater_availability());
+            if(patient1.getWater_availability() != null && !patient1.getWater_availability()
+                    .equalsIgnoreCase("")) {
+
+                String wateravail_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    wateravail_Transl = StringUtils.switch_hi_wateravail_edit(patient1.getWater_availability());
+                }
+                else {
+                    wateravail_Transl = patient1.getWater_availability();
+                }
+
+                int spinner_position = availa_adapt.getPosition(wateravail_Transl);
                 water_availability_spinner.setSelection(spinner_position);
             }
-            if(patient1.getToilet_facility() != null && !patient1.getToilet_facility().equalsIgnoreCase("")) {
-                int spinner_position = toiletfacility_adapt.getPosition(patient1.getToilet_facility());
+            if(patient1.getToilet_facility() != null && !patient1.getToilet_facility()
+                    .equalsIgnoreCase("")) {
+
+                String toiletfacility_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    toiletfacility_Transl = StringUtils.switch_hi_toiletfacil_edit(patient1.getToilet_facility());
+                }
+                else {
+                    toiletfacility_Transl = patient1.getToilet_facility();
+                }
+
+                int spinner_position = toiletfacility_adapt.getPosition(toiletfacility_Transl);
                 toilet_facility_spinner.setSelection(spinner_position);
 
                 if(spinner_position >= 0) {
@@ -899,8 +971,18 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-            if(patient1.getStructure_house() != null && !patient1.getStructure_house().equalsIgnoreCase("")) {
-                int spinner_position = structure_adapt.getPosition(patient1.getStructure_house());
+            if(patient1.getStructure_house() != null && !patient1.getStructure_house()
+                    .equalsIgnoreCase("")) {
+
+                String housestruct_Transl = "";
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    housestruct_Transl = StringUtils.switch_hi_housestructure_edit(patient1.getStructure_house());
+                }
+                else {
+                    housestruct_Transl = patient1.getStructure_house();
+                }
+
+                int spinner_position = structure_adapt.getPosition(housestruct_Transl);
                 structure_of_house_spinner.setSelection(spinner_position);
             }
 
@@ -2671,7 +2753,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-                patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
+                //patientAttributesDTO.setValue(occupation_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(occupation_spinner));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
@@ -2681,7 +2764,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Bank Account"));
-            patientAttributesDTO.setValue(bankaccount_spinner.getSelectedItem().toString());
+            //  patientAttributesDTO.setValue(bankaccount_spinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(bankaccount_spinner));
             Log.d("HOH", "Bankacc: "+ bankaccount_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2690,7 +2774,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Mobile Phone Type"));
-            patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
+            // patientAttributesDTO.setValue(mobilephone_spinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(mobilephone_spinner));
             Log.d("HOH", "mobile phone type: "+ mobilephone_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2699,7 +2784,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Use WhatsApp"));
-            patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
+            // patientAttributesDTO.setValue(whatsapp_spinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
             Log.d("HOH", "Whatsapp use: "+ whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2730,7 +2816,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Drinking Water Source"));
-                patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
+                // patientAttributesDTO.setValue(source_of_water_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(source_of_water_spinner));
                 Log.d("HOH", "source of water: " + source_of_water_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2752,7 +2839,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Safe Drinking Water"));
-                    patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                    // patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+                    patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(howtomake_water_safe_spinner));
                     Log.d("HOH", "water safe: " + howtomake_water_safe_spinner.getSelectedItem().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
@@ -2764,7 +2852,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
+                    // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En(time_water_checkbox.getText().toString()));
                     Log.d("HOH", "time to bring water: " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -2779,13 +2868,22 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
 
+                //            patientAttributesDTO = new PatientAttributesDTO();
+//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//            patientAttributesDTO.setPatientuuid(uuid);
+//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
+//                    .getUuidForAttribute("Time Drinking Water Source"));
+//            patientAttributesDTO.setValue(howtomake_water_safe_spinner.getSelectedItem().toString());
+//            patientAttributesDTOList.add(patientAttributesDTO);
+
                 //Drinking water availability...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("Drinking Water Availability"));
-                patientAttributesDTO.setValue(water_availability_spinner.getSelectedItem().toString());
+                // patientAttributesDTO.setValue(water_availability_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(water_availability_spinner));
                 Log.d("HOH", "Water availability: " + water_availability_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2809,7 +2907,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Toilet Facility"));
-                    patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
+                    //  patientAttributesDTO.setValue(toilet_facility_spinner.getSelectedItem().toString());
+                    patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(toilet_facility_spinner));
                     Log.d("HOH", "Toilet: " + toilet_facility_spinner.getSelectedItem().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 }
@@ -2820,7 +2919,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                         .getUuidForAttribute("House Structure"));
-                patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
+                //  patientAttributesDTO.setValue(structure_of_house_spinner.getSelectedItem().toString());
+                patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(structure_of_house_spinner));
                 Log.d("HOH", "Structure: " + structure_of_house_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -2831,7 +2931,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Family Cultivable Land"));
-                    patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
+                    //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En(hectars_land_checkbox.getText().toString()));
                     Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -2847,12 +2948,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
 
                 sessionManager.setHOH_checkbox(true);
-                Log.d("session", "session_update: "+ sessionManager.getHOH_checkbox());
+                Log.d("session", "session_create: "+ sessionManager.getHOH_checkbox());
 
             }
             else {
                 sessionManager.setHOH_checkbox(false);
-                Log.d("session", "session_update: "+ sessionManager.getHOH_checkbox());
+                Log.d("session", "session_create: "+ sessionManager.getHOH_checkbox());
             }
             //end of checking if the family head checkbox is checked or not...
 
