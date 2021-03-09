@@ -509,6 +509,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(parent.getSelectedItem().toString().equalsIgnoreCase("[Describe]") ||
                         parent.getSelectedItem().toString().equalsIgnoreCase("वर्णन करे")) {
                     occupation_edittext.setVisibility(View.VISIBLE);
+                    occupation_edittext.requestFocus();
+                    occupation_edittext.setFocusable(true);
+                    occupation_edittext.setFocusableInTouchMode(true);
                 }
                 else {
                     occupation_edittext.setVisibility(View.GONE);
@@ -617,6 +620,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(parent.getSelectedItem().toString().equalsIgnoreCase("Other[Enter]") ||
                         parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]")) {
                     watersafe_edittext.setVisibility(View.VISIBLE);
+                    watersafe_edittext.requestFocus();
+                    watersafe_edittext.setFocusable(true);
+                    watersafe_edittext.setFocusableInTouchMode(true);
                 }
                 else {
                     watersafe_edittext.setVisibility(View.GONE);
@@ -672,6 +678,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(parent.getSelectedItem().toString().equalsIgnoreCase("Other [Enter]") ||
                         parent.getSelectedItem().toString().equalsIgnoreCase("अन्य [दर्ज करें]")) {
                     toiletfacility_edittext.setVisibility(View.VISIBLE);
+                    toiletfacility_edittext.requestFocus();
+                    toiletfacility_edittext.setFocusable(true);
+                    toiletfacility_edittext.setFocusableInTouchMode(true);
                 }
                 else {
                     toiletfacility_edittext.setVisibility(View.GONE);

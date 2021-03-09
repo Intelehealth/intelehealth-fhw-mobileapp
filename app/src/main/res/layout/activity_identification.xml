@@ -849,7 +849,9 @@
                                 android:textSize="@dimen/card_content_sub_text_size"
                                 android:hint="@string/enter_occupation"
                                 android:visibility="gone"
-                                tools:visibility="visible"/>
+                                tools:visibility="visible"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"/>
 
 
                             <View
@@ -1046,7 +1048,9 @@
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:hint="@string/enter_answer"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -1085,6 +1089,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:fontFamily="@font/lato_regular"
                         android:freezesText="true"
                         android:hint="@string/enter_time"
@@ -1142,7 +1147,9 @@
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:hint="@string/enter_answer"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -1203,6 +1210,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:focusable="true"
+                        android:focusableInTouchMode="true"
                         android:fontFamily="@font/lato_regular"
                         android:freezesText="true"
                         android:hint="@string/enter_number"
