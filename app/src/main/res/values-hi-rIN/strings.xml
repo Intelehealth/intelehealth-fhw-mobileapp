@@ -89,6 +89,7 @@
     <string name="identification_screen_checkbox_female">महिला</string>
     <string name="identification_screen_prompt_birthday">जन्म की तारीख*</string>
     <string name="identification_screen_prompt_age">उम्र:</string>
+    <string name="identification_screen_prompt_time">समय:</string>
     <string name="identification_screen_prompt_city">गांव / कस्बा / शहर *</string>
     <string name="identification_screen_prompt_state">राज्य *</string>
     <string name="identification_screen_prompt_caste" translatable="false">जाति</string>
@@ -109,7 +110,9 @@
     <string name="identification_screen_text_years" translatable="false"> वर्षों </string>
     <string name="identification_screen_text_months" translatable="false"> महीने</string>
     <string name="identification_screen_picker_years" translatable="false">वर्षों</string>
+    <string name="identification_screen_picker_hours" translatable="false">घंटे</string>
     <string name="identification_screen_picker_months" translatable="false">महीने</string>
+    <string name="identification_screen_picker_minute" translatable="false">मिनट</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">आक्टिव विज़िट्स</string>

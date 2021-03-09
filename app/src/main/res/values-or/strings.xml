@@ -71,6 +71,7 @@
     <string name="identification_screen_error_data_fields">ସେବକକୁ ଅପଲୋର୍ଡ଼ କରିବା</string>
     <string name="identification_screen_prompt_address">ଠିକଣା</string>
     <string name="identification_screen_prompt_age">ବୟସ*</string>
+    <string name="identification_screen_prompt_time">Time:</string>
     <string name="identification_screen_prompt_birthday">ଜନ୍ମ ତିଥି*</string>
     <string name="identification_screen_prompt_country">ଦେଶ *</string>
     <string name="identification_screen_prompt_city">ଗ୍ରାମ/ସହର/ନଗର *</string>
@@ -390,7 +391,9 @@
     <string name="identification_screen_text_years" translatable="false">ବର୍ଡ</string>
     <string name="identification_screen_text_months" translatable="false">ମାସ</string>
     <string name="identification_screen_picker_years" translatable="false">"ବର୍ଡ "</string>
+    <string name="identification_screen_picker_hours" translatable="false">hours</string>
     <string name="identification_screen_picker_months" translatable="false">ମାସ</string>
+    <string name="identification_screen_picker_minute" translatable="false">minute</string>
     <string name="title_activity_question_node" translatable="false">ପ୍ରଶନସନାର୍ଗତବିଧ</string>
     <string name="title_activity_setup" translatable="false">ବନିୟାସ</string>
     <string name="sync_complete" translatable="false">ସମ୍ପୂର</string>
