@@ -1382,10 +1382,15 @@ public class IdentificationActivity extends AppCompatActivity {
         familyhead_checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (familyhead_checkbox.isChecked())
+                if (familyhead_checkbox.isChecked()) {
                     cardview_household.setVisibility(View.VISIBLE);
-                else
+                    no_of_member_edittext.requestFocus();
+                    no_of_member_edittext.setFocusable(true);
+                    no_of_member_edittext.setFocusableInTouchMode(true);
+                }
+                else {
                     cardview_household.setVisibility(View.GONE);
+                }
             }
         });
     }
