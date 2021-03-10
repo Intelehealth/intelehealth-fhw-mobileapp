@@ -92,6 +92,7 @@ import okhttp3.ResponseBody;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_economic_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_education_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_occupation_edit;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -721,7 +722,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 //
         if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
-            occuView.setText(patient_new.getOccupation());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
+                occuView.setText(occupation);
+            }
+            else {
+                occuView.setText(patient_new.getOccupation());
+            }
+
         } else {
 //            occuRow.setVisibility(View.GONE);
             occuView.setText("");

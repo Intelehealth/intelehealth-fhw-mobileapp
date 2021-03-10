@@ -447,8 +447,8 @@
                         <TableRow
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="match_parent">
+                            android:layout_height="match_parent"
+                            android:paddingBottom="5dp">
 
                             <TextView
                                 android:layout_width="match_parent"

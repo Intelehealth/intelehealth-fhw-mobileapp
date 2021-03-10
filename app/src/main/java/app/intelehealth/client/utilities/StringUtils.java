@@ -713,7 +713,7 @@ public final class StringUtils {
             case "Declined to answer":
                 val = "जवाब देने के लिए मना कर दिया";
                 break;
-            case "सरकारी नौकरी":
+            case "Government job":
                 val = "सरकारी नौकरी";
                 break;
             case "Large scale to medium scale industry":
