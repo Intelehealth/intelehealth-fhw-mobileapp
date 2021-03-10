@@ -151,7 +151,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String getCheckbox_Hi_En(String checkbox_text) {
+    public static String getCheckbox_Hi_En_Hi(String checkbox_text) {
         String val = "";
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -163,6 +163,9 @@ public final class StringUtils {
                 default:
                      return val;
             }
+        }
+        else {
+            val = "Declined to answer";
         }
 
         return val;
@@ -708,7 +711,7 @@ public final class StringUtils {
             case "Declined to answer":
                 val = "जवाब देने के लिए मना कर दिया";
                 break;
-            case "सरकारी नौकरी":
+            case "Government job":
                 val = "सरकारी नौकरी";
                 break;
             case "Large scale to medium scale industry":
