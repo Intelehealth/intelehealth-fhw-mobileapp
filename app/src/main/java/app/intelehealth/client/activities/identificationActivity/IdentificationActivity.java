@@ -2801,6 +2801,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdID"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
+                patientAttributesDTOList.add(patientAttributesDTO);
 
             } else {
 
@@ -2810,6 +2811,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdID"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
+                patientAttributesDTOList.add(patientAttributesDTO);
 
             }
 //          patientAttributesDTOList.add(patientAttributesDTO);
