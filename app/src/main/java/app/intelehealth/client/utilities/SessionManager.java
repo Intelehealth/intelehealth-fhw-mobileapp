@@ -49,6 +49,8 @@ public class SessionManager {
     private static final String OFFLINE_OPENMRSID = "OFFLINE_OPENMRSID";
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
+    private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
+    private static final String STATENAME = "STATENAME";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -73,6 +75,15 @@ public class SessionManager {
         editor.putString(VISIT_ID, token);
         editor.commit();
     }
+
+//    public void setHOH_checkbox(boolean value) {
+//        editor.putBoolean("HOH", value);
+//        editor.commit();
+//    }
+//
+//    public boolean getHOH_checkbox() {
+//        return pref.getBoolean("HOH", false);
+//    }
 
     public String getBaseUrl() {
         return pref.getString(BASE_URL, "https://openmrs.intelehealth.io");
@@ -102,7 +113,7 @@ public class SessionManager {
     }
 
     public String getAppLanguage() {
-        return pref.getString(APP_LANGUAGE, "");
+        return pref.getString(APP_LANGUAGE, "en");
     }
 
     public void setAppLanguage(String pullExcutedTime) {
@@ -155,6 +166,15 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getStateName() {
+        return pref.getString(STATENAME, "");
+    }
+
+    public void setStateName(String stateName) {
+        editor.putString(STATENAME, stateName);
+        editor.commit();
+    }
+
     public String getLocationName() {
         return pref.getString(KEY_PREF_LOCATION_NAME, "");
     }
@@ -188,6 +208,15 @@ public class SessionManager {
 
     public void setServerUrl(String serverUrl) {
         editor.putString(KEY_PREF_SERVER_URL, serverUrl);
+        editor.commit();
+    }
+
+    public String getHouseholdUuid() {
+        return pref.getString(HOUSEHOLD_UUID, "");
+    }
+
+    public void setHouseholdUuid(String UUID) {
+        editor.putString(HOUSEHOLD_UUID, UUID);
         editor.commit();
     }
 

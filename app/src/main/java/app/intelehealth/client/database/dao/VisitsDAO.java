@@ -12,6 +12,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.intelehealth.client.models.dto.VisitAttribute_Speciality;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.app.AppConstants;
@@ -67,6 +68,7 @@ public class VisitsDAO {
         return isCreated;
     }
 
+
     public boolean insertPatientToDB(VisitDTO visit) throws DAOException {
         boolean isCreated = true;
         long createdRecordsCount1 = 0;
@@ -105,7 +107,7 @@ public class VisitsDAO {
 
     }
 
-    private boolean insertVisitAttribToDB(List<VisitAttributeDTO> visitAttributeDTOS, SQLiteDatabase db) throws DAOException {
+    public boolean insertVisitAttribToDB(List<VisitAttributeDTO> visitAttributeDTOS, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
         db.beginTransaction();
@@ -130,6 +132,99 @@ public class VisitsDAO {
         return isCreated;
     }
 
+
+    //update condition for speciality
+/*
+    public boolean update_visitTbl_speciality(String spinner_value, String visitUUID) throws DAOException {
+        boolean isupdatedone = false;
+//        String cursor_uuid = "", cursor_value="";
+        Log.d("SPINNER", "SPINNER_Selected_valuelogs: "+ spinner_value);
+        Log.d("SPINNER", "SPINNER_Selected_uuidlogs: "+ visitUUID);
+
+       */
+/* SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_dr_speciality WHERE value = ?",
+                new String[]{spinner_value});
+
+        if(idCursor.getCount() != 0)
+        {
+            while(idCursor.moveToNext())
+            {
+                 cursor_uuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();*//*
+
+
+
+        SQLiteDatabase db_update = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db_update.beginTransaction();
+        ContentValues values = new ContentValues();
+        String whereclause = "uuid=?";
+        String[] selectionArgs = {visitUUID};
+        try
+        {
+//            values.put("speciality_uuid", cursor_uuid);
+            values.put("speciality_value", spinner_value);
+            values.put("sync", "0");
+
+            Logger.logD("visit", "updated_specilaity_values " +
+                    values.get("speciality_value"));
+
+            int i = db_update.update("tbl_visit", values, whereclause, selectionArgs);
+
+            Logger.logD("visit", "updated_specilaity" + i);
+            db_update.setTransactionSuccessful();
+            if(i != -1)
+                isupdatedone = true;
+
+        }
+        catch (SQLException e)
+        {
+            isupdatedone = false;
+            Logger.logD("visit", "updated" + e.getMessage());
+            throw new DAOException(e.getMessage());
+
+        }
+     finally {
+            db_update.endTransaction();
+//            db_update.close(); Closing the db was causing the crash on visit onCreate() in update.
+            //while updating, do not close the db instance,.
+
+    }
+
+        //Sqlite Db Browser bug isnt showing the updated records...
+        //To re-check and confirm that the records are updated & stored in the local db, below is
+        //the code....
+      */
+/*  SQLiteDatabase db_aa = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db_aa.beginTransaction();
+        Cursor idCursor_aa = db_aa.rawQuery("SELECT speciality_uuid, speciality_value FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
+
+        if(idCursor_aa.getCount() != 0)
+        {
+            while(idCursor_aa.moveToNext())
+            {
+                String aa_uuid = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_uuid"));
+                String aa_value = idCursor_aa.getString(idCursor_aa.getColumnIndexOrThrow("speciality_value"));
+                Log.d("PRAJ", "PRAJ: "+ aa_uuid + " :: " + aa_value);
+            }
+        }
+        idCursor_aa.close();
+        db_aa.setTransactionSuccessful();
+        db_aa.endTransaction();*//*
+
+
+        return  isupdatedone;
+}
+*/
+
+
+    //update - end....
+
     public List<VisitDTO> unsyncedVisits() {
         List<VisitDTO> visitDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -146,6 +241,25 @@ public class VisitsDAO {
                 visitDTO.setEnddate(idCursor.getString(idCursor.getColumnIndexOrThrow("enddate")));
                 visitDTO.setCreatoruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("creator")));
                 visitDTO.setVisitTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_type_uuid")));
+
+                List<VisitAttribute_Speciality> list = new ArrayList<>();
+                list = fetchVisitAttr_Speciality(visitDTO.getUuid());
+                visitDTO.setAttributes(list);
+//                visitDTOList.add(visitDTO);
+
+                //adding visit attribute list in the visit data.
+//               List<VisitAttribute_Speciality> list = new ArrayList<>();
+//               VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
+//               speciality.setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+//               speciality.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality_value")));
+//               list.add(speciality);
+//
+//
+//                visitDTO.setAttributes(list);
+                //need a return value as list so that I can then add it to visitDTO.setAttributes(list);
+//               list =  fetchVisitAttr_Speciality();
+//               visitDTO.setAttributes(list);
+
                 visitDTOList.add(visitDTO);
             }
         }
@@ -153,7 +267,40 @@ public class VisitsDAO {
         db.setTransactionSuccessful();
         db.endTransaction();
 
+//        List<VisitAttribute_Speciality> list = new ArrayList<>();
+//        list = fetchVisitAttr_Speciality();
+//        visitDTO.setAttributes(list);
+//        visitDTOList.add(visitDTO);
+
         return visitDTOList;
+    }
+
+    private List<VisitAttribute_Speciality> fetchVisitAttr_Speciality(String visit_uuid) {
+
+        List<VisitAttribute_Speciality> Specialtylist = new ArrayList<>();
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=? AND visit_uuid=?",
+                new String[]{"0", visit_uuid});
+
+        VisitAttribute_Speciality data = new VisitAttribute_Speciality();
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                data = new VisitAttribute_Speciality();
+                data.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                data.setAttributeType(cursor.getString
+                        (cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                data.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                Specialtylist.add(data);
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return Specialtylist;
     }
 
     public List<VisitDTO> getAllVisits() {
@@ -201,8 +348,6 @@ public class VisitsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
 
         return isUpdated;

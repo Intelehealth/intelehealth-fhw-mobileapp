@@ -1,6 +1,7 @@
 package app.intelehealth.client.database.dao;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -21,7 +22,7 @@ import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.NotificationID;
 import app.intelehealth.client.utilities.PatientsFrameJson;
 import app.intelehealth.client.utilities.SessionManager;
-import app.intelehealth.client.R;
+import app.intelehealth.client.R;;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
@@ -44,16 +45,23 @@ public class SyncDAO {
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
+    String appLanguage;
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        appLanguage = sessionManager.getAppLanguage();
+        if (!appLanguage.equalsIgnoreCase("")) {
+            setLocale(appLanguage);
+        }
         PatientsDAO patientsDAO = new PatientsDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
         EncounterDAO encounterDAO = new EncounterDAO();
         ObsDAO obsDAO = new ObsDAO();
         LocationDAO locationDAO = new LocationDAO();
         ProviderDAO providerDAO = new ProviderDAO();
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+        ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         try {
             Logger.logD(TAG, "pull sync started");
 
@@ -65,6 +73,10 @@ public class SyncDAO {
             obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+            providerAttributeLIstDAO.insertProvidersAttributeList
+                    (responseDTO.getData().getProviderAttributeList());
+            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+//            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
@@ -175,7 +187,6 @@ public class SyncDAO {
 
         mDbHelper = new InteleHealthDatabaseHelper(context);
         db = mDbHelper.getWritableDatabase();
-
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
@@ -208,7 +219,7 @@ public class SyncDAO {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
 
                         if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
                             Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
@@ -218,7 +229,6 @@ public class SyncDAO {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
 //                        }
-
                     } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
@@ -278,6 +288,15 @@ public class SyncDAO {
         });
         sessionManager.setPullSyncFinished(true);
         return true;
+    }
+
+    public void setLocale(String appLanguage)
+    {
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        IntelehealthApplication.getAppContext().getResources().updateConfiguration(config, IntelehealthApplication.getAppContext().getResources().getDisplayMetrics());
     }
 
     private void triggerVisitNotification(ArrayList<String> listPatientUUID) {

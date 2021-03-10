@@ -209,8 +209,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             }
         }
     }
-
-
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -234,8 +232,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             fab = itemView.findViewById(R.id.fab);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
-
-
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             rvChips.setLayoutManager(linearLayoutManager);
             rvChips.setHasFixedSize(true);
@@ -259,23 +255,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                         chipList.add(node.getOptionsList().get(i));
                     }
                 }
-               /* if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
-                    int childOptionCount = currentNode.getOptionsList().get(0).getOptionsList().size();
-                    if (childOptionCount > 8) {
-                        List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);
-                        chipList.addAll(spiltList.get(pos));
-                    } else {
-                        Node node = currentNode.getOptionsList().get(0);
-                        for (int i = 0; i < node.getOptionsList().size(); i++) {
-                            chipList.add(node.getOptionsList().get(i));
-                        }
-                    }
-                } else {
-                    Node node = currentNode.getOptionsList().get(pos);
-                    for (int i = 0; i < node.getOptionsList().size(); i++) {
-                        chipList.add(node.getOptionsList().get(i));
-                    }
-                }*/
             }
 
 

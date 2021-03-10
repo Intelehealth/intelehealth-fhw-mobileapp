@@ -1,18 +1,20 @@
 package app.intelehealth.client.activities.pastMedicalHistoryActivity;
 
-import android.app.Dialog;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -20,7 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -28,7 +32,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
-
+import android.widget.Button;
+import android.widget.TextView;
 
 
 import org.json.JSONException;
@@ -58,6 +63,8 @@ import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActiv
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import app.intelehealth.client.database.dao.PatientsDAO;
+
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
     String patient = "patient";
@@ -66,6 +73,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
@@ -76,9 +84,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String imageName;
     File filePath;
 
-    SQLiteDatabase localdb;
+    SQLiteDatabase localdb, db;
+    String mgender;
 
     boolean hasLicense = false;
+    String edit_PatHist = "";
 
 //  String mFileName = "DemoHistory.json";
 
@@ -95,10 +105,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     SessionManager sessionManager = null;
     private String encounterVitals;
-    private String encounterAdultIntials;
+    private String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     RecyclerView pastMedical_recyclerView;
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
+    String new_result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +119,45 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 //        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //        e = sharedPreferences.edit();
 
-        boolean past = sessionManager.isReturning();
-        if (past) {
-            MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
+        Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+            visitUuid = intent.getStringExtra("visitUuid");
+            encounterVitals = intent.getStringExtra("encounterUuidVitals");
+            edit_PatHist = intent.getStringExtra("edit_PatHist");
+            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            state = intent.getStringExtra("state");
+            patientName = intent.getStringExtra("name");
+            intentTag = intent.getStringExtra("tag");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
+            if(edit_PatHist == null)
+                new_result = getPastMedicalVisitData();
+        }
+
+        boolean past = sessionManager.isReturning();
+        if (past && edit_PatHist == null) {
+            MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
+            alertdialog.setTitle(getString(R.string.question_update_details));
+//            TextView textViewTitle = new TextView(this);
+//            textViewTitle.setText(getString(R.string.question_update_details));
+//            textViewTitle.setTextColor(getResources().getColor((R.color.colorPrimary)));
+//            textViewTitle.setPadding(30,50,30,0);
+//            textViewTitle.setTextSize(16F);
+//            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//            alertdialog.setCustomTitle(textViewTitle);
             //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
-            alertdialog.setTitle(getString(R.string.title_activity_patient_history));
-            alertdialog.setMessage(getString(R.string.question_update_details));
+
+            View layoutInflater = LayoutInflater.from(PastMedicalHistoryActivity.this)
+                    .inflate(R.layout.past_fam_hist_previous_details, null);
+            alertdialog.setView(layoutInflater);
+            TextView textView = layoutInflater.findViewById(R.id.textview_details);
+            Log.v(TAG, new_result);
+            textView.setText(Html.fromHtml(new_result));
+
+
+//            alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -129,7 +172,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     String[] columns = {"value", " conceptuuid"};
                     try {
                         String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
-                        String[] medHistArgs = {encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                        String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
                         Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
                         medHistCursor.moveToLast();
                         phistory = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -149,29 +192,35 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
                     intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);
 
                 }
             });
-            Dialog builderDialog = alertdialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
+            AlertDialog alertDialog = alertdialog.create();
+            alertDialog.show();
 
+            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            alertDialog.setCancelable(false);
+            alertDialog.setCanceledOnTouchOutside(false);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+            
         }
 
-        Intent intent = this.getIntent(); // The intent was passed to the activity
-        if (intent != null) {
-            patientUuid = intent.getStringExtra("patientUuid");
-            visitUuid = intent.getStringExtra("visitUuid");
-            encounterVitals = intent.getStringExtra("encounterUuidVitals");
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-            state = intent.getStringExtra("state");
-            patientName = intent.getStringExtra("name");
-            intentTag = intent.getStringExtra("tag");
-        }
+
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -222,6 +271,19 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
        /* historyListView = findViewById(R.id.patient_history_expandable_list_view);
         adapter = new CustomExpandableListAdapter(this, patientHistoryMap, this.getClass().getSimpleName()); //The adapter might change depending on the activity.
         historyListView.setAdapter(adapter);*/
+
+
+        mgender = PatientsDAO.fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
+            patientHistoryMap.fetchItem("0");
+        }
+        else if(mgender.equalsIgnoreCase("F")) {
+            patientHistoryMap.fetchItem("1");
+        }
+
+        // flaoting value of age is passed to Node for comparison...
+        patientHistoryMap.fetchAge(float_ageYear_Month);
 
         adapter = new QuestionsAdapter(this, patientHistoryMap, pastMedical_recyclerView, this.getClass().getSimpleName(), this, false);
         pastMedical_recyclerView.setAdapter(adapter);
@@ -306,6 +368,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
@@ -334,8 +397,10 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);
             startActivity(intent);
@@ -484,6 +549,22 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             v.startAnimation(bottomUp);
         }
 
+    }
+
+    private String getPastMedicalVisitData() {
+        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        // String[] columns = {"value"};
+        String[] columns = {"value", " conceptuuid"};
+        try {
+            String medHistSelection = "encounteruuid = ? AND conceptuuid = ? AND voided!='1'";
+            String[] medHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+            Cursor medHistCursor = localdb.query("tbl_obs", columns, medHistSelection, medHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+            result = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            result = ""; // if medical history does not exist
+        }    db.close();    return result;
     }
 }
 

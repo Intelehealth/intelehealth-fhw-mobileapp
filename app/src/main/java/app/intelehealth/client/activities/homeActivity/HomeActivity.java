@@ -48,6 +48,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
@@ -175,7 +176,8 @@ public class HomeActivity extends AppCompatActivity {
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
-        manualSyncButton.setText(R.string.sync_now);
+       // manualSyncButton.setText(R.string.sync_now);
+        manualSyncButton.setText(R.string.refresh);
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -201,6 +203,9 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
                     startActivity(intent);
                 } else {
+                    //Clear HouseHold UUID from Session for new registration
+                    sessionManager.setHouseholdUuid("");
+
                     Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
                     startActivity(intent);
                 }
@@ -302,8 +307,9 @@ public class HomeActivity extends AppCompatActivity {
         try {
             JSONObject obj = null;
             if (hasLicense) {
-                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
-
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, context),
+                                String.valueOf(FileUtils.encodeJSON(context, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }

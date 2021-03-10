@@ -5,12 +5,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,12 +24,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -53,14 +55,14 @@ public class VitalsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
-
+    private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
     String weightvalue;
     ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
 
     VitalsObject results = new VitalsObject();
-    private String encounterAdultIntials = "";
+    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
 
     @Override
@@ -72,9 +74,11 @@ public class VitalsActivity extends AppCompatActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             Log.v(TAG, "Patient ID: " + patientUuid);
             Log.v(TAG, "Visit ID: " + visitUuid);
             Log.v(TAG, "Patient Name: " + patientName);
@@ -117,7 +121,9 @@ public class VitalsActivity extends AppCompatActivity {
             JSONObject obj = null;
 //            #633 #632
             if (!sessionManager.getLicenseKey().isEmpty()) {
-                obj = new JSONObject(FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this)); //Load the config file
+                obj = new JSONObject(Objects.requireNonNullElse
+                        (FileUtils.readFileRoot(AppConstants.CONFIG_FILE_NAME, this),
+                                String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)))); //Load the config file
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }//Load the config file
@@ -476,7 +482,7 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
@@ -762,9 +768,7 @@ public class VitalsActivity extends AppCompatActivity {
             try {
                 if (mHeight.getText() != null && !mHeight.getText().toString().equals("")) {
                     results.setHeight((mHeight.getText().toString()));
-                }
-                else if(mHeight.getText().toString().equals(""))
-                {
+                } else if (mHeight.getText().toString().equals("")) {
                     results.setHeight("0");
                 }
                 if (mWeight.getText() != null) {
@@ -814,12 +818,9 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
-                if(results.getHeight().equals(""))
-                {
+                if (results.getHeight().equals("")) {
                     obsDTO.setValue("0");
-                }
-                else
-                {
+                } else {
                     obsDTO.setValue(results.getHeight());
                 }
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEIGHT));
@@ -902,6 +903,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
@@ -916,12 +918,9 @@ public class VitalsActivity extends AppCompatActivity {
             obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
             obsDTO.setEncounteruuid(encounterVitals);
             obsDTO.setCreator(sessionManager.getCreatorID());
-            if(results.getHeight().equals(""))
-            {
+            if (results.getHeight().equals("")) {
                 obsDTO.setValue("0");
-            }
-            else
-            {
+            } else {
                 obsDTO.setValue(results.getHeight());
             }
 
@@ -1022,8 +1021,10 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
             intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             startActivity(intent);
         }

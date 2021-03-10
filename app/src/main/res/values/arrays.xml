@@ -15,6 +15,11 @@
 <!--        <item>cb</item>-->
     </string-array>
 
+    <string-array name="speciality_values">
+        <item>Select Specialization</item>
+        <item>General Physician</item>
+    </string-array>
+
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
@@ -63,7 +68,16 @@
         <item>Graduation &amp; Higher</item>
     </string-array>
 
-    <string-array name="caste">
+    <string-array name="education_hi">
+        <item> चयन करें</item>
+        <item>अशिक्षित</item>
+        <item>प्रथम</item>
+        <item>माध्यमिक</item>
+        <item>उच्च माध्यमिक</item>
+        <item>स्नातक और उच्चतर</item>
+    </string-array>
+
+    <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
         <item>OBC</item>
@@ -72,12 +86,20 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_hi">
+        <item>चयन करें</item>
+        <item>सामान्य</item>
+        <item>अन्य पिछड़ा वर्ग</item>
+        <item>अनुसूचित जाति</item>
+        <item>अनुसूचित जनजाति</item>
+        <item>अन्य</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
     </string-array>
-
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
@@ -89,6 +111,12 @@
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_hi">
+        <item>चयन करें</item>
+        <item>गरीबी रेखा से ऊपर</item>
+        <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
     <string-array name="states_india">
@@ -305,5 +333,199 @@
         <item>@color/dot_dark_screen3</item>
         <item>@color/dot_dark_screen4</item>
     </array>
+
+    <string-array name="location_state">
+        <item>Select State</item>
+    </string-array>
+
+    <string-array name="occupation_spinner_en">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Government job</item>
+        <item>Large scale to medium scale industry</item>
+        <item>Professional job in private sector</item>
+        <item>Small scale industry</item>
+        <item>Big shop owner</item>
+        <item>Technician/craftsman</item>
+        <item>Small shop owner</item>
+        <item>Large scale farmer</item>
+        <item>Daily wage earner</item>
+        <item>Small scale farmer/farm worker</item>
+        <item>Unemployed</item>
+        <item>Housewife</item>
+        <item>Other skills (driver,mason etc)</item>
+        <item>[Describe]</item>
+    </string-array>
+
+<!--    Hindi Occupation-->
+    <string-array name="occupation_spinner_hi">
+        <item>चुनते हैं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>सरकारी नौकरी</item>
+        <item>बड़ा या मध्यम उद्योग</item>
+        <item>निजी क्षेत्र में नौकरी</item>
+        <item>छोटा उद्योग</item>
+        <item>बड़ी दूकान के मालिक</item>
+        <item>तकनीशियन</item>
+        <item>छोटे दूकान का मालिक</item>
+        <item>बड़ा किसान</item>
+        <item>दैनिक मजदूर</item>
+        <item>छोटे किसान/ दुसरे के खेत में काम करने वाले</item>
+        <item>बेरोजगार</item>
+        <item>ग्रहिणी</item>
+        <item>अन्य कुशलता (ड्राईवर,राज मिस्त्री)</item>
+        <item>वर्णन करे</item>
+    </string-array>
+
+    <string-array name="bank_account_spinner_en">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="bank_account_spinner_hi">
+        <item>चुनते हैं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>हाँ</item>
+        <item>नहीं</item>
+    </string-array>
+
+    <string-array name="mobilephone_spinner_en">
+        <item>Select</item>
+        <item>Basic Phone</item>
+        <item>Smartphone</item>
+        <item>Does not own mobile phone</item>
+    </string-array>
+
+    <string-array name="mobilephone_spinner_hi">
+        <item>चुनते हैं</item>
+        <item>साधारण फोन</item>
+        <item>स्मार्टफोन</item>
+        <item>मोबाइल फोन नहीं है</item>
+    </string-array>
+
+    <string-array name="familymember_whatsapp_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="familymember_whatsapp_hi">
+        <item>चुनते हैं</item>
+        <item>हाँ</item>
+        <item>नहीं</item>
+    </string-array>
+
+
+    <string-array name="sourcewater_spinner_en">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Chapakal/Hand Pump</item>
+        <item>Wells</item>
+        <item>Boring</item>
+        <item>Rivers/ponds</item>
+        <item>Tanker water</item>
+        <item>Any other</item>
+    </string-array>
+
+    <string-array name="sourcewater_spinner_hi">
+        <item>चुनते हैं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>चापाकल/हैण्ड पंप</item>
+        <item>कुंवा</item>
+        <item>बोरिंग</item>
+        <item>नदी/तालाब</item>
+        <item>टैंकर का पानी</item>
+        <item>कोई और</item>
+    </string-array>
+
+    <string-array name="howtomake_water_safe_en">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Nothing</item>
+        <item>Boil</item>
+        <item>Alum</item>
+        <item>Add Bleach/Chlorine tablets</item>
+        <item>Strain through cloth</item>
+        <item>Use water filter(ceramic/sand/composite)etc</item>
+        <item>Use electronic filter</item>
+        <item>Other[Enter]</item>
+    </string-array>
+
+    <string-array name="howtomake_water_safe_hi">
+        <item>चुनते हैं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>कुछ भी नहीं</item>
+        <item>उबलना</item>
+        <item>अलम</item>
+        <item>ब्लीच / क्लोरीन गोलियाँ जोड़ें</item>
+        <item>कपड़े के माध्यम</item>
+        <item>पानी फिल्टर (सिरेमिक / रेत / समग्र) आदि का उपयोग करें</item>
+        <item>इलेक्ट्रॉनिक फ़िल्टर का उपयोग करें</item>
+        <item>अन्य [दर्ज करें]</item>
+    </string-array>
+
+    <string-array name="water_availability_spinner_en">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>Yes</item>
+        <item>No</item>
+        <item>Don\'t know</item>
+    </string-array>
+
+    <string-array name="water_availability_spinner_hi">
+        <item>चुनते हैं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>हाँ</item>
+        <item>नहीं</item>
+        <item>पता नहीं</item>
+    </string-array>
+
+    <string-array name="toiletFacility_spinner_en">
+        <item>Select</item>
+        <item>Declined to answer</item>
+        <item>No facility /uses open space or field</item>
+        <item>Own toilet</item>
+        <item>Community toilet</item>
+        <item>Shared toilet with other household</item>
+        <item>Other [Enter]</item>
+    </string-array>
+
+    <string-array name="toiletFacility_spinner_hi">
+        <item>चुनते हैं</item>
+        <item>जवाब देने के लिए मना कर दिया</item>
+        <item>कोई सुविधा नहीं  / खुली जगह या क्षेत्र का उपयोग करते हैं</item>
+        <item>खुद का शौचालय</item>
+        <item>सामुदायिक शौचालय</item>
+        <item>अन्य घर के साथ साझा शौचालय</item>
+        <item>अन्य [दर्ज करें]</item>
+    </string-array>
+
+    <string-array name="structure_house_en">
+        <item>Select</item>
+        <item>Kutcha House</item>
+        <item>Pakka House</item>
+        <item>Homeless</item>
+    </string-array>
+
+    <string-array name="structure_house_hi">
+        <item>चुनते हैं</item>
+        <item>कच्चा घर</item>
+        <item>पक्का घर</item>
+        <item>घर नहीं है</item>
+    </string-array>
+
+    <string-array name="location_district">
+        <item>Select District</item>
+    </string-array>
+
+    <string-array name="location_sanch">
+        <item>Select Sanch</item>
+    </string-array>
+
+    <string-array name="location_village">
+        <item>Select Village</item>
+    </string-array>
 
 </resources>

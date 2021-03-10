@@ -52,6 +52,7 @@ public class ProviderDAO {
             values.put("voided", provider.getVoided());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", "TRUE");
+
             createdRecordsCount = db.insertWithOnConflict("tbl_provider", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;

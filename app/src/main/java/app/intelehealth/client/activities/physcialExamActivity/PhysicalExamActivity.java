@@ -70,6 +70,8 @@ import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 import app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator;
 
+import app.intelehealth.client.database.dao.PatientsDAO;
+
 public class PhysicalExamActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     final static String TAG = PhysicalExamActivity.class.getSimpleName();
     // private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -81,6 +83,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     String state;
     String patientName;
     String intentTag;
+    private float float_ageYear_Month;
 
     ArrayList<String> selectedExamsList;
 
@@ -100,10 +103,11 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     String physicalString;
     Boolean complaintConfirmed = false;
     String encounterVitals;
-    String encounterAdultIntials;
+    String encounterAdultIntials, EncounterAdultInitial_LatestVisit;
     SessionManager sessionManager;
     RecyclerView physExam_recyclerView;
     QuestionsAdapter adapter;
+    String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
 
 
@@ -115,7 +119,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         sessionManager = new SessionManager(this);
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setTitle(R.string.wash_hands);
+        alertDialogBuilder.setTitle(getResources().getString(R.string.wash_hands));
         LayoutInflater factory = LayoutInflater.from(this);
         final View view = factory.inflate(R.layout.hand_wash, null);
         alertDialogBuilder.setView(view);
@@ -140,15 +144,17 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
-            if (selectedExams != null) selectedExamsList.addAll(selectedExams);
+            if (selectedExams != null)
+                selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
-
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
@@ -159,7 +165,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             selectedExamsList.clear();
             selectedExamsList.addAll(selectedExamsWithoutDuplicates);
             Log.d(TAG, selectedExamsList.toString());
-            for (String string : selectedExamsList) Log.d(TAG, string);
+            for (String string : selectedExamsList)
+                Log.d(TAG, string);
 
             boolean hasLicense = false;
 //            if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())
@@ -182,12 +189,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
-
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         if (getSupportActionBar() != null) {
@@ -210,7 +214,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (mViewPager != null) {
             mViewPager.setAdapter(mSectionsPagerAdapter);
         }*/
-
         /*TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(15);
 
@@ -237,10 +240,24 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         });
 
          */
-
       /*
       Commented to avoid crash...
         Log.e(TAG, "PhyExam: " + physicalExamMap.getTotalNumberOfExams());*/
+
+        mgender = PatientsDAO.fetch_gender(patientUuid);
+
+        if(mgender.equalsIgnoreCase("M")) {
+            physicalExamMap.fetchItem("0");
+        }
+        else if(mgender.equalsIgnoreCase("F")) {
+            physicalExamMap.fetchItem("1");
+        }
+        physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
+
+        // flaoting value of age is passed to Node for comparison...
+        physicalExamMap.fetchAge(float_ageYear_Month);
+        physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
+
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);
         physExam_recyclerView.setAdapter(adapter);
         recyclerViewIndicator.attachToRecyclerView(physExam_recyclerView);
@@ -290,8 +307,10 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent.putExtra("visitUuid", visitUuid);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
+                intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
 
@@ -307,9 +326,11 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("visitUuid", visitUuid);
                 intent1.putExtra("encounterUuidVitals", encounterVitals);
                 intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                 intent1.putExtra("state", state);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", intentTag);
+                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                 intent1.putExtra("hasPrescription", "false");
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
@@ -417,7 +438,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(R.string.question_answer_all_phy_exam);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.question_answer_all_phy_exam));
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -6,10 +6,10 @@
     <string name="hint_required" translatable="false">Required</string>
     <string name="hint_optional" translatable="false">Optional</string>
     <string name="tag_optional" translatable="false">optional</string>
-    <string name="generic_ok" translatable="false">OK</string>
-    <string name="generic_cancel" translatable="false">Cancel</string>
-    <string name="generic_yes" translatable="false">Yes</string>
-    <string name="generic_no" translatable="false">No</string>
+    <string name="generic_ok">OK</string>
+    <string name="generic_cancel">Cancel</string>
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
     <string name="generic_back" translatable="false">Back</string>
     <string name="generic_coming_soon" translatable="false">Coming Soon.....</string>
     <string name="action_print" translatable="false">Print</string>
@@ -69,7 +69,7 @@
     <string name="button_find_pt" translatable="false">Find Patient</string>
     <string name="button_diagnostic_tests" translatable="false">Diagnostic Tests</string>
     <string name="button_active_pt" translatable="false">Active Patients</string>
-    <string name="menu_option_sync" translatable="false">Sync Data</string>
+    <string name="menu_option_sync" translatable="false">Refresh Data</string>
     <string name="menu_option_settings" translatable="false">Settings</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
@@ -89,6 +89,7 @@
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
     <string name="identification_screen_prompt_age">Age:</string>
+    <string name="identification_screen_prompt_time">Time:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
     <string name="identification_screen_prompt_caste" translatable="false">Caste</string>
@@ -109,7 +110,9 @@
     <string name="identification_screen_text_years" translatable="false"> years </string>
     <string name="identification_screen_text_months" translatable="false"> months</string>
     <string name="identification_screen_picker_years" translatable="false">years</string>
+    <string name="identification_screen_picker_hours" translatable="false">hours</string>
     <string name="identification_screen_picker_months" translatable="false">months</string>
+    <string name="identification_screen_picker_minute" translatable="false">minute</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient" translatable="false">Active Visits</string>
@@ -202,7 +205,7 @@
     <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
 
     //Physical Exam Dialog
-    <string name="wash_hands" translatable="false">Remember to wash your hands</string>
+    <string name="wash_hands">Remember to wash your hands</string>
 
 
     //Patient Detail Screen
@@ -238,7 +241,7 @@
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync" translatable="false">Data &amp; sync</string>
+    <string name="pref_header_data_sync" translatable="false">Data &amp; Refresh</string>
 
     <string name="pref_title_server_url" translatable="false">Server URL</string>
     <string name="pref_title_id_prefix" translatable="false">Location Prefix</string>
@@ -356,7 +359,7 @@
     <string name="patient_upload_error" translatable="false">Patient has not been uploaded</string>
     <string name="patient_not_registered" translatable="false">Patient not registered</string>
 
-    <string name="action_sync_all" translatable="false">Sync Data</string>
+    <string name="action_sync_all" translatable="false">Refresh Data</string>
 
     <!-- Vitals Screen Error-->
 
@@ -431,7 +434,7 @@
 
     <string name="title_activity_splash_acticity" translatable="false">SplashActicity</string>
     <string name="title_activity_home" translatable="false">HomeActivity</string>
-    <string name="title_activity_sync" translatable="false">ActivitySync</string>
+    <string name="title_activity_sync" translatable="false">ActivityRefresh</string>
     <string name="title_activity_privacy_notice" translatable="false">Privacy Notice</string>
     <string name="title_activity_visit_summary" translatable="false">VisitSummaryActivity</string>
     <string name="title_activity_past_medical_history" translatable="false">PastMedicalHistoryActivity</string>
@@ -440,7 +443,7 @@
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">Please select an option</string>
     <string name="temperature_f">Temperature (F)</string>
-    <string name="sync_now">Sync Now</string>
+    <string name="sync_now">Refresh Now</string>
     <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
@@ -453,7 +456,7 @@
     <string name="invalid_url">Invalid URL</string>
     <string name="years">years</string>
     <string name="months">months</string>
-    <string name="please_wait_till_sync_is_completed">Please wait till sync is completed</string>
+    <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
     <string name="patient_name">Patient name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
@@ -476,7 +479,7 @@
     <string name="health_worker">Health worker</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
-    <string name="sync">Sync</string>
+    <string name="sync">Refresh</string>
     <string name="update_protocols">Update Protocols</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
@@ -488,17 +491,17 @@
     <string name="active">Active</string>
     <string name="closed">Closed</string>
 
-    <string name="syncInProgress">Sync in progress</string>
+    <string name="syncInProgress">Refresh in progress</string>
     <string name="please_wait">Please wait...</string>
-    <string name="sync_notif_title">sync</string>
-    <string name="sync_background_completed">syncBackground Completed</string>
-    <string name="sync_not_available">Sync not available</string>
+    <string name="sync_notif_title">refresh</string>
+    <string name="sync_background_completed">refreshBackground Completed</string>
+    <string name="sync_not_available">Refresh not available</string>
     <string name="please_connect_to_internet">Please connect to an internet connection!</string>
     <string name="image_upload">ImageUpload</string>
     <string name="image_upload_failed">ImageUpload failed</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
-    <string name="lastsync_normal">Last sync</string>
+    <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
     <string name="error">Error</string>
@@ -523,15 +526,15 @@
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
-    <string name="syncing_visitDialog">Syncing</string>
-    <string name="successfully_synced_notif">Successfully synced</string>
+    <string name="syncing_visitDialog">Refreshing</string>
+    <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
     <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
-    <string name="last_synced">Last Synced - </string>
+    <string name="last_synced">Last Refreshed - </string>
     <string name="today_visits">Today\'s Visits</string>
     <string name="active_visits">Active Visits</string>
     <string name="day">day</string>
@@ -539,8 +542,8 @@
     <string name="minute">minute</string>
     <string name="s">s</string>
     <string name="ago">ago</string>
-    <string name="successfully_synced">Successfully synced</string>
-    <string name="failed_synced"><![CDATA[Failed synced, check your internet connection]]></string>
+    <string name="successfully_synced">Successfully refreshed</string>
+    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="upload_started">Uploading...</string>
     <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
@@ -554,6 +557,8 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
     <!--New Ayu Related Changes-->
@@ -574,7 +579,7 @@
     <string name="skip">skip</string>
     <string name="start">Start</string>
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
-    <string name="custom_setup">Custom setup</string>
+    <string name="custom_setup">Setup</string>
     <string name="demo_version">Demo version</string>
     <string name="sample_text">sample text</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
@@ -626,5 +631,30 @@
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
+    <string name="refresh">Refresh</string>
+    <string name="family_member">Family Member</string>
+    <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="document_">"Document - "</string>
+    <string name="gender">Gender</string>
+    <string name="are_you_head_of_the_family">Are you Head of the Family?</string>
+    <string name="what_is_your_occupation">What is your occupation?</string>
+    <string name="do_you_have_a_bank_account">Do you have a bank account?</string>
+    <string name="what_kind_of_mobile_phone_do_you_personally_own">What kind of mobile phone do you personally own?</string>
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">Do you or any of your family member use WhatsApp?</string>
+    <string name="total_number_of_members_in_the_household">Total number of members in the household</string>
+    <string name="enter_number">Enter Number</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">How many members usually live in your household or are staying with you now</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">What do you do to make drinking water safer?</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">How long does it take to go there, get water, and come back in one trip?</string>
+    <string name="declined">Declined to answer</string>
+    <string name="enter_time">Enter Time</string>
+    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">In the past two weeks, was the water from this source not available for at least one full day?</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
+    <string name="select_the_structure_of_house">Select the structure of house</string>
+    <string name="how_much_hectars_of_cultivable_land_your_family_owns">How much hectars of cultivable land your family owns?</string>
+    <string name="enter_answer">Enter Answer</string>
+    <string name="enter_occupation">Enter Occupation</string>
+    <string name="select">Select</string>
 
 </resources>
