@@ -14,7 +14,6 @@
 
 package app.intelehealth.client.utilities;
 
-import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.io.File;
