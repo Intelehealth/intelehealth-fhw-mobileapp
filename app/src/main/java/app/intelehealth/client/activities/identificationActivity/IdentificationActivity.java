@@ -906,7 +906,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //Houselhold Head...
-            if (sessionManager.getHOH_checkbox()) {
+            if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
+            && !patient1.getNo_of_family_members().isEmpty()) {
                 familyhead_checkbox.setChecked(true);
                 cardview_household.setVisibility(View.VISIBLE);
                 //sessionManager.setHOH_checkbox(false);
@@ -2217,8 +2218,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
                     // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En(time_water_checkbox.getText().toString()));
-                    Log.d("HOH", "time to bring water: " + time_water_checkbox.getText().toString());
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(time_water_checkbox.getText().toString())); //hi to en and vice-versa...
+                    Log.d("HOH", "time to bring water:create " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
@@ -2295,7 +2296,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Family Cultivable Land"));
                     //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En(hectars_land_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(hectars_land_checkbox.getText().toString()));
                     Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -2310,12 +2311,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 }
 
-                sessionManager.setHOH_checkbox(true);
-                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
+               // sessionManager.setHOH_checkbox(true);
+               // Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
 
             } else {
-                sessionManager.setHOH_checkbox(false);
-                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
+               // sessionManager.setHOH_checkbox(false);
+              //  Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
             }
             //end of checking if the family head checkbox is checked or not...
 
@@ -2929,8 +2930,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Time Drinking Water Source"));
                     // patientAttributesDTO.setValue(StringUtils.getValue(time_water_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En(time_water_checkbox.getText().toString()));
-                    Log.d("HOH", "time to bring water: " + time_water_checkbox.getText().toString());
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(time_water_checkbox.getText().toString()));
+                    Log.d("HOH", "time to bring water_edit: " + time_water_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
                     //User enters value here...
@@ -3007,7 +3008,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO
                             .getUuidForAttribute("Family Cultivable Land"));
                     //  patientAttributesDTO.setValue(StringUtils.getValue(hectars_land_checkbox.getText().toString()));
-                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En(hectars_land_checkbox.getText().toString()));
+                    patientAttributesDTO.setValue(StringUtils.getCheckbox_Hi_En_Hi(hectars_land_checkbox.getText().toString()));
                     Log.d("HOH", "Hectars: " + hectars_land_checkbox.getText().toString());
                     patientAttributesDTOList.add(patientAttributesDTO);
                 } else {
@@ -3022,12 +3023,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 }
 
-                sessionManager.setHOH_checkbox(true);
-                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
+//                sessionManager.setHOH_checkbox(true);
+//                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
 
             } else {
-                sessionManager.setHOH_checkbox(false);
-                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
+//                sessionManager.setHOH_checkbox(false);
+//                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
             }
             //end of checking if the family head checkbox is checked or not...
 

@@ -153,7 +153,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String getCheckbox_Hi_En(String checkbox_text) {
+    public static String getCheckbox_Hi_En_Hi(String checkbox_text) {
         String val = "";
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -165,6 +165,9 @@ public final class StringUtils {
                 default:
                      return val;
             }
+        }
+        else {
+            val = "Declined to answer";
         }
 
         return val;
