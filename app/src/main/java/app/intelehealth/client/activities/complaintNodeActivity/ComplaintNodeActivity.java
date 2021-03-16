@@ -134,6 +134,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 confirmComplaints();
             }
         });
