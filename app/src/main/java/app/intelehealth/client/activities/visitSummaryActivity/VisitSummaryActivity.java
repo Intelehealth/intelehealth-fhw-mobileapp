@@ -1887,7 +1887,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
                 .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
-                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
+                        medicalAdviceTextView.getText().toString().lastIndexOf("User") + 6).toString();
         //lastIndexOf("User") will give index of U of User
         //so the char this will return is U...here User + 6 will return W eg: User\n\nWatch as +6 will give W
 
@@ -1972,7 +1972,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                  //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
 
@@ -2222,7 +2222,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
                 .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
-                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
+                        medicalAdviceTextView.getText().toString().lastIndexOf("User") + 6).toString();
         //lastIndexOf("User") will give index of U of User
         //so the char this will return is U...here User + 6 will return W eg: User\n\nWatch as +6 will give W
 
@@ -2307,8 +2307,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                 //   "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
-                 //   getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    //   "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
+                    //   getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
@@ -3289,8 +3289,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                  * variable a contains the hyperlink sent from webside.
                  * variable b contains the string data (medical advice) of patient.
                  * */
-           //     medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
-             //   medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n", "<br><br>")));
+                //     medicalAdvice_string = medicalAdvice_string.replace("\n\n", "\n");
+                //   medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink + medicalAdvice_string.replaceAll("\n", "<br><br>")));
 
 
                 adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
@@ -3376,7 +3376,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
                     + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
-                  //  "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    //  "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
 
