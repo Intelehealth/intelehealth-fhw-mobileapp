@@ -8,8 +8,10 @@ import android.content.Intent;
 import androidx.appcompat.app.AlertDialog;
 
 import android.os.Build;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -810,6 +812,9 @@ public class Node implements Serializable {
             case "number":
                 askNumber(questionNode, context, adapter);
                 break;
+            case "decimal":
+                askDecimal(questionNode, context, adapter);
+                break;
             case "area":
                 askArea(questionNode, context, adapter);
                 break;
@@ -826,6 +831,84 @@ public class Node implements Serializable {
                 openCamera(context, imagePath, imageName);
                 break;
         }
+    }
+
+    //This function allows support for keypad with decimal support for main level questions...
+    private static void askDecimal(Node node, Activity context, QuestionsAdapter adapter) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setTitle(R.string.question_number_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_number_decimal_keypad, null);
+        numberDialog.setView(convertView);
+
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value_decimal);
+       // et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
+        //  et_enter_value.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_CLASS_NUMBER);
+
+        et_enter_value.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(1000) ||
+                    Double.valueOf(s.toString()) < Double.valueOf(1)) {
+                        // Toast.makeText(context, "not > than 1000", Toast.LENGTH_SHORT).show();
+                        et_enter_value.setError(context.getString(R.string.enter_valid_input));
+                        et_enter_value.setText("");
+                    } else {
+                        et_enter_value.setError(null);
+                    }
+
+                } else {
+                    //do nothing....
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (et_enter_value.getText().toString().startsWith(".")) {
+                    et_enter_value.setText("");
+                } else {
+
+                }
+            }
+        });
+
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               /* numberPicker.setValue(numberPicker.getValue());
+                String value = String.valueOf(numberPicker.getValue());*/
+                String value = et_enter_value.getText().toString();
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                node.setSelected(true);
+                adapter.notifyDataSetChanged();
+
+                dialog.dismiss();
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
     }
 
     public static void openCamera(Activity activity, String imagePath, String imageName) {
@@ -1211,6 +1294,9 @@ public class Node implements Serializable {
             case "number":
                 subAskNumber(questionNode, context, adapter);
                 break;
+            case "decimal":
+                subAskDecimal(questionNode, context, adapter);
+                break;
             case "area":
                 subAskArea(questionNode, context, adapter);
                 break;
@@ -1227,6 +1313,86 @@ public class Node implements Serializable {
                 openCamera(context, imagePath, imageName);
                 break;
         }
+    }
+
+    //This function allows support for keypad with decimal support for sub level questions...
+    private static void subAskDecimal(Node node, Activity context, CustomArrayAdapter adapter) {
+
+        final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+        numberDialog.setTitle(R.string.question_number_picker);
+        final LayoutInflater inflater = context.getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.dialog_number_decimal_keypad, null);
+        numberDialog.setView(convertView);
+
+        EditText et_enter_value = convertView.findViewById(R.id.et_enter_value_decimal);
+       // et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
+        //  et_enter_value.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL|InputType.TYPE_CLASS_NUMBER);
+
+        et_enter_value.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(1000) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(1)) {
+                        // Toast.makeText(context, "not > than 1000", Toast.LENGTH_SHORT).show();
+                        et_enter_value.setError(context.getString(R.string.enter_valid_input));
+                        et_enter_value.setText("");
+                    } else {
+                        et_enter_value.setError(null);
+                    }
+
+                } else {
+                    // flag_height = 0;
+                    // mBMI.getText().clear();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (et_enter_value.getText().toString().startsWith(".")) {
+                    et_enter_value.setText("");
+                } else {
+
+                }
+            }
+        });
+
+
+
+        numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //numberPicker.setValue(numberPicker.getValue());
+                // String value = String.valueOf(numberPicker.getValue());
+                String value = et_enter_value.getText().toString();
+                Log.d("val", "val: "+value);
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", value));
+                } else {
+                    node.addLanguage(" " + value);
+                    node.setText(value);
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                node.setSelected(true);
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+        numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+        AlertDialog dialog = numberDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
     }
 
     public static void subAskArea(final Node node, Activity context, final CustomArrayAdapter adapter) {
