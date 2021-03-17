@@ -22,10 +22,26 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
 
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
 
-        imagesPushDAO.patientProfileImagesPush();
-//        imagesPushDAO.obsImagesPush();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Pull data Started");
+                syncDAO.pullData_Background(IntelehealthApplication.getAppContext()); //only this new function duplicate
+                Logger.logD(TAG, "Pull data ended");
+            }
+        }, 3000);
+
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Patient Profile Image Push Started");
+                imagesPushDAO.patientProfileImagesPush();
+                Logger.logD(TAG, "Patient Profile  Image push ended");
+            }
+        }, 6000);
+
 
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()
@@ -33,17 +49,26 @@ public class SyncUtils {
          * worker thread (non-ui thread) and the image push is executing on the
          * ui thread.
          */
-        final Handler handler_background = new Handler(Looper.getMainLooper());
-        handler_background.postDelayed(new Runnable() {
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 Logger.logD(TAG, "Background Image Push Started");
                 imagesPushDAO.obsImagesPush();
-                Logger.logD(TAG, "Background Image Pull ended");
+                Logger.logD(TAG, "Background Image push ended");
             }
-        }, 3000);
+        }, 9000);
 
-        imagesPushDAO.deleteObsImage();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Logger.logD(TAG, "Background Image delete Started");
+                imagesPushDAO.deleteObsImage();
+                Logger.logD(TAG, "Background Image delete ended");
+            }
+        }, 12000);
+
+
 
         NotificationUtils notificationUtils = new NotificationUtils();
         notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
@@ -56,18 +81,29 @@ public class SyncUtils {
 
     }
 
+    /**
+     * This method will be responsible for initial sync/setup
+     * @param fromActivity
+     */
+    public void initialSync(String fromActivity) {
+
+        SyncDAO syncDAO = new SyncDAO();
+        Logger.logD(TAG, "Pull Started");
+        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+        Logger.logD(TAG, "Pull ended");
+
+    }
     public boolean syncForeground(String fromActivity) {
         boolean isSynced = false;
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
         isSynced = syncDAO.pushDataApi();
-        Logger.logD(TAG, "Push ended");
+        Logger.logD(TAG, "Push ended " + isSynced);
 
 
 //        need to add delay for pulling the obs correctly
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
@@ -76,26 +112,36 @@ public class SyncUtils {
             }
         }, 3000);
 
-        imagesPushDAO.patientProfileImagesPush();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                imagesPushDAO.patientProfileImagesPush();
+            }
+        }, 6000);
+
 
 //        imagesPushDAO.obsImagesPush();
-        
+
         /*
          * Handler is added for pushing image in sync foreground
          * to fix the issue of Phy exam and additional images not showing up sometimes
          * on the webapp (doctor portal).
          * */
-        final Handler handler_foreground = new Handler();
-        handler_foreground.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Logger.logD(TAG, "Image Push Started");
                 imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Image Pull ended");
             }
-        }, 3000);
+        }, 9000);
 
-        imagesPushDAO.deleteObsImage();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                imagesPushDAO.deleteObsImage();
+            }
+        }, 12000);
 
 
         WorkManager.getInstance()

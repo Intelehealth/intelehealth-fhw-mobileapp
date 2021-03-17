@@ -656,5 +656,7 @@
     <string name="enter_answer">Enter Answer</string>
     <string name="enter_occupation">Enter Occupation</string>
     <string name="select">Select</string>
+    <!--@lincon-->
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
 
 </resources>

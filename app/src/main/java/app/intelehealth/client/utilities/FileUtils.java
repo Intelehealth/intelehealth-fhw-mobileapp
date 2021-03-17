@@ -91,7 +91,7 @@ public class FileUtils {
         }
         try {
             encoded = new JSONObject(raw_json);
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             Toast.makeText(context, "config file is missing", Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }

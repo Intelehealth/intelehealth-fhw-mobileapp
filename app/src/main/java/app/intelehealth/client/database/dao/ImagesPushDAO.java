@@ -1,5 +1,6 @@
 package app.intelehealth.client.database.dao;
 
+import android.content.Intent;
 import android.util.Log;
 
 
@@ -49,6 +50,7 @@ public class ImagesPushDAO {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+        Logger.logD("url", url);
         for (PatientProfile p : patientProfiles) {
             Single<ResponseBody> personProfilePicUpload = AppConstants.apiInterface.PERSON_PROFILE_PIC_UPLOAD(url, "Basic " + encoded, p);
             personProfilePicUpload.subscribeOn(Schedulers.io())
@@ -73,6 +75,8 @@ public class ImagesPushDAO {
                     });
         }
         sessionManager.setPullSyncFinished(true);
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }
@@ -85,6 +89,7 @@ public class ImagesPushDAO {
         UrlModifiers urlModifiers = new UrlModifiers();
         ImagesDAO imagesDAO = new ImagesDAO();
         String url = urlModifiers.setObsImageUrl();
+        Logger.logD("url", url);
         List<ObsPushDTO> obsImageJsons = new ArrayList<>();
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
@@ -130,6 +135,8 @@ public class ImagesPushDAO {
                     });
         }
         sessionManager.setPushSyncFinished(true);
+        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
     }
