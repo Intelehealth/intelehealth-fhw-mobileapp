@@ -17,12 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +28,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -73,7 +71,6 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.OfflineLogin;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -176,7 +173,7 @@ public class HomeActivity extends AppCompatActivity {
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
-       // manualSyncButton.setText(R.string.sync_now);
+        // manualSyncButton.setText(R.string.sync_now);
         manualSyncButton.setText(R.string.refresh);
 
         //Help section of watsapp...
@@ -314,19 +311,15 @@ public class HomeActivity extends AppCompatActivity {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
 
-            if(obj.has("video_library"))
-            {
+            if (obj.has("video_library")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri.parse(obj.getString("video_library"));
                 intent.setData(uri);
                 startActivity(intent);
-            }
-            else
-            {
+            } else {
                 Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
@@ -412,71 +405,70 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.updateProtocolsOption: {
 
 
-                if (NetworkConnection.isOnline(this))
-                {
+                if (NetworkConnection.isOnline(this)) {
 
-                    if (!sessionManager.getLicenseKey().isEmpty()) {
+                    /*if (!sessionManager.getLicenseKey().isEmpty()) {
 
                         String licenseUrl = sessionManager.getMindMapServerUrl();
                         String licenseKey = sessionManager.getLicenseKey();
                         getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
 
-                    } else {
-                        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
-                        // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-                        LayoutInflater li = LayoutInflater.from(this);
-                        View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                        dialog.setTitle(getString(R.string.enter_license_key))
-                                .setView(promptsView)
-                                .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                    } else {*/
+                    MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+                    // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+                    LayoutInflater li = LayoutInflater.from(this);
+                    View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
+                    dialog.setTitle(getString(R.string.enter_license_key))
+                            .setView(promptsView)
+                            .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                        Dialog d = (Dialog) dialog;
+                                    Dialog d = (Dialog) dialog;
 
-                                        EditText etURL = d.findViewById(R.id.licenseurl);
-                                        EditText etKey = d.findViewById(R.id.licensekey);
-                                        String url = etURL.getText().toString().trim();
-                                        String key = etKey.getText().toString().trim();
+                                    EditText etURL = d.findViewById(R.id.licenseurl);
+                                    EditText etKey = d.findViewById(R.id.licensekey);
+                                    String url = etURL.getText().toString().trim();
+                                    String key = etKey.getText().toString().trim();
 
-                                        if (url.isEmpty()) {
-                                            etURL.setError(getResources().getString(R.string.enter_server_url));
-                                            etURL.requestFocus();
-                                            return;
-                                        }
-                                        if (url.contains(":")) {
-                                            etURL.setError(getResources().getString(R.string.invalid_url));
-                                            etURL.requestFocus();
-                                            return;
-                                        }
-                                        if (key.isEmpty()) {
-                                            etKey.setError(getResources().getString(R.string.enter_license_key));
-                                            etKey.requestFocus();
-                                            return;
-                                        }
-
-                                        sessionManager.setMindMapServerUrl(url);
-                                        getMindmapDownloadURL("https://" + url + ":3004/", key);
-
+                                    if (url.isEmpty()) {
+                                        etURL.setError(getResources().getString(R.string.enter_server_url));
+                                        etURL.requestFocus();
+                                        return;
                                     }
-                                })
-                                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
+                                    if (url.contains(":")) {
+                                        etURL.setError(getResources().getString(R.string.invalid_url));
+                                        etURL.requestFocus();
+                                        return;
                                     }
-                                });
-                        Dialog builderDialog = dialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
+                                    if (key.isEmpty()) {
+                                        etKey.setError(getResources().getString(R.string.enter_license_key));
+                                        etKey.requestFocus();
+                                        return;
+                                    }
 
-                    }
+                                    sessionManager.setMindMapServerUrl(url);
+                                    getMindmapDownloadURL("https://" + url + ":3004/", key);
 
-            }else{
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    Dialog builderDialog = dialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
+
+                    // }
+
+                } else {
                     Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
-        }
+            }
 
          /*   case R.id.sync:
 //                pullDataDAO.pullData(this);
