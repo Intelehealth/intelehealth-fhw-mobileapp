@@ -56,8 +56,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
-import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
-import app.intelehealth.client.activities.activePatientsActivity.ActivePatientAdapter;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
 import app.intelehealth.client.database.dao.EncounterDAO;
