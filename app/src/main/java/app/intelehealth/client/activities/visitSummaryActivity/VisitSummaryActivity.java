@@ -598,8 +598,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 else
                 {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage(R.string.download_prescription_first_before_sharing);
-                    alertDialog.setPositiveButton(R.string.ok,
+                    alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
