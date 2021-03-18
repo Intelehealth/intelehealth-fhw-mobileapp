@@ -358,14 +358,14 @@
 
     <!-- Vitals Screen Error-->
 
-    <string name="weight_error">वजन %1$s किलो से कम होना चाहिए</string>
-    <string name="height_error">ऊंचाई 0 और %1$s सेमी के बीच होनी चाहिए चाहिए</string>
-    <string name="spo2_error">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="pulse_error">पल्स %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="bpsys_error">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="bpdia_error">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="resp_error">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
-    <string name="temp_error">तापमान %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="weight_error" translatable="false">वजन %1$s किलो से कम होना चाहिए</string>
+    <string name="height_error" translatable="false">ऊंचाई 0 और %1$s सेमी के बीच होनी चाहिए चाहिए</string>
+    <string name="spo2_error" translatable="false">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="pulse_error" translatable="false">पल्स %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="bpsys_error" translatable="false">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="bpdia_error" translatable="false">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="resp_error" translatable="false">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
+    <string name="temp_error" translatable="false">तापमान %1$s और %2$s के बीच होना चाहिए</string>
 
     <string name="not_provided">नहीं दिया गया</string>
 
