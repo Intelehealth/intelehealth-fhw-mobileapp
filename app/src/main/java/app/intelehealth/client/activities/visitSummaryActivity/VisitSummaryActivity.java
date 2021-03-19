@@ -703,6 +703,61 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         }
+        flag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flag.isChecked()) {
+                    MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                    alertdialogBuilder.setMessage("Do you want to set this visit as an Emergency?");
+                    alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //here set emergency as True for this visit...
+                            try {
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.setEmergency(visitUuid, true);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+                            dialogInterface.dismiss(); //close the dialog
+                            //    flag.setChecked(true); //check the dialog here...
+                        }
+                    });
+                    alertdialogBuilder.setNegativeButton(R.string.generic_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.setEmergency(visitUuid, false);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+
+                            flag.setChecked(false); //uncheck the checkbox here...
+                            dialog.dismiss(); //dialog is closed...
+                        }
+                    });
+                    AlertDialog alertDialog = alertdialogBuilder.create();
+                    alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false); //dialog will not close when clicked outside...
+
+                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+                }
+                else {
+                    try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, false);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+                }
+            }
+        });
+/*
         flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -761,6 +816,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
         });
+*/
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
