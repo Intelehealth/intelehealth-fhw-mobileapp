@@ -87,12 +87,12 @@
     </string-array>
 
     <string-array name="caste_or">
-        <item>Select</item>
-        <item>General</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
+        <item>ଚୟନ କରନ୍ତୁ</item>
+        <item>ସାଧାରଣ</item>
+        <item>ଅନ୍ୟାନ୍ୟ ପଛୁଆ ବର୍ଗ</item>
+        <item>ଅନୁସୂଚିତ ଜାତି</item>
+        <item>ଅନୁସୂଚିତ ଜନଜାତି</item>
+        <item>ଅନ୍ୟାନ୍ୟ</item>
     </string-array>
 
     <string-array name="caste_hi">
@@ -112,8 +112,8 @@
 
     <string-array name="economic_or">
         <item>ଚୟନ</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ</item>
+        <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ</item>
     </string-array>
 
     <string-array name="economic_cb">

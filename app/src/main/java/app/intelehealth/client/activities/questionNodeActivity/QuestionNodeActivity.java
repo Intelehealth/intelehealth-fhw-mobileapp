@@ -608,7 +608,26 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        //language ui
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String a = currentNode.formQuestionAnswer(0);
+            Log.d("tag", a);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question Not Answered", "सवाल का जवाब नहीं दिया")
+                    .replace("Patient reports -", "पेशेंट ने सूचित किया -")
+                    .replace("Patient denies -", "पेशेंट ने मना कर दिया -")));
+        }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question Not Answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
+                    .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
+                    .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")));
+        }
+        else {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        }
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

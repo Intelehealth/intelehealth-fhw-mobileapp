@@ -315,6 +315,11 @@
     <string name="privacy_notice_title">ଗୋପନୀୟତା ନୋଟିସ୍</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
 
+    <string name="pulse_error">ସ୍ଫନ୍ଦନ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="bpsys_error">ସିଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="bpdia_error">ଡାୟାଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="resp_error">शଶ୍ୱାସକ୍ରିୟା ହାର %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="temp_error">ତାପମାତ୍ରା %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="not_provided" translatable="false">Not provided</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
@@ -482,18 +487,18 @@
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
-    <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Sevika) confirm that I have read out the privacy notice and consent to the patient.</string>
-    <string name="enter_10_digits">Enter 10 digits</string>
-    <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
-    <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="share">Share</string>
-    <string name="view_print">View/Print</string>
-    <string name="refresh">Refresh</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="enter_mobile_number_to_share_prescription">ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କର ଯେଉଁଥିରେ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ଅଂଶୀଦାର କରିବାକୁ ଚାହୁଁଛନ୍ତି |</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସେଭିକା) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ନୋଟିସ୍ ପ the ିଛି ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
+    <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="please_read_out_privacy_consent_first">ଦୟାକରି ପ୍ରଥମେ ଗୋପନୀୟତା ସମ୍ମତି ପଢ଼ିନିଅନ୍ତୁ .</string>
+    <string name="download_prescription_first_before_sharing">ବାଣ୍ଟିବା ପୂର୍ବରୁ ପ୍ରଥମେ ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ |</string>
+    <string name="share">ଶେୟାର୍</string>
+    <string name="view_print">ଦେଖନ୍ତୁ/ପ୍ରିଣ୍ଟ କରନ୍ତୁ</string>
+    <string name="refresh">ରିଫ୍ରେଶ୍</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, Intelehealth ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ |"</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
-    <string name="family_member">Family Member</string>
-    <string name="no_family_member_registered">No Family Member Registered</string>
+    <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
+    <string name="no_family_member_registered">କ Family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
     <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
 
 </resources>
