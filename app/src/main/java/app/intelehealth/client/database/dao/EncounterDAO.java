@@ -216,7 +216,7 @@ public class EncounterDAO {
         String whereclause = "visituuid = ? AND encounter_type_uuid = ? ";
         String[] whereargs = {visitUuid, emergency_uuid};
         try {
-            values.put("voided", "1");
+            values.put("voided", "1"); //visit will be shown in Awaiting consult...
             values.put("sync", false);
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD("encounter", "description" + i);
@@ -234,7 +234,7 @@ public class EncounterDAO {
             EncounterDTO encounterDTO = new EncounterDTO();
             encounterDTO.setUuid(encounteruuid);
             encounterDTO.setVisituuid(visitUuid);
-            encounterDTO.setVoided(0);
+            encounterDTO.setVoided(0); //visit will be shown in Priority Consult...
             encounterDTO.setEncounterTypeUuid(emergency_uuid);
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setSyncd(false);
@@ -265,10 +265,12 @@ public class EncounterDAO {
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+                    return uuid;
                 }
             }
             idCursor.close();
             db.setTransactionSuccessful();
+
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
@@ -276,6 +278,30 @@ public class EncounterDAO {
             db.endTransaction();
 
         }
+
+        //for new visit or already uplaoded visit checking...
+       /* try {
+            Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='1' COLLATE NOCASE", new String[]{visitUuid, encounterType});
+
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                   // uuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+                    uuid = "no priority visit";
+                    return uuid;
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        finally {
+            db.endTransaction();
+        }
+*/
+        Log.d("uuid", "uuid: "+uuid);
         return uuid;
     }
 

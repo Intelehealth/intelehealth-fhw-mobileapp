@@ -621,17 +621,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
         flag = findViewById(R.id.flaggedcheckbox);
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String emergencyUuid = "";
-        try {
-            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
 
-        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
-            flag.setChecked(true);
-        }
+
+//        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+//            //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
+//            flag.setChecked(true);
+//            flag.setEnabled(false);
+//        }
+//        else if() {
+//            flag.setChecked(false);
+//            flag.setEnabled(false);
+//        }
+//        else {
+//            flag.setChecked(false); //new visit from phy exam or else if old visit but still it will come here
+        //as without prio upload -> no row added in db of emergency enc Also, for new visit no row will already be there for enc emergency...
+//            flag.setEnabled(false);
+//        }
 
         physicalDoumentsUpdates();
 
@@ -698,17 +703,120 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
         }
-        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        flag.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                try {
-                    EncounterDAO encounterDAO = new EncounterDAO();
-                    encounterDAO.setEmergency(visitUuid, isChecked);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+            public void onClick(View v) {
+                if(flag.isChecked()) {
+                    MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                    alertdialogBuilder.setMessage("Do you want to set this visit as an Emergency?");
+                    alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //here set emergency as True for this visit...
+                            try {
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.setEmergency(visitUuid, true);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+                            dialogInterface.dismiss(); //close the dialog
+                            //    flag.setChecked(true); //check the dialog here...
+                        }
+                    });
+                    alertdialogBuilder.setNegativeButton(R.string.generic_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.setEmergency(visitUuid, false);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+
+                            flag.setChecked(false); //uncheck the checkbox here...
+                            dialog.dismiss(); //dialog is closed...
+                        }
+                    });
+                    AlertDialog alertDialog = alertdialogBuilder.create();
+                    alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false); //dialog will not close when clicked outside...
+
+                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+                }
+                else {
+                    try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, false);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
             }
         });
+/*
+        flag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Log.d("check", "checked: "+ isChecked);
+
+                //If user ticks the checkbox then show a dialog box...
+                if(isChecked) {
+                    MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                    alertdialogBuilder.setMessage("Do you want to set this visit as an Emergency?");
+                    alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //here set emergency as True for this visit...
+                            try {
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.setEmergency(visitUuid, isChecked);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+                            dialogInterface.dismiss(); //close the dialog
+                        //    flag.setChecked(true); //check the dialog here...
+                        }
+                    });
+                    alertdialogBuilder.setNegativeButton(R.string.generic_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            try {
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.setEmergency(visitUuid, false);
+                            } catch (DAOException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
+                            }
+
+                            flag.setChecked(false); //uncheck the checkbox here...
+                            dialog.dismiss(); //dialog is closed...
+                        }
+                    });
+                    AlertDialog alertDialog = alertdialogBuilder.create();
+                    alertDialog.show();
+                    alertDialog.setCanceledOnTouchOutside(false); //dialog will not close when clicked outside...
+
+                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+                }
+                else {
+                    try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, isChecked);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+                }
+
+            }
+        });
+*/
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -745,10 +853,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     try {
                         EncounterDAO encounterDAO = new EncounterDAO();
                         encounterDAO.setEmergency(visitUuid, true);
+
+                        //here disable the checkbox...
+                        flag.setEnabled(false);
+
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                 }
+                else {
+                    //here if checkbox is not selected still disable the checkbox...
+                    flag.setEnabled(false);
+
+                   /* try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, false);
+
+                        //here disable the checkbox...
+                        flag.setEnabled(false);
+
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }*/
+                }
+
+
                 if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     String patientSelection = "uuid = ?";
                     String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -1402,6 +1531,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String emergencyUuid = "";
+        try {
+            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //visit is uploaded to server checking in this case the checkbox will be disabled...
+        if(!isSynedFlag.equalsIgnoreCase("0")) {
+            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+                //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
+                flag.setChecked(true);
+                flag.setEnabled(false);
+            }
+            else {
+                flag.setChecked(false);
+                flag.setEnabled(false);
+            }
+        }
+        else{
+            //to set the checkbox as checked in offline mode so that i can be modified later...
+            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+                //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
+                flag.setChecked(true);
+            }
+            else { flag.setChecked(false); }
+        }
     }
 
     /**
