@@ -22,4 +22,12 @@
         android:inputType="number"
         android:fontFamily="@font/lato_regular"/>
 
+<!--  <EditText-->
+<!--      android:id="@+id/et_enter_value_decimal"-->
+<!--      android:layout_width="match_parent"-->
+<!--      android:layout_height="wrap_content"-->
+<!--      android:inputType="numberDecimal"-->
+<!--      android:fontFamily="@font/lato_regular"/>-->
+
+
 </LinearLayout>
