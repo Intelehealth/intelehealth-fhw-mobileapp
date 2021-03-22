@@ -3,7 +3,6 @@ package app.intelehealth.client.database.dao;
 import android.content.Intent;
 import android.util.Log;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -11,14 +10,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.intelehealth.client.utilities.Logger;
-import app.intelehealth.client.utilities.SessionManager;
-import app.intelehealth.client.utilities.UrlModifiers;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.models.ObsImageModel.ObsJsonResponse;
 import app.intelehealth.client.models.ObsImageModel.ObsPushDTO;
 import app.intelehealth.client.models.patientImageModelRequest.PatientProfile;
+import app.intelehealth.client.utilities.Logger;
+import app.intelehealth.client.utilities.SessionManager;
+import app.intelehealth.client.utilities.UrlModifiers;
 import app.intelehealth.client.utilities.exception.DAOException;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -100,6 +99,7 @@ public class ImagesPushDAO {
 
         int i = 0;
         for (ObsPushDTO p : obsImageJsons) {
+
             //pass it like this
             File file = null;
             file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
@@ -110,6 +110,7 @@ public class ImagesPushDAO {
             Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .retry(3)
                     .subscribe(new DisposableObserver<ObsJsonResponse>() {
                         @Override
                         public void onNext(ObsJsonResponse obsJsonResponse) {
@@ -119,7 +120,7 @@ public class ImagesPushDAO {
 
                         @Override
                         public void onError(Throwable e) {
-                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            Logger.logD(TAG, "onError " + e.getMessage());
 //                            AppConstants.notificationUtils.DownloadDone("Patient Profile", "Error Uploading Patient Profile", IntelehealthApplication.getAppContext());
                         }
 
@@ -133,6 +134,11 @@ public class ImagesPushDAO {
                             }
                         }
                     });
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         sessionManager.setPushSyncFinished(true);
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
