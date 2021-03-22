@@ -628,5 +628,7 @@
     <string name="no_family_member_registered">कोई परिवार का सदस्य पंजीकृत नहीं</string>
     <string name="question_not_answered">प्रश्न का उत्तर नहीं दिया गया है</string>
     <string name="version_settings">संस्करण 1.3</string>
+    <string name="document_">"डाक्यूमेंट - "</string>
 
-0</resources>
+
+    0</resources>
