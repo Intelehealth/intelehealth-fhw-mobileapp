@@ -656,5 +656,10 @@
     <string name="enter_answer">Enter Answer</string>
     <string name="enter_occupation">Enter Occupation</string>
     <string name="select">Select</string>
+    <string name="Hours">Hours</string>
+    <string name="Days">Days</string>
+    <string name="Weeks">Weeks</string>
+    <string name="Months">Months</string>
+    <string name="Years">Years</string>
 
 </resources>
