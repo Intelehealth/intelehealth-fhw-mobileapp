@@ -243,7 +243,7 @@ public class SetupActivity extends AppCompatActivity {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                             String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
-                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
                                 value = getLocationFromServer(BASE_URL); //state wise locations...
                             else
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
