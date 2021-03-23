@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -315,6 +316,10 @@ public class PatientsDAO {
                     cursor.moveToNext();
                 }
             }
+            else if(cursor.getCount() == 0 &&
+                    attributeuuid.equalsIgnoreCase("1c718819-345c-4368-aad6-d69b4c267db7")) {
+                name = "Education Level";
+            }
             cursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -385,11 +390,18 @@ public class PatientsDAO {
         String attributeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
+        Log.d("count", "count: "+cursor.getCount());
+        //cursor.getcount() = -1 if the column doesnt exists...
+        //0 if the row is not present...
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }
         }
+        else if(cursor.getCount() == 0 && attr.equalsIgnoreCase("Education Level")) {
+            attributeUuid = "1c718819-345c-4368-aad6-d69b4c267db7";
+        }
+
         cursor.close();
 
         return attributeUuid;
