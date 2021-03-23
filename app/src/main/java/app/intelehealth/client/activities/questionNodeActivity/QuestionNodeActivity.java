@@ -617,7 +617,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
             .replace("Question not answered", "सवाल का जवाब नहीं दिया")
             .replace("Patient reports -", "पेशेंट ने सूचित किया -")
-            .replace("Patient denies -", "पेशेंट ने मना कर दिया -")));
+            .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
+            .replace("Hours", "घंटे").replace("Days","दिन")
+            .replace("Weeks", "हफ्तों").replace("Months", "महीने")
+            .replace("Years", "वर्षों")));
         }
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
