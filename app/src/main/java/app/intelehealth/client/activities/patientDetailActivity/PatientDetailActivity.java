@@ -1198,8 +1198,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
+                                        Log.d("colon", "colon: "+comp);
                                         visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
+                                        Log.d("colon", "colon_visitvalue: "+visitValue);
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
