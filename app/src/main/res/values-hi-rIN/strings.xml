@@ -656,5 +656,10 @@
     <string name="enter_answer">उत्तर दर्ज करें</string>
     <string name="enter_occupation">व्यवसाय दर्ज करें</string>
     <string name="select">चुनते हैं</string>
+    <string name="Hours">घंटे</string>
+    <string name="Days">दिन</string>
+    <string name="Weeks">हफ्तों</string>
+    <string name="Months">महीने</string>
+    <string name="Years">वर्षों</string>
 
 </resources>
