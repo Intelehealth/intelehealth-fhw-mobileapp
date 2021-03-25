@@ -637,6 +637,8 @@ public class SetupActivity extends AppCompatActivity {
 
             if (village_name != null) {
                 String urlString = mUrlField.getText().toString();
+                mLoginButton.setText(getString(R.string.please_wait_progress));
+                mLoginButton.setEnabled(false);
                 TestSetup(urlString, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
@@ -1065,17 +1067,18 @@ public class SetupActivity extends AppCompatActivity {
     public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
 
         ProgressDialog progress;
+        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
+        ;//SetupActivity.this);
+        progress.setTitle(getString(R.string.please_wait_progress));
+        progress.setMessage(getString(R.string.logging_in));
+        progress.show();
 
         String urlString = urlModifiers.loginUrl(CLEAN_URL);
         Logger.logD(TAG, "usernaem and password" + USERNAME + PASSWORD);
         encoded = base64Utils.encoded(USERNAME, PASSWORD);
         sessionManager.setEncoded(encoded);
 
-        progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
-        ;//SetupActivity.this);
-        progress.setTitle(getString(R.string.please_wait_progress));
-        progress.setMessage(getString(R.string.logging_in));
-        progress.show();
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -1176,7 +1179,7 @@ public class SetupActivity extends AppCompatActivity {
                                             Log.i(TAG, "onPostExecute: Parse init");
                                             Intent intent = new Intent(SetupActivity.this, HomeActivity.class);
                                             intent.putExtra("setup", true);
-                                            if (r2.isChecked()) {
+                                            if (r2.isChecked()) { // License protocol chosen
                                                 if (!sessionManager.getLicenseKey().isEmpty()) {
                                                     sessionManager.setTriggerNoti("no");
                                                     startActivity(intent);
@@ -1184,7 +1187,7 @@ public class SetupActivity extends AppCompatActivity {
                                                 } else {
                                                     Toast.makeText(SetupActivity.this, R.string.please_enter_valid_license_key, Toast.LENGTH_LONG).show();
                                                 }
-                                            } else {
+                                            } else { // demo protocol chosen
                                                 sessionManager.setTriggerNoti("no");
                                                 startActivity(intent);
                                                 finish();
@@ -1217,6 +1220,8 @@ public class SetupActivity extends AppCompatActivity {
                 dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
+                mLoginButton.setText(getString(R.string.action_sign_in));
+                mLoginButton.setEnabled(true);
             }
 
             @Override

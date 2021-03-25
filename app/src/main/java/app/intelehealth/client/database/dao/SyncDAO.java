@@ -1,12 +1,12 @@
 package app.intelehealth.client.database.dao;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
-
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -18,11 +18,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import app.intelehealth.client.utilities.Logger;
-import app.intelehealth.client.utilities.NotificationID;
-import app.intelehealth.client.utilities.PatientsFrameJson;
-import app.intelehealth.client.utilities.SessionManager;
-import app.intelehealth.client.R;;
+import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
@@ -31,6 +27,10 @@ import app.intelehealth.client.models.dto.ResponseDTO;
 import app.intelehealth.client.models.dto.VisitDTO;
 import app.intelehealth.client.models.pushRequestApiCall.PushRequestApiCall;
 import app.intelehealth.client.models.pushResponseApiCall.PushResponseApiCall;
+import app.intelehealth.client.utilities.Logger;
+import app.intelehealth.client.utilities.NotificationID;
+import app.intelehealth.client.utilities.PatientsFrameJson;
+import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.exception.DAOException;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,6 +39,8 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+;
 
 public class SyncDAO {
     public static String TAG = "SyncDAO";
@@ -64,6 +66,18 @@ public class SyncDAO {
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         try {
             Logger.logD(TAG, "pull sync started");
+            Logger.logD(TAG, "***************Record Count Log****************");
+            Logger.logD(TAG, "Patient Count - " + responseDTO.getData().getPatientDTO().size());
+            Logger.logD(TAG, "Patient Attributes Count - " + responseDTO.getData().getPatientAttributesDTO().size());
+            Logger.logD(TAG, "PatientAttributeTypeMaster Count - " + responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
+            Logger.logD(TAG, "Visit Count - " + responseDTO.getData().getVisitDTO().size());
+            Logger.logD(TAG, "Encounter Count - " + responseDTO.getData().getEncounterDTO().size());
+            Logger.logD(TAG, "OBS Count - " + responseDTO.getData().getObsDTO().size());
+            Logger.logD(TAG, "Location Count - " + responseDTO.getData().getLocationDTO().size());
+            Logger.logD(TAG, "Provider Count - " + responseDTO.getData().getProviderlist().size());
+            Logger.logD(TAG, "Provider Attribute Count - " + responseDTO.getData().getProviderAttributeList().size());
+            Logger.logD(TAG, "Visit Attribute Count - " + responseDTO.getData().getVisitAttributeList().size());
+            Logger.logD(TAG, "*******************************");
 
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
@@ -78,7 +92,7 @@ public class SyncDAO {
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //            visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
 
-            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+            //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setPullExcutedTime(sessionManager.isPulled());
             sessionManager.setFirstTimeSyncExecute(false);
@@ -104,7 +118,8 @@ public class SyncDAO {
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
-        Logger.logD("Start pull request", "Started");
+        Logger.logD("Start pull request", "Started ");
+        Logger.logD("url", url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -118,8 +133,10 @@ public class SyncDAO {
                     boolean sync = false;
                     try {
                         sync = SyncData(response.body());
+                        Logger.logD("sync", "" + sync);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        e.printStackTrace();
                     }
                     if (sync) {
                         sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
@@ -132,7 +149,8 @@ public class SyncDAO {
                     }
                     //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
                     else {
-
+                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
                     //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
 
@@ -171,11 +189,15 @@ public class SyncDAO {
                 //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
                 /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
             }
 
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
             }
         });
         sessionManager.setPullSyncFinished(true);
@@ -194,6 +216,7 @@ public class SyncDAO {
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
+        Logger.logD("url", url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -242,6 +265,8 @@ public class SyncDAO {
 //                        else {
 //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
 //                        }
+                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
@@ -279,19 +304,22 @@ public class SyncDAO {
                 //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
                /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
                 IntelehealthApplication.getAppContext().startService(intent);*/
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
             }
 
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
             }
         });
         sessionManager.setPullSyncFinished(true);
         return true;
     }
 
-    public void setLocale(String appLanguage)
-    {
+    public void setLocale(String appLanguage) {
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -365,6 +393,7 @@ public class SyncDAO {
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //        push only happen if any one data exists.
+        Logger.logD("url", url);
         if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
             pushResponseApiCallObservable.subscribeOn(Schedulers.io())
@@ -406,9 +435,13 @@ public class SyncDAO {
                         public void onError(Throwable e) {
                             Logger.logD(TAG, "Onerror " + e.getMessage());
                             isSucess[0] = false;
+                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                         }
                     });
             sessionManager.setPullSyncFinished(true);
+            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
         }
 
         return isSucess[0];
