@@ -1058,7 +1058,12 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
+//        final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
+        final String[] units = new String[]{
+                context.getString(R.string.Hours), context.getString(R.string.Days),
+                context.getString(R.string.Weeks), context.getString(R.string.Months),
+                context.getString(R.string.Years)}; //supports Hindi Translations as well...
+
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
         quantityPicker.setMaxValue(100);
@@ -1069,7 +1074,13 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-                String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //translate back to English from Hindi if present...
+                String unit_text = "";
+                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+                unit_text = or_en(units[unitPicker.getValue()]); //for Odiya...
+
+                String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
@@ -1092,6 +1103,67 @@ public class Node implements Serializable {
         AlertDialog dialog = durationDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
+
+    private static String hi_en(String unit) {
+
+        switch (unit) {
+            case "घंटे":
+                unit = "Hours";
+                break;
+
+            case "दिन":
+                unit = "Days";
+                break;
+
+            case "हफ्तों":
+                unit = "Weeks";
+                break;
+
+            case "महीने":
+                unit = "Months";
+                break;
+
+            case "वर्षों":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String or_en(String unit) {
+
+        switch (unit) {
+            case "घंटे":
+                unit = "Hours";
+                break;
+
+            case "ଦନି":
+                unit = "Days";
+                break;
+
+            case "हफ्तों":
+                unit = "Weeks";
+                break;
+
+            case "महीने":
+                unit = "Months";
+                break;
+
+            case "वर्षों":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);

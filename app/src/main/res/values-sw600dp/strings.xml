@@ -60,5 +60,10 @@
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="family_member">Family Member</string>
     <string name="successfully_synced">Successfully refreshed</string>
+    <string name="Hours">Hours</string>
+    <string name="Days">Days</string>
+    <string name="Weeks">Weeks</string>
+    <string name="Months">Months</string>
+    <string name="Years">Years</string>
 
 </resources>
