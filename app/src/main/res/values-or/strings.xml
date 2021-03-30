@@ -509,6 +509,11 @@
     <string name="Months">ମାସ</string>
     <string name="Years">ବର୍ଷ</string>
     <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ -"</string>
+    <string name="per_Hour">ପ୍ରତି ଘଣ୍ଟା</string>
+    <string name="per_Day">ପ୍ରତିଦିନ</string>
+    <string name="per_Week">ପ୍ରତି ସପ୍ତାହ</string>
+    <string name="per_Month">ପ୍ରତି ମାସରେ |</string>
+    <string name="per_Year">ପ୍ରତିବର୍ଷ</string>
 
 
 </resources>

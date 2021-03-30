@@ -622,6 +622,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Hours", "घंटे").replace("Days","दिन")
                     .replace("Weeks", "हफ्तों").replace("Months", "महीने")
                     .replace("Years", "वर्षों")
+                    .replace("times per hour","प्रति घंटे बार").replace("time per day","प्रति दिन का समय")
+                    .replace("times per week","प्रति सप्ताह बार").replace("times per month","प्रति माह बार")
+                    .replace("times per year","प्रति वर्ष बार")
             ));
         }
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){ //For Odiya...
@@ -632,6 +635,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
                     .replace("Weeks", "ସପ୍ତାହ").replace("Months", "ମାସ")
                     .replace("Years", "ବର୍ଷ")
+                    .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day","ସମୟ ପ୍ରତିଦିନ")
+                    .replace("times per week","ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month","ସମୟ ପ୍ରତି ମାସରେ |")
+                    .replace("times per year","ସମୟ ପ୍ରତିବର୍ଷ")
             ));
         }
         else {
