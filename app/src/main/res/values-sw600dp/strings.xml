@@ -62,5 +62,10 @@
     <string name="successfully_synced">Successfully refreshed</string>
     <string name="document_">"Document - "</string>
 
+    <string name="Hours">Hours</string>
+    <string name="Days">Days</string>
+    <string name="Weeks">Weeks</string>
+    <string name="Months">Months</string>
+    <string name="Years">Years</string>
 
 </resources>
