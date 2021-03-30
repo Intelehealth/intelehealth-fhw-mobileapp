@@ -1078,7 +1078,7 @@ public class Node implements Serializable {
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
-                unit_text = or_en(unit_text); //for Odiya...
+                unit_text = or_en(units[unitPicker.getValue()]); //for Odiya...
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1469,12 +1469,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-      //  final String[] units = context.getResources().getStringArray(R.array.duration_units);
-        final String[] units = new String[]{
-                context.getString(R.string.Hours), context.getString(R.string.Days),
-                context.getString(R.string.Weeks), context.getString(R.string.Months),
-                context.getString(R.string.Years)}; //supports Hindi Translations as well...
-
+        final String[] units = context.getResources().getStringArray(R.array.duration_units);
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
         quantityPicker.setMaxValue(100);
@@ -1485,13 +1480,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
-                //translate back to English from Hindi if present...
-                String unit_text = "";
-                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
-                unit_text = or_en(unit_text); //for Odiya...
-
-                String durationString = quantityPicker.getValue() + " " + unit_text;
+                String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
