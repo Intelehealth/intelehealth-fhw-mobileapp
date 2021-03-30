@@ -661,6 +661,8 @@
     <string name="Weeks">Weeks</string>
     <string name="Months">Months</string>
     <string name="Years">Years</string>
+    <string name="image_saved">Image saved successfully!</string>
+    <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
 
