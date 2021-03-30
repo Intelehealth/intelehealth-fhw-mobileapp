@@ -503,11 +503,11 @@
     <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
     <string name="no_family_member_registered">କ Family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
     <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
-    <string name="Hours">Hours</string>
-    <string name="Days">ଦନି</string>
-    <string name="Weeks">Weeks</string>
-    <string name="Months">Months</string>
-    <string name="Years">Years</string>
+    <string name="Hours">ଘଣ୍ଟା</string>
+    <string name="Days">ଦିନ</string>
+    <string name="Weeks">ସପ୍ତାହ</string>
+    <string name="Months">ମାସ</string>
+    <string name="Years">ବର୍ଷ</string>
     <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ -"</string>
 
 

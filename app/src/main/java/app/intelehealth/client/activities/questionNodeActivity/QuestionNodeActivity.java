@@ -621,14 +621,18 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
                     .replace("Hours", "घंटे").replace("Days","दिन")
                     .replace("Weeks", "हफ्तों").replace("Months", "महीने")
-                    .replace("Years", "वर्षों")));
+                    .replace("Years", "वर्षों")
+            ));
         }
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){ //For Odiya...
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
                     .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
                     .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
-                    .replace("Days", "ଦନି")));
+                    .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
+                    .replace("Weeks", "ସପ୍ତାହ").replace("Months", "ମାସ")
+                    .replace("Years", "ବର୍ଷ")
+            ));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
