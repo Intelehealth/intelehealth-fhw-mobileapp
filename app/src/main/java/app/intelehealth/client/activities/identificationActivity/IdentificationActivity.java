@@ -1202,7 +1202,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         //DOB is set using an AlertDialog
-        Locale.setDefault(Locale.ENGLISH);
+        Locale.setDefault(Locale.forLanguageTag(sessionManager.getAppLanguage()));
 
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -1213,7 +1213,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                Locale.setDefault(Locale.ENGLISH);
+                Locale.setDefault(Locale.forLanguageTag(sessionManager.getAppLanguage()));
                 //Formatted so that it can be read the way the user sets
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                 dob.set(year, monthOfYear, dayOfMonth);
@@ -1234,7 +1234,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgeYears = Integer.valueOf(yearData[0]);
                 mAgeMonths = Integer.valueOf(monthData[1]);
                 mAgeDays = Integer.valueOf(daysData[1]);
-                mAge.setText(age);
+                String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
+                        mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
+                        mAgeDays + getString(R.string.days);
+                mAge.setText(ageString);
+
+//                mAge.setText(age);
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -1350,7 +1355,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         mDOBDay = birthDay;
                     }
-                    Locale.setDefault(Locale.ENGLISH);
+                    Locale.setDefault(Locale.forLanguageTag(sessionManager.getAppLanguage())); //1358, 1237, 1205, 1216
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
