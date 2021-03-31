@@ -524,5 +524,8 @@
     <string name="Weeks">Weeks</string>
     <string name="Months">Months</string>
     <string name="Years">Years</string>
+    <string name="image_saved">ପ୍ରତିଛବି ସଫଳତାର ସହିତ ସଞ୍ଚୟ ହୋଇଛି |</string>
+    <string name="emergency_confirmation">ଆପଣ ଏହି ପରିଦର୍ଶନକୁ ଜରୁରୀକାଳୀନ ପରିସ୍ଥିତି ଭାବରେ ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+
 
 </resources>

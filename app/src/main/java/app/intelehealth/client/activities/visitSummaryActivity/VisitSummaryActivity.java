@@ -708,7 +708,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(flag.isChecked()) {
                     MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                    alertdialogBuilder.setMessage("Do you want to set this visit as an Emergency?");
+                    alertdialogBuilder.setMessage(getResources().getString(R.string.emergency_confirmation));
                     alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {

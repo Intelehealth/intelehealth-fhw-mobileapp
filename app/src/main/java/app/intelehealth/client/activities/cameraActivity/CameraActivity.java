@@ -402,7 +402,7 @@ public class CameraActivity extends AppCompatActivity {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(CameraActivity.this, "Image Saved successfully", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CameraActivity.this, getResources().getString(R.string.image_saved), Toast.LENGTH_SHORT).show();
                                     compressImageAndSave(filePath);
                                 }
                             });

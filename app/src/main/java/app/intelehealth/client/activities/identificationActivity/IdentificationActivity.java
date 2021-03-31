@@ -1222,6 +1222,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBYear = year;
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
+//                mDOB.setText(mDOBDay + getResources().getString(R.));
+
 
                 String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
                 //get years months days
@@ -1234,7 +1236,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgeYears = Integer.valueOf(yearData[0]);
                 mAgeMonths = Integer.valueOf(monthData[1]);
                 mAgeDays = Integer.valueOf(daysData[1]);
-                mAge.setText(age);
+                String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
+                        mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
+                        mAgeDays + getString(R.string.days);
+                mAge.setText(ageString);
+
+//                mAge.setText(age);
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);

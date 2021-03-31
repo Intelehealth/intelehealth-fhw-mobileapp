@@ -661,5 +661,9 @@
     <string name="Weeks">हफ्तों</string>
     <string name="Months">महीने</string>
     <string name="Years">वर्षों</string>
+    <string name="image_saved">छवि सफलतापूर्वक सहेजी गई!</string>
+    <string name="emergency_confirmation">क्या आप इस यात्रा को आपातकाल के रूप में सेट करना चाहते हैं?</string>
+
+
 
 </resources>

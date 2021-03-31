@@ -633,5 +633,9 @@
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="document_">"Document - "</string>
     <string name="gender">Gender</string>
+    <string name="image_saved">Image saved successfully!</string>
+    <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
+
+
 
 </resources>
