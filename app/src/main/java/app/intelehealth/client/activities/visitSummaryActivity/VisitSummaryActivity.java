@@ -374,14 +374,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(R.string.end_visit_msg);
-                    alertDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
+                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
                         }
                     });
-                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -2765,8 +2765,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             Log.d(TAG, "endVisit: null");
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-            alertDialogBuilder.setMessage(getString(R.string.visit_summary_upload_reminder));
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setMessage(getResources().getString(R.string.visit_summary_upload_reminder));
+            alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -3298,7 +3298,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 if (followUpDateCard.getVisibility() == View.VISIBLE) {
                     if (!followUpDateTextView.getText().toString().trim().isEmpty())
-                        body = body + getString(R.string.visit_summary_follow_up_date) + ":" +
+                        body = body + getResources().getString(R.string.visit_summary_follow_up_date) + ":" +
                                 followUpDateTextView.getText().toString() + "\n";
                 }
 
