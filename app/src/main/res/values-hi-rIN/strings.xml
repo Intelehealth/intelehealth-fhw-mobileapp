@@ -107,9 +107,9 @@
     <string name="identification_screen_required_fields" translatable="false">कृपया आवश्यक फ़ील्ड दर्ज करें</string>
     <string name="identification_screen_error_dob" translatable="false">एक वैध जन्मतिथि दर्ज करें</string>
     <string name="identification_screen_error_age" translatable="false">एक मान्य आयु दर्ज करें</string>
-    <string name="identification_screen_text_years" translatable="false"> वर्षों </string>
+    <string name="identification_screen_text_years" translatable="false">वर्ष</string>
     <string name="identification_screen_text_months" translatable="false"> महीने</string>
-    <string name="identification_screen_picker_years" translatable="false">वर्षों</string>
+    <string name="identification_screen_picker_years" translatable="false">वर्ष</string>
     <string name="identification_screen_picker_hours" translatable="false">घंटे</string>
     <string name="identification_screen_picker_months" translatable="false">महीने</string>
     <string name="identification_screen_picker_minute" translatable="false">मिनट</string>
@@ -452,7 +452,7 @@
     <string name="enter_server_url">सर्वर URL दर्ज करें</string>
     <string name="enter_license_key"><b>लाइसेंस नंबर डाले</b></string>
     <string name="invalid_url">अवैध यूआरएल</string>
-    <string name="years">वर्षों</string>
+    <string name="years">वर्ष</string>
     <string name="months">महीने</string>
     <string name="please_wait_till_sync_is_completed">कृपया सिंक पूरी होने तक प्रतीक्षा करें</string>
     <string name="patient_name">पेशेंट का नाम</string>
@@ -660,7 +660,7 @@
     <string name="Days">दिन</string>
     <string name="Weeks">हफ्तों</string>
     <string name="Months">महीने</string>
-    <string name="Years">वर्षों</string>
+    <string name="Years">वर्ष</string>
     <string name="image_saved">छवि सफलतापूर्वक सहेजी गई!</string>
     <string name="emergency_confirmation">क्या आप इस यात्रा को आपातकाल के रूप में सेट करना चाहते हैं?</string>
 
