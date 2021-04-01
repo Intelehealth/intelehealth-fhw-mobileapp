@@ -580,12 +580,48 @@ public class PatientDetailActivity extends AppCompatActivity {
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
-        mGender = patient_new.getGender();
         dobView.setText(dob);
+        mGender = patient_new.getGender();
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
             genderView.setVisibility(View.GONE);
-        } else {
-            genderView.setText(patient_new.getGender());
+        }
+        else {
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            {
+                if(patient_new.getGender().equalsIgnoreCase("M"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+                }
+                else if(patient_new.getGender().equalsIgnoreCase("F"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+                }
+                else
+                {
+                    genderView.setText(patient_new.getGender());
+                }
+            }
+
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+            {
+                if(patient_new.getGender().equalsIgnoreCase("M"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+                }
+                else if(patient_new.getGender().equalsIgnoreCase("F"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+                }
+                else
+                {
+                    genderView.setText(patient_new.getGender());
+                }
+            }
+            else
+            {
+                genderView.setText(patient_new.getGender());
+            }
+
 
         }
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {

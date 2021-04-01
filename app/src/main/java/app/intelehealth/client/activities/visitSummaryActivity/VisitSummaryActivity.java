@@ -901,9 +901,45 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
-
+        String gender_tv = patientGender;
         nameView.setText(patientName);
-        genderView.setText(patientGender);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        {
+            if(gender_tv.equalsIgnoreCase("M"))
+            {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            }
+            else if(gender_tv.equalsIgnoreCase("F"))
+            {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            }
+            else
+            {
+                genderView.setText(gender_tv);
+            }
+        }
+
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+        {
+            if(gender_tv.equalsIgnoreCase("M"))
+            {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            }
+            else if(gender_tv.equalsIgnoreCase("F"))
+            {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            }
+            else
+            {
+                genderView.setText(gender_tv);
+            }
+        }
+        else
+        {
+            genderView.setText(gender_tv);
+        }
+
+
         heightView = findViewById(R.id.textView_height_value);
         weightView = findViewById(R.id.textView_weight_value);
         pulseView = findViewById(R.id.textView_pulse_value);

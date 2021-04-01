@@ -496,5 +496,7 @@
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
     <string name="row_gender">ଲିଙ୍ଗ</string>
+    <string name="gender_male">ପୁରୁଷ</string>
+    <string name="gender_female">ମହିଳା</string>
 
 </resources>
