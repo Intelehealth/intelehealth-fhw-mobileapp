@@ -636,23 +636,23 @@
     <string name="do_you_have_a_bank_account">क्या आपके पास एक बैंक खाता है?*</string>
     <string name="what_kind_of_mobile_phone_do_you_personally_own">क्या आप अपना फोन खुद रखते हैं?*</string>
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">क्या आप या आपके परिवार का कोई सदस्य व्हाट्सएप का उपयोग करता है?*</string>
-    <string name="total_number_of_members_in_the_household">घर के कुल सदस्य कितने हैं?</string>
+    <string name="total_number_of_members_in_the_household">घर के कुल सदस्य कितने हैं?*</string>
     <string name="enter_number">नंबर डालें</string>
-    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">आपके घर में आमतौर पर कितने सदस्य रहते हैं या अब आपके साथ रह रहे हैं?</string>
+    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">आपके घर में आमतौर पर कितने सदस्य रहते हैं या अब आपके साथ रह रहे हैं?*</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">
-        आपके घर के सदस्यों के लिए पीने के पानी का मुख्य स्रोत क्या है?</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">पेयजल को सुरक्षित बनाने के लिए आप क्या करते हैं?</string>
+        आपके घर के सदस्यों के लिए पीने के पानी का मुख्य स्रोत क्या है?*</string>
+    <string name="what_do_you_do_to_make_drinking_water_safer">पेयजल को सुरक्षित बनाने के लिए आप क्या करते हैं?*</string>
     <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">
-        वहां जाने, पानी लाने और वापस आने (एक यात्रा)में कितना समय लगता है?</string>
+        वहां जाने, पानी लाने और वापस आने (एक यात्रा)में कितना समय लगता है?*</string>
     <string name="declined">जवाब देने के लिए मना कर दिया</string>
     <string name="enter_time">समय दर्ज करें</string>
     <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">
-        पिछले दो हफ्तों में, इस स्रोत से पानी कम से कम एक पूरा  दिन उपलब्ध नहीं था?</string>
+        पिछले दो हफ्तों में, इस स्रोत से पानी कम से कम एक पूरा  दिन उपलब्ध नहीं था?*</string>
     <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">
-        आपके घर के सदस्य आमतौर पर किस प्रकार की शौचालय सुविधा का उपयोग करते हैं?</string>
-    <string name="select_the_structure_of_house">घर की संरचना</string>
+        आपके घर के सदस्य आमतौर पर किस प्रकार की शौचालय सुविधा का उपयोग करते हैं?*</string>
+    <string name="select_the_structure_of_house">घर की संरचना*</string>
     <string name="how_much_hectars_of_cultivable_land_your_family_owns">
-        आपके परिवार के पास खेती लायक कितनी ज़मीन है?</string>
+        आपके परिवार के पास खेती लायक कितनी ज़मीन है?*</string>
     <string name="enter_answer">उत्तर दर्ज करें</string>
     <string name="enter_occupation">व्यवसाय दर्ज करें</string>
     <string name="select">चुनते हैं</string>
