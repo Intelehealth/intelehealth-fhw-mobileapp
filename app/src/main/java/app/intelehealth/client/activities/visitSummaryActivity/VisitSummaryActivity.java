@@ -151,6 +151,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String visitUuid;
     String state;
     String patientName;
+    String patientGender;
     String intentTag;
     String visitUUID;
     String medicalAdvice_string = "";
@@ -193,6 +194,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     FrameLayout frameLayout_doctor;
     TextView nameView;
+    TextView genderView;
     TextView idView;
     TextView visitView;
     TextView heightView;
@@ -434,6 +436,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
+            patientGender = intent.getStringExtra("gender");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
@@ -888,6 +891,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         queryData(String.valueOf(patientUuid));
         nameView = findViewById(R.id.textView_name_value);
+        genderView = findViewById(R.id.textView_gender_value);
 
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
@@ -899,7 +903,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         nameView.setText(patientName);
-
+        genderView.setText(patientGender);
         heightView = findViewById(R.id.textView_height_value);
         weightView = findViewById(R.id.textView_weight_value);
         pulseView = findViewById(R.id.textView_pulse_value);

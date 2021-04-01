@@ -92,6 +92,7 @@ import okhttp3.ResponseBody;
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
+    String mGender;
     String visitUuid = null;
     List<String> visitUuidList;
     String patientUuid;
@@ -311,6 +312,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("encounterUuidAdultIntial", "");
                 intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 intent2.putExtra("name", fullName);
+                intent2.putExtra("gender", mGender);
                 intent2.putExtra("tag", "new");
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                 startActivity(intent2);
@@ -390,7 +392,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name",
+        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
                 "patient_photo"};
@@ -402,6 +404,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setFirst_name(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
                 patient_new.setMiddle_name(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
                 patient_new.setLast_name(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setDate_of_birth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 patient_new.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                 patient_new.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
@@ -460,6 +463,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         idView = findViewById(R.id.textView_ID);
         TextView patinetName = findViewById(R.id.textView_name);
         TextView dobView = findViewById(R.id.textView_DOB);
+        TextView genderView = findViewById(R.id.textView_Gender);
         TextView ageView = findViewById(R.id.textView_age);
         TextView addr1View = findViewById(R.id.textView_address_1);
         TableRow addr2Row = findViewById(R.id.tableRow_addr2);
@@ -576,7 +580,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
+        mGender = patient_new.getGender();
         dobView.setText(dob);
+        if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
+            genderView.setVisibility(View.GONE);
+        } else {
+            genderView.setText(patient_new.getGender());
+
+        }
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);
         } else {
@@ -842,6 +853,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
                 visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
                 visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("gender", mGender );
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);
                 visitSummary.putExtra("pastVisit", past_visit);

@@ -218,6 +218,7 @@
     <string name="row_patient_id" translatable="false">Patient ID</string>
     <string name="row_dob" translatable="false">DOB</string>
     <string name="row_age" translatable="false">Age</string>
+    <string name="row_gender">Gender</string>
     <string name="row_address">Address</string>
     <string name="row_phone_number" translatable="false">Phone number</string>
     <string name="row_open_visit" translatable="false">Click to open visit</string>

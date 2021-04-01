@@ -62,6 +62,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
     String visitUuid;
     String state;
     String patientName;
+    String patientGender;
     String intentTag;
     SearchView searchView;
     List<Node> complaints;
@@ -89,6 +90,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientGender = intent.getStringExtra("gender");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
         }
@@ -356,6 +358,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
+                        intent.putExtra("gender", patientGender);
                         intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                         if (intentTag != null) {
                             intent.putExtra("tag", intentTag);

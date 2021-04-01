@@ -218,6 +218,7 @@
     <string name="row_patient_id" translatable="false">मरीज की पहचान</string>
     <string name="row_dob" translatable="false">जन्म तिथि</string>
     <string name="row_age" translatable="false">उम्र</string>
+    <string name="row_gender">लिंग</string>
     <string name="row_address">पता</string>
     <string name="row_phone_number" translatable="false">फ़ोन</string>
     <string name="row_open_visit" translatable="false">यात्रा खोलने के लिए क्लिक करे</string>

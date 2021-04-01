@@ -71,6 +71,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     String visitUuid;
     String state;
     String patientName;
+    String patientGender;
     String intentTag;
     String mgender;
 
@@ -126,6 +127,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
+            patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
         }
@@ -366,6 +368,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("gender", patientGender);
                     intent.putExtra("tag", intentTag);
 
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
@@ -384,6 +387,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
