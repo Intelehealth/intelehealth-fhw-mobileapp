@@ -770,7 +770,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
                 yearPicker.setMinValue(0);
-                yearPicker.setMaxValue(100);
+                yearPicker.setMaxValue(120);
                 monthPicker.setMinValue(0);
                 monthPicker.setMaxValue(12);
 
