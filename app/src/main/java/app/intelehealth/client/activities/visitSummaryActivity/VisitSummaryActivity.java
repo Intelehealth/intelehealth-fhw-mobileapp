@@ -557,15 +557,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
 
                     //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
-                    alertDialog.setMessage(getString(R.string.enter_mobile_number_to_share_prescription));
-                    alertDialog.setPositiveButton(getString(R.string.share),
+                    alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.share),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
-                                        String whatsappMessage = getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                                        String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                                + whatsapp_url + getResources().getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
                                         // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
@@ -938,13 +938,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             SyncUtils syncUtils = new SyncUtils();
                             boolean isSynced = syncUtils.syncForeground("visitSummary");
                             if (isSynced) {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
                                 //
                                 showVisitID();
                                 Log.d("visitUUID", "showVisitID: " + visitUUID);
 
                             } else {
-                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
                             }
                             uploaded = true;
@@ -952,7 +952,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
                     }, 4000);
                 } else {
-                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                 }
 
             }
@@ -972,7 +972,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
         } else {
-            idView.setText(getString(R.string.patient_not_registered));
+            idView.setText(getResources().getString(R.string.patient_not_registered));
         }
 
         nameView.setText(patientName);
@@ -1095,7 +1095,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this,R.style.AlertDialogStyle);
-                famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
+                famHistDialog.setTitle(getResources().getString(R.string.visit_summary_family_history));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 famHistDialog.setView(convertView);
@@ -1105,19 +1105,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     famHistText.setText(Html.fromHtml(famHistory.getValue()));
                 famHistText.setEnabled(false);
 
-                famHistDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                famHistDialog.setPositiveButton(getResources().getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                         // final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                        textInput.setTitle(R.string.question_text_input);
+                        textInput.setTitle(getResources().getString(R.string.question_text_input));
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (famHistory.getValue() != null)
                             dialogEditText.setText(Html.fromHtml(famHistory.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //famHistory.setValue(dialogEditText.getText().toString());
@@ -1131,7 +1131,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        textInput.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -1143,14 +1143,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                famHistDialog.setNeutralButton(getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                famHistDialog.setNeutralButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
                     }
                 });
 
-                famHistDialog.setNegativeButton(R.string.generic_erase_redo, new DialogInterface.OnClickListener() {
+                famHistDialog.setNegativeButton(getResources().getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -1191,7 +1191,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
+                complaintDialog.setTitle(getResources().getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 complaintDialog.setView(convertView);
@@ -1202,11 +1202,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 complaintText.setEnabled(false);
 
-                complaintDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                complaintDialog.setPositiveButton(getResources().getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                        textInput.setTitle(R.string.question_text_input);
+                        textInput.setTitle(getResources().getString(R.string.question_text_input));
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (complaint.getValue() != null) {
                             dialogEditText.setText(Html.fromHtml(complaint.getValue()));
@@ -1214,7 +1214,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             dialogEditText.setText("");
                         }
                         textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
@@ -1226,7 +1226,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        textInput.setNeutralButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -1238,7 +1238,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.setNegativeButton(getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
+                complaintDialog.setNegativeButton(getResources().getString(R.string.generic_erase_redo), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Deleting the old image in physcial examination
@@ -1270,7 +1270,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 });
 
-                complaintDialog.setNeutralButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                complaintDialog.setNeutralButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -1300,7 +1300,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
+                physicalDialog.setTitle(getResources().getString(R.string.visit_summary_on_examination));
                 final LayoutInflater inflater = getLayoutInflater();
                 View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                 physicalDialog.setView(convertView);
@@ -1310,18 +1310,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     physicalText.setText(Html.fromHtml(phyExam.getValue()));
                 physicalText.setEnabled(false);
 
-                physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
+                physicalDialog.setPositiveButton(getResources().getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                        textInput.setTitle(R.string.question_text_input);
+                        textInput.setTitle(getResources().getString(R.string.question_text_input));
                         final EditText dialogEditText = new EditText(VisitSummaryActivity.this);
                         if (phyExam.getValue() != null)
                             dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
                         else
                             dialogEditText.setText("");
                         textInput.setView(dialogEditText);
-                        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -1334,7 +1334,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 dialog.dismiss();
                             }
                         });
-                        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        textInput.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
