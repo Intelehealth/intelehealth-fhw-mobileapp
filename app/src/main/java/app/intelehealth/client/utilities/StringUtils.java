@@ -830,4 +830,112 @@ public final class StringUtils {
         return val;
     }
 
+    public static String hi_or__en(String dobString) {
+
+       String mdobString =  dobString.replace("जनवरी","January")
+                .replace("ଜାନୁଆରୀ", "January")
+                .replace("फ़रवरी", "February")
+                .replace("ଫେବୃଆରୀ", "February")
+                .replace("मार्च", "March")
+                .replace("ମାର୍ଚ୍ଚ", "March")
+                .replace("अप्रैल", "April")
+                .replace("ଏପ୍ରିଲ୍", "April")
+                .replace("मई", "May")
+                .replace("ମେ", "May")
+                .replace("जून", "June")
+                .replace("ଜୁନ୍", "June")
+                .replace("जुलाई", "July")
+                .replace("ଜୁଲାଇ", "July")
+                .replace("अगस्त","August")
+                .replace("ଅଗଷ୍ଟ", "August")
+                .replace("सितंबर", "September")
+                .replace("ସେପ୍ଟେମ୍ବର", "September")
+                .replace("अक्टूबर", "October")
+                .replace("ଅକ୍ଟୋବର", "October")
+                .replace("नवंबर", "November")
+                .replace("ନଭେମ୍ବର", "November")
+                .replace("दिसंबर", "December")
+                .replace("ଡିସେମ୍ବର", "December");
+
+        return mdobString;
+/*
+        switch (dobString) {
+            case "जनवरी":
+                dobString = "January";
+                break;
+            case "ଜାନୁଆରୀ":
+                dobString = "January";
+                break;
+            case "फ़रवरी":
+                dobString = "February";
+                break;
+            case "ଫେବୃଆରୀ":
+                dobString = "February";
+                break;
+            case "मार्च":
+                dobString = "March";
+                break;
+            case "ମାର୍ଚ୍ଚ":
+                dobString = "March";
+                break;
+            case "अप्रैल":
+                dobString = "April";
+                break;
+            case "ଏପ୍ରିଲ୍":
+                dobString = "April";
+                break;
+            case "मई":
+                dobString = "May";
+                break;
+            case "ମେ":
+                dobString = "May";
+                break;
+            case "जून":
+                dobString = "June";
+                break;
+            case "ଜୁନ୍":
+                dobString = "June";
+                break;
+            case "जुलाई":
+                dobString = "July";
+                break;
+            case "ଜୁଲାଇ":
+                dobString = "July";
+                break;
+            case "अगस्त":
+                dobString = "August";
+                break;
+            case "ଅଗଷ୍ଟ":
+                dobString = "August";
+                break;
+            case "सितंबर":
+                dobString = "September";
+                break;
+            case "ସେପ୍ଟେମ୍ବର":
+                dobString = "September";
+                break;
+            case "अक्टूबर":
+                dobString = "October";
+                break;
+            case "ଅକ୍ଟୋବର":
+                dobString = "October";
+                break;
+            case "नवंबर":
+                dobString = "November";
+                break;
+            case "ନଭେମ୍ବର":
+                dobString = "November";
+                break;
+            case "दिसंबर":
+                dobString = "December";
+                break;
+            case "ଡିସେମ୍ବର":
+                dobString = "December";
+                break;
+            default:
+                return dobString;
+        }
+*/
+
+    }
 }

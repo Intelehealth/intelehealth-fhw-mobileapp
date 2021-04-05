@@ -6,7 +6,6 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "app.intelehealth.client"
-        //minSdkVersion 19
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 6
