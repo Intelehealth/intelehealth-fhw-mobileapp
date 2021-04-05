@@ -1224,7 +1224,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 mDOB.setError(null);
                 mAge.setError(null);
-                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                //Set Maximum date to current date because even after bday is less than current date
+                // it goes to check date is set after today...
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
              //   Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
@@ -1240,7 +1241,8 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mDOB.setText(mDOBDay + getResources().getString(R.));
 
 
-                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
+                        today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
                 //get years months days
                 String[] frtData = age.split("-");
 
@@ -1269,6 +1271,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.show();
             }
         });
+
         //if patient update then age will be set
         if (patientID_edit != null) {
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
