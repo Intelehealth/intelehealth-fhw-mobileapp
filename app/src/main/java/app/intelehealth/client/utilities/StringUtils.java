@@ -132,17 +132,14 @@ public final class StringUtils {
         if (spinner.getSelectedItemPosition() == 0)
             val = "Not provided";
 
-        else if(spinner.getSelectedItem() == null)
-        {
+        else if (spinner.getSelectedItem() == null) {
             val = "Not provided";
-        }
-        else
-        {
+        } else {
             val = spinner.getSelectedItem().toString();
         }
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
@@ -155,16 +152,15 @@ public final class StringUtils {
         String val = "";
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             switch (checkbox_text) {
                 case "जवाब देने के लिए मना कर दिया":
                     val = "Declined to answer";
                     break;
                 default:
-                     return val;
+                    return val;
             }
-        }
-        else {
+        } else {
             val = "Declined to answer";
         }
 
@@ -176,7 +172,7 @@ public final class StringUtils {
         val = spinner.getSelectedItem().toString();
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_en_occupation(val);
             val = switch_hi_en_bankaccount(val);
             val = switch_hi_en_mobile(val);
@@ -189,7 +185,6 @@ public final class StringUtils {
         }
         return val;
     }
-
 
 
     public static String switch_hi_housestructure_edit(String val) {
@@ -282,7 +277,6 @@ public final class StringUtils {
     }
 
 
-
     public static String switch_hi_en_wateravail(String val) {
         switch (val) {
             case "जवाब देने के लिए मना कर दिया":
@@ -338,7 +332,7 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_en_sourcewater(String val){
+    public static String switch_hi_en_sourcewater(String val) {
         switch (val) {
             case "जवाब देने के लिए मना कर दिया":
                 val = "Declined to answer";
@@ -467,7 +461,6 @@ public final class StringUtils {
         }
         return val;
     }
-
 
 
     public static String switch_hi_education(String val) {
@@ -604,7 +597,7 @@ public final class StringUtils {
     }
 
 
-    public static String switch_hi_watersource_edit(String val){
+    public static String switch_hi_watersource_edit(String val) {
         switch (val) {
             case "Declined to answer":
                 val = "जवाब देने के लिए मना कर दिया";
@@ -830,4 +823,149 @@ public final class StringUtils {
         return val;
     }
 
+    public static String hi_or__en(String dobString) {
+
+        String mdobString = dobString
+                .replace("जनवरी", "January")
+                .replace("ଜାନୁଆରୀ", "January")
+                .replace("फ़रवरी", "February")
+                .replace("ଫେବୃଆରୀ", "February")
+                .replace("मार्च", "March")
+                .replace("ମାର୍ଚ୍ଚ", "March")
+                .replace("अप्रैल", "April")
+                .replace("ଏପ୍ରିଲ୍", "April")
+                .replace("मई", "May")
+                .replace("ମେ", "May")
+                .replace("जून", "June")
+                .replace("ଜୁନ୍", "June")
+                .replace("जुलाई", "July")
+                .replace("ଜୁଲାଇ", "July")
+                .replace("अगस्त", "August")
+                .replace("ଅଗଷ୍ଟ", "August")
+                .replace("सितंबर", "September")
+                .replace("ସେପ୍ଟେମ୍ବର", "September")
+                .replace("अक्टूबर", "October")
+                .replace("ଅକ୍ଟୋବର", "October")
+                .replace("नवंबर", "November")
+                .replace("ନଭେମ୍ବର", "November")
+                .replace("दिसंबर", "December")
+                .replace("ଡିସେମ୍ବର", "December");
+
+        return mdobString;
+/*
+        switch (dobString) {
+            case "जनवरी":
+                dobString = "January";
+                break;
+            case "ଜାନୁଆରୀ":
+                dobString = "January";
+                break;
+            case "फ़रवरी":
+                dobString = "February";
+                break;
+            case "ଫେବୃଆରୀ":
+                dobString = "February";
+                break;
+            case "मार्च":
+                dobString = "March";
+                break;
+            case "ମାର୍ଚ୍ଚ":
+                dobString = "March";
+                break;
+            case "अप्रैल":
+                dobString = "April";
+                break;
+            case "ଏପ୍ରିଲ୍":
+                dobString = "April";
+                break;
+            case "मई":
+                dobString = "May";
+                break;
+            case "ମେ":
+                dobString = "May";
+                break;
+            case "जून":
+                dobString = "June";
+                break;
+            case "ଜୁନ୍":
+                dobString = "June";
+                break;
+            case "जुलाई":
+                dobString = "July";
+                break;
+            case "ଜୁଲାଇ":
+                dobString = "July";
+                break;
+            case "अगस्त":
+                dobString = "August";
+                break;
+            case "ଅଗଷ୍ଟ":
+                dobString = "August";
+                break;
+            case "सितंबर":
+                dobString = "September";
+                break;
+            case "ସେପ୍ଟେମ୍ବର":
+                dobString = "September";
+                break;
+            case "अक्टूबर":
+                dobString = "October";
+                break;
+            case "ଅକ୍ଟୋବର":
+                dobString = "October";
+                break;
+            case "नवंबर":
+                dobString = "November";
+                break;
+            case "ନଭେମ୍ବର":
+                dobString = "November";
+                break;
+            case "दिसंबर":
+                dobString = "December";
+                break;
+            case "ଡିସେମ୍ବର":
+                dobString = "December";
+                break;
+            default:
+                return dobString;
+        }
+*/
+
+    }
+
+    public static String en__hi_dob(String dob) {
+        String mdob_text = dob
+                .replace("January", "जनवरी")
+                .replace("February", "फ़रवरी")
+                .replace("March", "मार्च")
+                .replace("April", "अप्रैल")
+                .replace("May", "मई")
+                .replace("June", "जून")
+                .replace("July", "जुलाई")
+                .replace("August", "अगस्त")
+                .replace("September", "सितंबर")
+                .replace("October", "अक्टूबर")
+                .replace("November", "नवंबर")
+                .replace("December", "दिसंबर");
+
+        return mdob_text;
+    }
+
+    public static String en__or_dob(String dob) {
+        String mdob_text = dob
+                .replace("January", "ଜାନୁଆରୀ")
+                .replace("February", "ଫେବୃଆରୀ")
+                .replace("March", "ମାର୍ଚ୍ଚ")
+                .replace("April", "ଏପ୍ରିଲ୍")
+                .replace("May", "ମେ")
+                .replace("June", "ଜୁନ୍")
+                .replace("July", "ଜୁଲାଇ")
+                .replace("August", "ଅଗଷ୍ଟ")
+                .replace("September", "ସେପ୍ଟେମ୍ବର")
+                .replace("October", "ଅକ୍ଟୋବର")
+                .replace("November", "ନଭେମ୍ବର")
+                .replace("December", "ଡିସେମ୍ବର");
+
+        return mdob_text;
+    }
 }

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -173,6 +174,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identification);
         setTitle(R.string.title_activity_identification);
@@ -190,7 +203,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        sessionManager = new SessionManager(this);
+       // sessionManager = new SessionManager(this);
         mFirstName = findViewById(R.id.identification_first_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
@@ -1202,7 +1215,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         //DOB is set using an AlertDialog
-        Locale.setDefault(Locale.ENGLISH);
+      //  Locale.setDefault(Locale.ENGLISH);
 
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -1211,11 +1224,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 mDOB.setError(null);
                 mAge.setError(null);
-                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                //Set Maximum date to current date because even after bday is less than current date
+                // it goes to check date is set after today...
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                Locale.setDefault(Locale.ENGLISH);
+             //   Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
+                        Locale.forLanguageTag(sessionManager.getAppLanguage()));
+
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 mDOB.setText(dobString);
@@ -1225,7 +1241,8 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mDOB.setText(mDOBDay + getResources().getString(R.));
 
 
-                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
+                        today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
                 //get years months days
                 String[] frtData = age.split("-");
 
@@ -1254,6 +1271,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBPicker.show();
             }
         });
+
         //if patient update then age will be set
         if (patientID_edit != null) {
             mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
@@ -1357,8 +1375,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         mDOBDay = birthDay;
                     }
-                    Locale.setDefault(Locale.ENGLISH);
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                //    Locale.setDefault(Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
+                            Locale.forLanguageTag(sessionManager.getAppLanguage()));
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
                     mDOB.setText(dobString);
@@ -2032,7 +2051,10 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
+
+            String dob = StringUtils.hi_or__en(mDOB.getText().toString());
+
+            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
@@ -2744,7 +2766,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
+
+            String dob = StringUtils.hi_or__en(mDOB.getText().toString());
+            patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
