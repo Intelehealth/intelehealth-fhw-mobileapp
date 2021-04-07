@@ -526,6 +526,11 @@
     <string name="Years">Years</string>
     <string name="image_saved">ପ୍ରତିଛବି ସଫଳତାର ସହିତ ସଞ୍ଚୟ ହୋଇଛି |</string>
     <string name="emergency_confirmation">ଆପଣ ଏହି ପରିଦର୍ଶନକୁ ଜରୁରୀକାଳୀନ ପରିସ୍ଥିତି ଭାବରେ ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
+    <string name="per_Hour">ପ୍ରତି ଘଣ୍ଟା</string>
+    <string name="per_Day">ପ୍ରତିଦିନ</string>
+    <string name="per_Week">ପ୍ରତି ସପ୍ତାହ</string>
+    <string name="per_Month">ପ୍ରତି ମାସରେ |</string>
+    <string name="per_Year">ପ୍ରତିବର୍ଷ</string>
 
 
 </resources>

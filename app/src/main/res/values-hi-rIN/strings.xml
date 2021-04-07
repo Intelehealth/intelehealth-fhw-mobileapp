@@ -663,6 +663,11 @@
     <string name="Years">वर्ष</string>
     <string name="image_saved">छवि सफलतापूर्वक सहेजी गई!</string>
     <string name="emergency_confirmation">क्या आप इस यात्रा को आपातकाल के रूप में सेट करना चाहते हैं?</string>
+    <string name="per_Hour">घंटे से</string>
+    <string name="per_Day">हर दिन</string>
+    <string name="per_Week">प्रति सप्ताह</string>
+    <string name="per_Month">प्रति माह</string>
+    <string name="per_Year">प्रति वर्ष</string>
 
 
 

@@ -660,6 +660,11 @@
     <string name="Years">Years</string>
     <string name="image_saved">Image saved successfully!</string>
     <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
+    <string name="per_Hour">per Hour</string>
+    <string name="per_Day">per Day</string>
+    <string name="per_Week">Per Week</string>
+    <string name="per_Month">per Month</string>
+    <string name="per_Year">per Year</string>
 
 
 
