@@ -88,6 +88,8 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
+import static app.intelehealth.client.utilities.StringUtils.en__hi_dob;
+import static app.intelehealth.client.utilities.StringUtils.en__or_dob;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_economic_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_hi_education_edit;
@@ -438,7 +440,22 @@ public class IdentificationActivity extends AppCompatActivity {
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
         mLastName.setText(patient1.getLast_name());
+
+  /*      if(patient1.getDate_of_birth() != null) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                mDOB.setText(StringUtils.en__hi_dob(patient1.getDate_of_birth()));
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                mDOB.setText(StringUtils.en__or_dob(patient1.getDate_of_birth()));
+            } else {
+                mDOB.setText(patient1.getDate_of_birth());
+            }
+        }
+        else {
+            mDOB.setText(patient1.getDate_of_birth());
+        }*/
         mDOB.setText(patient1.getDate_of_birth());
+
+
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
         mAddress2.setText(patient1.getAddress2());
@@ -1279,7 +1296,19 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //if patient update then age will be set
         if (patientID_edit != null) {
-            mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+            //dob to be displayed based on translation...
+            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+                mDOB.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                mDOB.setText(dob_text);
+            } else {
+                mDOB.setText(dob);
+            }
+
+          //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
@@ -2788,8 +2817,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
+                String dob = StringUtils.hi_or__en_noEdit
+                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(mDOB.getText().toString())));
+                        (StringUtils.getValue(dob)));
             } else {
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
