@@ -495,5 +495,10 @@
     <string name="family_member">Family Member</string>
     <string name="no_family_member_registered">No Family Member Registered</string>
     <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
+    <string name="Hours">ଘଣ୍ଟା</string>
+    <string name="Days">ଦିନ</string>
+    <string name="Weeks">ସପ୍ତାହ</string>
+    <string name="Months">ମାସ</string>
+    <string name="Years">ବର୍ଷ</string>
 
 </resources>
