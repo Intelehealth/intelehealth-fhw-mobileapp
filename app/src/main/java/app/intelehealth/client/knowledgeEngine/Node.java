@@ -1008,7 +1008,11 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+       // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+        final String[] units = new String[]{context.getString(R.string.per_Hour),
+                context.getString(R.string.per_Day), context.getString(R.string.per_Week),
+                context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
+
         final String[] doctorUnits = new String[]{"times per hour", "time per day", "times per week", "times per month", "times per year"};
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
@@ -1386,7 +1390,11 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = context.getResources().getStringArray(R.array.units);
+      //  final String[] units = context.getResources().getStringArray(R.array.units);
+        final String[] units = new String[]{context.getString(R.string.per_Hour),
+                context.getString(R.string.per_Day), context.getString(R.string.per_Week),
+                context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
+
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
