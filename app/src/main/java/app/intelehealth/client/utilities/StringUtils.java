@@ -193,4 +193,131 @@ public final class StringUtils {
         return val;
     }
 
+    public static String en__hi_dob(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("January", "जनवरी")
+                .replace("February", "फ़रवरी")
+                .replace("March", "मार्च")
+                .replace("April", "अप्रैल")
+                .replace("May", "मई")
+                .replace("June", "जून")
+                .replace("July", "जुलाई")
+                .replace("August", "अगस्त")
+                .replace("September", "सितंबर")
+                .replace("October", "अक्टूबर")
+                .replace("November", "नवंबर")
+                .replace("December", "दिसंबर");
+
+        return mdob_text;
+    }
+
+    public static String en__or_dob(String dob) { //English dob is replaced to Odiya text.
+        String mdob_text = dob
+                .replace("January", "ଜାନୁଆରୀ")
+                .replace("February", "ଫେବୃଆରୀ")
+                .replace("March", "ମାର୍ଚ୍ଚ")
+                .replace("April", "ଏପ୍ରିଲ୍")
+                .replace("May", "ମେ")
+                .replace("June", "ଜୁନ୍")
+                .replace("July", "ଜୁଲାଇ")
+                .replace("August", "ଅଗଷ୍ଟ")
+                .replace("September", "ସେପ୍ଟେମ୍ବର")
+                .replace("October", "ଅକ୍ଟୋବର")
+                .replace("November", "ନଭେମ୍ବର")
+                .replace("December", "ଡିସେମ୍ବର");
+
+        return mdob_text;
+    }
+
+    public static String hi_or__en_month(int month_index) {
+        String dob_string = "";
+
+        switch (month_index) {
+            case 0:
+                dob_string = "January";
+                break;
+            case 1:
+                dob_string = "February";
+                break;
+            case 2:
+                dob_string = "March";
+                break;
+            case 3:
+                dob_string = "April";
+                break;
+            case 4:
+                dob_string = "May";
+                break;
+            case 5:
+                dob_string = "June";
+                break;
+            case 6:
+                dob_string = "July";
+                break;
+            case 7:
+                dob_string = "August";
+                break;
+            case 8:
+                dob_string = "September";
+                break;
+            case 9:
+                dob_string = "October";
+                break;
+            case 10:
+                dob_string = "November";
+                break;
+            case 11:
+                dob_string = "December";
+                break;
+
+            default:
+                return dob_string;
+        }
+
+        return dob_string;
+    }
+
+
+    public static String hi_or__en_noEdit(String dobString, String locale) {
+
+        if(locale.equalsIgnoreCase("hi")) {
+            String dob = dobString
+                    //Hindi
+                    .replace("जनवरी", "January")
+                    .replace("फ़रवरी", "February")
+                    .replace("मार्च", "March")
+                    .replace("अप्रैल", "April")
+                    .replace("मई", "May")
+                    .replace("जून", "June")
+                    .replace("जुलाई", "July")
+                    .replace("अगस्त", "August")
+                    .replace("सितंबर", "September")
+                    .replace("अक्टूबर", "October")
+                    .replace("नवंबर", "November")
+                    .replace("दिसंबर", "December");
+            return dob;
+        }
+        else if(locale.equalsIgnoreCase("or")) {
+            //Odiya
+            String dob = dobString
+                    .replace("ଜାନୁଆରୀ", "January")
+                    .replace("ଫେବୃଆରୀ", "February")
+                    .replace("ମାର୍ଚ୍ଚ", "March")
+                    .replace("ଏପ୍ରିଲ୍", "April")
+                    .replace("ମେ", "May")
+                    .replace("ଜୁନ୍", "June")
+                    .replace("ଜୁଲାଇ", "July")
+                    .replace("ଅଗଷ୍ଟ", "August")
+                    .replace("ସେପ୍ଟେମ୍ବର", "September")
+                    .replace("ଅକ୍ଟୋବର", "October")
+                    .replace("ନଭେମ୍ବର", "November")
+                    .replace("ଡିସେମ୍ବର", "December");
+            return dob;
+        }
+        else {
+            return dobString;
+        }
+
+    }
+
 }

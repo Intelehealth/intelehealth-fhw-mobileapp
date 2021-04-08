@@ -217,6 +217,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:paddingBottom="4dp"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space

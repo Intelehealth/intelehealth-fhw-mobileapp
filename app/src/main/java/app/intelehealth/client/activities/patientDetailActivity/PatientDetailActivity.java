@@ -89,6 +89,9 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static app.intelehealth.client.utilities.StringUtils.en__hi_dob;
+import static app.intelehealth.client.utilities.StringUtils.en__or_dob;
+
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
@@ -576,7 +579,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
-        dobView.setText(dob);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+            dobView.setText(dob_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+            dobView.setText(dob_text);
+        } else {
+            dobView.setText(dob);
+        }
+        //dobView.setText(dob);
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);
         } else {
