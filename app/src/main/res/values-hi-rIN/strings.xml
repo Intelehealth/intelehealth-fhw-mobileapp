@@ -633,5 +633,10 @@
     <string name="Weeks">हफ्तों</string>
     <string name="Months">महीने</string>
     <string name="Years">वर्ष</string>
+    <string name="per_Hour">घंटे से</string>
+    <string name="per_Day">हर दिन</string>
+    <string name="per_Week">प्रति सप्ताह</string>
+    <string name="per_Month">प्रति माह</string>
+    <string name="per_Year">प्रति वर्ष</string>
 
 0</resources>

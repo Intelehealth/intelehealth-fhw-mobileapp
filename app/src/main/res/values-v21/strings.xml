@@ -68,6 +68,11 @@
     <string name="Weeks">Weeks</string>
     <string name="Months">Months</string>
     <string name="Years">Years</string>
+    <string name="per_Hour">per Hour</string>
+    <string name="per_Day">per Day</string>
+    <string name="per_Week">Per Week</string>
+    <string name="per_Month">per Month</string>
+    <string name="per_Year">per Year</string>
 
 
 </resources>
