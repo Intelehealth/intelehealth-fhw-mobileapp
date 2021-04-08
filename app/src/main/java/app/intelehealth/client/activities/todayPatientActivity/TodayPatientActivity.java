@@ -61,6 +61,17 @@ public class TodayPatientActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_patient);
         setTitle(getString(R.string.title_activity_today_patient));
@@ -80,17 +91,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         mTodayPatientList = findViewById(R.id.today_patient_recycler_view);
-        sessionManager = new SessionManager(this);
-        String language = sessionManager.getAppLanguage();
-        //In case of crash still the app should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-        }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
