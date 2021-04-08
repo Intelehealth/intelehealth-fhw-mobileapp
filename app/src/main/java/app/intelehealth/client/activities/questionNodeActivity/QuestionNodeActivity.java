@@ -633,7 +633,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
                     .replace("Hours", "घंटे").replace("Days", "दिन")
                     .replace("Weeks", "हफ्तों").replace("Months", "महीने")
-                    .replace("Years", "वर्षों")
+                    .replace("Years", "वर्ष")
                     .replace("times per hour", "प्रति घंटे बार").replace("time per day", "प्रति दिन का समय")
                     .replace("times per week", "प्रति सप्ताह बार").replace("times per month", "प्रति माह बार")
                     .replace("times per year", "प्रति वर्ष बार")));
