@@ -106,9 +106,9 @@
     <string name="identification_screen_required_fields" translatable="false">कृपया आवश्यक फ़ील्ड दर्ज करें</string>
     <string name="identification_screen_error_dob" translatable="false">एक वैध जन्मतिथि दर्ज करें</string>
     <string name="identification_screen_error_age" translatable="false">एक मान्य आयु दर्ज करें</string>
-    <string name="identification_screen_text_years" translatable="false"> वर्षों </string>
+    <string name="identification_screen_text_years" translatable="false"> वर्ष </string>
     <string name="identification_screen_text_months" translatable="false"> महीने</string>
-    <string name="identification_screen_picker_years" translatable="false">वर्षों</string>
+    <string name="identification_screen_picker_years" translatable="false">वर्ष</string>
     <string name="identification_screen_picker_months" translatable="false">महीने</string>
 
     //Active Patients Screen
@@ -218,6 +218,7 @@
     <string name="row_patient_id" translatable="false">मरीज की पहचान</string>
     <string name="row_dob" translatable="false">जन्म तिथि</string>
     <string name="row_age" translatable="false">उम्र</string>
+    <string name="row_gender">लिंग</string>
     <string name="row_address">पता</string>
     <string name="row_phone_number" translatable="false">फ़ोन</string>
     <string name="row_open_visit" translatable="false">यात्रा खोलने के लिए क्लिक करे</string>
@@ -358,14 +359,14 @@
 
     <!-- Vitals Screen Error-->
 
-    <string name="weight_error" translatable="false">वजन %1$s किलो से कम होना चाहिए</string>
-    <string name="height_error" translatable="false">ऊंचाई 0 और %1$s सेमी के बीच होनी चाहिए चाहिए</string>
-    <string name="spo2_error" translatable="false">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="pulse_error" translatable="false">पल्स %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="bpsys_error" translatable="false">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="bpdia_error" translatable="false">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="resp_error" translatable="false">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
-    <string name="temp_error" translatable="false">तापमान %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="weight_error">वजन %1$s किलो से कम होना चाहिए</string>
+    <string name="height_error">ऊंचाई 0 और %1$s सेमी के बीच होनी चाहिए चाहिए</string>
+    <string name="spo2_error">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="pulse_error">पल्स %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="bpsys_error">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="bpdia_error">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="resp_error">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
+    <string name="temp_error">तापमान %1$s और %2$s के बीच होना चाहिए</string>
 
     <string name="not_provided">नहीं दिया गया</string>
 
@@ -449,7 +450,7 @@
     <string name="enter_server_url">सर्वर URL दर्ज करें</string>
     <string name="enter_license_key"><b>लाइसेंस नंबर डाले</b></string>
     <string name="invalid_url">अवैध यूआरएल</string>
-    <string name="years">वर्षों</string>
+    <string name="years">वर्ष</string>
     <string name="months">महीने</string>
     <string name="please_wait_till_sync_is_completed">कृपया सिंक पूरी होने तक प्रतीक्षा करें</string>
     <string name="patient_name">पेशेंट का नाम</string>
@@ -628,5 +629,17 @@
     <string name="no_family_member_registered">कोई परिवार का सदस्य पंजीकृत नहीं</string>
     <string name="question_not_answered">प्रश्न का उत्तर नहीं दिया गया है</string>
     <string name="version_settings">संस्करण 1.3</string>
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">महिला</string>
+    <string name="Hours">घंटे</string>
+    <string name="Days">दिन</string>
+    <string name="Weeks">हफ्तों</string>
+    <string name="Months">महीने</string>
+    <string name="Years">वर्ष</string>
+    <string name="per_Hour">घंटे से</string>
+    <string name="per_Day">हर दिन</string>
+    <string name="per_Week">प्रति सप्ताह</string>
+    <string name="per_Month">प्रति माह</string>
+    <string name="per_Year">प्रति वर्ष</string>
 
-0</resources>
+</resources>

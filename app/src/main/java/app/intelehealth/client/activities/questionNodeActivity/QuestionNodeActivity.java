@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -41,6 +42,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -71,6 +73,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     String visitUuid;
     String state;
     String patientName;
+    String patientGender;
     String intentTag;
     String mgender;
 
@@ -115,6 +118,17 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         filePath = new File(AppConstants.IMAGE_PATH);
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -126,6 +140,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             patientName = intent.getStringExtra("name");
+            patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             complaints = intent.getStringArrayListExtra("complaints");
         }
@@ -366,6 +381,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("gender", patientGender);
                     intent.putExtra("tag", intentTag);
 
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
@@ -384,6 +400,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
@@ -608,7 +625,43 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     public void questionsMissing() {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        //language ui
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String a = currentNode.formQuestionAnswer(0);
+            Log.d("tag", a);
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "सवाल का जवाब नहीं दिया")
+                    .replace("Patient reports -", "पेशेंट ने सूचित किया -")
+                    .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
+                    .replace("Hours", "घंटे").replace("Days","दिन")
+                    .replace("Weeks", "हफ्तों").replace("Months", "महीने")
+                    .replace("Years", "वर्ष")
+                    .replace("times per hour", "प्रति घंटे बार")
+                    .replace("time per day", "प्रति दिन का समय")
+                    .replace("times per week", "प्रति सप्ताह बार")
+                    .replace("times per month", "प्रति माह बार")
+                    .replace("times per year", "प्रति वर्ष बार")));
+        }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
+                    .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
+                    .replace("Patient denies -", "ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -")
+                    .replace("Hours", "ଘଣ୍ଟା").replace("Days", "ଦିନ")
+                    .replace("Weeks", "ସପ୍ତାହ").replace("Months", "ମାସ")
+                    .replace("Years", "ବର୍ଷ")
+                    .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା")
+                    .replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
+                    .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ")
+                    .replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
+                    .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
+        }
+        else {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        }
+
+      //  alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

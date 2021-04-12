@@ -81,6 +81,8 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
     private String pop_up;
+    private String pop_up_hi;
+    private String pop_up_or;
     private String gender;
     private String min_age;
     private String max_age;
@@ -201,7 +203,6 @@ public class Node implements Serializable {
             }
 
 
-
             //Only for physical exams
             if (!this.language.isEmpty()) {
                 if (this.language.contains(":")) {
@@ -237,7 +238,22 @@ public class Node implements Serializable {
             this.negativeCondition = jsonNode.optString("neg-condition");
 
             this.pop_up = jsonNode.optString("pop-up");
-            this.hasPopUp = !pop_up.isEmpty();
+
+            this.pop_up_hi = jsonNode.optString("pop-up-hi"); //pop-up for Hindi...
+            if (this.pop_up_hi.isEmpty()) {
+                this.pop_up_hi = this.pop_up;
+            }
+
+            this.pop_up_or = jsonNode.optString("pop-up-or"); //pop-up for Odiya...
+            if (this.pop_up_or.isEmpty()) {
+                this.pop_up_or = this.pop_up;
+            }
+
+            // this.hasPopUp = !pop_up.isEmpty();
+            if (!pop_up.isEmpty() || !pop_up_hi.isEmpty() || !pop_up_or.isEmpty()) {
+                this.hasPopUp = true;
+            }
+
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -265,6 +281,8 @@ public class Node implements Serializable {
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
         this.pop_up = source.pop_up;
+        this.pop_up_hi = source.pop_up_hi;
+        this.pop_up_or = source.pop_up_or;
         this.jobAidFile = source.jobAidFile;
         this.jobAidType = source.jobAidType;
         this.aidAvailable = source.aidAvailable;
@@ -763,13 +781,22 @@ public class Node implements Serializable {
     }
 
     public void generatePopUp(final Activity context) {
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
         HashSet<String> messages = new HashSet<String>();
         List<Node> mOptions = optionsList;
         if (optionsList != null && !optionsList.isEmpty()) {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected() && node_opt.hasPopUp) {
-                    messages.add(node_opt.pop_up);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        messages.add(node_opt.pop_up_hi);
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        messages.add(node_opt.pop_up_or);
+                    } else {
+                        messages.add(node_opt.pop_up);
+                    }
+
                 }
             }
         }
@@ -1009,7 +1036,11 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+      //  final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+        final String[] units = new String[]{context.getString(R.string.per_Hour),
+                context.getString(R.string.per_Day), context.getString(R.string.per_Week),
+                context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
+
         final String[] doctorUnits = new String[]{"times per hour", "time per day", "times per week", "times per month", "times per year"};
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
@@ -1021,7 +1052,15 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
+               // String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
+                //translate back to English from Hindi if present...
+//                String unit_text = "";
+//                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+//                unit_text = or_en(unit_text); //for Odiya...
+
+                //String durationString = quantityPicker.getValue() + " " + unit_text;
                 String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
+
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
@@ -1058,7 +1097,12 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
+       // final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
+        final String[] units = new String[]{
+                context.getString(R.string.Hours), context.getString(R.string.Days),
+                context.getString(R.string.Weeks), context.getString(R.string.Months),
+                context.getString(R.string.Years)}; //supports Hindi Translations as well...
+
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
         quantityPicker.setMaxValue(100);
@@ -1069,7 +1113,12 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-                String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //translate back to English from Hindi if present...
+                String unit_text = "";
+                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+                unit_text = or_en(unit_text); //for Odiya...
+                String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
@@ -1092,6 +1141,69 @@ public class Node implements Serializable {
         AlertDialog dialog = durationDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
+
+    private static String hi_en(String unit) {
+
+        switch (unit) {
+            case "घंटे":
+                unit = "Hours";
+                break;
+
+            case "दिन":
+                unit = "Days";
+                break;
+
+            case "हफ्तों":
+                unit = "Weeks";
+                break;
+
+            case "महीने":
+                unit = "Months";
+                break;
+
+            case "वर्षों":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String or_en(String unit) {
+
+        switch (unit) {
+            case "ଘଣ୍ଟା":
+                unit = "Hours";
+                break;
+
+            case "ଦିନ":
+                unit = "Days";
+                break;
+
+            case "ସପ୍ତାହ":
+                unit = "Weeks";
+                break;
+
+            case "ମାସ":
+                unit = "Months";
+                break;
+
+            case "ବର୍ଷ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+
+
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
@@ -1348,7 +1460,11 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = context.getResources().getStringArray(R.array.units);
+       // final String[] units = context.getResources().getStringArray(R.array.units);
+        final String[] units = new String[]{context.getString(R.string.per_Hour),
+                context.getString(R.string.per_Day), context.getString(R.string.per_Week),
+                context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
+
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
@@ -1397,7 +1513,12 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-        final String[] units = context.getResources().getStringArray(R.array.duration_units);
+       // final String[] units = context.getResources().getStringArray(R.array.duration_units);
+        final String[] units = new String[]{
+                context.getString(R.string.Hours), context.getString(R.string.Days),
+                context.getString(R.string.Weeks), context.getString(R.string.Months),
+                context.getString(R.string.Years)}; //supports Hindi Translations as well...
+
         unitPicker.setDisplayedValues(units);
         quantityPicker.setMinValue(0);
         quantityPicker.setMaxValue(100);
@@ -1408,7 +1529,13 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-                String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+               // String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //translate back to English from Hindi if present...
+                String unit_text = "";
+                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+                unit_text = or_en(unit_text); //for Odiya...
+
+                String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
@@ -1981,7 +2108,7 @@ public class Node implements Serializable {
         Log.i(TAG, "formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = "Question Not Answered" + next_line;
+            mLanguage = "Question not answered" + next_line;
         }
 
         return mLanguage;
@@ -2009,6 +2136,8 @@ public class Node implements Serializable {
                 ", jobAidFile='" + jobAidFile + '\'' +
                 ", jobAidType='" + jobAidType + '\'' +
                 ", pop_up='" + pop_up + '\'' +
+                ", pop_up_hi='" + pop_up_hi + '\'' +
+                ", pop_up_or='" + pop_up_or + '\'' +
                 ", positiveCondition='" + positiveCondition + '\'' +
                 ", negativeCondition='" + negativeCondition + '\'' +
                 ", rootNode=" + rootNode +
@@ -2032,16 +2161,16 @@ public class Node implements Serializable {
     public void fetchAge(float age) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if(!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
                     !optionsList.get(i).getMax_age().equalsIgnoreCase("")) {
                 if (age < Float.parseFloat(optionsList.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                     remove(optionsList, i);
                     i--;
                 }
 
-            //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-             else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
+                //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
                     remove(optionsList, i);
                     i--;
                 }
@@ -2049,10 +2178,10 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
-                    if(!optionsList.get(i).getOptionsList()
+                    if (!optionsList.get(i).getOptionsList()
                             .get(j).getMin_age().equalsIgnoreCase("") &&
                             !optionsList.get(i).getOptionsList()
                                     .get(j).getMax_age().equalsIgnoreCase("")) {
@@ -2060,9 +2189,7 @@ public class Node implements Serializable {
                                 .get(j).getMin_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
-                        }
-
-                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
+                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
                                 .get(j).getMax_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
@@ -2073,19 +2200,17 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
+                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age())) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
-                                }
-
-                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
+                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
                                 }
@@ -2097,15 +2222,15 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
 
-                                    if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                    if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMax_age().equalsIgnoreCase("")) {
 
@@ -2114,9 +2239,7 @@ public class Node implements Serializable {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
-                                        }
-
-                                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                                 .getMax_age())) {
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
@@ -2131,19 +2254,19 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {
 
-                                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMax_age().equalsIgnoreCase("")) {
                                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2152,9 +2275,7 @@ public class Node implements Serializable {
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                             .get(l).getOptionsList(), m);
                                                     m--;
-                                                }
-
-                                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                         .get(l).getOptionsList().get(m).getMax_age())) {
 
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2163,7 +2284,7 @@ public class Node implements Serializable {
 
                                                 }
                                             }
-                                    }
+                                        }
                                     }
                                 }
                             }
@@ -2179,7 +2300,7 @@ public class Node implements Serializable {
     public void fetchItem(String s) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
+        for (int i = 0; i < optionsList.size(); i++) {
             if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
                 remove(optionsList, i);
                 i--;
@@ -2187,8 +2308,8 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
                     if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
                         remove(optionsList.get(i).getOptionsList(), j);
@@ -2199,10 +2320,10 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2216,13 +2337,13 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
                                     if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2238,14 +2359,14 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {

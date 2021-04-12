@@ -1,6 +1,7 @@
 package app.intelehealth.client.activities.additionalDocumentsActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -21,12 +22,14 @@ import android.view.View;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.database.dao.ImagesDAO;
 import app.intelehealth.client.models.DocumentObject;
+import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.UuidDictionary;
 
 import app.intelehealth.client.activities.cameraActivity.CameraActivity;
@@ -42,10 +45,23 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private String encounterAdultIntials;
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
+    SessionManager sessionManager = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_additional_documents);
         Toolbar topToolBar = findViewById(R.id.toolbar);

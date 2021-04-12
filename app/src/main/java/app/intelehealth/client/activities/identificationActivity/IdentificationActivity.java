@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -83,6 +84,16 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_economic_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_education_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_or_caste_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_or_economic_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_or_education_edit;
+
+import static app.intelehealth.client.utilities.StringUtils.en__hi_dob;
+import static app.intelehealth.client.utilities.StringUtils.en__or_dob;
+
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
@@ -149,11 +160,29 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerYear;
     private int retainPickerMonth;
     private int retainPickerDate;
+    int dob_indexValue = 15;
+    //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
+    //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
+    //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        Log.d("lang", "lang: "+language);
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
+        }
+      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         setContentView(R.layout.activity_identification);
         setTitle(R.string.title_activity_identification);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -170,7 +199,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        sessionManager = new SessionManager(this);
+
         mFirstName = findViewById(R.id.identification_first_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
@@ -468,8 +497,23 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
-            else
-                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//            else
+//                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+
+            else {
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String education = switch_hi_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String education = switch_or_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }
+                else {
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                }
+            }
+
             if (educationAdapter == null) {
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
             }
@@ -477,13 +521,43 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
-            else
-                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+//            else
+//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+
+            else {
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }
+                else {
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                }
+            }
 
             if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mCaste.setSelection(0);
-            else
-                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+//            else
+//                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+
+            else {
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String caste = switch_hi_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String caste = switch_or_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }
+                else {
+                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                }
+
+            }
+
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
@@ -611,7 +685,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         //DOB is set using an AlertDialog
-        Locale.setDefault(Locale.ENGLISH);
+       // Locale.setDefault(Locale.ENGLISH);
 
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -622,12 +696,24 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                Locale.setDefault(Locale.ENGLISH);
+               // Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
-                mDOB.setText(dobString);
+                dob_indexValue = monthOfYear; //fetching the inex value of month selected...
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                    mDOB.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+                    mDOB.setText(dob_text);
+                } else {
+                    mDOB.setText(dobString);
+                }
+
+              //  mDOB.setText(dobString);
                 mDOBYear = year;
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
@@ -658,7 +744,19 @@ public class IdentificationActivity extends AppCompatActivity {
         });
         //if patient update then age will be set
         if (patientID_edit != null) {
-            mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+            //dob to be displayed based on translation...
+            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
+                mDOB.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                String dob_text = en__or_dob(dob); //to show text of English into Odiya...
+                mDOB.setText(dob_text);
+            } else {
+                mDOB.setText(dob);
+            }
+
+           // mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
@@ -759,8 +857,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         mDOBDay = birthDay;
                     }
-                    Locale.setDefault(Locale.ENGLISH);
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                 //   Locale.setDefault(Locale.ENGLISH);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
+                            Locale.ENGLISH);
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
                     mDOB.setText(dobString);
@@ -1190,7 +1289,19 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
+
+            String[] dob_array = mDOB.getText().toString().split(" ");
+            Log.d("dob_array", "0: " + dob_array[0]);
+            Log.d("dob_array", "0: " + dob_array[1]);
+            Log.d("dob_array", "0: " + dob_array[2]);
+
+            //get month index and return English value for month.
+            String dob = StringUtils.hi_or__en_month(dob_indexValue);
+            dob_array[1] = dob_array[1].replace(dob_array[1], dob);
+            String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+            patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
+                    (StringUtils.getValue(dob_value)));
+
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
@@ -1497,7 +1608,29 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
+
+            String[] dob_array = mDOB.getText().toString().split(" ");
+            Log.d("dob_array", "0: " + dob_array[0]);
+            Log.d("dob_array", "0: " + dob_array[1]);
+            Log.d("dob_array", "0: " + dob_array[2]);
+
+            //get month index and return English value for month.
+            if (dob_indexValue == 15) {
+                String dob = StringUtils.hi_or__en_noEdit
+                        (mDOB.getText().toString(), sessionManager.getAppLanguage());
+                patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
+                        (StringUtils.getValue(dob)));
+            } else {
+                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob_month_split = dob_array[1];
+                dob_array[1] = dob_month_split.replace(dob_month_split, dob);
+                String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
+
+                patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
+                        (StringUtils.getValue(dob_value)));
+            }
+
+           // patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
