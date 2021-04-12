@@ -1052,7 +1052,15 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
+               // String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
+                //translate back to English from Hindi if present...
+//                String unit_text = "";
+//                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+//                unit_text = or_en(unit_text); //for Odiya...
+
+                //String durationString = quantityPicker.getValue() + " " + unit_text;
                 String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
+
 
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
@@ -1110,6 +1118,8 @@ public class Node implements Serializable {
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(unit_text); //for Odiya...
+                String durationString = quantityPicker.getValue() + " " + unit_text;
+
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {

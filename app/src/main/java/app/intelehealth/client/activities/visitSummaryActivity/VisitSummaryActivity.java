@@ -568,7 +568,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     if(!editText.getText().toString().equalsIgnoreCase(""))
                                     {
                                         String phoneNumber = "+91" + editText.getText().toString();
-                                        String whatsappMessage = getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                        String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                                 + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
                                        // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
@@ -598,8 +598,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 else
                 {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage(R.string.download_prescription_first_before_sharing);
-                    alertDialog.setPositiveButton(R.string.ok,
+                    alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();

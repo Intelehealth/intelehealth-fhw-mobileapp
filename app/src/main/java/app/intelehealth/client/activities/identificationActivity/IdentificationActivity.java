@@ -84,6 +84,13 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.StringUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_caste_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_economic_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_hi_education_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_or_caste_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_or_economic_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_or_education_edit;
+
 import static app.intelehealth.client.utilities.StringUtils.en__hi_dob;
 import static app.intelehealth.client.utilities.StringUtils.en__or_dob;
 
@@ -490,8 +497,23 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
-            else
-                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+//            else
+//                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+
+            else {
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String education = switch_hi_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String education = switch_or_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }
+                else {
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                }
+            }
+
             if (educationAdapter == null) {
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
             }
@@ -499,13 +521,43 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
-            else
-                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+//            else
+//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+
+            else {
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String economic = switch_or_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }
+                else {
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                }
+            }
 
             if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mCaste.setSelection(0);
-            else
-                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+//            else
+//                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+
+            else {
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String caste = switch_hi_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    String caste = switch_or_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }
+                else {
+                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                }
+
+            }
+
         } else {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
