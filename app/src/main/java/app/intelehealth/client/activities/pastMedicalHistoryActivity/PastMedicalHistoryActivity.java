@@ -76,6 +76,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String visitUuid;
     String state;
     String patientName;
+    String patientGender;
     String intentTag;
     private float float_ageYear_Month;
 
@@ -144,6 +145,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
+            patientGender = intent.getStringExtra("gender");
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
@@ -210,6 +212,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
                     intent.putExtra("state", state);
                     intent.putExtra("name", patientName);
+                    intent.putExtra("gender", patientGender);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
@@ -386,6 +389,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("gender", patientGender);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
             startActivity(intent);
@@ -415,6 +419,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
             intent.putExtra("state", state);
             intent.putExtra("name", patientName);
+            intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);

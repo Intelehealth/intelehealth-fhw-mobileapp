@@ -513,6 +513,9 @@
     <string name="per_Week">ପ୍ରତି ସପ୍ତାହ</string>
     <string name="per_Month">ପ୍ରତି ମାସରେ |</string>
     <string name="per_Year">ପ୍ରତିବର୍ଷ</string>
+    <string name="row_gender">ଲିଙ୍ଗ</string>
+    <string name="gender_male">ପୁରୁଷ</string>
+    <string name="gender_female">ମହିଳା</string>
 
 
 </resources>
