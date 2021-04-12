@@ -48,7 +48,6 @@ import java.util.Locale;
 import java.util.UUID;
 
 import app.intelehealth.client.R;
-import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.questionNodeActivity.QuestionsAdapter;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;

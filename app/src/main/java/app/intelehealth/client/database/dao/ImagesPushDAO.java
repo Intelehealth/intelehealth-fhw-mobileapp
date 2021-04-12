@@ -110,7 +110,6 @@ public class ImagesPushDAO {
             Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .retry(3)
                     .subscribe(new DisposableObserver<ObsJsonResponse>() {
                         @Override
                         public void onNext(ObsJsonResponse obsJsonResponse) {
@@ -134,11 +133,6 @@ public class ImagesPushDAO {
                             }
                         }
                     });
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
         sessionManager.setPushSyncFinished(true);
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
