@@ -1120,8 +1120,6 @@ public class Node implements Serializable {
                 unit_text = or_en(unit_text); //for Odiya...
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
-                String durationString = quantityPicker.getValue() + " " + unit_text;
-
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
