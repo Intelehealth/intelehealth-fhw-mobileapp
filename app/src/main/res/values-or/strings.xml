@@ -516,6 +516,7 @@
     <string name="row_gender">ଲିଙ୍ଗ</string>
     <string name="gender_male">ପୁରୁଷ</string>
     <string name="gender_female">ମହିଳା</string>
+    <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ - "</string>
 
 
 </resources>
