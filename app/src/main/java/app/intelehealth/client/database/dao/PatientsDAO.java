@@ -62,6 +62,7 @@ public class PatientsDAO {
             values.put("middle_name", patient.getMiddlename());
             values.put("last_name", patient.getLastname());
             values.put("address1", patient.getAddress1());
+            values.put("address2", patient.getAddress2());
             values.put("country", patient.getCountry());
             values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
             values.put("gender", patient.getGender());
