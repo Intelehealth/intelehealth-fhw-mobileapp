@@ -17,12 +17,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,9 +27,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -50,8 +41,15 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.WorkManager;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
+import app.intelehealth.client.activities.helpActivity.TiledeskActivity;
 import app.intelehealth.client.activities.identificationActivity.IdentificationActivity;
 import app.intelehealth.client.activities.loginActivity.LoginActivity;
 import app.intelehealth.client.activities.privacyNoticeActivity.PrivacyNotice_Activity;
@@ -73,7 +71,6 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.OfflineLogin;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -183,15 +180,16 @@ public class HomeActivity extends AppCompatActivity {
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+917005308163";
+                /*String phoneNumberWithCountryCode = "+917005308163";
                 String message =
                         getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                                *//*" from " + sessionManager.getState() + *//*getString(R.string.i_need_assistance);
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(
                                 String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        phoneNumberWithCountryCode, message))));
+                                        phoneNumberWithCountryCode, message))));*/
+                startActivity(new Intent(HomeActivity.this, TiledeskActivity.class));
             }
         });
         c1.setOnClickListener(new View.OnClickListener() {
