@@ -1416,6 +1416,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     String dobString = simpleDateFormat.format(dob.getTime());
                     mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
+                    dob_indexValue = mDOBPicker.getDatePicker().getMonth(); //if user manually selects Age then...
+                    Log.d("dd", "dd: "+dob_indexValue);
                     dialog.dismiss();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -2092,11 +2094,11 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("dob_array", "0: " + dob_array[2]);
 
             //get month index and return English value for month.
-            if (dob_indexValue == 15) {
+            if (dob_indexValue == 15) { //no value has been edited...ie. DOB/Age is not selected...
                 String dob = StringUtils.hi_or__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob)));
+                        (StringUtils.getValue(dob))); 
             }
             else {
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
