@@ -377,7 +377,7 @@ public class CameraActivity extends AppCompatActivity {
                 .build();
 
         preview.setSurfaceProvider(mPreviewView.createSurfaceProvider());
-
+        cameraProvider.unbindAll();
         mCamera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis, imageCapture);
 
 

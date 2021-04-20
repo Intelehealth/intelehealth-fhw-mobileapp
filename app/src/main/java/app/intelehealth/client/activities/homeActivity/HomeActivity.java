@@ -33,6 +33,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -559,8 +560,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+        //IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        //registerReceiver(syncBroadcastReceiver, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -570,11 +571,21 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        registerReceiver(syncBroadcastReceiver, filter);
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
-        unregisterReceiver(syncBroadcastReceiver);
+        try {
+            unregisterReceiver(syncBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean keyVerified(String key) {
