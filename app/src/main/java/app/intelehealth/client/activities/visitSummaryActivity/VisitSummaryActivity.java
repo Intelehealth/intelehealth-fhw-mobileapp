@@ -3102,8 +3102,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
-        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+        dbValue = dbValue.replace("{", "");
+        try {
+            objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+            Log.e(TAG, "TEST DB: " + dbValue);
+            Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+        }
+        catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            Toast.makeText(context, getResources().getString(R.string.something_went_wrong),
+                    Toast.LENGTH_SHORT).show();
+        }
 
         String doctorSign = "";
         String doctrRegistartionNum = "";
@@ -3623,7 +3632,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
-                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString
+                        (encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                     visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
             } while (encounterCursor.moveToNext());
