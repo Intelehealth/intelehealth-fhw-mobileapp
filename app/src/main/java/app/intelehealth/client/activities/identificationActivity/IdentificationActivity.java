@@ -729,7 +729,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAgeYears = Integer.valueOf(yearData[0]);
                 mAgeMonths = Integer.valueOf(monthData[1]);
                 mAgeDays = Integer.valueOf(daysData[1]);
-                mAge.setText(age);
+                String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                        mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+                        mAgeDays + getResources().getString(R.string.days);
+                mAge.setText(ageS);
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -764,7 +767,10 @@ public class IdentificationActivity extends AppCompatActivity {
             mAgeYears = Integer.valueOf(ymdData[0]);
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
-            mAge.setText(yrMoDays);
+            String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                    mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+                    mAgeDays + getResources().getString(R.string.days);
+            mAge.setText(age);
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -862,7 +868,17 @@ public class IdentificationActivity extends AppCompatActivity {
                             Locale.ENGLISH);
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
-                    mDOB.setText(dobString);
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                        mDOB.setText(dob_text);
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                        String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+                        mDOB.setText(dob_text);
+                    } else {
+                        mDOB.setText(dobString);
+                    }
+
+//                    mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dialog.dismiss();
                 });
