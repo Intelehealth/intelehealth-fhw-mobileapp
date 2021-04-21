@@ -1088,6 +1088,7 @@ public class SetupActivity extends AppCompatActivity {
 
                                             if (keyVerified(key)) {
                                                 getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                                                alertDialog.dismiss();
                                             }
                                         } else {
                                             Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
