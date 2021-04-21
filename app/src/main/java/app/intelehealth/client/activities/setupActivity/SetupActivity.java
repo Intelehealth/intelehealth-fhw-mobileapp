@@ -115,8 +115,8 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mAdminPasswordView;
     private EditText mUrlField;
     private Button mLoginButton;
-     private Spinner mDropdownLocation;
-//    private Spinner spinner_state, spinner_district,
+    private Spinner mDropdownLocation;
+    //    private Spinner spinner_state, spinner_district,
 //            spinner_sanch, spinner_village;
     private TextView mAndroidIdTextView;
     private RadioButton r1;
@@ -128,7 +128,7 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
-//    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
+    //    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
 //    boolean value = false;
     String base_url;
 //    Map.Entry<String, String> village_name;
@@ -164,8 +164,8 @@ public class SetupActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(),0);
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(mLoginButton.getWindowToken(), 0);
                 attemptLogin();
 
             }
@@ -205,8 +205,8 @@ public class SetupActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(submitButton.getWindowToken(),0);
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(submitButton.getWindowToken(), 0);
                 attemptLogin();
                 //progressBar.setVisibility(View.VISIBLE);
                 //progressBar.setProgress(0);
@@ -641,7 +641,7 @@ public class SetupActivity extends AppCompatActivity {
 
         //spinner-end...
 
-         Location location = null;
+        Location location = null;
 
         //add state wise here...
 
@@ -889,8 +889,7 @@ public class SetupActivity extends AppCompatActivity {
 
                         }
                     });
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             mUrlField.setError(getString(R.string.url_invalid));
         }
@@ -1049,7 +1048,7 @@ public class SetupActivity extends AppCompatActivity {
                                 text.setError(null);
 
                                 //If both are not entered...
-                                if(url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
                                     url.requestFocus();
                                     url.setError(getResources().getString(R.string.enter_server_url));
                                     text.setError(getResources().getString(R.string.enter_license_key));
@@ -1057,14 +1056,14 @@ public class SetupActivity extends AppCompatActivity {
                                 }
 
                                 //If Url is empty...key is not empty...
-                                if(url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                                if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
                                     url.requestFocus();
                                     url.setError(getResources().getString(R.string.enter_server_url));
                                     return;
                                 }
 
                                 //If Url is not empty...key is empty...
-                                if(!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
                                     text.requestFocus();
                                     text.setError(getResources().getString(R.string.enter_license_key));
                                     return;
@@ -1090,8 +1089,7 @@ public class SetupActivity extends AppCompatActivity {
                                             if (keyVerified(key)) {
                                                 getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                                         }
 
@@ -1099,8 +1097,7 @@ public class SetupActivity extends AppCompatActivity {
                                         //invalid url || invalid url and key.
                                         Toast.makeText(SetupActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
                                     }
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(SetupActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -1321,6 +1318,7 @@ public class SetupActivity extends AppCompatActivity {
             public void onSubscribe(Disposable d) {
 
             }
+
             @Override
             public void onNext(LoginModel loginModel) {
                 Boolean authencated = loginModel.getAuthenticated();
@@ -1458,6 +1456,7 @@ public class SetupActivity extends AppCompatActivity {
 
 
     }
+
     public String getSalt_DATA() {
         BufferedReader reader = null;
         String salt = null;
