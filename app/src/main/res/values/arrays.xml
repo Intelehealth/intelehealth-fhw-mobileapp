@@ -2,9 +2,9 @@
 
 
     <string-array name="language_names">
-        <item>Hindi</item>
+        <item>हिंदी</item>
         <item>English</item>
-        <item>Odiya</item>
+        <item>ଓଡିଆ</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 

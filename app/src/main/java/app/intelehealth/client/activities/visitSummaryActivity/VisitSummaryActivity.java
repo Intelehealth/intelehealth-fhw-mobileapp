@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
@@ -24,6 +25,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -48,6 +50,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -1556,13 +1559,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return isExists;
     }
 
-    public void setLocale(String appLanguage)
-    {
+    public void setLocale(String appLanguage) {
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
         Locale locale = new Locale(appLanguage);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            getApplicationContext().createConfigurationContext(conf); }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
     }
 
     private String convertCtoF(String temperature) {
