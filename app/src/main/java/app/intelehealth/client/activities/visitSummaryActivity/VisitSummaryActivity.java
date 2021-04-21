@@ -3102,7 +3102,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-        dbValue = dbValue.replace("{", "");
+      //  dbValue = dbValue.replace("{", "");
         try {
             objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
             Log.e(TAG, "TEST DB: " + dbValue);
