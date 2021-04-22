@@ -114,7 +114,7 @@ public class ConfigUtils {
         JSONObject object = jsonreader();
         try {
             view = object.getBoolean("privacyNotice");
-        } catch (JSONException e) {
+        } catch (JSONException | NullPointerException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         return view;

@@ -76,5 +76,6 @@
     <string name="per_Month">per Month</string>
     <string name="per_Year">per Year</string>
 
-
+    <!--@lincon-->
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
 </resources>

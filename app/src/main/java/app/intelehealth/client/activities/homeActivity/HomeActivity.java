@@ -17,12 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,6 +29,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -46,7 +46,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -73,7 +75,6 @@ import app.intelehealth.client.utilities.NetworkConnection;
 import app.intelehealth.client.utilities.OfflineLogin;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.widget.materialprogressbar.CustomProgressDialog;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -90,7 +91,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
-    ProgressDialog TempDialog;
+    //ProgressDialog TempDialog;
+    private ProgressDialog mSyncProgressDialog;
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
@@ -98,8 +100,8 @@ public class HomeActivity extends AppCompatActivity {
     TextView lastSyncTextView;
     TextView lastSyncAgo;
     Button manualSyncButton;
-    IntentFilter filter;
-    Myreceiver reMyreceive;
+    //IntentFilter filter;
+    //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
     CardView c1, c2, c3, c4, c5, c6;
     private String key = null;
@@ -138,8 +140,8 @@ public class HomeActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
-        reMyreceive = new Myreceiver();
-        filter = new IntentFilter("lasysync");
+        //reMyreceive = new Myreceiver();
+        //filter = new IntentFilter("lasysync");
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
@@ -176,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
-       // manualSyncButton.setText(R.string.sync_now);
+        // manualSyncButton.setText(R.string.sync_now);
         manualSyncButton.setText(R.string.refresh);
 
         //Help section of watsapp...
@@ -265,36 +267,24 @@ public class HomeActivity extends AppCompatActivity {
 //                }
             }
         });
-        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+        //WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         if (sessionManager.isFirstTimeLaunched()) {
-            TempDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
-            TempDialog.setTitle(R.string.syncInProgress);
-            TempDialog.setCancelable(false);
-            TempDialog.setProgress(i);
+            mSyncProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle); //thats how to add a style!
+            mSyncProgressDialog.setTitle(R.string.syncInProgress);
+            mSyncProgressDialog.setCancelable(false);
+            mSyncProgressDialog.setProgress(i);
+            mSyncProgressDialog.show();
 
-            TempDialog.show();
-
-            CDT = new CountDownTimer(7000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    TempDialog.setTitle(getString(R.string.syncInProgress));
-                    TempDialog.setMessage(getString(R.string.please_wait));
-                    i--;
-                }
-
-                public void onFinish() {
-                    TempDialog.dismiss();
-                    //Your Code ...
-                    sessionManager.setFirstTimeLaunched(false);
-                    sessionManager.setMigration(true);
-                }
-            }.start();
-
+            syncUtils.initialSync("home");
+        } else {
+            // if initial setup done then we can directly set the periodic background sync job
+            WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
-        sessionManager.setMigration(true);
+        /*sessionManager.setMigration(true);
 
         if (sessionManager.isReturningUser()) {
             syncUtils.syncForeground("");
-        }
+        }*/
 
         showProgressbar();
     }
@@ -314,19 +304,15 @@ public class HomeActivity extends AppCompatActivity {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(this, AppConstants.CONFIG_FILE_NAME)));
             }
 
-            if(obj.has("video_library"))
-            {
+            if (obj.has("video_library")) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri.parse(obj.getString("video_library"));
                 intent.setData(uri);
                 startActivity(intent);
-            }
-            else
-            {
+            } else {
                 Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (JSONException e) {
+        } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
         }
@@ -412,8 +398,7 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.updateProtocolsOption: {
 
 
-                if (NetworkConnection.isOnline(this))
-                {
+                if (NetworkConnection.isOnline(this)) {
 
                     if (!sessionManager.getLicenseKey().isEmpty()) {
 
@@ -471,12 +456,12 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
 
-            }else{
+                } else {
                     Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
                 }
 
                 return true;
-        }
+            }
 
          /*   case R.id.sync:
 //                pullDataDAO.pullData(this);
@@ -567,6 +552,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 */
         Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
 
@@ -579,7 +565,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        registerReceiver(reMyreceive, filter);
+        //registerReceiver(reMyreceive, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
@@ -590,9 +576,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        unregisterReceiver(reMyreceive);
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        registerReceiver(syncBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(syncBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean keyVerified(String key) {
@@ -644,13 +641,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public class Myreceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-//          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
-        }
-    }
+
 
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
@@ -803,5 +794,65 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
+    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);
 
+            if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                if (sessionManager.isFirstTimeLaunched()) {
+                    if (flagType == AppConstants.SYNC_FAILED) {
+                        hideSyncProgressBar(false);
+                        /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
+                        finish();*/
+                        new AlertDialog.Builder(HomeActivity.this)
+                                .setMessage(R.string.failed_initial_synced)
+                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+
+                                }).setCancelable(false)
+
+                                .show();
+                    } else {
+                        mTempSyncHelperList.add(flagType);
+                        if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
+//                                && mTempSyncHelperList.contains(AppConstants.SYNC_PUSH_DATA_DONE)
+                                /*&& mTempSyncHelperList.contains(AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE)
+                                && mTempSyncHelperList.contains(AppConstants.SYNC_OBS_IMAGE_PUSH_DONE)*/) {
+                            hideSyncProgressBar(true);
+                        }
+                    }
+                }
+            }
+            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+//          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
+        }
+    };
+
+    private void hideSyncProgressBar(boolean isSuccess) {
+        if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
+        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
+            if (isSuccess) {
+
+                sessionManager.setFirstTimeLaunched(false);
+                sessionManager.setMigration(true);
+                // initial setup/sync done and now we can set the periodic background sync job
+                // given some delay after initial sync
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                    }
+                }, 10000);
+            }
+        }
+
+    }
 }

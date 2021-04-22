@@ -643,5 +643,6 @@
     <string name="per_Year">प्रति वर्ष</string>
     <string name="document_">"दस्तावेज़ - "</string>
 
-
+    <!--@lincon-->
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
 </resources>

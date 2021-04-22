@@ -518,5 +518,6 @@
     <string name="gender_female">ମହିଳା</string>
     <string name="document_">"ଡକ୍ୟୁମେଣ୍ଟ୍ - "</string>
 
-
+    <!--@lincon-->
+    <string name="failed_initial_synced">ସିଙ୍କ ବିଫଳ ହେଲା, ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ | ଦୟାକରି ବନ୍ଦ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଆପ୍ ଆରମ୍ଭ କରନ୍ତୁ |</string>
 </resources>

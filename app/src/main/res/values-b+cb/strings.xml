@@ -480,5 +480,6 @@
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
 
-
+    <!--@lincon-->
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
 </resources>

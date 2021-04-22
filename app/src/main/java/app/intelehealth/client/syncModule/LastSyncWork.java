@@ -12,7 +12,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
-
+import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
@@ -42,7 +42,7 @@ public class LastSyncWork extends Worker {
         Logger.logD(TAG, "doWork");
 
         Intent in = new Intent();
-        in.setAction("lasysync");
+        in.setAction(AppConstants.SYNC_INTENT_ACTION);
         IntelehealthApplication.getAppContext().sendBroadcast(in);
 
         return Result.success();

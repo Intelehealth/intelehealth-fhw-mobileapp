@@ -16,7 +16,18 @@ public class SyncUtils {
 
 
     private static final String TAG = SyncUtils.class.getSimpleName();
+    /**
+     * This method will be responsible for initial sync/setup
+     * @param fromActivity
+     */
+    public void initialSync(String fromActivity) {
 
+        SyncDAO syncDAO = new SyncDAO();
+        Logger.logD(TAG, "Pull Started");
+        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+        Logger.logD(TAG, "Pull ended");
+
+    }
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
