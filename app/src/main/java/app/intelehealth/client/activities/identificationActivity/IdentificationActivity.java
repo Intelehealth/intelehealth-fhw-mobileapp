@@ -1137,13 +1137,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.i(TAG, "Result OK");
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
-                // check and correct the image rotation
-                try {
-                    BitmapUtils.handleSamplingAndRotationBitmap(IdentificationActivity.this, Uri.parse(mCurrentPhotoPath));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
 
                 Glide.with(this)
                         .load(new File(mCurrentPhotoPath))
