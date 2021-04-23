@@ -3,7 +3,7 @@
 
     <string-array name="language_names">
         <item>English</item>
-        <item>Gujarati</item>
+        <item>ગુજરાતી</item>
 <!--        <item>Hindi</item>-->
 <!--        <item>Odiya</item>-->
 <!--        <item>Cebuano</item>-->
@@ -88,7 +88,7 @@
 
     <string-array name="education_gu">
         <item>Select</item>
-        <item>Illiterate</item>
+        <item>નિરક્ષર</item>
         <item>Primary</item>
         <item>Secondary</item>
         <item>Higher Secondary</item>
@@ -104,7 +104,7 @@
         <item>Graduation &amp; Higher</item>
     </string-array>
 
-    <string-array name="caste">
+    <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
         <item>OBC</item>
@@ -115,7 +115,7 @@
 
     <string-array name="caste_gu">
         <item>Select</item>
-        <item>General</item>
+        <item>જનરલ</item>
         <item>OBC</item>
         <item>SC</item>
         <item>ST</item>
@@ -130,8 +130,8 @@
 
     <string-array name="economic_gu">
         <item>Select</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>ગરીબી રેખા ઉપર</item>
+        <item>ગરીબી રેખાની નીચે</item>
     </string-array>
 
 

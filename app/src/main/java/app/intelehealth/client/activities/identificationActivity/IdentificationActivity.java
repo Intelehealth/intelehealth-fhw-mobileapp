@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -96,6 +97,7 @@ public class IdentificationActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter;
+    private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -168,6 +170,20 @@ public class IdentificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        Log.d("lang", "lang: "+language);
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config,
+                    getBaseContext().getResources().getDisplayMetrics());
+        }
+      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         setContentView(R.layout.activity_identification);
         setTitle(R.string.title_activity_identification);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -442,12 +458,25 @@ public class IdentificationActivity extends AppCompatActivity {
         //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
-        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
-                R.array.caste, R.layout.custom_spinner);
-        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCaste.setAdapter(casteAdapter);
+//        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.caste, R.layout.custom_spinner);
+//        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mCaste.setAdapter(casteAdapter);
         try {
-            String economicLanguage = "economic_" + Locale.getDefault().getLanguage();
+            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
+            int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
+            if (castes != 0) {
+                casteAdapter = ArrayAdapter.createFromResource(this,
+                        castes, R.layout.custom_spinner);
+
+            }
+            mCaste.setAdapter(casteAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+        try {
+            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
             int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
             if (economics != 0) {
                 economicStatusAdapter = ArrayAdapter.createFromResource(this,
@@ -460,7 +489,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
         try {
-            String educationLanguage = "education_" + Locale.getDefault().getLanguage();
+            String educationLanguage = "education_" + sessionManager.getAppLanguage();
             int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
             if (educations != 0) {
                 educationAdapter = ArrayAdapter.createFromResource(this,
@@ -506,7 +535,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals(getString(R.string.not_provided)))
+            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
 //            else
 //                mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -528,7 +557,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            if (patient1.getEconomic_status().equals(getString(R.string.not_provided)))
+            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
@@ -543,7 +572,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-            if (patient1.getCaste().equals(getString(R.string.not_provided)))
+            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mCaste.setSelection(0);
 //            else
 //                mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
