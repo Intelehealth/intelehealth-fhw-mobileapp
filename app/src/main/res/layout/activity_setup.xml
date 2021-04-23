@@ -5,6 +5,7 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/coordinatorLayout"
     tools:context=".activities.setupActivity.SetupActivity">
 
         <com.google.android.material.appbar.AppBarLayout

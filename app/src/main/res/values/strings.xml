@@ -649,4 +649,10 @@
     <string name="per_Year">per Year</string>
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+    //setup activity
+    <string name="setup_internet_available">A strong Internet connection is required for setup.</string>
+    <string name="setup_internet_not_available">You are not connected to the Internet.</string>
+    <string name="generic_info">Info!</string>
+
+
 </resources>
