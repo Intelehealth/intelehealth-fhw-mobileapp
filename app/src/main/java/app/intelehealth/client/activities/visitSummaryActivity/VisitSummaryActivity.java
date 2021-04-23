@@ -1972,6 +1972,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+            }else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
         String font_face = "<style>" +
