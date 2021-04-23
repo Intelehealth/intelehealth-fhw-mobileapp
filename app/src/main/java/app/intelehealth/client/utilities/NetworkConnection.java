@@ -37,7 +37,18 @@ public class NetworkConnection {
         return TYPE_NOT_CONNECTED;
     }
 
-
+    public static String getConnectivityStatusString(Context context) {
+        String conn = NetworkConnection.getConnectionType(context);
+        String status = null;
+        if (conn == NetworkConnection.TYPE_WIFI) {
+            status = "Connected to Internet!";
+        } else if (conn == NetworkConnection.TYPE_MOBILE) {
+            status = "Connected to Internet!";
+        } else if (conn == NetworkConnection.TYPE_NOT_CONNECTED) {
+            status = "Not connected to Internet!";
+        }
+        return status;
+    }
 }
 
 
