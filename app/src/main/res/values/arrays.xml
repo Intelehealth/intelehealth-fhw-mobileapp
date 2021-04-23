@@ -3,6 +3,7 @@
 
     <string-array name="language_names">
         <item>English</item>
+        <item>Gujarati</item>
 <!--        <item>Hindi</item>-->
 <!--        <item>Odiya</item>-->
 <!--        <item>Cebuano</item>-->
@@ -10,6 +11,7 @@
 
     <string-array name="language_values">
         <item>en</item>
+        <item>gu</item>
 <!--        <item>hi</item>-->
 <!--        <item>or</item>-->
 <!--        <item>cb</item>-->
@@ -20,12 +22,24 @@
         <item>General Physician</item>
     </string-array>
 
+    <string-array name="speciality_values_gu">
+        <item>Select Specialization</item>
+        <item>General Physician</item>
+    </string-array>
+
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
+
+    <string-array name="pref_example_list_titles_gu">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
@@ -35,7 +49,19 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
+
+    <string-array name="state_error_gu">
+        <item>Please select country first</item>
+    </string-array>
+
     <string-array name="countries">
+        <item>Select Country</item>
+        <item>India</item>
+        <item>United States</item>
+        <item>Philippines</item>
+    </string-array>
+
+    <string-array name="countries_gu">
         <item>Select Country</item>
         <item>India</item>
         <item>United States</item>
@@ -59,6 +85,16 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
+    <string-array name="education_gu">
+        <item>Select</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -77,7 +113,22 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_gu">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
     <string-array name="economic_en">
+        <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_gu">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
