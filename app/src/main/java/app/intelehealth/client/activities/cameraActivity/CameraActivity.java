@@ -9,30 +9,27 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.cameraview.CameraView;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.cameraview.CameraView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,10 +38,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import app.intelehealth.client.R;
-import app.intelehealth.client.activities.cameraActivity.CameraActivityPermissionsDispatcher;
-
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
+import app.intelehealth.client.utilities.BitmapUtils;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -117,14 +113,21 @@ public class CameraActivity extends AppCompatActivity {
             Log.d(TAG, "onPictureTaken " + data.length);
             Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
                     .show();
-            compressImageAndSave(data);
+            //compressImageAndSave(data);
+            // check and correct the image rotation
+            try {
+                Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
+                compressImageAndSave(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
     };
 
 
-    void compressImageAndSave(final byte[] data) {
+    void compressImageAndSave(Bitmap bitmap) {
         getBackgroundHandler().post(new Runnable() {
             @Override
             public void run() {
@@ -144,7 +147,7 @@ public class CameraActivity extends AppCompatActivity {
                 OutputStream os = null;
                 try {
                     os = new FileOutputStream(file);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    //Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
                     //  Bitmap bitmap = Bitmap.createScaledBitmap(bmp, 600, 800, false);
                     //  bitmap.recycle();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
