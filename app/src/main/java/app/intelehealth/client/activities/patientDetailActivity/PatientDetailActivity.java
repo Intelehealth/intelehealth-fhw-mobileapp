@@ -84,6 +84,10 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static app.intelehealth.client.utilities.StringUtils.switch_gu_caste_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_gu_economic_edit;
+import static app.intelehealth.client.utilities.StringUtils.switch_gu_education_edit;
+
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     String patientName;
@@ -556,9 +560,51 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
-        education_statusView.setText(patient_new.getEducation_level());
-        economic_statusView.setText(patient_new.getEconomic_status());
-        casteView.setText(patient_new.getCaste());
+//        education_statusView.setText(patient_new.getEducation_level());
+//        economic_statusView.setText(patient_new.getEconomic_status());
+//        casteView.setText(patient_new.getCaste());
+
+        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            education_statusView.setText("પૂરી પાડવામાં આવેલ નથી");
+        }else {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String education = switch_gu_education_edit(patient_new.getEducation_level());
+                education_statusView.setText(education);
+            } else {
+                education_statusView.setText(patient_new.getEducation_level());
+            }
+        }
+        // education_statusView.setText(patient_new.getEducation_level());
+        if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            economic_statusView.setText("પૂરી પાડવામાં આવેલ નથી");
+        } else {
+            economic_statusView.setText(patient_new.getEconomic_status());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String economic = switch_gu_economic_edit(patient_new.getEconomic_status());
+                economic_statusView.setText(economic);
+            } else {
+                economic_statusView.setText(patient_new.getEconomic_status());
+            }
+            // economic_statusView.setText(patient_new.getEconomic_status());
+        }
+
+        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            casteView.setText("પૂરી પાડવામાં આવેલ નથી");
+        } else {
+            casteView.setText(patient_new.getCaste());
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                String caste = switch_gu_caste_edit(patient_new.getCaste());
+                casteView.setText(caste);
+            }
+            else {
+                casteView.setText(patient_new.getCaste());
+            }
+            // casteView.setText(patient_new.getCaste());
+        }
+
         healthSchemeView.setText(patient_new.getHealth_scheme());
 
 //

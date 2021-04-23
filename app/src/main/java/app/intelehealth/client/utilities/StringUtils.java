@@ -142,9 +142,138 @@ public final class StringUtils {
             val = spinner.getSelectedItem().toString();
         }
 
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            val = switch_gu_caste(val);
+            val = switch_gu_economic(val);
+            val = switch_gu_education(val);
+        }
+
 
         return val;
     }
+
+    public static String switch_gu_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "નિરક્ષર";
+                break;
+            case "Primary":
+                val = "પ્રાથમિક";
+                break;
+            case "Secondary":
+                val = "માધ્યમિક";
+                break;
+            case "Higher Secondary":
+                val = "ઉચ્ચતર માધ્યમિક";
+                break;
+            case "Graduation & Higher":
+                val = "સ્નાતક અને ઉચ્ચતર";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_gu_education(String val) {
+        switch (val) {
+            case "નિરક્ષર":
+                val = "Illiterate";
+                break;
+            case "પ્રાથમિક":
+                val = "Primary";
+                break;
+            case "માધ્યમિક":
+                val = "Secondary";
+                break;
+            case "ઉચ્ચતર માધ્યમિક":
+                val = "Higher Secondary";
+                break;
+            case "સ્નાતક અને ઉચ્ચતર":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_economic(String val) {
+        switch (val) {
+            case "ગરીબી રેખા ઉપર":
+                val = "APL";
+                break;
+            case "ગરીબી રેખાની નીચે":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "ગરીબી રેખા ઉપર";
+                break;
+            case "BPL":
+                val = "ગરીબી રેખાની નીચે";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_caste(String val) {
+        switch (val) {
+            case "જનરલ":
+                val = "General";
+                break;
+            case "અન્ય પછાત વર્ગ":
+                val = "OBC";
+                break;
+            case "અનુસૂચિત જાતિ":
+                val = "SC";
+                break;
+            case "સુનિશ્ચિત જનજાતિ":
+                val = "ST";
+                break;
+            case "અન્ય":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "જનરલ";
+                break;
+            case "OBC":
+                val = "અન્ય પછાત વર્ગ";
+                break;
+            case "SC":
+                val = "અનુસૂચિત જાતિ";
+                break;
+            case "ST":
+                val = "સુનિશ્ચિત જનજાતિ";
+                break;
+            case "others":
+                val = "અન્ય";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
 
     public static String getFileNameWithoutExtension(File file) {
         String fileName = "";
