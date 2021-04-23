@@ -131,11 +131,13 @@ public final class StringUtils {
     public static String getProvided(Spinner spinner) {
         String val = "";
         if (spinner.getSelectedItemPosition() == 0)
-            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+            val = "Not provided";
+
 
         else if(spinner.getSelectedItem() == null)
         {
-            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+            val = "Not provided";
+
         }
         else
         {
@@ -322,4 +324,92 @@ public final class StringUtils {
         return val;
     }
 
+    public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("January", "जनवरी")
+                .replace("February", "फ़रवरी")
+                .replace("March", "मार्च")
+                .replace("April", "अप्रैल")
+                .replace("May", "मई")
+                .replace("June", "जून")
+                .replace("July", "जुलाई")
+                .replace("August", "अगस्त")
+                .replace("September", "सितंबर")
+                .replace("October", "अक्टूबर")
+                .replace("November", "नवंबर")
+                .replace("December", "दिसंबर");
+
+        return mdob_text;
+    }
+
+    public static String gu_en_month(int month_index) {
+        String dob_string = "";
+
+        switch (month_index) {
+            case 0:
+                dob_string = "January";
+                break;
+            case 1:
+                dob_string = "February";
+                break;
+            case 2:
+                dob_string = "March";
+                break;
+            case 3:
+                dob_string = "April";
+                break;
+            case 4:
+                dob_string = "May";
+                break;
+            case 5:
+                dob_string = "June";
+                break;
+            case 6:
+                dob_string = "July";
+                break;
+            case 7:
+                dob_string = "August";
+                break;
+            case 8:
+                dob_string = "September";
+                break;
+            case 9:
+                dob_string = "October";
+                break;
+            case 10:
+                dob_string = "November";
+                break;
+            case 11:
+                dob_string = "December";
+                break;
+
+            default:
+                return dob_string;
+        }
+
+        return dob_string;
+    }
+
+    public static String gu_en_noEdit(String dobString, String locale) {
+
+        if (locale.equalsIgnoreCase("gu")) {
+            String dob = dobString
+                    //Gujarati
+                    .replace("जनवरी", "January")
+                    .replace("फ़रवरी", "February")
+                    .replace("मार्च", "March")
+                    .replace("अप्रैल", "April")
+                    .replace("मई", "May")
+                    .replace("जून", "June")
+                    .replace("जुलाई", "July")
+                    .replace("अगस्त", "August")
+                    .replace("सितंबर", "September")
+                    .replace("अक्टूबर", "October")
+                    .replace("नवंबर", "November")
+                    .replace("दिसंबर", "December");
+            return dob;
+        } else {
+            return dobString;
+        }
+    }
 }
