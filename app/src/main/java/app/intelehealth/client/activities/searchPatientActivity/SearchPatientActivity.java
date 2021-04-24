@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
+    FloatingActionButton new_patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
+        new_patient = findViewById(R.id.new_patient);
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
@@ -128,6 +131,14 @@ public class SearchPatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
+
+            //If there is any data present against that search query than it will hide the FAB else will show the FAB...
+            if(recycler.patients.size() == 0) {
+                new_patient.setVisibility(View.VISIBLE);
+            }
+            else {
+                new_patient.setVisibility(View.GONE);
+            }
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
