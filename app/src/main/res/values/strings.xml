@@ -669,6 +669,8 @@
     <string name="per_Month">per Month</string>
     <string name="per_Year">per Year</string>
 
+    <string name="please_select_specialization">Please select specialization</string>
+
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
