@@ -2170,6 +2170,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
             //House Hold Registration
+/*
             if (sessionManager.getHouseholdUuid().equals("")) {
 
                 String HouseHold_UUID = UUID.randomUUID().toString();
@@ -2193,6 +2194,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTOList.add(patientAttributesDTO);
 
             }
+*/
 
             //Occupation ...
             if (occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
@@ -2905,7 +2907,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")) {
+          /*  if (sessionManager.getHouseholdUuid().equals("")) {
 
                 String HouseHold_UUID = UUID.randomUUID().toString();
                 sessionManager.setHouseholdUuid(HouseHold_UUID);
@@ -2927,7 +2929,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setValue(HouseHold_UUID);
                 patientAttributesDTOList.add(patientAttributesDTO);
 
-            }
+            }*/
 //          patientAttributesDTOList.add(patientAttributesDTO);
             //Occupation ...
             if (occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
