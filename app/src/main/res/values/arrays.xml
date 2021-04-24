@@ -336,7 +336,7 @@
     </array>
 
     <string-array name="location_state">
-        <item>Select State</item>
+        <item>Select Location</item>
     </string-array>
 
     <string-array name="occupation_spinner_en">
