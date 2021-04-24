@@ -846,6 +846,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <!-- Here we will add Occupation UI which is common fields for all -->
+<!--
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -968,10 +969,12 @@
                         </LinearLayout>
             </LinearLayout>
             </androidx.cardview.widget.CardView>
+-->
 
                 <!-- End of Occupation UI -->
 
                 <!-- Here we will add the Cardview and Checkbox for Head Of Household -->
+<!--
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/familyhead_checkbox"
                     android:layout_width="match_parent"
@@ -983,7 +986,9 @@
                     android:textSize="@dimen/card_content_text_size">
 
                 </com.google.android.material.checkbox.MaterialCheckBox>
+-->
 
+<!--
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_household"
                 android:layout_width="match_parent"
@@ -1263,6 +1268,7 @@
 
             </LinearLayout>
             </androidx.cardview.widget.CardView>
+-->
 
                 <!-- End of HOH -->
 
