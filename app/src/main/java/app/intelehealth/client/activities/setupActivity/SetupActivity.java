@@ -521,7 +521,7 @@ public class SetupActivity extends AppCompatActivity {
         }*/ else {
 
             List<String> list_state = new ArrayList<>();
-            list_state.add("Select State");
+            list_state.add("Select Location");
             spinner_state.setEnabled(false);
             spinner_state.setAlpha(0.4F);
             LocationArrayAdapter adapter_state = new LocationArrayAdapter(SetupActivity.this, list_state);
@@ -609,7 +609,7 @@ public class SetupActivity extends AppCompatActivity {
             TextView t = (TextView) spinner_state.getSelectedView();
             t.setError("Select State");
             t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select State from dropdown", Toast.LENGTH_LONG).show();
+            Toast.makeText(SetupActivity.this, "Select Location from dropdown", Toast.LENGTH_LONG).show();
         } /*else if (spinner_district.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_district;
@@ -916,7 +916,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private List<String> getLocation(List<Result> resultList) {
         List<String> list = new ArrayList<>();
-        list.add("Select State");
+        list.add("Select Location");
         for (int i = 0; i < resultList.size(); i++) {
             list.add(resultList.get(i).getDisplay());
         }

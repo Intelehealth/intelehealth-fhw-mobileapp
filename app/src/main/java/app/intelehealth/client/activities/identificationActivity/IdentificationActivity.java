@@ -1112,7 +1112,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource
+                (this, R.array.state_error, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
