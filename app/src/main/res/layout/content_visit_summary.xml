@@ -198,6 +198,7 @@
                     <!--Height-->
                     <TableRow
                         android:layout_width="wrap_content"
+                        android:visibility="gone"
                         android:layout_height="wrap_content">
 
                         <TextView
@@ -218,13 +219,15 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--Weight-->
-                    <TableRow android:layout_width="match_parent">
+                    <TableRow android:layout_width="match_parent"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textView_weight"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:visibility="gone"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_weight"
                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -238,13 +241,15 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
                     <!--BMI-->
-                    <TableRow>
+                    <TableRow
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/textView_bmi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:visibility="gone"
                             android:fontFamily="@font/lato_bold"
                             android:text="@string/visit_summary_bmi"
                             android:textSize="@dimen/card_content_sub_text_size" />
