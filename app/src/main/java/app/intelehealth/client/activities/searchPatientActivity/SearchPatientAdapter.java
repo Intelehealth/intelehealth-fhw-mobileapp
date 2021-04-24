@@ -74,7 +74,8 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
     }
 
     @Override
-    public int getItemCount() {
+    public int getItemCount()
+    {
         return patients.size();
     }
 

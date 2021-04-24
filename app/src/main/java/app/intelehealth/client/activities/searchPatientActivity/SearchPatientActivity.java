@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,11 +29,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -40,10 +43,13 @@ import java.util.List;
 import java.util.Locale;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.identificationActivity.IdentificationActivity;
+import app.intelehealth.client.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.ProviderDAO;
 import app.intelehealth.client.models.dto.PatientDTO;
+import app.intelehealth.client.utilities.ConfigUtils;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 
@@ -61,6 +67,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
+    FloatingActionButton new_patient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +100,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
+        new_patient = findViewById(R.id.new_patient);
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
@@ -116,6 +124,24 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         }
 
+        new_patient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Loads the config file values and check for the boolean value of privacy key.
+                ConfigUtils configUtils = new ConfigUtils(SearchPatientActivity.this);
+                if (configUtils.privacy_notice()) {
+                    Intent intent = new Intent(SearchPatientActivity.this, PrivacyNotice_Activity.class);
+                    startActivity(intent);
+                } else {
+                    //Clear HouseHold UUID from Session for new registration
+                  //  sessionManager.setHouseholdUuid("");
+
+                    Intent intent = new Intent(SearchPatientActivity.this, IdentificationActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
 
     }
 
@@ -128,6 +154,14 @@ public class SearchPatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
+
+            //If there is any data present against that search query than it will hide the FAB else will show the FAB...
+            if(recycler.patients.size() == 0) {
+                new_patient.setVisibility(View.VISIBLE);
+            }
+            else {
+                new_patient.setVisibility(View.GONE);
+            }
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -166,6 +200,9 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT |
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD); //to show numbers easily...
+
         // Assumes current activity is the searchable activity
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
@@ -369,28 +406,60 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     public List<PatientDTO> getQueryPatients(String query) {
         String search = query.trim().replaceAll("\\s", "");
+        // search = StringUtils.mobileNumberEmpty(phoneNumber());
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC", null);
+
+        String patientUUID = "";
+        final Cursor search_mobile_cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute WHERE value = ?",
+                new String[] {search} );
+        //if no data is present against that corresponding cursor than cursor count returns = 0 ... i.e cursor_count = 0 ...
         try {
-            if (searchCursor.moveToFirst()) {
+            if (search_mobile_cursor.moveToFirst()) {
                 do {
-                    PatientDTO model = new PatientDTO();
-                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                    model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
-                    model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
-                    model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                    model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
-                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
-                    model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
-                    model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
-                    modelList.add(model);
-                } while (searchCursor.moveToNext());
+                    patientUUID = search_mobile_cursor.getString(search_mobile_cursor.getColumnIndexOrThrow("patientuuid"));
+                }
+                while (search_mobile_cursor.moveToNext());
             }
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
+         } catch (Exception e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " WHERE first_name LIKE " + "'%" + search + "%' OR middle_name LIKE '%" + search + "%' OR uuid = ? OR last_name LIKE '%" + search + "%' OR (first_name || middle_name) LIKE '%" + search + "%' OR (middle_name || last_name) LIKE '%" + search + "%' OR (first_name || last_name) LIKE '%" + search + "%' OR openmrs_id LIKE '%" + search + "%' " + "ORDER BY first_name ASC",
+                new String[]{patientUUID});
+      //  if(searchCursor.getCount() != -1) { //all values are present as per the search text entered...
+            try {
+                if (searchCursor.moveToFirst()) {
+                    do {
+                        PatientDTO model = new PatientDTO();
+                        model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
+                        model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
+                        model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
+                        model.setMiddlename(searchCursor.getString(searchCursor.getColumnIndexOrThrow("middle_name")));
+                        model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                        model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
+                        model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                        modelList.add(model);
+                    } while (searchCursor.moveToNext());
+                }
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+     //   }
+       /* else { //mobile no entered...
+            String patientUUID = "";
+            final Cursor search_mobile_cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute WHERE value = ?",
+                    new String[] {search} );
+            if(search_mobile_cursor.moveToFirst()) {
+                patientUUID = search_mobile_cursor.getString(search_mobile_cursor.getColumnIndexOrThrow("pateintuuid"));
+            }
+            while (search_mobile_cursor.moveToNext());
+
+
+        }*/
+
         return modelList;
 
     }
