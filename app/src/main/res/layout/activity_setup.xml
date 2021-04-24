@@ -127,7 +127,7 @@
                                     android:focusable="true"
                                     />
 
-                                <android.widget.Space
+                              <!--  <android.widget.Space
                                     android:layout_width="match_parent"
                                     android:layout_height="10dp"/>
 
@@ -168,7 +168,7 @@
                                     android:focusable="true"
                                     android:alpha="0.4"
                                     />
-
+-->
                                 <android.widget.Space
                                     android:layout_width="match_parent"
                                     android:layout_height="10dp"/>
