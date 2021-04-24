@@ -39,7 +39,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">एकल आरोग्य</string>
+    <string name="title_activity_login">आरोग्य सहायता</string>
     <string name="prompt_email">उपयोगकर्ता नाम</string>
     <string name="prompt_password">कुंजिका</string>
     <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"ସାମାଜିକ ସ୍ବସ୍ଥ୍ୟ ଗ୍ରାହକ "</string>
+    <string name="app_name">"ସ୍ୱାସ୍ଥ୍ୟ ସହାୟତା "</string>
     <string name="generic_the_flipping_word_next">ପରବତ୍ତର୍ତ୍ତୀ</string>
     <string name="button_ok">ଓକେ</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
@@ -169,7 +169,7 @@
     <string name="title_activity_family_history">ପରିବାର ଇତିହାସ</string>
     <string name="title_activity_get_patient_history">ରୋଗୀ ଇତିିହାସ</string>
     <string name="title_activity_identification">ନୂତନ ରୋଗୀମାନଙ୍କୁ ଯୋଡ଼ିବା</string>
-    <string name="title_activity_login">ବୃଦ୍ଧି ସମ୍ବନ୍ଧୀୟ ସ୍ବାସ୍ଥ୍ୟ</string>
+    <string name="title_activity_login">ସ୍ୱାସ୍ଥ୍ୟ ସହାୟତା</string>
     <string name="title_activity_patient_detail">ରୋଗୀ ବିବରଣୀ</string>
     <string name="title_activity_patient_history">ତୀତ ପୁରୁଣା ଚିକିସତ୍ା ଇଚ୍ଛିହାସ</string>
     <string name="title_activity_patient_summary">ଯାତ୍ରା ସାରାଂଶ</string>
