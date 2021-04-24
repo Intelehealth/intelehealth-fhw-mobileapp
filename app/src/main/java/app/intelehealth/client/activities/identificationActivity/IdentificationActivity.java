@@ -273,7 +273,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
-        occupation_spinner = findViewById(R.id.occupation_spinner);
+       /* occupation_spinner = findViewById(R.id.occupation_spinner);
         occupation_edittext = findViewById(R.id.occupation_edittext);
         bankaccount_spinner = findViewById(R.id.bankaccount_spinner);
         mobilephone_spinner = findViewById(R.id.mobilephone_spinner);
@@ -284,21 +284,21 @@ public class IdentificationActivity extends AppCompatActivity {
         water_availability_spinner = findViewById(R.id.water_availability_spinner);
         toilet_facility_spinner = findViewById(R.id.toilet_facility_spinner);
         toiletfacility_edittext = findViewById(R.id.toiletfacility_edittext);
-        structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);
+        structure_of_house_spinner = findViewById(R.id.structure_of_house_spinner);*/
 
         //HOH - Checkbox
-        familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
+       /* familyhead_checkbox = findViewById(R.id.familyhead_checkbox);
         time_water_checkbox = findViewById(R.id.time_water_checkbox);
-        hectars_land_checkbox = findViewById(R.id.hectars_land_checkbox);
+        hectars_land_checkbox = findViewById(R.id.hectars_land_checkbox);*/
 
         //EditText
-        time_water_editText = findViewById(R.id.time_water_editText);
+       /* time_water_editText = findViewById(R.id.time_water_editText);
         hectars_land_editText = findViewById(R.id.hectars_land_editText);
         no_of_member_edittext = findViewById(R.id.no_of_member_edittext);
-        no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);
+        no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);*/
 
         //Cardview
-        cardview_household = findViewById(R.id.cardview_household);
+       // cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -522,7 +522,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //Occupation Adapter ...
-        try {
+      /*  try {
             String occupationLanguage = "occupation_spinner_" + sessionManager.getAppLanguage();
             int occupation_id = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
             if (occupation_id != 0) {
@@ -535,12 +535,13 @@ public class IdentificationActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, "Occupation values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
-        }
+        }*/
 
         //Household Head
 //        occupation_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.occupation_spinner));
 
+/*
         occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -560,8 +561,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+*/
 
         //Bank Account Adapter ...
+/*
         try {
             String bankaccountLanguage = "bank_account_spinner_" + sessionManager.getAppLanguage();
             int bankaccount_id = res.getIdentifier(bankaccountLanguage, "array", getApplicationContext().getPackageName());
@@ -575,11 +578,13 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
 //        bankaccount_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.bank_account_spinner));
 
         //Mobile Type Adapter ...
+/*
         try {
             String mobileTypeLanguage = "mobilephone_spinner_" + sessionManager.getAppLanguage();
             int mobiletype_id = res.getIdentifier(mobileTypeLanguage, "array", getApplicationContext().getPackageName());
@@ -593,6 +598,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Mobile Type values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
 //        mobile_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.mobilephone_spinner));
@@ -601,6 +607,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                getResources().getStringArray(R.array.familymember_whatsapp));
 
         //Whatsapp App Adapter ...
+/*
         try {
             String whatsappLanguage = "familymember_whatsapp_" + sessionManager.getAppLanguage();
             int whatsapp_id = res.getIdentifier(whatsappLanguage, "array", getApplicationContext().getPackageName());
@@ -614,11 +621,13 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Whatsapp values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
 //        sourcewater_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.sourcewater_spinner));
 
         //Source Water Adapter ...
+/*
         try {
             String sourcewaterLanguage = "sourcewater_spinner_" + sessionManager.getAppLanguage();
             int sourcewater_id = res.getIdentifier(sourcewaterLanguage, "array", getApplicationContext().getPackageName());
@@ -632,11 +641,13 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Water Source values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
 //        watersafe_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.howtomake_water_safe));
 
         // Water Safe Adapter ...
+/*
         try {
             String watersafeLanguage = "howtomake_water_safe_" + sessionManager.getAppLanguage();
             int watersafe_id = res.getIdentifier(watersafeLanguage, "array", getApplicationContext().getPackageName());
@@ -650,7 +661,9 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Water Safe values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
+/*
         howtomake_water_safe_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -670,11 +683,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+*/
 
 //        availa_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.water_availability_spinner));
 
         // Water Availability Adapter ...
+/*
         try {
             String wateravailLanguage = "water_availability_spinner_" + sessionManager.getAppLanguage();
             int wateravail_id = res.getIdentifier(wateravailLanguage, "array", getApplicationContext().getPackageName());
@@ -688,11 +703,13 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Water Availability values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
 //        toiletfacility_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.toiletFacility_spinner));
 
         // Toilet Facility Adapter ...
+/*
         try {
             String toiletFacilityLanguage = "toiletFacility_spinner_" + sessionManager.getAppLanguage();
             int toiletfacil_id = res.getIdentifier(toiletFacilityLanguage, "array", getApplicationContext().getPackageName());
@@ -706,8 +723,10 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Toilet Facility values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
 
+/*
         toilet_facility_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -727,11 +746,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+*/
 
 //        structure_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.structure_house));
 
         // House Structure Adapter ...
+/*
         try {
             String houseStructureLanguage = "structure_house_" + sessionManager.getAppLanguage();
             int houseStruct_id = res.getIdentifier(houseStructureLanguage, "array", getApplicationContext().getPackageName());
@@ -745,11 +766,13 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "House Structure values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
         //editText values values are set for the household fields ...
-        no_of_member_edittext.setText(patient1.getNo_of_family_members());
-        no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());
+     /*   no_of_member_edittext.setText(patient1.getNo_of_family_members());
+        no_of_staying_members_edittext.setText(patient1.getNo_of_family_currently_live());*/
 
+/*
         if (patient1.getTime_travel_water() != null || patient1.getHectars_land() != null) {
             if (patient1.getTime_travel_water().equalsIgnoreCase("Declined to answer")) {
                 time_water_editText.setVisibility(View.GONE);
@@ -766,6 +789,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 hectars_land_editText.setText(patient1.getHectars_land());
             }
         }
+*/
 
 
         if (null == patientID_edit || patientID_edit.isEmpty()) {
@@ -773,6 +797,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         }
 
+/*
         time_water_editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -842,7 +867,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+*/
 
+/*
         time_water_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -855,7 +882,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
+*/
 
+/*
         hectars_land_checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -868,6 +897,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
+*/
 
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
@@ -941,7 +971,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //Houselhold Head...
-            if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
+          /*  if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
                     && !patient1.getNo_of_family_members().isEmpty()) {
                 familyhead_checkbox.setChecked(true);
                 cardview_household.setVisibility(View.VISIBLE);
@@ -949,8 +979,9 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 familyhead_checkbox.setChecked(false);
                 cardview_household.setVisibility(View.GONE);
-            }
+            }*/
 
+/*
             if (patient1.getOccupation() != null && !patient1.getOccupation().equalsIgnoreCase("")) {
                 String occupation_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -976,6 +1007,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
 
             }
+*/
+/*
             if (patient1.getBank_account() != null && !patient1.getBank_account().equalsIgnoreCase("")) {
                 String bankacc_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -987,6 +1020,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = bankaccount_adapt.getPosition(bankacc_Transl);
                 bankaccount_spinner.setSelection(spinner_position);
             }
+*/
+/*
             if (patient1.getMobile_type() != null && !patient1.getMobile_type().equalsIgnoreCase("")) {
                 String mobile_Transl = "";
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -998,6 +1033,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = mobile_adapt.getPosition(mobile_Transl);
                 mobilephone_spinner.setSelection(spinner_position);
             }
+*/
+/*
             if (patient1.getWhatsapp_mobile() != null && !patient1.getWhatsapp_mobile()
                     .equalsIgnoreCase("")) {
                 String whatsapp_Transl = "";
@@ -1010,6 +1047,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = whatsapp_adapt.getPosition(whatsapp_Transl);
                 whatsapp_spinner.setSelection(spinner_position);
             }
+*/
+/*
             if (patient1.getSource_of_water() != null && !patient1.getSource_of_water()
                     .equalsIgnoreCase("")) {
 
@@ -1023,6 +1062,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = sourcewater_adapt.getPosition(watersource_Transl);
                 source_of_water_spinner.setSelection(spinner_position);
             }
+*/
+/*
             if (patient1.getWater_safe() != null && !patient1.getWater_safe().equalsIgnoreCase("")) {
 
                 String watersafe_Transl = "";
@@ -1050,7 +1091,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     watersafe_edittext.setText(patient1.getWater_safe());
                 }
             }
+*/
 
+/*
             if (patient1.getWater_availability() != null && !patient1.getWater_availability()
                     .equalsIgnoreCase("")) {
 
@@ -1064,6 +1107,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = availa_adapt.getPosition(wateravail_Transl);
                 water_availability_spinner.setSelection(spinner_position);
             }
+*/
+/*
             if (patient1.getToilet_facility() != null && !patient1.getToilet_facility()
                     .equalsIgnoreCase("")) {
 
@@ -1093,7 +1138,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     toiletfacility_edittext.setText(patient1.getToilet_facility());
                 }
             }
+*/
 
+/*
             if (patient1.getStructure_house() != null && !patient1.getStructure_house()
                     .equalsIgnoreCase("")) {
 
@@ -1107,6 +1154,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = structure_adapt.getPosition(housestruct_Transl);
                 structure_of_house_spinner.setSelection(spinner_position);
             }
+*/
 
             //mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste())); //edit...
         } else {
@@ -1449,6 +1497,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+/*
         familyhead_checkbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1462,6 +1511,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
+*/
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1595,7 +1645,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-                patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -1640,7 +1690,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("occupation")) {
+              /*  if (name.equalsIgnoreCase("occupation")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Bank Account")) {
@@ -1678,7 +1728,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("Family Cultivable Land")) {
                     patient1.setHectars_land(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
 
             } while (idCursor1.moveToNext());
         }
@@ -1917,15 +1967,16 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         // TODO: Add validations for all Spinners here...
-        if (occupation_spinner.getSelectedItemPosition() == 0) {
+     /*   if (occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = occupation_spinner;
             cancel = true;
             return;
-        }
+        }*/
 
+/*
         if (occupation_edittext.getVisibility() == View.VISIBLE && occupation_edittext.getText().toString().isEmpty() &&
                 occupation_edittext.getText().toString().equalsIgnoreCase("") &&
                 occupation_edittext.getText().toString() != null) {
@@ -1935,7 +1986,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (bankaccount_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bankaccount_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -1944,7 +1997,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (mobilephone_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) mobilephone_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -1953,7 +2008,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (whatsapp_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) whatsapp_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -1962,7 +2019,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (familyhead_checkbox.isChecked()) {
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
@@ -2093,6 +2152,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                }
 
         }
+*/
 
 
         if (cancel) {
@@ -2214,7 +2274,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
             //Occupation ...
-            if (occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
+         /*   if (occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
                     !occupation_edittext.getText().toString().equalsIgnoreCase("")) {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2232,10 +2292,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(occupation_spinner));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-            }
+            }*/
 
             //Bank Account...
-            patientAttributesDTO = new PatientAttributesDTO();
+          /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Bank Account"));
@@ -2263,9 +2323,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
             //Check first if Are you Head of Household checkbox is checked or not...
-            if (familyhead_checkbox.isChecked()) {
+/*            if (familyhead_checkbox.isChecked()) {
                 //Total no of members in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2423,10 +2483,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 // sessionManager.setHOH_checkbox(true);
                 // Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
 
-            } else {
+            }*/
+           /* else {
                 // sessionManager.setHOH_checkbox(false);
                 //  Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
-            }
+            }*/
             //end of checking if the family head checkbox is checked or not...
 
             //            patientAttributesDTO = new PatientAttributesDTO();
@@ -2662,6 +2723,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         // TODO: Add validations for all Spinners here...
+/*
         if (occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2670,7 +2732,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (occupation_edittext.getVisibility() == View.VISIBLE && occupation_edittext.getText().toString().isEmpty() &&
                 occupation_edittext.getText().toString().equalsIgnoreCase("") &&
                 occupation_edittext.getText().toString() != null) {
@@ -2680,8 +2744,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
 
+/*
         if (bankaccount_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) bankaccount_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2690,7 +2756,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (mobilephone_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) mobilephone_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2699,7 +2767,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (whatsapp_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) whatsapp_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2708,7 +2778,9 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
+/*
         if (familyhead_checkbox.isChecked()) {
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
@@ -2838,6 +2910,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //            }
 
         }
+*/
 
 
         if (cancel) {
@@ -2958,7 +3031,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }*/
 //          patientAttributesDTOList.add(patientAttributesDTO);
             //Occupation ...
-            if (occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
+          /*  if (occupation_edittext.getVisibility() == View.VISIBLE && !occupation_edittext.getText().toString().isEmpty() &&
                     !occupation_edittext.getText().toString().equalsIgnoreCase("")) {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2976,10 +3049,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(occupation_spinner));
                 Log.d("HOH", "Occupation: " + occupation_spinner.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
-            }
+            }*/
 
             //Bank Account...
-            patientAttributesDTO = new PatientAttributesDTO();
+          /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Bank Account"));
@@ -3007,9 +3080,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
-
+*/
             //Check first if Are you Head of Household checkbox is checked or not...
-            if (familyhead_checkbox.isChecked()) {
+/*            if (familyhead_checkbox.isChecked()) {
                 //Total no of members in household  ...
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3167,10 +3240,11 @@ public class IdentificationActivity extends AppCompatActivity {
 //                sessionManager.setHOH_checkbox(true);
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
 
-            } else {
+            }*/
+           /* else {
 //                sessionManager.setHOH_checkbox(false);
 //                Log.d("session", "session_create: " + sessionManager.getHOH_checkbox());
-            }
+            }*/
             //end of checking if the family head checkbox is checked or not...
 
             patientAttributesDTOList.add(patientAttributesDTO);
