@@ -147,12 +147,12 @@
                                 android:text="@string/patient_name"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
-
                             <TextView
                                 android:id="@+id/textView_name"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:layout_marginStart="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -184,6 +184,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
+                                android:layout_marginStart="10dp"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -197,6 +198,7 @@
 
                         <TableRow
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -246,6 +248,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
+                                android:layout_marginStart="10dp"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -278,6 +281,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:layout_marginStart="10dp"
                                 android:paddingBottom="@dimen/padding_2dp"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -291,6 +295,7 @@
 
                         <TableRow
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -323,6 +328,7 @@
                         <TableRow
                             android:id="@+id/tableRow_addr2"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -354,6 +360,7 @@
 
                         <TableRow
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -402,6 +409,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
+                                android:layout_marginStart="10dp"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -415,6 +423,7 @@
                         <TableRow
                             android:id="@+id/tableRow_SDW"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -449,6 +458,7 @@
                             android:id="@+id/tableRow_Occupation"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:visibility="gone"
                             android:paddingBottom="5dp">
 
                             <TextView
@@ -481,6 +491,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Economic_Status"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -510,6 +521,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Education_Status"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -541,6 +553,7 @@
                         <TableRow
                             android:id="@+id/tableRow_Caste"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -780,12 +793,9 @@
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
-
                         </TableRow>
 
-
                     </TableLayout>
-
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -82,13 +82,13 @@
     <string name="identification_screen_prompt_last_name">Last name *</string>
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">Address line 2</string>
-    <string name="identification_screen_prompt_phone_number">Phone number</string>
+    <string name="identification_screen_prompt_phone_number">Phone number *</string>
     <string name="admin_password_dialog_heading" translatable="false">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender" translatable="false">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
-    <string name="identification_screen_prompt_age">Age:</string>
+    <string name="identification_screen_prompt_age">Age: *</string>
     <string name="identification_screen_prompt_time">Time:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
