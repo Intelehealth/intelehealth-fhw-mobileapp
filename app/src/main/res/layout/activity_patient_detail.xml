@@ -575,6 +575,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+<!--
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_familymember"
                 android:layout_width="match_parent"
@@ -653,6 +654,7 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+-->
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_history"

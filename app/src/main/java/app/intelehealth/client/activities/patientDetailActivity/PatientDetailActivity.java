@@ -162,8 +162,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
-        rvFamilyMember = findViewById(R.id.rv_familymember);
-        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
+//        rvFamilyMember = findViewById(R.id.rv_familymember);
+//        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
 
         ivPrescription = findViewById(R.id.iv_prescription);
@@ -187,7 +187,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         editbtn = findViewById(R.id.edit_button);
-        ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
+     //   ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,6 +197,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
         });
+/*
         ib_addFamilyMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -216,6 +217,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+*/
 
         setDisplay(patientUuid);
 
@@ -334,7 +336,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
-        LoadFamilyMembers();
+      //  LoadFamilyMembers();
 
     }
 
@@ -360,7 +362,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                 }
 
-                if (listPatientNames.size() > 0) {
+            /*    if (listPatientNames.size() > 0) {
                     tvNoFamilyMember.setVisibility(View.GONE);
                     rvFamilyMember.setVisibility(View.VISIBLE);
                     FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
@@ -370,7 +372,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } else {
                     tvNoFamilyMember.setVisibility(View.VISIBLE);
                     rvFamilyMember.setVisibility(View.GONE);
-                }
+                }*/
 
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
