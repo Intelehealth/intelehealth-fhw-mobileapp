@@ -70,7 +70,7 @@
     <string name="identification_screen_dialog_error_dob">"ଭୁଲ: ଅାଜି ପରର ତାରିଖ ପାଇଁ ଜନ୍ମତିଥି ସେଟ ୍ଅଛି "</string>
     <string name="identification_screen_error_data_fields">ସେବକକୁ ଅପଲୋର୍ଡ଼ କରିବା</string>
     <string name="identification_screen_prompt_address">ଠିକଣା</string>
-    <string name="identification_screen_prompt_age">ବୟସ*</string>
+    <string name="identification_screen_prompt_age">ବୟସ *</string>
     <string name="identification_screen_prompt_time">Time:</string>
     <string name="identification_screen_prompt_birthday">ଜନ୍ମ ତିଥି*</string>
     <string name="identification_screen_prompt_country">ଦେଶ *</string>
@@ -83,7 +83,7 @@
     <string name="identification_screen_prompt_first_name">ପ୍ରଥମ ନାମ *</string>
     <string name="identification_screen_prompt_last_name">ଶେଷ ନାମ *</string>
     <string name="identification_screen_prompt_middle_name">ମଧ୍ୟମ ନାମ</string>
-    <string name="identification_screen_prompt_phone_number">"ଫୋନ୍ ନମ୍ବର "</string>
+    <string name="identification_screen_prompt_phone_number">"ଫୋନ୍ ନମ୍ବର *"</string>
     <string name="identification_screen_prompt_occupation">ବୃତ୍ତି</string>
     <string name="identification_screen_prompt_relationship">"ପୁଅ/ଟିଅ / ସ୍ତ୍ରୀର "</string>
     <string name="identification_screen_prompt_postal_code">"ପୋଷ୍ଟାଲ କୋଡ଼୍ "</string>

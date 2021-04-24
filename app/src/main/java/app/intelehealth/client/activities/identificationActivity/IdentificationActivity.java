@@ -136,10 +136,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-    EditText stateText;
+//    EditText stateText;
+    AutoCompleteTextView autocompleteState;
     EditText casteText;
     Spinner mCountry;
-    Spinner mState;
+//    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -244,8 +245,9 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity = findViewById(R.id.identification_city);
         mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-        stateText = findViewById(R.id.identification_state);
-        mState = findViewById(R.id.spinner_state);
+//        stateText = findViewById(R.id.identification_state);
+        autocompleteState = findViewById(R.id.autocomplete_state);
+//        mState = findViewById(R.id.spinner_state);
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
@@ -462,7 +464,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity.setText(patient1.getCity_village());
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
-        // mOccupation.setText(patient1.getOccupation());
+        autocompleteState.setText(patient1.getState_province());
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -1112,9 +1114,16 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
-        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mState.setAdapter(stateAdapter);
+//        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
+//        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mState.setAdapter(stateAdapter);
+
+        // Get the string array
+        String[] countries = getResources().getStringArray(R.array.states_india);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        autocompleteState.setAdapter(adapter);
 
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1127,41 +1136,41 @@ public class IdentificationActivity extends AppCompatActivity {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_india, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
+//                        mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
-                        if (patientID_edit != null)
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        else
-                            mState.setSelection(stateAdapter.getPosition(state));
+//                        if (patientID_edit != null)
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        else
+//                            mState.setSelection(stateAdapter.getPosition(state));
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_us, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
+//                        mState.setAdapter(stateAdapter);
 
-                        if (patientID_edit != null) {
-
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        }
+//                        if (patientID_edit != null) {
+//
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        }
                     } else if (country.matches("Philippines")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_philippines, R.layout.custom_spinner);
                         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        mState.setAdapter(stateAdapter);
-
-                        if (patientID_edit != null) {
-                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        } else {
-                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
-                        }
+//                        mState.setAdapter(stateAdapter);
+//
+//                        if (patientID_edit != null) {
+//                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+//                        } else {
+//                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
+//                        }
                     }
                 } else {
                     ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.state_error, R.layout.custom_spinner);
                     // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mState.setAdapter(stateAdapter);
+//                    mState.setAdapter(stateAdapter);
                 }
 
             }
@@ -1171,31 +1180,31 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
-        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String state = parent.getItemAtPosition(position).toString();
-                if (state.matches("Odisha")) {
-                    //Creating the instance of ArrayAdapter containing list of fruit names
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.odisha_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else if (state.matches("Bukidnon")) {
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                            R.array.bukidnon_villages, R.layout.custom_spinner);
-                    mCity.setThreshold(1);//will start working from first character
-                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-                } else {
-                    mCity.setAdapter(null);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                String state = parent.getItemAtPosition(position).toString();
+//                if (state.matches("Odisha")) {
+//                    //Creating the instance of ArrayAdapter containing list of fruit names
+//                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                            R.array.odisha_villages, R.layout.custom_spinner);
+//                    mCity.setThreshold(1);//will start working from first character
+//                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+//                } else if (state.matches("Bukidnon")) {
+//                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+//                            R.array.bukidnon_villages, R.layout.custom_spinner);
+//                    mCity.setThreshold(1);//will start working from first character
+//                    mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+//                } else {
+//                    mCity.setAdapter(null);
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
 
         mGenderF.setOnClickListener(new View.OnClickListener() {
@@ -1308,7 +1317,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setText(dob);
             }
 
-          //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
+            //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
             String yrMoDays = DateAndTimeUtils.getAgeInYearMonth(patient1.getDate_of_birth(), context);
 
@@ -1417,7 +1426,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dob_indexValue = mDOBPicker.getDatePicker().getMonth(); //if user manually selects Age then...
-                    Log.d("dd", "dd: "+dob_indexValue);
+                    Log.d("dd", "dd: " + dob_indexValue);
                     dialog.dismiss();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
@@ -1827,9 +1836,9 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("")
-                && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                 && !countryText.getText().toString().equals("") &&
+                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1842,17 +1851,26 @@ public class IdentificationActivity extends AppCompatActivity {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
-            if (mDOB.getText().toString().equals("")) {
-                mDOB.setError(getString(R.string.error_field_required));
-            }
+//            if (mDOB.getText().toString().equals("")) {
+//                mDOB.setError(getString(R.string.error_field_required));
+//            }
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
+            if (mPhoneNum.getText().toString().equals("")) {
+                mPhoneNum.setError(getString(R.string.error_field_required));
             }
+
+            if (autocompleteState.getText().toString().equals("")) {
+                autocompleteState.setError(getString(R.string.error_field_required));
+            }
+
+
+//            if (mCity.getText().toString().equals("")) {
+//                mCity.setError(getString(R.string.error_field_required));
+//            }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -1889,13 +1907,13 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (mState.getSelectedItemPosition() == 0) {
-            stateText.setError(getString(R.string.error_field_required));
-            focusView = stateText;
+        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+            autocompleteState.setError(getString(R.string.error_field_required));
+            focusView = autocompleteState;
             cancel = true;
             return;
         } else {
-            stateText.setError(null);
+            autocompleteState.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2098,9 +2116,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 String dob = StringUtils.hi_or__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
-                        (StringUtils.getValue(dob))); 
-            }
-            else {
+                        (StringUtils.getValue(dob)));
+            } else {
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
@@ -2110,7 +2127,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-           // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+            // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -2119,7 +2136,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+            patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2565,8 +2582,9 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+               && !countryText.getText().toString().equals("") &&
+                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -2579,17 +2597,25 @@ public class IdentificationActivity extends AppCompatActivity {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
-            if (mDOB.getText().toString().equals("")) {
-                mDOB.setError(getString(R.string.error_field_required));
-            }
+//            if (mDOB.getText().toString().equals("")) {
+//                mDOB.setError(getString(R.string.error_field_required));
+//            }
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
-                mCity.setError(getString(R.string.error_field_required));
+            if (mPhoneNum.getText().toString().equals("")) {
+                mPhoneNum.setError(getString(R.string.error_field_required));
             }
+
+            if (autocompleteState.getText().toString().equals("")) {
+                autocompleteState.setError(getString(R.string.error_field_required));
+            }
+
+//            if (mCity.getText().toString().equals("")) {
+//                mCity.setError(getString(R.string.error_field_required));
+//            }
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2626,13 +2652,13 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (mState.getSelectedItemPosition() == 0) {
-            stateText.setError(getString(R.string.error_field_required));
-            focusView = stateText;
+        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+            autocompleteState.setError(getString(R.string.error_field_required));
+            focusView = autocompleteState;
             cancel = true;
             return;
         } else {
-            stateText.setError(null);
+            autocompleteState.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...

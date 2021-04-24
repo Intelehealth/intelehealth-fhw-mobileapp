@@ -516,21 +516,21 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("casteLayout")) {
-                casteRow.setVisibility(View.VISIBLE);
-            } else {
-                casteRow.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("educationLayout")) {
-                educationRow.setVisibility(View.VISIBLE);
-            } else {
-                educationRow.setVisibility(View.GONE);
-            }
-            if (obj.getBoolean("economicLayout")) {
-                economicRow.setVisibility(View.VISIBLE);
-            } else {
-                economicRow.setVisibility(View.GONE);
-            }
+//            if (obj.getBoolean("casteLayout")) {
+//                casteRow.setVisibility(View.VISIBLE);
+//            } else {
+//                casteRow.setVisibility(View.GONE);
+//            }
+//            if (obj.getBoolean("educationLayout")) {
+//                educationRow.setVisibility(View.VISIBLE);
+//            } else {
+//                educationRow.setVisibility(View.GONE);
+//            }
+//            if (obj.getBoolean("economicLayout")) {
+//                economicRow.setVisibility(View.VISIBLE);
+//            } else {
+//                economicRow.setVisibility(View.GONE);
+//            }
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -544,7 +544,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getMiddle_name() == null) {
             patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
-            patientName = patient_new.getFirst_name() + " " + patient_new.getMiddle_name() + " " + patient_new.getLast_name();
+            patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         }
 
 //        setTitle(patientName);
