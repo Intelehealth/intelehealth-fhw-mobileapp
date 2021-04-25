@@ -131,24 +131,24 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setTitle(getResources().getString(R.string.wash_hands));
-        LayoutInflater factory = LayoutInflater.from(this);
-        final View view = factory.inflate(R.layout.hand_wash, null);
-        alertDialogBuilder.setView(view);
-        alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-        //alertDialog.show();
-
-        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+//        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//        // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+//        alertDialogBuilder.setTitle(getResources().getString(R.string.wash_hands));
+//        LayoutInflater factory = LayoutInflater.from(this);
+//        final View view = factory.inflate(R.layout.hand_wash, null);
+//        alertDialogBuilder.setView(view);
+//        alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        AlertDialog alertDialog = alertDialogBuilder.show();
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+//        //alertDialog.show();
+//
+//        Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
         //pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         selectedExamsList = new ArrayList<>();
