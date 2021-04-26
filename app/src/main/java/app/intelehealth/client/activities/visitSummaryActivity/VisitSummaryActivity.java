@@ -2028,7 +2028,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String bp = mBP;
         if (bp.equals("/") || bp.equals("null/null")) bp = "";
 
-        String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
+        String address =  mState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
 
         String fam_hist = mFamHist;
         String pat_hist = mPatHist;
@@ -2352,7 +2352,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String bp = mBP;
         if (bp.equals("/") || bp.equals("null/null")) bp = "";
 
-        String address = mAddress + " " + mCityState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
+        String address = mState + ((!TextUtils.isEmpty(mPhone)) ? ", " + mPhone : "");
 
         String fam_hist = mFamHist;
         String pat_hist = mPatHist;
