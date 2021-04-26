@@ -105,10 +105,10 @@
     <string name="identification_screen_required_fields">Please enter required fields</string>
     <string name="identification_screen_error_dob">Enter a valid DOB</string>
     <string name="identification_screen_error_age">Enter a valid age</string>
-    <string name="identification_screen_text_years"> years </string>
-    <string name="identification_screen_text_months"> months</string>
-    <string name="identification_screen_picker_years">years</string>
-    <string name="identification_screen_picker_months">months</string>
+    <string name="identification_screen_text_years"> વર્ષો</string>
+    <string name="identification_screen_text_months"> મહિના</string>
+    <string name="identification_screen_picker_years">વર્ષો</string>
+    <string name="identification_screen_picker_months">મહિના</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient">Active Visits</string>

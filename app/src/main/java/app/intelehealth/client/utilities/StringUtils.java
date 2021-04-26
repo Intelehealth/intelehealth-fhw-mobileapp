@@ -326,18 +326,18 @@ public final class StringUtils {
 
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
         String mdob_text = dob
-                .replace("January", "जनवरी")
-                .replace("February", "फ़रवरी")
-                .replace("March", "मार्च")
-                .replace("April", "अप्रैल")
-                .replace("May", "मई")
-                .replace("June", "जून")
-                .replace("July", "जुलाई")
-                .replace("August", "अगस्त")
-                .replace("September", "सितंबर")
-                .replace("October", "अक्टूबर")
-                .replace("November", "नवंबर")
-                .replace("December", "दिसंबर");
+                .replace("January", "જાન્યુઆરી")
+                .replace("February", "ફેબ્રુઆરી")
+                .replace("March", "કુચ")
+                .replace("April", "એપ્રિલ")
+                .replace("May", "મે")
+                .replace("June", "જૂન")
+                .replace("July", "જુલાઈ")
+                .replace("August", ".ગસ્ટ")
+                .replace("September", "સપ્ટેમ્બર")
+                .replace("October", "ઓક્ટોબર")
+                .replace("November", "નવેમ્બર")
+                .replace("December", "ડિસેમ્બર");
 
         return mdob_text;
     }
@@ -395,18 +395,18 @@ public final class StringUtils {
         if (locale.equalsIgnoreCase("gu")) {
             String dob = dobString
                     //Gujarati
-                    .replace("जनवरी", "January")
-                    .replace("फ़रवरी", "February")
-                    .replace("मार्च", "March")
-                    .replace("अप्रैल", "April")
-                    .replace("मई", "May")
-                    .replace("जून", "June")
-                    .replace("जुलाई", "July")
-                    .replace("अगस्त", "August")
-                    .replace("सितंबर", "September")
-                    .replace("अक्टूबर", "October")
-                    .replace("नवंबर", "November")
-                    .replace("दिसंबर", "December");
+                    .replace("જાન્યુઆરી", "January")
+                    .replace("ફેબ્રુઆરી", "February")
+                    .replace("કુચ", "March")
+                    .replace("એપ્રિલ", "April")
+                    .replace("મે", "May")
+                    .replace("જૂન", "June")
+                    .replace("જુલાઈ", "July")
+                    .replace(".ગસ્ટ", "August")
+                    .replace("સપ્ટેમ્બર", "September")
+                    .replace("ઓક્ટોબર", "October")
+                    .replace("નવેમ્બર", "November")
+                    .replace("ડિસેમ્બર", "December");
             return dob;
         } else {
             return dobString;

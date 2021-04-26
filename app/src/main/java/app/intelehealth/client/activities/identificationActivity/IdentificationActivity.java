@@ -154,14 +154,12 @@ public class IdentificationActivity extends AppCompatActivity {
     Context context;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
-
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
     private int retainPickerMonth;
     private int retainPickerDate;
     int dob_indexValue = 15;
-
     //Health_Scheme_Fields
     MaterialCheckBox ma_checkbox, ab_checkbox, none_checkbox;
     FrameLayout frameLayout;
@@ -250,23 +248,19 @@ public class IdentificationActivity extends AppCompatActivity {
         personal_info_textview = findViewById(R.id.personal_info_textview);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-
         mOccupation = findViewById(R.id.identification_occupation);
         mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
-
         mCaste = findViewById(R.id.spinner_caste);
         mEducation = findViewById(R.id.spinner_education);
         mEconomicStatus = findViewById(R.id.spinner_economic_status);
         casteText = findViewById(R.id.identification_caste);
         educationText = findViewById(R.id.identification_education);
         economicText = findViewById(R.id.identification_econiomic_status);
-
         casteLayout = findViewById(R.id.identification_txtlcaste);
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
         mImageView = findViewById(R.id.imageview_id_picture);
-
         ma_checkbox = findViewById(R.id.ma_checkbox);
         ab_checkbox = findViewById(R.id.ab_checkbox);
         none_checkbox = findViewById(R.id.none_checkbox);
@@ -758,7 +752,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
         //DOB is set using an AlertDialog
-        Locale.setDefault(Locale.ENGLISH);
+       // Locale.setDefault(Locale.ENGLISH);
 
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -769,14 +763,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(null);
                 //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                Locale.setDefault(Locale.ENGLISH);
+               // Locale.setDefault(Locale.ENGLISH);
                 //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 dob_indexValue = monthOfYear; //fetching the inex value of month selected...
 
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String dob_text = en__gu_dob(dobString); //to show text of English into Hindi...
                     mDOB.setText(dob_text);
                 }else {
@@ -819,7 +813,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             //dob to be displayed based on translation...
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Hindi...
                 mDOB.setText(dob_text);
             } else {
@@ -935,7 +929,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             Locale.ENGLISH);
                     dob.set(mDOBYear, mDOBMonth, mDOBDay);
                     String dobString = simpleDateFormat.format(dob.getTime());
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                         String dob_text = en__gu_dob(dobString); //to show text of English into Hindi...
                         mDOB.setText(dob_text);
                     } else {
@@ -1678,6 +1672,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                     (StringUtils.getValue(dob_value)));
         }
+
         patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
         patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
         patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));

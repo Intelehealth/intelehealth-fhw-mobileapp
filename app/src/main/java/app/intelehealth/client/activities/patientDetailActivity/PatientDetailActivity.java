@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -84,6 +85,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static app.intelehealth.client.utilities.StringUtils.en__gu_dob;
 import static app.intelehealth.client.utilities.StringUtils.switch_gu_caste_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_gu_economic_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_gu_education_edit;
@@ -100,6 +102,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
 
+    private int mAgeYears = 0;
+    private int mAgeMonths = 0;
+    private int mAgeDays = 0;
     EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
     private boolean hasLicense = false;
@@ -131,6 +136,18 @@ public class PatientDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+
         setContentView(R.layout.activity_patient_detail);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -521,13 +538,26 @@ public class PatientDetailActivity extends AppCompatActivity {
         //Log.d("IDEA","IDEA"+id);
 
 
-        String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
+//        String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
+//        ageView.setText(age);
+        String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth()).split(" ");
+        mAgeYears = Integer.valueOf(ymdData[0]);
+        mAgeMonths = Integer.valueOf(ymdData[1]);
+        mAgeDays = Integer.valueOf(ymdData[2]);
+        String age = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+                mAgeDays + getResources().getString(R.string.days);
         ageView.setText(age);
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
 
         String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
-        dobView.setText(dob);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
+            dobView.setText(dob_text);
+        } else {
+            dobView.setText(dob);
+        }
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);
         } else {
