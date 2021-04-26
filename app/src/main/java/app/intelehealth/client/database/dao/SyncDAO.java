@@ -66,18 +66,6 @@ public class SyncDAO {
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         try {
             Logger.logD(TAG, "pull sync started");
-            Logger.logD(TAG, "***************Record Count Log****************");
-            Logger.logD(TAG, "Patient Count - " + responseDTO.getData().getPatientDTO().size());
-            Logger.logD(TAG, "Patient Attributes Count - " + responseDTO.getData().getPatientAttributesDTO().size());
-            Logger.logD(TAG, "PatientAttributeTypeMaster Count - " + responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
-            Logger.logD(TAG, "Visit Count - " + responseDTO.getData().getVisitDTO().size());
-            Logger.logD(TAG, "Encounter Count - " + responseDTO.getData().getEncounterDTO().size());
-            Logger.logD(TAG, "OBS Count - " + responseDTO.getData().getObsDTO().size());
-            Logger.logD(TAG, "Location Count - " + responseDTO.getData().getLocationDTO().size());
-            Logger.logD(TAG, "Provider Count - " + responseDTO.getData().getProviderlist().size());
-            Logger.logD(TAG, "Provider Attribute Count - " + responseDTO.getData().getProviderAttributeList().size());
-            Logger.logD(TAG, "Visit Attribute Count - " + responseDTO.getData().getVisitAttributeList().size());
-            Logger.logD(TAG, "*******************************");
 
             patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
             patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
@@ -231,6 +219,8 @@ public class SyncDAO {
                     try {
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
+                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
                     if (sync) {
