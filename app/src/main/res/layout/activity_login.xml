@@ -8,14 +8,29 @@
     android:background="@color/colorPrimaryDark"
     tools:context=".activities.loginActivity.LoginActivity">
 
-    <ImageView
-        android:id="@+id/iv_logo"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_above="@+id/ll_center"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_round_app" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_above="@+id/ll_center">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_round_app" />
+
+        <ImageView
+            android:id="@+id/iv_ekal"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_ekal_logo" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_center"

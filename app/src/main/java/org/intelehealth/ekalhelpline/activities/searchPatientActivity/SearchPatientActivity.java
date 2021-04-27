@@ -155,12 +155,12 @@ public class SearchPatientActivity extends AppCompatActivity {
             recyclerView.setAdapter(recycler);
 
             //If there is any data present against that search query than it will hide the FAB else will show the FAB...
-            if(recycler.patients.size() == 0) {
-                new_patient.setVisibility(View.VISIBLE);
-            }
-            else {
-                new_patient.setVisibility(View.GONE);
-            }
+//            if(recycler.patients.size() == 0) {
+//                new_patient.setVisibility(View.VISIBLE);
+//            }
+//            else {
+//                new_patient.setVisibility(View.GONE);
+//            }
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
