@@ -117,14 +117,16 @@ public class PatientsFrameJson {
         }
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
-            visit.setLocation(visitDTO.getLocationuuid());
-            visit.setPatient(visitDTO.getPatientuuid());
-            visit.setStartDatetime(visitDTO.getStartdate());
-            visit.setUuid(visitDTO.getUuid());
-            visit.setVisitType(visitDTO.getVisitTypeUuid());
-            visit.setStopDatetime(visitDTO.getEnddate());
-            visit.setAttributes(visitDTO.getAttributes());
-            visitList.add(visit);
+            if (visitDTO.getAttributes().size() > 0) {
+                visit.setLocation(visitDTO.getLocationuuid());
+                visit.setPatient(visitDTO.getPatientuuid());
+                visit.setStartDatetime(visitDTO.getStartdate());
+                visit.setUuid(visitDTO.getUuid());
+                visit.setVisitType(visitDTO.getVisitTypeUuid());
+                visit.setStopDatetime(visitDTO.getEnddate());
+                visit.setAttributes(visitDTO.getAttributes());
+                visitList.add(visit);
+            }
 
         }
 

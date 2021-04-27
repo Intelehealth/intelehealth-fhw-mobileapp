@@ -811,7 +811,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 try {
                     if (!isVisitSpecialityExists) {
                         isUpdateVisitDone = speciality_attributes
-                                .insertVisitAttributes(visitUuid, "General Physician");
+                                .insertVisitAttributes(visitUuid, speciality_selected);
                     }
                     Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 } catch (DAOException e) {
