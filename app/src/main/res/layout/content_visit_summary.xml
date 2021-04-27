@@ -523,6 +523,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView_content_physexam"
+                    android:layout_marginTop="-54dp"
                     android:padding="10dp" />
 
                 <TextView
@@ -1111,7 +1112,6 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
-            android:visibility="gone"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
@@ -1122,7 +1122,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Speciality"
+                    android:text="@string/speciality_cardview_title"
                     android:background="@color/titleBar_cardview"
                     android:fontFamily="@font/lato_bold"
                     android:paddingVertical="12dp"

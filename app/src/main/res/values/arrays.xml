@@ -20,6 +20,14 @@
         <item>General Physician</item>
     </string-array>
 
+    <string-array name="speciality_value_hindi">
+        <item>स्पेशलाइज़ेशन चुनिए</item>
+        <item>सामान्य चिकित्सक</item>
+        <item>त्वचा विशेषज्ञ</item>
+        <item>फ़िज़ियोथेरेपिस्ट</item>
+        <item>प्रसूतिशास्री</item>
+        <item>बच्चों का चिकित्सक</item>
+    </string-array>
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>

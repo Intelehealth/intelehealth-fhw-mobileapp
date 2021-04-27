@@ -78,4 +78,7 @@
 
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+    <string name="speciality_cardview_title">Speciality</string>
+    <string name="select_specialization_text">Select Specialization</string>
+    <string name="please_select_specialization_msg">Please select specialization</string>
 </resources>
