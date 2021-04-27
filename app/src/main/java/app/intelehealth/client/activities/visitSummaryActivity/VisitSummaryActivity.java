@@ -656,16 +656,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
       //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if(items != null)
         {
-            /*if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-
-            }
-            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-
-            }
-            else {
-
-            }*/
-
             items.add(0, getString(R.string.select_specialization_text));
             stringArrayAdapter =
                     new ArrayAdapter<String>
@@ -680,37 +670,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     getResources().getStringArray(R.array.speciality_values));
             speciality_spinner.setAdapter(stringArrayAdapter);
         }
-       /* }
-        else {
-            stringArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
-                    getResources().getStringArray(R.array.speciality_value_hindi));
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }*/
-
 
         if(special_value != null)
         {
-/*
-            if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("hi")) {
-                switch (special_value) {
-                    case "General Physician":
-                        special_value = "सामान्य चिकित्सक";
-                        break;
-                    case "Dermatologist":
-                        special_value = "त्वचा विशेषज्ञ";
-                        break;
-                    case "Physiotherapist":
-                        special_value = "फ़िज़ियोथेरेपिस्ट";
-                        break;
-                    case "Gynecologist":
-                        special_value = "प्रसूतिशास्री";
-                        break;
-                    case "Pediatrician":
-                        special_value = "बच्चों का चिकित्सक";
-                        break;
-                }
-            }
-*/
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
         }
@@ -724,34 +686,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SPINNER", "SPINNER_Selected: "+ adapterView.getItemAtPosition(i).toString());
 
-/*                if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("hi")) {
-                    speciality_selected = adapterView.getItemAtPosition(i).toString();
-
-                    switch (speciality_selected) {
-                        case "सामान्य चिकित्सक":
-                            speciality_selected = "General Physician";
-                            break;
-                        case "त्वचा विशेषज्ञ":
-                            speciality_selected = "Skin Speciality";
-                            break;
-                        case "फ़िज़ियोथेरेपिस्ट":
-                            speciality_selected = "Physiotherapist";
-                            break;
-                        case "प्रसूतिशास्री":
-                            speciality_selected = "Dentist";
-                            break;
-                        case "बच्चों का चिकित्सक":
-                            speciality_selected = "Child Specialist";
-                            break;
-                    }
-
-                }*/
-              //  else {
                     speciality_selected = adapterView.getItemAtPosition(i).toString();
                     Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
-             //   }
-
-
 
 
             }
@@ -866,14 +802,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Log.d("visitUUID", "upload_click: " + visitUUID);
+
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
-                    VisitsDAO visitsDAO_speciality = new VisitsDAO();
                 VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                 boolean isUpdateVisitDone = false;
                 try {
-//                        isUpdateVisitDone = visitsDAO_speciality.update_visitTbl_speciality
-//                                (speciality_selected, visitUuid);
                     if (!isVisitSpecialityExists) {
                         isUpdateVisitDone = speciality_attributes
                                 .insertVisitAttributes(visitUuid, "General Physician");
@@ -884,8 +819,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 }
 
-                Log.d("visitUUID", "upload_click: " + visitUUID);
-                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+
                     if(isVisitSpecialityExists)
                         speciality_spinner.setEnabled(false);
 
