@@ -268,7 +268,7 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-        mImageView = findViewById(R.id.imageview_id_picture);
+      //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
@@ -464,9 +464,9 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         autocompleteState.setText(patient1.getState_province());
 
-        if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
+       /* if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
-
+*/
         Resources res = getResources();
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.countries, R.layout.custom_spinner);
@@ -1266,6 +1266,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 onRadioButtonClicked(v);
             }
         });
+/*
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1287,6 +1288,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
             }
         });
+*/
         mDOBYear = today.get(Calendar.YEAR);
         mDOBMonth = today.get(Calendar.MONTH);
         mDOBDay = today.get(Calendar.DAY_OF_MONTH);
@@ -1792,12 +1794,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCurrentPhotoPath = data.getStringExtra("RESULT");
                 Log.v("IdentificationActivity", mCurrentPhotoPath);
 
+/*
                 Glide.with(this)
                         .load(new File(mCurrentPhotoPath))
                         .thumbnail(0.25f)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(mImageView);
+*/
             }
         }
     }
