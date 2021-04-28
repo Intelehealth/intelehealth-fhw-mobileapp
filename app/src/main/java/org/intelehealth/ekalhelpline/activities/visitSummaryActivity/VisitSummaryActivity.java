@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
@@ -22,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
@@ -46,6 +48,7 @@ import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -264,7 +267,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String mFileName = "config.json";
     public static String prescription1;
     public static String prescription2;
-    SessionManager sessionManager;
+    SessionManager sessionManager, sessionManager1;
     String encounterUuid;
     String encounterVitals;
     //  Boolean isreturningWhatsapp = true;
@@ -283,6 +286,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageView ivPrescription;
     private String hasPrescription = "";
     private boolean isRespiratory = false;
+    String appLanguage;
 
 
     @Override
@@ -419,16 +423,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
-        String language = sessionManager.getAppLanguage();
+        sessionManager1 = new SessionManager(this);
+//        String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
-        if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        if (!language.equalsIgnoreCase("")) {
+//            Locale locale = new Locale(language);
+//            Locale.setDefault(locale);
+//            Configuration config = new Configuration();
+//            config.locale = locale;
+//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        }
+        appLanguage = sessionManager1.getAppLanguage();
+        if(!appLanguage.equalsIgnoreCase(""))
+        {
+            setLocale(appLanguage);
         }
-        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+//        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -592,8 +602,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage(R.string.download_prescription_first_before_sharing);
-                    alertDialog.setPositiveButton(R.string.ok,
+                    alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -774,7 +784,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (flag.isChecked()) {
                     MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                     alertdialogBuilder.setMessage(getResources().getString(R.string.emergency_confirmation));
-                    alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                    alertdialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             //here set emergency as True for this visit...
@@ -788,7 +798,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             //    flag.setChecked(true); //check the dialog here...
                         }
                     });
-                    alertdialogBuilder.setNegativeButton(R.string.generic_no, new DialogInterface.OnClickListener() {
+                    alertdialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
@@ -1013,13 +1023,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 } else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError(getString(R.string.please_select_specialization));
+                    t.setError(getResources().getString(R.string.please_select_specialization));
                     t.setTextColor(Color.RED);
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage("Please select specialization")
+                            .setMessage(getResources().getString(R.string.please_select_specialization))
                             .setCancelable(false)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     dialogInterface.dismiss();
@@ -1656,6 +1666,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
+
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            getApplicationContext().createConfigurationContext(conf); }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+    }
+
     private boolean speciality_row_exist_check(String uuid) {
         boolean isExists = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
