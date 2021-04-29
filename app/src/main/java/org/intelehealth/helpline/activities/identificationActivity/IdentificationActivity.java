@@ -960,11 +960,14 @@ public class IdentificationActivity extends AppCompatActivity {
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String caste = switch_hi_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                    mCaste.setSelection(casteAdapter != null ?
+                            casteAdapter.getPosition(caste) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                    mCaste.setSelection(casteAdapter != null ?
+                            casteAdapter.getPosition(patient1.getCaste()) : 0);
                 } else {
-                    mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
+                    mCaste.setSelection(casteAdapter != null ?
+                            casteAdapter.getPosition(patient1.getCaste()) : 0);
                 }
 
             }
