@@ -678,5 +678,6 @@
     //Speciality Spinner
     <string name="speciality">Speciality</string>
     <string name="select_speciality">Select Speciality</string>
+    <string name="enter_field">Enter field</string>
 
 </resources>

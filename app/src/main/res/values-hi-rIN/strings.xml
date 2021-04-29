@@ -671,6 +671,7 @@
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
     <string name="please_select_specialization">कृपया विशेषज्ञता का चयन करें</string>
     <string name="speciality">स्पेशलिटी</string>
+    <string name="enter_field">फ़ील्ड दर्ज करें</string>
 
 
 </resources>
