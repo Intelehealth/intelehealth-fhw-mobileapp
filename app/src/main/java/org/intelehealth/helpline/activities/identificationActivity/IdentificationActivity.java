@@ -917,39 +917,45 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEducation_level().equals("Not provided"))
                 mEducation.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String education = switch_hi_education_edit(patient1.getEducation_level());
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                    mEducation.setSelection(educationAdapter != null ?
+                            educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                    mEducation.setSelection(educationAdapter != null ?
+                            educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 } else {
-                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
+                    mEducation.setSelection(educationAdapter != null ?
+                            educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 }
             }
             //mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
-            if (educationAdapter == null) {
-                Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
-            }
+//            if (educationAdapter == null) {
+//                Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
+//            }
 
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEconomic_status().equals("Not provided"))
                 mEconomicStatus.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String economic = switch_hi_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
+                            economicStatusAdapter.getPosition(economic) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
+                            economicStatusAdapter.getPosition(patient1.getEconomic_status()) : 0);
                 } else {
-                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
+                            economicStatusAdapter.getPosition(patient1.getEconomic_status()) : 0);
                 }
             }
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCaste().equals("Not provided"))
                 mCaste.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
