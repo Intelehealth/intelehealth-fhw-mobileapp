@@ -2,22 +2,28 @@ package app.intelehealth.client.activities.activePatientsActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
-import androidx.recyclerview.widget.RecyclerView;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import app.intelehealth.client.models.ActivePatientModel;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
-
-import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -26,6 +32,11 @@ import app.intelehealth.client.activities.patientDetailActivity.PatientDetailAct
 
 public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
 
+    interface OnActionListener {
+        void onEndVisitClicked(ActivePatientModel activePatientModel, boolean hasPrescription);
+    }
+
+    private OnActionListener actionListener;
     List<ActivePatientModel> activePatientModels;
     Context context;
     LayoutInflater layoutInflater;
@@ -78,13 +89,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 //        int age = DateAndTimeUtils.getAge(activePatientModel.getDate_of_birth());
 
         //get date of birth and convert it into years and months
-        String age = DateAndTimeUtils.getAgeInYearMonth(activePatientModel.getDate_of_birth(), context);
+        String age = DateAndTimeUtils.getAgeInYears(activePatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
-        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+//        String body = String.format("%s %s (%s)", context.getString(R.string.identification_screen_prompt_age), age, activePatientModel.getGender());
+        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + activePatientModel.getGender() + ")</b>");
 
-
-        holder.getHeadTextView().setText(header);
-        holder.getBodyTextView().setText(body);
+        holder.getHeadTextView().setText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()));
+        holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
+        holder.tvAgeGender.setText(body);
         if (activePatientModel.getEnddate() == null) {
             holder.getIndicatorTextView().setText(R.string.active);
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
@@ -92,7 +104,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
-        holder.getRootView().setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String patientStatus = "returning";
@@ -108,13 +120,54 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 }
                 context.startActivity(intent);
             }
-        });
+        };
+//        holder.getRootView().setOnClickListener(listener);
+        holder.btnVisitDetails.setOnClickListener(listener);
 
+        boolean enableEndVisit = false;
         for (int i = 0; i < listPatientUUID.size(); i++) {
             if (activePatientModels.get(position).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
                 holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
                 holder.ivPriscription.setTag("1");
+                enableEndVisit = true;
             }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.btnVisitDetails.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorPrimary)));
+        } else {
+            holder.btnEndVisit.setBackgroundResource(R.drawable.bg_visit_details);
+        }
+
+        holder.btnEndVisit.setEnabled(enableEndVisit);
+        if (enableEndVisit) {
+            if (activePatientModel.getEnddate() == null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                } else {
+                    holder.btnEndVisit.setBackgroundResource(R.drawable.bg_end_visit);
+                }
+                holder.btnEndVisit.setText(context.getString(R.string.action_end_visit));
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.btnEndVisit.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                } else {
+                    holder.btnEndVisit.setBackgroundResource(R.drawable.bg_visit_closed);
+                }
+
+                holder.btnEndVisit.setText(context.getString(R.string.visit_closed));
+            }
+
+            holder.btnEndVisit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (activePatientModel.getEnddate() != null)
+                        return;
+
+                    if (actionListener != null)
+                        actionListener.onEndVisitClicked(activePatientModel, "1".equals(holder.ivPriscription.getTag()));
+                }
+            });
         }
     }
 
@@ -135,6 +188,8 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
+        Button btnEndVisit, btnVisitDetails;
+        TextView tvAgeGender;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
@@ -143,6 +198,9 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
+            btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
+            btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
+            tvAgeGender = itemView.findViewById(R.id.tv_age_gender);
             rootView = itemView;
         }
 
@@ -183,4 +241,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         }
     }
 
+    public void setActionListener(OnActionListener actionListener) {
+        this.actionListener = actionListener;
+    }
 }

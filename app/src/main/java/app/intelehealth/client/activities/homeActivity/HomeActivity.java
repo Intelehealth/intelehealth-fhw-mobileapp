@@ -99,11 +99,11 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView lastSyncTextView;
     TextView lastSyncAgo;
-    Button manualSyncButton;
+    CardView manualSyncButton;
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
-    TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
+    TextView findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
 
     @Override
@@ -152,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        c1 = findViewById(R.id.cardview_newpat);
+//        c1 = findViewById(R.id.cardview_newpat);
         c2 = findViewById(R.id.cardview_find_patient);
         c3 = findViewById(R.id.cardview_today_patient);
         c4 = findViewById(R.id.cardview_active_patients);
@@ -160,8 +160,8 @@ public class HomeActivity extends AppCompatActivity {
         c6 = findViewById(R.id.cardview_help_whatsapp);
 
         //card textview referrenced to fix bug of localization not working in some cases...
-        newPatient_textview = findViewById(R.id.newPatient_textview);
-        newPatient_textview.setText(R.string.new_patient);
+        /*newPatient_textview = findViewById(R.id.newPatient_textview);
+        newPatient_textview.setText(R.string.new_patient);*/
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
@@ -179,7 +179,7 @@ public class HomeActivity extends AppCompatActivity {
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
 
         // manualSyncButton.setText(R.string.sync_now);
-        manualSyncButton.setText(R.string.refresh);
+//        manualSyncButton.setText(R.string.refresh);
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +196,8 @@ public class HomeActivity extends AppCompatActivity {
                                         phoneNumberWithCountryCode, message))));
             }
         });
-        c1.setOnClickListener(new View.OnClickListener() {
+
+        /*c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Loads the config file values and check for the boolean value of privacy key.
@@ -212,7 +213,7 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });
+        });*/
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
