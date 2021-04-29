@@ -71,6 +71,7 @@ public class Node implements Serializable {
     private String display_oriya;
     private String display_cebuno;
     private String display_hindi;
+    private String display_marathi;
     private String language;
     private String choiceType;
     private String inputType;
@@ -192,6 +193,15 @@ public class Node implements Serializable {
             }
             if (this.display_hindi.isEmpty()) {
                 this.display_hindi = this.display;
+            }
+
+            //Marathi support..
+            this.display_marathi = jsonNode.optString("display-mr");
+            if (this.display_marathi.isEmpty()) {
+                this.display_marathi = jsonNode.optString("display-mr");
+            }
+            if (this.display_marathi.isEmpty()) {
+                this.display_marathi = this.display;
             }
 
             this.language = jsonNode.optString("language");
@@ -451,6 +461,21 @@ public class Node implements Serializable {
                     }
                 }
             }
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+
             default: {
                 {
                     if (display != null && display.isEmpty()) {
@@ -1729,6 +1754,14 @@ public class Node implements Serializable {
         this.display_hindi = display_hindi;
     }
 
+    public String getDisplay_marathi() {
+        return display_marathi;
+    }
+
+    public void setDisplay_marathi(String display_marathi) {
+        this.display_marathi = display_marathi;
+    }
+
     public void setOptionsList(List<Node> optionsList) {
         this.optionsList = optionsList;
     }
@@ -2057,6 +2090,7 @@ public class Node implements Serializable {
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                ", display_marathi='" + display_marathi + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
