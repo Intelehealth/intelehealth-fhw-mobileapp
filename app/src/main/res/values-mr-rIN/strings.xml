@@ -623,7 +623,7 @@
         <string name="share">सामायिक करा</string>
         <string name="please_enter_mobile_number">कृपया मोबाइल नंबर प्रविष्ट करा</string>
         <string name="download_prescription_first_before_sharing">सामायिक करण्यापूर्वी प्रिस्क्रिप्शन डाउनलोड करा</string>
-        <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* मी (सेविका) पुष्टी करतो की मी गोपनीयतेची सूचना वाचली आहे आणि रुग्णाची संमती घेतली आहे.</string>
+        <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* मी (कर्मचार्या) पुष्टी करतो की मी गोपनीयता सूचना रुग्णाला वाचून दिली आहे आणि रुग्णाची संमती घेतली आहे.</string>
         <string name="enter_10_digits">10 अंक प्रविष्ट करा</string>
         <string name="please_read_out_privacy_consent_first">कृपया प्रथम गोपनीयता संमती वाचा.</string>
         <string name="view_print">पहा / मुद्रित करा</string>
