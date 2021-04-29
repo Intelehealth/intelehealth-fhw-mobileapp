@@ -5,7 +5,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "org.intelehealth.ekalhelpline"
+        applicationId "org.intelehealth.helpline"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
