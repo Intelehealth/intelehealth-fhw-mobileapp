@@ -129,6 +129,7 @@ import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import app.intelehealth.client.utilities.NetworkConnection;
+import app.intelehealth.client.utilities.VisitUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
 public class VisitSummaryActivity extends AppCompatActivity {
@@ -244,7 +245,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     //added checkbox flag .m
     CheckBox flag;
 
-    Boolean isPastVisit = false, isVisitSpecialityExists = false, fromEndVisit;
+    Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -395,8 +396,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     dialogInterface.dismiss();
-                    if (fromEndVisit)
-                        finish();
                 }
             });
             alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
@@ -451,7 +450,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
 //            hasPrescription = intent.getStringExtra("hasPrescription");
-            fromEndVisit = intent.getBooleanExtra("fromEndVisit", false);
 
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
@@ -1596,9 +1594,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
-
-        if (fromEndVisit)
-            onEndVisit();
     }
 
     /**
@@ -3067,52 +3062,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
-        if (visitUUID != null && !visitUUID.isEmpty()) {
-            if (followUpDate != null && !followUpDate.isEmpty()) {
-                MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
-                followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
-                        intent.putExtra("patientUuid", patientUuid);
-                        intent.putExtra("visitUuid", visitUuid);
-                        intent.putExtra("encounterUuidVitals", encounterVitals);
-                        intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        intent.putExtra("state", state);
-                        intent.putExtra("name", patientName);
-                        intent.putExtra("tag", intentTag);
-                        startActivity(intent);
-                    }
-                });
-                followUpAlert.show();
-            } else {
-                Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
-                intent.putExtra("patientUuid", patientUuid);
-                intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("encounterUuidVitals", encounterVitals);
-                intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent.putExtra("state", state);
-                intent.putExtra("name", patientName);
-                intent.putExtra("tag", intentTag);
-                startActivity(intent);
-            }
-        } else {
-
-            Log.d(TAG, "endVisit: null");
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-            alertDialogBuilder.setMessage(getString(R.string.visit_summary_upload_reminder));
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
-
-        }
+        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
     }
 
 

@@ -35,7 +35,6 @@ import java.util.Locale;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.homeActivity.HomeActivity;
-import app.intelehealth.client.activities.visitSummaryActivity.VisitSummaryActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
@@ -45,10 +44,11 @@ import app.intelehealth.client.database.dao.VisitsDAO;
 import app.intelehealth.client.models.TodayPatientModel;
 import app.intelehealth.client.models.dto.EncounterDTO;
 import app.intelehealth.client.models.dto.VisitDTO;
-import app.intelehealth.client.utilities.DateAndTimeUtils;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
 import app.intelehealth.client.utilities.StringUtils;
+import app.intelehealth.client.utilities.UuidDictionary;
+import app.intelehealth.client.utilities.VisitUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
 public class TodayPatientActivity extends AppCompatActivity {
@@ -215,6 +215,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         String encounterIDSelection = "visituuid = ?";
 
         String visitUuid = todayPatientModel.getUuid();
+        String visitnote = "", followupdate = "";
         String[] encounterIDArgs = {visitUuid};
         EncounterDAO encounterDAO = new EncounterDAO();
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
@@ -227,30 +228,71 @@ public class TodayPatientActivity extends AppCompatActivity {
                     encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
 
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+
             } while (encounterCursor.moveToNext());
         }
         encounterCursor.close();
 
-        Intent visitSummary = new Intent(TodayPatientActivity.this, VisitSummaryActivity.class);
-
-        visitSummary.putExtra("visitUuid", visitUuid);
-        visitSummary.putExtra("patientUuid", todayPatientModel.getPatientuuid());
-        visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
-        visitSummary.putExtra("encounterUuidAdultIntial", encounterAdultIntialslocal);
-        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntialslocal);
-        visitSummary.putExtra("name", String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()));
-        visitSummary.putExtra("gender", todayPatientModel.getGender());
-        visitSummary.putExtra("float_ageYear_Month", DateAndTimeUtils.getFloat_Age_Year_Month(todayPatientModel.getDate_of_birth()));
-        visitSummary.putExtra("tag", "");
-        boolean past_visit = todayPatientModel.getEnddate() != null;
-        visitSummary.putExtra("pastVisit", past_visit);
-        if (hasPrescription) {
-            visitSummary.putExtra("hasPrescription", "true");
-        } else {
-            visitSummary.putExtra("hasPrescription", "false");
+        String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                followupdate = dbValue;
+            } while (visitCursor.moveToNext());
         }
-        visitSummary.putExtra("fromEndVisit", true);
-        startActivity(visitSummary);
+        visitCursor.close();
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
+        if (hasPrescription) {
+            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.end_visit_msg));
+            alertDialogBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            String finalFollowupdate = followupdate;
+            String finalEncounterVitalslocal = encounterVitalslocal;
+            String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+            alertDialogBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    VisitUtils.endVisit(TodayPatientActivity.this,
+                            visitUuid,
+                            todayPatientModel.getPatientuuid(),
+                            finalFollowupdate,
+                            finalEncounterVitalslocal,
+                            finalEncounterAdultIntialslocal,
+                            null,
+                            String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
+                            ""
+                    );
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+
+        } else {
+            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.error_no_data));
+            alertDialogBuilder.setNeutralButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+        }
     }
 
     @Override

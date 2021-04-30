@@ -1,5 +1,7 @@
 package app.intelehealth.client.activities.homeActivity;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -24,8 +26,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +37,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -52,6 +55,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import app.intelehealth.client.BuildConfig;
 import app.intelehealth.client.R;
 import app.intelehealth.client.activities.activePatientsActivity.ActivePatientActivity;
 import app.intelehealth.client.activities.identificationActivity.IdentificationActivity;
@@ -112,11 +116,13 @@ public class HomeActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
+    private ImageView ivSync;
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
+    private ObjectAnimator syncAnimator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +248,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        ivSync = findViewById(R.id.iv_sync);
 
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 
@@ -250,6 +257,9 @@ public class HomeActivity extends AppCompatActivity {
 ////            lastSyncAgo.setText(CalculateAgoTime());
 //        }
 
+        syncAnimator = ObjectAnimator.ofFloat(ivSync, View.ROTATION, 0f, 359f).setDuration(1200);
+        syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        syncAnimator.setInterpolator(new LinearInterpolator());
         manualSyncButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,11 +267,12 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (isNetworkConnected()) {
                     Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+                    ivSync.clearAnimation();
+                    syncAnimator.start();
+                    syncUtils.syncForeground("home");
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
-
-                syncUtils.syncForeground("home");
 //                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 //                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
@@ -832,6 +843,11 @@ public class HomeActivity extends AppCompatActivity {
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
+
+            if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
+                syncAnimator.cancel();
+                syncAnimator.end();
+            }
         }
     };
 
