@@ -15,7 +15,7 @@
         tools:showIn="@layout/activity_home">
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
@@ -24,50 +24,16 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardview_newpat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="16dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
-
-                        <ImageView
-                            android:id="@+id/iv_new_patient"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_person_add_24dp" />
-
-                        <TextView
-                            android:id="@+id/newPatient_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_new_patient"
-                            android:text="@string/new_patient"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_find_patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -77,28 +43,31 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_find_patient"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
                             android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_search_24dp" />
+                            app:srcCompat="@drawable/ic_search_patient" />
 
                         <TextView
                             android:id="@+id/findPatients_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_find_patient"
+                            android:layout_below="@+id/iv_find_patient"
                             android:text="@string/find_patient"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:layout_marginTop="16dp"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -106,8 +75,9 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_today_patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
@@ -116,37 +86,49 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_today_patients"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
                             android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_calendar_intele_24dp" />
+                            app:srcCompat="@drawable/ic_calendar" />
 
                         <TextView
                             android:id="@+id/todaysVisits_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_today_patients"
+                            android:layout_below="@+id/iv_today_patients"
                             android:text="@string/today_visits"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:layout_marginTop="16dp"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_active_patients"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
@@ -155,28 +137,31 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_active_patients"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
                             android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_active_patients_black" />
+                            app:srcCompat="@drawable/ic_active_cases" />
 
                         <TextView
                             android:id="@+id/activeVisits_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_active_patients"
+                            android:layout_below="@+id/iv_active_patients"
                             android:text="@string/active_visits"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:layout_marginTop="16dp"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
@@ -184,8 +169,9 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_video_libraby"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -195,37 +181,49 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:padding="16dp">
 
                         <ImageView
                             android:id="@+id/iv_video_library"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerVertical="true"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
                             android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_play_circle_filled_black_24dp" />
+                            app:srcCompat="@drawable/ic_video_library" />
 
                         <TextView
                             android:id="@+id/videoLibrary_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/iv_video_library"
+                            android:layout_below="@+id/iv_video_library"
                             android:text="@string/video_library"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:layout_marginTop="16dp"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="20sp" />
 
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_help_whatsapp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -236,39 +234,102 @@
                         <RelativeLayout
                             android:id="@+id/help_relative"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:gravity="center_vertical"
                             android:padding="16dp">
 
                             <ImageView
                                 android:id="@+id/iv_whatsapp_helpline"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:layout_centerVertical="true"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_centerHorizontal="true"
                                 android:contentDescription="TODO"
-                                app:srcCompat="@drawable/ic_icons8_whatsapp" />
+                                app:srcCompat="@drawable/ic_whatsapp" />
 
                             <TextView
                                 android:id="@+id/help_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:layout_toEndOf="@+id/iv_whatsapp_helpline"
+                                android:layout_below="@+id/iv_whatsapp_helpline"
                                 android:text="@string/Whatsapp_Help_Cardview"
                                 android:includeFontPadding="false"
                                 android:fontFamily="@font/lato_medium"
-                                android:textSize="28sp"/>
+                                android:layout_marginTop="16dp"
+                                android:textAlignment="center"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="20sp"/>
 
                             <!-- Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
 
-
                         </RelativeLayout>
-
-
-
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/manualsyncbutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="16dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/iv_sync"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="TODO"
+                            app:srcCompat="@drawable/ic_sync" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/iv_sync"
+                            android:layout_marginTop="16dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/lastsynctextview"
+                                android:textAlignment="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/lastsync"
+                                android:layout_gravity="center_horizontal"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/lastsyncago"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="2 hours ago"
+                                android:visibility="gone"
+                                tools:visibility="visible"
+                                android:includeFontPadding="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+                <!--<androidx.cardview.widget.CardView
                     android:id="@+id/cardview_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -301,7 +362,9 @@
                             android:fontFamily="@font/lato_regular"
                             android:textSize="15sp" />
 
-                        <LinearLayout
+
+
+<LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -333,11 +396,9 @@
                                 android:textSize="14sp" />
 
                         </LinearLayout>
-
-
                     </RelativeLayout>
 
-                </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>-->
             </LinearLayout>
 
         </ScrollView>

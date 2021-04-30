@@ -1,9 +1,7 @@
 package app.intelehealth.client.activities.visitSummaryActivity;
 
-import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -84,7 +82,6 @@ import com.google.gson.Gson;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -104,8 +101,6 @@ import app.intelehealth.client.activities.complaintNodeActivity.ComplaintNodeAct
 import app.intelehealth.client.activities.familyHistoryActivity.FamilyHistoryActivity;
 import app.intelehealth.client.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import app.intelehealth.client.activities.patientSurveyActivity.PatientSurveyActivity;
-import app.intelehealth.client.activities.setupActivity.LocationArrayAdapter;
-import app.intelehealth.client.activities.setupActivity.SetupActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.dao.EncounterDAO;
@@ -134,6 +129,7 @@ import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.activities.physcialExamActivity.PhysicalExamActivity;
 import app.intelehealth.client.activities.vitalActivity.VitalsActivity;
 import app.intelehealth.client.utilities.NetworkConnection;
+import app.intelehealth.client.utilities.VisitUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
 public class VisitSummaryActivity extends AppCompatActivity {
@@ -381,47 +377,51 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 return true;
             }
             case R.id.summary_endVisit: {
-                //meera
-                if (downloaded) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
-                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            endVisit();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.show();
-                    //alertDialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
-                } else {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
-                    alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.show();
-                    //alertDialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-                }
+                onEndVisit();
                 return true;
             }
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void onEndVisit() {
+        //meera
+        if (downloaded) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+            alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
+            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    endVisit();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+        } else {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+            alertDialogBuilder.setMessage(getResources().getString(R.string.error_no_data));
+            alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
     }
 
@@ -3062,52 +3062,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             if (visitIDCursor != null) visitIDCursor.close();
         }
-        if (visitUUID != null && !visitUUID.isEmpty()) {
-            if (followUpDate != null && !followUpDate.isEmpty()) {
-                MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-                followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
-                followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
-                        intent.putExtra("patientUuid", patientUuid);
-                        intent.putExtra("visitUuid", visitUuid);
-                        intent.putExtra("encounterUuidVitals", encounterVitals);
-                        intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                        intent.putExtra("state", state);
-                        intent.putExtra("name", patientName);
-                        intent.putExtra("tag", intentTag);
-                        startActivity(intent);
-                    }
-                });
-                followUpAlert.show();
-            } else {
-                Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
-                intent.putExtra("patientUuid", patientUuid);
-                intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("encounterUuidVitals", encounterVitals);
-                intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent.putExtra("state", state);
-                intent.putExtra("name", patientName);
-                intent.putExtra("tag", intentTag);
-                startActivity(intent);
-            }
-        } else {
-
-            Log.d(TAG, "endVisit: null");
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-            alertDialogBuilder.setMessage(getString(R.string.visit_summary_upload_reminder));
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
-
-        }
+        VisitUtils.endVisit(VisitSummaryActivity.this, visitUuid, patientUuid, followUpDate, encounterVitals, encounterUuidAdultIntial, state, patientName, intentTag);
     }
 
 

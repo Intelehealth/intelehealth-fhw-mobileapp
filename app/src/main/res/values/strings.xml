@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">Ekal Arogya</string>
+    <string name="title_activity_login" translatable="false">Intelehealth</string>
     <string name="prompt_email" translatable="false">Username</string>
     <string name="prompt_password" translatable="false">Password</string>
     <string name="prompt_admin_password" translatable="false">Admin Password</string>
@@ -657,5 +657,5 @@
     <string name="select_specialization_text">Select Specialization</string>
     <string name="please_select_specialization_msg">Please select specialization</string>
 
-
+    <string name="visit_closed">Visit Closed</string>
 </resources>

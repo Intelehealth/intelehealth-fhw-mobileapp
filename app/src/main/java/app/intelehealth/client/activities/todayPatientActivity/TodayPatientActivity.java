@@ -9,19 +9,19 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 
 import app.intelehealth.client.R;
+import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.app.AppConstants;
 import app.intelehealth.client.app.IntelehealthApplication;
 import app.intelehealth.client.database.InteleHealthDatabaseHelper;
@@ -45,8 +46,9 @@ import app.intelehealth.client.models.dto.EncounterDTO;
 import app.intelehealth.client.models.dto.VisitDTO;
 import app.intelehealth.client.utilities.Logger;
 import app.intelehealth.client.utilities.SessionManager;
-import app.intelehealth.client.activities.homeActivity.HomeActivity;
 import app.intelehealth.client.utilities.StringUtils;
+import app.intelehealth.client.utilities.UuidDictionary;
+import app.intelehealth.client.utilities.VisitUtils;
 import app.intelehealth.client.utilities.exception.DAOException;
 
 public class TodayPatientActivity extends AppCompatActivity {
@@ -149,7 +151,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b  " +
                 "WHERE a.patientuuid = b.uuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
@@ -161,7 +163,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             if (cursor.moveToFirst()) {
                 do {
                     try {
-                        todayPatientList.add(new TodayPatientModel(
+                        TodayPatientModel model = new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
@@ -172,7 +174,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                        todayPatientList.add(model
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -195,8 +199,100 @@ public class TodayPatientActivity extends AppCompatActivity {
                     DividerItemDecoration(TodayPatientActivity.this,
                     DividerItemDecoration.VERTICAL));*/
             mTodayPatientList.setAdapter(mTodayPatientAdapter);
+            mTodayPatientAdapter.setActionListener(new TodayPatientAdapter.OnActionListener() {
+                @Override
+                public void onEndVisitClicked(TodayPatientModel todayPatientModel, boolean hasPrescription) {
+                    onEndVisit(todayPatientModel, hasPrescription);
+                }
+            });
         }
 
+    }
+
+    private void onEndVisit(TodayPatientModel todayPatientModel, boolean hasPrescription) {
+        String encounterAdultIntialslocal = "";
+        String encounterVitalslocal = null;
+        String encounterIDSelection = "visituuid = ?";
+
+        String visitUuid = todayPatientModel.getUuid();
+        String visitnote = "", followupdate = "";
+        String[] encounterIDArgs = {visitUuid};
+        EncounterDAO encounterDAO = new EncounterDAO();
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+
+                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+
+            } while (encounterCursor.moveToNext());
+        }
+        encounterCursor.close();
+
+        String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+//                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                followupdate = dbValue;
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
+        if (hasPrescription) {
+            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.end_visit_msg));
+            alertDialogBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            String finalFollowupdate = followupdate;
+            String finalEncounterVitalslocal = encounterVitalslocal;
+            String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+            alertDialogBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    VisitUtils.endVisit(TodayPatientActivity.this,
+                            visitUuid,
+                            todayPatientModel.getPatientuuid(),
+                            finalFollowupdate,
+                            finalEncounterVitalslocal,
+                            finalEncounterAdultIntialslocal,
+                            null,
+                            String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
+                            ""
+                    );
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+
+        } else {
+            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.error_no_data));
+            alertDialogBuilder.setNeutralButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.show();
+            //alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+        }
     }
 
     @Override
@@ -291,7 +387,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+        String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
@@ -304,7 +400,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             if (cursor.moveToFirst()) {
                 do {
                     try {
-                        todayPatientList.add(new TodayPatientModel(
+                        TodayPatientModel model = new TodayPatientModel(
                                 cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
@@ -315,7 +411,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                        todayPatientList.add(model
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -338,6 +436,12 @@ public class TodayPatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));
             mTodayPatientList.setAdapter(mTodayPatientAdapter);
+            mTodayPatientAdapter.setActionListener(new TodayPatientAdapter.OnActionListener() {
+                @Override
+                public void onEndVisitClicked(TodayPatientModel todayPatientModel, boolean hasPrescription) {
+                    onEndVisit(todayPatientModel, hasPrescription);
+                }
+            });
         }
 
     }
