@@ -30,7 +30,7 @@
 
 
 
-<app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator
+<org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator
     android:id="@+id/recyclerViewIndicator"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
 android:layout_gravity="center"
     app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-</app.intelehealth.client.utilities.pageindicator.ScrollingPagerIndicator>
+</org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/question_recyclerView"
