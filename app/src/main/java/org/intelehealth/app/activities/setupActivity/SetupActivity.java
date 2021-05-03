@@ -229,6 +229,32 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
+        if(!mUrlField.getText().toString().trim().isEmpty() ||
+        !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
+
+            isLocationFetched = false;
+            mEmailView.setError(null);
+
+            LocationArrayAdapter adapter = new LocationArrayAdapter
+                    (SetupActivity.this, new ArrayList<String>());
+            mDropdownLocation.setAdapter(adapter);
+
+            if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                    String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                    base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                    if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+//                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                        getLocationFromServer(BASE_URL);
+                    else
+                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+        else {
+
+        }
         mUrlField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -244,7 +270,8 @@ public class SetupActivity extends AppCompatActivity {
 //                sanch_count = 0;
 //                village_count = 0;
 //                empty_spinner("url");
-                LocationArrayAdapter adapter = new LocationArrayAdapter(SetupActivity.this, new ArrayList<String>());
+                LocationArrayAdapter adapter = new LocationArrayAdapter
+                        (SetupActivity.this, new ArrayList<String>());
                 mDropdownLocation.setAdapter(adapter);
             }
 
