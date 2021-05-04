@@ -1867,13 +1867,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+911141236457" + "</span><br>" +
 
                    /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
                     + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
 
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
-                    
+
                     "</div>";
 
         }
@@ -1881,8 +1882,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String htmlDocument = "";
         if (isRespiratory) {
             htmlDocument =
-                    String.format("<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                    String.format("<b><p id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<p id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
                                     "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     /* doctorDetailStr +*/
@@ -1909,7 +1910,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s<br>" +
                                     "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
                                     "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" +
+                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice</p></b></u>" +
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
                                     "%s<br>" +
@@ -1932,7 +1933,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                            (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
 //                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 
-                            /*pat_hist, fam_hist,*/ /*mComplaint,*/ diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
+                            /*pat_hist, fam_hist,*/ /*mComplaint,*/
+                            diagnosis_web.replace(Node.big_bullet, "- "),
+                            rx_web.replace(Node.big_bullet, "- "),
+                            tests_web.replace(Node.big_bullet, "- "),
+                            advice_web.replace(Node.big_bullet, "- "),
+                            followUp_web.replace(Node.big_bullet, "- "), doctor_web.replace(Node.big_bullet, "- "));
+
             //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             htmlDocument =
