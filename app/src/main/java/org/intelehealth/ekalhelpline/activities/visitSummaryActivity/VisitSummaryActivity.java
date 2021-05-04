@@ -1880,9 +1880,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
-        String htmlDocument = "";
-        if (isRespiratory) {
-            htmlDocument =
+//        if (isRespiratory) {
+           String htmlDocument =
                     String.format("<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" +
                                     "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
                             "<br><br>" +
@@ -1948,32 +1947,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             Log.d("html","html:ppp "+ Html.fromHtml(htmlDocument));
             //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
-        } else {
+/*        } else {
             htmlDocument =
                     String.format( "<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" +
                                     "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
                                     "<br><br>" +
 
-                                  /*  "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +*/
+                                  *//*  "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
+                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +*//*
 
                                     "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
                                     "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
                                     "<br><br>" +
 
-                                   /* "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
-                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +*/
+                                   *//* "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
+                                    "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +*//*
 
-                                   /* "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +*/
+                                   *//* "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +*//*
 
-                                    /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
+                                    *//*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
+                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*//*
 
-                                   /* "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
-                                    para_open + "%s" + para_close + "<br><br>" +*/
+                                   *//* "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
+                                    para_open + "%s" + para_close + "<br><br>" +*//*
 
                                     "<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
                                     "%s </b><br>" +
@@ -1987,26 +1986,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s" + "</b><br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
 
-                                   /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +*/
+                                   *//* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +*//*
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" +
 
-                                   /* + doctrRegistartionNum + "</span>" +*/
+                                   *//* + doctrRegistartionNum + "</span>" +*//*
                                     "</div>"
 
-                            , heading, heading2,/* heading3,*/ mPatientName, age, mGender, /*mSdw*/ /*address, mPatientOpenMRSID, mDate,*/
-                            /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*/
+                            , heading, heading2,*//* heading3,*//* mPatientName, age, mGender, *//*mSdw*//* *//*address, mPatientOpenMRSID, mDate,*//*
+                            *//*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*//*
 
-                           /* (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
-                            (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",*/
+                           *//* (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "",
+                            (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",*//*
 
-                            /*pat_hist, fam_hist,*/ /*mComplaint,*/
+                            *//*pat_hist, fam_hist,*//* *//*mComplaint,*//*
 
                             diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             Log.d("html","html:ppp "+ Html.fromHtml(htmlDocument));
             // webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
-        }
+        }*/
         //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
 
         return htmlDocument;
