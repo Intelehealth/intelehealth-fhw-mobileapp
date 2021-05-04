@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import java.io.File;
 import java.util.List;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 
 public final class StringUtils {

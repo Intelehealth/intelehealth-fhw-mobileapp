@@ -17,14 +17,16 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.models.ActivePatientModel;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import app.intelehealth.client.R;
-import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
-import app.intelehealth.client.models.ActivePatientModel;
-import app.intelehealth.client.utilities.DateAndTimeUtils;
-import app.intelehealth.client.utilities.StringUtils;
+
 
 /**
  * Created by Dexter Barretto on 5/20/17.
