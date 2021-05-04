@@ -24,6 +24,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.StringUtils;
 
 
 /**
@@ -71,7 +72,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         String age = DateAndTimeUtils.getAgeInYears(todayPatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
 //        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
-        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + todayPatientModel.getGender() + ")</b>");
+        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, todayPatientModel.getGender()) + ")</b>");
 
         if (todayPatientModel.getSync().equalsIgnoreCase("0")){
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
