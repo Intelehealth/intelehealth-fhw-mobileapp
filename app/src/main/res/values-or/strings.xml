@@ -523,4 +523,6 @@
     <string name="speciality_cardview_title">Speciality</string>
     <string name="select_specialization_text">Select Specialization</string>
     <string name="please_select_specialization_msg">Please select specialization</string>
+
+    <string name="visit_closed">ପରିଦର୍ଶନ ବନ୍ଦ |</string>
 </resources>

@@ -648,4 +648,6 @@
     <string name="speciality_cardview_title">स्पेशलिटी</string>
     <string name="select_specialization_text">स्पेशलाइज़ेशन चुनिए</string>
     <string name="please_select_specialization_msg">कृपया विशेषज्ञता का चयन करें</string>
+
+    <string name="visit_closed">विजिट बंद हुई</string>
 </resources>

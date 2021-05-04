@@ -14,6 +14,7 @@
 
 package app.intelehealth.client.utilities;
 
+import android.content.Context;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -575,4 +576,14 @@ public final class StringUtils {
 
     }
 
+    public static String getLocaleGender(Context context, String gender) {
+        switch (gender) {
+            case "M":
+                return context.getString(R.string.gender_male);
+            case "F":
+                return context.getString(R.string.gender_female);
+            default:
+                return gender;
+        }
+    }
 }

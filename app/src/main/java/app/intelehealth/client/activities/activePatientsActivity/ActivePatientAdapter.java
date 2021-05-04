@@ -24,6 +24,7 @@ import app.intelehealth.client.R;
 import app.intelehealth.client.activities.patientDetailActivity.PatientDetailActivity;
 import app.intelehealth.client.models.ActivePatientModel;
 import app.intelehealth.client.utilities.DateAndTimeUtils;
+import app.intelehealth.client.utilities.StringUtils;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -92,7 +93,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         String age = DateAndTimeUtils.getAgeInYears(activePatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(activePatientModel.getDate_of_birth());
 //        String body = String.format("%s %s (%s)", context.getString(R.string.identification_screen_prompt_age), age, activePatientModel.getGender());
-        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + activePatientModel.getGender() + ")</b>");
+        Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, activePatientModel.getGender()) + ")</b>");
 
         holder.getHeadTextView().setText(String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()));
         holder.getBodyTextView().setText(activePatientModel.getOpenmrs_id());
