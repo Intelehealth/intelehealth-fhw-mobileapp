@@ -1784,15 +1784,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
 
-        String rx_web = stringToWeb(rxReturned);
+        String rx_web = stringToWeb_sms(rxReturned);
 
-        String tests_web = stringToWeb(testsReturned.trim().replace("\n\n", "\n")
+        String tests_web = stringToWeb_sms(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
 
-        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n", "\n"));
+        String advice_web = stringToWeb_sms(medicalAdvice_string.trim().replace("\n\n", "\n"));
         Log.d("Hyperlink", "hyper_print: " + advice_web);
 
-        String diagnosis_web = stringToWeb(diagnosisReturned);
+        String diagnosis_web = stringToWeb_sms(diagnosisReturned);
 
         String followUpDateStr = "";
         if (followUpDate != null && followUpDate.contains(",")) {
@@ -1810,9 +1810,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             followUpDateStr = followUpDate;
         }
 
-        String followUp_web = stringToWeb(followUpDateStr);
+        String followUp_web = stringToWeb_sms(followUpDateStr);
 
-        String doctor_web = stringToWeb(doctorName);
+        String doctor_web = stringToWeb_sms(doctorName);
 
         String heading = prescription1;
         String heading2 = prescription2;
@@ -1883,13 +1883,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String htmlDocument = "";
         if (isRespiratory) {
             htmlDocument =
-                    String.format("<b><p id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
-                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
+                    String.format("<b id=\"heading_1\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b><br>" +
+                                    "<b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">%s</b>" +
+                            "<br><br>" +
+
+                                    /*"<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +*/
+//                                    "<hr style=\"font-size:12pt;\">" + "<br/>" +
                                     /* doctorDetailStr +*/
-                                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" +
-                                    "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" +
+
+
+                                    "<b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</b><br>" +
+                                    "<b id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </b>" +
+                                    "<br><br>" +
 
                                   /*  "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +*/
@@ -1905,16 +1910,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                   /*  "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +*/
 
-                                    "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice</p></b></u>" +
-                                    "%s<br>" +
-                                    "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" +
-                                    "%s<br>" +
+                                    "<b id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
+                                    "%s </b><br>" +
+                                    "<b id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
+                                    "%s </b><br>" +
+                                    "<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
+                                    "%s " + "</b><br>" +
+                                    "<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
+                                    "%s" + "</b><br>" +
+                                    "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
+                                    "%s" + "</b><br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
 
                                    /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
@@ -1925,7 +1930,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                   /*  doctrRegistartionNum + "</p>" +*/
 
                                     "</div>"
-                            , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/
+                            , heading, heading2, /*heading3,*/ mPatientName, age, mGender, /*mSdw*/
 //                            address, mPatientOpenMRSID, mDate,
 
                             /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
@@ -1935,12 +1940,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 
                             /*pat_hist, fam_hist,*/ /*mComplaint,*/
-                            diagnosis_web.replace(Node.big_bullet, "- "),
-                            rx_web.replace(Node.big_bullet, "- "),
-                            tests_web.replace(Node.big_bullet, "- "),
-                            advice_web.replace(Node.big_bullet, "- "),
-                            followUp_web.replace(Node.big_bullet, "- "), doctor_web.replace(Node.big_bullet, "- "));
+                            diagnosis_web,
+                            rx_web,
+                            tests_web,
+                            advice_web,
+                            followUp_web, doctor_web);
 
+            Log.d("html","html:ppp "+ Html.fromHtml(htmlDocument));
             //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
             htmlDocument =
@@ -2184,6 +2190,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String para_close = "</p>";
             formatted = para_open + Node.big_bullet +
                     input.replaceAll("\n", para_close + para_open + Node.big_bullet)
+                    + para_close;
+        }
+        return formatted;
+    }
+
+    private String stringToWeb_sms(String input) {
+        String formatted = "";
+        if (input != null && !input.isEmpty()) {
+
+            String para_open = "<b style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "</b><br>";
+            formatted = para_open + "- " +
+                    input.replaceAll("\n", para_close + para_open + "- ")
                     + para_close;
         }
         return formatted;
