@@ -121,7 +121,7 @@
             android:layout_height="wrap_content">
             <Button
                 android:id="@+id/btn_visit_details"
-                android:text="Visit Details"
+                android:text="@string/visit_summary_patient_details"
                 android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -132,7 +132,7 @@
                 android:enabled="false"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:text="End Visit"
+                android:text="@string/action_end_visit"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         </LinearLayout>

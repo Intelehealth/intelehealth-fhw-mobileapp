@@ -520,6 +520,7 @@
 
     <!--@lincon-->
     <string name="failed_initial_synced">ସିଙ୍କ ବିଫଳ ହେଲା, ଆପଣଙ୍କର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ଯାଞ୍ଚ କରନ୍ତୁ | ଦୟାକରି ବନ୍ଦ କରନ୍ତୁ ଏବଂ ପୁନର୍ବାର ଆପ୍ ଆରମ୍ଭ କରନ୍ତୁ |</string>
+    <string name="visit_closed">ପରିଦର୍ଶନ ବନ୍ଦ |</string>
     <string name="speciality_cardview_title">ବିଶେଷତା</string>
     <string name="select_specialization_text">ବିଶେଷତା ଚୟନ କରନ୍ତୁ |</string>
     <string name="please_select_specialization_msg">ଦୟାକରି ବିଶେଷତା ଚୟନ କରନ୍ତୁ |</string>
