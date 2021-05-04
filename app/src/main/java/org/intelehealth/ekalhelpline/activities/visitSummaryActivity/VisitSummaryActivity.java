@@ -1865,10 +1865,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             //  docDigitallySign = "Digitally Signed By";
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
+                    objClsDoctorDetails.getRegistrationNumber() : "";
+            doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
+
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+911141236457" + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+911141236457" + "</span>" /*+*/
 
                    /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
                     + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
@@ -1876,7 +1878,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
 
-                    "</div>";
+                    /*"</div>"*/;
 
         }
 
@@ -1919,16 +1921,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s" + "</b><br>" +
                                     "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
                                     "%s" + "</b><br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                   /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
 
                                    /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
 
-                                    doctorDetailStr +
-                                    "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" +
+                                    doctorDetailStr
+                                    /*"<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" +*/
 
                                   /*  doctrRegistartionNum + "</p>" +*/
 
-                                    "</div>"
+                                    /*"</div>"*/
                             , heading, heading2, /*heading3,*/ mPatientName, age, mGender, /*mSdw*/
 //                            address, mPatientOpenMRSID, mDate,
 
