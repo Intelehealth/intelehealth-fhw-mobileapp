@@ -473,46 +473,46 @@ public class IdentificationActivity extends AppCompatActivity {
 //        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
 
-        try { //Caste adapter setting...
-            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
-            int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
-            if (castes != 0) {
-                casteAdapter = ArrayAdapter.createFromResource(this,
-                        castes, R.layout.custom_spinner);
-
-            }
-            mCaste.setAdapter(casteAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-        try { //Economic adapter setting...
-            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
-            int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
-            if (economics != 0) {
-                economicStatusAdapter = ArrayAdapter.createFromResource(this,
-                        economics, R.layout.custom_spinner);
-            }
-            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            mEconomicStatus.setAdapter(economicStatusAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
-        try { //Education adapter setting....
-            String educationLanguage = "education_" + sessionManager.getAppLanguage();
-            int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
-            if (educations != 0) {
-                educationAdapter = ArrayAdapter.createFromResource(this,
-                        educations, R.layout.custom_spinner);
-
-            }
-            // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
-            mEducation.setAdapter(educationAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
+//        try { //Caste adapter setting...
+//            String casteLanguage = "caste_" + sessionManager.getAppLanguage();
+//            int castes = res.getIdentifier(casteLanguage, "array", getApplicationContext().getPackageName());
+//            if (castes != 0) {
+//                casteAdapter = ArrayAdapter.createFromResource(this,
+//                        castes, R.layout.custom_spinner);
+//
+//            }
+//            mCaste.setAdapter(casteAdapter);
+//        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+//            Logger.logE("Identification", "#648", e);
+//        }
+//        try { //Economic adapter setting...
+//            String economicLanguage = "economic_" + sessionManager.getAppLanguage();
+//            int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
+//            if (economics != 0) {
+//                economicStatusAdapter = ArrayAdapter.createFromResource(this,
+//                        economics, R.layout.custom_spinner);
+//            }
+//            // countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            mEconomicStatus.setAdapter(economicStatusAdapter);
+//        } catch (Exception e) {
+//            Toast.makeText(this, R.string.economic_values_missing, Toast.LENGTH_SHORT).show();
+//            Logger.logE("Identification", "#648", e);
+//        }
+//        try { //Education adapter setting....
+//            String educationLanguage = "education_" + sessionManager.getAppLanguage();
+//            int educations = res.getIdentifier(educationLanguage, "array", getApplicationContext().getPackageName());
+//            if (educations != 0) {
+//                educationAdapter = ArrayAdapter.createFromResource(this,
+//                        educations, R.layout.custom_spinner);
+//
+//            }
+//            // countryAdapter.setDropDownViewResource(R.layout.custom_spinner);
+//            mEducation.setAdapter(educationAdapter);
+//        } catch (Exception e) {
+//            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+//            Logger.logE("Identification", "#648", e);
+//        }
 
         //Occupation Adapter ...
       /*  try {
@@ -938,39 +938,39 @@ public class IdentificationActivity extends AppCompatActivity {
 //            }
 
 
-            if (patient1.getEconomic_status().equals("Not provided"))
-                mEconomicStatus.setSelection(0);
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
-                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
-                            economicStatusAdapter.getPosition(economic) : 0);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
-                            economicStatusAdapter.getPosition(patient1.getEconomic_status()) : 0);
-                } else {
-                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
-                            economicStatusAdapter.getPosition(patient1.getEconomic_status()) : 0);
-                }
-            }
+//            if (patient1.getEconomic_status().equals("Not provided"))
+//                mEconomicStatus.setSelection(0);
+//            else {
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String economic = switch_hi_economic_edit(patient1.getEconomic_status());
+//                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
+//                            economicStatusAdapter.getPosition(economic) : 0);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
+//                            economicStatusAdapter.getPosition(patient1.getEconomic_status()) : 0);
+//                } else {
+//                    mEconomicStatus.setSelection(economicStatusAdapter != null ?
+//                            economicStatusAdapter.getPosition(patient1.getEconomic_status()) : 0);
+//                }
+//            }
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste().equals("Not provided"))
-                mCaste.setSelection(0);
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String caste = switch_hi_caste_edit(patient1.getCaste());
-                    mCaste.setSelection(casteAdapter != null ?
-                            casteAdapter.getPosition(caste) : 0);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    mCaste.setSelection(casteAdapter != null ?
-                            casteAdapter.getPosition(patient1.getCaste()) : 0);
-                } else {
-                    mCaste.setSelection(casteAdapter != null ?
-                            casteAdapter.getPosition(patient1.getCaste()) : 0);
-                }
-
-            }
+//            if (patient1.getCaste().equals("Not provided"))
+//                mCaste.setSelection(0);
+//            else {
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String caste = switch_hi_caste_edit(patient1.getCaste());
+//                    mCaste.setSelection(casteAdapter != null ?
+//                            casteAdapter.getPosition(caste) : 0);
+//                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+//                    mCaste.setSelection(casteAdapter != null ?
+//                            casteAdapter.getPosition(patient1.getCaste()) : 0);
+//                } else {
+//                    mCaste.setSelection(casteAdapter != null ?
+//                            casteAdapter.getPosition(patient1.getCaste()) : 0);
+//                }
+//
+//            }
 
             //Houselhold Head...
           /*  if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
