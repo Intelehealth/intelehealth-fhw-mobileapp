@@ -3,13 +3,17 @@ package org.intelehealth.ekalhelpline.activities.setupActivity;
 import android.accounts.Account;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -17,6 +21,7 @@ import android.os.StrictMode;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.text.Editable;
 import android.text.TextUtils;
@@ -39,6 +44,7 @@ import android.widget.Toast;
 
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
@@ -71,6 +77,7 @@ import org.intelehealth.ekalhelpline.utilities.Base64Utils;
 import org.intelehealth.ekalhelpline.utilities.DialogUtils;
 import org.intelehealth.ekalhelpline.utilities.DownloadMindMaps;
 import org.intelehealth.ekalhelpline.utilities.Logger;
+import org.intelehealth.ekalhelpline.utilities.NetworkChangeListener;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.utilities.StringEncryption;
@@ -126,6 +133,10 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
+
+    private BroadcastReceiver MyReceiver = null;
+    CoordinatorLayout coordinatorLayout;
+
     HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
     boolean value = false;
     String base_url;
@@ -141,6 +152,8 @@ public class SetupActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
+        coordinatorLayout = findViewById(R.id.coordinatorLayout);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -180,6 +193,16 @@ public class SetupActivity extends AppCompatActivity {
        /* spinner_district.setEnabled(false);
         spinner_sanch.setEnabled(false);
         spinner_village.setEnabled(false);*/
+
+        isOnline();
+
+        MyReceiver = new NetworkChangeListener() {
+            @Override
+            protected void onNetworkChange(String status) {
+                Snackbar.make(coordinatorLayout, status, Snackbar.LENGTH_SHORT)
+                        .setTextColor(getResources().getColor(R.color.white)).show();
+            }
+        };
 
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -671,6 +694,39 @@ public class SetupActivity extends AppCompatActivity {
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCancelable(false);
+    }
+
+    public boolean isOnline () {
+        ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
+            return false;
+        }
+        else
+        {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
+            return true;
+        }
+//        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        broadcastIntent();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(MyReceiver);
+    }
+
+    public void broadcastIntent() {
+        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
     }
 
     private boolean isEmailValid(String email) {
