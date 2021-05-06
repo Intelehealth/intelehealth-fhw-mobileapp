@@ -4,8 +4,11 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
-        applicationId "app.intelehealth.client"
+        applicationId "org.intelehealth.app"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 46
@@ -36,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation project(':webrtc')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

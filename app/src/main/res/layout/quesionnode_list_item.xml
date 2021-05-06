@@ -73,7 +73,7 @@
             android:scrollbars="vertical" />
 
 
-        <!--        <app.intelehealth.client.utilities.AutoFitGridRecyclerView-->
+        <!--        <appilities.AutoFitGridRecyclerView-->
         <!--            android:id="@+id/rv_chips"-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="wrap_content"-->
