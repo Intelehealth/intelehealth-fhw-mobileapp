@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +41,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 import app.intelehealth.client.R;
 import app.intelehealth.client.app.AppConstants;
@@ -79,16 +85,17 @@ public class LoginActivity extends AppCompatActivity {
      */
 //    private UserLoginTask mAuthTask = null;
     private OfflineLogin offlineLogin = null;
-
+    SessionManager sessionManager1;
     UrlModifiers urlModifiers = new UrlModifiers();
     Base64Utils base64Utils = new Base64Utils();
     String encoded = null;
+
     // UI references.
     private EditText mUsernameView;
 //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
-
+    String appLanguage;
     private long createdRecordsCount = 0;
     String provider_url_uuid;
 
@@ -97,7 +104,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         sessionManager = new SessionManager(this);
-
+        sessionManager1 = new SessionManager(this);
+        appLanguage = sessionManager1.getAppLanguage();
+        if(!appLanguage.equalsIgnoreCase(""))
+        {
+            setLocale(appLanguage);
+        }
         context = LoginActivity.this;
         sessionManager = new SessionManager(context);
         cpd = new CustomProgressDialog(context);
@@ -172,6 +184,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            getApplicationContext().createConfigurationContext(conf); }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+    }
+
     private void setLogo() {
 
         File f = new File("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
@@ -197,19 +226,19 @@ public class LoginActivity extends AppCompatActivity {
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mUsernameView.setError(getString(R.string.enter_username));
+            mUsernameView.setError(getResources().getString(R.string.enter_username));
             mUsernameView.requestFocus();
             return;
         }
         // Check for a valid password, if the user entered one.
         if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.enter_password));
+            mPasswordView.setError(getResources().getString(R.string.enter_password));
             mPasswordView.requestFocus();
             return;
         }
 
         if (password.length() < 4) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordView.setError(getResources().getString(R.string.error_invalid_password));
             mPasswordView.requestFocus();
             return;
         }
@@ -236,12 +265,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void cant_log() {
-        final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
+        final SpannableString span_string = new SpannableString(getResources().getString(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
       MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
-                .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
-                .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
+                .setMessage(getResources().getString(R.string.contact_whatsapp))
+                .setNegativeButton(getResources().getString(R.string.contact), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //finish();
@@ -257,8 +286,8 @@ public class LoginActivity extends AppCompatActivity {
 
                         String phoneNumberWithCountryCode = "+917005308163";
                         String message =
-                                getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
-                                        /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                                getResources().getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
+                                        /*" from " + sessionManager.getState() + */getResources().getString(R.string.i_need_assistance);
 
                         startActivity(new Intent(Intent.ACTION_VIEW,
                                 Uri.parse(
@@ -268,7 +297,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                 })
-                .setPositiveButton(R.string.close_button, null);
+                .setPositiveButton(getResources().getString(R.string.close_button), null);
 
       AlertDialog alertDialog = builder.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
@@ -412,7 +441,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onError(Throwable e) {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 cpd.dismiss();
-                Toast.makeText(LoginActivity.this, getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, getResources().getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
 
             }
 

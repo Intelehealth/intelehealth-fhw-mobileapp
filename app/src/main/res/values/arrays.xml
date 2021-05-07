@@ -23,8 +23,8 @@
     </string-array>
 
     <string-array name="speciality_values_gu">
-        <item>Select Specialization</item>
-        <item>General Physician</item>
+        <item>વિશેષતા પસંદ કરો</item>
+        <item>જનરલ ફિઝિશિયન</item>
     </string-array>
 
 
@@ -35,9 +35,9 @@
     </string-array>
 
     <string-array name="pref_example_list_titles_gu">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+        <item>હમેશા</item>
+        <item>જ્યારે શક્ય હોય ત્યારે</item>
+        <item>ક્યારેય નહી</item>
     </string-array>
 
     <string-array name="pref_example_list_values">
@@ -51,7 +51,7 @@
     </string-array>
 
     <string-array name="state_error_gu">
-        <item>Please select country first</item>
+        <item>ક્રુપા કરી દેશ પસંદ કરો</item>
     </string-array>
 
     <string-array name="countries">
@@ -87,12 +87,12 @@
     </string-array>
 
     <string-array name="education_gu">
-        <item>Select</item>
-        <item>નિરક્ષર</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
+        <item>પસંદ કરો</item>
+        <item>અશિક્ષિત</item>
+        <item>પ્રાથમિક</item>
+        <item>સેકેંડરી</item>
+        <item>હાયર સેકેંડરી</item>
+        <item>સ્નાતક અને વધુ</item>
     </string-array>
 
     <string-array name="education_cb">
@@ -114,12 +114,12 @@
     </string-array>
 
     <string-array name="caste_gu">
-        <item>Select</item>
-        <item>જનરલ</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
+        <item>પસંદ કરો</item>
+        <item>જનરલ ફિઝિશિયન</item>
+        <item>સામાજિક શૈક્ષણિક પછાત</item>
+        <item>શેડ્યુલ કાસ્ટ</item>
+        <item>શેડ્યુલ ટ્રાઇબ</item>
+        <item>અન્ય</item>
     </string-array>
 
     <string-array name="economic_en">
@@ -129,9 +129,12 @@
     </string-array>
 
     <string-array name="economic_gu">
-        <item>Select</item>
-        <item>ગરીબી રેખા ઉપર</item>
-        <item>ગરીબી રેખાની નીચે</item>
+        <item>પસંદ કરો
+
+
+        </item>
+        <item>ગરીબીની રેખાથી ઉપર</item>
+        <item>ગરીબીની રેખાથી નિચે</item>
     </string-array>
 
 

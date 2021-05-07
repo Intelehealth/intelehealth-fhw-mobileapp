@@ -250,12 +250,12 @@ public class HomeActivity extends AppCompatActivity {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
 
                 if (isNetworkConnected()) {
-                    Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getResources().getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, context.getResources().getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
 
-                syncUtils.syncForeground("home");
+                syncUtils.syncForeground("home", sessionManager.getAppLanguage());
 //                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 //                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
@@ -290,7 +290,7 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager.setMigration(true);
 
         if (sessionManager.isReturningUser()) {
-            syncUtils.syncForeground("");
+            syncUtils.syncForeground("",sessionManager.getAppLanguage());
         }
 
         showProgressbar();
@@ -419,7 +419,7 @@ public class HomeActivity extends AppCompatActivity {
                         // AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
-                        dialog.setTitle(getString(R.string.enter_license_key))
+                        dialog.setTitle(getResources().getString(R.string.enter_license_key))
                                 .setView(promptsView)
                                 .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                                     @Override

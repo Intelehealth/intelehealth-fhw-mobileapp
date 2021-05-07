@@ -147,7 +147,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         textInput.setView(passwordEditText);
 
-        textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+        textInput.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 boolean bool = AdminPassword.getAdminPassword()
@@ -156,7 +156,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         });
 
-        textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+        textInput.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 admin_password = false;
