@@ -5,6 +5,8 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -134,7 +136,7 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 binding.callingLayout.setVisibility(View.GONE);
                 binding.rippleBackgroundContent.stopRippleAnimation();
-                if (socket != null){
+                if (socket != null) {
                     socket.emit("create or join", mRoomId);
                     initializeSurfaceViews();
 
@@ -153,12 +155,20 @@ public class CompleteActivity extends AppCompatActivity {
         binding.inCallRejectImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (socket != null){
+                    socket.emit("create or join", mRoomId);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            socket.emit("no_answer");
+                        }
+                    }, 100);
+
+                }
                 binding.rippleBackgroundContent.stopRippleAnimation();
                 if (mRingtone != null)
                     mRingtone.stop();
-                if (socket != null)
-                    socket.emit("no answer");
-                disconnectAll();
+
             }
         });
 
@@ -182,7 +192,7 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (socket != null)
                     socket.emit("bye");
-                disconnectAll();
+                //disconnectAll();
 
             }
         });
@@ -270,7 +280,7 @@ public class CompleteActivity extends AppCompatActivity {
         if (EasyPermissions.hasPermissions(this, perms)) {
             connectToSignallingServer();
 
-            if(!mIsInComingRequest) {
+            if (!mIsInComingRequest) {
 
                 initializeSurfaceViews();
 
@@ -289,7 +299,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     private void connectToSignallingServer() {
         try {
-            String url = Constants.BASE_URL;//+ "?userId=" + mNurseId;
+            String url = Constants.BASE_URL + "?userId=" + mNurseId;
             Log.v("url", url);
             socket = IO.socket(url);
 
@@ -303,7 +313,7 @@ public class CompleteActivity extends AppCompatActivity {
             socket.on(EVENT_CONNECT, args -> {
                 Log.d(TAG, "connectToSignallingServer: connect");
                 //socket.emit("create or join", "foo");
-                if (!mIsInComingRequest){
+                if (!mIsInComingRequest) {
 
                     socket.emit("create or join", mRoomId);
 
@@ -317,6 +327,9 @@ public class CompleteActivity extends AppCompatActivity {
             }).on("call", args -> {
                 Log.d(TAG, "connectToSignallingServer: call");
                 socket.emit("create or join", mRoomId);
+            }).on("no_answer", args -> {
+                Log.d(TAG, "connectToSignallingServer: no answer");
+                disconnectAll();
             }).on("created", args -> {
                 Log.d(TAG, "connectToSignallingServer: created");
                 isInitiator = true;
@@ -379,7 +392,7 @@ public class CompleteActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(CompleteActivity.this, "Disconned!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CompleteActivity.this, "Disconnected!", Toast.LENGTH_SHORT).show();
 
                     }
                 });

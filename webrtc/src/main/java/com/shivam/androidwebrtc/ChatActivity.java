@@ -271,6 +271,27 @@ public class ChatActivity extends AppCompatActivity {
                     Log.d(TAG, "disconnect: " + String.valueOf(arg));
                 }
             });
+            mSocket.on("call", args -> {
+                Log.d(TAG, "calling...: ");
+                for (Object arg : args) {
+                    Log.d(TAG, "call: " + String.valueOf(arg));
+                }
+                try {
+                    if (args[0] instanceof JSONObject) {
+                        JSONObject jsonObject = (JSONObject) args[0];
+                        //{"nurseId":"28cea4ab-3188-434a-82f0-055133090a38","doctorName":"Mr Doctor","roomId":"f0f3d654-a7cd-4c7e-904c-f702c1825e0c"}
+                        Intent in = new Intent(this, CompleteActivity.class);
+
+                        in.putExtra("roomId", jsonObject.getString("roomId"));
+                        in.putExtra("isInComingRequest", true);
+                        in.putExtra("doctorname", jsonObject.getString("doctorName"));
+                        in.putExtra("nurseId", jsonObject.getString("nurseId"));
+                        startActivity(in);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
             mSocket.on("allUsers", args -> {
                 // try {
                 for (Object arg : args) {
