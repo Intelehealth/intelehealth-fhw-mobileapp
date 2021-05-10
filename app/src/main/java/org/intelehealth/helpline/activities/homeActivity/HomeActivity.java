@@ -414,7 +414,8 @@ public class HomeActivity extends AppCompatActivity {
 
                                     EditText etURL = d.findViewById(R.id.licenseurl);
                                     EditText etKey = d.findViewById(R.id.licensekey);
-                                    String url = etURL.getText().toString().trim();
+//                                    String url = etURL.getText().toString().trim();
+                                    String url = etURL.getText().toString().replace(" ", "");
                                     String key = etKey.getText().toString().trim();
 
                                     if (url.isEmpty()) {
