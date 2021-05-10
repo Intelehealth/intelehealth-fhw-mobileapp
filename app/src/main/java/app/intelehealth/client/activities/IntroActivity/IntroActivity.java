@@ -380,7 +380,7 @@ public class IntroActivity extends AppCompatActivity {
                                             sessionManager.setSetupComplete(true);
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
-                                            AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
+                                            AdminPassword.getAdminPassword(context).setUp(ADMIN_PASSWORD);
 
                                             Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
                                                     .applicationId(AppConstants.IMAGE_APP_ID)

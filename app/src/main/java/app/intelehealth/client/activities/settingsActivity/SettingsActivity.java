@@ -47,7 +47,7 @@ import app.intelehealth.client.activities.homeActivity.HomeActivity;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
     private static boolean admin_password = false;
-
+    Context context;
     //Locale myLocale;
     /**
      * A preference value change listener that updates the preference's summary
@@ -150,7 +150,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         textInput.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                boolean bool = AdminPassword.getAdminPassword()
+                boolean bool = AdminPassword.getAdminPassword(context)
                         .login(passwordEditText.getText().toString());
                 admin_password = bool;
             }
@@ -191,7 +191,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                boolean bool = AdminPassword.getAdminPassword()
+                boolean bool = AdminPassword.getAdminPassword(context)
                         .login(passwordEditText.getText().toString());
                 admin_password = bool;
             }
@@ -225,6 +225,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         setTitle(R.string.menu_option_settings);
         sessionManager = new SessionManager(this);
+        context = SettingsActivity.this;
         setupActionBar();
     }
 
