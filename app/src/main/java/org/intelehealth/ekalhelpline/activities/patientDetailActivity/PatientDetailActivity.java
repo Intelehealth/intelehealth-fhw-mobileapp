@@ -447,13 +447,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-                if (name.equalsIgnoreCase("caste")) {
+               /* if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("Education Level")) {
+              /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Economic Status")) {
@@ -464,7 +464,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
                     profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
@@ -668,7 +668,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         //english = en
         //hindi = hi
         //education
-        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+      /*  if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             education_statusView.setText("नहीं दिया गया");
         } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
@@ -684,10 +684,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 education_statusView.setText(patient_new.getEducation_level());
             }
             // education_statusView.setText(patient_new.getEducation_level());
-        }
+        }*/
 
         //economic
-        if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+     /*   if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             economic_statusView.setText("नहीं दिया गया");
         } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
@@ -703,10 +703,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 economic_statusView.setText(patient_new.getEconomic_status());
             }
             // economic_statusView.setText(patient_new.getEconomic_status());
-        }
+        }*/
 
         //caste
-        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+      /*  if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             casteView.setText("नहीं दिया गया");
         } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
@@ -722,16 +722,16 @@ public class PatientDetailActivity extends AppCompatActivity {
                 casteView.setText(patient_new.getCaste());
             }
             // casteView.setText(patient_new.getCaste());
-        }
+        }*/
 
 //
-        if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
+      /*  if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
             sdwView.setText(patient_new.getSdw());
         } else {
             sdwRow.setVisibility(View.GONE);
-        }
+        }*/
 //
-        if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
+      /*  if (patient_new.getOccupation() != null && !patient_new.getOccupation().equals("")) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String occupation = switch_hi_occupation_edit(patient_new.getOccupation());
                 occuView.setText(occupation);
@@ -742,7 +742,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
 //            occuRow.setVisibility(View.GONE);
             occuView.setText("");
-        }
+        }*/
 
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);
