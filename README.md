@@ -12,8 +12,8 @@ Intelehealth is an open source telemedicine platform that empowers local communi
 
 ## How it works
 * Intelehealth Android application runs on low bandwidth mobile data connection so it can operate in the remotest of settings
-* The mobile app uses intelligent data-gathering flowcharts so that CHWs gather comprehensive clinical history and conduct clinically relevant physical exams
-* The app independently guides the CHW through a series of questions and exams based on the patient’s presenting symptoms and medical history
+* The mobile org uses intelligent data-gathering flowcharts so that CHWs gather comprehensive clinical history and conduct clinically relevant physical exams
+* The org independently guides the CHW through a series of questions and exams based on the patient’s presenting symptoms and medical history
 * The CHW uploads the gathered clinical data to a cloud server which houses the patients Electronic Health Record (EHR) system
 * The remote doctor reviews uploaded data, offer medical advice and prescription, and refer patient if required
 

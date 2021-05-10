@@ -579,9 +579,9 @@
 <!--                android:layout_height="wrap_content"-->
 <!--                android:layout_gravity="center"-->
 <!--                android:layout_marginTop="@dimen/padding_card"-->
-<!--                app:cardCornerRadius="5dp"-->
-<!--                app:cardElevation="2dp"-->
-<!--                app:cardUseCompatPadding="true">-->
+<!--                org:cardCornerRadius="5dp"-->
+<!--                org:cardElevation="2dp"-->
+<!--                org:cardUseCompatPadding="true">-->
 
 <!--                <LinearLayout-->
 <!--                    android:layout_width="match_parent"-->
@@ -622,7 +622,7 @@
 <!--                                android:background="@null"-->
 <!--                                android:foreground="?android:attr/selectableItemBackground"-->
 <!--                                android:padding="10dp"-->
-<!--                                app:srcCompat="@drawable/ic_add_24dp" />-->
+<!--                                org:srcCompat="@drawable/ic_add_24dp" />-->
 
 <!--                        </LinearLayout>-->
 
@@ -895,6 +895,6 @@
     <!--android:layout_height="wrap_content"-->
     <!--android:layout_gravity="bottom|end"-->
     <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
+    <!--org:srcCompat="@android:drawable/ic_dialog_email" />-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

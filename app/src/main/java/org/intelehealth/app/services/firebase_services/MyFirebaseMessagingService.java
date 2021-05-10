@@ -13,6 +13,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.shivam.androidwebrtc.CompleteActivity;
 
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.R;
@@ -34,9 +35,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message Title: " + remoteMessage.getNotification().getTitle());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-
-        parseMessage(remoteMessage.getNotification().getTitle(),
-                remoteMessage.getNotification().getBody());
+        Log.d(TAG, "Notification Message Body: " + remoteMessage.getData());
+        //  {nurseId=28cea4ab-3188-434a-82f0-055133090a38, doctorName=doctor1, roomId=b60263f2-5716-4047-aaf5-7c13199b7f0c}
+        if ("Incoming call".equals(remoteMessage.getNotification().getTitle())) {
+            Intent in = new Intent(this, CompleteActivity.class);
+            String roomId = remoteMessage.getData().get("roomId");
+            String doctorName = remoteMessage.getData().get("doctorName");
+            String nurseId = remoteMessage.getData().get("nurseId");
+            in.putExtra("roomId", roomId);
+            in.putExtra("isInComingRequest", true);
+            in.putExtra("doctorname", doctorName);
+            in.putExtra("nurseId", nurseId);
+            startActivity(in);
+        } else {
+            parseMessage(remoteMessage.getNotification().getTitle(),
+                    remoteMessage.getNotification().getBody());
+        }
     }
 
     private void parseMessage(String messageTitle, String messageBody) {

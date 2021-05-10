@@ -131,7 +131,7 @@ public class Node implements Serializable {
      * Most nodes are single choice questions. Therefore, they can just be clicked and selected.
      * Some nodes may be multi-choice, in which case there must be an attribute within the JSON to dictate that.
      * <p>
-     * text - the text that is displayed on the app to user
+     * text - the text that is displayed on the org to user
      * language - the text that is displayed after answering a question
      * differs from the text attribute in that this is the response form of a question
      * inputType - dictates if the knowledgeEngine is something other that choice-based
@@ -140,7 +140,7 @@ public class Node implements Serializable {
      * optionsList - container of sub-nodes of the current knowledgeEngine
      * associatedComplaint - just like the name says
      * jobAidFile - the filename of the job aid
-     * should be stored in the physicalExamAssets folder within the app when compiling
+     * should be stored in the physicalExamAssets folder within the org when compiling
      * jobAidType - options are audio, video, or image
      *
      * @param jsonNode A JSON Object of a mindmap should be used here. The object that is generated will hold objects within it.
@@ -378,7 +378,7 @@ public class Node implements Serializable {
         this.associated_symptoms = associated_symptoms;
     }
 
-    //Terminal nodes are important to identify to know so that the app does not keep looking for sub-nodes.
+    //Terminal nodes are important to identify to know so that the org does not keep looking for sub-nodes.
     public boolean isTerminal() {
         return terminal;
     }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.intelehealth.app">
+    package="org.intelehealth.app"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -35,8 +38,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true"
-        android:usesCleartextTraffic="true">
-
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute, LockedOrientationActivity">
+        <receiver
+            android:name=".utilities.RTCMessageReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="app.intelehealth.client.RTC_MESSAGING_EVENT" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name="org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:label="@string/title_activity_privacy_notice"

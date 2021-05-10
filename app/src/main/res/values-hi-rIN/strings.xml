@@ -650,4 +650,5 @@
     <string name="please_select_specialization_msg">कृपया विशेषज्ञता का चयन करें</string>
 
     <string name="visit_closed">विजिट बंद हुई</string>
+    <string name="chat_fab">chat fab</string>
 </resources>
