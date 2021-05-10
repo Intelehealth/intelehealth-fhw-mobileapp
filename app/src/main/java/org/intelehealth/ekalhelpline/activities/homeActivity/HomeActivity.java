@@ -414,7 +414,7 @@ public class HomeActivity extends AppCompatActivity {
 
                                     EditText etURL = d.findViewById(R.id.licenseurl);
                                     EditText etKey = d.findViewById(R.id.licensekey);
-                                    String url = etURL.getText().toString().trim();
+                                    String url = etURL.getText().toString().replace(" ", "");
                                     String key = etKey.getText().toString().trim();
 
                                     if (url.isEmpty()) {
@@ -433,7 +433,7 @@ public class HomeActivity extends AppCompatActivity {
                                         return;
                                     }
 
-                                    sessionManager.setMindMapServerUrl(url);
+                                    sessionManager.setMindMapServerUrl(url); //trim
                                     getMindmapDownloadURL("https://" + url + ":3004/", key);
 
                                 }
@@ -696,7 +696,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
-        ApiClient.changeApiBaseUrl(url);
+        ApiClient.changeApiBaseUrl(url); //trim
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
             Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key);
