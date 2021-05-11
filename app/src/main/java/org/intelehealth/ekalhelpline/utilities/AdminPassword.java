@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -31,9 +32,9 @@ public class AdminPassword {
                 context.getString(R.string.admin_login_shared_preference_key), Context.MODE_PRIVATE);
     }
 
-    public static AdminPassword getAdminPassword() {
+    public static AdminPassword getAdminPassword(Context context) {
         if (mAdminPassword == null)
-            mAdminPassword = new AdminPassword(IntelehealthApplication.getAppContext());
+            mAdminPassword = new AdminPassword(context);
         return mAdminPassword;
     }
 
