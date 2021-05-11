@@ -158,19 +158,19 @@ public final class StringUtils {
     public static String switch_gu_education_edit(String val) {
         switch (val) {
             case "Illiterate":
-                val = "નિરક્ષર";
+                val = "અશિક્ષિત";
                 break;
             case "Primary":
                 val = "પ્રાથમિક";
                 break;
             case "Secondary":
-                val = "માધ્યમિક";
+                val = "સેકેંડરી";
                 break;
             case "Higher Secondary":
-                val = "ઉચ્ચતર માધ્યમિક";
+                val = "હાયર સેકેંડરી";
                 break;
             case "Graduation & Higher":
-                val = "સ્નાતક અને ઉચ્ચતર";
+                val = "સ્નાતક અને વધુ";
                 break;
             default:
                 return val;
@@ -178,22 +178,21 @@ public final class StringUtils {
         return val;
     }
 
-
     public static String switch_gu_education(String val) {
         switch (val) {
-            case "નિરક્ષર":
+            case "અશિક્ષિત":
                 val = "Illiterate";
                 break;
             case "પ્રાથમિક":
                 val = "Primary";
                 break;
-            case "માધ્યમિક":
+            case "સેકેંડરી":
                 val = "Secondary";
                 break;
-            case "ઉચ્ચતર માધ્યમિક":
+            case "હાયર સેકેંડરી":
                 val = "Higher Secondary";
                 break;
-            case "સ્નાતક અને ઉચ્ચતર":
+            case "સ્નાતક અને વધુ":
                 val = "Graduation & Higher";
                 break;
             default:
@@ -204,10 +203,10 @@ public final class StringUtils {
 
     public static String switch_gu_economic(String val) {
         switch (val) {
-            case "ગરીબી રેખા ઉપર":
+            case "ગરીબીની રેખાથી ઉપર":
                 val = "APL";
                 break;
-            case "ગરીબી રેખાની નીચે":
+            case "ગરીબીની રેખાથી નિચે":
                 val = "BPL";
                 break;
             default:
@@ -219,10 +218,10 @@ public final class StringUtils {
     public static String switch_gu_economic_edit(String val) {
         switch (val) {
             case "APL":
-                val = "ગરીબી રેખા ઉપર";
+                val = "ગરીબીની રેખાથી ઉપર";
                 break;
             case "BPL":
-                val = "ગરીબી રેખાની નીચે";
+                val = "ગરીબીની રેખાથી નિચે";
                 break;
             default:
                 return val;
@@ -235,13 +234,13 @@ public final class StringUtils {
             case "જનરલ":
                 val = "General";
                 break;
-            case "અન્ય પછાત વર્ગ":
+            case "સામાજિક શૈક્ષણિક પછાત":
                 val = "OBC";
                 break;
-            case "અનુસૂચિત જાતિ":
+            case "શેડ્યુલ કાસ્ટ":
                 val = "SC";
                 break;
-            case "સુનિશ્ચિત જનજાતિ":
+            case "શેડ્યુલ ટ્રાઇબ":
                 val = "ST";
                 break;
             case "અન્ય":
@@ -259,13 +258,13 @@ public final class StringUtils {
                 val = "જનરલ";
                 break;
             case "OBC":
-                val = "અન્ય પછાત વર્ગ";
+                val = "સામાજિક શૈક્ષણિક પછાત";
                 break;
             case "SC":
-                val = "અનુસૂચિત જાતિ";
+                val = "શેડ્યુલ કાસ્ટ";
                 break;
             case "ST":
-                val = "સુનિશ્ચિત જનજાતિ";
+                val = "શેડ્યુલ ટ્રાઇબ";
                 break;
             case "others":
                 val = "અન્ય";

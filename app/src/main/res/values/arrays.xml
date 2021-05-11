@@ -115,7 +115,7 @@
 
     <string-array name="caste_gu">
         <item>પસંદ કરો</item>
-        <item>જનરલ ફિઝિશિયન</item>
+        <item>જનરલ</item>
         <item>સામાજિક શૈક્ષણિક પછાત</item>
         <item>શેડ્યુલ કાસ્ટ</item>
         <item>શેડ્યુલ ટ્રાઇબ</item>
@@ -129,10 +129,7 @@
     </string-array>
 
     <string-array name="economic_gu">
-        <item>પસંદ કરો
-
-
-        </item>
+        <item>પસંદ કરો</item>
         <item>ગરીબીની રેખાથી ઉપર</item>
         <item>ગરીબીની રેખાથી નિચે</item>
     </string-array>
