@@ -644,4 +644,14 @@
     <string name="associated_symptoms">સંકળાયેલ લક્ષણો</string>
     <string name="select_specialization">વિશેષતા પસંદ કરો</string>
 
+    <string name="Hours">કલાક</string>
+    <string name="Days">દિવસ</string>
+    <string name="Weeks">અઠવાડિયું</string>
+    <string name="Months">માસ</string>
+    <string name="Years">વર્ષ</string>
+    <string name="per_Hour">કલાક દીઠ</string>
+    <string name="per_Day">દિવસ દીઠ</string>
+    <string name="per_Week">સપ્તાહ દીઠ</string>
+    <string name="per_Month">પ્રતિ મહિના</string>
+    <string name="per_Year">પ્રતિ વર્ષ</string>
 </resources>

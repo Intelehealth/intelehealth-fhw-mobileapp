@@ -564,14 +564,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
-                assoSympObj.put("display-gu", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
+                assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
-                finalAssoSympObj.put("display-gu", "સંકળાયેલ લક્ષણો");
+                finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
@@ -618,7 +618,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
                     .replace("Patient reports -", "દરદી રિપોર્ટ કરે છે -")
-                    .replace("Patient denies -", "દરદી મના કરે છે -")));
+                    .replace("Patient denies -", "દરદી મના કરે છે -")
+                    .replace("Hours", "કલાક").replace("Days","દિવસ")
+                    .replace("Weeks", "અઠવાડિયું").replace("Months", "માસ")
+                    .replace("Years", "વર્ષ")
+                    .replace("times per hour", "કલાક દીઠ વખત")
+                    .replace("time per day", "દિવસ દીઠ વખત")
+                    .replace("times per week", "દર અઠવાડિયે વખત")
+                    .replace("times per month", "દર મહિને વખત")
+                    .replace("times per year", "વર્ષ દીઠ વખત")));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
