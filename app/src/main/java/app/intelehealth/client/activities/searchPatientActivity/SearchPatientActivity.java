@@ -1,5 +1,6 @@
 package app.intelehealth.client.activities.searchPatientActivity;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -59,6 +60,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
+    private boolean onlyFollowUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
-
+            onlyFollowUp = false;
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("doquery", "doquery", e);
@@ -124,9 +126,9 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     private void firstQuery() {
         try {
-            getAllPatientsFromDB();
+//            getAllPatientsFromDB();
 
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(), SearchPatientActivity.this);
+            recycler = new SearchPatientAdapter(getAllPatientsFromDB(onlyFollowUp), SearchPatientActivity.this);
 
 
 //            Log.i("db data", "" + getAllPatientsFromDB());
@@ -178,21 +180,36 @@ public class SearchPatientActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_filter_all:
+                if (onlyFollowUp) {
+                    onlyFollowUp = false;
+                    firstQuery();
+                }
+                break;
+
+            case R.id.action_filter_follow_up:
+                if (!onlyFollowUp) {
+                    onlyFollowUp = true;
+                    firstQuery();
+                }
+                break;
+
             case R.id.summary_endAllVisit:
                 endAllVisit();
 
             case R.id.action_filter:
                 //alert box.
-                displaySingleSelectionDialog();    //function call
+//                displaySingleSelectionDialog();    //function call
             case R.id.action_search:
-
 
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -210,10 +227,18 @@ public class SearchPatientActivity extends AppCompatActivity {
         lvItems.setAdapter(searchAdapter);
     }
 
-    public List<PatientDTO> getAllPatientsFromDB() {
+    public List<PatientDTO> getAllPatientsFromDB(boolean onlyFollowUp) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC", null);
+        String WHERE = "";
+        String ORDER_BY = " ORDER BY first_name ASC";
+        if (onlyFollowUp) {
+            table = "tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o ";
+            WHERE = "where p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and o.conceptuuid = 'e8caffd6-5d22-41c4-8d6a-bc31a44d0c86' and o.value IS NOT NULL and substr(o.value, 7, 4) || '-' || substr(o.value, 4, 2) || '-' || substr(o.value, 0, 3) >= date('now')";
+            ORDER_BY = "ORDER BY substr(o.value, 7, 4) || '-' || substr(o.value, 4, 2) || '-' || substr(o.value, 0, 3) ASC";
+        }
+
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + WHERE + ORDER_BY, null);
         try {
             if (searchCursor.moveToFirst()) {
                 do {

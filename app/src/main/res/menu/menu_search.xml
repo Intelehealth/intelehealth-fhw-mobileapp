@@ -19,4 +19,21 @@
     <!--android:id="@+id/action_filter"-->
     <!--android:title="Filter by Creator"-->
     <!--app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter_24"
+        android:orderInCategory="2"
+        android:title="Filter"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/action_filter_all"
+                android:orderInCategory="1"
+                android:title="@string/all" />
+            <item
+                android:id="@+id/action_filter_follow_up"
+                android:orderInCategory="2"
+                android:title="@string/follow_up" />
+        </menu>
+    </item>
 </menu>
