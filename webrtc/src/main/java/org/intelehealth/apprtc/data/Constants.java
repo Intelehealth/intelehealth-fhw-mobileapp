@@ -1,6 +1,7 @@
-package com.shivam.androidwebrtc.data;
+package org.intelehealth.apprtc.data;
 
 public class Constants {
+    //TODO:
     public static final String BASE_URL = "https://testing.intelehealth.org:3004";
 
     public static final String ICE_SERVER_1_URL = "stun:stun.l.google.com:19302";

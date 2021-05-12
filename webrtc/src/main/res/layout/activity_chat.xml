@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.shivam.androidwebrtc.ChatActivity">
+    tools:context="org.intelehealth.apprtc.ChatActivity">
 
     <RelativeLayout
         android:id="@+id/footer_layout"

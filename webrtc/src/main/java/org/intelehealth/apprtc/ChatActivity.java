@@ -1,4 +1,4 @@
-package com.shivam.androidwebrtc;
+package org.intelehealth.apprtc;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -31,10 +31,9 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.myhexaville.androidwebrtc.R;
-import com.shivam.androidwebrtc.adapter.ChatListingAdapter;
-import com.shivam.androidwebrtc.data.Constants;
 
+import org.intelehealth.apprtc.adapter.ChatListingAdapter;
+import org.intelehealth.apprtc.data.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

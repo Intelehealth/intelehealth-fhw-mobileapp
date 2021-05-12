@@ -75,22 +75,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.view.MenuItemCompat;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.shivam.androidwebrtc.ChatActivity;
+import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
@@ -115,7 +104,6 @@ import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivi
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.app.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;

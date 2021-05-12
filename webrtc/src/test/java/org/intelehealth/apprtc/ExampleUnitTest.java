@@ -1,4 +1,4 @@
-package com.shivam.androidwebrtc;
+package org.intelehealth.apprtc;
 
 import org.junit.Test;
 

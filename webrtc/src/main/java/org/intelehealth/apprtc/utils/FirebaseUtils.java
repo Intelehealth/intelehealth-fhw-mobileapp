@@ -1,4 +1,4 @@
-package com.shivam.androidwebrtc.utils;
+package org.intelehealth.apprtc.utils;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,8 +9,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.shivam.androidwebrtc.data.Constants;
 
+import org.intelehealth.apprtc.data.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 

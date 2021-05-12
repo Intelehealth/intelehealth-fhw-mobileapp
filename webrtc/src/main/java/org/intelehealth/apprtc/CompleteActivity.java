@@ -1,24 +1,26 @@
-package com.shivam.androidwebrtc;
+package org.intelehealth.apprtc;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import com.myhexaville.androidwebrtc.R;
-import com.myhexaville.androidwebrtc.databinding.ActivitySamplePeerConnectionBinding;
-import com.shivam.androidwebrtc.data.Constants;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.intelehealth.apprtc.data.Constants;
+import org.intelehealth.apprtc.databinding.ActivitySamplePeerConnectionBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.AudioSource;
@@ -148,14 +150,13 @@ public class CompleteActivity extends AppCompatActivity {
 
                     startStreamingVideo();
                 }
-                if (mRingtone != null)
-                    mRingtone.stop();
+                stopRinging();
             }
         });
         binding.inCallRejectImv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (socket != null){
+                if (socket != null) {
                     socket.emit("create or join", mRoomId);
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -166,8 +167,7 @@ public class CompleteActivity extends AppCompatActivity {
 
                 }
                 binding.rippleBackgroundContent.stopRippleAnimation();
-                if (mRingtone != null)
-                    mRingtone.stop();
+                stopRinging();
 
             }
         });
@@ -226,6 +226,42 @@ public class CompleteActivity extends AppCompatActivity {
         start();
     }
 
+    private void stopRinging() {
+        if (mRingtone != null && mRingtone.isPlaying())
+            mRingtone.stop();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.call_end_aler_txt);
+        alertdialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (socket != null)
+                    socket.emit("bye");
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.no, null);
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        //IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -269,6 +305,7 @@ public class CompleteActivity extends AppCompatActivity {
                 Toast.makeText(CompleteActivity.this, getString(R.string.call_end_lbl), Toast.LENGTH_SHORT).show();
             }
         });
+        stopRinging();
         finish();
 
     }

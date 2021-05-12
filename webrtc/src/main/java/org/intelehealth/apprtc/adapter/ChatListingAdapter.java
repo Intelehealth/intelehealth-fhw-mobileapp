@@ -1,4 +1,4 @@
-package com.shivam.androidwebrtc.adapter;
+package org.intelehealth.apprtc.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.myhexaville.androidwebrtc.R;
-import com.shivam.androidwebrtc.data.Constants;
 
+import org.intelehealth.apprtc.R;
+import org.intelehealth.apprtc.data.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -104,7 +104,10 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         SimpleDateFormat displayFormat = new SimpleDateFormat("h:mm a, MMM d");
         displayFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
-        return displayFormat.format(date);
+        Date todayDate = new Date();
+        String temp1 = displayFormat.format(date);
+        String temp2 = displayFormat.format(todayDate);
+        return temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
     }
 
     @Override

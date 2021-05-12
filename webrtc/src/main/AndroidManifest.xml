@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.myhexaville.androidwebrtc">
+    package="org.intelehealth.apprtc">
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -26,16 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="LockedOrientationActivity">
-        <service
-            android:name="com.shivam.androidwebrtc.SocketBackgroundService"
-            android:enabled="true"
-            android:exported="true"></service>
 
         <activity
-            android:name="com.shivam.androidwebrtc.IncomingVCallActivity"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
-        <activity
-            android:name="com.shivam.androidwebrtc.ChatActivity"
+            android:name="org.intelehealth.apprtc.ChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <!--
@@ -62,7 +55,7 @@
         </activity>
         -->
         <activity
-            android:name="com.shivam.androidwebrtc.CompleteActivity"
+            android:name="org.intelehealth.apprtc.CompleteActivity"
             android:label="@string/title_activity_complete"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />

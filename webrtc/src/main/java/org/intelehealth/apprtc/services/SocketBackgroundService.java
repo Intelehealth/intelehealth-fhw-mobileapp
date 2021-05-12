@@ -1,7 +1,6 @@
-package com.shivam.androidwebrtc.services;
+package org.intelehealth.apprtc.services;
 
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
@@ -9,11 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.shivam.androidwebrtc.CompleteActivity;
-import com.shivam.androidwebrtc.data.Constants;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Constants;
 
 import java.net.URISyntaxException;
 

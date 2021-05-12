@@ -1,4 +1,4 @@
-package com.shivam.androidwebrtc;
+package org.intelehealth.apprtc;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

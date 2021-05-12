@@ -237,4 +237,7 @@
     <string name="loading">Loading...</string>
     <string name="video_call">Video Call</string>
     <string name="please_wait_for_doctor">Please wait for doctor avaialble.</string>
+    <string name="call_end_aler_txt">Do you want to end the video call ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
