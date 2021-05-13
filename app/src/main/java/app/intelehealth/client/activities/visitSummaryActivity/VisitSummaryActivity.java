@@ -1888,7 +1888,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String advice_web = "";
         String advice_doctor__ = medicalAdviceTextView.getText().toString()
                 .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
-                .replace("Start WhatsApp Call Doctor", "Start WhatsApp Call Doctor_");
+                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
 
         if(advice_doctor__.indexOf("Start") != -1 ||
                 advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
