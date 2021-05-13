@@ -20,6 +20,7 @@
             android:layout_height="42dip"
             android:background="@drawable/ic_baseline_lens_24_gray"
             android:padding="8dip"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_baseline_mic_none_24_blue" />
 
         <ImageView
@@ -30,6 +31,7 @@
             android:layout_toRightOf="@+id/audio_rec_imv"
             android:background="@drawable/ic_baseline_lens_24_gray"
             android:padding="8dip"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_baseline_photo_camera_24_blue" />
 
         <ImageView
@@ -65,7 +67,7 @@
 
         <EditText
             android:id="@+id/text_etv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="36dip"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dip"

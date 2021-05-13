@@ -100,7 +100,7 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
         //rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         Date date = rawSimpleDateFormat.parse(rawTime);
-        Log.v("date", date.toString());
+        //Log.v("date", date.toString());
 
         SimpleDateFormat displayFormat = new SimpleDateFormat("h:mm a, MMM d");
         displayFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));

@@ -281,7 +281,7 @@
         </service>
 
         <receiver
-            android:name=".Network.NetworkChangeListener"
+            android:name="org.intelehealth.app.utilities.NetworkChangeListener"
             android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

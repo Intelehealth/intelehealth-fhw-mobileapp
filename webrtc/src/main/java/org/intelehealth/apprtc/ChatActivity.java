@@ -92,11 +92,11 @@ public class ChatActivity extends AppCompatActivity {
         if (getIntent().hasExtra("patientName")) {
             mPatientName = getIntent().getStringExtra("patientName");
         }
-        Log.v("mPatientUUid", mPatientUUid);
-        Log.v("mFromUUId", mFromUUId);
-        Log.v("mToUUId", mToUUId);
-        Log.v("mVisitUUID", mVisitUUID);
-        Log.v("mPatientName", mPatientName);
+        Log.v("mPatientUUid", String.valueOf(mPatientUUid));
+        Log.v("mFromUUId", String.valueOf(mFromUUId));
+        Log.v("mToUUId", String.valueOf(mToUUId));
+        Log.v("mVisitUUID", String.valueOf(mVisitUUID));
+        Log.v("mPatientName", String.valueOf(mPatientName));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(mPatientName);
         //getSupportActionBar().setSubtitle(mVisitUUID);
@@ -341,7 +341,15 @@ public class ChatActivity extends AppCompatActivity {
                                 }
 
                             } else {
-                                addNewMessage(jsonObject);
+                                if (jsonObject.has("dataValues")) {
+                                    try {
+                                        addNewMessage(jsonObject.getJSONObject("dataValues"));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                else
+                                    addNewMessage(jsonObject);
                             }
 
 
@@ -390,7 +398,7 @@ public class ChatActivity extends AppCompatActivity {
                 jsonObject.put("type", Constants.LEFT_ITEM);
             }
             if (!jsonObject.has("createdAt")) {
-                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
                 rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
             }

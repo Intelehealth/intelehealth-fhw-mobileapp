@@ -1,8 +1,11 @@
 package org.intelehealth.apprtc;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -112,6 +115,9 @@ public class CompleteActivity extends AppCompatActivity {
     private String mNurseId = "Doctor";
     private boolean mIsInComingRequest = false;
     private Ringtone mRingtone;
+
+    BroadcastReceiver broadcastReceiver;
+    boolean mMicrophonePluggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,6 +231,27 @@ public class CompleteActivity extends AppCompatActivity {
             }
         });
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                int status;
+                if (Intent.ACTION_HEADSET_PLUG.equals(action)) {
+                    status = intent.getIntExtra("state", -1);
+                    if (status == 0) {
+                        mMicrophonePluggedIn = false;
+                        setSpeakerphone();
+                    }
+                    if (status == 1) {
+                        mMicrophonePluggedIn = true;
+                        setSpeakerphone();
+                    }
+                }
+            }
+        };
+        IntentFilter receiverFilter = new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+        registerReceiver(broadcastReceiver, receiverFilter);
+
         start();
     }
 
@@ -308,6 +335,11 @@ public class CompleteActivity extends AppCompatActivity {
             }
         });
         stopRinging();
+        try {
+            unregisterReceiver(broadcastReceiver);
+        }catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
         finish();
 
     }
@@ -634,7 +666,7 @@ public class CompleteActivity extends AppCompatActivity {
                 remoteVideoTrack.setEnabled(true);
                 incomingSurfaceViewVideoRenderer = new VideoRenderer(binding.incomingSurfaceView);
                 remoteVideoTrack.addRenderer(incomingSurfaceViewVideoRenderer);
-                setSpeakerphoneOn(true);
+                setSpeakerphone();
 
             }
 
@@ -656,16 +688,20 @@ public class CompleteActivity extends AppCompatActivity {
 
         return factory.createPeerConnection(rtcConfig, pcConstraints, pcObserver);
     }
-    /** Sets the speaker phone mode. */
-    private void setSpeakerphoneOn(boolean on) {
-        AudioManager audioManager = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+
+    /**
+     * Sets the speaker phone mode.
+     */
+    private void setSpeakerphone() {
+        AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 
         boolean wasOn = audioManager.isSpeakerphoneOn();
-        if (wasOn == on) {
+        if (wasOn && !mMicrophonePluggedIn) {
             return;
         }
-        audioManager.setSpeakerphoneOn(on);
+        audioManager.setSpeakerphoneOn(!mMicrophonePluggedIn);
     }
+
 
     private VideoCapturer createVideoCapturer() {
         VideoCapturer videoCapturer;
