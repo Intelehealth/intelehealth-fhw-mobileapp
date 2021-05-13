@@ -1,7 +1,9 @@
 package org.intelehealth.apprtc;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -546,6 +548,7 @@ public class CompleteActivity extends AppCompatActivity {
         localAudioTrack = factory.createAudioTrack("101", audioSource);
         localAudioTrack.setEnabled(true);
 
+
     }
 
     private void initializePeerConnections() {
@@ -631,7 +634,7 @@ public class CompleteActivity extends AppCompatActivity {
                 remoteVideoTrack.setEnabled(true);
                 incomingSurfaceViewVideoRenderer = new VideoRenderer(binding.incomingSurfaceView);
                 remoteVideoTrack.addRenderer(incomingSurfaceViewVideoRenderer);
-
+                setSpeakerphoneOn(true);
 
             }
 
@@ -653,7 +656,16 @@ public class CompleteActivity extends AppCompatActivity {
 
         return factory.createPeerConnection(rtcConfig, pcConstraints, pcObserver);
     }
+    /** Sets the speaker phone mode. */
+    private void setSpeakerphoneOn(boolean on) {
+        AudioManager audioManager = (AudioManager)getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 
+        boolean wasOn = audioManager.isSpeakerphoneOn();
+        if (wasOn == on) {
+            return;
+        }
+        audioManager.setSpeakerphoneOn(on);
+    }
 
     private VideoCapturer createVideoCapturer() {
         VideoCapturer videoCapturer;
