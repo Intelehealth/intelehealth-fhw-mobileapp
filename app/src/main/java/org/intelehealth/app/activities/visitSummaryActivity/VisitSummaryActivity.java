@@ -998,6 +998,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 genderView.setText(gender_tv);
             }
         }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+        {
+            if(gender_tv.equalsIgnoreCase("M"))
+            {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            }
+            else if(gender_tv.equalsIgnoreCase("F"))
+            {
+                genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            }
+            else
+            {
+                genderView.setText(gender_tv);
+            }
+        }
         else
         {
             genderView.setText(gender_tv);
