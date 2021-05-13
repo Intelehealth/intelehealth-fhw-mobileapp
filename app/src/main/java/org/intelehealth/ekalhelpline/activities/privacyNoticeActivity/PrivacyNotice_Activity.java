@@ -128,7 +128,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                 }
 
             }
-            if (current.toString().equals("gu")) {
+            else if (current.toString().equals("gu")) {
                 String privacy_string = obj.getString("privacyNoticeText_Gujarati");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
@@ -138,7 +138,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                 }
 
             }
-            if (current.toString().equals("mr")) {
+            else if (current.toString().equals("mr")) {
                 String privacy_string = obj.getString("privacyNoticeText_Marathi");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
