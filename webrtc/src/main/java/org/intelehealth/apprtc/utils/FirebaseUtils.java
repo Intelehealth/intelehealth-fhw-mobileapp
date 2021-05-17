@@ -23,7 +23,7 @@ public class FirebaseUtils {
         // Start the queue
         requestQueue.start();
         try {
-            if (userUUID.isEmpty() || fcmToken.isEmpty()) {
+            if (userUUID != null || userUUID.isEmpty() || fcmToken != null || fcmToken.isEmpty()) {
                 return;
             }
             JSONObject inputJsonObject = new JSONObject();

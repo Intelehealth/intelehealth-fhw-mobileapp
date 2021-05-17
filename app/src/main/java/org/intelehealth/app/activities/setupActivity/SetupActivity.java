@@ -70,7 +70,6 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.Logger;
-import org.intelehealth.app.utilities.NetworkChangeListener;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
@@ -126,7 +125,7 @@ public class SetupActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
 
-    private BroadcastReceiver MyReceiver = null;
+//    private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
     //    HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
 //    boolean value = false;
@@ -192,13 +191,13 @@ public class SetupActivity extends AppCompatActivity {
 
         isOnline();
 
-        MyReceiver = new NetworkChangeListener() {
-            @Override
-            protected void onNetworkChange(String status) {
-                Snackbar.make(coordinatorLayout, status, Snackbar.LENGTH_SHORT)
-                        .setTextColor(getResources().getColor(R.color.white)).show();
-            }
-        };
+//        MyReceiver = new NetworkChangeListener() {
+//            @Override
+//            protected void onNetworkChange(String status) {
+//                Snackbar.make(coordinatorLayout, status, Snackbar.LENGTH_SHORT)
+//                        .setTextColor(getResources().getColor(R.color.white)).show();
+//            }
+//        };
 
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -741,18 +740,18 @@ public class SetupActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        broadcastIntent();
+//        broadcastIntent();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(MyReceiver);
+//        unregisterReceiver(MyReceiver);
     }
 
-    public void broadcastIntent() {
-        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }
+//    public void broadcastIntent() {
+//        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+//    }
 
     private void showProgressbar() {
 // instantiate it within the onCreate method
