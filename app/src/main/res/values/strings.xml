@@ -659,4 +659,6 @@
     <string name="chat_fab">chat fab</string>
 
     <string name="visit_closed">Visit Closed</string>
+    <string name="ok_close_now">Ok, Close It</string>
+    <string name="retry_again">Retry Again!</string>
 </resources>

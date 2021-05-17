@@ -525,4 +525,6 @@
     <string name="select_specialization_text">ବିଶେଷତା ଚୟନ କରନ୍ତୁ |</string>
     <string name="please_select_specialization_msg">ଦୟାକରି ବିଶେଷତା ଚୟନ କରନ୍ତୁ |</string>
     <string name="chat_fab">chat fab</string>
+    <string name="ok_close_now">Ok, Close It</string>
+    <string name="retry_again">Retry Again!</string>
 </resources>

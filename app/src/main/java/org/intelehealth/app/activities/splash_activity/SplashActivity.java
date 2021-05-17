@@ -1,35 +1,41 @@
 package org.intelehealth.app.activities.splash_activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import android.widget.Toast;
-
-
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-
-import java.util.List;
-import java.util.Locale;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 
-import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 public class SplashActivity extends AppCompatActivity {
+    private static final int GROUP_PERMISSION_REQUEST = 1000;
     SessionManager sessionManager = null;
-//    ProgressDialog TempDialog;
-    int i = 5;
+    //    ProgressDialog TempDialog;
+    //int i = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_activity);
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
-      //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
@@ -51,7 +57,30 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkPerm() {
-        PermissionListener permissionlistener = new PermissionListener() {
+        if (checkAndRequestPermissions()) {
+            if (sessionManager.isMigration()) {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() { //Do something after 100ms
+                        nextActivity();
+                    }
+                }, 2000);
+            } else {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() { //Do something after 100ms
+                        SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
+                        boolean smoothupgrade = smoothUpgrade.checkingDatabase();
+                        if (smoothupgrade) {
+                            nextActivity();
+                        }
+                    }
+                }, 2000);
+            }
+        }
+       /* PermissionListener permissionlistener = new PermissionListener() {
 
             @Override
             public void onPermissionGranted() {
@@ -64,27 +93,7 @@ public class SplashActivity extends AppCompatActivity {
 //                TempDialog.setCancelable(false);
 //                TempDialog.setProgress(i);
 //                TempDialog.show();
-                if (sessionManager.isMigration()) {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() { //Do something after 100ms
-                            nextActivity();
-                        }
-                    }, 2000);
-                } else {
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() { //Do something after 100ms
-                            SmoothUpgrade smoothUpgrade = new SmoothUpgrade(SplashActivity.this);
-                            boolean smoothupgrade = smoothUpgrade.checkingDatabase();
-                            if (smoothupgrade) {
-                                nextActivity();
-                            }
-                        }
-                    }, 2000);
-                }
+
 
             }
 
@@ -97,13 +106,90 @@ public class SplashActivity extends AppCompatActivity {
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage(R.string.reject_permission_results)
-                .setPermissions(Manifest.permission.INTERNET,
-                        Manifest.permission.ACCESS_NETWORK_STATE,
+                .setPermissions(*//*Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE,*//*
                         Manifest.permission.GET_ACCOUNTS,
                         Manifest.permission.CAMERA,
                         Manifest.permission.READ_EXTERNAL_STORAGE,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check();
+                .check();*/
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == GROUP_PERMISSION_REQUEST) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                checkPerm();
+            } else {
+                showPermissionDeniedAlert(permissions);
+            }
+
+        }
+    }
+
+    private void showPermissionDeniedAlert(String[] permissions) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+
+        // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+        alertdialogBuilder.setMessage(R.string.reject_permission_results);
+        alertdialogBuilder.setPositiveButton(R.string.retry_again, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                checkPerm();
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.ok_close_now, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+        negativeButton.setTextColor(getResources().getColor(org.intelehealth.apprtc.R.color.colorPrimary));
+        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int cameraPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
+        int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
+        int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (getAccountPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
+        }
+        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), GROUP_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
     }
 
     private void nextActivity() {

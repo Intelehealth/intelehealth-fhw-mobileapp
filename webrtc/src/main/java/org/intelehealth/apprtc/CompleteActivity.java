@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -49,11 +52,10 @@ import org.webrtc.VideoTrack;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static io.socket.client.Socket.EVENT_CONNECT;
 import static io.socket.client.Socket.EVENT_DISCONNECT;
@@ -294,7 +296,22 @@ public class CompleteActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        if (requestCode == RC_CALL) {
+            boolean allGranted = grantResults.length != 0;
+            for (int grantResult : grantResults) {
+                if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                start();
+            } else {
+                Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+        }
     }
 
     @Override
@@ -337,7 +354,7 @@ public class CompleteActivity extends AppCompatActivity {
         stopRinging();
         try {
             unregisterReceiver(broadcastReceiver);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
         finish();
@@ -345,10 +362,8 @@ public class CompleteActivity extends AppCompatActivity {
     }
 
 
-    @AfterPermissionGranted(RC_CALL)
     private void start() {
-        String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-        if (EasyPermissions.hasPermissions(this, perms)) {
+        if (checkAndRequestPermissions()) {
             connectToSignallingServer();
 
             if (!mIsInComingRequest) {
@@ -363,9 +378,26 @@ public class CompleteActivity extends AppCompatActivity {
 
                 startStreamingVideo();
             }
-        } else {
-            EasyPermissions.requestPermissions(this, "Need some permissions", RC_CALL, perms);
         }
+    }
+
+    private boolean checkAndRequestPermissions() {
+        int cameraPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA);
+        int recordAudioPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+        }
+        if (recordAudioPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.RECORD_AUDIO);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), RC_CALL);
+            return false;
+        }
+        return true;
     }
 
     private void connectToSignallingServer() {
