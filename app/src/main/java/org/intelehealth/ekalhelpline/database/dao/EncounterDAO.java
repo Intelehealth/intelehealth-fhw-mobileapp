@@ -10,8 +10,11 @@ import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.intelehealth.ekalhelpline.utilities.Logger;
@@ -230,13 +233,16 @@ public class EncounterDAO {
 
         }
         if (emergencyChecked) {
+            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+            Date todayDate = new Date();
+            String thisDate = currentDate.format(todayDate);
             String encounteruuid = UUID.randomUUID().toString();
             EncounterDTO encounterDTO = new EncounterDTO();
             encounterDTO.setUuid(encounteruuid);
             encounterDTO.setVisituuid(visitUuid);
             encounterDTO.setVoided(0); //visit will be shown in Priority Consult...
             encounterDTO.setEncounterTypeUuid(emergency_uuid);
-            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setEncounterTime(thisDate);
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
             Log.d("DTO","DTOdao: "+ encounterDTO.getProvideruuid());
