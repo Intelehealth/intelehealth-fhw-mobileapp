@@ -359,7 +359,7 @@
     <string name="spo2_error">SpO2 %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು </string>
     <string name="pulse_error">ನಾಡಿ %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="bpsys_error">ಸಿಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
-    <string name="bpdia_error">ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು. %1$s ಮತ್ತು. %2$s ನಡುವೆ ಇರಬೇಕು</string>
+    <string name="bpdia_error">ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="resp_error">ಉಸಿರಾಟದ ಪ್ರಮಾಣವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="temp_error">ತಾಪಮಾನವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
 

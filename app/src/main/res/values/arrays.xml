@@ -5,6 +5,7 @@
         <item>Hindi</item>
         <item>English</item>
         <item>Marathi</item>
+        <item>Kannada</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -12,7 +13,9 @@
         <item>hi</item>
         <item>en</item>
         <item>mr</item>
-<!--        <item>cb</item>-->
+        <item>kn</item>
+
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -20,12 +23,12 @@
         <item>General Physician</item>
     </string-array>
 
-
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
