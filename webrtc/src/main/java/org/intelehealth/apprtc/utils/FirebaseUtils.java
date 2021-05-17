@@ -18,12 +18,14 @@ public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
     public static void saveToken(Context context, String userUUID, String fcmToken) {
+        //Log.v(TAG, userUUID);
+        //Log.v(TAG, fcmToken);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Start the queue
         requestQueue.start();
         try {
-            if (userUUID != null || userUUID.isEmpty() || fcmToken != null || fcmToken.isEmpty()) {
+            if (userUUID == null || userUUID.isEmpty() || fcmToken == null || fcmToken.isEmpty()) {
                 return;
             }
             JSONObject inputJsonObject = new JSONObject();
@@ -31,8 +33,8 @@ public class FirebaseUtils {
             inputJsonObject.put("data", new JSONObject().put("device_reg_token", fcmToken));
 
             String url = Constants.SAVE_FCM_TOKEN_URL;
-            Log.v(TAG, url);
-            Log.v(TAG, inputJsonObject.toString());
+            //Log.v(TAG, url);
+            //Log.v(TAG, inputJsonObject.toString());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, inputJsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {

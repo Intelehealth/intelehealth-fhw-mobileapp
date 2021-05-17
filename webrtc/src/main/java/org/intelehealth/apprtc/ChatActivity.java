@@ -259,7 +259,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void connectTOSocket() {
         try {
-            mSocket = IO.socket(Constants.BASE_URL + "?userId=" + mFromUUId);
+            mSocket = IO.socket(Constants.BASE_URL + "?userId=" + mFromUUId+ "&name=" + mFromUUId);
             mSocket.on("connect", args -> {
                 for (Object arg : args) {
                     Log.d(TAG, "connect: " + String.valueOf(arg));

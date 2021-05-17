@@ -402,7 +402,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     private void connectToSignallingServer() {
         try {
-            String url = Constants.BASE_URL + "?userId=" + mNurseId;
+            String url = Constants.BASE_URL + "?userId=" + mNurseId+ "&name=" + mNurseId;
             Log.v("url", url);
             socket = IO.socket(url);
 
