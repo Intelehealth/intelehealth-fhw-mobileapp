@@ -134,7 +134,8 @@ public class SetupActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
 
-    private BroadcastReceiver MyReceiver = null;
+//    commenting out code for NetworkChange Reciever for this helpline: Dated 17 may : Nishita
+    //    private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
 
     HashMap<String, String> hashMap1, hashMap2, hashMap3, hashMap4;
@@ -194,15 +195,15 @@ public class SetupActivity extends AppCompatActivity {
         spinner_sanch.setEnabled(false);
         spinner_village.setEnabled(false);*/
 
-        isOnline();
-
-        MyReceiver = new NetworkChangeListener() {
-            @Override
-            protected void onNetworkChange(String status) {
-                Snackbar.make(coordinatorLayout, status, Snackbar.LENGTH_SHORT)
-                        .setTextColor(getResources().getColor(R.color.white)).show();
-            }
-        };
+//        isOnline();
+//
+//        MyReceiver = new NetworkChangeListener() {
+//            @Override
+//            protected void onNetworkChange(String status) {
+//                Snackbar.make(coordinatorLayout, status, Snackbar.LENGTH_SHORT)
+//                        .setTextColor(getResources().getColor(R.color.white)).show();
+//            }
+//        };
 
         mAdminPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -696,38 +697,38 @@ public class SetupActivity extends AppCompatActivity {
         mProgressDialog.setCancelable(false);
     }
 
-    public boolean isOnline () {
-        ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
-            return false;
-        }
-        else
-        {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
-            return true;
-        }
-//        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        broadcastIntent();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(MyReceiver);
-    }
-
-    public void broadcastIntent() {
-        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-    }
+//    public boolean isOnline () {
+//        ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
+//        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
+//            DialogUtils dialogUtils = new DialogUtils();
+//            dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
+//            return false;
+//        }
+//        else
+//        {
+//            DialogUtils dialogUtils = new DialogUtils();
+//            dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
+//            return true;
+//        }
+////        return true;
+//    }
+//
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        broadcastIntent();
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        unregisterReceiver(MyReceiver);
+//    }
+//
+//    public void broadcastIntent() {
+//        registerReceiver(MyReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+//    }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
