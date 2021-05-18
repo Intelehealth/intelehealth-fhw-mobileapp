@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -34,6 +35,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
+
+    @Override
+    public void onNewToken(@NonNull String s) {
+        super.onNewToken(s);
+    }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

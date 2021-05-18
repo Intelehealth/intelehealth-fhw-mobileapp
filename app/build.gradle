@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+
+static def getDateTime() {
+    DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
+
+    return df.format(new Date());
+}
 android {
     compileSdkVersion 30
     dataBinding {
@@ -18,6 +26,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        archivesBaseName = "Intelehealth "  + versionName
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -32,6 +41,15 @@ android {
             }
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                if (variant.buildType.name == "release") {
+                    output.outputFileName = archivesBaseName + " - " + getDateTime() + ".apk";
+                } else {
+                    output.outputFileName = archivesBaseName + " - Alpha - " + getDateTime() + ".apk";
+                }
+            }
         }
     }
 

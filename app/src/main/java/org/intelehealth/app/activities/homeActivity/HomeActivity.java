@@ -45,7 +45,6 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
@@ -68,6 +67,8 @@ import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -137,8 +138,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
 
-        // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), FirebaseInstanceId.getInstance().getToken());
+
         catchFCMMessageData();
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -297,6 +297,7 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            saveToken();
         }
         /*sessionManager.setMigration(true);
 
@@ -307,7 +308,13 @@ public class HomeActivity extends AppCompatActivity {
         showProgressbar();
     }
 
-    private void catchFCMMessageData(){
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
+    }
+
+    private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
             //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
@@ -340,12 +347,24 @@ public class HomeActivity extends AppCompatActivity {
                     chatIntent.putExtra("toUuid", toUUId);
                     startActivity(chatIntent);
 
-                }
+                } /*else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                    //Log.d(TAG, "actionType : VIDEO_CALL");
+                    Intent in = new Intent(this, CompleteActivity.class);
+                    String roomId = remoteMessage.getString("roomId");
+                    String doctorName = remoteMessage.getString("doctorName");
+                    String nurseId = remoteMessage.getString("nurseId");
+                    in.putExtra("roomId", roomId);
+                    in.putExtra("isInComingRequest", true);
+                    in.putExtra("doctorname", doctorName);
+                    in.putExtra("nurseId", nurseId);
+                    startActivity(in);
+                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
+
     //function for handling the video library feature...
     private void videoLibrary() {
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -998,7 +1017,7 @@ public class HomeActivity extends AppCompatActivity {
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
             if (isSuccess) {
-
+                saveToken();
                 sessionManager.setFirstTimeLaunched(false);
                 sessionManager.setMigration(true);
                 // initial setup/sync done and now we can set the periodic background sync job

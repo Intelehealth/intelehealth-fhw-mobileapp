@@ -3,6 +3,7 @@ package org.intelehealth.apprtc.utils;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,8 +19,8 @@ public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
     public static void saveToken(Context context, String userUUID, String fcmToken) {
-        //Log.v(TAG, userUUID);
-        //Log.v(TAG, fcmToken);
+        Log.v(TAG, userUUID);
+        Log.v(TAG, fcmToken);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         // Start the queue
@@ -33,8 +34,8 @@ public class FirebaseUtils {
             inputJsonObject.put("data", new JSONObject().put("device_reg_token", fcmToken));
 
             String url = Constants.SAVE_FCM_TOKEN_URL;
-            //Log.v(TAG, url);
-            //Log.v(TAG, inputJsonObject.toString());
+            Log.v(TAG, url);
+            Log.v(TAG, inputJsonObject.toString());
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.PUT, url, inputJsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -47,9 +48,15 @@ public class FirebaseUtils {
 
                 }
             });
+            jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    7 * 1000,
+                    3,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(jsonObjectRequest);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+
 }
