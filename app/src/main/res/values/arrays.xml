@@ -5,6 +5,7 @@
         <item>Hindi</item>
         <item>English</item>
         <item>Marathi</item>
+        <item>Assamese</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -12,6 +13,7 @@
         <item>hi</item>
         <item>en</item>
         <item>mr</item>
+        <item>as</item>
 <!--        <item>cb</item>-->
     </string-array>
 

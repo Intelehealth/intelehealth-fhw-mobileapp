@@ -127,7 +127,18 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     privacy_textview.setText(privacy_string);
                 }
 
-            } else {
+            }
+            //privacy notice support for Assamese language...
+            else if (current.toString().equals("as")) {
+                String privacy_string = obj.getString("privacyNoticeText_Assamese");
+                if (privacy_string.isEmpty()) {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                } else {
+                    privacy_textview.setText(privacy_string);
+                }
+            }
+            else {
                 String privacy_string = obj.getString("privacyNoticeText");
                 privacy_textview.setText(privacy_string);
             }
