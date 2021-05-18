@@ -493,4 +493,11 @@
     <string name="per_Year">প্রতি বছৰে</string>
     <string name="failed_initial_synced">পুনৰবাৰ ব্যর্থ, আপোনাৰ ইন্টাৰনেট সংযোগ পৰীক্ষা কৰা। আবেদন পুনৰাই আৰম্ভ কৰা।</string>
     <string name="something_went_wrong">কিছু ভুল হৈছে. সমর্থন যোগাযোগ কৰা</string>
+    <string name="please_select_specialization">অনুগ্ৰহ কৰি বিশেষত্ব নিৰ্বাচন কৰক</string>
+    <string name="speciality">বিশেষত্ব</string>
+    <string name="select_speciality">বিশেষত্ব নিৰ্বাচন কৰক</string>
+    <string name="setup_internet_available">ছেটআপৰ বাবে এটা শক্তিশালী ইণ্টাৰনেট সংযোগৰ প্ৰয়োজন।</string>
+    <string name="setup_internet_not_available">আপুনি ইণ্টাৰনেটৰ সৈতে সংযোজিত নহয়।</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কৰ্মকৰ্তা) নিশ্চিত হৈছি যে আমি ৰোগীৰ গোপনীয়তা বিজ্ঞপ্তি আৰু সম্মতিটো পঢ়িছি।</string>
+
 </resources>
