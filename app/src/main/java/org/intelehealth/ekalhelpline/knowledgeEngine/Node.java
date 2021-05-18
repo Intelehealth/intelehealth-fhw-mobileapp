@@ -71,6 +71,7 @@ public class Node implements Serializable {
     private String display_oriya;
     private String display_cebuno;
     private String display_hindi;
+    private String display_assamese;
     private String language;
     private String choiceType;
     private String inputType;
@@ -192,6 +193,15 @@ public class Node implements Serializable {
             }
             if (this.display_hindi.isEmpty()) {
                 this.display_hindi = this.display;
+            }
+
+            //Assamese language support for display...
+            this.display_assamese = jsonNode.optString("display-as");
+            if (this.display_assamese.isEmpty()) {
+                this.display_assamese = jsonNode.optString("display-as");
+            }
+            if (this.display_assamese.isEmpty()) {
+                this.display_assamese = this.display;
             }
 
             this.language = jsonNode.optString("language");
@@ -451,6 +461,20 @@ public class Node implements Serializable {
                     }
                 }
             }
+
+            //Assamese language support...
+            case "as": {
+                if (display_assamese != null && !display_assamese.isEmpty()) {
+                    return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
             default: {
                 {
                     if (display != null && display.isEmpty()) {
@@ -2057,6 +2081,7 @@ public class Node implements Serializable {
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                ", display_assamese='" + display_assamese + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
