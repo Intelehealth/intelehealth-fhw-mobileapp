@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">একল আৰোগ্য</string>
     <string name="generic_the_flipping_word_next" translatable="false">পৰবর্তী</string>
     <string name="hint_required" translatable="false">প্রয়োজনীয়</string>
     <string name="hint_optional" translatable="false">.ইচ্ছাধীন</string>
@@ -498,6 +497,9 @@
     <string name="select_speciality">বিশেষত্ব নিৰ্বাচন কৰক</string>
     <string name="setup_internet_available">ছেটআপৰ বাবে এটা শক্তিশালী ইণ্টাৰনেট সংযোগৰ প্ৰয়োজন।</string>
     <string name="setup_internet_not_available">আপুনি ইণ্টাৰনেটৰ সৈতে সংযোজিত নহয়।</string>
+    <string name="app_name" translatable="false">একল আৰোগ্য হেল্পলাইন</string>
+    <string name="title_activity_login" translatable="false">একল আৰোগ্য হেল্পলাইন</string>
+    <string name="intelehealth_name">একল আৰোগ্য হেল্পলাইন</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কৰ্মকৰ্তা) নিশ্চিত হৈছি যে আমি ৰোগীৰ গোপনীয়তা বিজ্ঞপ্তি আৰু সম্মতিটো পঢ়িছি।</string>
 
 </resources>
