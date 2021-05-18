@@ -649,7 +649,22 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
-        } else {
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "")
+                    .replace("Patient reports -", "")
+                    .replace("Patient denies -", "")
+                    .replace("Hours", "").replace("Days", "")
+                    .replace("Weeks", "").replace("Months", "")
+                    .replace("Years", "")
+                    .replace("times per hour", "")
+                    .replace("time per day", "")
+                    .replace("times per week", "")
+                    .replace("times per month", "")
+                    .replace("times per year", "")));
+        }
+        else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 
