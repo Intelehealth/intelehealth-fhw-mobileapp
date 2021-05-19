@@ -515,7 +515,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         questionListView.setAdapter(adapter);
         questionListView.setChoiceMode(ExpandableListView.CHOICE_MODE_MULTIPLE);
         questionListView.expandGroup(0);*/
-        setTitle(patientName + ": " + currentNode.findDisplay());
+        setTitle(patientName + ": " + currentNode.findDisplay()); //fetches the locale based translation for Associated Symptoms...
 
     }
 
@@ -587,7 +587,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
-                finalAssoSympObj.put("display-hi", "সম্পৰ্কিত লক্ষণসমূহ");
+                finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -615,7 +615,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
-            setTitle(patientName + ": " + currentNode.getText());
+            setTitle(patientName + ": " + currentNode.findDisplay());
 
         }
     }
