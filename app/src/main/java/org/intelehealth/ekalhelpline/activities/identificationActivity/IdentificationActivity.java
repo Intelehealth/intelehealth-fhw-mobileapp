@@ -86,7 +86,7 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
+//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
@@ -1365,10 +1365,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
             }
-            else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+          /*  else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
-            }
+            }*/
             else {
                 mDOB.setText(dob);
             }

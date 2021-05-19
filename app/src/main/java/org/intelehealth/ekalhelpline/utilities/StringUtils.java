@@ -893,6 +893,7 @@ public final class StringUtils {
     * @return mdob_text : Assamese month translation is passed.
     * @param dob : DOB in the format DD MMMM YYYY eg. 15 January 2021
     */
+/*
     public static String en__as_dob(String dob) { //English dob is replaced to Assamese text.
         String mdob_text = dob
                 .replace("January", "জানুৱাৰী")
@@ -910,6 +911,7 @@ public final class StringUtils {
 
         return mdob_text;
     }
+*/
 
 
     public static String en__or_dob(String dob) { //English dob is replaced to Odiya text.
@@ -966,6 +968,7 @@ public final class StringUtils {
                     .replace("ଡିସେମ୍ବର", "December");
             return dob;
         }
+/*
         else if(locale.equalsIgnoreCase("as")) {
             //Odiya
             String dob = dobString
@@ -983,6 +986,7 @@ public final class StringUtils {
                     .replace("ডিচেম্বৰ", "December");
             return dob;
         }
+*/
 
         else {
             return dobString;

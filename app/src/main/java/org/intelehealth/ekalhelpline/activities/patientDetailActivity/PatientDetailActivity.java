@@ -87,7 +87,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
+//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
@@ -604,10 +604,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             String dob_text = en__or_dob(dob); //to show text of English into Odiya...
             dobView.setText(dob_text);
         }
+/*
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             String dob_text = en__as_dob(dob); //to show text of English into Odiya...
             dobView.setText(dob_text);
         }
+*/
         else {
             dobView.setText(dob);
         }

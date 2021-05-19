@@ -579,7 +579,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
-                assoSympObj.put("display-or", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
+                assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
