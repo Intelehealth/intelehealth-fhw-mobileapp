@@ -29,8 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-
+                android:layout_weight="2"
                 android:orientation="vertical">
 
                 <TextView
@@ -54,8 +53,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginBottom="5dp"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -64,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:fontFamily="@font/lato_bold"
                     android:paddingStart="5dp"
                     android:paddingTop="3dp"
