@@ -922,7 +922,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
+           /* if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -937,10 +937,10 @@ public class IdentificationActivity extends AppCompatActivity {
             //mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
             if (educationAdapter == null) {
                 Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
-            }
+            }*/
 
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+          /*  if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -951,10 +951,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
-            }
+            }*/
             // mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
 
-            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+        /*    if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mCaste.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -966,7 +966,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
                 }
 
-            }
+            }*/
 
             //Houselhold Head...
           /*  if (patient1.getNo_of_family_members() != null && !patient1.getNo_of_family_members().equalsIgnoreCase("")
