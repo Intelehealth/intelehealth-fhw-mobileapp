@@ -529,7 +529,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("जुड़े लक्षण"))
+                    || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ")) ||
+                    (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
@@ -576,6 +579,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
+                assoSympObj.put("display-or", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
@@ -583,6 +587,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-hi", "সম্পৰ্কিত লক্ষণসমূহ");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -652,17 +657,17 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "")
-                    .replace("Patient reports -", "")
-                    .replace("Patient denies -", "")
-                    .replace("Hours", "").replace("Days", "")
-                    .replace("Weeks", "").replace("Months", "")
-                    .replace("Years", "")
-                    .replace("times per hour", "")
-                    .replace("time per day", "")
-                    .replace("times per week", "")
-                    .replace("times per month", "")
-                    .replace("times per year", "")));
+                    .replace("Question not answered", "প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই")
+                    .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
+                    .replace("Patient denies -", "ৰোগীয়ে অস্বীকাৰ কৰে -")
+                    .replace("Hours", "ঘণ্টা").replace("Days", "দিনসমূহ")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাহ")
+                    .replace("Years", "বছৰ")
+                    .replace("times per hour", "প্ৰতি ঘণ্টাত সময়")
+                    .replace("time per day", "প্ৰতিদিনে সময়")
+                    .replace("times per week", "প্ৰতি সপ্তাহত সময়")
+                    .replace("times per month", "প্ৰতি মাহে সময়")
+                    .replace("times per year", "প্ৰতি বছৰে সময়")));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
