@@ -78,12 +78,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             builder.dispatcher(dispatcher);
 
-            Parse.initialize(new Parse.Configuration.Builder(this)
-                    .clientBuilder(builder)
-                    .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server("http://" + url + ":1337/parse/")
-                    .build()
-            );
+//            Parse.initialize(new Parse.Configuration.Builder(this)
+//                    .clientBuilder(builder)
+//                    .applicationId(AppConstants.IMAGE_APP_ID)
+//                    .server("http://" + url + ":1337/parse/")
+//                    .build()
+//            );
             Log.i(TAG, "onCreate: Parse init");
 
             InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
