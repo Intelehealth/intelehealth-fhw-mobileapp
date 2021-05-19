@@ -576,6 +576,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
+                assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
@@ -583,6 +584,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("text", "Associated symptoms");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -649,6 +651,17 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per hour", "ସମୟ ପ୍ରତି ଘଣ୍ଟା").replace("time per day", "ସମୟ ପ୍ରତିଦିନ")
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ").replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಲಾಗಿಲ್ಲ")
+                    .replace("Patient reports -", "ರೋಗಿಯ ವರದಿಗಳು-")
+                    .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-")
+                    .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
+                    .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
+                    .replace("Years", "ವರ್ಷಗಳು")
+                    .replace("times per hour","ಗಂಟೆಗೆ ಬಾರಿ" ).replace("time per day", "ದಿನಕ್ಕೆ ಬಾರಿ")
+                    .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ").replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
+                    .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ")));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }

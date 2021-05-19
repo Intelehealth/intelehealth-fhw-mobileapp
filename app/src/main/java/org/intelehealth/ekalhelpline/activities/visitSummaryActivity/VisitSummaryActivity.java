@@ -144,7 +144,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     boolean uploaded = false;
     boolean downloaded = false;
 
-    Context context;
+    Context context, context1;
 
     String patientUuid;
     String visitUuid;
@@ -377,7 +377,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case R.id.summary_endVisit: {
                 //meera
                 if (downloaded) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
@@ -506,6 +506,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
+        context1 = VisitSummaryActivity.this;
 //we can remove by data binding
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
@@ -1595,9 +1596,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    Toast.makeText(context, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context1, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(context, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context1, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                 }
 
                 SyncUtils syncUtils = new SyncUtils();
