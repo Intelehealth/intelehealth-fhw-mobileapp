@@ -917,7 +917,7 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getEducation_level().equals("Not provided"))
+       /*     if (patient1.getEducation_level().equals("Not provided"))
                 mEducation.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -931,7 +931,8 @@ public class IdentificationActivity extends AppCompatActivity {
                     mEducation.setSelection(educationAdapter != null ?
                             educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 }
-            }
+            }*/
+
             //mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
 //            if (educationAdapter == null) {
 //                Toast.makeText(context, "Education Level: " + patient1.getEducation_level(), Toast.LENGTH_LONG).show();
