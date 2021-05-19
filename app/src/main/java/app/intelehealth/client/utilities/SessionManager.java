@@ -75,7 +75,7 @@ public class SessionManager {
     }
 
     public String getBaseUrl() {
-        return pref.getString(BASE_URL, "https://openmrs.intelehealth.io");
+        return pref.getString(BASE_URL, "http://openmrs.intelehealth.io");
     }
 
     public void setBaseUrl(String baseUrl) {
@@ -383,7 +383,7 @@ public class SessionManager {
     }
 
     public String getMindMapServerUrl() {
-        return pref.getString(MIND_MAP_SERVER_URL, "https://mindmaps2.intelehealth.io");
+        return pref.getString(MIND_MAP_SERVER_URL, "http://mindmaps2.intelehealth.io");
     }  //getting the sync value  and time and saving in the sharedpref
 
     public void setMindMapServerUrl(String mindMapServerUrl) {

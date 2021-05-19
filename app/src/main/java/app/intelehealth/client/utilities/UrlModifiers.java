@@ -9,7 +9,7 @@ public class UrlModifiers {
 
         String urlModifier = "session";
 
-        String BASE_URL = "https://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
         return BASE_URL + urlModifier;
     }
 
@@ -17,7 +17,7 @@ public class UrlModifiers {
 
         String provider = "provider?user=" + USER_UUID;
 
-        String BASE_URL = "https://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + CLEAN_URL + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -25,7 +25,7 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "personimage/" + patientUuid;
 
-        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -33,7 +33,7 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "personimage";
 
-        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -42,7 +42,7 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs/" + obsUuid + "/value";
 
-        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -50,7 +50,7 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs/" + obsUuid;
 
-        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -58,7 +58,7 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs";
 
-        String BASE_URL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+        String BASE_URL = "http://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
         return BASE_URL + provider;
     }
 
@@ -68,7 +68,7 @@ public class UrlModifiers {
      */
     public String setwhatsappPresciptionUrl() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        String BASE_URL = "https://" + sessionManager.getServerUrl() +
+        String BASE_URL = "http://" + sessionManager.getServerUrl() +
                 "/preApi/index.jsp?v=";
         return BASE_URL;
     }

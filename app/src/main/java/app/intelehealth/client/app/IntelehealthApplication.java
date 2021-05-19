@@ -81,7 +81,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             Parse.initialize(new Parse.Configuration.Builder(this)
                     .clientBuilder(builder)
                     .applicationId(AppConstants.IMAGE_APP_ID)
-                    .server("https://" + url + ":1337/parse/")
+                    .server("http://" + url + ":1337/parse/")
                     .build()
             );
             Log.i(TAG, "onCreate: Parse init");

@@ -8,5 +8,6 @@
         <domain includeSubdomains="true">13.228.184.65</domain>
         <domain includeSubdomains="true">13.232.32.249</domain>
         <domain includeSubdomains="true">13.235.137.183</domain>
+        <domain includeSubdomains="true">aravind.org</domain>
     </domain-config>
 </network-security-config>
