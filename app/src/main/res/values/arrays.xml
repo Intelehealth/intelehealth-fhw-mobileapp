@@ -6,6 +6,7 @@
         <item>English</item>
         <item>Marathi</item>
         <item>Kannada</item>
+        <item>Gujarati</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -14,8 +15,8 @@
         <item>en</item>
         <item>mr</item>
         <item>kn</item>
-
-        <!--        <item>cb</item>-->
+        <item>gu</item>
+<!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
