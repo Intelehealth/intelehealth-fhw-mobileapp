@@ -86,6 +86,7 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
@@ -1361,7 +1362,12 @@ public class IdentificationActivity extends AppCompatActivity {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
-            } else {
+            }
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                String dob_text = en__as_dob(dob); //to show text of English into Odiya...
+                mDOB.setText(dob_text);
+            }
+            else {
                 mDOB.setText(dob);
             }
 
@@ -2175,12 +2181,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) { //no value has been edited...ie. DOB/Age is not selected...
-                String dob = StringUtils.hi_or__en_noEdit
+                String dob = StringUtils.hi_or_as__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_as__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
 
@@ -2935,12 +2941,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or__en_noEdit
+                String dob = StringUtils.hi_or_as__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_as__en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
                 dob_array[1] = dob_month_split.replace(dob_month_split, dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
