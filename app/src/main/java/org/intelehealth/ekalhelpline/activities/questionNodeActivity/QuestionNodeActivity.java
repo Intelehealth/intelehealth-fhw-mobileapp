@@ -617,7 +617,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
-            setTitle(patientName + ": " + currentNode.getText());
+            setTitle(patientName + ": " + currentNode.findDisplay());
 
         }
     }
@@ -684,7 +684,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
                     .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
                     .replace("Years", "ವರ್ಷಗಳು")
-                    .replace("times per hour","ಗಂಟೆಗೆ ಬಾರಿ" ).replace("time per day", "ದಿನಕ್ಕೆ ಬಾರಿ")
+                    .replace("times per hour", "ಗಂಟೆಗೆ ಬಾರಿ").replace("time per day", "ದಿನಕ್ಕೆ ಬಾರಿ")
                     .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ").replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
                     .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ")));
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -692,7 +692,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Question not answered", "પ્રશ્નનો જવાબ મળ્યો નથી")
                     .replace("Patient reports -", "દરદી રિપોર્ટ કરે છે -")
                     .replace("Patient denies -", "દરદી મના કરે છે -")
-                    .replace("Hours", "કલાક").replace("Days","દિવસ")
+                    .replace("Hours", "કલાક").replace("Days", "દિવસ")
                     .replace("Weeks", "અઠવાડિયું").replace("Months", "માસ")
                     .replace("Years", "વર્ષ")
                     .replace("times per hour", "કલાક દીઠ વખત")
@@ -700,8 +700,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "દર અઠવાડિયે વખત")
                     .replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "વર્ષ દીઠ વખત")));
-        }
-        else {
+        } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 

@@ -7,6 +7,7 @@
         <item>Marathi</item>
         <item>Kannada</item>
         <item>Gujarati</item>
+        <item>Odiya</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -16,6 +17,7 @@
         <item>mr</item>
         <item>kn</item>
         <item>gu</item>
+        <item>or</item>
 <!--        <item>cb</item>-->
     </string-array>
 

@@ -228,7 +228,6 @@ public class Node implements Serializable {
             }
 
 
-
             //Only for physical exams
             if (!this.language.isEmpty()) {
                 if (this.language.contains(":")) {
@@ -1085,7 +1084,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+        // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1157,7 +1156,7 @@ public class Node implements Serializable {
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]);
-                unit_text = kn_en(unit_text);
+                unit_text = kn_en(unit_text); //for Kannada...
                 unit_text = mr_en(unit_text); //for Marathi...
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
@@ -1215,6 +1214,7 @@ public class Node implements Serializable {
 
         return unit;
     }
+
     private static String kn_en(String unit) {
 
         switch (unit) {
@@ -1304,6 +1304,7 @@ public class Node implements Serializable {
 
         return unit;
     }
+
     private static String gu_en(String unit) {
 
         switch (unit) {
@@ -1590,7 +1591,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-      //  final String[] units = context.getResources().getStringArray(R.array.units);
+        //  final String[] units = context.getResources().getStringArray(R.array.units);
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1644,7 +1645,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = context.getResources().getStringArray(R.array.duration_units);
+        // final String[] units = context.getResources().getStringArray(R.array.duration_units);
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
@@ -1660,7 +1661,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
@@ -2322,16 +2323,16 @@ public class Node implements Serializable {
     public void fetchAge(float age) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if(!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
                     !optionsList.get(i).getMax_age().equalsIgnoreCase("")) {
                 if (age < Float.parseFloat(optionsList.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                     remove(optionsList, i);
                     i--;
                 }
 
-            //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-             else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
+                //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
                     remove(optionsList, i);
                     i--;
                 }
@@ -2339,10 +2340,10 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
-                    if(!optionsList.get(i).getOptionsList()
+                    if (!optionsList.get(i).getOptionsList()
                             .get(j).getMin_age().equalsIgnoreCase("") &&
                             !optionsList.get(i).getOptionsList()
                                     .get(j).getMax_age().equalsIgnoreCase("")) {
@@ -2350,9 +2351,7 @@ public class Node implements Serializable {
                                 .get(j).getMin_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
-                        }
-
-                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
+                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
                                 .get(j).getMax_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
@@ -2363,19 +2362,17 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
+                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age())) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
-                                }
-
-                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
+                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
                                 }
@@ -2387,15 +2384,15 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
 
-                                    if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                    if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMax_age().equalsIgnoreCase("")) {
 
@@ -2404,9 +2401,7 @@ public class Node implements Serializable {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
-                                        }
-
-                                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                                 .getMax_age())) {
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
@@ -2421,19 +2416,19 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {
 
-                                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMax_age().equalsIgnoreCase("")) {
                                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2442,9 +2437,7 @@ public class Node implements Serializable {
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                             .get(l).getOptionsList(), m);
                                                     m--;
-                                                }
-
-                                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                         .get(l).getOptionsList().get(m).getMax_age())) {
 
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2453,7 +2446,7 @@ public class Node implements Serializable {
 
                                                 }
                                             }
-                                    }
+                                        }
                                     }
                                 }
                             }
@@ -2469,7 +2462,7 @@ public class Node implements Serializable {
     public void fetchItem(String s) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
+        for (int i = 0; i < optionsList.size(); i++) {
             if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
                 remove(optionsList, i);
                 i--;
@@ -2477,8 +2470,8 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
                     if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
                         remove(optionsList.get(i).getOptionsList(), j);
@@ -2489,10 +2482,10 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2506,13 +2499,13 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
                                     if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2528,14 +2521,14 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {

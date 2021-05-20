@@ -81,6 +81,7 @@ import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummar
 import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -186,7 +187,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         editbtn = findViewById(R.id.edit_button);
-     //   ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
+        //   ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -335,7 +336,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
-      //  LoadFamilyMembers();
+        //  LoadFamilyMembers();
 
     }
 

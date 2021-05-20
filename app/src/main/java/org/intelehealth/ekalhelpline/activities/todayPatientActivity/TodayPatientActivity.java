@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,7 +57,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     RecyclerView mTodayPatientList;
-   MaterialAlertDialogBuilder dialogBuilder;
+    MaterialAlertDialogBuilder dialogBuilder;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -284,13 +286,13 @@ public class TodayPatientActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void doQueryWithProviders(List<String> providersuuids) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).format(cDate);
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
         String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid " +
@@ -385,7 +387,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
 
     }
