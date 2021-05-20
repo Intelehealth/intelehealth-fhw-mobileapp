@@ -502,5 +502,13 @@
     <string name="intelehealth_name">একল আৰোগ্য হেল্পলাইন</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কৰ্মকৰ্তা) নিশ্চিত হৈছি যে আমি ৰোগীৰ গোপনীয়তা বিজ্ঞপ্তি আৰু সম্মতিটো পঢ়িছি।</string>
     <string name="enter_license_key">লাইচেঞ্চ কি\' প্ৰবিষ্ট কৰক</string>
+    <string name="weight_error">ওজন %1$s কিগ্ৰাতকৈ কম হ\'ব লাগে</string>
+    <string name="height_error">উচ্চতা 0 ৰ পৰা %1$s ছেমিৰ ভিতৰত হ\'ব লাগে</string>
+    <string name="spo2_error">এছপিও2 %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগিব</string>
+    <string name="pulse_error">পালচ %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
+    <string name="bpsys_error">চিষ্টোলিক চাপ %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
+    <string name="bpdia_error">ডায়েষ্টলিক চাপ %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
+    <string name="resp_error">শ্বাস-প্ৰশ্বাসৰ হাৰ %1$s ৰ পৰা %2$s ৰ ভিতৰত হ\'ব লাগে</string>
+    <string name="temp_error">তাপমাত্ৰা %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
 
 </resources>
