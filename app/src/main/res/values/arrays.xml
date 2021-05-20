@@ -8,6 +8,7 @@
         <item>Kannada</item>
         <item>Gujarati</item>
         <item>Odiya</item>
+        <item>Assamese</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -18,6 +19,7 @@
         <item>kn</item>
         <item>gu</item>
         <item>or</item>
+        <item>as</item>
 <!--        <item>cb</item>-->
     </string-array>
 
