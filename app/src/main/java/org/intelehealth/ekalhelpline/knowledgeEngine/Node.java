@@ -735,7 +735,7 @@ public class Node implements Serializable {
                         if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
                                 (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
                                 (associatedTest.trim().equals("संबंधित लक्षणे"))
-                       || associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -766,7 +766,7 @@ public class Node implements Serializable {
                             || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
                             (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
                             (associatedTest.trim().equals("संबंधित लक्षणे")) ||
-                            associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))){
+                            (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             raw = raw.substring(6);
@@ -1214,9 +1214,9 @@ public class Node implements Serializable {
     }
 
     /*
-    * @param unit The value of the duration that is passed.
-    * @return english translated duration.
-    * */
+     * @param unit The value of the duration that is passed.
+     * @return english translated duration.
+     * */
     private static String as_en(String unit) {
 
         switch (unit) {
@@ -1250,7 +1250,7 @@ public class Node implements Serializable {
     /*
      * @param unit The value of the duration that is passed.
      * @return english translated duration.
-    */
+     */
     private static String hi_en(String unit) {
 
         switch (unit) {
@@ -2255,7 +2255,7 @@ public class Node implements Serializable {
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("संबंधित लक्षणे"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ"))){
+                            || (mOptions.get(i).getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
