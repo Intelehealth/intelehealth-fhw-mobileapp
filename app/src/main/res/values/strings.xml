@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ekal Arogya Helpline</string>
+    <string name="app_name">Intelehealth Helpline</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">Ekal Arogya Helpline</string>
+    <string name="title_activity_login">Intelehealth Helpline</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
