@@ -126,7 +126,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Button newVisit;
     IntentFilter filter;
     Myreceiver reMyreceive;
-    ImageView photoView, whatsapp_no;
+    ImageView photoView, whatsapp_no, calling;
     ImagesDAO imagesDAO = new ImagesDAO();
     TextView idView;
     RecyclerView rvFamilyMember;
@@ -499,6 +499,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
         ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
+        ImageView calling = findViewById(R.id.calling);
 
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
@@ -691,6 +692,16 @@ public class PatientDetailActivity extends AppCompatActivity {
                         Uri.parse(
                                 String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                         phoneNumberWithCountryCode, message))));
+            }
+        });
+
+        //mobile calling is supported...
+        calling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
+                intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
+                startActivity(intent);
             }
         });
 
