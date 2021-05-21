@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -125,7 +126,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Button newVisit;
     IntentFilter filter;
     Myreceiver reMyreceive;
-    ImageView photoView;
+    ImageView photoView, whatsapp_no;
     ImagesDAO imagesDAO = new ImagesDAO();
     TextView idView;
     RecyclerView rvFamilyMember;
@@ -497,6 +498,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
+        ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
 
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
@@ -673,6 +675,25 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+
+        //By clicking on this whatsapp icon, the HW will be able to connect with the patient through his whatsapp no.
+        whatsapp_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumberWithCountryCode = "+91" + phoneView.getText().toString();
+//                String message =
+//                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+//                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
+                        + getString(R.string.and_i_be_assisting_you);
+
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        phoneNumberWithCountryCode, message))));
+            }
+        });
+
 
         //english = en
         //hindi = hi

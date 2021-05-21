@@ -546,6 +546,7 @@
     <string name="temp_error">ଶ୍ୱାସକ୍ରିୟା ହାର %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ୍ |</string>
     <string name="gender">ଲିଙ୍ଗ</string>
     <string name="please_enter_url_and_key">ଦୟାକରି URL ଏବଂ କି ପ୍ରବେଶ କରନ୍ତୁ |</string>
+    <string name="and_i_be_assisting_you">\" and I will be assisting you.\"</string>
 
 
 </resources>
