@@ -589,11 +589,11 @@ public class SetupActivity extends AppCompatActivity {
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
 
-                                            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
-                                                    .applicationId(AppConstants.IMAGE_APP_ID)
-                                                    .server("http://" + CLEAN_URL + ":1337/parse/")
-                                                    .build()
-                                            );
+//                                            Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+//                                                    .applicationId(AppConstants.IMAGE_APP_ID)
+//                                                    .server("http://" + CLEAN_URL + ":1337/parse/")
+//                                                    .build()
+//                                            );
 
                                             SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
                                             //SQLiteDatabase read_db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
