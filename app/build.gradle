@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat
 
 static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
-
     return df.format(new Date());
 }
 android {
@@ -26,7 +25,7 @@ android {
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Intelehealth "  + versionName
+        archivesBaseName = "Intelehealth " + versionName + " - " + getDateTime()
     }
     compileOptions {
         sourceCompatibility = '1.8'
@@ -42,19 +41,29 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        applicationVariants.all { variant ->
-            variant.outputs.each { output ->
-                if (variant.buildType.name == "release") {
-                    output.outputFileName = archivesBaseName + " - " + getDateTime() + ".apk";
-                } else {
-                    output.outputFileName = archivesBaseName + " - Alpha - " + getDateTime() + ".apk";
-                }
-            }
+    }
+    // use the bundle block to control which types of configuration APKs
+    // you want your app bundle to support.
+    bundle {
+        language {
+            // This property is set to true by default.
+            // You can specify `false` to turn off
+            // generating configuration APKs for language resources.
+            // These resources are instead packaged with each base and
+            // feature APK.
+            // Continue reading below to learn about situations when an app
+            // might change setting to `false`, otherwise consider leaving
+            // the default on for more optimized downloads.
+            enableSplit = false
+        }
+        density {
+           enableSplit = true
+        }
+        abi {
+            enableSplit = true
         }
     }
-
 }
-
 dependencies {
     implementation project(':webrtc')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
