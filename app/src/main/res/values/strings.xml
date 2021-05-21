@@ -286,7 +286,7 @@
     <string name="offline_authentication_not_possible">Unable to authenticate offline.</string>
     <string name="admin_authentication_not_possible">Unable to authenticate.</string>
 
-    <string name="login_location_select">Select location</string>
+    <string name="login_location_select">Select Location</string>
     <string name="prompt_licensekey">License key</string>
     <string name="setup_use_demo_mindmap">Use demo protocols</string>
     <string name="setup_download_mindmap">Download protocols</string>
