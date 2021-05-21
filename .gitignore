@@ -19,3 +19,4 @@ salt.env
 *.jpg
 
 .idea/
+/webrtc/build/
