@@ -909,15 +909,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     VisitAttributeListDAO visit_state_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitState = false;
+/*
                     try {
                         if (!isVisitSpecialityExists) {
-                            isUpdateVisitState = visit_state_attributes.insertVisitAttributesState(visitUuid, "" + sessionManager.getStateName());
+                         //   isUpdateVisitState = visit_state_attributes.insertVisitAttributesState(visitUuid, "" + sessionManager.getStateName());
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
                         e.printStackTrace();
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
+*/
 
                     if (flag.isChecked()) {
                         try {
