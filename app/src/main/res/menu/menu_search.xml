@@ -23,17 +23,52 @@
         android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_24"
         android:orderInCategory="2"
-        android:title="Filter"
+        android:title="@string/filter"
         app:showAsAction="ifRoom">
         <menu>
+            <group android:checkableBehavior="single">
             <item
+                android:checkable="true"
                 android:id="@+id/action_filter_all"
                 android:orderInCategory="1"
                 android:title="@string/all" />
             <item
+                android:checkable="true"
                 android:id="@+id/action_filter_follow_up"
                 android:orderInCategory="2"
                 android:title="@string/follow_up" />
+
+            <item
+                android:checkable="false"
+                android:id="@+id/action_my_visits"
+                android:orderInCategory="3"
+                android:title="@string/my_visits">
+                <menu>
+                    <group android:checkableBehavior="single">
+                        <item
+                            android:id="@+id/action_today"
+                            android:checkable="true"
+                            android:orderInCategory="1"
+                            android:title="@string/today"/>
+                        <item
+                            android:id="@+id/action_last_week"
+                            android:checkable="true"
+                            android:orderInCategory="2"
+                            android:title="@string/last_7_days"/>
+                        <item
+                            android:id="@+id/action_last_month"
+                            android:checkable="true"
+                            android:orderInCategory="3"
+                            android:title="@string/last_30_days"/>
+                        <item
+                            android:id="@+id/action_last_year"
+                            android:checkable="true"
+                            android:orderInCategory="4"
+                            android:title="@string/last_1_year"/>
+                    </group>
+                </menu>
+            </item>
+            </group>
         </menu>
     </item>
 </menu>

@@ -60,7 +60,9 @@ public class SearchPatientActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
-    private boolean onlyFollowUp;
+//    private boolean onlyFollowUp;
+    SearchFilter searchFilter = SearchFilter.ALL;
+    private MenuItem prevSelectedMenuFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                     DividerItemDecoration(this,
                     DividerItemDecoration.VERTICAL));*/
             recyclerView.setAdapter(recycler);
-            onlyFollowUp = false;
+//            onlyFollowUp = false;
+            searchFilter = SearchFilter.ALL;
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("doquery", "doquery", e);
@@ -128,7 +131,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         try {
 //            getAllPatientsFromDB();
 
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(onlyFollowUp), SearchPatientActivity.this);
+            recycler = new SearchPatientAdapter(getAllPatientsFromDB(searchFilter), SearchPatientActivity.this);
 
 
 //            Log.i("db data", "" + getAllPatientsFromDB());
@@ -176,7 +179,12 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
         });
 
-
+        MenuItem myVisits = menu.findItem(R.id.action_my_visits);
+        if (myVisits != null) {
+            myVisits.getSubMenu().clearHeader();
+        }
+        prevSelectedMenuFilter = menu.findItem(R.id.action_filter_all);
+        prevSelectedMenuFilter.setChecked(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -185,19 +193,45 @@ public class SearchPatientActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_filter_all:
-                if (onlyFollowUp) {
-                    onlyFollowUp = false;
+                if (searchFilter != SearchFilter.ALL) {
+                    searchFilter = SearchFilter.ALL;
                     firstQuery();
                 }
                 break;
 
             case R.id.action_filter_follow_up:
-                if (!onlyFollowUp) {
-                    onlyFollowUp = true;
+                if (searchFilter != SearchFilter.FOLLOW_UP) {
+                    searchFilter = SearchFilter.FOLLOW_UP;
                     firstQuery();
                 }
                 break;
 
+            case R.id.action_today:
+                if (searchFilter != SearchFilter.MY_TODAY) {
+                    searchFilter = SearchFilter.MY_TODAY;
+                    firstQuery();
+                }
+                break;
+
+            case R.id.action_last_week:
+                if (searchFilter != SearchFilter.MY_LAST_7_DAYS) {
+                    searchFilter = SearchFilter.MY_LAST_7_DAYS;
+                    firstQuery();
+                }
+                break;
+
+            case R.id.action_last_month:
+                if (searchFilter != SearchFilter.MY_LAST_30_DAYS) {
+                    searchFilter = SearchFilter.MY_LAST_30_DAYS;
+                    firstQuery();
+                }
+                break;
+            case R.id.action_last_year:
+                if (searchFilter != SearchFilter.MY_LAST_1_YEAR) {
+                    searchFilter = SearchFilter.MY_LAST_1_YEAR;
+                    firstQuery();
+                }
+                break;
             case R.id.summary_endAllVisit:
                 endAllVisit();
 
@@ -209,6 +243,10 @@ public class SearchPatientActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+        if (prevSelectedMenuFilter != null && prevSelectedMenuFilter.isChecked())
+            prevSelectedMenuFilter.setChecked(false);
+        item.setChecked(!item.isChecked());
+        prevSelectedMenuFilter = item;
         return super.onOptionsItemSelected(item);
     }
 
@@ -227,15 +265,31 @@ public class SearchPatientActivity extends AppCompatActivity {
         lvItems.setAdapter(searchAdapter);
     }
 
-    public List<PatientDTO> getAllPatientsFromDB(boolean onlyFollowUp) {
+    public List<PatientDTO> getAllPatientsFromDB(SearchFilter filter) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
         String WHERE = "";
         String ORDER_BY = " ORDER BY first_name ASC";
-        if (onlyFollowUp) {
+        if (filter == SearchFilter.FOLLOW_UP) {
             table = "tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o ";
             WHERE = "where p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and o.conceptuuid = 'e8caffd6-5d22-41c4-8d6a-bc31a44d0c86' and o.value IS NOT NULL and substr(o.value, 7, 4) || '-' || substr(o.value, 4, 2) || '-' || substr(o.value, 0, 3) >= date('now')";
             ORDER_BY = "ORDER BY substr(o.value, 7, 4) || '-' || substr(o.value, 4, 2) || '-' || substr(o.value, 0, 3) ASC";
+        } else if (filter == SearchFilter.MY_TODAY) {
+            table = "tbl_patient as p, tbl_visit as v ";
+            WHERE = "where p.uuid = v.patientuuid and date('now', 'localtime') == substr(v.startdate, 0, 11) and v.creator = '"+ sessionManager.getCreatorID() + "'";
+            ORDER_BY = "ORDER BY substr(v.startdate, 0, 11) DESC";
+        } else if (filter == SearchFilter.MY_LAST_7_DAYS) {
+            table = "tbl_patient as p, tbl_visit as v ";
+            WHERE = "where p.uuid = v.patientuuid and substr(v.startdate, 0, 11) < date('now', 'localtime') and substr(v.startdate, 0, 11) >= date('now', 'localtime', '-7 day') and v.creator = '"+ sessionManager.getCreatorID() + "'";
+            ORDER_BY = "ORDER BY substr(v.startdate, 0, 11) DESC";
+        } else if (filter == SearchFilter.MY_LAST_30_DAYS) {
+            table = "tbl_patient as p, tbl_visit as v ";
+            WHERE = "where p.uuid = v.patientuuid and substr(v.startdate, 0, 11) < date('now', 'localtime') and substr(v.startdate, 0, 11) >= date('now', 'localtime', '-30 day') and v.creator = '"+ sessionManager.getCreatorID() + "'";
+            ORDER_BY = "ORDER BY substr(v.startdate, 0, 11) DESC";
+        } else if (filter == SearchFilter.MY_LAST_1_YEAR) {
+            table = "tbl_patient as p, tbl_visit as v ";
+            WHERE = "where p.uuid = v.patientuuid and substr(v.startdate, 0, 11) < date('now', 'localtime') and substr(v.startdate, 0, 11) >= date('now', 'localtime', '-1 year') and v.creator = '"+ sessionManager.getCreatorID() + "'";
+            ORDER_BY = "ORDER BY substr(v.startdate, 0, 11) DESC";
         }
 
         final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + WHERE + ORDER_BY, null);
@@ -535,6 +589,15 @@ public class SearchPatientActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    enum SearchFilter {
+        ALL,
+        FOLLOW_UP,
+        MY_TODAY,
+        MY_LAST_7_DAYS,
+        MY_LAST_30_DAYS,
+        MY_LAST_1_YEAR
     }
 }
 

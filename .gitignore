@@ -18,3 +18,5 @@ salt.env
 .externalNativeBuild
 *.jpg
 /.idea/
+/app/release/
+/webrtc/build/

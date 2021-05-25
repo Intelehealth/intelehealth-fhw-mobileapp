@@ -650,5 +650,11 @@
     <string name="gujarati_end_statement">" દાખલ કરો."</string>
     <string name="all">All</string>
     <string name="follow_up">Follow up</string>
+    <string name="my_visits">My Visits</string>
+    <string name="today">Today</string>
+    <string name="last_7_days">Last 7 days</string>
+    <string name="last_30_days">Last 30 days</string>
+    <string name="last_1_year">Last 1 year</string>
+    <string name="filter">Filter</string>
 
 </resources>
