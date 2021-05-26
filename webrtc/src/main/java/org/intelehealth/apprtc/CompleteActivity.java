@@ -13,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -255,6 +256,9 @@ public class CompleteActivity extends AppCompatActivity {
         registerReceiver(broadcastReceiver, receiverFilter);
 
         start();
+
+        IntentFilter filter = new IntentFilter("android.intent.action.PHONE_STATE");
+        registerReceiver(mPhoneStateBroadcastReceiver, filter);
     }
 
     private void stopRinging() {
@@ -317,6 +321,11 @@ public class CompleteActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         disconnectAll();
+        try {
+            unregisterReceiver(mPhoneStateBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 
@@ -402,7 +411,7 @@ public class CompleteActivity extends AppCompatActivity {
 
     private void connectToSignallingServer() {
         try {
-            String url = Constants.BASE_URL + "?userId=" + mNurseId+ "&name=" + mNurseId;
+            String url = Constants.BASE_URL + "?userId=" + mNurseId + "&name=" + mNurseId;
             Log.v("url", url);
             socket = IO.socket(url);
 
@@ -782,4 +791,15 @@ public class CompleteActivity extends AppCompatActivity {
         return Camera2Enumerator.isSupported(this);
     }
 
+    private BroadcastReceiver mPhoneStateBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+            if (callState == TelephonyManager.CALL_STATE_OFFHOOK) {
+                if (socket != null) {
+                    socket.emit("bye");
+                }
+            }
+        }
+    };
 }

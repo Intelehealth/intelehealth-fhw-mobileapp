@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -66,7 +67,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
-                startActivity(in);
+                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                    startActivity(in);
+                }else{
+                    sendNotification(remoteMessage, null);
+                }
+
             } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
                 try {
                     Log.d(TAG, "actionType : TEXT_CHAT");

@@ -1,9 +1,12 @@
 package org.intelehealth.apprtc;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -259,7 +262,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void connectTOSocket() {
         try {
-            mSocket = IO.socket(Constants.BASE_URL + "?userId=" + mFromUUId+ "&name=" + mFromUUId);
+            mSocket = IO.socket(Constants.BASE_URL + "?userId=" + mFromUUId + "&name=" + mFromUUId);
             mSocket.on("connect", args -> {
                 for (Object arg : args) {
                     Log.d(TAG, "connect: " + String.valueOf(arg));
@@ -285,7 +288,10 @@ public class ChatActivity extends AppCompatActivity {
                         in.putExtra("isInComingRequest", true);
                         in.putExtra("doctorname", jsonObject.getString("doctorName"));
                         in.putExtra("nurseId", jsonObject.getString("nurseId"));
-                        startActivity(in);
+                        int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                        if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                            startActivity(in);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -347,8 +353,7 @@ public class ChatActivity extends AppCompatActivity {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                }
-                                else
+                                } else
                                     addNewMessage(jsonObject);
                             }
 
@@ -465,4 +470,5 @@ public class ChatActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
