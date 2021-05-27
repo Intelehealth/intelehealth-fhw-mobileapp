@@ -31,9 +31,9 @@ public class AdminPassword {
                 context.getString(R.string.admin_login_shared_preference_key), Context.MODE_PRIVATE);
     }
 
-    public static AdminPassword getAdminPassword() {
+    public static AdminPassword getAdminPassword(Context context) {
         if (mAdminPassword == null)
-            mAdminPassword = new AdminPassword(IntelehealthApplication.getAppContext());
+            mAdminPassword = new AdminPassword(context);
         return mAdminPassword;
     }
 

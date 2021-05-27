@@ -77,4 +77,5 @@
     <string name="gujarati_and_enter_your_patient_id">" અને તમારો પેશન્ટ ઓળખનંબર "</string>
     <string name="gujarati_end_statement">" દાખલ કરો."</string>
     <string name="enter_valid_input">Enter valid input</string>
+    <string name="document_">Document-</string>
 </resources>

@@ -60,7 +60,7 @@ public class SyncUtils {
 
     }
 
-    public boolean syncForeground(String fromActivity) {
+    public boolean syncForeground(String fromActivity ,String appLanguage) {
         boolean isSynced = false;
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
@@ -75,7 +75,7 @@ public class SyncUtils {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
+                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, appLanguage);
                 Logger.logD(TAG, "Pull ended");
             }
         }, 3000);

@@ -131,20 +131,150 @@ public final class StringUtils {
     public static String getProvided(Spinner spinner) {
         String val = "";
         if (spinner.getSelectedItemPosition() == 0)
-            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+            val = "Not provided";
+
 
         else if(spinner.getSelectedItem() == null)
         {
-            val = IntelehealthApplication.getAppContext().getString(R.string.not_provided);
+            val = "Not provided";
+
         }
         else
         {
             val = spinner.getSelectedItem().toString();
         }
 
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            val = switch_gu_caste(val);
+            val = switch_gu_economic(val);
+            val = switch_gu_education(val);
+        }
+
 
         return val;
     }
+
+    public static String switch_gu_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "અશિક્ષિત";
+                break;
+            case "Primary":
+                val = "પ્રાથમિક";
+                break;
+            case "Secondary":
+                val = "સેકેંડરી";
+                break;
+            case "Higher Secondary":
+                val = "હાયર સેકેંડરી";
+                break;
+            case "Graduation & Higher":
+                val = "સ્નાતક અને વધુ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_education(String val) {
+        switch (val) {
+            case "અશિક્ષિત":
+                val = "Illiterate";
+                break;
+            case "પ્રાથમિક":
+                val = "Primary";
+                break;
+            case "સેકેંડરી":
+                val = "Secondary";
+                break;
+            case "હાયર સેકેંડરી":
+                val = "Higher Secondary";
+                break;
+            case "સ્નાતક અને વધુ":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_economic(String val) {
+        switch (val) {
+            case "ગરીબીની રેખાથી ઉપર":
+                val = "APL";
+                break;
+            case "ગરીબીની રેખાથી નિચે":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "ગરીબીની રેખાથી ઉપર";
+                break;
+            case "BPL":
+                val = "ગરીબીની રેખાથી નિચે";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_caste(String val) {
+        switch (val) {
+            case "જનરલ":
+                val = "General";
+                break;
+            case "સામાજિક શૈક્ષણિક પછાત":
+                val = "OBC";
+                break;
+            case "શેડ્યુલ કાસ્ટ":
+                val = "SC";
+                break;
+            case "શેડ્યુલ ટ્રાઇબ":
+                val = "ST";
+                break;
+            case "અન્ય":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_gu_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "જનરલ";
+                break;
+            case "OBC":
+                val = "સામાજિક શૈક્ષણિક પછાત";
+                break;
+            case "SC":
+                val = "શેડ્યુલ કાસ્ટ";
+                break;
+            case "ST":
+                val = "શેડ્યુલ ટ્રાઇબ";
+                break;
+            case "others":
+                val = "અન્ય";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
 
     public static String getFileNameWithoutExtension(File file) {
         String fileName = "";
@@ -193,4 +323,92 @@ public final class StringUtils {
         return val;
     }
 
+    public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
+        String mdob_text = dob
+                .replace("January", "જાન્યુઆરી")
+                .replace("February", "ફેબ્રુઆરી")
+                .replace("March", "કુચ")
+                .replace("April", "એપ્રિલ")
+                .replace("May", "મે")
+                .replace("June", "જૂન")
+                .replace("July", "જુલાઈ")
+                .replace("August", ".ગસ્ટ")
+                .replace("September", "સપ્ટેમ્બર")
+                .replace("October", "ઓક્ટોબર")
+                .replace("November", "નવેમ્બર")
+                .replace("December", "ડિસેમ્બર");
+
+        return mdob_text;
+    }
+
+    public static String gu_en_month(int month_index) {
+        String dob_string = "";
+
+        switch (month_index) {
+            case 0:
+                dob_string = "January";
+                break;
+            case 1:
+                dob_string = "February";
+                break;
+            case 2:
+                dob_string = "March";
+                break;
+            case 3:
+                dob_string = "April";
+                break;
+            case 4:
+                dob_string = "May";
+                break;
+            case 5:
+                dob_string = "June";
+                break;
+            case 6:
+                dob_string = "July";
+                break;
+            case 7:
+                dob_string = "August";
+                break;
+            case 8:
+                dob_string = "September";
+                break;
+            case 9:
+                dob_string = "October";
+                break;
+            case 10:
+                dob_string = "November";
+                break;
+            case 11:
+                dob_string = "December";
+                break;
+
+            default:
+                return dob_string;
+        }
+
+        return dob_string;
+    }
+
+    public static String gu_en_noEdit(String dobString, String locale) {
+
+        if (locale.equalsIgnoreCase("gu")) {
+            String dob = dobString
+                    //Gujarati
+                    .replace("જાન્યુઆરી", "January")
+                    .replace("ફેબ્રુઆરી", "February")
+                    .replace("કુચ", "March")
+                    .replace("એપ્રિલ", "April")
+                    .replace("મે", "May")
+                    .replace("જૂન", "June")
+                    .replace("જુલાઈ", "July")
+                    .replace(".ગસ્ટ", "August")
+                    .replace("સપ્ટેમ્બર", "September")
+                    .replace("ઓક્ટોબર", "October")
+                    .replace("નવેમ્બર", "November")
+                    .replace("ડિસેમ્બર", "December");
+            return dob;
+        } else {
+            return dobString;
+        }
+    }
 }

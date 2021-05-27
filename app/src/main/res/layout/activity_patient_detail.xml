@@ -647,9 +647,10 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:layout_weight="1"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/header_patient_history"
@@ -662,9 +663,9 @@
 
                             <TextView
                                 android:id="@+id/textView_patHist"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingHorizontal="5dp"
@@ -679,9 +680,10 @@
                             android:layout_height="wrap_content">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:layout_weight="1"
                                 android:includeFontPadding="false"
                                 android:text="@string/header_family_history"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -693,9 +695,9 @@
 
                             <TextView
                                 android:id="@+id/textView_famHist"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingHorizontal="5dp"

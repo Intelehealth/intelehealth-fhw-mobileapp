@@ -3,6 +3,7 @@
 
     <string-array name="language_names">
         <item>English</item>
+        <item>ગુજરાતી</item>
 <!--        <item>Hindi</item>-->
 <!--        <item>Odiya</item>-->
 <!--        <item>Cebuano</item>-->
@@ -10,6 +11,7 @@
 
     <string-array name="language_values">
         <item>en</item>
+        <item>gu</item>
 <!--        <item>hi</item>-->
 <!--        <item>or</item>-->
 <!--        <item>cb</item>-->
@@ -20,12 +22,24 @@
         <item>General Physician</item>
     </string-array>
 
+    <string-array name="speciality_values_gu">
+        <item>વિશેષતા પસંદ કરો</item>
+        <item>જનરલ ફિઝિશિયન</item>
+    </string-array>
+
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
+
+    <string-array name="pref_example_list_titles_gu">
+        <item>હમેશા</item>
+        <item>જ્યારે શક્ય હોય ત્યારે</item>
+        <item>ક્યારેય નહી</item>
+    </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
@@ -35,7 +49,19 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
+
+    <string-array name="state_error_gu">
+        <item>ક્રુપા કરી દેશ પસંદ કરો</item>
+    </string-array>
+
     <string-array name="countries">
+        <item>Select Country</item>
+        <item>India</item>
+        <item>United States</item>
+        <item>Philippines</item>
+    </string-array>
+
+    <string-array name="countries_gu">
         <item>Select Country</item>
         <item>India</item>
         <item>United States</item>
@@ -59,6 +85,16 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
+    <string-array name="education_gu">
+        <item>પસંદ કરો</item>
+        <item>અશિક્ષિત</item>
+        <item>પ્રાથમિક</item>
+        <item>સેકેંડરી</item>
+        <item>હાયર સેકેંડરી</item>
+        <item>સ્નાતક અને વધુ</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -68,7 +104,7 @@
         <item>Graduation &amp; Higher</item>
     </string-array>
 
-    <string-array name="caste">
+    <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
         <item>OBC</item>
@@ -77,10 +113,25 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_gu">
+        <item>પસંદ કરો</item>
+        <item>જનરલ</item>
+        <item>સામાજિક શૈક્ષણિક પછાત</item>
+        <item>શેડ્યુલ કાસ્ટ</item>
+        <item>શેડ્યુલ ટ્રાઇબ</item>
+        <item>અન્ય</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_gu">
+        <item>પસંદ કરો</item>
+        <item>ગરીબીની રેખાથી ઉપર</item>
+        <item>ગરીબીની રેખાથી નિચે</item>
     </string-array>
 
 
