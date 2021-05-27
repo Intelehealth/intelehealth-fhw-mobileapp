@@ -805,14 +805,14 @@ public class Node implements Serializable {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
 
-
-                        if (node.getLanguage().contains("_")) {
-                            node.setLanguage(node.getLanguage().replace("_", dateString));
-                        } else {
-                            node.addLanguage(" " + dateString);
-                            node.setText(node.getLanguage());
-                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                            if (node.getLanguage().contains("_")) {
+                                node.setLanguage(node.getLanguage().replace("_", dateString)); }
+                            else {
+                                node.addLanguage(" " + dateString);
+                                node.setText(node.getLanguage());
                         }
+                            //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+
                         node.setSelected(true);
                         adapter.notifyDataSetChanged();
                         //TODO:: Check if the language is actually what is intended to be displayed
@@ -821,6 +821,7 @@ public class Node implements Serializable {
         datePickerDialog.setTitle(R.string.question_date_picker);
         //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.setCanceledOnTouchOutside(false);
         datePickerDialog.show();
     }
 
@@ -940,11 +941,19 @@ public class Node implements Serializable {
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
 
             }
         });
         AlertDialog dialog = numberDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -992,10 +1001,18 @@ public class Node implements Serializable {
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = areaDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1041,10 +1058,17 @@ public class Node implements Serializable {
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = rangeDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1108,10 +1132,18 @@ public class Node implements Serializable {
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = frequencyDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1308,6 +1340,7 @@ public class Node implements Serializable {
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle(R.string.question_date_picker);
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+        datePickerDialog.setCanceledOnTouchOutside(false);
         datePickerDialog.show();
     }
 
@@ -1344,11 +1377,18 @@ public class Node implements Serializable {
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+                    dialog.dismiss();
 
             }
         });
         AlertDialog dialog = numberDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1429,10 +1469,18 @@ public class Node implements Serializable {
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = areaDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1477,11 +1525,19 @@ public class Node implements Serializable {
         });
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = rangeDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1539,10 +1595,17 @@ public class Node implements Serializable {
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = frequencyDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1597,10 +1660,19 @@ public class Node implements Serializable {
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
+
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = durationDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
