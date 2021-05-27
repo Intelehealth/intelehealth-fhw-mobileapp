@@ -68,6 +68,10 @@ public class PatientDTO {
     @Expose
     private Boolean syncd;
 
+    @SerializedName("followup")
+    @Expose
+    private String followup;
+
     public String getUuid() {
         return uuid;
     }
@@ -227,5 +231,13 @@ public class PatientDTO {
 
     public void setPatientPhoto(String patientPhoto) {
         this.patientPhoto = patientPhoto;
+    }
+
+    public String getFollowup() {
+        return followup;
+    }
+
+    public void setFollowup(String followup) {
+        this.followup = followup;
     }
 }

@@ -40,6 +40,22 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/lato_regular" />
 
+            <TextView
+                android:id="@+id/tv_follow_up"
+                tools:text="Follow Up"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:background="@drawable/bg_follow_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="28dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_regular" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1.5pt"></View>

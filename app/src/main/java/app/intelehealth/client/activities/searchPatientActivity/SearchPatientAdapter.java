@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             holder.bodyTextView.setText(body);
+
+            if (TextUtils.isEmpty(patinet.getFollowup())) {
+                holder.tvFollowUp.setVisibility(View.GONE);
+            } else {
+                holder.tvFollowUp.setText(String.format("%s: %s", context.getString(R.string.follow_up), patinet.getFollowup()));
+                holder.tvFollowUp.setVisibility(View.VISIBLE);
+            }
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +90,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
+        private TextView tvFollowUp;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
+            tvFollowUp = itemView.findViewById(R.id.tv_follow_up);
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }

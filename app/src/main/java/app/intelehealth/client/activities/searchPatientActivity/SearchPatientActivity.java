@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +37,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import app.intelehealth.client.R;
@@ -265,9 +267,34 @@ public class SearchPatientActivity extends AppCompatActivity {
         lvItems.setAdapter(searchAdapter);
     }
 
+    public HashMap<String, String> getFollowUpMap() {
+        HashMap<String, String> map = new HashMap<>();
+        String table = "tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o ";
+        String WHERE = "where p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and o.conceptuuid = 'e8caffd6-5d22-41c4-8d6a-bc31a44d0c86'";
+        String ORDER_BY = "ORDER BY substr(o.value, 7, 4) || '-' || substr(o.value, 4, 2) || '-' || substr(o.value, 0, 3) ASC";
+
+        try {
+            Cursor searchCursor = db.rawQuery("SELECT p.uuid as uuid, o.value as followup FROM " + table + WHERE + ORDER_BY, null);
+            if (searchCursor.moveToFirst()) {
+                do {
+                    String uuid = searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"));
+                    String followUp = searchCursor.getString(searchCursor.getColumnIndexOrThrow("followup"));
+                    if (!TextUtils.isEmpty(followUp)) {
+                        followUp = followUp.split(",")[0];
+                    }
+                    map.put(uuid, followUp);
+                } while (searchCursor.moveToNext());
+            }
+            searchCursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
     public List<PatientDTO> getAllPatientsFromDB(SearchFilter filter) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        String table = "tbl_patient";
+        String table = "tbl_patient as p ";
         String WHERE = "";
         String ORDER_BY = " ORDER BY first_name ASC";
         if (filter == SearchFilter.FOLLOW_UP) {
@@ -292,7 +319,8 @@ public class SearchPatientActivity extends AppCompatActivity {
             ORDER_BY = "ORDER BY substr(v.startdate, 0, 11) DESC";
         }
 
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + WHERE + ORDER_BY, null);
+        HashMap<String, String> followUpMap = getFollowUpMap();
+        final Cursor searchCursor = db.rawQuery("SELECT p.uuid as puuid, * FROM " + table + WHERE + ORDER_BY, null);
         try {
             if (searchCursor.moveToFirst()) {
                 do {
@@ -301,10 +329,13 @@ public class SearchPatientActivity extends AppCompatActivity {
                     model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
                     model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
                     model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
-                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
+                    model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("puuid")));
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
 
+                    if (followUpMap.containsKey(model.getUuid())) {
+                        model.setFollowup(followUpMap.get(model.getUuid()));
+                    }
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
