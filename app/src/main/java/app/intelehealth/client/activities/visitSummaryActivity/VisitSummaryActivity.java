@@ -1886,20 +1886,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //String advice_web = stringToWeb(adviceReturned);
 
         String advice_web = "";
-        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
-        medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
+        String advice_doctor__ = medicalAdviceTextView.getText().toString()
+                .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
+                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
 
-            String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
-                .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
-                        medicalAdviceTextView.getText().toString().lastIndexOf("User") + 6).toString();
-        //lastIndexOf("User") will give index of U of User
-        //so the char this will return is U...here User + 6 will return W eg: User\n\nWatch as +6 will give W
+        if(advice_doctor__.indexOf("Start") != -1 ||
+                advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
+
+
+
+            String advice_split = new StringBuilder(advice_doctor__)
+                    .delete(advice_doctor__.indexOf("Start"),
+                            advice_doctor__.lastIndexOf("Doctor_")+9).toString();
+            //lastIndexOf("Doctor_") will give index of D of Doctor_
+            //so the char this will return is D...here Doctor_ + 9 will return W eg: Doctor_\n\nWatch as +9 will give W
 
              advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }
         else {
-             advice_web = stringToWeb(medicalAdviceTextView.getText().toString().replace("\n\n", "\n")); //showing advice here...
+            advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }
 
@@ -3315,7 +3321,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
                 adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
-                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
                 Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
                 //checkForDoctor();
