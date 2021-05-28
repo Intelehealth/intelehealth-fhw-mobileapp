@@ -77,4 +77,6 @@
     <string name="gujarati_and_enter_your_patient_id">" અને તમારો પેશન્ટ ઓળખનંબર "</string>
     <string name="gujarati_end_statement">" દાખલ કરો."</string>
     <string name="document_">Document-</string>
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+
 </resources>

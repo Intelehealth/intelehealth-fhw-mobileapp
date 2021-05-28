@@ -711,6 +711,7 @@ public class HomeActivity extends AppCompatActivity {
         registerReceiver(syncBroadcastReceiver, filter);
     }
 
+    @Override
     protected void onStop() {
         super.onStop();
         try {
@@ -769,72 +770,7 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-//    public class Myreceiver extends BroadcastReceiver {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-////          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
-//        }
-//    }
 
-    private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
-    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);
-
-            if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
-                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                if (sessionManager.isFirstTimeLaunched()) {
-                    if (flagType == AppConstants.SYNC_FAILED) {
-                        hideSyncProgressBar(false);
-                        /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
-                        finish();*/
-                        new AlertDialog.Builder(HomeActivity.this)
-                                .setMessage(R.string.failed_initial_synced)
-                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        finish();
-                                    }
-
-                                }).setCancelable(false)
-
-                                .show();
-                    } else {
-                        mTempSyncHelperList.add(flagType);
-                        if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
-//                                && mTempSyncHelperList.contains(AppConstants.SYNC_PUSH_DATA_DONE)
-                                /*&& mTempSyncHelperList.contains(AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE)
-                                && mTempSyncHelperList.contains(AppConstants.SYNC_OBS_IMAGE_PUSH_DONE)*/) {
-                            hideSyncProgressBar(true);
-                        }
-                    }
-                }
-            }
-            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-//          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
-        }
-    };
-    private void hideSyncProgressBar(boolean isSuccess) {
-        if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
-        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
-            mSyncProgressDialog.dismiss();
-            if (isSuccess) {
-
-                sessionManager.setFirstTimeLaunched(false);
-                sessionManager.setMigration(true);
-                // initial setup/sync done and now we can set the periodic background sync job
-                // given some delay after initial sync
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
-                    }
-                }, 10000);
-            }
-        }
-    }
 
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
@@ -987,5 +923,65 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private List<Integer> mTempSyncHelperList = new ArrayList<Integer>();
+    private BroadcastReceiver syncBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);
 
+            if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                if (sessionManager.isFirstTimeLaunched()) {
+                    if (flagType == AppConstants.SYNC_FAILED) {
+                        hideSyncProgressBar(false);
+                        /*Toast.makeText(context, R.string.failed_synced, Toast.LENGTH_SHORT).show();
+                        finish();*/
+                        new AlertDialog.Builder(HomeActivity.this)
+                                .setMessage(R.string.failed_initial_synced)
+                                .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+
+                                }).setCancelable(false)
+
+                                .show();
+                    } else {
+                        mTempSyncHelperList.add(flagType);
+                        if (mTempSyncHelperList.contains(AppConstants.SYNC_PULL_DATA_DONE)
+//                                && mTempSyncHelperList.contains(AppConstants.SYNC_PUSH_DATA_DONE)
+                                /*&& mTempSyncHelperList.contains(AppConstants.SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE)
+                                && mTempSyncHelperList.contains(AppConstants.SYNC_OBS_IMAGE_PUSH_DONE)*/) {
+                            hideSyncProgressBar(true);
+                        }
+                    }
+                }
+            }
+            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+//          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
+        }
+    };
+
+    private void hideSyncProgressBar(boolean isSuccess) {
+        if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
+        if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
+            mSyncProgressDialog.dismiss();
+            if (isSuccess) {
+
+                sessionManager.setFirstTimeLaunched(false);
+                sessionManager.setMigration(true);
+                // initial setup/sync done and now we can set the periodic background sync job
+                // given some delay after initial sync
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                    }
+                }, 10000);
+            }
+        }
+
+    }
 }

@@ -98,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
     String appLanguage;
     private long createdRecordsCount = 0;
     String provider_url_uuid;
+    private Button mEmailSignInButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
 //                return false;
 //            }
 //        });
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -242,7 +243,8 @@ public class LoginActivity extends AppCompatActivity {
             mPasswordView.requestFocus();
             return;
         }
-
+        mEmailSignInButton.setText(getString(R.string.please_wait_progress));
+        mEmailSignInButton.setEnabled(false);
         if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
@@ -311,12 +313,12 @@ public class LoginActivity extends AppCompatActivity {
      * This class also uses SharedPreferences to store session ID
      */
     public void UserLoginTask(String mEmail, String mPassword) {
-
+        cpd.show();
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
         Logger.logD(TAG, "username and password" + mEmail + mPassword);
         encoded = base64Utils.encoded(mEmail, mPassword);
         sessionManager.setEncoded(encoded);
-        cpd.show();
+        //cpd.show();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
@@ -442,7 +444,8 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 cpd.dismiss();
                 Toast.makeText(LoginActivity.this, getResources().getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
-
+                mEmailSignInButton.setText(getString(R.string.action_sign_in));
+                mEmailSignInButton.setEnabled(true);
             }
 
             @Override
