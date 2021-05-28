@@ -650,7 +650,7 @@
     <string name="gujarati_end_statement">" દાખલ કરો."</string>
     <string name="document_">Document-</string>
     <string name="select_specialization">Select Specialization</string>
-
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
     <string name="Hours">Hours</string>
     <string name="Days">Days</string>
     <string name="Weeks">Weeks</string>
