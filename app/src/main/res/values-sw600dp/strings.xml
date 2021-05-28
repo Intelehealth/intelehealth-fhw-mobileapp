@@ -78,4 +78,6 @@
     <string name="gujarati_end_statement">" દાખલ કરો."</string>
     <string name="enter_valid_input">Enter valid input</string>
     <string name="document_">Document-</string>
+    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+
 </resources>
