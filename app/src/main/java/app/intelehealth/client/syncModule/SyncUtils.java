@@ -19,6 +19,14 @@ public class SyncUtils {
 
 
     private static final String TAG = SyncUtils.class.getSimpleName();
+    public void initialSync(String fromActivity, String appLanguage) {
+
+        SyncDAO syncDAO = new SyncDAO();
+        Logger.logD(TAG, "Pull Started");
+        syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, appLanguage);
+        Logger.logD(TAG, "Pull ended");
+
+    }
 
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
