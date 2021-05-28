@@ -69,7 +69,13 @@ public class SplashActivity extends AppCompatActivity {
 //                TempDialog.show();
 
                 if (sessionManager.isMigration()) {
-                    nextActivity();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            nextActivity();
+                        }
+                    }, 2000);
                 } else {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
