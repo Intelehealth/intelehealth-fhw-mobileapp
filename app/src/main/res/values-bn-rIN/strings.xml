@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ekal Arogya Helpline</string>
     <string name="generic_the_flipping_word_next" translatable="false">পরবর্তী</string>
     <string name="hint_required" translatable="false">অনুরোধ</string>
     <string name="hint_optional" translatable="false">ঐচ্ছিক</string>
@@ -495,5 +494,9 @@
     <string name="per_Month">প্রতি মাস</string>
     <string name="per_Year">প্রতি বছর</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কার্যকর্তা) নিশ্চিত করেছি যে রোগীর কাছে গোপনীয়তা বিজ্ঞপ্তি এবং সম্মতিটি পড়েছি।</string>
+    <string name="app_name" translatable="false">একাল আরোগ্য হেল্পলাইন</string>
+    <string name="intelehealth_name">একাল আরোগ্য হেল্পলাইন</string>
+    <string name="identification_screen_picker_hours" translatable="false">ঘন্টা</string>
+    <string name="identification_screen_picker_minute" translatable="false">মিনিট</string>
 
 </resources>

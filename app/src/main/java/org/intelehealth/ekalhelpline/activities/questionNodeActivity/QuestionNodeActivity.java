@@ -584,7 +584,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
                 assoSympObj.put("display-mr", "आपल्याकडे खालील लक्षण आहे का?");
                 assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
-                assoSympObj.put("display-bn", "");
+                assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত লক্ষণগুলি রয়েছে?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
@@ -596,7 +596,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
                 finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
-                finalAssoSympObj.put("display-bn", "");
+                finalAssoSympObj.put("display-bn", "সম্পর্কিত লক্ষণ");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -725,17 +725,17 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         //Bengali Language Support...
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
-                    .replace("Question not answered", "")
-                    .replace("Patient reports -", "")
-                    .replace("Patient denies -", "")
+                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
+                    .replace("Patient reports -", "রোগীর রিপোর্ট -")
+                    .replace("Patient denies -", "রোগী অস্বীকার করে -")
                     .replace("Hours", "ঘন্টার").replace("Days", "দিনগুলি")
                     .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
                     .replace("Years", "বছর")
-                    .replace("times per hour", "")
-                    .replace("time per day", "")
-                    .replace("times per week", "")
-                    .replace("times per month", "")
-                    .replace("times per year", "")));
+                    .replace("times per hour", "প্রতি ঘন্টা")
+                    .replace("time per day", "প্রতিদিন সময়")
+                    .replace("times per week", "প্রতি সপ্তাহে বার")
+                    .replace("times per month", "প্রতি মাসে বার")
+                    .replace("times per year", "প্রতি বছর বার")));
         }
 
         else {
