@@ -75,6 +75,7 @@ public class Node implements Serializable {
     private String display_kannada;
     private String display_gujarati;
     private String display_assamese;
+    private String display_bengali;
     private String language;
     private String choiceType;
     private String inputType;
@@ -230,6 +231,15 @@ public class Node implements Serializable {
             }
             if (this.display_assamese.isEmpty()) {
                 this.display_assamese = this.display;
+            }
+
+            //Bengali language support for display...
+            this.display_bengali = jsonNode.optString("display-bn");
+            if (this.display_bengali.isEmpty()) {
+                this.display_bengali = jsonNode.optString("display-bn");
+            }
+            if (this.display_bengali.isEmpty()) {
+                this.display_bengali = this.display;
             }
 
             this.language = jsonNode.optString("language");
@@ -536,6 +546,19 @@ public class Node implements Serializable {
             case "as": {
                 if (display_assamese != null && !display_assamese.isEmpty()) {
                     return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Bengali language support...
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -2363,6 +2386,7 @@ public class Node implements Serializable {
                 ", display_hindi='" + display_hindi + '\'' +
                 ", display_kannada='" + display_kannada + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
+                ", display_bengali='" + display_bengali + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
