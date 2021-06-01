@@ -494,4 +494,6 @@
     <string name="per_Week">প্রতি সপ্তাহ</string>
     <string name="per_Month">প্রতি মাস</string>
     <string name="per_Year">প্রতি বছর</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কার্যকর্তা) নিশ্চিত করেছি যে রোগীর কাছে গোপনীয়তা বিজ্ঞপ্তি এবং সম্মতিটি পড়েছি।</string>
+
 </resources>
