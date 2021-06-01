@@ -584,6 +584,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
                 assoSympObj.put("display-mr", "आपल्याकडे खालील लक्षण आहे का?");
                 assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
+                assoSympObj.put("display-bn", "");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
@@ -595,6 +596,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
                 finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
+                finalAssoSympObj.put("display-bn", "");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
