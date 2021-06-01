@@ -484,7 +484,7 @@
     <string name="emergency_confirmation">আপনি কি এই দর্শনটিকে জরুরী হিসেবে সেট করতে চান ?</string>
     <string name="something_went_wrong">কিছু ভুল হয়েছে সত্তর যোগাযোগ করুন</string>
     <string name="gender">লিঙ্গ</string>
-    <string name="Hours">"ঘন্টার "</string>
+    <string name="Hours">ঘন্টার</string>
     <string name="Days">দিনগুলি</string>
     <string name="Weeks">সপ্তাহ</string>
     <string name="Months">মাস</string>

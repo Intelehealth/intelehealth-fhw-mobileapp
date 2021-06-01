@@ -720,6 +720,22 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "প্ৰতি মাহে সময়")
                     .replace("times per year", "প্ৰতি বছৰে সময়")));
         }
+        //Bengali Language Support...
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "")
+                    .replace("Patient reports -", "")
+                    .replace("Patient denies -", "")
+                    .replace("Hours", "ঘন্টার").replace("Days", "দিনগুলি")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
+                    .replace("Years", "বছর")
+                    .replace("times per hour", "")
+                    .replace("time per day", "")
+                    .replace("times per week", "")
+                    .replace("times per month", "")
+                    .replace("times per year", "")));
+        }
+
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
