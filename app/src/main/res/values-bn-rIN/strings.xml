@@ -498,5 +498,12 @@
     <string name="intelehealth_name">একাল আরোগ্য হেল্পলাইন</string>
     <string name="identification_screen_picker_hours" translatable="false">ঘন্টা</string>
     <string name="identification_screen_picker_minute" translatable="false">মিনিট</string>
+    <string name="please_select_specialization">বিশেষীকরণ নির্বাচন করুন</string>
+    <string name="failed_initial_synced">রিফ্রেশ ব্যর্থ, আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন। অ্যাপ্লিকেশন পুনরায় চালু করুন।</string>
+    <string name="speciality">বিশেষত্ব</string>
+    <string name="select_speciality">বিশেষত্ব নির্বাচন করুন</string>
+    <string name="setup_internet_available">"সেটআপের জন্য একটি শক্তিশালী ইন্টারনেট সংযোগ প্রয়োজন। "</string>
+    <string name="setup_internet_not_available">আপনি ইন্টারনেটের সাথে সংযুক্ত নন।</string>
+    <string name="enter_license_key">লাইসেন্স কী প্রবেশ করান</string>
 
 </resources>
