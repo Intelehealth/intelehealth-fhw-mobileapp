@@ -60,6 +60,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -68,6 +69,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 import org.intelehealth.ekalhelpline.R;
@@ -152,11 +154,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -289,7 +291,7 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-      //  mImageView = findViewById(R.id.imageview_id_picture);
+        //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
@@ -317,7 +319,7 @@ public class IdentificationActivity extends AppCompatActivity {
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);*/
 
         //Cardview
-       // cardview_household = findViewById(R.id.cardview_household);
+        // cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -1519,8 +1521,11 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
-                registerUser();
-//                onPatientCreateClicked();
+                if (NetworkConnection.isOnline(getApplication())) {
+                    registerUser();
+                } else {
+                    onPatientCreateClicked(UUID.randomUUID().toString());
+                }
             }
         });
 
@@ -1672,7 +1677,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -1833,7 +1838,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
-    public void onPatientCreateClicked() {
+    public void onPatientCreateClicked(String personUUID) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -1916,7 +1921,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2579,10 +2584,64 @@ public class IdentificationActivity extends AppCompatActivity {
 
     private void registerUser() {
 
+        if (mFirstName.getText().toString().equals("")) {
+            mFirstName.setError(getString(R.string.error_field_required));
+            return;
+        }
+        if (mLastName.getText().toString().equals("")) {
+            mLastName.setError(getString(R.string.error_field_required));
+            return;
+        }
+        if (mAge.getText().toString().equals("")) {
+            mAge.setError(getString(R.string.error_field_required));
+            return;
+        }
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            return;
+        }
+
+        if (mPhoneNum.getText().toString().equals("")) {
+            mPhoneNum.setError(getString(R.string.error_field_required));
+            return;
+        }
+
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
+            if (mPhoneNum.getText().toString().trim().length() < 10) {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError(getString(R.string.enter_10_digits));
+                return;
+            }
+        }
+
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteState.setError(getString(R.string.error_field_required));
+            return;
+        }
+
+        String randomString = generateRandomString();
+
         ///////////Data Model for step 1
         UserCreationData userCreationData = new UserCreationData();
-        userCreationData.setUsername("teskap88");
-        userCreationData.setPassword("Admin123");
+        userCreationData.setUsername("" + mPhoneNum.getText().toString());
+        userCreationData.setPassword("" + randomString);
+
+        Log.e("Password", "" + randomString);
 
         NameUser nameUser = new NameUser();
         nameUser.setGivenName("" + mFirstName.getText().toString());
@@ -2646,7 +2705,7 @@ public class IdentificationActivity extends AppCompatActivity {
                                     if (res != null) {
 //                                        Log.e("UUID", "" + res.getPerson().getUuid());
 
-                                        Toast.makeText(context,"Success", Toast.LENGTH_LONG).show();
+//                                        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
 
 //                                        encoded = "";
 //                                        encoded = base64Utils.encoded(userName, password);
@@ -2672,7 +2731,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                                        );
 
                                         personUUID = res.getPerson().getUuid();
-                                        onPatientCreateClicked();
+                                        onPatientCreateClicked(personUUID);
 
 //                                        sendBirthDataCall(encoded, personUUID, userBirthData, userAddressData);
 
@@ -2708,7 +2767,27 @@ public class IdentificationActivity extends AppCompatActivity {
                 Logger.logD(TAG, "completed");
             }
         });
+    }
 
+    private String generateRandomString() {
+
+        String finalString = "";
+        int rndNumber = 10;
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+
+        StringBuilder sb = new StringBuilder(5);
+        for (int i = 0; i < 5; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        finalString = sb.toString();
+
+        Random r = new Random(System.currentTimeMillis());
+        rndNumber = ((1 + r.nextInt(2)) * 10 + r.nextInt(10));
+
+        finalString = finalString + "s" + rndNumber;
+
+        return finalString;
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {
@@ -2793,7 +2872,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
