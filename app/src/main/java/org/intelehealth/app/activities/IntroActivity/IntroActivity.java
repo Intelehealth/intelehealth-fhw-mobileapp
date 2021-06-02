@@ -295,7 +295,10 @@ public class IntroActivity extends AppCompatActivity {
                             if (locationResults.getResults() != null) {
                                 Results<Location> locationList = locationResults;
                                 mLocations = locationList.getResults();
-                                location = mLocations.get(0);
+                                if (mLocations.size() > 1)
+                                    location = mLocations.get(1);
+                                else
+                                    location = mLocations.get(0);
 
                                 TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
 
