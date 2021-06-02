@@ -3,7 +3,9 @@ package org.intelehealth.ekalhelpline.networkApiCalls;
 
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
+import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.ekalhelpline.models.Location;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.UserCreationData;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.ekalhelpline.models.Results;
@@ -100,4 +102,12 @@ public interface ApiInterface {
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
+
+    @POST
+    Observable<UserCallRes> REGISTER_USER(@Url String url,
+                                          @Header("Authorization") String authHeader,
+                                          @Body UserCreationData userCreationData);
+
+
+
 }

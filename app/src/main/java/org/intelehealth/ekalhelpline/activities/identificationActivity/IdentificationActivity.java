@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.os.StrictMode;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -45,7 +46,16 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.parse.Parse;
 
+import org.intelehealth.ekalhelpline.BuildConfig;
+import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.NameUser;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.PersonUser;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.UserCreationData;
+import org.intelehealth.ekalhelpline.models.loginModel.LoginModel;
+import org.intelehealth.ekalhelpline.utilities.Base64Utils;
+import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -87,6 +97,13 @@ import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
@@ -174,6 +191,9 @@ public class IdentificationActivity extends AppCompatActivity {
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
+    String encoded = null;
+    Base64Utils base64Utils = new Base64Utils();
+    private String personUUID = "";
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
@@ -1499,7 +1519,8 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
-                onPatientCreateClicked();
+                registerUser();
+//                onPatientCreateClicked();
             }
         });
 
@@ -1816,7 +1837,8 @@ public class IdentificationActivity extends AppCompatActivity {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
-        uuid = UUID.randomUUID().toString();
+//        uuid = UUID.randomUUID().toString();
+        uuid = personUUID;
 
         patientdto.setUuid(uuid);
         Gson gson = new Gson();
@@ -2533,22 +2555,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
-//                if (push)
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
-//                else
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", 2, getApplication());
-
-//                if (pushImage)
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", 4, getApplication());
-//                else
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", 4, getApplication());
-
-
-//
             }
-//            else {
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
-//            }
+
             if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
@@ -2566,6 +2574,140 @@ public class IdentificationActivity extends AppCompatActivity {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
+    }
+
+    private void registerUser() {
+
+        ///////////Data Model for step 1
+        UserCreationData userCreationData = new UserCreationData();
+        userCreationData.setUsername("teskap88");
+        userCreationData.setPassword("Admin123");
+
+        NameUser nameUser = new NameUser();
+        nameUser.setGivenName("" + mFirstName.getText().toString());
+        nameUser.setMiddleName("" + mMiddleName.getText().toString());
+        nameUser.setFamilyName("" + mLastName.getText().toString());
+
+        PersonUser personUser = new PersonUser();
+        List<NameUser> nameUserList = new ArrayList<>();
+        nameUserList.add(nameUser);
+        personUser.setNames(nameUserList);
+
+        personUser.setGender("" + mGender);
+
+        List<String> roles = new ArrayList<>();
+        roles.add("8d94f280-c2cc-11de-8d13-0010c6dffd0f");
+        roles.add("f4c6152c-50cf-4055-b842-557baa0c5e30");
+        userCreationData.setRoles(roles);
+
+        userCreationData.setPerson(personUser);
+
+        Gson gson = new Gson();
+        Log.e("JSON-STEP1- ", "" + gson.toJson(userCreationData));
+
+////////////////////API Call
+
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
+        encoded = base64Utils.encoded("admin", "Admin123");
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+        loginModelObservable.subscribe(new Observer<LoginModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(LoginModel loginModel) {
+                int responsCode = loginModel.hashCode();
+                Boolean authencated = loginModel.getAuthenticated();
+                Gson gson = new Gson();
+                Logger.logD(TAG, "success" + gson.toJson(loginModel));
+//                sessionManager.setChwname(loginModel.getUser().getDisplay());
+//                sessionManager.setCreatorID(loginModel.getUser().getUuid());
+//                sessionManager.setSessionID(loginModel.getSessionId());
+//                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+
+                UrlModifiers urlModifiers = new UrlModifiers();
+                String url = urlModifiers.setRegistrationURL();
+                if (authencated) {
+                    Observable<UserCallRes> resultsObservable = AppConstants.apiInterface.REGISTER_USER(url, "Basic " + encoded, userCreationData);
+                    resultsObservable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DisposableObserver<UserCallRes>() {
+                                @Override
+                                public void onNext(UserCallRes res) {
+                                    if (res != null) {
+//                                        Log.e("UUID", "" + res.getPerson().getUuid());
+
+                                        Toast.makeText(context,"Success", Toast.LENGTH_LONG).show();
+
+//                                        encoded = "";
+//                                        encoded = base64Utils.encoded(userName, password);
+//                                        sessionManager.setEncoded(encoded);
+
+                                        //Commented by Venu For Account Manager Issue.
+                                      /*  final Account account = new Account(userName, "io.intelehealth.openmrs");
+                                        manager.addAccountExplicitly(account, password, null);*/
+
+//                                        sessionManager.setLocationName("" + userAddressData.getCountyDistrict());
+//                                        sessionManager.setLocationUuid("b56d5d16-bf89-4ac0-918d-e830fbfba290");
+//                                        sessionManager.setLocationDescription("In Maharashtra State");
+//                                        sessionManager.setServerUrl(BuildConfig.CLEAN_URL);
+//                                        sessionManager.setServerUrlRest("https://" + BuildConfig.CLEAN_URL + "/openmrs/ws/rest/v1/");
+//                                        sessionManager.setServerUrlBase("https://" + BuildConfig.CLEAN_URL + "/openmrs");
+//                                        sessionManager.setBaseUrl("https://" + BuildConfig.CLEAN_URL + "/openmrs/ws/rest/v1/");
+//                                        sessionManager.setSetupComplete(true);
+
+//                                        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+//                                                .applicationId(AppConstants.IMAGE_APP_ID)
+//                                                .server("https://" + BuildConfig.CLEAN_URL + "/parse/")
+//                                                .build()
+//                                        );
+
+                                        personUUID = res.getPerson().getUuid();
+                                        onPatientCreateClicked();
+
+//                                        sendBirthDataCall(encoded, personUUID, userBirthData, userAddressData);
+
+                                    } else {
+                                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+//                                    progress.dismiss();
+                                    Log.e("LOCATIONS", "" + e);
+                                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    Logger.logD(TAG, "completed");
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+//                progress.dismiss();
+                Logger.logD(TAG, "Login Failure" + e.getMessage());
+                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
 
     }
 
