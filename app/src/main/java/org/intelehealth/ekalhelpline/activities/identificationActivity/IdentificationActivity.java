@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -21,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.os.StrictMode;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -40,16 +40,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.NameUser;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.PersonUser;
+import org.intelehealth.ekalhelpline.models.NewUserCreationCall.UserCreationData;
+import org.intelehealth.ekalhelpline.models.loginModel.LoginModel;
+import org.intelehealth.ekalhelpline.utilities.Base64Utils;
+import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -58,6 +62,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
 import java.util.UUID;
 
 import org.intelehealth.ekalhelpline.R;
@@ -87,11 +92,15 @@ import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -135,11 +144,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -174,6 +183,9 @@ public class IdentificationActivity extends AppCompatActivity {
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
+    String encoded = null;
+    Base64Utils base64Utils = new Base64Utils();
+    private String personUUID = "";
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
@@ -269,7 +281,7 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-      //  mImageView = findViewById(R.id.imageview_id_picture);
+        //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
@@ -297,7 +309,7 @@ public class IdentificationActivity extends AppCompatActivity {
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);*/
 
         //Cardview
-       // cardview_household = findViewById(R.id.cardview_household);
+        // cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -1499,7 +1511,11 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patientID_edit != null) {
                 onPatientUpdateClicked(patient1);
             } else {
-                onPatientCreateClicked();
+                if (NetworkConnection.isOnline(getApplication())) {
+                    registerUser();
+                } else {
+                    onPatientCreateClicked(UUID.randomUUID().toString());
+                }
             }
         });
 
@@ -1651,7 +1667,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -1812,11 +1828,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
-    public void onPatientCreateClicked() {
+    public void onPatientCreateClicked(String personUUID) {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
-        uuid = UUID.randomUUID().toString();
+//        uuid = UUID.randomUUID().toString();
+        uuid = personUUID;
 
         patientdto.setUuid(uuid);
         Gson gson = new Gson();
@@ -1894,7 +1911,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2533,22 +2550,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 boolean push = syncDAO.pushDataApi();
                 boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
-//                if (push)
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
-//                else
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data not uploaded.", 2, getApplication());
-
-//                if (pushImage)
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image upload complete.", 4, getApplication());
-//                else
-//                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s Image not complete.", 4, getApplication());
-
-
-//
             }
-//            else {
-//                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
-//            }
+
             if (isPatientInserted && isPatientImageInserted) {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
@@ -2567,6 +2570,214 @@ public class IdentificationActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+    }
+
+    private void registerUser() {
+
+        if (mFirstName.getText().toString().equals("")) {
+            mFirstName.setError(getString(R.string.error_field_required));
+            return;
+        }
+        if (mLastName.getText().toString().equals("")) {
+            mLastName.setError(getString(R.string.error_field_required));
+            return;
+        }
+        if (mAge.getText().toString().equals("")) {
+            mAge.setError(getString(R.string.error_field_required));
+            return;
+        }
+        if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            return;
+        }
+
+        if (mPhoneNum.getText().toString().equals("")) {
+            mPhoneNum.setError(getString(R.string.error_field_required));
+            return;
+        }
+
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
+            if (mPhoneNum.getText().toString().trim().length() < 10) {
+                mPhoneNum.requestFocus();
+                mPhoneNum.setError(getString(R.string.enter_10_digits));
+                return;
+            }
+        }
+
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteState.setError(getString(R.string.error_field_required));
+            return;
+        }
+
+        String randomString = generateRandomString();
+
+        ///////////Data Model for step 1
+        UserCreationData userCreationData = new UserCreationData();
+        userCreationData.setUsername("" + mPhoneNum.getText().toString());
+        userCreationData.setPassword("" + randomString);
+
+        Log.e("Password", "" + randomString);
+
+        NameUser nameUser = new NameUser();
+        nameUser.setGivenName("" + mFirstName.getText().toString());
+        nameUser.setMiddleName("" + mMiddleName.getText().toString());
+        nameUser.setFamilyName("" + mLastName.getText().toString());
+
+        PersonUser personUser = new PersonUser();
+        List<NameUser> nameUserList = new ArrayList<>();
+        nameUserList.add(nameUser);
+        personUser.setNames(nameUserList);
+
+        personUser.setGender("" + mGender);
+
+        List<String> roles = new ArrayList<>();
+        roles.add("8d94f280-c2cc-11de-8d13-0010c6dffd0f");
+        roles.add("f4c6152c-50cf-4055-b842-557baa0c5e30");
+        userCreationData.setRoles(roles);
+
+        userCreationData.setPerson(personUser);
+
+        Gson gson = new Gson();
+        Log.e("JSON-STEP1- ", "" + gson.toJson(userCreationData));
+
+////////////////////API Call
+
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
+        encoded = base64Utils.encoded("admin", "Admin123");
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        Observable<LoginModel> loginModelObservable = AppConstants.apiInterface.LOGIN_MODEL_OBSERVABLE(urlString, "Basic " + encoded);
+        loginModelObservable.subscribe(new Observer<LoginModel>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(LoginModel loginModel) {
+                int responsCode = loginModel.hashCode();
+                Boolean authencated = loginModel.getAuthenticated();
+                Gson gson = new Gson();
+                Logger.logD(TAG, "success" + gson.toJson(loginModel));
+//                sessionManager.setChwname(loginModel.getUser().getDisplay());
+//                sessionManager.setCreatorID(loginModel.getUser().getUuid());
+//                sessionManager.setSessionID(loginModel.getSessionId());
+//                sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+
+                UrlModifiers urlModifiers = new UrlModifiers();
+                String url = urlModifiers.setRegistrationURL();
+                if (authencated) {
+                    Observable<UserCallRes> resultsObservable = AppConstants.apiInterface.REGISTER_USER(url, "Basic " + encoded, userCreationData);
+                    resultsObservable
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new DisposableObserver<UserCallRes>() {
+                                @Override
+                                public void onNext(UserCallRes res) {
+                                    if (res != null) {
+//                                        Log.e("UUID", "" + res.getPerson().getUuid());
+
+//                                        Toast.makeText(context, "Success", Toast.LENGTH_LONG).show();
+
+//                                        encoded = "";
+//                                        encoded = base64Utils.encoded(userName, password);
+//                                        sessionManager.setEncoded(encoded);
+
+                                        //Commented by Venu For Account Manager Issue.
+                                      /*  final Account account = new Account(userName, "io.intelehealth.openmrs");
+                                        manager.addAccountExplicitly(account, password, null);*/
+
+//                                        sessionManager.setLocationName("" + userAddressData.getCountyDistrict());
+//                                        sessionManager.setLocationUuid("b56d5d16-bf89-4ac0-918d-e830fbfba290");
+//                                        sessionManager.setLocationDescription("In Maharashtra State");
+//                                        sessionManager.setServerUrl(BuildConfig.CLEAN_URL);
+//                                        sessionManager.setServerUrlRest("https://" + BuildConfig.CLEAN_URL + "/openmrs/ws/rest/v1/");
+//                                        sessionManager.setServerUrlBase("https://" + BuildConfig.CLEAN_URL + "/openmrs");
+//                                        sessionManager.setBaseUrl("https://" + BuildConfig.CLEAN_URL + "/openmrs/ws/rest/v1/");
+//                                        sessionManager.setSetupComplete(true);
+
+//                                        Parse.initialize(new Parse.Configuration.Builder(getApplicationContext())
+//                                                .applicationId(AppConstants.IMAGE_APP_ID)
+//                                                .server("https://" + BuildConfig.CLEAN_URL + "/parse/")
+//                                                .build()
+//                                        );
+
+                                        personUUID = res.getPerson().getUuid();
+                                        onPatientCreateClicked(personUUID);
+
+//                                        sendBirthDataCall(encoded, personUUID, userBirthData, userAddressData);
+
+                                    } else {
+                                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+//                                    progress.dismiss();
+                                    Log.e("LOCATIONS", "" + e);
+                                    Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void onComplete() {
+                                    Logger.logD(TAG, "completed");
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+//                progress.dismiss();
+                Logger.logD(TAG, "Login Failure" + e.getMessage());
+                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onComplete() {
+                Logger.logD(TAG, "completed");
+            }
+        });
+    }
+
+    private String generateRandomString() {
+
+        String finalString = "";
+        int rndNumber = 10;
+        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+
+        StringBuilder sb = new StringBuilder(5);
+        for (int i = 0; i < 5; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        finalString = sb.toString();
+
+        Random r = new Random(System.currentTimeMillis());
+        rndNumber = ((1 + r.nextInt(2)) * 10 + r.nextInt(10));
+
+        finalString = finalString + "s" + rndNumber;
+
+        return finalString;
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {
@@ -2651,7 +2862,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 

@@ -72,5 +72,13 @@ public class UrlModifiers {
         return BASE_URL;
     }
 
+    public String setRegistrationURL() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String provider = "user";
+
+        String BASE_URL = "https://"+ sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/";
+        return BASE_URL + provider;
+    }
+
 
 }

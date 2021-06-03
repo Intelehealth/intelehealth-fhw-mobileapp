@@ -4,22 +4,22 @@
     <string-array name="language_names">
         <item>Hindi</item>
         <item>English</item>
-        <item>Marathi</item>
-        <item>Kannada</item>
-        <item>Gujarati</item>
-        <item>Odiya</item>
-        <item>Assamese</item>
+<!--        <item>Marathi</item>-->
+<!--        <item>Kannada</item>-->
+<!--        <item>Gujarati</item>-->
+<!--        <item>Odiya</item>-->
+<!--        <item>Assamese</item>-->
 <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
-        <item>mr</item>
-        <item>kn</item>
-        <item>gu</item>
-        <item>or</item>
-        <item>as</item>
+<!--        <item>mr</item>-->
+<!--        <item>kn</item>-->
+<!--        <item>gu</item>-->
+<!--        <item>or</item>-->
+<!--        <item>as</item>-->
 <!--        <item>cb</item>-->
     </string-array>
 

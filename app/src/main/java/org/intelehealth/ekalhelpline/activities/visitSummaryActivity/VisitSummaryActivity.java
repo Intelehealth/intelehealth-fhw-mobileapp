@@ -83,7 +83,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -124,7 +123,6 @@ import org.intelehealth.ekalhelpline.utilities.Logger;
 import android.print.PdfPrint;
 
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
-import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
 import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 
 import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;

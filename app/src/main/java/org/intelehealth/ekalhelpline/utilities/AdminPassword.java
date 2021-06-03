@@ -7,13 +7,11 @@ import android.widget.Toast;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.internal.$Gson$Preconditions;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 
 /**
  * Created by Dexter Barretto on 8/5/17.
