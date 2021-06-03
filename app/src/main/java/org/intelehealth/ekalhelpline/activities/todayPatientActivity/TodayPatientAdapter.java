@@ -57,9 +57,11 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                     todayPatientModel.getLast_name());
         }
 //        int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
+        String phone_no = todayPatientModel.getPhone_number();
         String age = DateAndTimeUtils.getAgeInYearMonth(todayPatientModel.getDate_of_birth(), context);
-        String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
-        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+      //  String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
+        String body = context.getString(R.string.row_phone_number) + ": " + phone_no + "\n" +
+                context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
         if (todayPatientModel.getSync().equalsIgnoreCase("0")){
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
