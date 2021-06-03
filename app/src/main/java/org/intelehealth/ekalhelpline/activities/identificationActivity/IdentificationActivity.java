@@ -8,7 +8,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -41,14 +40,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
-import com.parse.Parse;
 
-import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.NameUser;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.PersonUser;
@@ -59,7 +53,6 @@ import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -108,9 +101,6 @@ import io.reactivex.schedulers.Schedulers;
 
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
