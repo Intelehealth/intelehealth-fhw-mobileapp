@@ -52,6 +52,7 @@
         android:orientation="horizontal"
         android:layout_above="@+id/textview_powered"
         android:layout_marginBottom="20dp"
+        android:gravity="center"
         android:layout_marginHorizontal="5dp"
         android:weightSum="4">
 
@@ -70,6 +71,7 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
+            android:visibility="gone"
             android:layout_marginEnd="5dp"
             android:src="@drawable/nhm_logo"/>
 
