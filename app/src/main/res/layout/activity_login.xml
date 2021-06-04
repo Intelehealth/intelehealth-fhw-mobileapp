@@ -19,7 +19,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@mipmap/intelehealth_i_icon_only" />
+            android:src="@mipmap/ic_launcher_round" />
 
        <!-- <ImageView
             android:id="@+id/iv_ekal"
