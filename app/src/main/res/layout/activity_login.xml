@@ -140,7 +140,7 @@
             android:background="@drawable/button_bg_rounded_corners"
             android:text="@string/action_sign_in"
             android:fontFamily="@font/lato_bold"
-            android:textColor="@color/button_text_color"
+            android:textColor="@color/white"
             android:textSize="16sp"
              />
 
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginTop="10dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="15dp"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
             android:paddingTop="5dp"
@@ -174,7 +174,7 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
@@ -183,7 +183,7 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
@@ -192,7 +192,7 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
@@ -201,7 +201,7 @@
 
         <ImageView
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"

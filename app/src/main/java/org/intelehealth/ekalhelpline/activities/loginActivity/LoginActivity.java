@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        mEmailSignInButton.setText(getString(R.string.please_wait_progress));
+      //  mEmailSignInButton.setText(getString(R.string.please_wait_progress));
         mEmailSignInButton.setEnabled(false);
         if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
