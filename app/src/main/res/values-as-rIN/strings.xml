@@ -511,5 +511,6 @@
     <string name="resp_error">শ্বাস-প্ৰশ্বাসৰ হাৰ %1$s ৰ পৰা %2$s ৰ ভিতৰত হ\'ব লাগে</string>
     <string name="temp_error">তাপমাত্ৰা %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
     <string name="and_i_be_assisting_you">\" and I will be assisting you.\"</string>
+    <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Ekal Arogya &amp;\nTransform Rural India</string>
 
 </resources>
