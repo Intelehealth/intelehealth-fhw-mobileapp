@@ -70,9 +70,9 @@
     </style>
 
     <style name="MyEditTextTheme">
-        <item name="colorControlNormal">#FFFFFF</item>
-        <item name="colorControlActivated">#FFFFFF</item>
-        <item name="colorControlHighlight">#FFFFFF</item>
+        <item name="colorControlNormal">#3A5084</item>
+        <item name="colorControlActivated">#3A5084</item>
+        <item name="colorControlHighlight">#3A5084</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">

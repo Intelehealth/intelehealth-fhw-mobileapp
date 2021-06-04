@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        mEmailSignInButton.setText(getString(R.string.please_wait_progress));
+      //  mEmailSignInButton.setText(getString(R.string.please_wait_progress));
         mEmailSignInButton.setEnabled(false);
         if (NetworkConnection.isOnline(this)) {
             // Show a progress spinner, and kick off a background task to
@@ -454,6 +454,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return salt;
+    }
 
+    /**
+     * This function is called when user clicks on the back button of the device...
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+        finish();
+        /*FinishAffinity will remove the connection of the current activity (here, LoginScreen) from its stack
+        and then finish help to exit that activity.*/
     }
 }
