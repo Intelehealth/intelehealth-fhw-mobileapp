@@ -5,7 +5,7 @@
     android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/white"
     tools:context=".activities.loginActivity.LoginActivity">
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:id="@+id/iv_logo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/ic_splash_logo" />
 
        <!-- <ImageView
             android:id="@+id/iv_ekal"
@@ -38,7 +38,6 @@
         android:layout_centerInParent="true"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -54,16 +53,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_avatar" />
+                android:src="@drawable/ic_avatar"
+                android:tint="@color/colorPrimaryDark"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etUsernameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/font_black_5"
-                app:passwordToggleTint="@color/white"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                app:passwordToggleTint="@color/colorPrimaryDark"
                 android:theme="@style/MyEditTextTheme">
 
             <EditText
@@ -71,13 +71,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
-                android:textColorHint="@color/font_black_5"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:fontFamily="@font/lato_regular"
                 android:maxLength="100"
                 android:theme="@style/MyEditTextTheme"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -97,16 +97,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
-                android:src="@drawable/ic_lock" />
+                android:src="@drawable/ic_lock"
+                android:tint="@color/colorPrimaryDark"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/font_black_5"
-                app:passwordToggleTint="@color/white"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                app:passwordToggleTint="@color/colorPrimaryDark"
                 android:theme="@style/MyEditTextTheme"
                 app:passwordToggleEnabled="true">
 
@@ -115,13 +116,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
-                android:textColorHint="@color/font_black_5"
+                android:textColorHint="@color/colorPrimaryDark"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLength="50"
                 android:maxLines="1"
                 android:fontFamily="@font/lato_regular"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimaryDark"
                 android:singleLine="true"
                 android:textSize="16sp" />
 
@@ -154,10 +155,71 @@
             android:paddingStart="10dp"
             android:paddingTop="5dp"
             android:text="@string/cant_login_user"
-            android:textColor="@color/white"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp"
             android:fontFamily="@font/lato_bold"
              />
-
     </LinearLayout>
+
+    <!--Bottom Logo and Banner text-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/textview_powered"
+        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="5dp"
+        android:weightSum="4">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/usaid_logo"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/nhm_logo"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/nishtha_logo"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/jhpiego_logo"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textview_powered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Powered by Intelehealth, Ekal Arogya &amp; TRI"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:paddingVertical="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
+        />
 </RelativeLayout>
