@@ -96,7 +96,7 @@
         android:id="@+id/textview_powered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Powered by Intelehealth, Ekal Arogya &amp; TRI"
+        android:text="Powered by Intelehealth, Ekal Arogya &amp; \nTransform Rural India"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:textAlignment="center"
