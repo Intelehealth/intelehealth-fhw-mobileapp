@@ -73,6 +73,7 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
+            values.put("occupation", patient.getTestedPositiveDate());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -111,6 +112,7 @@ public class PatientsDAO {
             values.put("patient_photo", patientDTO.getPatientPhoto());
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
+            values.put("occupation", patientDTO.getTestedPositiveDate());
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
                 insertPatientAttributes(patientAttributesList, db);
@@ -157,6 +159,7 @@ public class PatientsDAO {
             values.put("patient_photo", patientDTO.getPatient_photo());
             values.put("dead", false);
             values.put("sync", false);
+            values.put("occupation", patientDTO.getTestedPositiveDate());
 
             insertPatientAttributes(patientAttributesDTOS, db);
             Logger.logD("pulldata", "datadumper" + values);
@@ -461,6 +464,7 @@ public class PatientsDAO {
                     patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
                     patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
                     patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                    patientDTO.setTestedPositiveDate(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                     patientDTOList.add(patientDTO);
                 }
             }

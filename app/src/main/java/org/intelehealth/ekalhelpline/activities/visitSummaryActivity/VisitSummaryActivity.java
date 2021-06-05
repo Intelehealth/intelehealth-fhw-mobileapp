@@ -1668,7 +1668,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mCountry = patient.getCountry();
 
         String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
-        String mOccupation = patient.getOccupation();
+        String mOccupation = patient.getTestedPositiveDate();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -2276,7 +2276,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mCountry = patient.getCountry();
 
         String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
-        String mOccupation = patient.getOccupation();
+        String mOccupation = patient.getTestedPositiveDate();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -2600,7 +2600,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String mCountry = patient.getCountry();
 
         String mSdw = (!TextUtils.isEmpty(patient.getSdw())) ? patient.getSdw() : "";
-        String mOccupation = patient.getOccupation();
+        String mOccupation = patient.getTestedPositiveDate();
         String mGender = patient.getGender();
 
         Calendar c = Calendar.getInstance();
@@ -3293,7 +3293,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 patient.setPhone_number(idCursor.getString(idCursor.getColumnIndex("phone_number")));
                 patient.setGender(idCursor.getString(idCursor.getColumnIndex("gender")));
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
-                patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                patient.setTestedPositiveDate(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatient_photo(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
             } while (idCursor.moveToNext());
         }
@@ -3325,7 +3325,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     patient.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("occupation")) {
-                    patient.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                    patient.setTestedPositiveDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));

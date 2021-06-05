@@ -68,6 +68,10 @@ public class PatientDTO {
     @Expose
     private Boolean syncd;
 
+    @SerializedName("occupation")
+    @Expose
+    private String occupation;
+
     public String getUuid() {
         return uuid;
     }
@@ -227,5 +231,13 @@ public class PatientDTO {
 
     public void setPatientPhoto(String patientPhoto) {
         this.patientPhoto = patientPhoto;
+    }
+
+    public String getTestedPositiveDate() {
+        return occupation;
+    }
+
+    public void setTestedPositiveDate(String occupation) {
+        this.occupation = occupation;
     }
 }

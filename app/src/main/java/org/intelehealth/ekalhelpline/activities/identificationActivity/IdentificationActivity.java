@@ -1573,6 +1573,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }, instance.get(Calendar.YEAR), instance.get(Calendar.MONTH), instance.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+        et_tested_positive_date.setText(patient1.getTestedPositiveDate());
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1706,7 +1707,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-                //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                patient1.setTestedPositiveDate(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -1751,9 +1752,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-              /*  if (name.equalsIgnoreCase("occupation")) {
-                    patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                if (name.equalsIgnoreCase("positiveDate")) {
+                    patient1.setTestedPositiveDate(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+              /*
                 if (name.equalsIgnoreCase("Bank Account")) {
                     patient1.setBank_account(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2232,6 +2234,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setTestedPositiveDate(StringUtils.getValue(et_tested_positive_date.getText().toString()));
 
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -2291,7 +2294,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("positiveDate"));
             patientAttributesDTO.setValue(StringUtils.getValue(et_tested_positive_date.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -3196,6 +3199,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setTestedPositiveDate(StringUtils.getValue(et_tested_positive_date.getText().toString()));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -3252,7 +3256,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("positiveDate"));
             patientAttributesDTO.setValue(StringUtils.getValue(et_tested_positive_date.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 

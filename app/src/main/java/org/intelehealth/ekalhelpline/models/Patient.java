@@ -163,11 +163,11 @@ public class Patient {
         this.sdw = sdw;
     }
 
-    public String getOccupation() {
+    public String getTestedPositiveDate() {
         return occupation;
     }
 
-    public void setOccupation(String occupation) {
+    public void setTestedPositiveDate(String occupation) {
         this.occupation = occupation;
     }
 
