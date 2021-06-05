@@ -17,3 +17,6 @@ salt.env
 .idea/caches/build_file_checksums.ser
 .externalNativeBuild
 *.jpg
+/.idea/
+/app/release/
+/webrtc/build/
