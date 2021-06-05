@@ -59,6 +59,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -189,6 +190,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+    private Spinner state_spinner, city_spinner;
+    private EditText et_tested_positive_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1534,6 +1537,42 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 */
+
+        state_spinner = findViewById(R.id.state_spinner);
+        city_spinner = findViewById(R.id.city_spinner);
+        state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 0 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                city_spinner.setAdapter(adapter);
+                autocompleteState.setText(getResources().getStringArray(R.array.state_values)[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        et_tested_positive_date = findViewById(R.id.et_tested_positive_date);
+        et_tested_positive_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar instance = Calendar.getInstance();
+                new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(0);
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        Date date = cal.getTime();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        et_tested_positive_date.setText(simpleDateFormat.format(date));
+                    }
+                }, instance.get(Calendar.YEAR), instance.get(Calendar.MONTH), instance.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1938,6 +1977,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
+            if (et_tested_positive_date.getText().toString().equals("")) {
+                et_tested_positive_date.setError(getString(R.string.error_field_required));
+            }
+
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
@@ -2222,6 +2265,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValue(city_spinner.getSelectedItem().toString()));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2244,12 +2288,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(et_tested_positive_date.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2619,6 +2663,11 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        if (et_tested_positive_date.getText().toString().equals("")) {
+            et_tested_positive_date.setError(getString(R.string.error_field_required));
+            return;
+        }
+
         if (autocompleteState.getText().toString().equals("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             return;
@@ -2887,6 +2936,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
+            }
+
+            if (et_tested_positive_date.getText().toString().equals("")) {
+                et_tested_positive_date.setError(getString(R.string.error_field_required));
             }
 
             if (autocompleteState.getText().toString().equals("")) {
@@ -3196,12 +3249,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mRelationship.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-//            patientAttributesDTO = new PatientAttributesDTO();
-//            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//            patientAttributesDTO.setPatientuuid(uuid);
-//            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(mOccupation.getText().toString()));
-//            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(et_tested_positive_date.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

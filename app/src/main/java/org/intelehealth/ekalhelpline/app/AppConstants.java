@@ -58,6 +58,7 @@ public class AppConstants {
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
+    public static ApiInterface ivrApiInterface = ApiClient.createIVRService(ApiInterface.class);
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
     public static String NEW_UUID = new UuidGenerator().UuidGenerator();
     public static NotificationUtils notificationUtils = new NotificationUtils();

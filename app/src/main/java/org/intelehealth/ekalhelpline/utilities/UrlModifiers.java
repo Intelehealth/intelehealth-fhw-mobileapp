@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.utilities;
 
+import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 
 public class UrlModifiers {
@@ -80,5 +81,12 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
-
+    public String getIvrCallUrl(String caller, String receiver) {
+        String api_key = "Af2b75f5c755b200279df32f232763b0b";
+        if (BuildConfig.DEBUG) {
+            caller = "9850347122";
+            receiver = "9970077303";
+        }
+        return String.format("https://api-voice.kaleyra.com/v1/?api_key=%s&method=dial.click2call&caller=%s&receiver=%s", api_key, caller, receiver);
+    }
 }

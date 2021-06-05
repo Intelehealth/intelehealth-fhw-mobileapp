@@ -668,6 +668,8 @@
     <string name="setup_internet_not_available">You are not connected to the Internet.</string>
     <string name="generic_info">Info!</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
-    <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Ekal Arogya &amp;\nTransform Rural India</string>
-
+    <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Arogya Foundation of India &amp;\nTransform Rural India</string>
+    <string name="calling_patient">Calling patient…</string>
+    <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
+    <string name="hint_date_tested_positive">Date of tested positive*</string>
 </resources>

@@ -567,4 +567,18 @@
         <item>Select Village</item>
     </string-array>
 
+    <string-array name="state_values">
+        <item>Jharkhand</item>
+        <item>Madhya Pradesh</item>
+    </string-array>
+
+    <string-array name="jh_city_values">
+        <item>Ranchi</item>
+        <item>East Singhbhum</item>
+    </string-array>
+
+    <string-array name="mp_city_values">
+        <item>Khandwa</item>
+        <item>Rajgarh</item>
+    </string-array>
 </resources>

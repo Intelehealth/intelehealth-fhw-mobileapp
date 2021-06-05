@@ -108,6 +108,7 @@ public interface ApiInterface {
                                           @Header("Authorization") String authHeader,
                                           @Body UserCreationData userCreationData);
 
-
+    @GET
+    Single<String> CALL_PATIENT_IVR(@Url String url);
 
 }
