@@ -672,4 +672,7 @@
     <string name="calling_patient">Calling patient…</string>
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="hint_date_tested_positive">Date of tested positive*</string>
+    <string name="hint_block">Block*</string>
+    <string name="error_mandatory_field">Please fill all the mandatory fields</string>
+    <string name="warning_user_exist">Mobile number already exists</string>
 </resources>

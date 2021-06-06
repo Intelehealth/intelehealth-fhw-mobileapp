@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.networkApiCalls;
 
 
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
+import org.intelehealth.ekalhelpline.models.ClsUserGetResponse;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
 import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.ekalhelpline.models.Location;
@@ -111,4 +112,6 @@ public interface ApiInterface {
     @GET
     Single<String> CALL_PATIENT_IVR(@Url String url);
 
+    @GET
+    Observable<ClsUserGetResponse> getUsersFromServer(@Url String url, @Header("Authorization") String authHeader, @Query("username")  String userName);
 }

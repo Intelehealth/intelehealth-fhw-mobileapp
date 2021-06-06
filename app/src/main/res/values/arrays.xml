@@ -568,17 +568,46 @@
     </string-array>
 
     <string-array name="state_values">
+        <item>Select</item>
         <item>Jharkhand</item>
         <item>Madhya Pradesh</item>
     </string-array>
 
     <string-array name="jh_city_values">
+        <item>Select</item>
         <item>Ranchi</item>
         <item>East Singhbhum</item>
     </string-array>
 
     <string-array name="mp_city_values">
+        <item>Select</item>
         <item>Khandwa</item>
         <item>Rajgarh</item>
+    </string-array>
+
+    <string-array name="jh_block_values">
+        <item>Select</item>
+        <item>Burmu</item>
+        <item>Khelari</item>
+        <item>Kanke</item>
+        <item>Ormanjhi</item>
+        <item>Angara</item>
+        <item>Rahe</item>
+        <item>Silli</item>
+        <item>Sonahatu</item>
+        <item>Namkum</item>
+        <item>Ratu</item>
+        <item>Nagri</item>
+        <item>Mandar</item>
+        <item>Chanho</item>
+        <item>Bero</item>
+        <item>Itki</item>
+        <item>Lapung</item>
+        <item>Bundu</item>
+        <item>Tamar</item>
+    </string-array>
+    <string-array name="mp_block_values">
+        <item>Select</item>
+        <item>Other</item>
     </string-array>
 </resources>
