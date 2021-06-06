@@ -976,6 +976,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
                         Log.e("Check", "No complaint");
+                        //add arrow with Self Assessment here...
+                        complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     // complaintxt1.setLayoutParams(layoutParams);
@@ -1291,6 +1293,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                         }
                     }
                     // Called when we close app on vitals screen and Didn't select any complaints
+                    //Here, we don't get any complaints so we will use this block...
+                    /*This block is called in two cases :
+                    * 1. When user closes the app after filling vitals screen.
+                    * 2. Patient app creates Self-Assessment.
+                    * TODO: Need to add code logic for distinguishing visit created by Patient app to be shown as Self-Assessment
+                    *  and app forcely closed by user at Vitals screen...
+                    *  */
                     else {
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         try {
