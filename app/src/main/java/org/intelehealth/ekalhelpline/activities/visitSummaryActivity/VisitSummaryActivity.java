@@ -231,6 +231,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView additionalCommentsCard;
     CardView followUpDateCard;
     CardView card_print, card_share;
+    CardView cardView_vitals, cardView_complaint, cardView_pathist, cardView_famhist,
+            cardView_additional_document_images;
 
 
     TextView diagnosisTextView;
@@ -238,7 +240,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
     TextView additionalCommentsTextView;
-    TextView followUpDateTextView;
+    TextView followUpDateTextView, textView_heading_physexam;
     //added checkbox flag .m
     CheckBox flag;
 
@@ -523,6 +525,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        cardView_vitals = findViewById(R.id.cardView_vitals);
+        cardView_complaint = findViewById(R.id.cardView_complaint);
+        cardView_famhist = findViewById(R.id.cardView_famhist);
+        cardView_pathist = findViewById(R.id.cardView_pathist);
+        cardView_additional_document_images = findViewById(R.id.additional_document_images);
+        textView_heading_physexam = findViewById(R.id.textView_heading_physexam);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1148,8 +1156,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
-        if (complaint.getValue() != null)
+
+        if (complaint.getValue() != null) {
             complaintView.setText(Html.fromHtml(complaint.getValue()));
+        }
+        else {
+            //If the visit was created by Patient app ie. no chief complaint selected then in that case HIDE the cards...
+            cardView_vitals.setVisibility(View.GONE);
+            cardView_complaint.setVisibility(View.GONE);
+            cardView_famhist.setVisibility(View.GONE);
+            cardView_pathist.setVisibility(View.GONE);
+            cardView_additional_document_images.setVisibility(View.GONE);
+            textView_heading_physexam.setText(R.string.self_assessment); //On examination will be changed to this text...
+        }
+
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
