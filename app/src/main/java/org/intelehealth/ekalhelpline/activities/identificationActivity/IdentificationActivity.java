@@ -58,6 +58,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -1538,22 +1539,58 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 */
 
+        List<String> stateArray = Arrays.asList(getResources().getStringArray(R.array.state_values));
         state_spinner = findViewById(R.id.state_spinner);
         city_spinner = findViewById(R.id.city_spinner);
-        state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 0 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                city_spinner.setAdapter(adapter);
-                autocompleteState.setText(getResources().getStringArray(R.array.state_values)[position]);
-            }
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.state_values, android.R.layout.simple_spinner_item);
+        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        state_spinner.setAdapter(stateAdapter);
+        String stateprovince = patient1.getState_province();
+        int stateIndex = stateArray.indexOf(stateprovince);
+        if (stateIndex > 0) {
+            state_spinner.setSelection(stateIndex);
+            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.mp_city_values, android.R.layout.simple_spinner_item);
+            cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            city_spinner.setAdapter(cityAdapter);
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+        String city_village = patient1.getCity_village();
+        mCity.setText(city_village);
+        List<String> cityArray = Arrays.asList(getResources().getStringArray(R.array.jh_city_values));
+        int cityIndex = cityArray.indexOf(city_village);
+        if (cityIndex > 0) {
+            city_spinner.setSelection(cityIndex);
+        } else {
+            cityArray = Arrays.asList(getResources().getStringArray(R.array.mp_city_values));
+            cityIndex = cityArray.indexOf(city_village);
+            if (cityIndex > 0) {
+                ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.mp_city_values, android.R.layout.simple_spinner_item);
+                cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                city_spinner.setAdapter(cityAdapter);
+                city_spinner.setSelection(cityIndex);
             }
-        });
+        }
+
+        state_spinner.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 0 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        city_spinner.setAdapter(adapter);
+                        autocompleteState.setText(stateArray.get(position));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+        }, 1000);
+
 
         et_tested_positive_date = findViewById(R.id.et_tested_positive_date);
         et_tested_positive_date.setOnClickListener(new View.OnClickListener() {
@@ -2915,7 +2952,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !state_spinner.getSelectedItem().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -2988,13 +3025,20 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+        /*if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
             return;
         } else {
             autocompleteState.setError(null);
+        }*/
+
+        if (et_tested_positive_date.getText().toString().equals("")) {
+            et_tested_positive_date.setError(getString(R.string.error_field_required));
+            return;
+        } else {
+            et_tested_positive_date.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -3226,7 +3270,9 @@ public class IdentificationActivity extends AppCompatActivity {
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setState_province(StringUtils.getValue(state_spinner.getSelectedItem().toString()));
+//            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCity_village(StringUtils.getValue(city_spinner.getSelectedItem().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);

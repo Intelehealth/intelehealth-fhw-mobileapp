@@ -553,7 +553,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"
                                     android:focusable="true"
-                                    android:entries="@array/state_values"
                                     />
 
                                 <TextView
@@ -567,11 +566,11 @@
                                     android:fontFamily="@font/lato_bold" />
                                 <Spinner
                                     android:id="@+id/city_spinner"
+                                    android:entries="@array/jh_city_values"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"
                                     android:focusable="true"
-                                    android:entries="@array/jh_city_values"
                                     />
                             </LinearLayout>
 
