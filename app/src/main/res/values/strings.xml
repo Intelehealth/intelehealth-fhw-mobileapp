@@ -673,4 +673,5 @@
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="hint_date_tested_positive">Date of tested positive*</string>
     <string name="self_assessment">Self Assessment</string>
+    <string name="district_identification_screen">District*</string>
 </resources>
