@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_form"
@@ -8,43 +9,53 @@
     android:background="@color/white"
     tools:context=".activities.loginActivity.LoginActivity">
 
-    <LinearLayout
+<!--    <LinearLayout
+        android:id="@+id/linear_applogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ll_center"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_splash_logo" />
 
-        <!-- <ImageView
+
+        &lt;!&ndash; <ImageView
              android:id="@+id/iv_ekal"
              android:layout_width="120dp"
              android:layout_height="120dp"
              android:layout_marginStart="20dp"
              android:layout_gravity="center"
-             android:src="@drawable/i_logo" />-->
+             android:src="@drawable/i_logo" />&ndash;&gt;
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/ll_center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_splash_logo" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:orientation="horizontal">
 
@@ -88,7 +99,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:orientation="horizontal">
 
@@ -135,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/button_bg_rounded_corners"
             android:fontFamily="@font/lato_bold"
@@ -151,9 +161,7 @@
             android:layout_marginTop="10dp"
             android:fontFamily="@font/lato_bold"
             android:paddingStart="10dp"
-            android:paddingTop="5dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="15dp"
             android:text="@string/cant_login_user"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="16sp" />
@@ -164,23 +172,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_above="@+id/linear_state"
+        android:layout_above="@+id/linear_logos"
         android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
         android:weightSum="2"
-        android:layout_marginBottom="5dp">
+        app:layout_constraintBottom_toTopOf="@+id/linear_logos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginStart="70dp"
             android:layout_marginEnd="1dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
@@ -189,54 +200,59 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Jharkhand"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textAlignment="center"/>
+                android:text="Jharkhand"
+                android:textSize="10sp"
+                android:textAlignment="center"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="70dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginEnd="70dp"
-            android:layout_marginStart="1dp"
             android:weightSum="2">
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_mp_logo"/>
+                android:src="@drawable/ic_mp_logo" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Madhya Pradesh"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textAlignment="center"/>
+                android:text="Madhya Pradesh"
+                android:textAlignment="center"
+                android:textSize="10sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>
 
     <!--<State Logos End-->
     <LinearLayout
-        android:id="@+id/linear_state"
+        android:id="@+id/linear_logos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textview_powered"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="4">
+        android:weightSum="4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textview_powered">
 
         <ImageView
             android:layout_width="0dp"
@@ -281,11 +297,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:paddingVertical="10dp"
         android:text="@string/powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india"
         android:textAlignment="center"
-        android:textColor="@color/white" />
-</RelativeLayout>
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

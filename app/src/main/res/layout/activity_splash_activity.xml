@@ -147,7 +147,7 @@
         android:layout_above="@+id/textview_powered"
         android:gravity="center"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:weightSum="4"
         app:layout_constraintBottom_toTopOf="@+id/textview_powered"
         app:layout_constraintEnd_toEndOf="parent"
