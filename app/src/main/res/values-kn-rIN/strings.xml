@@ -663,7 +663,8 @@
     <string name="and_enter_your_patient_id">\"ಮತ್ತು ನಿಮ್ಮ ರೋಗಿಯ ID ಅನ್ನು ನಮೂದಿಸಿ”</string>
     <string name="and_i_be_assisting_you">\" and I will be assisting you.\"</string>
     <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Arogya Foundation of India &amp;\nTransform Rural India</string>
-
+    <string name="self_assessment">Self Assessment</string>
+    <string name="district_identification_screen">District*</string>
 
 
 </resources>

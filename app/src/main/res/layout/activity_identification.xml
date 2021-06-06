@@ -562,7 +562,7 @@
                                     android:layout_marginTop="15dp"
                                     android:includeFontPadding="false"
                                     android:textSize="16sp"
-                                    android:text="@string/identification_screen_prompt_city"
+                                    android:text="@string/district_identification_screen"
                                     android:fontFamily="@font/lato_bold" />
                                 <Spinner
                                     android:id="@+id/city_spinner"
