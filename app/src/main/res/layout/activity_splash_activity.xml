@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     tools:context=".activities.splash_activity.SplashActivity">
+
+    <!--Bottom Logo and Banner text-->
+
+    <!--State Logos-->
 
     <LinearLayout
         android:id="@+id/ll_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:layout_marginTop="80dp"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin">
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_splash_logo" />
 
@@ -35,48 +43,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
             android:fontFamily="@font/lato_bold"
-            android:minLines="2"
             android:lines="2"
-            android:textAlignment="center"
+            android:minLines="2"
             android:text="Swasthya Sampark\n Telecaller"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="28sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="NISHTHA’s Comprehensive Post COVID Care Initiative"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
-            android:layout_marginTop="5dp"/>
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
-    <!--Bottom Logo and Banner text-->
-
-    <!--State Logos-->
-    <LinearLayout
+    <TextView
+        android:id="@+id/tagline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_above="@+id/linear_state"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:text="NISHTHA’s Comprehensive Post COVID Care Initiative"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ll_center" />
+
+    <LinearLayout
+        android:id="@+id/linear_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linear_logos"
         android:layout_marginHorizontal="5dp"
+        android:orientation="horizontal"
         android:weightSum="2"
-        android:layout_marginBottom="5dp">
+        app:layout_constraintBottom_toTopOf="@+id/linear_logos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:layout_marginEnd="1dp"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ImageView
@@ -90,21 +102,21 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Jharkhand"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textAlignment="center"/>
+                android:text="Jharkhand"
+                android:textAlignment="center"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="70dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginEnd="70dp"
-            android:layout_marginStart="1dp"
             android:weightSum="2">
 
             <ImageView
@@ -113,41 +125,44 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_mp_logo"/>
+                android:src="@drawable/ic_mp_logo" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Madhya Pradesh"
-                android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textAlignment="center"/>
+                android:text="Madhya Pradesh"
+                android:textAlignment="center"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>
     <!--State Logos end-->
 
     <LinearLayout
-        android:id="@+id/linear_state"
+        android:id="@+id/linear_logos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_above="@+id/textview_powered"
-        android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:weightSum="4">
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:weightSum="4"
+        app:layout_constraintBottom_toTopOf="@+id/textview_powered"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/usaid_logo"/>
+            android:layout_weight="1"
+            android:src="@drawable/usaid_logo" />
 
-<!--
+        <!--
         <ImageView
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -162,34 +177,35 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/nishtha_logo"/>
+            android:layout_weight="1"
+            android:src="@drawable/nishtha_logo" />
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/jhpiego_logo"/>
+            android:layout_weight="1"
+            android:src="@drawable/jhpiego_logo" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textview_powered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india"
         android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:paddingVertical="10dp"
         android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:paddingVertical="10dp"
+        android:text="@string/powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india"
+        android:textAlignment="center"
         android:textColor="@color/white"
-        android:layout_marginBottom="10dp"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
