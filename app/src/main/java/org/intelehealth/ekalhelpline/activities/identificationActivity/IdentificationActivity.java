@@ -1652,13 +1652,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setItems(options, new DialogInterface.OnClickListener() {
-                    @
-                            Override
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         if (which == 0) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            View viewInflated = LayoutInflater.from(context).inflate(R.layout.input_tested_positive, findViewById(android.R.id.content), false);
+                            View viewInflated = LayoutInflater.from(context).inflate(R.layout.input_tested_positive,
+                                    findViewById(android.R.id.content), false);
                             final EditText input = (EditText) viewInflated.findViewById(R.id.input);
                             builder.setView(viewInflated);
                             builder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1666,15 +1666,26 @@ public class IdentificationActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
                                     et_tested_positive_date.setError(null);
-                                    et_tested_positive_date.setText(input.getText().toString());
+                                    //passes number of days to this function to calculate the actual date...
+                                    if(!input.getText().toString().isEmpty() || !input.getText().toString().equals("")) {
+                                        String date = getDatefromDays(Integer.parseInt(input.getText().toString()));
+                                        et_tested_positive_date.setText(date);
+                                    }
+                                    else {
+                                        //do nothing close the dialog...
+                                    }
+
                                 }
                             });
+
                             builder.show();
                             input.requestFocus();
+
                         } else {
 
                             Calendar instance = Calendar.getInstance();
-                            new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+                            new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                                    new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                     Calendar cal = Calendar.getInstance();
@@ -1716,6 +1727,25 @@ public class IdentificationActivity extends AppCompatActivity {
             };
             mPhoneNum.addTextChangedListener(mobileNumberWatcher);
         }
+    }
+
+    /**
+     * @param dateString : number of days entered by the user is passed as an argument here.
+     * @return date : formatted date string value is passed as a return value.
+     */
+    private String getDatefromDays(int dateString) {
+        String date = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",
+                Locale.forLanguageTag(sessionManager.getAppLanguage()));
+
+        //number of days before date...
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -dateString);
+        date = simpleDateFormat.format(calendar.getTime());
+        Log.v("time", "todays date: " + date);
+        //number of days calculation...
+
+        return date;
     }
 
     @Override
