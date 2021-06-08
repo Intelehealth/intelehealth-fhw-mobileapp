@@ -143,17 +143,22 @@ public class DateAndTimeUtils {
         //String xyears = "", xmonths = "";
 
         if(period.getYears() > 0) {
-            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+            //tyears = period.getYears()+ " " + context.getResources().getString(R.string.years);
+            tyears = String.valueOf(period.getYears());
             //xyears = String.valueOf(period.getYears());
         }
         if(period.getMonths() > 0) {
-            tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
+           // tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
+            tmonth = String.valueOf(period.getMonths());
             //xmonths = String.valueOf(period.getMonths());
         }
-        if(period.getDays() > 0)
-            tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
+        if(period.getDays() > 0) {
+            // tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
+            tdays = String.valueOf(period.getDays());
+        }
 
-        age = tyears + " " + tmonth + " " + tdays;
+      //  age = tyears + " " + tmonth + " " + tdays;
+        age = tyears;
 
         return age;
     }

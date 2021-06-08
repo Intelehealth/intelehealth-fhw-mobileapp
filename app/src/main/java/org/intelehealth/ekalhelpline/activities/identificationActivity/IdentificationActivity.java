@@ -1315,12 +1315,13 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 */
-        mDOBYear = today.get(Calendar.YEAR);
+      /*  mDOBYear = today.get(Calendar.YEAR);
         mDOBMonth = today.get(Calendar.MONTH);
-        mDOBDay = today.get(Calendar.DAY_OF_MONTH);
+        mDOBDay = today.get(Calendar.DAY_OF_MONTH);*/
         //DOB is set using an AlertDialog
         //  Locale.setDefault(Locale.ENGLISH);
 
+/*
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -1367,34 +1368,35 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
+*/
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+       /* mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDOBPicker.show();
             }
-        });
+        });*/
 
         //if patient update then age will be set
         if (patientID_edit != null) {
             //dob to be displayed based on translation...
-            String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
+           /* String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
-            }
+            }*/
           /*  else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
             }*/
-            else {
+           /* else {
                 mDOB.setText(dob);
-            }
+            }*/
 
             //  mDOB.setText(DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth()));
             //get year month days
@@ -1406,6 +1408,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mAgeDays = Integer.valueOf(ymdData[2]);
             mAge.setText(yrMoDays);
         }
+/*
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1519,6 +1522,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
             }
         });
+*/
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(v -> {
             if (patientID_edit != null) {
@@ -1756,6 +1760,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
     }
 
+/*
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
         String calculatedAge = null;
         int resmonth;
@@ -1816,6 +1821,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         return calculatedAge != null ? calculatedAge : " ";
     }
+*/
 
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
@@ -2050,6 +2056,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     public void onPatientCreateClicked(String personUUID) {
+        String birthDate = "";
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -2063,6 +2070,7 @@ public class IdentificationActivity extends AppCompatActivity {
         View focusView = null;
 
 
+/*
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2087,6 +2095,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+*/
 
         if (mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
@@ -2133,8 +2142,19 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") &&
+                !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
+
+            //passes number of days to this function to calculate the actual date...
+            if(!mAge.getText().toString().isEmpty() || !mAge.getText().toString().equals("")) {
+                String age = getYearFromAge(Integer.parseInt(mAge.getText().toString()));
+                birthDate = DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(age));
+                Log.v("age", "birthdate: "+birthDate);
+            }
+            else {
+                //do nothing close the dialog...
+            }
 
             Log.v(TAG, "Result");
 
@@ -2154,6 +2174,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
+
 
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
@@ -2446,13 +2467,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setTestedPositiveDate(StringUtils.getValue(et_tested_positive_date.getText().toString()));
 
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
-            String[] dob_array = mDOB.getText().toString().split(" ");
+           /* String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
             Log.d("dob_array", "0: " + dob_array[1]);
-            Log.d("dob_array", "0: " + dob_array[2]);
+            Log.d("dob_array", "0: " + dob_array[2]);*/
 
             //get month index and return English value for month.
-            if (dob_indexValue == 15) { //no value has been edited...ie. DOB/Age is not selected...
+        /*    if (dob_indexValue == 15) { //no value has been edited...ie. DOB/Age is not selected...
                 String dob = StringUtils.hi_or_as__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
@@ -2465,9 +2486,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob_value)));
 
-            }
+            }*/
 
-            // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+           /*  patientdto.setDateofbirth(DateAndTimeUtils.
+                     getFormatedDateOfBirth(StringUtils.getValue(dob_value)));*/
+            patientdto.setDateofbirth(birthDate);
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -3073,6 +3096,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {
+        String birthDate = "";
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -3085,6 +3109,7 @@ public class IdentificationActivity extends AppCompatActivity {
         View focusView = null;
 
 
+/*
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -3109,6 +3134,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+*/
 
         if (mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
@@ -3157,6 +3183,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 && !countryText.getText().toString().equals("") &&
                 !state_spinner.getSelectedItem().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
+
+            //passes number of days to this function to calculate the actual date...
+            if(!mAge.getText().toString().isEmpty() || !mAge.getText().toString().equals("")) {
+                String age = getYearFromAge(Integer.parseInt(mAge.getText().toString()));
+                birthDate = DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(age));
+                Log.v("age", "birthdate: "+birthDate);
+            }
+            else {
+                //do nothing close the dialog...
+            }
 
             Log.v(TAG, "Result");
 
@@ -3464,13 +3500,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setTestedPositiveDate(StringUtils.getValue(et_tested_positive_date.getText().toString()));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
-            String[] dob_array = mDOB.getText().toString().split(" ");
+          /*  String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
             Log.d("dob_array", "0: " + dob_array[1]);
             Log.d("dob_array", "0: " + dob_array[2]);
-
+*/
             //get month index and return English value for month.
-            if (dob_indexValue == 15) {
+           /* if (dob_indexValue == 15) {
                 String dob = StringUtils.hi_or_as__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
@@ -3483,9 +3519,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob_value)));
-            }
+            }*/
 
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
+            patientdto.setDate_of_birth(birthDate);
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setState_province(StringUtils.getValue(state_spinner.getSelectedItem().toString()));
@@ -3883,4 +3920,20 @@ public class IdentificationActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private String getYearFromAge(int dateString) {
+        String date = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
+                Locale.ENGLISH);
+
+        //number of days before date...
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -dateString);
+        date = simpleDateFormat.format(calendar.getTime());
+        Log.v("time", "todays date: " + date);
+        //number of days calculation...
+
+        return date;
+    }
+
 }

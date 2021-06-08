@@ -601,27 +601,27 @@ public class PatientDetailActivity extends AppCompatActivity {
         //Log.d("IDEA","IDEA"+id);
 
         String age = DateAndTimeUtils.getAgeInYearMonth(patient_new.getDate_of_birth(), context);
-        ageView.setText(age);
+        ageView.setText(age + " " + context.getResources().getString(R.string.years));
         float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patient_new.getDate_of_birth());
 
         //dob to be displayed based on translation...
-        String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
+       /* String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient_new.getDate_of_birth());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
             dobView.setText(dob_text);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             String dob_text = en__or_dob(dob); //to show text of English into Odiya...
             dobView.setText(dob_text);
-        }
+        }*/
 /*
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             String dob_text = en__as_dob(dob); //to show text of English into Odiya...
             dobView.setText(dob_text);
         }
 */
-        else {
+        /*else {
             dobView.setText(dob);
-        }
+        }*/
 
         if (patient_new.getGender() != null) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
