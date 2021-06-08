@@ -201,6 +201,7 @@ public class IdentificationActivity extends AppCompatActivity {
     CustomProgressDialog cpd;
     private TextWatcher mobileNumberWatcher;
     private boolean isUserExists;
+    private DatePickerDialog datePickerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1728,7 +1729,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         } else {
 
                             Calendar instance = Calendar.getInstance();
-                            new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                            datePickerDialog = new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                                     new DatePickerDialog.OnDateSetListener() {
                                 @Override
                                 public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -1739,7 +1740,10 @@ public class IdentificationActivity extends AppCompatActivity {
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                                     et_tested_positive_date.setText(simpleDateFormat.format(date));
                                 }
-                            }, instance.get(Calendar.YEAR), instance.get(Calendar.MONTH), instance.get(Calendar.DAY_OF_MONTH)).show();
+                            }, instance.get(Calendar.YEAR), instance.get(Calendar.MONTH), instance.get(Calendar.DAY_OF_MONTH));
+                            datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                            //This will set the maxDate to Today only...
+                            datePickerDialog.show();
                         }
                     }
                 });
