@@ -514,5 +514,7 @@
     <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Arogya Foundation of India &amp;\nTransform Rural India</string>
     <string name="self_assessment">Self Assessment</string>
     <string name="district_identification_screen">District*</string>
-
+    <string name="in_partnership_with_state_government_of">In partnership with state government of</string>
+    <string name="jharkhand">Jharkhand</string>
+    <string name="madhya_pradesh">Madhya Pradesh</string>
 </resources>
