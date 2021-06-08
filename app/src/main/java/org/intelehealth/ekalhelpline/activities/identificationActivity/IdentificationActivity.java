@@ -1272,14 +1272,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     int dob_int = Integer.parseInt(mAge.getText().toString());
                     if (dob_int < 1) {
                         mAge.getText().clear();
-                        mAge.setError("Age cannot be less than 1");
+                        mAge.setError(getString(R.string.age_lessthan_1));
                         mAge.setFocusable(true);
                         mAge.setFocusableInTouchMode(true);
                         mAge.requestFocus();
                         return;
                     } else if (dob_int > 120) {
                         mAge.getText().clear();
-                        mAge.setError("Age cannot be greater than 120");
+                        mAge.setError(getString(R.string.age_greaterthan_120));
                         mAge.setFocusable(true);
                         mAge.setFocusableInTouchMode(true);
                         mAge.requestFocus();
