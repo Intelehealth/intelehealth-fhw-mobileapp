@@ -679,4 +679,7 @@
     <string name="warning_user_exist">Mobile number already exists</string>
     <string name="enter_number_of_days">Enter number of days</string>
     <string name="enter_date">Select a date</string>
+    <string name="in_partnership_with_state_government_of">In partnership with state government of</string>
+    <string name="jharkhand">Jharkhand</string>
+    <string name="madhya_pradesh">Madhya Pradesh</string>
 </resources>

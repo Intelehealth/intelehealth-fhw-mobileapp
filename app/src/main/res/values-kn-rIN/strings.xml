@@ -6,7 +6,7 @@
     <string name="hint_required">ಅಗತ್ಯವಿದೆ</string>
     <string name="hint_optional">ಐಚ್ಛಿಕ</string>
     <string name="tag_optional">ಐಚ್ಛಿಕ</string>
-    <string name="generic_ok" >ಒಕೆ</string>
+    <string name="generic_ok">ಒಕೆ</string>
     <string name="generic_cancel">ರದ್ದುಮಾಡಿ</string>
     <string name="generic_yes">ಹೌದು</string>
     <string name="generic_no">ಇಲ್ಲ</string>
@@ -544,7 +544,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >ನಿಮ್ಮ ಭೇಟಿಗೆ ಕಾರಣವೇನು?</string>
+    <string name="what_is_the_reason_for_your_visit">ನಿಮ್ಮ ಭೇಟಿಗೆ ಕಾರಣವೇನು?</string>
     <string name="swipe_down_to_return">ಮುಂದೆ ಹೋಗಲು ಮೇಲಕ್ಕೆ ಮತ್ತು ಹಿಂದೆ ಹೋಗಲು ಕೆಳಗೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
     <string name="swipe_up">ಮುಂದಿನದಕ್ಕೆ ಮೇಲಕ್ಕೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
     <string name="swipe_down">ಹಿಂದಿನದಕ್ಕೆ ಕೆಳಗೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
@@ -665,6 +665,8 @@
     <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Arogya Foundation of India &amp;\nTransform Rural India</string>
     <string name="self_assessment">Self Assessment</string>
     <string name="district_identification_screen">District*</string>
-
+    <string name="in_partnership_with_state_government_of">In partnership with state government of</string>
+    <string name="jharkhand">Jharkhand</string>
+    <string name="madhya_pradesh">Madhya Pradesh</string>
 
 </resources>

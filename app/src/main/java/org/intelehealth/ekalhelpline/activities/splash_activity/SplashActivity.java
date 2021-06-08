@@ -27,6 +27,7 @@ import org.intelehealth.ekalhelpline.activities.loginActivity.LoginActivity;
 
 
 public class SplashActivity extends AppCompatActivity {
+    private static final int SPLASH_TIMER = 6 * 1000; // 7 sec
     SessionManager sessionManager = null;
 //    ProgressDialog TempDialog;
     int i = 5;
@@ -75,7 +76,7 @@ public class SplashActivity extends AppCompatActivity {
                         public void run() {
                                 nextActivity();
                         }
-                    }, 2000);
+                    }, SPLASH_TIMER);
                 } else {
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -93,7 +94,7 @@ public class SplashActivity extends AppCompatActivity {
                             }
 
                         }
-                    }, 2000);
+                    }, SPLASH_TIMER);
                 }
 
             }
