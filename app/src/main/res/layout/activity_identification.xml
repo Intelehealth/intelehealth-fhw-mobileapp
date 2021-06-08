@@ -583,7 +583,7 @@
                                     android:fontFamily="@font/lato_bold" />
                                 <Spinner
                                     android:id="@+id/block_spinner"
-                                    android:entries="@array/jh_block_values"
+                                    android:entries="@array/rn_block_values"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="12dp"

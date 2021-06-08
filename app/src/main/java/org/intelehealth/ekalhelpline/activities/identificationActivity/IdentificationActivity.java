@@ -1599,6 +1599,7 @@ public class IdentificationActivity extends AppCompatActivity {
         block_spinner = findViewById(R.id.block_spinner);
         city_spinner.setEnabled(false);
         block_spinner.setEnabled(false);
+
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.state_values, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state_spinner.setAdapter(stateAdapter);
@@ -1606,17 +1607,19 @@ public class IdentificationActivity extends AppCompatActivity {
         int stateIndex = stateArray.indexOf(stateprovince);
         if (stateIndex > 0) {
             city_spinner.setEnabled(true);
-            block_spinner.setEnabled(true);
+          //  block_spinner.setEnabled(true);
 
             state_spinner.setSelection(stateIndex);
             ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, stateIndex == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
             cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             city_spinner.setAdapter(cityAdapter);
 
-            ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, stateIndex == 1 ? R.array.jh_block_values : R.array.mp_block_values, android.R.layout.simple_spinner_item);
+           /* ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    stateIndex == 1 ? R.array.jh_block_values : R.array.mp_block_values, android.R.layout.simple_spinner_item);
             blockAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            block_spinner.setAdapter(blockAdapter);
+            block_spinner.setAdapter(blockAdapter);*/
         }
+
 
         String city_village = patient1.getCity_village();
         mCity.setText(city_village);
@@ -1639,7 +1642,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        String block = patient1.getEducation_level();
+  /*      String block = patient1.getEducation_level();
         List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.jh_block_values));
         int blockIndex = blockArray.indexOf(block);
         if (blockIndex > 0) {
@@ -1657,7 +1660,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     block_spinner.setSelection(blockIndex);
                 }
             }
-        }
+        }*/
 
         state_spinner.postDelayed(new Runnable() {
             @Override
@@ -1666,16 +1669,18 @@ public class IdentificationActivity extends AppCompatActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         city_spinner.setEnabled(true);
-                        block_spinner.setEnabled(true);
+                      //  block_spinner.setEnabled(true);
 
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
+                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                position == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         city_spinner.setAdapter(adapter);
                         autocompleteState.setText(stateArray.get(position));
 
-                        ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 1 ? R.array.jh_block_values : R.array.mp_block_values, android.R.layout.simple_spinner_item);
+                      /*  ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                position == 1 ? R.array.jh_block_values : R.array.mp_block_values, android.R.layout.simple_spinner_item);
                         blockAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        block_spinner.setAdapter(blockAdapter);
+                        block_spinner.setAdapter(blockAdapter);*/
                     }
 
                     @Override
@@ -1685,6 +1690,46 @@ public class IdentificationActivity extends AppCompatActivity {
                 });
             }
         }, 1000);
+
+        city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position > 0) {
+                    block_spinner.setEnabled(true);
+
+                    int array = 0;
+                    switch (position) {
+                        case 1:
+                            array = R.array.rn_block_values;
+                            break;
+                        case 2:
+                            array = R.array.es_block_values;
+                            break;
+                        case 3:
+                            array = R.array.bo_block_values;
+                            break;
+                        case 4:
+                            array = R.array.dh_block_values;
+                            break;
+                        default:
+                            array = R.array.default_block_values;
+                    }
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
+                            (IdentificationActivity.this, array,
+                                    android.R.layout.simple_spinner_item);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    block_spinner.setAdapter(adapter);
+                } else {
+                    block_spinner.setEnabled(false);
+                    // block_spinner.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         et_tested_positive_date = findViewById(R.id.et_tested_positive_date);

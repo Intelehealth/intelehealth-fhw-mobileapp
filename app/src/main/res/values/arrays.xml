@@ -577,6 +577,8 @@
         <item>Select</item>
         <item>Ranchi</item>
         <item>East Singhbhum</item>
+        <item>Bokaro</item>
+        <item>Dhanbad</item>
     </string-array>
 
     <string-array name="mp_city_values">
@@ -585,7 +587,7 @@
         <item>Rajgarh</item>
     </string-array>
 
-    <string-array name="jh_block_values">
+    <string-array name="rn_block_values">
         <item>Select</item>
         <item>Burmu</item>
         <item>Khelari</item>
@@ -606,8 +608,61 @@
         <item>Bundu</item>
         <item>Tamar</item>
     </string-array>
+
     <string-array name="mp_block_values">
         <item>Select</item>
         <item>Other</item>
     </string-array>
+
+    <!--East Singhbhum Values...-->
+    <string-array name="es_block_values">
+        <item>Select</item>
+        <item>Baharagora</item>
+        <item>Boram</item>
+        <item>Chakulia</item>
+        <item>Dhalbhumgarh</item>
+        <item>Dumaria</item>
+        <item>Ghatshila</item>
+        <item>Golmuri cum Jugsalai</item>
+        <item>Gudabandha</item>
+        <item>Musabani</item>
+        <item>Patamda</item>
+        <item>Potka</item>
+    </string-array>
+
+    <!--Bokaro Values...-->
+    <string-array name="bo_block_values">
+        <item>Select</item>
+        <item>Bermo</item>
+        <item>Chandankiyari</item>
+        <item>Chandrapura</item>
+        <item>Chas</item>
+        <item>Gumia</item>
+        <item>Jaridih</item>
+        <item>Kasmar</item>
+        <item>Nawadih</item>
+        <item>Peterwar</item>
+    </string-array>
+
+    <!--Dhanbad Values...-->
+    <string-array name="dh_block_values">
+        <item>Select</item>
+        <item>Baghmara</item>
+        <item>Baliapur</item>
+        <item>Dhanbad</item>
+        <item>Egarkund</item>
+        <item>Govindpur</item>
+        <item>Kaliasole</item>
+        <item>Nirsa</item>
+        <item>Purvi Tundi</item>
+        <item>Topchanchi</item>
+        <item>Tundi</item>
+    </string-array>
+
+    <!--Default Block Values...-->
+    <string-array name="default_block_values">
+        <item>Select</item>
+        <item>Invalid</item>
+    </string-array>
+
 </resources>
