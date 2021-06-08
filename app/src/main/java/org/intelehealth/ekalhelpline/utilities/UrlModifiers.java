@@ -89,4 +89,10 @@ public class UrlModifiers {
         }
         return String.format("https://api-voice.kaleyra.com/v1/?api_key=%s&method=dial.click2call&caller=%s&receiver=%s", api_key, caller, receiver);
     }
+
+    public String getUserMapping(String CLEAN_URL) {
+        String urlModifier = "iuser";
+        String BASE_URL = "https://" + CLEAN_URL + "/";
+        return BASE_URL + urlModifier;
+    }
 }

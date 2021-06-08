@@ -4,6 +4,7 @@ package org.intelehealth.ekalhelpline.networkApiCalls;
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
 import org.intelehealth.ekalhelpline.models.ClsUserGetResponse;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
+import org.intelehealth.ekalhelpline.models.GetPassword;
 import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.ekalhelpline.models.Location;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.UserCreationData;
@@ -114,4 +115,7 @@ public interface ApiInterface {
 
     @GET
     Observable<ClsUserGetResponse> getUsersFromServer(@Url String url, @Header("Authorization") String authHeader, @Query("username")  String userName);
+
+    @POST
+    Observable<GetPassword> getUserMapping(@Url String url, @Header("Authorization") String authHeader, @Body GetPassword getPassword);
 }

@@ -46,6 +46,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.ekalhelpline.models.ClsUserGetResponse;
+import org.intelehealth.ekalhelpline.models.GetPassword;
 import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.NameUser;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.PersonUser;
@@ -2916,7 +2917,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        String randomString = generateRandomString();
+        String randomString = generatePassword(10);
 
         ///////////Data Model for step 1
         UserCreationData userCreationData = new UserCreationData();
@@ -3012,8 +3013,11 @@ public class IdentificationActivity extends AppCompatActivity {
 //                                                .build()
 //                                        );
 
+
+                                        /*personUUID = res.getPerson().getUuid();
+                                        onPatientCreateClicked(personUUID);*/
                                         personUUID = res.getPerson().getUuid();
-                                        onPatientCreateClicked(personUUID);
+                                        createUserMapping(personUUID, mPhoneNum.getText().toString(), randomString);
 
 //                                        sendBirthDataCall(encoded, personUUID, userBirthData, userAddressData);
 
@@ -3051,25 +3055,34 @@ public class IdentificationActivity extends AppCompatActivity {
         });
     }
 
-    private String generateRandomString() {
+    private String generatePassword(int length) {
+        char[] SYMBOLS = "-/.^&*_!@%=+>)".toCharArray();
+        char[] LOWERCASE = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        char[] UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        char[] NUMBERS = "0123456789".toCharArray();
+        char[] ALL_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/.^&*_!@%=+>)".toCharArray();
+        Random rand = new SecureRandom();
 
-        String finalString = "";
-        int rndNumber = 10;
-        final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        SecureRandom rnd = new SecureRandom();
+        char[] password = new char[length];
+        //get the requirements out of the way
+        password[0] = LOWERCASE[rand.nextInt(LOWERCASE.length)];
+        password[1] = UPPERCASE[rand.nextInt(UPPERCASE.length)];
+        password[2] = NUMBERS[rand.nextInt(NUMBERS.length)];
+        password[3] = SYMBOLS[rand.nextInt(SYMBOLS.length)];
 
-        StringBuilder sb = new StringBuilder(5);
-        for (int i = 0; i < 5; i++) {
-            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        //populate rest of the password with random chars
+        for (int i = 4; i < length; i++) {
+            password[i] = ALL_CHARS[rand.nextInt(ALL_CHARS.length)];
         }
-        finalString = sb.toString();
 
-        Random r = new Random(System.currentTimeMillis());
-        rndNumber = ((1 + r.nextInt(2)) * 10 + r.nextInt(10));
-
-        finalString = finalString + "s" + rndNumber;
-
-        return finalString;
+        //shuffle it up
+        for (int i = 0; i < password.length; i++) {
+            int randomPosition = rand.nextInt(password.length);
+            char temp = password[i];
+            password[i] = password[randomPosition];
+            password[randomPosition] = temp;
+        }
+        return new String(password);
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {
@@ -3871,6 +3884,35 @@ public class IdentificationActivity extends AppCompatActivity {
                         } else {
                             isUserExists = false;
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
+
+    private void createUserMapping(String personUUID, String enteredUserName, String password) {
+        cpd.show();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String urlString = urlModifiers.getUserMapping(sessionManager.getServerUrl());
+        String encoded = base64Utils.encoded("admin", "Admin123");
+        GetPassword getPassword = new GetPassword();
+        getPassword.username = enteredUserName;
+        getPassword.password = password;
+        Observable<GetPassword> userGetResponse = AppConstants.apiInterface.getUserMapping(urlString, "Basic " + encoded, getPassword);
+        userGetResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<GetPassword>() {
+                    @Override
+                    public void onNext(GetPassword response) {
+                        cpd.dismiss();
+                        onPatientCreateClicked(personUUID);
                     }
 
                     @Override
