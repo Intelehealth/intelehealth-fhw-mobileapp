@@ -3,20 +3,28 @@ package org.intelehealth.ekalhelpline.services.firebase_services;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ekalhelpline.utilities.OfflineLogin;
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Dexter Barretto on 5/25/17.
@@ -26,7 +34,13 @@ import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
+    private static final String ACTION_NAME = "org.intelehealth.ekalhelpline.RTC_MESSAGING_EVENT";
 
+    @Override
+    public void onNewToken(String s) {
+        super.onNewToken(s);
+        Log.e("NEW_TOKEN", s);
+    }
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //Displaying data in log
@@ -34,12 +48,76 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message Title: " + remoteMessage.getNotification().getTitle());
         Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
+        Log.d(TAG, "Notification Message Data: " + remoteMessage.getData());
+        if (remoteMessage.getData().containsKey("actionType")) {
+            if (remoteMessage.getData().get("actionType").equals("VIDEO_CALL")) {
+                Log.d(TAG, "actionType : VIDEO_CALL");
+                Intent in = new Intent(this, CompleteActivity.class);
+                String roomId = remoteMessage.getData().get("roomId");
+                String doctorName = remoteMessage.getData().get("doctorName");
+                String nurseId = remoteMessage.getData().containsKey("nurseId") ? remoteMessage.getData().get("nurseId") : "";
+                //String nurseId = remoteMessage.getData().get("nurseId");
+                in.putExtra("roomId", roomId);
+                in.putExtra("isInComingRequest", true);
+                in.putExtra("doctorname", doctorName);
+                in.putExtra("nurseId", nurseId);
 
-        parseMessage(remoteMessage.getNotification().getTitle(),
-                remoteMessage.getNotification().getBody());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                    startActivity(in);
+                }else{
+                    sendNotification(remoteMessage, null);
+                }
+
+            } else if (remoteMessage.getData().get("actionType").equals("TEXT_CHAT")) {
+                try {
+                    Log.d(TAG, "actionType : TEXT_CHAT");
+                    String fromUUId = remoteMessage.getData().get("toUser");
+                    String toUUId = remoteMessage.getData().get("fromUser");
+                    String patientUUid = remoteMessage.getData().get("patientId");
+                    String visitUUID = remoteMessage.getData().get("visitId");
+                    String patientName = remoteMessage.getData().get("patientName");
+                    JSONObject connectionInfoObject = new JSONObject();
+                    connectionInfoObject.put("fromUUID", fromUUId);
+                    connectionInfoObject.put("toUUID", toUUId);
+                    connectionInfoObject.put("patientUUID", patientUUid);
+
+
+                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    chatIntent.putExtra("patientName", patientName);
+                    chatIntent.putExtra("visitUuid", visitUUID);
+                    chatIntent.putExtra("patientUuid", patientUUid);
+                    chatIntent.putExtra("fromUuid", fromUUId);
+                    chatIntent.putExtra("toUuid", toUUId);
+                    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, chatIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                    sendNotification(remoteMessage, pendingIntent);
+
+
+                    Intent intent = new Intent(ACTION_NAME);
+                    intent.putExtra("visit_uuid", visitUUID);
+                    intent.putExtra("connection_info", connectionInfoObject.toString());
+                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    getApplicationContext().sendBroadcast(intent);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else {
+            parseMessage(remoteMessage);
+        }
     }
 
-    private void parseMessage(String messageTitle, String messageBody) {
+    private void parseMessage(RemoteMessage remoteMessage) {
+        String messageTitle = remoteMessage.getNotification().getTitle();
+        String messageBody = remoteMessage.getNotification().getBody();
 
         switch (messageBody) {
             case "INVALIDATE_OFFLINE_LOGIN": {
@@ -51,42 +129,51 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
             default:
                 //Calling method to generate notification
-                sendNotification(messageBody);
+                sendNotification(remoteMessage, null);
         }
 
     }
 
     //This method is only generating push notification
     //It is same as we did in earlier posts
-    private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+    private void sendNotification(RemoteMessage remoteMessage, PendingIntent pendingIntent) {
+        String messageTitle = remoteMessage.getNotification().getTitle();
+        String messageBody = remoteMessage.getNotification().getBody();
+
+        if (pendingIntent == null) {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+        }
         String channelId = "CHANNEL_ID";
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Firebase Push Notification")
+                .setContentTitle(messageTitle)
                 .setContentText(messageBody)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+       /* NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);*/
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            NotificationChannel channel = new NotificationChannel
-                    (channelId, "Default Channel", NotificationManager.IMPORTANCE_HIGH);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Default Channel";
+            String description = "Default Channel description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
             notificationManager.createNotificationChannel(channel);
         }
 
 
-
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(1, notificationBuilder.build());
     }
 }

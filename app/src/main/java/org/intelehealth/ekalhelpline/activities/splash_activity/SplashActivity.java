@@ -20,6 +20,7 @@ import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.IntroActivity.IntroActivity;
 import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalhelpline.dataMigration.SmoothUpgrade;
+import org.intelehealth.ekalhelpline.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.ekalhelpline.utilities.Logger;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 
@@ -49,7 +50,8 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-
+        // refresh the fcm token
+        TokenRefreshUtils.refreshToken(this);
         checkPerm();
     }
 

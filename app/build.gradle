@@ -3,6 +3,9 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
+    dataBinding {
+        enabled = true
+    }
     compileSdkVersion 30
     defaultConfig {
         applicationId "org.intelehealth.ekalhelpline"
@@ -45,6 +48,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation project(path: ':webrtc')
     testImplementation 'junit:junit:4.13-beta-2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.0.0'

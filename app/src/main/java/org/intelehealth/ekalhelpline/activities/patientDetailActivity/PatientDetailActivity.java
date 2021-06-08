@@ -13,13 +13,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -38,25 +31,24 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
+import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
@@ -72,16 +64,22 @@ import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 import org.intelehealth.ekalhelpline.utilities.DownloadFilesUtils;
 import org.intelehealth.ekalhelpline.utilities.FileUtils;
 import org.intelehealth.ekalhelpline.utilities.Logger;
+import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
 import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
-
-import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -89,11 +87,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_occupation_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 
@@ -1038,6 +1031,29 @@ public class PatientDetailActivity extends AppCompatActivity {
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
+    }
+
+    public void startVideoChatWithPatient(View view) {
+        /*EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
+        RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+        RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);*/
+
+        /*Intent chatIntent = new Intent(PatientDetailActivity.this, ChatActivity.class);
+        chatIntent.putExtra("patientName", patientName);
+        chatIntent.putExtra("visitUuid", visitUuid);
+        chatIntent.putExtra("patientUuid", patientUuid);
+        chatIntent.putExtra("fromUuid", *//*sessionManager.getProviderID()*//* encounterDTO.getProvideruuid()); // provider uuid
+
+        chatIntent.putExtra("toUuid", patientUuid);
+
+        startActivity(chatIntent);*/
+
+        startActivity(new Intent(this, CompleteActivity.class)
+                .putExtra("callerName", patientName)
+                .putExtra("roomId", patientUuid)
+                .putExtra("nurseId", sessionManager.getProviderID())
+        );
     }
 
     public class Myreceiver extends BroadcastReceiver {
