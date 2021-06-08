@@ -24,7 +24,7 @@
             android:layout_width="80dip"
             android:layout_height="80dip"
             android:layout_gravity="center"
-            android:src="@drawable/ic_splash_logo" />
+            android:src="@drawable/ic_logo_app" />
 
         <!-- <ImageView
             android:layout_width="160dp"
