@@ -1252,6 +1252,46 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+
+
+        mAge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if(!mAge.getText().toString().isEmpty() || !mAge.getText().toString().equals("")) {
+                    int dob_int = Integer.parseInt(mAge.getText().toString());
+                    if (dob_int < 1) {
+                        mAge.getText().clear();
+                        mAge.setError("Age cannot be less than 1");
+                        mAge.setFocusable(true);
+                        mAge.setFocusableInTouchMode(true);
+                        mAge.requestFocus();
+                        return;
+                    } else if (dob_int > 120) {
+                        mAge.getText().clear();
+                        mAge.setError("Age cannot be greater than 120");
+                        mAge.setFocusable(true);
+                        mAge.setFocusableInTouchMode(true);
+                        mAge.requestFocus();
+                        return;
+                    }
+                    else {
+                        //do nothing...
+                    }
+                }
+            }
+        });
+
 //        mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
