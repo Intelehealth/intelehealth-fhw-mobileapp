@@ -1608,7 +1608,7 @@ public class IdentificationActivity extends AppCompatActivity {
         int stateIndex = stateArray.indexOf(stateprovince);
         if (stateIndex > 0) {
             city_spinner.setEnabled(true);
-          //  block_spinner.setEnabled(true);
+            block_spinner.setEnabled(true);
 
             state_spinner.setSelection(stateIndex);
             ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, stateIndex == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
@@ -1643,8 +1643,115 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-  /*      String block = patient1.getEducation_level();
-        List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.jh_block_values));
+
+       // if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Ranchi")) {
+           /* ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.rn_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp);*/
+
+           /* if (block != null) {
+                int spinnerPosition = blockadp.getPosition(block);
+                block_spinner.setSelection(spinnerPosition);
+            }*/
+
+        String block = patient1.getEducation_level();
+
+        if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Ranchi")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.rn_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp); //Ranchi Array
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.rn_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("East Singhbhum")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.es_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp); //East Array
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.es_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Bokaro")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.bo_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp); //Bokaro array
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.bo_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Dhanbad")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.dh_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp); //Dhandabad array
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.dh_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Khandwa")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.mp_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp); //Khandwa array
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.mp_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Rajgarh")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.mp_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp); //Rajgrah array
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.mp_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+        //   }
+
+       /* List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.jh_block_values));
         int blockIndex = blockArray.indexOf(block);
         if (blockIndex > 0) {
             if (block_spinner.getAdapter().getCount() > blockIndex) {
@@ -1692,45 +1799,84 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }, 1000);
 
-        city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        city_spinner.postDelayed(new Runnable() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    block_spinner.setEnabled(true);
+            public void run() {
+                city_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        block_spinner.setEnabled(true);
 
-                    int array = 0;
-                    switch (position) {
-                        case 1:
-                            array = R.array.rn_block_values;
-                            break;
-                        case 2:
-                            array = R.array.es_block_values;
-                            break;
-                        case 3:
-                            array = R.array.bo_block_values;
-                            break;
-                        case 4:
-                            array = R.array.dh_block_values;
-                            break;
-                        default:
-                            array = R.array.default_block_values;
+                        if(state_spinner.getSelectedItem().toString().equalsIgnoreCase("Jharkhand")) {
+                            if (position > 0) {
+                                block_spinner.setEnabled(true);
+
+                                int array = 0;
+                                switch (position) {
+                                    case 1:
+                                        array = R.array.rn_block_values;
+                                        break;
+                                    case 2:
+                                        array = R.array.es_block_values;
+                                        break;
+                                    case 3:
+                                        array = R.array.bo_block_values;
+                                        break;
+                                    case 4:
+                                        array = R.array.dh_block_values;
+                                        break;
+                                    default:
+                                        array = R.array.default_block_values;
+                                }
+                                //if (block_spinner.getAdapter().getCount()  0) {
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
+                                        (IdentificationActivity.this, array,
+                                                android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                block_spinner.setAdapter(adapter);
+                            } else {
+                                block_spinner.setEnabled(false);
+                                // block_spinner.setEnabled(false);
+                            }
+                        }
+                        else if(state_spinner.getSelectedItem().toString().equalsIgnoreCase("Madhya Pradesh")) {
+                            if (position > 0) {
+                                block_spinner.setEnabled(true);
+
+                                int array = 0;
+                                switch (position) {
+                                    case 1:
+                                        array = R.array.mp_block_values;
+                                        break;
+                                    case 2:
+                                        array = R.array.mp_block_values;
+                                        break;
+                                    default:
+                                        array = R.array.default_block_values;
+                                }
+                                //if (block_spinner.getAdapter().getCount()  0) {
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
+                                        (IdentificationActivity.this, array,
+                                                android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                block_spinner.setAdapter(adapter);
+                            } else {
+                                block_spinner.setEnabled(false);
+                                // block_spinner.setEnabled(false);
+                            }
+                        }
+
+                        // }
                     }
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
-                            (IdentificationActivity.this, array,
-                                    android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    block_spinner.setAdapter(adapter);
-                } else {
-                    block_spinner.setEnabled(false);
-                    // block_spinner.setEnabled(false);
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
 
             }
-        });
+        }, 1000);
 
 
         et_tested_positive_date = findViewById(R.id.et_tested_positive_date);
