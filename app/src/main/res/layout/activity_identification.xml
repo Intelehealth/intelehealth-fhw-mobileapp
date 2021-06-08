@@ -572,6 +572,24 @@
                                     android:layout_marginTop="12dp"
                                     android:focusable="true"
                                     />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:layout_marginTop="15dp"
+                                    android:includeFontPadding="false"
+                                    android:textSize="16sp"
+                                    android:text="@string/hint_block"
+                                    android:fontFamily="@font/lato_bold" />
+                                <Spinner
+                                    android:id="@+id/block_spinner"
+                                    android:entries="@array/jh_block_values"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp"
+                                    android:focusable="true"
+                                    />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -667,7 +685,7 @@
                                 android:hint="@string/identification_screen_prompt_postal_code"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType="number"
-                                android:maxLength="9"
+                                android:maxLength="6"
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />

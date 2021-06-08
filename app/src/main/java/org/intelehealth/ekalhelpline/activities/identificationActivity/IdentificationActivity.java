@@ -21,8 +21,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.os.StrictMode;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +45,16 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalhelpline.models.ClsUserGetResponse;
 import org.intelehealth.ekalhelpline.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.NameUser;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.PersonUser;
 import org.intelehealth.ekalhelpline.models.NewUserCreationCall.UserCreationData;
+import org.intelehealth.ekalhelpline.models.ResultsItem;
 import org.intelehealth.ekalhelpline.models.loginModel.LoginModel;
 import org.intelehealth.ekalhelpline.utilities.Base64Utils;
 import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
+import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -191,8 +196,11 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
-    private Spinner state_spinner, city_spinner;
+    private Spinner state_spinner, city_spinner, block_spinner;
     private EditText et_tested_positive_date;
+    CustomProgressDialog cpd;
+    private TextWatcher mobileNumberWatcher;
+    private boolean isUserExists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +223,7 @@ public class IdentificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        cpd = new CustomProgressDialog(this);
         i_privacy = getIntent();
         context = IdentificationActivity.this;
         privacy_value = i_privacy.getStringExtra("privacy"); //privacy_accept value retrieved from previous act.
@@ -1542,16 +1551,26 @@ public class IdentificationActivity extends AppCompatActivity {
         List<String> stateArray = Arrays.asList(getResources().getStringArray(R.array.state_values));
         state_spinner = findViewById(R.id.state_spinner);
         city_spinner = findViewById(R.id.city_spinner);
+        block_spinner = findViewById(R.id.block_spinner);
+        city_spinner.setEnabled(false);
+        block_spinner.setEnabled(false);
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.state_values, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state_spinner.setAdapter(stateAdapter);
         String stateprovince = patient1.getState_province();
         int stateIndex = stateArray.indexOf(stateprovince);
         if (stateIndex > 0) {
+            city_spinner.setEnabled(true);
+            block_spinner.setEnabled(true);
+
             state_spinner.setSelection(stateIndex);
-            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.mp_city_values, android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, stateIndex == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
             cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             city_spinner.setAdapter(cityAdapter);
+
+            ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, stateIndex == 1 ? R.array.jh_block_values : R.array.mp_block_values, android.R.layout.simple_spinner_item);
+            blockAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockAdapter);
         }
 
         String city_village = patient1.getCity_village();
@@ -1559,7 +1578,9 @@ public class IdentificationActivity extends AppCompatActivity {
         List<String> cityArray = Arrays.asList(getResources().getStringArray(R.array.jh_city_values));
         int cityIndex = cityArray.indexOf(city_village);
         if (cityIndex > 0) {
-            city_spinner.setSelection(cityIndex);
+            if (city_spinner.getAdapter().getCount() > cityIndex) {
+                city_spinner.setSelection(cityIndex);
+            }
         } else {
             cityArray = Arrays.asList(getResources().getStringArray(R.array.mp_city_values));
             cityIndex = cityArray.indexOf(city_village);
@@ -1567,7 +1588,29 @@ public class IdentificationActivity extends AppCompatActivity {
                 ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.mp_city_values, android.R.layout.simple_spinner_item);
                 cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 city_spinner.setAdapter(cityAdapter);
-                city_spinner.setSelection(cityIndex);
+                if (city_spinner.getAdapter().getCount() > cityIndex) {
+                    city_spinner.setSelection(cityIndex);
+                }
+            }
+        }
+
+        String block = patient1.getEducation_level();
+        List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.jh_block_values));
+        int blockIndex = blockArray.indexOf(block);
+        if (blockIndex > 0) {
+            if (block_spinner.getAdapter().getCount() > blockIndex) {
+                block_spinner.setSelection(blockIndex);
+            }
+        } else {
+            blockArray = Arrays.asList(getResources().getStringArray(R.array.mp_block_values));
+            blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.mp_block_values, android.R.layout.simple_spinner_item);
+                blockAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                block_spinner.setAdapter(blockAdapter);
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
             }
         }
 
@@ -1577,10 +1620,17 @@ public class IdentificationActivity extends AppCompatActivity {
                 state_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 0 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
+                        city_spinner.setEnabled(true);
+                        block_spinner.setEnabled(true);
+
+                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         city_spinner.setAdapter(adapter);
                         autocompleteState.setText(stateArray.get(position));
+
+                        ArrayAdapter<CharSequence> blockAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, position == 1 ? R.array.jh_block_values : R.array.mp_block_values, android.R.layout.simple_spinner_item);
+                        blockAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        block_spinner.setAdapter(blockAdapter);
                     }
 
                     @Override
@@ -1596,21 +1646,114 @@ public class IdentificationActivity extends AppCompatActivity {
         et_tested_positive_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar instance = Calendar.getInstance();
-                new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+                final String[] options = {
+                        getString(R.string.enter_number_of_days), getString(R.string.enter_date)
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTimeInMillis(0);
-                        cal.set(year, monthOfYear, dayOfMonth);
-                        Date date = cal.getTime();
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                        et_tested_positive_date.setText(simpleDateFormat.format(date));
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (which == 0) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            View viewInflated = LayoutInflater.from(context).inflate(R.layout.input_tested_positive,
+                                    findViewById(android.R.id.content), false);
+                            final EditText input = (EditText) viewInflated.findViewById(R.id.input);
+                            builder.setView(viewInflated);
+                            builder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    et_tested_positive_date.setError(null);
+                                    //passes number of days to this function to calculate the actual date...
+                                    if(!input.getText().toString().isEmpty() || !input.getText().toString().equals("")) {
+                                        String date = getDatefromDays(Integer.parseInt(input.getText().toString()));
+                                        et_tested_positive_date.setText(date);
+                                    }
+                                    else {
+                                        //do nothing close the dialog...
+                                    }
+
+                                }
+                            });
+
+                            builder.show();
+                            input.requestFocus();
+
+                        } else {
+
+                            Calendar instance = Calendar.getInstance();
+                            new DatePickerDialog(IdentificationActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                                    new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                    Calendar cal = Calendar.getInstance();
+                                    cal.setTimeInMillis(0);
+                                    cal.set(year, monthOfYear, dayOfMonth);
+                                    Date date = cal.getTime();
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                                    et_tested_positive_date.setText(simpleDateFormat.format(date));
+                                }
+                            }, instance.get(Calendar.YEAR), instance.get(Calendar.MONTH), instance.get(Calendar.DAY_OF_MONTH)).show();
+                        }
                     }
-                }, instance.get(Calendar.YEAR), instance.get(Calendar.MONTH), instance.get(Calendar.DAY_OF_MONTH)).show();
+                });
+                builder.show();
             }
         });
         et_tested_positive_date.setText(patient1.getTestedPositiveDate());
+
+        if (patientID_edit == null) {
+            mobileNumberWatcher = new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() == 10 && NetworkConnection.isOnline(IdentificationActivity.this)) {
+                        checkUserExistsOrNot(s.toString());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    /*if (s.length() == 10) {
+                        checkUserExistsOrNot(s.toString());
+                    }*/
+                }
+            };
+            mPhoneNum.addTextChangedListener(mobileNumberWatcher);
+        }
+    }
+
+    /**
+     * @param dateString : number of days entered by the user is passed as an argument here.
+     * @return date : formatted date string value is passed as a return value.
+     */
+    private String getDatefromDays(int dateString) {
+        String date = "";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd",
+                Locale.forLanguageTag(sessionManager.getAppLanguage()));
+
+        //number of days before date...
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, -dateString);
+        date = simpleDateFormat.format(calendar.getTime());
+        Log.v("time", "todays date: " + date);
+        //number of days calculation...
+
+        return date;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mobileNumberWatcher != null) {
+            mPhoneNum.removeTextChangedListener(mobileNumberWatcher);
+        }
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -2064,13 +2207,42 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+        /*if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
             return;
         } else {
             autocompleteState.setError(null);
+        }*/
+
+        if (state_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (city_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (block_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isUserExists) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.warning_user_exist);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return;
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2310,6 +2482,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+            patientAttributesDTO.setValue(block_spinner.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -2342,12 +2521,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2708,8 +2887,32 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (autocompleteState.getText().toString().equals("")) {
-            autocompleteState.setError(getString(R.string.error_field_required));
+        if (state_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (city_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (block_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isUserExists) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.warning_user_exist);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
             return;
         }
 
@@ -3034,6 +3237,21 @@ public class IdentificationActivity extends AppCompatActivity {
             autocompleteState.setError(null);
         }*/
 
+        if (state_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (city_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (block_spinner.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (et_tested_positive_date.getText().toString().equals("")) {
             et_tested_positive_date.setError(getString(R.string.error_field_required));
             return;
@@ -3273,10 +3491,19 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setState_province(StringUtils.getValue(state_spinner.getSelectedItem().toString()));
 //            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(city_spinner.getSelectedItem().toString()));
+            patientdto.setEducation_level(StringUtils.getValue(block_spinner.getSelectedItem().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
+            patientAttributesDTO.setValue(block_spinner.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3313,12 +3540,12 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatus));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mEducation));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3614,5 +3841,46 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
+    private void checkUserExistsOrNot(String enteredUserName) {
+        cpd.show();
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String urlString = urlModifiers.setRegistrationURL();
+        String encoded = base64Utils.encoded("admin", "Admin123");
+        Observable<ClsUserGetResponse> userGetResponse = AppConstants.apiInterface.getUsersFromServer(urlString, "Basic " + encoded, enteredUserName);
+        userGetResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ClsUserGetResponse>() {
+                    @Override
+                    public void onNext(ClsUserGetResponse clsUserGetResponse) {
+                        cpd.dismiss();
+                        List<ResultsItem> resultList = clsUserGetResponse.getResults();
+                        if (resultList != null && resultList.size() > 0) {
+                            isUserExists = true;
+                            /*isUSerExistsAlready = false;
+                            image_username_valid.setVisibility(View.VISIBLE);*/
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+                            alertDialogBuilder.setMessage(R.string.warning_user_exist);
+                            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        } else {
+                            isUserExists = false;
+                        }
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        cpd.dismiss();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+    }
 }
