@@ -9,6 +9,7 @@
         <item>Gujarati</item>
         <item>Odiya</item>
         <item>Assamese</item>
+        <item>Malyalam</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -20,6 +21,7 @@
         <item>gu</item>
         <item>or</item>
         <item>as</item>
+        <item>ml</item>
 <!--        <item>cb</item>-->
     </string-array>
 
