@@ -722,6 +722,21 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "প্ৰতি মাহে সময়")
                     .replace("times per year", "প্ৰতি বছৰে সময়")));
         }
+        //Telugu Language Support...
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
+                    .replace("Patient reports -", "రోగి నివేదికలు -")
+                    .replace("Patient denies -", "రోగి నిరాకరించాడు -")
+                    .replace("Hours", "గంటలు").replace("Days", "రోజులు")
+                    .replace("Weeks", "వారాలు").replace("Months", "నెలల")
+                    .replace("Years", "సంవత్సరాలు")
+                    .replace("times per hour", "గంటకు సార్లు")
+                    .replace("time per day", "రోజుకు సార్లు")
+                    .replace("times per week", "వారానికి సార్లు")
+                    .replace("times per month", "నెలకు సార్లు")
+                    .replace("times per year", "సంవత్సరానికి సార్లు")));
+        }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
