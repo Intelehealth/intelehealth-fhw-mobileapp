@@ -75,6 +75,7 @@ public class Node implements Serializable {
     private String display_kannada;
     private String display_gujarati;
     private String display_assamese;
+    private String display_telugu;
     private String language;
     private String choiceType;
     private String inputType;
@@ -231,6 +232,16 @@ public class Node implements Serializable {
             if (this.display_assamese.isEmpty()) {
                 this.display_assamese = this.display;
             }
+
+            //Telugu language support for display...
+            this.display_telugu = jsonNode.optString("display-te");
+            if (this.display_telugu.isEmpty()) {
+                this.display_telugu = jsonNode.optString("display-te");
+            }
+            if (this.display_telugu.isEmpty()) {
+                this.display_telugu = this.display;
+            }
+
 
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
@@ -544,6 +555,20 @@ public class Node implements Serializable {
                     }
                 }
             }
+
+            //Telugu language support...
+            case "te": {
+                if (display_telugu != null && !display_telugu.isEmpty()) {
+                    return display_telugu;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
 
             default: {
                 {
@@ -2363,6 +2388,7 @@ public class Node implements Serializable {
                 ", display_hindi='" + display_hindi + '\'' +
                 ", display_kannada='" + display_kannada + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
+                ", display_telugu='" + display_telugu + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
