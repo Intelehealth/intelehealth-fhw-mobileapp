@@ -75,6 +75,7 @@ public class Node implements Serializable {
     private String display_kannada;
     private String display_gujarati;
     private String display_assamese;
+    private String display_malyalam;
     private String language;
     private String choiceType;
     private String inputType;
@@ -231,6 +232,16 @@ public class Node implements Serializable {
             if (this.display_assamese.isEmpty()) {
                 this.display_assamese = this.display;
             }
+
+            //Malyalam language support for display...
+            this.display_malyalam = jsonNode.optString("display-ml");
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = jsonNode.optString("display-ml");
+            }
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = this.display;
+            }
+
 
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
@@ -536,6 +547,19 @@ public class Node implements Serializable {
             case "as": {
                 if (display_assamese != null && !display_assamese.isEmpty()) {
                     return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -2363,6 +2387,7 @@ public class Node implements Serializable {
                 ", display_hindi='" + display_hindi + '\'' +
                 ", display_kannada='" + display_kannada + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
+                ", display_malyalam='" + display_malyalam + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
