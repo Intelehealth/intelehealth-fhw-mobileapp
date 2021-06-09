@@ -75,6 +75,7 @@ public class Node implements Serializable {
     private String display_kannada;
     private String display_gujarati;
     private String display_assamese;
+    private String display_tamil;
     private String language;
     private String choiceType;
     private String inputType;
@@ -230,6 +231,16 @@ public class Node implements Serializable {
             }
             if (this.display_assamese.isEmpty()) {
                 this.display_assamese = this.display;
+            }
+
+            //Tamil language support for display...
+
+            this.display_tamil = jsonNode.optString("display-ta");
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = jsonNode.optString("display-ta");
+            }
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = this.display;
             }
 
             this.language = jsonNode.optString("language");
@@ -536,6 +547,19 @@ public class Node implements Serializable {
             case "as": {
                 if (display_assamese != null && !display_assamese.isEmpty()) {
                     return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Tamil language support...
+            case "ta": {
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    return display_tamil;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -2363,6 +2387,7 @@ public class Node implements Serializable {
                 ", display_hindi='" + display_hindi + '\'' +
                 ", display_kannada='" + display_kannada + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
+                ", display_tamil='" + display_tamil + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
