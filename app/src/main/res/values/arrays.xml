@@ -9,7 +9,8 @@
         <item>Gujarati</item>
         <item>Odiya</item>
         <item>Assamese</item>
-<!--        <item>Cebuano</item>-->
+        <item>Telugu</item>
+        <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
@@ -20,7 +21,8 @@
         <item>gu</item>
         <item>or</item>
         <item>as</item>
-<!--        <item>cb</item>-->
+        <item>te</item>
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
