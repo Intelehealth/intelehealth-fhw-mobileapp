@@ -724,7 +724,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "প্ৰতি বছৰে সময়")));
         }
         //Tamil Language Support...
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "கேள்விக்கு பதிலளிக்கப்படவில்லை")
                     .replace("Patient reports -", "நோயாளி அறிக்கைகள் -")
