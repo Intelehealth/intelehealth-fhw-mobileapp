@@ -1,60 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ഇകാൽ ആരോഗ്യ ഹെൽപ്പ് ലൈൻ</string>
-    <string name="generic_the_flipping_word_next" translatable="false">അടുത്ത</string>
-    <string name="hint_required" translatable="false">" ആവശ്യമായ"</string>
-    <string name="hint_optional" translatable="false">" ഓപ്ഷണൽ"</string>
-    <string name="tag_optional" translatable="false">" ഓപ്ഷണൽ"</string>
-    <string name="generic_ok">ഓക്കെ</string>
-    <string name="generic_cancel">ക്യാൻസൽ</string>
-    <string name="generic_yes">" അതെ"</string>
-    <string name="generic_no">" ഇല്ല"</string>
-    <string name="generic_back" translatable="false">പുറകിൽ</string>
-    <string name="generic_coming_soon" translatable="false">" ഉടൻ വരുന്നു..."</string>
-    <string name="action_print" translatable="false">" പ്രിൻറ്"</string>
-    <string name="action_sms" translatable="false">" എസ്എംഎസ്"</string>
-    <string name="action_home" translatable="false">" വീട്"</string>
-    <string name="action_settings" translatable="false">" സജ്ജീകരണങ്ങള്‍"</string>
-    <string name="generic_warning" translatable="false">മുന്നറിയപ്പ്</string>
-    <string name="generic_update" translatable="false">അപ്ഡേറ്റ്</string>
-    <string name="generic_deleted" translatable="false">" ഇല്ലാതാക്കി"</string>
-    <string name="title_activity_login" translatable="false">ഇകാൽ ആരോഗ്യ ഹെൽപ്പ് ലൈൻ</string>
-    <string name="prompt_email" translatable="false">യൂസർ നെയിം</string>
-    <string name="prompt_password" translatable="false">പാസ്സ്‌വേർഡ്</string>
-    <string name="prompt_admin_password" translatable="false">" അഡ്മിൻ പാസ്സ്‌വേർഡ്"</string>
-    <string name="action_sign_in" translatable="false">"ലോഗിൻ "</string>
-    <string name="action_sign_in_short" translatable="false">" സൈൻ ഇൻ "</string>
-    <string name="url_invalid" translatable="false">താങ്കളുടെ URL പരിശോധിക്കുക</string>
-    <string name="prefix_invalid" translatable="false">മറ്റൊരു പ്രിഫിക്സ് തിരഞ്ഞെടുക്കുക</string>
-    <string name="error_invalid_email" translatable="false">യൂസർ നെയിം സാധുവല്ല</string>
-    <string name="error_invalid_password" translatable="false">ഈ പാസ്സ്‌വേർഡ് വളരെ ചെറുതാണ്</string>
-    <string name="error_incorrect_password" translatable="false">ഈ പാസ്സ്‌വേർഡ് വളരെ ചെറുതാണ്</string>
-    <string name="error_field_required" translatable="false">ഈ ഫീൽഡ് ആവശ്യമാണ്</string>
-    <string name="error_network" translatable="false">" നെറ്റ്‌വർക്ക് പിശക്"</string>
-    <string name="error_location_not_selected" translatable="false">" ലൊക്കേഷൻ ഡ്രോപ്ഡൗണില്‍നിന്ന് ഒരു സംഖ്യ തെരഞ്ഞെടുക്കുക"</string>
-    <string name="error_location_not_fetched" translatable="false">" ലൊക്കേഷൻ കണ്ടുപിടിക്കാൻ സാധിക്കുന്നില്ല"</string>
-    <string name="permission_rationale" translatable="false">"ഇമെയിൽ പൂര്‍ണ്ണമാക്കുന്നതിന് കോൺടാക്ട് പെർമിഷൻ ആവശ്യമാണ് "</string>
-    <string name="device_id" translatable="false">ഡിവൈസ് ഐഡി :</string>
-    <string name="cant_login_user" translatable="false">" ലോഗിൻ ചെയ്യാൻ സാധിക്കുന്നില്ലേ?"</string>
-    <string name="email_link" translatable="false">നിങ്ങളുടെ പാസ്‌വേഡ് പുന:സജ്ജമാക്കുന്നതിന് നിങ്ങളുടെ സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്ററുമായി ബന്ധപ്പെടുക അല്ലെങ്കിൽ support@intelehealth.io ലേക്ക് ഒരു ഇമെയിൽ അയയ്ക്കുക</string>
-    <string name="contact_whatsapp">" നിങ്ങളുടെ പാസ്‌വേഡ് പുനഃസജ്ജീകരിക്കുന്നതിനായി ദയവായി നിങ്ങളുടെ സിസ്റ്റം അഡ്മിനിസ്ട്രേറ്ററെ ബന്ധപ്പെടുക"</string>
-    <string name="title_home_screen" translatable="false">" വീട്"</string>
-    <string name="button_new_pt">" പുതിയ രോഗി"</string>
-    <string name="button_find_pt" translatable="false">രോഗിയെ കണ്ടെത്തുക</string>
-    <string name="button_diagnostic_tests" translatable="false">" ഡയഗ്നോസ്റ്റിക് ടെസ്റ്റ്"</string>
-    <string name="button_active_pt" translatable="false">സജീവ രോഗികൾ</string>
-    <string name="menu_option_sync" translatable="false">ഡാറ്റാ റിഫ്രഷ് ചെയ്യുക</string>
-    <string name="menu_option_settings" translatable="false">സജ്ജീകരണങ്ങള്‍</string>
-    <string name="menu_option_end_of_day" translatable="false">" ദിവസ അവസാനം"</string>
-    <string name="menu_option_logout" translatable="false">" ലോഗൗട്ട്"</string>
-    <string name="title_activity_identification" translatable="false">പുതിയ രോഗിയെ ഉൾപ്പെടുത്തുക</string>
-    <string name="identification_screen_prompt_first_name">ആദ്യ പേര്*</string>
-    <string name="identification_screen_prompt_middle_name">നടുവിലത്തെ പേര്</string>
-    <string name="identification_screen_prompt_last_name">അവസാന പേര്*</string>
-    <string name="identification_screen_prompt_address">വിലാസം ലൈന്‍1</string>
-    <string name="identification_screen_prompt_address2">വിലാസം ലൈന്‍2</string>
-    <string name="identification_screen_prompt_phone_number">" ഫോൺ നമ്പർ"</string>
-    <string name="admin_password_dialog_heading" translatable="false">" അഡ്മിൻ പാസ്സ്‌വേർഡ് നല്‍കുക"</string>
+    <string name="app_name">ఏకల్ ఆరోగ్య</string>
+    <string name="generic_coming_soon" translatable="false">" త్వరలో....."</string>
+    <string name="title_activity_login" translatable="false">" ఏకల్ ఆరోగ్య"</string>
+    <string name="prompt_email" translatable="false">" వినియోగదారు పేరు"</string>
+    <string name="prompt_password" translatable="false">పాస్‌వర్డ్</string>
+    <string name="prompt_admin_password" translatable="false">" అడ్మిన్ పాస్వర్డ్"</string>
+    <string name="action_sign_in" translatable="false">ప్రవేశించండి</string>
+    <string name="action_sign_in_short" translatable="false">సైన్ ఇన్ చేయండి</string>
+    <string name="url_invalid" translatable="false">" మీ URL ను తనిఖీ చేయండి."</string>
+    <string name="prefix_invalid" translatable="false">వేరే ఉపసర్గను ఎంచుకోండి!</string>
+    <string name="error_invalid_email" translatable="false">ఈ వినియోగదారు పేరు చెల్లదు</string>
+    <string name="error_invalid_password" translatable="false">ఈ పాస్‌వర్డ్ చాలా చిన్నది</string>
+    <string name="error_incorrect_password" translatable="false">దయచేసి వినియోగదారు పేరు మరియు పాస్‌వర్డ్ నమోదుచేసినది తనిఖీ చేయండి</string>
+    <string name="error_field_required" translatable="false">ఈ ఖాళీని తప్పనిసరిగా పూరించవలెను</string>
+    <string name="error_network" translatable="false">నెట్వర్క్ లోపం</string>
+    <string name="error_location_not_selected" translatable="false">దయచేసి ఈ క్రింది స్థానాలలో విలువను ఎంచుకోండి</string>
+    <string name="error_location_not_fetched" translatable="false">స్థానాలను పొందడం సాధ్యం కాలేదు</string>
+    <string name="permission_rationale" translatable="false">" ఇమెయిల్ పూర్తిలను అందించడానికి పరిచయాల అనుమతులు అవసరం."</string>
+    <string name="device_id" translatable="false">" పరికర ID:"</string>
+    <string name="cant_login_user" translatable="false">" లాగిన్ కాలేదా?"</string>
+    <string name="email_link" translatable="false">" దయచేసి మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి లేదా support@intelehealth.io కు ఇమెయిల్ పంపండి"</string>
+    <string name="contact_whatsapp">" మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి దయచేసి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి"</string>
+    <string name="title_home_screen" translatable="false">" హోమ్"</string>
+    <string name="button_new_pt">" కొత్త రోగి"</string>
+    <string name="button_find_pt" translatable="false">" రోగిని కనుగొనండి"</string>
+    <string name="button_diagnostic_tests" translatable="false">" రోగనిర్ధారణ పరీక్షలు"</string>
+    <string name="button_active_pt" translatable="false">" చురుకైన రోగులు"</string>
+    <string name="menu_option_sync" translatable="false">" డేటాను రిఫ్రెష్ చేయండి"</string>
+    <string name="menu_option_settings" translatable="false">" సెట్టింగులు"</string>
+    <string name="menu_option_end_of_day" translatable="false">" రోజు ముగింపు"</string>
+    <string name="menu_option_logout" translatable="false">" లాగ్ అవుట్"</string>
+    <string name="title_activity_identification" translatable="false">" కొత్త రోగిని జోడించండి"</string>
+    <string name="identification_screen_prompt_first_name">" మొదటి పేరు *"</string>
+    <string name="identification_screen_prompt_middle_name">" మధ్య పేరు"</string>
+    <string name="identification_screen_prompt_last_name">" చివరి పేరు *"</string>
+    <string name="identification_screen_prompt_address">" చిరునామా పంక్తి 1"</string>
+    <string name="identification_screen_prompt_address2">" చిరునామా పంక్తి 2"</string>
+    <string name="identification_screen_prompt_phone_number">" ఫోను నంబరు"</string>
+    <string name="admin_password_dialog_heading" translatable="false">అడ్మిన్ పాస్‌వర్డ్‌ను నమోదు చేయండి</string>
     <string name="identification_screen_prompt_gender" translatable="false">" ലിംഗഭേദം*"</string>
     <string name="identification_screen_checkbox_male">" പുരുഷൻ"</string>
     <string name="identification_screen_checkbox_female">" സ്ത്രീ"</string>
