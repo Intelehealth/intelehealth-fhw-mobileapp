@@ -713,15 +713,15 @@ public class HomeActivity extends AppCompatActivity {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
 
         // AlertDialog.Builder alertdialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-        alertdialogBuilder.setMessage(R.string.sure_to_exit);
-        alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+        alertdialogBuilder.setMessage(getResources().getString(R.string.sure_to_exit));
+        alertdialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
                 // finish();
             }
         });
-        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        alertdialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), null);
 
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.show();
