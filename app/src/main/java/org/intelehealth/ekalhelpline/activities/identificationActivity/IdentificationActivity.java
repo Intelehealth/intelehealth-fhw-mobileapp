@@ -2416,9 +2416,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
-            if (et_tested_positive_date.getText().toString().equals("")) {
+            /*if (et_tested_positive_date.getText().toString().equals("")) {
                 et_tested_positive_date.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
@@ -2483,10 +2483,10 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (block_spinner.getSelectedItemPosition() == 0) {
+        /*if (block_spinner.getSelectedItemPosition() == 0) {
             Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
         if (isUserExists) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
@@ -2742,7 +2742,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(block_spinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(block_spinner.getSelectedItem().toString().equalsIgnoreCase("Select") ? "" : block_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3141,10 +3141,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if (et_tested_positive_date.getText().toString().equals("")) {
+        /*if (et_tested_positive_date.getText().toString().equals("")) {
             et_tested_positive_date.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
         if (state_spinner.getSelectedItemPosition() == 0) {
             Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
@@ -3156,10 +3156,10 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (block_spinner.getSelectedItemPosition() == 0) {
+        /*if (block_spinner.getSelectedItemPosition() == 0) {
             Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
         if (isUserExists) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
@@ -3465,9 +3465,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
-            if (et_tested_positive_date.getText().toString().equals("")) {
+           /* if (et_tested_positive_date.getText().toString().equals("")) {
                 et_tested_positive_date.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
@@ -3531,17 +3531,17 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (block_spinner.getSelectedItemPosition() == 0) {
+        /*if (block_spinner.getSelectedItemPosition() == 0) {
             Toast.makeText(context, R.string.error_mandatory_field, Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
-        if (et_tested_positive_date.getText().toString().equals("")) {
+        /*if (et_tested_positive_date.getText().toString().equals("")) {
             et_tested_positive_date.setError(getString(R.string.error_field_required));
             return;
         } else {
             et_tested_positive_date.setError(null);
-        }
+        }*/
 
         // TODO: Add validations for all Spinners here...
 /*
@@ -3776,7 +3776,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setState_province(StringUtils.getValue(state_spinner.getSelectedItem().toString()));
 //            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(city_spinner.getSelectedItem().toString()));
-            patientdto.setEducation_level(StringUtils.getValue(block_spinner.getSelectedItem().toString()));
+            String block = StringUtils.getValue(block_spinner.getSelectedItem().toString());
+            patientdto.setEducation_level(block.equalsIgnoreCase("Select") ? "" : block);
+
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
@@ -3786,7 +3788,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education Level"));
-            patientAttributesDTO.setValue(block_spinner.getSelectedItem().toString());
+            patientAttributesDTO.setValue(block_spinner.getSelectedItem().toString().equalsIgnoreCase("Select") ? "" : block_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));

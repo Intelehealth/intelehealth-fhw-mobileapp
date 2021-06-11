@@ -360,7 +360,7 @@
                                 android:focusable="false"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="@string/hint_date_tested_positive"
+                                android:hint="@string/hint_date_tested_positive_optional"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
@@ -579,7 +579,7 @@
                                     android:layout_marginTop="15dp"
                                     android:includeFontPadding="false"
                                     android:textSize="16sp"
-                                    android:text="@string/hint_block"
+                                    android:text="@string/hint_block_optional"
                                     android:fontFamily="@font/lato_bold" />
                                 <Spinner
                                     android:id="@+id/block_spinner"
