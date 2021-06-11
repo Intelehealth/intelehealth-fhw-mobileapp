@@ -553,7 +553,12 @@
     <string name="in_partnership_with_state_government_of">ରାଜ୍ୟ ସରକାରଙ୍କ ସହଭାଗିତାରେ</string>
     <string name="jharkhand">ଝାଡ଼ଖଣ୍ଡ</string>
     <string name="madhya_pradesh">ମଧ୍ୟପ୍ରଦେଶ</string>
-    <string name="age_lessthan_1">Age cannot be less than 1</string>
-    <string name="age_greaterthan_120">Age cannot be greater than 120</string>
+    <string name="age_lessthan_1">ବୟସ 1 ରୁ କମ୍ ହୋଇପାରିବ ନାହିଁ </string>
+    <string name="age_greaterthan_120">ବୟସ 120 ରୁ ଅଧିକ ହୋଇପାରିବ ନାହିଁ</string>
+    <string name="hint_date_tested_positive_optional">ପରୀକ୍ଷିତ ପଜିଟିଭ୍ / ଦିନ</string>
+    <string name="hint_block_optional">ବ୍ଲକ</string>
+    <string name="take_photo">ଫଟୋ ନିଅନ୍ତୁ </string>
+    <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
+    <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
 
 </resources>

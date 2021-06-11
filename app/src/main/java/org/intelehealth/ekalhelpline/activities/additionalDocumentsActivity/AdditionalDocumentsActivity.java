@@ -1,23 +1,40 @@
 package org.intelehealth.ekalhelpline.activities.additionalDocumentsActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity;
+import org.intelehealth.ekalhelpline.app.AppConstants;
+import org.intelehealth.ekalhelpline.database.dao.ImagesDAO;
+import org.intelehealth.ekalhelpline.models.DocumentObject;
+import org.intelehealth.ekalhelpline.utilities.BitmapUtils;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+import org.intelehealth.ekalhelpline.utilities.StringUtils;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
+import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,20 +42,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.app.AppConstants;
-import org.intelehealth.ekalhelpline.database.dao.ImagesDAO;
-import org.intelehealth.ekalhelpline.models.DocumentObject;
-import org.intelehealth.ekalhelpline.utilities.SessionManager;
-import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
-
-import org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity;
-import org.intelehealth.ekalhelpline.utilities.StringUtils;
-import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
-
 public class AdditionalDocumentsActivity extends AppCompatActivity {
 
 
+    private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
@@ -130,23 +137,77 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                File photo = new File(mCurrentPhotoPath);
-                if (photo.exists()) {
-                    try{
-
-                        long length = photo.length();
-                        length = length/1024;
-                        Log.e("------->>>>",length+"");
-                    }catch(Exception e){
-                        System.out.println("File not found : " + e.getMessage() + e);
-                    }
-
-                    recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-                    updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
-                }
+                saveImage(mCurrentPhotoPath);
             }
+        } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            Uri selectedImage = data.getData();
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+            Log.v("path", picturePath + "");
+
+            // copy & rename the file
+            String finalImageName = UUID.randomUUID().toString();
+            final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+            BitmapUtils.copyFile(picturePath, finalFilePath);
+            compressImageAndSave(finalFilePath);
+
         }
     }
+
+    private Handler mBackgroundHandler;
+
+    private Handler getBackgroundHandler() {
+        if (mBackgroundHandler == null) {
+            HandlerThread thread = new HandlerThread("background");
+            thread.start();
+            mBackgroundHandler = new Handler(thread.getLooper());
+        }
+        return mBackgroundHandler;
+    }
+
+    void compressImageAndSave(final String filePath) {
+        getBackgroundHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                boolean flag = BitmapUtils.fileCompressed(filePath);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (flag) {
+                            saveImage(filePath);
+                        } else
+                            Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+    }
+
+
+    private void saveImage(String picturePath) {
+        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        File photo = new File(picturePath);
+        if (photo.exists()) {
+            try {
+
+                long length = photo.length();
+                length = length / 1024;
+                Log.e("------->>>>", length + "");
+            } catch (Exception e) {
+                System.out.println("File not found : " + e.getMessage() + e);
+            }
+
+            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+        }
+    }
+
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -160,15 +221,36 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_docs:
-                Intent cameraIntent = new Intent(this, CameraActivity.class);
-                String imageName = UUID.randomUUID().toString();
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+                selectImage();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void selectImage() {
+        final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(AdditionalDocumentsActivity.this);
+        builder.setTitle(R.string.additional_doc_image_picker_title);
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (item == 0) {
+                    Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
+                    String imageName = UUID.randomUUID().toString();
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
+
+                } else if (item == 1) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
+                } else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
 
