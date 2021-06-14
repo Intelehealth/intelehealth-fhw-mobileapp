@@ -518,12 +518,12 @@
     <string name="enter_answer">ഉത്തരം നല്‍കുക</string>
     <string name="enter_occupation">" തൊഴിൽ നല്‍കുക"</string>
     <string name="select">തിരഞ്ഞെടുക്കുക</string>
-    <string name="Hours">"മണിക്കൂറുകൾ "</string>
-    <string name="Days">" ദിവസങ്ങൾ"</string>
+    <string name="Hours">മണിക്കൂറുകൾ</string>
+    <string name="Days">ദിവസങ്ങൾ</string>
     <string name="Weeks">ആഴ്ചകൾ</string>
-    <string name="Months">" മാസങ്ങൾ"</string>
-    <string name="Years">" വർഷങ്ങൾ"</string>
-    <string name="image_saved">" ഇമേജുകള്‍ വിജയകരമായി സേവ് ചെയ്തിരിക്കുന്നു!"</string>
+    <string name="Months">മാസങ്ങൾ</string>
+    <string name="Years"> വർഷങ്ങൾ</string>
+    <string name="image_saved">ഇമേജുകള്‍ വിജയകരമായി സേവ് ചെയ്തിരിക്കുന്നു!</string>
     <string name="emergency_confirmation">നിങ്ങൾക്ക് ഈ സന്ദർശനം ഒരു എമർജൻസി ആയി ക്രമീകരിക്കണമോ?</string>
     <string name="per_Hour">ഒരു മണിക്കൂറിൽ</string>
     <string name="per_Day">ഒരു ദിവസത്തിൽ</string>

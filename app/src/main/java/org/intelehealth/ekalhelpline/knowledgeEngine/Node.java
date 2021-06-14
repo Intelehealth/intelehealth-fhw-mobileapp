@@ -305,6 +305,7 @@ public class Node implements Serializable {
         this.display_oriya = source.display_oriya;
         this.display_cebuno = source.display_cebuno;
         this.display_kannada = source.display_kannada;
+        this.display_malyalam = source.display_malyalam;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -1211,7 +1212,8 @@ public class Node implements Serializable {
                 unit_text = mr_en(unit_text); //for Marathi...
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
-                unit_text = as_en(unit_text);
+                unit_text = as_en(unit_text); //For Assamese..
+                unit_text = ml_en(unit_text); //For Malayalam
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1415,6 +1417,36 @@ public class Node implements Serializable {
                 break;
 
             case "વર્ષ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String ml_en(String unit) {
+
+        switch (unit) {
+            case "മണിക്കൂറുകൾ":
+                unit = "Hours";
+                break;
+
+            case "ദിവസങ്ങൾ":
+                unit = "Days";
+                break;
+
+            case "ആഴ്ചകൾ":
+                unit = "Weeks";
+                break;
+
+            case "മാസങ്ങൾ":
+                unit = "Months";
+                break;
+
+            case "വർഷങ്ങൾ":
                 unit = "Years";
                 break;
 
@@ -1760,6 +1792,8 @@ public class Node implements Serializable {
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
                 unit_text = as_en(unit_text); //for Assamese...
+                unit_text = ml_en(unit_text); //for Malayalam...
+
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -2025,6 +2059,14 @@ public class Node implements Serializable {
 
     public void setDisplay_marathi(String display_marathi) {
         this.display_marathi = display_marathi;
+    }
+
+    public String getDisplay_malyalam() {
+        return display_malyalam;
+    }
+
+    public void setDisplay_malyalam(String display_malyalam) {
+        this.display_malyalam = display_malyalam;
     }
 
     public String getDisplay_oriya() {
