@@ -305,6 +305,7 @@ public class Node implements Serializable {
         this.display_oriya = source.display_oriya;
         this.display_cebuno = source.display_cebuno;
         this.display_kannada = source.display_kannada;
+        this.display_telugu = source.display_telugu;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -1213,6 +1214,7 @@ public class Node implements Serializable {
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
                 unit_text = as_en(unit_text);
+                unit_text = te_en(unit_text); //For Telugu
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1416,6 +1418,36 @@ public class Node implements Serializable {
                 break;
 
             case "વર્ષ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String te_en(String unit) {
+
+        switch (unit) {
+            case "గంటలు":
+                unit = "Hours";
+                break;
+
+            case "రోజులు":
+                unit = "Days";
+                break;
+
+            case "వారాలు":
+                unit = "Weeks";
+                break;
+
+            case "నెలలు":
+                unit = "Months";
+                break;
+
+            case "సంవత్సరాలు":
                 unit = "Years";
                 break;
 
@@ -1761,6 +1793,8 @@ public class Node implements Serializable {
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
                 unit_text = as_en(unit_text); //for Assamese...
+                unit_text = te_en(unit_text); //for Telugu...
+
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -2009,6 +2043,14 @@ public class Node implements Serializable {
 
     public void setDisplay_kannada(String display_kannada) {
         this.display_kannada = display_kannada;
+    }
+
+    public String getDisplay_telugu() {
+        return display_telugu;
+    }
+
+    public void setDisplay_telugu(String display_telugu) {
+        this.display_telugu = display_telugu;
     }
 
 
