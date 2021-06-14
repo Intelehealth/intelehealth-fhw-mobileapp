@@ -733,10 +733,10 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Weeks", "வாரங்கள்").replace("Months", "மாதங்கள்")
                     .replace("Years", "ஆண்டுகள்")
                     .replace("times per hour", "ஒரு மணி நேரத்திற்கு")
-                    .replace("time per day", "ஒரு நாளைக்கு முறை")
-                    .replace("times per week", "வாரத்திற்கு முறை")
-                    .replace("times per month", "மாதத்திற்கு முறை")
-                    .replace("times per year", "வருடத்திற்கு முறை")));
+                    .replace("time per day", "ஒரு நாளைக்கு")
+                    .replace("times per week", "வாரத்திற்கு")
+                    .replace("times per month", "ஒரு மாதத்திற்கு")
+                    .replace("times per year", "வருடத்திற்கு")));
         } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
