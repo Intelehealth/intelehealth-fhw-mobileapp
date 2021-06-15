@@ -36,10 +36,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -61,8 +59,6 @@ import org.json.JSONObject;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -87,7 +83,6 @@ import org.intelehealth.ekalhelpline.models.dto.PatientDTO;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 import org.intelehealth.ekalhelpline.utilities.EditTextUtils;
 import org.intelehealth.ekalhelpline.utilities.FileUtils;
-import org.intelehealth.ekalhelpline.utilities.IReturnValues;
 import org.intelehealth.ekalhelpline.utilities.Logger;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.utilities.UuidGenerator;
@@ -106,9 +101,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();

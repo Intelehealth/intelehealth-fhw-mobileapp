@@ -1,6 +1,5 @@
 package org.intelehealth.ekalhelpline.utilities;
 
-import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 
 public class UrlModifiers {

@@ -1,6 +1,5 @@
 package org.intelehealth.ekalhelpline.models;
 
-import java.util.List;
 import java.util.Objects;
 
 import com.google.gson.annotations.SerializedName;

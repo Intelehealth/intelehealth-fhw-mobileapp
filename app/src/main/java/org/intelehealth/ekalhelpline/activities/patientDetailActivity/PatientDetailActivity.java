@@ -98,8 +98,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
+
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();

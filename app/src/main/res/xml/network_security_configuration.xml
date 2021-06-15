@@ -3,10 +3,6 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">intelehealth.io</domain>
         <domain includeSubdomains="true">intelehealth.org</domain>
-        <domain includeSubdomains="true">covidhelp.in</domain>
-        <domain includeSubdomains="true">165.227.97.214</domain>
-        <domain includeSubdomains="true">13.228.184.65</domain>
-        <domain includeSubdomains="true">13.232.32.249</domain>
-        <domain includeSubdomains="true">13.235.137.183</domain>
+        <domain includeSubdomains="true">swasthyasampark.intelehealth.org</domain>
     </domain-config>
 </network-security-config>
