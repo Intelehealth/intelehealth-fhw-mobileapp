@@ -1370,7 +1370,8 @@ public class SetupActivity extends AppCompatActivity {
 
                                                                     Log.d("loginmodell", "sess_phoneno: "+
                                                                             sessionManager.getProviderPhoneno());
-                                                                }                                                            }
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
