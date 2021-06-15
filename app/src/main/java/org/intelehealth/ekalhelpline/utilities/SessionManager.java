@@ -51,6 +51,7 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
+    private static final String PROVIDER_PHONENO = "PROVIDER_PHONENO";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -210,6 +211,16 @@ public class SessionManager {
         editor.putString(KEY_PREF_SERVER_URL, serverUrl);
         editor.commit();
     }
+
+    /**
+     * @param providerPhoneNo Set the phone number of the Provider who has setup the app...
+     */
+    public void setProviderPhoneNo(String providerPhoneNo) {
+        editor.putString(PROVIDER_PHONENO, providerPhoneNo);
+        editor.commit();
+    }
+    public String getProviderPhoneno() { return pref.getString(PROVIDER_PHONENO, ""); }
+
 
     public String getHouseholdUuid() {
         return pref.getString(HOUSEHOLD_UUID, "");
