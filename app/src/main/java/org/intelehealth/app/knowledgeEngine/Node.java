@@ -71,6 +71,7 @@ public class Node implements Serializable {
     private String display_oriya;
     private String display_cebuno;
     private String display_hindi;
+    private String display_russian;
     private String language;
     private String choiceType;
     private String inputType;
@@ -82,6 +83,7 @@ public class Node implements Serializable {
     private String pop_up;
     private String pop_up_hi;
     private String pop_up_or;
+    private String pop_up_ru;
     private String gender;
     private String min_age;
     private String max_age;
@@ -173,6 +175,14 @@ public class Node implements Serializable {
                 this.display = this.text;
             }
 
+            this.display_russian = jsonNode.optString("display-ru");
+            if (this.display_russian.isEmpty()) {
+                this.display_russian = jsonNode.optString("display-ru");
+            }
+            if (this.display_russian.isEmpty()) {
+                this.display_russian = this.display;
+            }
+
             this.display_oriya = jsonNode.optString("display-or");
             if (this.display_oriya.isEmpty()) {
                 this.display_oriya = jsonNode.optString("display-or");
@@ -248,8 +258,13 @@ public class Node implements Serializable {
                 this.pop_up_or = this.pop_up;
             }
 
+            this.pop_up_ru = jsonNode.optString("pop-up-ru"); //pop-up for Odiya...
+            if (this.pop_up_ru.isEmpty()) {
+                this.pop_up_ru = this.pop_up;
+            }
+
             // this.hasPopUp = !pop_up.isEmpty();
-            if (!pop_up.isEmpty() || !pop_up_hi.isEmpty() || !pop_up_or.isEmpty()) {
+            if (!pop_up.isEmpty() || !pop_up_hi.isEmpty() || !pop_up_or.isEmpty() || !pop_up_ru.isEmpty()) {
                 this.hasPopUp = true;
             }
 
@@ -282,6 +297,7 @@ public class Node implements Serializable {
         this.pop_up = source.pop_up;
         this.pop_up_hi = source.pop_up_hi;
         this.pop_up_or = source.pop_up_or;
+        this.pop_up_ru = source.pop_up_ru;
         this.jobAidFile = source.jobAidFile;
         this.jobAidType = source.jobAidType;
         this.aidAvailable = source.aidAvailable;
@@ -444,6 +460,21 @@ public class Node implements Serializable {
                 if (display_hindi != null && !display_hindi.isEmpty()) {
                     //Log.i(TAG, "findDisplay: cb ");
                     return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "ru": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_russian != null && !display_russian.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_russian;
                 } else {
                     if (display == null || display.isEmpty()) {
                         //Log.i(TAG, "findDisplay: eng/o txt");
@@ -777,7 +808,9 @@ public class Node implements Serializable {
                         messages.add(node_opt.pop_up_hi);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         messages.add(node_opt.pop_up_or);
-                    } else {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                        messages.add(node_opt.pop_up_ru);
+                    }else {
                         messages.add(node_opt.pop_up);
                     }
 
@@ -2111,6 +2144,7 @@ public class Node implements Serializable {
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                ", display_russian='" + display_russian + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
@@ -2122,6 +2156,7 @@ public class Node implements Serializable {
                 ", pop_up='" + pop_up + '\'' +
                 ", pop_up_hi='" + pop_up_hi + '\'' +
                 ", pop_up_or='" + pop_up_or + '\'' +
+                ", pop_up_ru='" + pop_up_ru + '\'' +
                 ", positiveCondition='" + positiveCondition + '\'' +
                 ", negativeCondition='" + negativeCondition + '\'' +
                 ", rootNode=" + rootNode +
