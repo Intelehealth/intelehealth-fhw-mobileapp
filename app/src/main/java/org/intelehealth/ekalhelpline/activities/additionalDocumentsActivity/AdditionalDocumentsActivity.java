@@ -263,7 +263,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 } else if (item == 1) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
-                } else if (options[item].equals("Cancel")) {
+                }
+                else {
                     dialog.dismiss();
                 }
             }
