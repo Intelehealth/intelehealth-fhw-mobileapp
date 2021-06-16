@@ -53,6 +53,8 @@ import java.util.concurrent.Executors;
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
+import org.intelehealth.ekalhelpline.utilities.BitmapUtils;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -98,6 +100,7 @@ public class CameraActivity extends AppCompatActivity {
             @Override
             public void run() {
                 File file = new File(filePath);
+                BitmapUtils.fileCompressed(filePath);
                 //OutputStream os = null;
 
 
@@ -111,7 +114,7 @@ public class CameraActivity extends AppCompatActivity {
                     bitmap.recycle();*/
 
 
-                Bitmap scaledBitmap = null;
+              /*  Bitmap scaledBitmap = null;
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
@@ -208,7 +211,7 @@ public class CameraActivity extends AppCompatActivity {
                     if (scaledBitmap != null) {
                         scaledBitmap.recycle();
                     }
-                }
+                }*/
                 Intent intent = new Intent();
                 intent.putExtra("RESULT", file.getAbsolutePath());
                 setResult(RESULT_OK, intent);
@@ -218,21 +221,6 @@ public class CameraActivity extends AppCompatActivity {
 
             }
         });
-    }
-
-    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            if (width > height) {
-                inSampleSize = Math.round((float) height / (float) reqHeight);
-            } else {
-                inSampleSize = Math.round((float) width / (float) reqWidth);
-            }
-        }
-        return inSampleSize;
     }
 
     /*CameraX*/
