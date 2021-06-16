@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.swasthyasamparktelemedicine.BuildConfig;
 import org.intelehealth.swasthyasamparktelemedicine.models.ClsUserGetResponse;
 import org.intelehealth.swasthyasamparktelemedicine.models.GetPassword;
 import org.intelehealth.swasthyasamparktelemedicine.models.GetUserCallRes.UserCallRes;
@@ -193,7 +194,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private EditText et_tested_positive_date;
     CustomProgressDialog cpd;
     private TextWatcher mobileNumberWatcher;
-    private boolean isUserExists;
+    private boolean isUserExists, checkUserCallExecuted;
     private DatePickerDialog datePickerDialog;
 
     @Override
@@ -1565,7 +1566,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (NetworkConnection.isOnline(getApplication())) {
                     registerUser();
                 } else {
-                    onPatientCreateClicked(UUID.randomUUID().toString());
+//                    onPatientCreateClicked(UUID.randomUUID().toString());
+                    Toast.makeText(context, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -3168,6 +3170,22 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (!checkUserCallExecuted) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(IdentificationActivity.this);
+            alertDialogBuilder.setMessage(R.string.try_again_later);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    mPhoneNum.setText("");
+                    mPhoneNum.requestFocus();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return;
+        }
+
         String randomString = generatePassword(8);
 
         ///////////Data Model for step 1
@@ -3203,7 +3221,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         UrlModifiers urlModifiers = new UrlModifiers();
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-        encoded = base64Utils.encoded("admin", "IHUser#1");
+        encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "Admin123" : "IHUser#1");
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -3307,7 +3325,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private String generatePassword(int length) {
-//        char[] SYMBOLS = "-/.^&*_!@%=+>)".toCharArray();
+        char[] SYMBOLS = "-/.^&*_!@%=+>)".toCharArray();
         char[] LOWERCASE = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         char[] UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         char[] NUMBERS = "0123456789".toCharArray();
@@ -3319,7 +3337,7 @@ public class IdentificationActivity extends AppCompatActivity {
         password[0] = LOWERCASE[rand.nextInt(LOWERCASE.length)];
         password[1] = UPPERCASE[rand.nextInt(UPPERCASE.length)];
         password[2] = NUMBERS[rand.nextInt(NUMBERS.length)];
-//        password[3] = SYMBOLS[rand.nextInt(SYMBOLS.length)];
+        password[3] = SYMBOLS[rand.nextInt(SYMBOLS.length)];
 
         //populate rest of the password with random chars
         for (int i = 3; i < length; i++) {
@@ -4124,15 +4142,18 @@ public class IdentificationActivity extends AppCompatActivity {
 
     private void checkUserExistsOrNot(String enteredUserName) {
         cpd.show();
+        isUserExists = false;
+        checkUserCallExecuted = false;
         UrlModifiers urlModifiers = new UrlModifiers();
         String urlString = urlModifiers.setRegistrationURL();
-        String encoded = base64Utils.encoded("admin", "IHUser#1");
+        String encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "Admin123" : "IHUser#1");
         Observable<ClsUserGetResponse> userGetResponse = AppConstants.apiInterface.getUsersFromServer(urlString, "Basic " + encoded, enteredUserName);
         userGetResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<ClsUserGetResponse>() {
                     @Override
                     public void onNext(ClsUserGetResponse clsUserGetResponse) {
+                        checkUserCallExecuted = true;
                         cpd.dismiss();
                         List<ResultsItem> resultList = clsUserGetResponse.getResults();
                         if (resultList != null && resultList.size() > 0) {
@@ -4169,7 +4190,7 @@ public class IdentificationActivity extends AppCompatActivity {
         cpd.show();
         UrlModifiers urlModifiers = new UrlModifiers();
         String urlString = urlModifiers.getUserMapping(sessionManager.getServerUrl());
-        String encoded = base64Utils.encoded("admin", "IHUser#1");
+        String encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "Admin123" : "IHUser#1");
         GetPassword getPassword = new GetPassword();
         getPassword.username = enteredUserName;
         getPassword.password = password;
