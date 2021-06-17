@@ -571,6 +571,7 @@
         <item>Select</item>
         <item>Jharkhand</item>
         <item>Madhya Pradesh</item>
+        <item>Sikkim</item>
     </string-array>
 
     <string-array name="jh_city_values">
@@ -585,6 +586,14 @@
         <item>Select</item>
         <item>Khandwa</item>
         <item>Rajgarh</item>
+    </string-array>
+
+    <string-array name="sk_city_values">
+        <item>Select</item>
+        <item>East</item>
+        <item>West</item>
+        <item>North</item>
+        <item>South</item>
     </string-array>
 
     <string-array name="rn_block_values">
@@ -663,6 +672,52 @@
     <string-array name="default_block_values">
         <item>Select</item>
         <item>Invalid</item>
+    </string-array>
+
+    <!--Sikkim - East - Block Values...-->
+    <string-array name="sk_east_block_values">
+        <item>Select</item>
+        <item>Machong</item>
+        <item>Pakyong</item>
+        <item>Rangpo</item>
+        <item>Rhenock</item>
+        <item>Rongli</item>
+        <item>Samdong</item>
+        <item>Sang</item>
+    </string-array>
+
+    <!--Sikkim - West - Block Values...-->
+    <string-array name="sk_west_block_values">
+        <item>Select</item>
+        <item>Dentam</item>
+        <item>Mangalbary</item>
+        <item>Rinchenpong</item>
+        <item>Sombaria</item>
+        <item>Soreng</item>
+        <item>Tashiding</item>
+        <item>Yuksom</item>
+    </string-array>
+
+    <!--Sikkim - North - Block Values...-->
+    <string-array name="sk_north_block_values">
+        <item>Select</item>
+        <item>Chungthang</item>
+        <item>Dikchu</item>
+        <item>Hee Gyathang</item>
+        <item>Passingdong</item>
+        <item>Phodong</item>
+    </string-array>
+
+    <!--Sikkim - South - Block Values...-->
+    <string-array name="sk_south_block_values">
+        <item>Select</item>
+        <item>Jorethang</item>
+        <item>Melli</item>
+        <item>Namthang</item>
+        <item>Ravongla</item>
+        <item>Temi</item>
+        <item>Tokal Bermiok</item>
+        <item>Yangyang</item>
     </string-array>
 
 </resources>
