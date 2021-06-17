@@ -650,4 +650,8 @@
     <string name="please_select_specialization_msg">कृपया विशेषज्ञता का चयन करें</string>
 
     <string name="visit_closed">विजिट बंद हुई</string>
+    <string name="take_photo">फोटो लो</string>
+    <string name="choose_from_gallery">गैलरी से चयन करो</string>
+    <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
+    <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
 </resources>
