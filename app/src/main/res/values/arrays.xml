@@ -572,6 +572,7 @@
         <item>Jharkhand</item>
         <item>Madhya Pradesh</item>
         <item>Sikkim</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="jh_city_values">
@@ -588,12 +589,19 @@
         <item>Rajgarh</item>
     </string-array>
 
+    <!--Sikkim - District values-->
     <string-array name="sk_city_values">
         <item>Select</item>
         <item>East</item>
         <item>West</item>
         <item>North</item>
         <item>South</item>
+    </string-array>
+
+    <!--Other - District values-->
+    <string-array name="other_city_values">
+        <item>Select</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="rn_block_values">
@@ -616,6 +624,7 @@
         <item>Lapung</item>
         <item>Bundu</item>
         <item>Tamar</item>
+        <item>Ranchi Urban</item>
     </string-array>
 
     <string-array name="mp_block_values">
@@ -718,6 +727,12 @@
         <item>Temi</item>
         <item>Tokal Bermiok</item>
         <item>Yangyang</item>
+    </string-array>
+
+    <!--Other Districit - Block - values-->
+    <string-array name="other_other_block_values">
+        <item>Select</item>
+        <item>Other</item>
     </string-array>
 
 </resources>
