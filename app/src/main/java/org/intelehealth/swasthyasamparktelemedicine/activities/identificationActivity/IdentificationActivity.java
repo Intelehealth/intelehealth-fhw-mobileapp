@@ -3325,7 +3325,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private String generatePassword(int length) {
-        char[] SYMBOLS = "-/.^&*_!@%=+>)".toCharArray();
+//        char[] SYMBOLS = "-/.^&*_!@%=+>)".toCharArray();
         char[] LOWERCASE = "abcdefghijklmnopqrstuvwxyz".toCharArray();
         char[] UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         char[] NUMBERS = "0123456789".toCharArray();
@@ -3337,7 +3337,7 @@ public class IdentificationActivity extends AppCompatActivity {
         password[0] = LOWERCASE[rand.nextInt(LOWERCASE.length)];
         password[1] = UPPERCASE[rand.nextInt(UPPERCASE.length)];
         password[2] = NUMBERS[rand.nextInt(NUMBERS.length)];
-        password[3] = SYMBOLS[rand.nextInt(SYMBOLS.length)];
+//        password[3] = SYMBOLS[rand.nextInt(SYMBOLS.length)];
 
         //populate rest of the password with random chars
         for (int i = 3; i < length; i++) {
