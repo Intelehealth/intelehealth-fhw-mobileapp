@@ -1606,7 +1606,7 @@ public class IdentificationActivity extends AppCompatActivity {
             block_spinner.setEnabled(true);
             state_spinner.setSelection(stateIndex);
 
-            int district_array[] = {R.array.jh_city_values, R.array.mp_city_values, R.array.sk_city_values};
+            int district_array[] = {R.array.jh_city_values, R.array.mp_city_values, R.array.sk_city_values, R.array.other_city_values};
             ArrayAdapter<CharSequence> cityAdapter = null;
             if(stateIndex == 1) {
                  cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -1619,6 +1619,10 @@ public class IdentificationActivity extends AppCompatActivity {
             else if(stateIndex == 3) {
                  cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                          district_array[2], android.R.layout.simple_spinner_item);
+            }
+            else if(stateIndex == 4) {
+                cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        district_array[3], android.R.layout.simple_spinner_item);
             }
             else {
                 //do nothing...
@@ -1635,16 +1639,18 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        //On Edit fetches district value from db and set spinner as selected...
+        //On Edit fetches district value from db and set district-spinner as selected...
         String city_village = patient1.getCity_village();
         mCity.setText(city_village);
         List<String> cityArray = Arrays.asList(getResources().getStringArray(R.array.jh_city_values));
         int cityIndex = cityArray.indexOf(city_village);
         if (cityIndex > 0) {
+            //Jharkhand districit....
             if (city_spinner.getAdapter().getCount() > cityIndex) {
                 city_spinner.setSelection(cityIndex);
             }
         } else {
+            //MP district...
             cityArray = Arrays.asList(getResources().getStringArray(R.array.mp_city_values));
             cityIndex = cityArray.indexOf(city_village);
             if (cityIndex > 0) {
@@ -1669,6 +1675,21 @@ public class IdentificationActivity extends AppCompatActivity {
                         city_spinner.setSelection(cityIndex);
                     }
                 }
+                else {
+                    //If Other is selected as State and The city in db stored than Other disitricit spinner will be selected....
+                    cityArray = Arrays.asList(getResources().getStringArray(R.array.other_city_values));
+                    cityIndex = cityArray.indexOf(city_village);
+                    if (cityIndex > 0) {
+                        ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.other_city_values, android.R.layout.simple_spinner_item);
+                        cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        city_spinner.setAdapter(cityAdapter);
+                        if (city_spinner.getAdapter().getCount() > cityIndex) {
+                            city_spinner.setSelection(cityIndex);
+                        }
+                    }
+                }
+
             }
         }
 
@@ -1835,6 +1856,22 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        //Other State - Other District - Block selected...
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.other_other_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp);
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.other_other_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+
 
 
 
@@ -1873,7 +1910,8 @@ public class IdentificationActivity extends AppCompatActivity {
                         city_spinner.setEnabled(true);
                       //  block_spinner.setEnabled(true);
 
-                        int district_array[] = {R.array.jh_city_values, R.array.mp_city_values, R.array.sk_city_values};
+                        int district_array[] = {R.array.jh_city_values, R.array.mp_city_values,
+                                R.array.sk_city_values, R.array.other_city_values};
                         ArrayAdapter<CharSequence> adapter = null;
                         if(position == 1) {
                             adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -1886,6 +1924,10 @@ public class IdentificationActivity extends AppCompatActivity {
                         else if(position == 3) {
                             adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                     district_array[2], android.R.layout.simple_spinner_item);
+                        }
+                        else if(position == 4) {
+                            adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    district_array[3], android.R.layout.simple_spinner_item);
                         }
                         else {
                             //do nothing...
@@ -2012,6 +2054,32 @@ public class IdentificationActivity extends AppCompatActivity {
                                 // block_spinner.setEnabled(false);
                             }
                         }
+                        //Other State is selected & Other District item is selected for that Statte than do the following...
+                        else if(state_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                            if (position > 0) {
+                                block_spinner.setEnabled(true);
+
+                                int array = 0;
+                                switch (position) {
+                                    case 1:
+                                        array = R.array.other_other_block_values;
+                                        break;
+                                    default:
+                                        array = R.array.default_block_values;
+                                }
+
+                                //if (block_spinner.getAdapter().getCount()  0) {
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
+                                        (IdentificationActivity.this, array,
+                                                android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                block_spinner.setAdapter(adapter);
+                            } else {
+                                block_spinner.setEnabled(false);
+                                // block_spinner.setEnabled(false);
+                            }
+                        }
+
                         //end...
 
                         // }
