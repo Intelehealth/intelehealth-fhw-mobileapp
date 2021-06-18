@@ -27,7 +27,7 @@ import org.intelehealth.swasthyasamparktelemedicine.activities.loginActivity.Log
 
 
 public class SplashActivity extends AppCompatActivity {
-    private static final int SPLASH_TIMER = 6 * 1000; // 7 sec
+    private static final int SPLASH_TIMER = 2 * 1000; // 7 sec
     SessionManager sessionManager = null;
 //    ProgressDialog TempDialog;
     int i = 5;
