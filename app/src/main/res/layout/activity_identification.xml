@@ -109,6 +109,34 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/identification_phone_number"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:digits="0123456789"
+                                        android:drawableStart="@drawable/phone_icon"
+                                        android:drawableLeft="@drawable/phone_icon"
+                                        android:drawablePadding="10dp"
+                                        android:ems="10"
+                                        android:fontFamily="@font/lato_regular"
+                                        android:freezesText="true"
+                                        android:hint="@string/identification_screen_prompt_phone_number"
+                                        android:imeOptions="actionUnspecified"
+                                        android:inputType="phone"
+                                        android:maxLength="10"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:tag="@string/tag_optional"
+                                        android:textSize="@dimen/card_content_sub_text_size"
+                                        android:focusable="true"
+                                        android:focusableInTouchMode="true"/>
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
                                     <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
                                     <!--On the Left or Right of textview or Editext-->
 
@@ -317,33 +345,7 @@
 <!--                        </com.google.android.material.textfield.TextInputLayout>-->
 
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/identification_phone_number"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:digits="0123456789"
-                                android:drawableStart="@drawable/phone_icon"
-                                android:drawableLeft="@drawable/phone_icon"
-                                android:drawablePadding="10dp"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:freezesText="true"
-                                android:hint="@string/identification_screen_prompt_phone_number"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="phone"
-                                android:maxLength="10"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"

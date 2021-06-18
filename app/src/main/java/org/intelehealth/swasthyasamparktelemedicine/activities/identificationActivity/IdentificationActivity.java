@@ -328,6 +328,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
+                mPhoneNum.setEnabled(false);
             }
         }
 //        if (sessionManager.valueContains("licensekey"))
