@@ -177,16 +177,16 @@
         android:layout_marginBottom="5dp"
         android:orientation="horizontal"
         android:padding="16dip"
-        android:weightSum="2"
+        android:weightSum="3"
         app:layout_constraintBottom_toTopOf="@+id/linear_logos"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:layout_weight="1"
+            android:layout_marginEnd="5dp"
             android:orientation="vertical">
 
             <ImageView
@@ -210,12 +210,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-
             android:layout_weight="1"
             android:orientation="vertical"
+            android:layout_marginStart="3dp"
             android:weightSum="2">
 
             <ImageView
@@ -237,6 +236,33 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_sikkim_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/sikkim"
+                android:textAlignment="center"
+                android:textSize="10sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <!--<State Logos End-->

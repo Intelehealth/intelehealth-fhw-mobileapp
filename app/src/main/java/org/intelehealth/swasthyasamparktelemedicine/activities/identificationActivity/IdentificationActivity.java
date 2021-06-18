@@ -1595,7 +1595,8 @@ public class IdentificationActivity extends AppCompatActivity {
         city_spinner.setEnabled(false);
         block_spinner.setEnabled(false);
 
-        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.state_values, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                R.array.state_values, android.R.layout.simple_spinner_item);
         stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         state_spinner.setAdapter(stateAdapter);
         String stateprovince = patient1.getState_province();
@@ -1603,9 +1604,27 @@ public class IdentificationActivity extends AppCompatActivity {
         if (stateIndex > 0) {
             city_spinner.setEnabled(true);
             block_spinner.setEnabled(true);
-
             state_spinner.setSelection(stateIndex);
-            ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this, stateIndex == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
+
+            int district_array[] = {R.array.jh_city_values, R.array.mp_city_values, R.array.sk_city_values};
+            ArrayAdapter<CharSequence> cityAdapter = null;
+            if(stateIndex == 1) {
+                 cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        district_array[0], android.R.layout.simple_spinner_item);
+            }
+            else if(stateIndex == 2) {
+                 cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                         district_array[1], android.R.layout.simple_spinner_item);
+            }
+            else if(stateIndex == 3) {
+                 cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                         district_array[2], android.R.layout.simple_spinner_item);
+            }
+            else {
+                //do nothing...
+            }
+           /* ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    stateIndex == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);*/
             cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             city_spinner.setAdapter(cityAdapter);
 
@@ -1616,6 +1635,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
+        //On Edit fetches district value from db and set spinner as selected...
         String city_village = patient1.getCity_village();
         mCity.setText(city_village);
         List<String> cityArray = Arrays.asList(getResources().getStringArray(R.array.jh_city_values));
@@ -1633,6 +1653,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 city_spinner.setAdapter(cityAdapter);
                 if (city_spinner.getAdapter().getCount() > cityIndex) {
                     city_spinner.setSelection(cityIndex);
+                }
+            }
+            else {
+                //If Sikkim is selected as State and The city in db stored is not present in
+                //Jk and MP then check districits of Sikkim...
+                cityArray = Arrays.asList(getResources().getStringArray(R.array.sk_city_values));
+                cityIndex = cityArray.indexOf(city_village);
+                if (cityIndex > 0) {
+                    ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                            R.array.sk_city_values, android.R.layout.simple_spinner_item);
+                    cityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    city_spinner.setAdapter(cityAdapter);
+                    if (city_spinner.getAdapter().getCount() > cityIndex) {
+                        city_spinner.setSelection(cityIndex);
+                    }
                 }
             }
         }
@@ -1736,6 +1771,71 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        //Sikkim - East District - Block selected....
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("East")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.sk_east_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp);
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.sk_east_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+
+        //Sikkim - West District - Block selected....
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("West")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.sk_west_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp);
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.sk_west_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+
+        //Sikkim - North District - Block selected....
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("North")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.sk_north_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp);
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.sk_north_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+
+        //Sikkim - South District - Block selected....
+        else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("South")) {
+            ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.sk_south_block_values, android.R.layout.simple_spinner_item);
+            blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            block_spinner.setAdapter(blockadp);
+
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.sk_south_block_values));
+            int blockIndex = blockArray.indexOf(block);
+            if (blockIndex > 0) {
+                if (block_spinner.getAdapter().getCount() > blockIndex) {
+                    block_spinner.setSelection(blockIndex);
+                }
+            }
+        }
+
+
 
 
 
@@ -1773,8 +1873,27 @@ public class IdentificationActivity extends AppCompatActivity {
                         city_spinner.setEnabled(true);
                       //  block_spinner.setEnabled(true);
 
-                        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                position == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);
+                        int district_array[] = {R.array.jh_city_values, R.array.mp_city_values, R.array.sk_city_values};
+                        ArrayAdapter<CharSequence> adapter = null;
+                        if(position == 1) {
+                            adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    district_array[0], android.R.layout.simple_spinner_item);
+                        }
+                        else if(position == 2) {
+                            adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    district_array[1], android.R.layout.simple_spinner_item);
+                        }
+                        else if(position == 3) {
+                            adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                    district_array[2], android.R.layout.simple_spinner_item);
+                        }
+                        else {
+                            //do nothing...
+                        }
+
+
+                        /*ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                position == 1 ? R.array.jh_city_values : R.array.mp_city_values, android.R.layout.simple_spinner_item);*/
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         city_spinner.setAdapter(adapter);
                         autocompleteState.setText(stateArray.get(position));
@@ -1859,6 +1978,41 @@ public class IdentificationActivity extends AppCompatActivity {
                                 // block_spinner.setEnabled(false);
                             }
                         }
+                        //Sikkim State is selected & District item is selected for that Statte than do the following...
+                        else if(state_spinner.getSelectedItem().toString().equalsIgnoreCase("Sikkim")) {
+                            if (position > 0) {
+                                block_spinner.setEnabled(true);
+
+                                int array = 0;
+                                switch (position) {
+                                    case 1:
+                                        array = R.array.sk_east_block_values;
+                                        break;
+                                    case 2:
+                                        array = R.array.sk_west_block_values;
+                                        break;
+                                    case 3:
+                                        array = R.array.sk_north_block_values;
+                                        break;
+                                    case 4:
+                                        array = R.array.sk_south_block_values;
+                                        break;
+                                    default:
+                                        array = R.array.default_block_values;
+                                }
+
+                                //if (block_spinner.getAdapter().getCount()  0) {
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource
+                                        (IdentificationActivity.this, array,
+                                                android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                block_spinner.setAdapter(adapter);
+                            } else {
+                                block_spinner.setEnabled(false);
+                                // block_spinner.setEnabled(false);
+                            }
+                        }
+                        //end...
 
                         // }
                     }
@@ -3221,7 +3375,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         UrlModifiers urlModifiers = new UrlModifiers();
         String urlString = urlModifiers.loginUrl(sessionManager.getServerUrl());
-        encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "Admin123" : "IHUser#1");
+        encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "IHUser#1" : "IHUser#1");
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -4146,7 +4300,7 @@ public class IdentificationActivity extends AppCompatActivity {
         checkUserCallExecuted = false;
         UrlModifiers urlModifiers = new UrlModifiers();
         String urlString = urlModifiers.setRegistrationURL();
-        String encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "Admin123" : "IHUser#1");
+        String encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "IHUser#1" : "IHUser#1");
         Observable<ClsUserGetResponse> userGetResponse = AppConstants.apiInterface.getUsersFromServer(urlString, "Basic " + encoded, enteredUserName);
         userGetResponse.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -4190,7 +4344,7 @@ public class IdentificationActivity extends AppCompatActivity {
         cpd.show();
         UrlModifiers urlModifiers = new UrlModifiers();
         String urlString = urlModifiers.getUserMapping(sessionManager.getServerUrl());
-        String encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "Admin123" : "IHUser#1");
+        String encoded = base64Utils.encoded("admin", BuildConfig.DEBUG ? "IHUser#1" : "IHUser#1");
         GetPassword getPassword = new GetPassword();
         getPassword.username = enteredUserName;
         getPassword.password = password;
