@@ -156,7 +156,7 @@
     <string name="table_bpsys">बीपी सिस्टोलिक </string>
     <string name="table_bpdia">बीपी डायास्टोलिक </string>
     <string name="table_temp">तापमान (सेल्सियस)</string>
-    <string name="table_spo2">SpO2 (%) ऑक्सीजन </string>
+    <string name="table_spo">SpO2 (%) ऑक्सीजन </string>
 
     //Patient Search Screen
     <string name="search_hint">नाम द्वारा मरीज की खोज</string>
@@ -363,7 +363,7 @@
 
     <string name="weight_error">वजन %1$s किलो से कम होना चाहिए</string>
     <string name="height_error">ऊंचाई 0 और %1$s सेमी के बीच होनी चाहिए चाहिए</string>
-    <string name="spo2_error">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="spo_error">SpO2 %1$s और %2$s के बीच होना चाहिए</string>
     <string name="pulse_error">पल्स %1$s और %2$s के बीच होना चाहिए</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>

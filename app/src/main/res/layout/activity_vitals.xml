@@ -232,7 +232,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
-                                android:hint="@string/table_spo2"
+                                android:hint="@string/table_spo"
                                 android:imeOptions="actionUnspecified"
                                 android:includeFontPadding="false"
                                 android:inputType="numberDecimal"

@@ -115,7 +115,7 @@
     <string name="table_bpsys" translatable="false">ബിപി സിസ്</string>
     <string name="table_bpdia" translatable="false">"  ബിപി ഡയാ"</string>
     <string name="table_temp" translatable="false">" താപനില (C)"</string>
-    <string name="table_spo2" translatable="false">" SpO2 (%)"</string>
+    <string name="table_spo" translatable="false">" SpO2 (%)"</string>
     <string name="search_hint" translatable="false">പേരിൻറെ അടിസ്ഥാനത്തിൽ രോഗിയെ അന്വേഷിക്കുന്നതിനായി ടൈപ്പ് ചെയ്യുക</string>
     <string name="action_search" translatable="false">അന്വേഷിക്കുക</string>
     <string name="alert_none_found" translatable="false">" ദയവായി നല്‍കിയിരിക്കുന്ന യൂസർനെയിമും പാസ്‌വേർഡും പരിശോധിക്കുക"</string>
@@ -264,7 +264,7 @@
     <string name="action_sync_all" translatable="false">" റിഫ്രഷ് ഡേറ്റ"</string>
     <string name="weight_error">" തൂക്കം %1$s kgൽ കുറവായിരിക്കണം"</string>
     <string name="height_error">" പൊക്കം പൂജ്യത്തിനും %1$s cmനും ഇടയിൽ ആയിരിക്കണം "</string>
-    <string name="spo2_error">%1$s നും %2$s നും ഇടയ്ക്കായിരിക്കണം</string>
+    <string name="spo_error">%1$s നും %2$s നും ഇടയ്ക്കായിരിക്കണം</string>
     <string name="pulse_error">" പൾസ് %1$s and %2$sനും ഇടയിൽ ആയിരിക്കണം"</string>
     <string name="bpsys_error">സിസ്റ്റോളിക് പ്രഷർ %1$s നും %2$sനും ഇടയിൽ ആയിരിക്കണം</string>
     <string name="bpdia_error">ഡയസ്റ്റോളിക് പ്രഷർ  %1$s നും %2$sനും ഇടയിൽ ആയിരിക്കണം</string>

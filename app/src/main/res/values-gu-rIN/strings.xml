@@ -156,7 +156,7 @@
         <string name="table_bpsys">બી.પી. સીસ્ટોલીક</string>
         <string name="table_bpdia" >બી.પી ડાયાસ્ટોલીક</string>
         <string name="table_temp" >તાપમાન</string>
-        <string name="table_spo2" >એસ.પી.૦૨(%)</string>
+        <string name="table_spo" >એસ.પી.૦૨(%)</string>
 
         //Patient Search Screen
         <string name="search_hint">દર્દીનુ નામ નાખી શોધો...</string>
@@ -351,7 +351,7 @@
 
         <string name="weight_error" >વજન %1$s કિગ્રાથી ઓછું હોવું જોઇએ</string>
         <string name="height_error" > ઊંચાઇ 0  થી %1Ss સેમીની વચ્ચે હોવી જોઇએ </string>
-        <string name="spo2_error" >SpO2 %1$s અને %2$s ની વચ્ચે હોવો જોઇએ</string>
+        <string name="spo_error" >SpO2 %1$s અને %2$s ની વચ્ચે હોવો જોઇએ</string>
         <string name="pulse_error" >નાડી %1$s અને %2$s ની વચ્ચે હોવી જોઇએ</string>
         <string name="bpsys_error" >સિસ્ટૉલિક પ્રેશર %1$s અને %2$s ની વચ્ચેનું હોવું જોઇએ</string>
         <string name="bpdia_error" >ડાયસ્ટૉલિક પ્રેશર %1$s અને %2$s ની વચ્ચે હોવું જોઇએ</string>
