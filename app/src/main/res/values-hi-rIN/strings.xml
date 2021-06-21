@@ -672,5 +672,8 @@
     <string name="please_select_specialization">कृपया विशेषज्ञता का चयन करें</string>
     <string name="speciality">स्पेशलिटी</string>
 
+    <string name="take_photo">फोटो लो</string>
+    <string name="choose_from_gallery">गैलरी से चयन करो</string>
+    <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
 
 </resources>
