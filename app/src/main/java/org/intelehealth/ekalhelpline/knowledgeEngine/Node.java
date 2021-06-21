@@ -77,6 +77,7 @@ public class Node implements Serializable {
     private String display_assamese;
     private String display_tamil;
     private String display_telugu;
+    private String display_bengali;
     private String language;
     private String choiceType;
     private String inputType;
@@ -254,6 +255,15 @@ public class Node implements Serializable {
             }
 
 
+            //Bengali language support for display...
+            this.display_bengali = jsonNode.optString("display-bn");
+            if (this.display_bengali.isEmpty()) {
+                this.display_bengali = jsonNode.optString("display-bn");
+            }
+            if (this.display_bengali.isEmpty()) {
+                this.display_bengali = this.display;
+            }
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -318,6 +328,7 @@ public class Node implements Serializable {
         this.display_kannada = source.display_kannada;
         this.display_tamil = source.display_tamil;
         this.display_telugu = source.display_telugu;
+        this.display_bengali = source.display_bengali;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -594,7 +605,18 @@ public class Node implements Serializable {
                     }
                 }
             }
-
+            //Bengali language support...
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
 
             default: {
                 {
@@ -1241,6 +1263,7 @@ public class Node implements Serializable {
                 unit_text = as_en(unit_text);
                 unit_text = ta_en(unit_text); //For Tamil...
                 unit_text = te_en(unit_text); //For Telugu
+                unit_text = bn_en(unit_text); //For Bengali..
 
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
@@ -1504,6 +1527,36 @@ private static String te_en(String unit) {
                 break;
 
             case "సంవత్సరాలు":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+
+private static String bn_en(String unit) {
+        switch (unit) {
+            case "ঘন্টার":
+                unit = "Hours";
+                break;
+
+            case "দিনগুলি":
+                unit = "Days";
+                break;
+
+            case "সপ্তাহ":
+                unit = "Weeks";
+                break;
+
+            case "মাস":
+                unit = "Months";
+                break;
+
+            case "বছর":
                 unit = "Years";
                 break;
 
@@ -1851,6 +1904,7 @@ private static String te_en(String unit) {
                 unit_text = as_en(unit_text); //for Assamese...
                 unit_text = ta_en(unit_text); //for Tamil...
                 unit_text = te_en(unit_text); //for Telugu...
+                unit_text = bn_en(unit_text); //for Bengali...
 
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
@@ -2105,6 +2159,9 @@ private static String te_en(String unit) {
     public String getDisplay_telugu() {
         return display_telugu;
     }
+    public String getDisplay_bengali() {
+        return display_bengali;
+    }
 
     public String getDisplay_tamil()
     {
@@ -2117,6 +2174,11 @@ private static String te_en(String unit) {
 
     public void setDisplay_telugu(String display_telugu) {
         this.display_telugu = display_telugu;
+    }
+
+
+    public void setDisplay_bengali(String display_bengali) {
+        this.display_bengali = display_bengali;
     }
 
 
@@ -2498,6 +2560,7 @@ private static String te_en(String unit) {
                 ", display_assamese='" + display_assamese + '\'' +
                 ", display_tamil='" + display_tamil + '\'' +
                 ", display_telugu='" + display_telugu + '\'' +
+                ", display_bengali='" + display_bengali + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +

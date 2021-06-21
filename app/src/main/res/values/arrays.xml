@@ -11,6 +11,7 @@
         <item>Assamese</item>
         <item>Tamil</item>
         <item>Telugu</item>
+        <item>Bengali</item>
     </string-array>
 
     <string-array name="language_values">
@@ -23,6 +24,7 @@
         <item>as</item>
         <item>ta</item>
         <item>te</item>
+        <item>bn</item>
     </string-array>
 
     <string-array name="speciality_values">
