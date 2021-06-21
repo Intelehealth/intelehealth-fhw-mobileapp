@@ -1941,11 +1941,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 
                         /*pat_hist, fam_hist,*/ /*mComplaint,*/
-                        diagnosis_web,
-                        rx_web,
-                        tests_web,
-                        advice_web,
-                        followUp_web, doctor_web);
+                        !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
+                        !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
+                        !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
+                        !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
+                        !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
+                        !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
 
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
         //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
