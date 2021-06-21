@@ -109,10 +109,11 @@ public class SplashActivity extends AppCompatActivity {
                 .setDeniedMessage(R.string.reject_permission_results)
                 .setPermissions(Manifest.permission.INTERNET,
                         Manifest.permission.ACCESS_NETWORK_STATE,
-                        Manifest.permission.GET_ACCOUNTS,
+//                        Manifest.permission.GET_ACCOUNTS,
                         Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
                 .check();
     }
 
