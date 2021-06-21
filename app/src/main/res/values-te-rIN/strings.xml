@@ -99,7 +99,7 @@
     <string name="table_bpsys" translatable="false">"బిపి సిస్/పైన  "</string>
     <string name="table_bpdia" translatable="false">"బిపి డయా/కింద "</string>
     <string name="table_temp" translatable="false">" ఉష్ణోగ్రత (సి)"</string>
-    <string name="table_spo2" translatable="false">SpO2 (%)</string>
+    <string name="table_spo" translatable="false">SpO2 (%)</string>
     <string name="search_hint" translatable="false">" రోగి పేరును శోధించడానికి టైప్ చేయండి…"</string>
     <string name="action_search" translatable="false">" వెతకండి"</string>
     <string name="alert_none_found" translatable="false">" దయచేసి వినియోగదారు పేరు మరియు పాస్‌వర్డ్ నమోదుచేసినది తనిఖీ చేయండి"</string>
@@ -238,7 +238,7 @@
     <string name="patient_not_registered" translatable="false">రోగి నమోదు కాలేదు</string>
     <string name="weight_error">" బరువు %1$s కిలోల కంటే తక్కువగా ఉండాలి"</string>
     <string name="height_error">" ఎత్తు 0 మరియు %1$s సెం.మీ మధ్య ఉండాలి"</string>
-    <string name="spo2_error">SpO2  %1$s మరియు %2$s మధ్య ఉండాలి</string>
+    <string name="spo_error">SpO2  %1$s మరియు %2$s మధ్య ఉండాలి</string>
     <string name="pulse_error">పల్స్ %1$s మరియు %2$s మధ్య ఉండాలి</string>
     <string name="bpsys_error">సిస్టోలిక్ పీడనం %1$s మరియు %2$s మధ్య ఉండాలి</string>
     <string name="bpdia_error">డయాస్టొలిక్ ఒత్తిడి %1$s మరియు %2$s మధ్య ఉండాలి</string>

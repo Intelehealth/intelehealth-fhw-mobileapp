@@ -364,7 +364,7 @@
 
         <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
         <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
-        <string name="spo_error">एसपीओ 2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>
+        <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>
         <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
         <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
         <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>

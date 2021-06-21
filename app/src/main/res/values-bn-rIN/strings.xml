@@ -112,7 +112,7 @@
     <string name="table_bpsys" translatable="false">বি পি /এস ওয়াই এস</string>
     <string name="table_bpdia" translatable="false">বি পি /ডি আই এ</string>
     <string name="table_temp" translatable="false">তাপমাত্রা(সি)</string>
-    <string name="table_spo2" translatable="false">অক্সিজেন</string>
+    <string name="table_spo" translatable="false">অক্সিজেন</string>
     <string name="search_hint" translatable="false">নাম অনুসারে রোগীর সন্ধান করতে টাইপ করুন</string>
     <string name="action_search" translatable="false">"অনুসন্ধান "</string>
     <string name="alert_none_found" translatable="false">অনুগ্রহ করে ব্যবহার কারীর নাম এবং পাসওয়ার্ড চেক করুন</string>
@@ -253,7 +253,7 @@
     <string name="action_sync_all" translatable="false">রিফ্রেশ ডাটা</string>
     <string name="weight_error">ওজন %1$s কেজির চেয়ে কম হওয়া উচিত</string>
     <string name="height_error">উচ্চতা 0 এবং %1$s সেমি এর মধ্যে হওয়া উচিত</string>
-    <string name="spo2_error">অক্সিজেন %1$s এবং %2$ সের মধ্যে থাকা উচিৎ</string>
+    <string name="spo_error">অক্সিজেন %1$s এবং %2$s সের মধ্যে থাকা উচিৎ</string>
     <string name="pulse_error">পালস %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
     <string name="bpsys_error">সিস্টোলিক চাপ %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
     <string name="bpdia_error">ডায়াস্তলিক চাপ %1$s এবং %2$s এর মধ্যে হওয়া উচিত</string>
