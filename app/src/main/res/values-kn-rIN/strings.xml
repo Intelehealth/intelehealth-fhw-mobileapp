@@ -149,7 +149,7 @@
     <string name="table_bpsys">ಬಿಪಿ. (ಸಿಸ್ಟೋಲಿಕ್)</string>
     <string name="table_bpdia">ಬಿಪಿ (ಡಯಾಸ್‌ಟೋಲಿಕ್ )</string>
     <string name="table_temp">ತಾಪಮಾನ (ಸಿ)</string>
-    <string name="table_spo2">SpO2 (%)</string>
+    <string name="table_spo">SpO2 (%)</string>
 
     //Patient Search Screen
     <string name="search_hint">ಹೆಸರಿನಿಂದ ರೋಗಿಯನ್ನು ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ ...</string>
@@ -356,7 +356,7 @@
 
     <string name="weight_error">ತೂಕವು %1$s ಕೆಜಿಗಿಂತ ಕಡಿಮೆಯಿರಬೇಕು</string>
     <string name="height_error">ಎತ್ತರವು 0 ಮತ್ತು %1$s ಸೆಂ.ಮೀ ನಡುವೆ ಇರಬೇಕು</string>
-    <string name="spo2_error">SpO2 %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು </string>
+    <string name="spo_error">SpO2 %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು </string>
     <string name="pulse_error">ನಾಡಿ %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="bpsys_error">ಸಿಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>
     <string name="bpdia_error">ಡಯಾಸ್ಟೊಲಿಕ್ ಒತ್ತಡವು %1$s ಮತ್ತು %2$s ನಡುವೆ ಇರಬೇಕು</string>

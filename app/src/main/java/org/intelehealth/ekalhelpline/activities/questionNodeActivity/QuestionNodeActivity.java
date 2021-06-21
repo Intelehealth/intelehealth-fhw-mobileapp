@@ -773,6 +773,22 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per year", "প্রতি বছর বার")));
         }
 
+        //Malyalam Language Support...
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ചോദ്യത്തിന് ഉത്തരം ലഭിച്ചില്ല")
+                    .replace("Patient reports -", "രോഗിയുടെ റിപ്പോർട്ടുകൾ -")
+                    .replace("Patient denies -", "രോഗി നിരസിക്കുന്നു -")
+                    .replace("Hours", "മണിക്കൂറുകൾ").replace("Days", "ദിവസങ്ങളിൽ")
+                    .replace("Weeks", "ആഴ്ചകൾ").replace("Months", "മാസങ്ങൾ")
+                    .replace("Years", "വർഷങ്ങൾ")
+                    .replace("times per hour", "മണിക്കൂറിൽ തവണ")
+                    .replace("time per day", "പ്രതിദിനം തവണ")
+                    .replace("times per week", "ആഴ്ചയിൽ തവണ")
+                    .replace("times per month", "മാസത്തിൽ തവണ")
+                    .replace("times per year", "വർഷത്തിൽ തവണ")));
+        }
+
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }

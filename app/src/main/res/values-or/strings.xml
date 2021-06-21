@@ -156,7 +156,7 @@
     <string name="table_height">ଉଚ୍ଚତା (ସେ.ମି)</string>
     <string name="table_weight">ଓଜନ (କି.ଗ୍ରା)</string>
     <string name="table_temp">ତାପମାତ୍ରା (ଏଫ)</string>
-    <string name="table_spo2">ଏସପିଓ ଦୁଇ (%)</string>
+    <string name="table_spo">ଏସପିଓ ଦୁଇ (%)</string>
     <string name="table_hw">ଶରୀର ମାପ</string>
     <string name="tag_optional">ଇଚ୍ଛାଧିନ</string>
     <string name="title_activity_additional_documents">ତିରକ୍ତ ଡ଼କୁ୍ଯମେଣ୍ଟସ୍ (ଦସ୍ତାବିଦ୍)</string>
@@ -538,7 +538,7 @@
     <string name="weight_error">ଓଜନ %1$s  କିଲୋଗ୍ରାମରୁ କମ୍ ହେବା ଉଚିତ୍ |</string>
     <string name="not_provided" translatable="false">ଉପଲବ୍ଧ ନାହିଁ</string>
     <string name="height_error">ଉଚ୍ଚତା 0 ରୁ  %1$s  ସେମି ମଧ୍ୟରେ ହେବା ଉଚିତ୍ |</string>
-    <string name="spo2_error">SpO2% 1 $ s ରୁ% 2 $ s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
+    <string name="spo_error">SpO2% 1 $ s ରୁ% 2 $ s ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
     <string name="pulse_error">ନାଡ %1$s  ରୁ %2$s  ମଧ୍ୟରେ ରହିବା ଉଚିତ |</string>
     <string name="bpsys_error">ସିଷ୍ଟୋଲିକ୍ ଚାପ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ୍ |</string>
     <string name="bpdia_error">ଡାଇଷ୍ଟୋଲିକ୍ ଚାପ %1$s ରୁ %2$s ମଧ୍ୟରେ ରହିବା ଉଚିତ୍ |</string>

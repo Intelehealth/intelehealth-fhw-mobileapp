@@ -12,6 +12,7 @@
         <item>Tamil</item>
         <item>Telugu</item>
         <item>Bengali</item>
+        <item>Malyalam</item>
     </string-array>
 
     <string-array name="language_values">
@@ -25,6 +26,7 @@
         <item>ta</item>
         <item>te</item>
         <item>bn</item>
+        <item>ml</item>
     </string-array>
 
     <string-array name="speciality_values">

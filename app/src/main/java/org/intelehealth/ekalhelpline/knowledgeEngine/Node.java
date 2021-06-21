@@ -78,6 +78,7 @@ public class Node implements Serializable {
     private String display_tamil;
     private String display_telugu;
     private String display_bengali;
+    private String display_malyalam;
     private String language;
     private String choiceType;
     private String inputType;
@@ -264,6 +265,16 @@ public class Node implements Serializable {
                 this.display_bengali = this.display;
             }
 
+            //Malyalam language support for display...
+            this.display_malyalam = jsonNode.optString("display-ml");
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = jsonNode.optString("display-ml");
+            }
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = this.display;
+            }
+
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -329,6 +340,7 @@ public class Node implements Serializable {
         this.display_tamil = source.display_tamil;
         this.display_telugu = source.display_telugu;
         this.display_bengali = source.display_bengali;
+        this.display_malyalam = source.display_malyalam;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -609,6 +621,19 @@ public class Node implements Serializable {
             case "bn": {
                 if (display_bengali != null && !display_bengali.isEmpty()) {
                     return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -1264,6 +1289,7 @@ public class Node implements Serializable {
                 unit_text = ta_en(unit_text); //For Tamil...
                 unit_text = te_en(unit_text); //For Telugu
                 unit_text = bn_en(unit_text); //For Bengali..
+                unit_text = ml_en(unit_text); //For Malayalam
 
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
@@ -1483,7 +1509,6 @@ public class Node implements Serializable {
             case "மணி":
                 unit = "Hours";
                 break;
-
             case "நாட்களில்":
                 unit = "Days";
                 break;
@@ -1557,6 +1582,37 @@ private static String bn_en(String unit) {
                 break;
 
             case "বছর":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+
+private static String ml_en(String unit) {
+    
+        switch (unit) {
+            case "മണിക്കൂറുകൾ":
+                unit = "Hours";
+                break;
+
+            case "ദിവസങ്ങൾ":
+                unit = "Days";
+                break;
+
+            case "ആഴ്ചകൾ":
+                unit = "Weeks";
+                break;
+
+            case "മാസങ്ങൾ":
+                unit = "Months";
+                break;
+
+            case "വർഷങ്ങൾ":
                 unit = "Years";
                 break;
 
@@ -1905,6 +1961,7 @@ private static String bn_en(String unit) {
                 unit_text = ta_en(unit_text); //for Tamil...
                 unit_text = te_en(unit_text); //for Telugu...
                 unit_text = bn_en(unit_text); //for Bengali...
+                unit_text = ml_en(unit_text); //for Malayalam...
 
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
@@ -2196,6 +2253,14 @@ private static String bn_en(String unit) {
 
     public void setDisplay_marathi(String display_marathi) {
         this.display_marathi = display_marathi;
+    }
+
+    public String getDisplay_malyalam() {
+        return display_malyalam;
+    }
+
+    public void setDisplay_malyalam(String display_malyalam) {
+        this.display_malyalam = display_malyalam;
     }
 
     public String getDisplay_oriya() {
@@ -2561,6 +2626,7 @@ private static String bn_en(String unit) {
                 ", display_tamil='" + display_tamil + '\'' +
                 ", display_telugu='" + display_telugu + '\'' +
                 ", display_bengali='" + display_bengali + '\'' +
+                ", display_malyalam='" + display_malyalam + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +

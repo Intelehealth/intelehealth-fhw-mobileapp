@@ -285,7 +285,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
-                        mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        mSpo2.setError(getResources().getString(R.string.spo_error,AppConstants.MINIMUM_SPO2,AppConstants.MAXIMUM_SPO2));
                     } else {
                         mSpo2.setError(null);
                     }
@@ -748,7 +748,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
-                        et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        et.setError(getString(R.string.spo_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                         focusView = et;
                         cancel = true;
                         break;
