@@ -10,7 +10,7 @@
         <item>Odiya</item>
         <item>Assamese</item>
         <item>Tamil</item>
-<!--        <item>Cebuano</item>-->
+        <item>Telugu</item>
     </string-array>
 
     <string-array name="language_values">
@@ -22,8 +22,7 @@
         <item>or</item>
         <item>as</item>
         <item>ta</item>
-
-        <!--        <item>cb</item>-->
+        <item>te</item>
     </string-array>
 
     <string-array name="speciality_values">
