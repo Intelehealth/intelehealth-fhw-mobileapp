@@ -539,4 +539,9 @@
     <string name="setup_internet_available">அமைப்பதற்கு வலுவான இணைய இணைப்பு தேவை.</string>
     <string name="setup_internet_not_available">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை.</string>
     <string name="generic_info">Info!</string>
+
+    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>
+    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>
+    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>
+
 </resources>

@@ -538,5 +538,11 @@
     <string name="setup_internet_available">സജ്ജീകരിക്കുന്നതിന് ശക്തമായ ഇന്റർനെറ്റ് കണക്ഷൻ ആവശ്യമാണ്.</string>
     <string name="setup_internet_not_available">നിങ്ങൾ ഇന്റർനെറ്റിലേക്ക് കണക്റ്റുചെയ്‌തിട്ടില്ല.</string>
     <string name="generic_info">വിവരം!</string>
+
+    <string name="take_photo">ഫോട്ടോ എടുക്കുക</string>
+    <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
+    <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
+
 </resources>
+
 

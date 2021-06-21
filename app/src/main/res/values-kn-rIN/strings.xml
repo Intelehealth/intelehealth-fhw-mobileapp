@@ -616,7 +616,7 @@
     <string name="refresh">ರಿಫ್ರೆಶ್ ಮಾಡಿ</string>
     <string name="family_member">ಕುಟುಂಬ ಸದಸ್ಯ</string>
     <string name="no_family_member_registered">ಯಾವುದೇ ಕುಟುಂಬ ಸದಸ್ಯರನ್ನು ನೋಂದಾಯಿಸಲಾಗಿಲ್ಲ</string>
-    <string name="document_">\"ಡಾಕ್ಯುಮೆಂಟ್ -</string>
+    <string name="document_">ಡಾಕ್ಯುಮೆಂಟ್-</string>
     <string name="gender">ಲಿಂಗ</string>
     <string name="are_you_head_of_the_family">ನೀವು ಕುಟುಂಬದ ಮುಖ್ಯಸ್ಥರಾಗಿದ್ದೀರಾ?</string>
     <string name="what_is_your_occupation">ನಿಮ್ಮ ವೃತ್ತಿ ಏನು?</string>
@@ -647,7 +647,7 @@
     <string name="emergency_confirmation">ಈ ಭೇಟಿಯನ್ನು ತುರ್ತು ಎಂದು ಪರಿಗಣಿಸಬೇಕೆ?</string>
     <string name="per_Hour">ಪ್ರತಿ ಗಂಟೆಗೆ</string>
     <string name="per_Day">ಪ್ರತಿ ದಿನಕ್ಕೆ</string>
-    <string name="per_Week">" ಪ್ರತಿ ವಾರಕ್ಕೆ"</string>
+    <string name="per_Week"> ಪ್ರತಿ ವಾರಕ್ಕೆ</string>
     <string name="per_Month">ಪ್ರತಿ ತಿಂಗಳು</string>
     <string name="per_Year">ವರ್ಷಕ್ಕೆ</string>
     <string name="something_went_wrong">ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಸಹಾಯಕರನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
@@ -662,5 +662,9 @@
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"ಹಲೋ, ಇಂಟೆಲ್‌ಹೆಲ್ತ್ ಬಳಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಪ್ರಿಸ್‌ಕ್ರಿಪ್‌ಷನ್‌  ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಇಲ್ಲಿ    ಕ್ಲಿಕ್ಕಿಸಿ</string>
     <string name="and_enter_your_patient_id">\"ಮತ್ತು ನಿಮ್ಮ ರೋಗಿಯ ID ಅನ್ನು ನಮೂದಿಸಿ”</string>
 
+
+    <string name="take_photo">ಭಾವಚಿತ್ರವನ್ನು ತೆಗಿರಿ</string>
+    <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
+    <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
 
 </resources>

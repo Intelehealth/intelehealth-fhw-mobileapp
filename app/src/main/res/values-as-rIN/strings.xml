@@ -511,4 +511,9 @@
     <string name="resp_error">শ্বাস-প্ৰশ্বাসৰ হাৰ %1$s ৰ পৰা %2$s ৰ ভিতৰত হ\'ব লাগে</string>
     <string name="temp_error">তাপমাত্ৰা %1$s ৰ পৰা %2$s ৰ মাজত থাকিব লাগে</string>
 
+    <string name="take_photo">ফটো লওক</string>
+    <string name="choose_from_gallery">গেলেৰীৰ পৰা বাছক</string>
+    <string name="additional_doc_image_picker_title">অতিৰিক্ত দস্তাবেজ যোগ কৰক!</string>
+
+
 </resources>

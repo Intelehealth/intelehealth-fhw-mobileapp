@@ -506,4 +506,8 @@
     <string name="setup_internet_not_available">আপনি ইন্টারনেটের সাথে সংযুক্ত নন।</string>
     <string name="enter_license_key">লাইসেন্স কী প্রবেশ করান</string>
 
+    <string name="take_photo">ছবি তোল</string>
+    <string name="choose_from_gallery">গ্যালারী থেকে চয়ন করুন</string>
+    <string name="additional_doc_image_picker_title">অতিরিক্ত নথি যুক্ত করুন!</string>
+
 </resources>

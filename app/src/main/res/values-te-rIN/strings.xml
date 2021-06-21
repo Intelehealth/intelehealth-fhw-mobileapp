@@ -535,4 +535,9 @@
     <string name="speciality">స్పెషలైజేషన్</string>
     <string name="select_speciality">స్పెషలైజేషన్ ఎంచుకోండి</string>
     <string name="please_select_specialization">దయచేసి స్పెషలైజేషన్ ఎంచుకోండి</string>
+
+    <string name="take_photo">ఫోటో తీసుకో</string>
+    <string name="choose_from_gallery">గ్యాలరీ నుండి ఎంచుకోండి</string>
+    <string name="additional_doc_image_picker_title">అదనపు పత్రాన్ని జోడించండి!</string>
+
 </resources>

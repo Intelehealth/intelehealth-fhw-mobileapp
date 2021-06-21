@@ -658,5 +658,9 @@
         <string name="per_Month">પ્રતિ મહિના</string>
         <string name="per_Year">પ્રતિ વર્ષ</string>
 
+        <string name="take_photo">ફોટો પાડ</string>
+        <string name="choose_from_gallery">ગેલેરીમાંથી પસંદ કરો</string>
+        <string name="additional_doc_image_picker_title">વધારાના દસ્તાવેજ ઉમેરો!</string>
+
 
 </resources>
