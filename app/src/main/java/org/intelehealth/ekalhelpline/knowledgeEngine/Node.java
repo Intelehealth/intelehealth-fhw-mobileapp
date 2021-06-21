@@ -75,6 +75,7 @@ public class Node implements Serializable {
     private String display_kannada;
     private String display_gujarati;
     private String display_assamese;
+    private String display_tamil;
     private String language;
     private String choiceType;
     private String inputType;
@@ -232,6 +233,16 @@ public class Node implements Serializable {
                 this.display_assamese = this.display;
             }
 
+            //Tamil language support for display...
+
+            this.display_tamil = jsonNode.optString("display-ta");
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = jsonNode.optString("display-ta");
+            }
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = this.display;
+            }
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -294,6 +305,7 @@ public class Node implements Serializable {
         this.display_oriya = source.display_oriya;
         this.display_cebuno = source.display_cebuno;
         this.display_kannada = source.display_kannada;
+        this.display_tamil = source.display_tamil;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -536,6 +548,19 @@ public class Node implements Serializable {
             case "as": {
                 if (display_assamese != null && !display_assamese.isEmpty()) {
                     return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Tamil language support...
+            case "ta": {
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    return display_tamil;
                 } else {
                     if (display == null || display.isEmpty()) {
                         return text;
@@ -1188,6 +1213,8 @@ public class Node implements Serializable {
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
                 unit_text = as_en(unit_text);
+                unit_text = ta_en(unit_text); //For Tamil...
+
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1391,6 +1418,36 @@ public class Node implements Serializable {
                 break;
 
             case "વર્ષ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String ta_en(String unit) {
+
+        switch (unit) {
+            case "மணி":
+                unit = "Hours";
+                break;
+
+            case "நாட்களில்":
+                unit = "Days";
+                break;
+
+            case "வாரங்கள்":
+                unit = "Weeks";
+                break;
+
+            case "மாதங்கள்":
+                unit = "Months";
+                break;
+
+            case "ஆண்டுகள்":
                 unit = "Years";
                 break;
 
@@ -1736,6 +1793,8 @@ public class Node implements Serializable {
                 unit_text = or_en(unit_text); //for Odia...
                 unit_text = gu_en(unit_text); //for Gujarati...
                 unit_text = as_en(unit_text); //for Assamese...
+                unit_text = ta_en(unit_text); //for Tamil...
+
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1986,6 +2045,15 @@ public class Node implements Serializable {
         this.display_kannada = display_kannada;
     }
 
+
+    public String getDisplay_tamil()
+    {
+        return display_tamil;
+    }
+    public void setDisplay_tamil(String display_tamil)
+    {
+        this.display_tamil = display_tamil;
+    }
 
     public String getDisplay_gujarati() {
         return display_gujarati;
@@ -2363,6 +2431,7 @@ public class Node implements Serializable {
                 ", display_hindi='" + display_hindi + '\'' +
                 ", display_kannada='" + display_kannada + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
+                ", display_tamil='" + display_tamil + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
