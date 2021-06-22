@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"ஏகல் ஆரோக்கியம்  "</string>
-    <string name="generic_the_flipping_word_next" translatable="false">"அடுத்தது  "</string>
+    <string name="app_name">ஏகல் ஆரோக்கியம்</string>
+    <string name="generic_the_flipping_word_next" translatable="false">அடுத்தது</string>
     <string name="hint_required" translatable="false">தேவை</string>
     <string name="hint_optional" translatable="false">விரும்பினால்</string>
     <string name="tag_optional" translatable="false">விரும்பினால்</string>
@@ -9,15 +9,15 @@
     <string name="generic_cancel">ரத்துசெய்</string>
     <string name="generic_yes">ஆம்</string>
     <string name="generic_no">இல்லை</string>
-    <string name="generic_back" translatable="false">மீண்டும்</string>
+    <string name="generic_back" translatable="false">பின் செல்</string>
     <string name="generic_coming_soon" translatable="false">விரைவில் வருகிறது .....</string>
     <string name="action_print" translatable="false">அச்சிடுக</string>
     <string name="action_sms" translatable="false">எஸ்.எம்.எஸ்</string>
     <string name="action_home" translatable="false">முகப்பு</string>
     <string name="action_settings" translatable="false">அமைப்புகள்</string>
     <string name="generic_warning" translatable="false">எச்சரிக்கை!</string>
-    <string name="generic_update" translatable="false">"புதுப்பிப்பு  "</string>
-    <string name="generic_deleted" translatable="false">"நீக்கப்பட்டது  "</string>
+    <string name="generic_update" translatable="false">புதுப்பிப்பு</string>
+    <string name="generic_deleted" translatable="false">நீக்கப்பட்டது</string>
     <string name="title_activity_login" translatable="false">ஏகல் ஆரோக்கியம்</string>
     <string name="prompt_email" translatable="false">பயனர்பெயர்</string>
     <string name="prompt_password" translatable="false">கடவுச்சொல்</string>
@@ -26,11 +26,11 @@
     <string name="action_sign_in_short" translatable="false">உள்நுழைக</string>
     <string name="url_invalid" translatable="false">உங்கள் URL ஐச் சரிபார்க்கவும்.</string>
     <string name="prefix_invalid" translatable="false">வேறு முன்னொட்டைத் தேர்ந்தெடுக்கவும்!</string>
-    <string name="error_invalid_email" translatable="false">"இந்தப் பயனர்பெயர் தவறானது  "</string>
+    <string name="error_invalid_email" translatable="false">"இந்தப் பயனர்பெயர் தவறானது</string>
     <string name="error_invalid_password" translatable="false">இந்தக் கடவுச்சொல் மிகவும் சிறியது</string>
     <string name="error_incorrect_password" translatable="false">உள்ளிடப்பட்ட பயனர்பெயர் மற்றும் கடவுச்சொல்லைச் சரிபார்க்கவும்</string>
-    <string name="error_field_required" translatable="false">"இந்தப் புலம் தேவை  "</string>
-    <string name="error_network" translatable="false">"பிணையப் பிழை  "</string>
+    <string name="error_field_required" translatable="false">இந்தப் புலம் தேவை</string>
+    <string name="error_network" translatable="false">பிணையப் பிழை</string>
     <string name="error_location_not_selected" translatable="false">இருப்பிடக் கீழ்தோன்றும் வடிவத்தைத் தேர்ந்தெடுக்கவும்</string>
     <string name="error_location_not_fetched" translatable="false">இருப்பிடங்களைப் பெற முடியவில்லை</string>
     <string name="permission_rationale" translatable="false">"மின்னஞ்சல் நிறைவு வழங்கத் தொடர்புகள் அனுமதி தேவை.  "</string>
@@ -38,7 +38,7 @@
     <string name="cant_login_user" translatable="false">உள்நுழைய முடியவில்லையா?</string>
     <string name="email_link" translatable="false">உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும் அல்லது support@intelehealth.io க்கு மின்னஞ்சல் அனுப்பவும்</string>
     <string name="contact_whatsapp">உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
-    <string name="title_home_screen" translatable="false">முகப்பு</string>
+    <string name="title_home_screen" translatable="false">வீடு</string>
     <string name="button_new_pt">புதிய நோயாளி</string>
     <string name="button_find_pt" translatable="false">நோயாளியைக் கண்டுபிடி</string>
     <string name="button_diagnostic_tests" translatable="false">கண்டறியும் சோதனைகள்</string>
@@ -48,25 +48,25 @@
     <string name="menu_option_end_of_day" translatable="false">நாள் முடிவு</string>
     <string name="menu_option_logout" translatable="false">வெளியேறு</string>
     <string name="title_activity_identification" translatable="false">புதிய நோயாளியைச் சேர்க்கவும்</string>
-    <string name="identification_screen_prompt_first_name">முதல் பெயர் *</string>
+    <string name="identification_screen_prompt_first_name">முதல் பெயர்*</string>
     <string name="identification_screen_prompt_middle_name">நடுத்தரப் பெயர்</string>
-    <string name="identification_screen_prompt_last_name">கடைசி பெயர் *</string>
+    <string name="identification_screen_prompt_last_name">கடைசி பெயர்*</string>
     <string name="identification_screen_prompt_address">முகவரி வரி 1</string>
     <string name="identification_screen_prompt_address2">முகவரி வரி 2</string>
     <string name="identification_screen_prompt_phone_number">தொலைபேசி எண்</string>
     <string name="admin_password_dialog_heading" translatable="false">நிர்வாகி கடவுச்சொல்லை உள்ளிடவும்</string>
-    <string name="identification_screen_prompt_gender" translatable="false">பாலினம் *</string>
+    <string name="identification_screen_prompt_gender" translatable="false">பாலினம்*</string>
     <string name="identification_screen_checkbox_male">ஆண்</string>
     <string name="identification_screen_checkbox_female">பெண்</string>
     <string name="identification_screen_prompt_birthday">பிறந்த தேதி*</string>
     <string name="identification_screen_prompt_age">வயது:</string>
     <string name="identification_screen_prompt_time">நேரம்:</string>
     <string name="identification_screen_prompt_city">கிராமம் / நகரம் / நகரம் *</string>
-    <string name="identification_screen_prompt_state">நிலை *</string>
+    <string name="identification_screen_prompt_state">நிலை*</string>
     <string name="identification_screen_prompt_caste" translatable="false">சாதி</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">பொருளாதார நிலை</string>
     <string name="identification_screen_prompt_education" translatable="false">கல்வி நிலை</string>
-    <string name="identification_screen_prompt_country" translatable="false">நாடு *</string>
+    <string name="identification_screen_prompt_country" translatable="false">நாடு*</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">அஞ்சல் குறியீடு</string>
     <string name="identification_screen_prompt_relationship" translatable="false">மகன் / மகள் / மனைவி</string>
     <string name="identification_screen_prompt_occupation" translatable="false">தொழில்</string>
@@ -84,7 +84,7 @@
     <string name="identification_screen_picker_hours" translatable="false">மணி</string>
     <string name="identification_screen_picker_months" translatable="false">மாதங்கள்</string>
     <string name="identification_screen_picker_minute" translatable="false">நிமிடம்</string>
-    <string name="title_activity_active_patient" translatable="false">செயலில் வருகைகள்</string>
+    <string name="title_activity_active_patient" translatable="false">செயலில் உள்ள வருகைகள்</string>
     <string name="title_activity_get_patient_history" translatable="false">நோயாளி வரலாறு</string>
     <string name="title_activity_search_patient" translatable="false">நோயாளி பார்வை</string>
     <string name="title_activity_complaint_select" translatable="false">புகார்களைத் தேர்ந்தெடுக்கவும்</string>
@@ -95,7 +95,6 @@
     <string name="complaint_dialog_title">வருகைக்கான காரணம்</string>
     <string name="complaint_required" translatable="false">புகார் தேர்ந்தெடுக்கப்பட வேண்டும்!</string>
     <string name="complaint_change_selected" translatable="false">மாற்றவும்</string>
-    <string name="question_answer_all" translatable="false">எல்லாக் கேள்விகளுக்கும் நீங்கள் நிச்சயமாகப் பதிலளித்திருக்கிறீர்களா?</string>
     <string name="question_answer_all_phy_exam" translatable="false">அனைத்துப் பொதுத் தேர்வு கேள்விகளுக்கும் பதிலளிக்கவும்.</string>
     <string name="question_duration_picker" translatable="false">கால அளவை உள்ளிடவும்</string>
     <string name="question_text_input" translatable="false">உரையை உள்ளிடவும்</string>
@@ -207,8 +206,8 @@
     <string name="flash_auto" translatable="false">ஃபிளாஷ் ஆட்டோ</string>
     <string name="flash_off" translatable="false">ஃபிளாஷ் முடக்கு</string>
     <string name="flash_on" translatable="false">ஃபிளாஷ் ஆன்</string>
-    <string name="permission_sms_rationale" translatable="false">SMS அனுப்ப SMS அனுமதி தேவை.</string>
-    <string name="permission_sms_denied" translatable="false">SMS அனுமதி மறுக்கப்பட்டது. விண்ணப்பத்திலிருந்து SMS அனுப்பத் தயவுசெய்து அதை வழங்குவதைக் கருத்தில் கொள்ளுங்கள்!</string>
+    <string name="permission_sms_rationale" translatable="false">எஸ்எம்எஸ் அனுப்ப எஸ்எம்எஸ் அனுமதி தேவை.</string>
+    <string name="permission_sms_denied" translatable="false">எஸ்எம்எஸ் அனுமதி மறுக்கப்பட்டது. விண்ணப்பத்திலிருந்து எஸ்எம்எஸ் அனுப்ப தயவுசெய்து அதை வழங்குவதைக் கருத்தில் கொள்ளுங்கள்!</string>
     <string name="permission_sms_never_askagain" translatable="false">மீண்டும் ஒருபோதும் கேட்காததால் SMS அனுமதி மறுக்கப்பட்டது.</string>
     <string name="button_save" translatable="false">சேமி</string>
     <string name="button_delete" translatable="false">அழி</string>
@@ -241,9 +240,9 @@
     <string name="prescription" translatable="false">மருந்து</string>
     <string name="error_no_data" translatable="false">வருகையை முடிக்க முயற்சிக்கும் முன் முதலில் பதிவிறக்கவும்.</string>
     <string name="error_phone_number" translatable="false">தொலைபேசி எண் காலியாக இருக்க முடியாது</string>
-    <string name="action_end_visit" translatable="false">இறுதி வருகை</string>
-    <string name="error_sms" translatable="false">SMS தோல்வியுற்றது, பின்னர் மீண்டும் முயற்சிக்கவும்!</string>
-    <string name="sms_success" translatable="false">SMS அனுப்பப்பட்டது!</string>
+    <string name="action_end_visit" translatable="false">வருகையை முடி</string>
+    <string name="error_sms" translatable="false">எஸ்எம்எஸ் தோல்வியுற்றது, பின்னர் மீண்டும் முயற்சிக்கவும்!</string>
+    <string name="sms_success" translatable="false">எஸ்எம்எஸ் அனுப்பப்பட்டது!</string>
     <string name="question_update_details" translatable="false">விவரங்களைப் புதுப்பிக்க விரும்புகிறீர்களா?</string>
     <string name="backup_completed" translatable="false">காப்புப் பிரதி முடிந்தது!</string>
     <string name="hide_text">மறை</string>
@@ -273,7 +272,7 @@
     <string name="not_provided" translatable="false">வழங்கப்படவில்லை</string>
     <string name="exit_survey_label" translatable="false">உங்கள் அனுபவம் எப்படி இருந்தது?</string>
     <string name="exit_survey_prompt" translatable="false">உங்கள் கருத்துகளை இங்கே உள்ளிடவும்</string>
-    <string name="exit_survey_skip" translatable="false">தவிர்</string>
+    <string name="exit_survey_skip" translatable="false">ஸ்கிப்</string>
     <string name="exit_survey_submit" translatable="false">சமர்ப்பிக்கவும்</string>
     <string name="exit_survey_toast">சமர்ப்பிக்கும் முன் ஒரு ஸ்மைலியைத் தேர்ந்தெடுக்கவும்</string>
     <string name="db_backup_complete" translatable="false">தரவுதள காப்புப்பிரதி முடிந்தது!</string>
@@ -362,7 +361,7 @@
     <string name="unable_to_end">முடிக்க முடியவில்லை</string>
     <string name="upload_before_end_visit_active">வருகைகள். வருகையை முடிக்க முயற்சிக்கும் முன் பதிவேற்றத்தைப் பார்வையிடவும்.</string>
     <string name="active">செயலில்</string>
-    <string name="closed">மூடப்பட்டது</string>
+    <string name="closed">முடிவுற்றது</string>
     <string name="syncInProgress">புதுப்பித்தல் செயலில் உள்ளது</string>
     <string name="please_wait">தயவுசெய்து காத்திருங்கள் ...</string>
     <string name="sync_notif_title">புதுப்பிப்பு</string>
@@ -379,7 +378,7 @@
     <string name="error">பிழை</string>
     <string name="patient_data_upload">நோயாளி தரவு பதிவேற்றம்</string>
     <string name="patient_image_download_notifi">நோயாளி படப் பதிவிறக்கம்</string>
-    <string name="image_download_complete_notifi">படப் பதிவிறக்கம் முடிந்தது.</string>
+    <string name="image_download_complete_notifi">பட பதிவிறக்கம் முடிந்தது.</string>
     <string name="no_prior_visits">முன் வருகைகள் இல்லை.</string>
     <string name="end_visit_notif">வருகை முடிவு</string>
     <string name="visit_ended_notif">வருகை முடிந்தது</string>
@@ -402,7 +401,7 @@
     <string name="successfully_synced_notif">வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது</string>
     <string name="languages">மொழிகள்</string>
     <string name="current_language">தற்போதைய மொழி</string>
-    <string name="protocols_downloaded_successfully">பதிவிறக்கம் செய்யப்பட்ட நெறிமுறைகள் வெற்றிகரமாக!</string>
+    <string name="protocols_downloaded_successfully">வெற்றிகரமாக நெறிமுறைகள் பதிவிறக்கம் செய்யப்பட்டது</string>
     <string name="no_protocols_found">நெறிமுறைகள் எதுவும் கிடைக்கவில்லை</string>
     <string name="unable_to_get_proper_response">நெறிமுறைகளைப் பதிவிறக்குவதில் சிக்கல் ஏற்பட்டது, தயவுசெய்து கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
     <string name="last_synced">கடைசியாகப் புதுப்பிக்கப்பட்டது -</string>
@@ -543,5 +542,6 @@
     <string name="take_photo">புகைப்படம் எடுக்கவும்</string>
     <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>
     <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>
+    <string name="question_answer_all" translatable="false">அனைத்து கேள்விகளுக்கும் நீங்கள் நிச்சயமாக பதிலளித்திருக்கிறீர்களா?</string>
 
 </resources>
