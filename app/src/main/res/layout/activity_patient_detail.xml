@@ -139,9 +139,10 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:layout_weight="1"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/patient_name"
@@ -149,9 +150,9 @@
 
                             <TextView
                                 android:id="@+id/textView_name"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:layout_marginStart="10dp"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -170,10 +171,11 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
+                                android:layout_weight="1"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_patient_id"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -181,10 +183,11 @@
 
                             <TextView
                                 android:id="@+id/textView_ID"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:layout_marginStart="10dp"
+                                android:layout_weight="2"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
@@ -202,9 +205,10 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
+                                android:layout_weight="1"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:text="@string/row_dob"
@@ -213,9 +217,9 @@
 
                             <TextView
                                 android:id="@+id/textView_DOB"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -234,7 +238,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -245,7 +250,8 @@
 
                             <TextView
                                 android:id="@+id/textView_age"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:layout_marginStart="10dp"
@@ -265,7 +271,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -276,7 +283,8 @@
 
                             <TextView
                                 android:id="@+id/textView_gender"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -299,7 +307,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -310,9 +319,9 @@
 
                             <TextView
                                 android:id="@+id/textView_address_1"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -332,8 +341,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -342,9 +352,9 @@
 
                             <TextView
                                 android:id="@+id/textView_address2"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -364,7 +374,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -374,9 +385,9 @@
 
                             <TextView
                                 android:id="@+id/textView_address_final"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -394,8 +405,9 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="1"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -405,7 +417,8 @@
 
                             <TextView
                                 android:id="@+id/textView_phone"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -427,7 +440,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -439,9 +453,9 @@
 
                             <TextView
                                 android:id="@+id/textView_SDW"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -462,7 +476,8 @@
                             android:paddingBottom="5dp">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -473,9 +488,9 @@
 
                             <TextView
                                 android:id="@+id/textView_occupation"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
@@ -495,7 +510,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -505,7 +521,8 @@
 
                             <TextView
                                 android:id="@+id/textView_economic_status"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -525,7 +542,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -536,7 +554,8 @@
 
                             <TextView
                                 android:id="@+id/textView_education_status"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -557,7 +576,8 @@
                             android:layout_height="match_parent">
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
@@ -568,7 +588,8 @@
 
                             <TextView
                                 android:id="@+id/textView_caste"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
