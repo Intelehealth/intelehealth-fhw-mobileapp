@@ -677,6 +677,30 @@
         <item>Tundi</item>
     </string-array>
 
+    <!--Khandwa Block Values...-->
+    <string-array name="kh_block_values">
+        <item>Select</item>
+        <item>Harsud</item>
+        <item>Khalwa</item>
+        <item>Khandwa</item>
+        <item>Pandhana</item>
+        <item>Punasa</item>
+        <item>Other</item>
+    </string-array>
+
+    <!--Rajgarh Block Values...-->
+    <string-array name="rj_block_values">
+        <item>Select</item>
+        <item>Biaora</item>
+        <item>Jirapur</item>
+        <item>Khilchipur</item>
+        <item>Narsinghgarh</item>
+        <item>Pachore</item>
+        <item>Rajgarh</item>
+        <item>Sarangpur</item>
+        <item>Other</item>
+    </string-array>
+
     <!--Default Block Values...-->
     <string-array name="default_block_values">
         <item>Select</item>
