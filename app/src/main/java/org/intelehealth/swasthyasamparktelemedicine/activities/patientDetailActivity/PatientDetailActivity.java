@@ -142,6 +142,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Context context;
     float float_ageYear_Month;
     private TextView phoneView;
+    private boolean isMedicalAdvice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -976,7 +977,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                     } else {
                         Log.e("Check", "No complaint");
                         //add arrow with Self Assessment here...
-                        complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
+                        //if medical advice change heading accordingly
+                        if (isMedicalAdvice)
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.text_medical_advice));
+                        else
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     // complaintxt1.setLayoutParams(layoutParams);
@@ -1021,6 +1026,25 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
+    }
+
+    //function to check if visit is of medical advise type
+    //end date must be exact 5 minutes greater than start date
+    private boolean isMedicalAdvice(String datetime, String end_datetime) {
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        try {
+            Date startTime = startFormat.parse(datetime);
+            Date endTime = endFormat.parse(end_datetime);
+            long diff = endTime.getTime() - startTime.getTime();
+            if (diff == 60000 * 5)
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        return false;
     }
 
     /**
@@ -1218,6 +1242,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                    isMedicalAdvice = isMedicalAdvice(date, end_date);
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;

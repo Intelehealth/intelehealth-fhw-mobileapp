@@ -9,21 +9,11 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,28 +22,74 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.swasthyasamparktelemedicine.BuildConfig;
+import org.intelehealth.swasthyasamparktelemedicine.R;
+import org.intelehealth.swasthyasamparktelemedicine.activities.cameraActivity.CameraActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.searchPatientActivity.SearchPatientActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.setupActivity.SetupActivity;
+import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
+import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.EncounterDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesPushDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.ObsDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.PatientsDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.SyncDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.VisitAttributeListDAO;
+import org.intelehealth.swasthyasamparktelemedicine.database.dao.VisitsDAO;
+import org.intelehealth.swasthyasamparktelemedicine.knowledgeEngine.Node;
 import org.intelehealth.swasthyasamparktelemedicine.models.ClsUserGetResponse;
 import org.intelehealth.swasthyasamparktelemedicine.models.GetPassword;
 import org.intelehealth.swasthyasamparktelemedicine.models.GetUserCallRes.UserCallRes;
 import org.intelehealth.swasthyasamparktelemedicine.models.NewUserCreationCall.NameUser;
 import org.intelehealth.swasthyasamparktelemedicine.models.NewUserCreationCall.PersonUser;
 import org.intelehealth.swasthyasamparktelemedicine.models.NewUserCreationCall.UserCreationData;
+import org.intelehealth.swasthyasamparktelemedicine.models.Patient;
 import org.intelehealth.swasthyasamparktelemedicine.models.ResultsItem;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.EncounterDTO;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.ObsDTO;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.PatientAttributesDTO;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.PatientDTO;
+import org.intelehealth.swasthyasamparktelemedicine.models.dto.VisitDTO;
 import org.intelehealth.swasthyasamparktelemedicine.models.loginModel.LoginModel;
+import org.intelehealth.swasthyasamparktelemedicine.syncModule.SyncUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.Base64Utils;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.DateAndTimeUtils;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.EditTextUtils;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.FileUtils;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.Logger;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.UrlModifiers;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.UuidDictionary;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.UuidGenerator;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
 import org.intelehealth.swasthyasamparktelemedicine.widget.materialprogressbar.CustomProgressDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,32 +106,6 @@ import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
-import org.intelehealth.swasthyasamparktelemedicine.R;
-import org.intelehealth.swasthyasamparktelemedicine.activities.patientDetailActivity.PatientDetailActivity;
-import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
-import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
-import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesDAO;
-import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesPushDAO;
-import org.intelehealth.swasthyasamparktelemedicine.database.dao.PatientsDAO;
-import org.intelehealth.swasthyasamparktelemedicine.database.dao.SyncDAO;
-import org.intelehealth.swasthyasamparktelemedicine.models.Patient;
-import org.intelehealth.swasthyasamparktelemedicine.models.dto.PatientAttributesDTO;
-import org.intelehealth.swasthyasamparktelemedicine.models.dto.PatientDTO;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.DateAndTimeUtils;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.EditTextUtils;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.FileUtils;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.Logger;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.UuidGenerator;
-
-import org.intelehealth.swasthyasamparktelemedicine.activities.cameraActivity.CameraActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.setupActivity.SetupActivity;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.StringUtils;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
-
-//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -103,8 +113,11 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
+//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
+
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
+    private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter;
@@ -196,6 +209,17 @@ public class IdentificationActivity extends AppCompatActivity {
     private TextWatcher mobileNumberWatcher;
     private boolean isUserExists, checkUserCallExecuted;
     private DatePickerDialog datePickerDialog;
+    private boolean isMedicalAdvice;;
+    private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness, cbManageVoiceIssue,
+            cbManageEating, cbDealProblems, cbMentalHealth, cbExercises;
+    private TextView txt_privacy;
+    private EditText et_medical_advice_extra;
+
+    public static void start(Context context, boolean medicalAdvice) {
+        Intent starter = new Intent(context, IdentificationActivity.class);
+        starter.putExtra(EXTRA_MEDICAL_ADVICE, medicalAdvice);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -330,6 +354,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 setscreen(patientID_edit);
                 mPhoneNum.setEnabled(false);
             }
+            isMedicalAdvice = intent.getBooleanExtra(EXTRA_MEDICAL_ADVICE, false);
         }
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -2184,6 +2209,34 @@ public class IdentificationActivity extends AppCompatActivity {
             };
             mPhoneNum.addTextChangedListener(mobileNumberWatcher);
         }
+
+        //if medical advise enable the card visibility to input data
+        if (isMedicalAdvice) {
+            View llMedicalAdvice = findViewById(R.id.ll_medical_advice);
+            llMedicalAdvice.setVisibility(View.VISIBLE);
+
+            cbVaccineGuide = llMedicalAdvice.findViewById(R.id.cbVaccineGuide);
+            cbCovidConcern = llMedicalAdvice.findViewById(R.id.cbCovidConcern);
+            cbManagingBreathlessness = llMedicalAdvice.findViewById(R.id.cbManagingBreathlessness);
+            cbManageVoiceIssue = llMedicalAdvice.findViewById(R.id.cbManageVoiceIssue);
+            cbManageEating = llMedicalAdvice.findViewById(R.id.cbManageEating);
+            cbDealProblems = llMedicalAdvice.findViewById(R.id.cbDealProblems);
+            cbMentalHealth = llMedicalAdvice.findViewById(R.id.cbMentalHealth);
+            cbExercises = llMedicalAdvice.findViewById(R.id.cbExercises);
+            et_medical_advice_extra = llMedicalAdvice.findViewById(R.id.et_medical_advice_extra);
+        }
+        chb_agree_privacy = findViewById(R.id.chb_agree_privacy);
+        txt_privacy = findViewById(R.id.txt_privacy);
+        txt_privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrivacyNotice_Activity.start(IdentificationActivity.this, true);
+                startActivity(intent);
+            }
+        });
+        if (!TextUtils.isEmpty(patientID_edit)) {
+            findViewById(R.id.buttons).setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -3293,6 +3346,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             if (isPatientInserted && isPatientImageInserted) {
+                if (isMedicalAdvice) { //if from medical  advise option then create medical advice visit first(automatically)
+                    createMedicalAdviceVisit();
+                }
+
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
@@ -3406,6 +3463,12 @@ public class IdentificationActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+            return;
+        }
+
+        //check if privacy notice is checked
+        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -4389,6 +4452,9 @@ public class IdentificationActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                    //if number exists redirect the patient the search activity(prefilled with mobile number in the search bar)
+                                    SearchPatientActivity.start(IdentificationActivity.this, enteredUserName);
+                                    finish();
                                 }
                             });
                             AlertDialog alertDialog = alertDialogBuilder.create();
@@ -4453,4 +4519,105 @@ public class IdentificationActivity extends AppCompatActivity {
         return date;
     }
 
+
+    void createMedicalAdviceVisit() {
+        //formats used in databases to store the start & end date
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        Calendar instance = Calendar.getInstance();
+        instance.set(Calendar.MILLISECOND, 0);
+        Date todayDate = instance.getTime();
+        String startDate = currentDate.format(todayDate);
+        instance.add(Calendar.MINUTE, 5);
+        String endDate = endFormat.format(instance.getTime());
+
+        //create & save visit uuid & encounter in the DB
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(startDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(getString(R.string.accept));//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        boolean returning = false;
+        sessionManager.setReturning(returning);
+
+        //create & save visit in the DB
+        VisitDTO visitDTO = new VisitDTO();
+        visitDTO.setUuid(uuid);
+        visitDTO.setPatientuuid(this.uuid);
+        visitDTO.setStartdate(startDate);
+        visitDTO.setEnddate(endDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //create & save obs data in the DB
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+        obsDTO.setEncounteruuid(encounterDTO.getUuid());
+        obsDTO.setCreator(sessionManager.getCreatorID());
+
+        //append all the selected items to the OBS value
+        String insertion = Node.bullet_arrow + "<b>" + "Medical Advice" + "</b>" + ": ";
+        if (cbVaccineGuide.isChecked())
+            insertion = insertion.concat(Node.next_line + cbVaccineGuide.getText());
+        if (cbCovidConcern.isChecked())
+            insertion = insertion.concat(Node.next_line + cbCovidConcern.getText());
+        if (cbManagingBreathlessness.isChecked())
+            insertion = insertion.concat(Node.next_line + cbManagingBreathlessness.getText());
+        if (cbManageVoiceIssue.isChecked())
+            insertion = insertion.concat(Node.next_line + cbManageVoiceIssue.getText());
+        if (cbManageEating.isChecked())
+            insertion = insertion.concat(Node.next_line + cbManageEating.getText());
+        if (cbDealProblems.isChecked())
+            insertion = insertion.concat(Node.next_line + cbDealProblems.getText());
+        if (cbMentalHealth.isChecked())
+            insertion = insertion.concat(Node.next_line + cbMentalHealth.getText());
+        if (cbExercises.isChecked())
+            insertion = insertion.concat(Node.next_line + cbExercises.getText());
+        if (!TextUtils.isEmpty(et_medical_advice_extra.getText()))
+            insertion = insertion.concat(Node.next_line + et_medical_advice_extra.getText());
+        obsDTO.setValue(insertion);
+
+        obsDTO.setUuid(AppConstants.NEW_UUID);
+
+        try {
+            obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //create & save visit attributes - required for syncing the data
+        VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+        try {
+            speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        SyncUtils syncUtils = new SyncUtils();
+        syncUtils.syncForeground(IdentificationActivity.class.getSimpleName());
+    }
 }
