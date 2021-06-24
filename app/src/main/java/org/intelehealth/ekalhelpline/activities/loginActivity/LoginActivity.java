@@ -243,7 +243,7 @@ public class LoginActivity extends AppCompatActivity {
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
       MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
-                .setMessage(getApplicationContext().getText(R.string.contact_whatsapp))
+                .setMessage(getResources().getString(R.string.contact_whatsapp))
                 .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
