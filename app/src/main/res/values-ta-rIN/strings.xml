@@ -37,7 +37,7 @@
     <string name="device_id" translatable="false">சாதன ஐடி:</string>
     <string name="cant_login_user" translatable="false">உள்நுழைய முடியவில்லையா?</string>
     <string name="email_link" translatable="false">உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும் அல்லது support@intelehealth.io க்கு மின்னஞ்சல் அனுப்பவும்</string>
-    <string name="contact_whatsapp">உங்கள் கடவுச்சொல்லை மீட்டமைக்க உங்கள் கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
+    <string name="contact_whatsapp">உங்கள் கடவுச்சொல்லை மீட்டமைக்க, தயவுசெய்து முறைமை நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
     <string name="title_home_screen" translatable="false">முகப்பு</string>
     <string name="button_new_pt">புதிய நோயாளி</string>
     <string name="button_find_pt" translatable="false">நோயாளியைக் கண்டுபிடி</string>
@@ -415,7 +415,7 @@
     <string name="successfully_synced">வெற்றிகரமாகப் புதுப்பிக்கப்பட்டது</string>
     <string name="visit_not_uploaded">வருகை பதிவேற்றப்படவில்லை</string>
     <string name="upload_started">பதிவேற்றுகிறது ...</string>
-    <string name="visit_uploaded_successfully">பதிவேற்றியதை வெற்றிகரமாகப் பார்வையிடவும்</string>
+    <string name="visit_uploaded_successfully">வருகை வெற்றிகரமாக பதிவேற்றப்பட்டது</string>
     <string name="visit_uploaded_failed">இணையம் கிடைக்கும்போது பதிவேற்றப்படும்</string>
     <string name="visitID">ஐடியைப் பார்வையிடவும்</string>
     <string name="end_visit_msg">வருகையை முடிக்க விரும்புகிறீர்களா?</string>
@@ -455,7 +455,7 @@
     <string name="economic_values_missing">பொருளாதார மதிப்புகள் இல்லை</string>
     <string name="education_values_missing">கல்வி மதிப்புகள் இல்லை</string>
     <string name="intelehealth_a_telemedicine_platform">ஏகல் ஆரோக்யா என்பது ஒரு டெலிமெடிசின் பயன்பாடாகும், இது கிராமப்புற மற்றும் தொலைதூரப் பகுதிகளில் உள்ள சுகாதார ஊழியர்களைத் தொலை மருத்துவர்களுடன் இணைக்கிறது, இதனால் அவர்கள் நோயாளிகளுக்கு உயர் தரமான சுகாதாரச் சேவைகளை வழங்க முடியும்.</string>
-    <string name="close_button">நெருக்கமான</string>
+    <string name="close_button">மூடவும்</string>
     <string name="device_ID">சாதன ஐடி:</string>
     <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம URL ஐ உள்ளிடவும்</string>
     <string name="please_enter_url_and_key">URL மற்றும் விசையை உள்ளிடவும்</string>
@@ -475,7 +475,7 @@
     <string name="error_non_decimal_no_added">பிழை: தசம அல்லாத எண் உள்ளிடப்பட்டது.</string>
     <string name="download_protocols">நெறிமுறைகளைப் பதிவிறக்குகிறது</string>
     <string name="mindmap_internect_connection">மைண்ட்மேப்களைப் பதிவிறக்க உங்களுக்கு இணைய இணைப்பு தேவை, தயவுசெய்து உங்கள் இணையத்தை இயக்கவும்</string>
-    <string name="days">நாட்களில்</string>
+    <string name="days">நாட்கள்</string>
     <string name="contact">தொடர்பு கொள்ளுங்கள்</string>
     <string name="has_a_new_prescription">ஒரு புதிய மருந்து உள்ளது</string>
     <string name="whatsapp_presc_toast">கோப்பு எக்ஸ்புளோரரிடமிருந்து பரிந்துரைக்கப்பட்ட PDF ஐத் தேர்ந்தெடுக்கவும் - உள் சேமிப்பு / EkalArogya_PDF</string>
