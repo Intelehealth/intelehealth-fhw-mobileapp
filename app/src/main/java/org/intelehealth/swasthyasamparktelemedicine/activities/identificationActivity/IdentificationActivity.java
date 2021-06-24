@@ -3466,6 +3466,21 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (isMedicalAdvice
+            && !cbCovidConcern.isChecked()
+            && !cbVaccineGuide.isChecked()
+            && !cbCovidConcern.isChecked()
+            && !cbManagingBreathlessness.isChecked()
+            && !cbManageVoiceIssue.isChecked()
+            && !cbManageEating.isChecked()
+            && !cbDealProblems.isChecked()
+            && !cbMentalHealth.isChecked()
+            && !cbExercises.isChecked()
+            && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+                Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+                return;
+        }
+
         //check if privacy notice is checked
         if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
             Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first), Toast.LENGTH_SHORT).show();
