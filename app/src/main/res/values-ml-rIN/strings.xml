@@ -56,6 +56,7 @@
     <string name="identification_screen_prompt_phone_number">" ഫോൺ നമ്പർ"</string>
     <string name="admin_password_dialog_heading" translatable="false">" അഡ്മിൻ പാസ്സ്‌വേർഡ് നല്‍കുക"</string>
     <string name="identification_screen_prompt_gender" translatable="false">" ലിംഗഭേദം*"</string>
+    <string name="identification_screen_dialog_error_gender">ലിംഗഭേദം തിരഞ്ഞെടുത്തിട്ടില്ല</string>
     <string name="identification_screen_checkbox_male">" പുരുഷൻ"</string>
     <string name="identification_screen_checkbox_female">" സ്ത്രീ"</string>
     <string name="identification_screen_prompt_birthday">ജനനത്തീയതി*</string>
