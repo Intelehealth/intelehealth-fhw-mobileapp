@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.swasthyasamparktelemedicine.R;
 import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
@@ -1039,10 +1040,18 @@ public class PatientDetailActivity extends AppCompatActivity {
             Date startTime = startFormat.parse(datetime);
             Date endTime = endFormat.parse(end_datetime);
             long diff = endTime.getTime() - startTime.getTime();
-            if (diff == 60000 * 5)
+            if (diff == TimeUnit.MINUTES.toMillis(5))
                 return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                Date startTime = startFormat.parse(datetime);
+                Date endTime = startFormat.parse(end_datetime);
+                long diff = endTime.getTime() - startTime.getTime();
+                if (diff == TimeUnit.MINUTES.toMillis(5))
+                    return true;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
         return false;
     }
