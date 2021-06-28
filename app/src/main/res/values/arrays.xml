@@ -2,8 +2,8 @@
 
 
     <string-array name="language_names">
-        <item>Hindi</item>
-<!--        <item>English</item>-->
+<!--        <item>Hindi</item>-->
+        <item>English</item>
 <!--        <item>Marathi</item>-->
 <!--        <item>Kannada</item>-->
 <!--        <item>Gujarati</item>-->
@@ -16,8 +16,8 @@
     </string-array>
 
     <string-array name="language_values">
-        <item>hi</item>
-<!--        <item>en</item>-->
+<!--        <item>hi</item>-->
+        <item>en</item>
 <!--        <item>mr</item>-->
 <!--        <item>kn</item>-->
 <!--        <item>gu</item>-->
