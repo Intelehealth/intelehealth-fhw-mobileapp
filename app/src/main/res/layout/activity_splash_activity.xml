@@ -23,12 +23,12 @@
             android:layout_gravity="center"
             android:src="@drawable/ic_round_app" />
 
-        <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/ic_ekal_logo" />
+<!--        <ImageView-->
+<!--            android:layout_width="160dp"-->
+<!--            android:layout_height="160dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:src="@drawable/ic_ekal_logo" />-->
 
         <TextView
             android:layout_width="wrap_content"
