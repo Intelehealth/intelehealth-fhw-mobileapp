@@ -88,6 +88,9 @@ import okhttp3.ResponseBody;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
@@ -604,7 +607,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             String dob_text = en__or_dob(dob); //to show text of English into Odiya...
             dobView.setText(dob_text);
-        } else {
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            String dob_text = en__bn_dob(dob); //to show text of English into Odiya...
+            dobView.setText(dob_text);
+        }else {
             dobView.setText(dob);
         }
         //dobView.setText(dob);
@@ -702,6 +709,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             education_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
         }
+        else if(patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            education_statusView.setText("সরবরাহ করা হয়নি");
+        }
         else {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String education = switch_hi_education_edit(patient_new.getEducation_level());
@@ -709,7 +720,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String education = switch_or_education_edit(patient_new.getEducation_level());
                 education_statusView.setText(education);
-            } else {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String education = switch_bn_education_edit(patient_new.getEducation_level());
+                education_statusView.setText(education);
+            }else {
                 education_statusView.setText(patient_new.getEducation_level());
             }
         }
@@ -722,6 +736,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                     sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 economic_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
             }
+            else if(patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                economic_statusView.setText("সরবরাহ করা হয়নি");
+            }
             else {
                 economic_statusView.setText(patient_new.getEconomic_status());
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -730,6 +748,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String economic = switch_or_economic_edit(patient_new.getEconomic_status());
+                    economic_statusView.setText(economic);
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String economic = switch_bn_economic_edit(patient_new.getEconomic_status());
                     economic_statusView.setText(economic);
                 }
                 else {
@@ -746,6 +768,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             casteView.setText("ଦିଅ ଯାଇ ନାହିଁ");
         }
+        else if(patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            casteView.setText("সরবরাহ করা হয়নি");
+        }
         else {
             casteView.setText(patient_new.getCaste());
             if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -754,6 +780,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String caste = switch_or_caste_edit(patient_new.getCaste());
+                casteView.setText(caste);
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String caste = switch_bn_caste_edit(patient_new.getCaste());
                 casteView.setText(caste);
             }
             else {

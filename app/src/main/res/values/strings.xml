@@ -258,7 +258,7 @@
     <string name="title_activity_camera" translatable="false">Camera</string>
     <string name="title_activity_today_patient" translatable="false">Today\'s Visits</string>
     <string name="title_activity_additional_documents">Additional Documents</string>
-    <string name="title_activity_video_library" translatable="false">Video Library</string>
+    <string name="title_activity_video_library">Video Library</string>
     <string name="visit_summary_patient_details" translatable="false">Visit details</string>
 
     <!--Setup Activity-->
