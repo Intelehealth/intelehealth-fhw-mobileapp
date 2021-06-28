@@ -5,6 +5,7 @@
         <item>हिंदी</item>
         <item>English</item>
         <item>ଓଡିଆ</item>
+        <item>தமிழ்</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -12,6 +13,7 @@
         <item>hi</item>
         <item>en</item>
         <item>or</item>
+        <item>ta</item>
 <!--        <item>cb</item>-->
     </string-array>
 
@@ -67,6 +69,16 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
+    <string-array name="education_ta">
+        <item>Select</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -94,6 +106,15 @@
         <item>others</item>
     </string-array>
 
+    <string-array name="caste_ta">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
     <string-array name="caste_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>ସାଧାରଣ</item>
@@ -113,6 +134,12 @@
     </string-array>
 
     <string-array name="economic_en">
+        <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_ta">
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
