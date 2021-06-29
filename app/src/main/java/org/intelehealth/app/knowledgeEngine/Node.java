@@ -1186,23 +1186,23 @@ public class Node implements Serializable {
     private static String bn_en(String unit) {
 
         switch (unit) {
-            case "કલાક":
+            case "ঘন্টার":
                 unit = "Hours";
                 break;
 
-            case "દિવસ":
+            case "দিনগুলি":
                 unit = "Days";
                 break;
 
-            case "અઠવાડિયું":
+            case "সপ্তাহ":
                 unit = "Weeks";
                 break;
 
-            case "માસ":
+            case "মাস":
                 unit = "Months";
                 break;
 
-            case "વર્ષ":
+            case "বছর":
                 unit = "Years";
                 break;
 

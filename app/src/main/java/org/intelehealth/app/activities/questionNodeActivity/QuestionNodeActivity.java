@@ -660,6 +660,20 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
         }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")){
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
+                    .replace("Patient reports -", "রোগীর রিপোর্ট-")
+                    .replace("Patient denies -", "রোগী অস্বীকার করে-")
+                    .replace("Hours", "ঘন্টার").replace("Days", "দিনগুলি")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
+                    .replace("Years", "বছর")
+                    .replace("times per hour", "প্রতি ঘন্টা")
+                    .replace("time per day", "দিনে বার")
+                    .replace("times per week", "প্রতি সপ্তাহে বার")
+                    .replace("times per month", "প্রতি মাসে বার")
+                    .replace("times per year", "প্রতি বছর বার")));
+        }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
