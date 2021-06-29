@@ -100,7 +100,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 //            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
 //            if(sharedPreferences.getAll().values().contains("cb"))
             Locale current = getResources().getConfiguration().locale;
-            if (current.toString().equals("or")) {
+            if (current.toString().equals("or")) { //Privacy notice support for Odiya
                 String privacy_string = obj.getString("privacyNoticeText_Odiya");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
@@ -109,7 +109,16 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     privacy_textview.setText(privacy_string);
                 }
 
-            } else if (current.toString().equals("hi")) {
+            }else if (current.toString().equals("bn")) { //Privacy notice support for Bengali
+                String privacy_string = obj.getString("privacyNoticeText_Bengali");
+                if (privacy_string.isEmpty()) {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                } else {
+                    privacy_textview.setText(privacy_string);
+                }
+            }
+            else if (current.toString().equals("hi")) { //Privacy notice support for Hindi
                 String privacy_string = obj.getString("privacyNoticeText_Hindi");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
