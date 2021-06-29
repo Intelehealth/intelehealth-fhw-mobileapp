@@ -85,6 +85,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
@@ -637,6 +638,21 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             else if(sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+            {
+                if(patient_new.getGender().equalsIgnoreCase("M"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+                }
+                else if(patient_new.getGender().equalsIgnoreCase("F"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+                }
+                else
+                {
+                    genderView.setText(patient_new.getGender());
+                }
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
             {
                 if(patient_new.getGender().equalsIgnoreCase("M"))
                 {
