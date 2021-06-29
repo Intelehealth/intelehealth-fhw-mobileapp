@@ -629,7 +629,7 @@ public final class StringUtils {
         return mdob_text;
     }
 
-    public static String hi_or_gu_en_month(int month_index) {
+    public static String hi_or__en_month(int month_index) {
         String dob_string = "";
 
         switch (month_index) {
@@ -678,7 +678,7 @@ public final class StringUtils {
     }
 
 
-    public static String hi_or_gu_en_noEdit(String dobString, String locale) {
+    public static String hi_or__en_noEdit(String dobString, String locale) {
 
         if(locale.equalsIgnoreCase("hi")) {
             String dob = dobString

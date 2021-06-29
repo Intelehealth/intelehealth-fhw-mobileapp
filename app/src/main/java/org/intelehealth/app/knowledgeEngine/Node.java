@@ -1821,7 +1821,7 @@ public class Node implements Serializable {
         return display_gujarati;
     }
 
-    public void setDisplay_gujarati(String display_oriya) {
+    public void setDisplay_gujarati(String display_gujarati) {
         this.display_gujarati = display_gujarati;
     }
 

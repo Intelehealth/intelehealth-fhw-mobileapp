@@ -1337,13 +1337,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_gu_en_noEdit
+                String dob = StringUtils.hi_or__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             }
             else {
-                String dob = StringUtils.hi_or_gu_en_month(dob_indexValue);
+                String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
@@ -1664,12 +1664,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or_gu_en_noEdit
+                String dob = StringUtils.hi_or__en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or_gu_en_month(dob_indexValue);
+                String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
                 dob_array[1] = dob_month_split.replace(dob_month_split, dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
