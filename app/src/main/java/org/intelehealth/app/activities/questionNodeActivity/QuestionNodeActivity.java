@@ -617,7 +617,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
-            setTitle(patientName + ": " + currentNode.getText());
+            setTitle(patientName + ": " + currentNode.findDisplay());
 
         }
     }
