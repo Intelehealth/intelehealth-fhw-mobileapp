@@ -1793,11 +1793,11 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Khandwa")) {
             ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                    R.array.mp_block_values, android.R.layout.simple_spinner_item);
+                    R.array.kh_block_values, android.R.layout.simple_spinner_item);
             blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             block_spinner.setAdapter(blockadp); //Khandwa array
 
-            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.mp_block_values));
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.kh_block_values));
             int blockIndex = blockArray.indexOf(block);
             if (blockIndex > 0) {
                 if (block_spinner.getAdapter().getCount() > blockIndex) {
@@ -1807,11 +1807,11 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         else if(city_spinner.getSelectedItem().toString().equalsIgnoreCase("Rajgarh")) {
             ArrayAdapter<CharSequence> blockadp = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                    R.array.mp_block_values, android.R.layout.simple_spinner_item);
+                    R.array.rj_block_values, android.R.layout.simple_spinner_item);
             blockadp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             block_spinner.setAdapter(blockadp); //Rajgrah array
 
-            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.mp_block_values));
+            List<String> blockArray = Arrays.asList(getResources().getStringArray(R.array.rj_block_values));
             int blockIndex = blockArray.indexOf(block);
             if (blockIndex > 0) {
                 if (block_spinner.getAdapter().getCount() > blockIndex) {
@@ -2029,10 +2029,10 @@ public class IdentificationActivity extends AppCompatActivity {
                                 int array = 0;
                                 switch (position) {
                                     case 1:
-                                        array = R.array.mp_block_values;
+                                        array = R.array.kh_block_values;
                                         break;
                                     case 2:
-                                        array = R.array.mp_block_values;
+                                        array = R.array.rj_block_values;
                                         break;
                                     default:
                                         array = R.array.default_block_values;
@@ -4493,6 +4493,7 @@ public class IdentificationActivity extends AppCompatActivity {
                                 }
                             });
                             AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.setCancelable(false);
                             alertDialog.show();
                         } else {
                             isUserExists = false;
