@@ -2,28 +2,28 @@
 
 
     <string-array name="language_names">
-<!--        <item>Hindi</item>-->
+        <item>Hindi</item>
         <item>English</item>
-<!--        <item>Marathi</item>-->
-<!--        <item>Kannada</item>-->
+        <item>Marathi</item>
+        <item>Kannada</item>
 <!--        <item>Gujarati</item>-->
 <!--        <item>Odiya</item>-->
 <!--        <item>Assamese</item>-->
-<!--        <item>Tamil</item>-->
+        <item>Tamil</item>
 <!--        <item>Telugu</item>-->
 <!--        <item>Bengali</item>-->
 <!--        <item>Malyalam</item>-->
     </string-array>
 
     <string-array name="language_values">
-<!--        <item>hi</item>-->
+        <item>hi</item>
         <item>en</item>
-<!--        <item>mr</item>-->
-<!--        <item>kn</item>-->
+        <item>mr</item>
+        <item>kn</item>
 <!--        <item>gu</item>-->
 <!--        <item>or</item>-->
 <!--        <item>as</item>-->
-<!--        <item>ta</item>-->
+        <item>ta</item>
 <!--        <item>te</item>-->
 <!--        <item>bn</item>-->
 <!--        <item>ml</item>-->
