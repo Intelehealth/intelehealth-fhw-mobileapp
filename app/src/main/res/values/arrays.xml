@@ -71,12 +71,12 @@
     </string-array>
 
     <string-array name="education_ta">
-        <item>Select</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>எழுதப்படிக்கத்தெரியாதவர்</item>
+        <item>முதல்நிலை</item>
+        <item>இடைநிலை</item>
+        <item>மேல்நிலை</item>
+        <item>பட்டம் மற்றும் உயர்</item>
     </string-array>
 
     <string-array name="education_cb">
@@ -107,12 +107,12 @@
     </string-array>
 
     <string-array name="caste_ta">
-        <item>Select</item>
-        <item>General</item>
-        <item>OBC</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>others</item>
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>பொது</item>
+        <item>ஓபிசி</item>
+        <item>எஸ்சி</item>
+        <item>எஸ்டி</item>
+        <item>மற்றவை</item>
     </string-array>
 
     <string-array name="caste_or">
@@ -140,9 +140,9 @@
     </string-array>
 
     <string-array name="economic_ta">
-        <item>Select</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>வறுமைக் கோட்டிற்கு மேல்</item>
+        <item>வறுமைக் கோட்டிற்குக் கீழ்</item>
     </string-array>
 
     <string-array name="economic_or">

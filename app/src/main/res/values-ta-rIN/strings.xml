@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Intelehealth</string>
+    <string name="app_name">இன்டெலிஹெல்த்</string>
     <string name="generic_the_flipping_word_next" translatable="false">அடுத்தது</string>
     <string name="hint_required" translatable="false">தேவை</string>
     <string name="hint_optional" translatable="false">விரும்பினால்</string>
@@ -81,8 +81,8 @@
     <string name="identification_screen_text_years" translatable="false">ஆண்டுகள்</string>
     <string name="identification_screen_text_months" translatable="false">மாதங்கள்</string>
     <string name="identification_screen_picker_years" translatable="false">ஆண்டுகள்</string>
-    <string name="identification_screen_picker_hours" translatable="false">மணி</string>
     <string name="identification_screen_picker_months" translatable="false">மாதங்கள்</string>
+    <string name="identification_screen_picker_hours" translatable="false">மணி</string>
     <string name="identification_screen_picker_minute" translatable="false">நிமிடம்</string>
     <string name="title_activity_active_patient" translatable="false">செயலில் உள்ள வருகைகள்</string>
     <string name="title_activity_get_patient_history" translatable="false">நோயாளி வரலாறு</string>
@@ -147,7 +147,7 @@
     <string name="visit_summary_heading_id" translatable="false">அடையாள ஆவணங்கள்</string>
     <string name="visit_summary_button_download" translatable="false">பதிவிறக்கம்</string>
     <string name="visit_summary_button_upload" translatable="false">பதிவேற்றவும்</string>
-    <string name="name_button_download" translatable="false">பொத்தான் பதிவிறக்க</string>
+    <string name="name_button_download" translatable="false">பதிவிறக்க</string>
     <string name="visit_summary_follow_up_date" translatable="false">பின்தொடர்தல் தேதி</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">நோயாளியின் பின்தொடர்தல் தேதியை நினைவூட்டுங்கள்:</string>
     <string name="visit_summary_upload_reminder" translatable="false">வருகையை முடிக்க முயற்சிக்கும் முன் முதலில் பதிவேற்றவும்.</string>
@@ -243,7 +243,7 @@
     <string name="error_sms" translatable="false">எஸ்எம்எஸ் தோல்வியுற்றது, பின்னர் மீண்டும் முயற்சிக்கவும்!</string>
     <string name="sms_success" translatable="false">எஸ்எம்எஸ் அனுப்பப்பட்டது!</string>
     <string name="question_update_details" translatable="false">விவரங்களைப் புதுப்பிக்க விரும்புகிறீர்களா?</string>
-    <string name="backup_completed" translatable="false">காப்புப் பிரதி முடிந்தது!</string>
+    <string name="backup_completed" translatable="false">காப்புப்பிரதி முடிந்தது!</string>
     <string name="hide_text">மறை</string>
     <string name="show_text">காட்டு</string>
     <string name="new_patient">புதிய நோயாளி</string>
@@ -279,21 +279,21 @@
     <string name="cloud_upload_header">தரவுதளத்தை மேகக்கணிக்கு பதிவேற்றுகிறது</string>
     <string name="no_network" translatable="false">இணைய இணைப்பு கிடைக்கவில்லை</string>
     <string name="no_data" translatable="false">காப்புப்பிரதி எடுக்கத் தரவு இல்லை!</string>
-    <string name="local_backup_failed" translatable="false">உள்ளூர் காப்புப்பிரதி கிடைக்கவில்லை</string>
-    <string name="local_backup_restore">உள்ளூர் காப்புப்பிரதியிலிருந்து மீட்டமைக்கிறது</string>
-    <string name="cloud_restore_header">படிவ மேகத்தை மீட்டமை</string>
+    <string name="local_backup_failed" translatable="false">உள் காப்புப்பிரதி கிடைக்கவில்லை</string>
+    <string name="local_backup_restore">உள் காப்புப்பிரதியிலிருந்து மீட்டமைக்கிறது</string>
+    <string name="cloud_restore_header">மேகக்கணிலிருந்து மீட்டமை</string>
     <string name="restore_data">தரவை மீட்டமைக்கிறது</string>
     <string name="error_existing_data">தரவுதளத்தில் தரவு உள்ளது, மீட்டெடுக்க முடியாது!</string>
-    <string name="cloud_download_data">மேகத்திலிருந்து தரவுதளத்தைப் பதிவிறக்குகிறது</string>
-    <string name="force_restore_header">மேகத்திலிருந்து தரவை மீட்டமைத்தல் (கட்டாயப்படுத்தப்பட்டது)</string>
+    <string name="cloud_download_data">மேகக்கணிலிருந்து தரவுதளத்தைப் பதிவிறக்குகிறது</string>
+    <string name="force_restore_header">மேகக்கணிலிருந்து தரவை மீட்டமைத்தல் (கட்டாயப்படுத்தப்பட்டது)</string>
     <string name="database_upload">தரவுதள பதிவேற்றம்</string>
-    <string name="database_uploading">தரவுதள பதிவேற்றம்</string>
+    <string name="database_uploading">தரவுத்தளம் பதிவேற்றுகிறது</string>
     <string name="database_upload_complete">தரவுதள பதிவேற்றம் முடிந்தது</string>
     <string name="database_upload_failed">தரவுதள பதிவேற்றம் தோல்வியுற்றது</string>
     <string name="db_backup_unavailable">தரவுதள காப்புப்பிரதி கிடைக்கவில்லை</string>
     <string name="db_file_write_error">காப்பு கோப்பை எழுதுவதில் பிழை</string>
     <string name="local_restore_alert_title">காப்புப்பிரதியை மீட்டமை</string>
-    <string name="local_restore_alert_message">உள்ளூர் காப்புப்பிரதி கண்டறியப்பட்டுள்ளது. மீட்டெடுக்க விரும்புகிறீர்களா?</string>
+    <string name="local_restore_alert_message">உள் காப்புப்பிரதி கண்டறியப்பட்டுள்ளது. மீட்டெடுக்க விரும்புகிறீர்களா?</string>
     <string name="image_downloading_service_title" translatable="false">பதிவிறக்குகிறது</string>
     <string name="image_downloading_service_message" translatable="false">படத் தரவைப் பதிவிறக்குகிறது</string>
     <string name="image_downloading_service_complete_title" translatable="false">படத் தரவு பதிவிறக்கம் முடிந்தது</string>
@@ -453,7 +453,7 @@
     <string name="i_need_assistance">\"எனக்குச் சில உதவி தேவை.\"</string>
     <string name="economic_values_missing">பொருளாதார மதிப்புகள் இல்லை</string>
     <string name="education_values_missing">கல்வி மதிப்புகள் இல்லை</string>
-    <string name="intelehealth_a_telemedicine_platform">ஏகல் ஆரோக்யா என்பது ஒரு டெலிமெடிசின் பயன்பாடாகும், இது கிராமப்புற மற்றும் தொலைதூரப் பகுதிகளில் உள்ள சுகாதார ஊழியர்களைத் தொலை மருத்துவர்களுடன் இணைக்கிறது, இதனால் அவர்கள் நோயாளிகளுக்கு உயர் தரமான சுகாதாரச் சேவைகளை வழங்க முடியும்.</string>
+    <string name="intelehealth_a_telemedicine_platform">இன்டெலிஹெல்த் என்பது கிராமப்புற மற்றும் தொலைதூரப் பகுதிகளில் உள்ள சுகாதார ஊழியர்களை தொலைதூர மருத்துவர்களுடன் இணைக்கும் ஒரு டெலிமெடிசின் பயன்பாடாகும், இதனால் அவர்கள் தங்கள் நோயாளிகளுக்கு உயர்தர சுகாதார சேவைகளை வழங்க முடியும்.</string>
     <string name="close_button">மூடவும்</string>
     <string name="device_ID">சாதன ஐடி:</string>
     <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம URL ஐ உள்ளிடவும்</string>
@@ -490,60 +490,73 @@
     <string name="family_member">குடும்ப உறுப்பினர்</string>
     <string name="no_family_member_registered">குடும்ப உறுப்பினர் யாரும் பதிவு செய்யப்படவில்லை</string>
     <string name="document_">ஆவணம்-</string>
-    <string name="gender">பாலினம்</string>
-    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>
-    <string name="what_is_your_occupation">உங்களுடைய தொழில் என்ன?*</string>
-    <string name="do_you_have_a_bank_account">உங்களிடம் வங்கி கணக்கு இருக்கிறதா?*</string>
-    <string name="what_kind_of_mobile_phone_do_you_personally_own">நீங்கள் தனிப்பட்ட முறையில் எந்த வகையான மொபைல் போனை வைத்திருக்கிறீர்கள்? *</string>
-    <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களில் யாரோ வாட்ஸ்அப்பைப் பயன்படுத்துகிறீர்களா? *</string>
-    <string name="total_number_of_members_in_the_household">வீட்டிலுள்ள மொத்த உறுப்பினர்களின் எண்ணிக்கை *</string>
-    <string name="enter_number">எண்ணை உள்ளிடவும்</string>
-    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">எத்தனை உறுப்பினர்கள் பொதுவாக உங்கள் வீட்டில் வசிக்கிறார்கள் அல்லது இப்போது உங்களுடன் தங்கியிருக்கிறார்கள் *</string>
-    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">உங்கள் வீட்டு உறுப்பினர்களுக்குக் குடிநீரின் முக்கிய ஆதாரம் எது? *</string>
-    <string name="what_do_you_do_to_make_drinking_water_safer">குடிநீரைப் பாதுகாப்பானதாக்க நீங்கள் என்ன செய்கிறீர்கள்? *</string>
-    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">அங்குச் செல்லவும், தண்ணீர் எடுக்கவும், ஒரே பயணத்தில் திரும்பி வரவும் எவ்வளவு நேரம் ஆகும்? *</string>
-    <string name="declined">பதிலளிக்க மறுத்துவிட்டார்</string>
-    <string name="enter_time">நேரத்தை உள்ளிடவும்</string>
-    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">கடந்த இரண்டு வாரங்களில், இந்த மூலத்திலிருந்து வரும் நீர் குறைந்தது ஒரு முழு நாளுக்குக் கிடைக்கவில்லையா? *</string>
-    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">உங்கள் வீட்டு உறுப்பினர்கள் பொதுவாக என்ன வகையான கழிப்பறை வசதியைப் பயன்படுத்துகிறார்கள்? *</string>
-    <string name="select_the_structure_of_house">வீட்டின் கட்டமைப்பைத் தேர்ந்தெடுக்கவும் *</string>
-    <string name="how_much_hectars_of_cultivable_land_your_family_owns">உங்கள் குடும்பத்திற்கு எவ்வளவு ஹெக்டேர் சாகுபடி நிலம் உள்ளது? *</string>
-    <string name="enter_answer">பதிலை உள்ளிடவும்</string>
-    <string name="enter_occupation">தொழில் உள்ளிடவும்</string>
-    <string name="select">தேர்ந்தெடு</string>
+<!--    <string name="gender">பாலினம்</string>-->
+<!--    <string name="are_you_head_of_the_family">நீங்கள் குடும்பத் தலைவரா?</string>-->
+<!--    <string name="what_is_your_occupation">உங்களுடைய தொழில் என்ன?*</string>-->
+<!--    <string name="do_you_have_a_bank_account">உங்களிடம் வங்கி கணக்கு இருக்கிறதா?*</string>-->
+<!--    <string name="what_kind_of_mobile_phone_do_you_personally_own">நீங்கள் தனிப்பட்ட முறையில் எந்த வகையான மொபைல் போனை வைத்திருக்கிறீர்கள்? *</string>-->
+<!--    <string name="do_you_or_any_of_your_family_member_use_whatsapp">நீங்களோ அல்லது உங்கள் குடும்ப உறுப்பினர்களில் யாரோ வாட்ஸ்அப்பைப் பயன்படுத்துகிறீர்களா? *</string>-->
+<!--    <string name="total_number_of_members_in_the_household">வீட்டிலுள்ள மொத்த உறுப்பினர்களின் எண்ணிக்கை *</string>-->
+<!--    <string name="enter_number">எண்ணை உள்ளிடவும்</string>-->
+<!--    <string name="how_many_members_usually_live_in_your_household_or_are_staying_with_you_now">எத்தனை உறுப்பினர்கள் பொதுவாக உங்கள் வீட்டில் வசிக்கிறார்கள் அல்லது இப்போது உங்களுடன் தங்கியிருக்கிறார்கள் *</string>-->
+<!--    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">உங்கள் வீட்டு உறுப்பினர்களுக்குக் குடிநீரின் முக்கிய ஆதாரம் எது? *</string>-->
+<!--    <string name="what_do_you_do_to_make_drinking_water_safer">குடிநீரைப் பாதுகாப்பானதாக்க நீங்கள் என்ன செய்கிறீர்கள்? *</string>-->
+<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">அங்குச் செல்லவும், தண்ணீர் எடுக்கவும், ஒரே பயணத்தில் திரும்பி வரவும் எவ்வளவு நேரம் ஆகும்? *</string>-->
+<!--    <string name="declined">பதிலளிக்க மறுத்துவிட்டார்</string>-->
+<!--    <string name="enter_time">நேரத்தை உள்ளிடவும்</string>-->
+<!--    <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">கடந்த இரண்டு வாரங்களில், இந்த மூலத்திலிருந்து வரும் நீர் குறைந்தது ஒரு முழு நாளுக்குக் கிடைக்கவில்லையா? *</string>-->
+<!--    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">உங்கள் வீட்டு உறுப்பினர்கள் பொதுவாக என்ன வகையான கழிப்பறை வசதியைப் பயன்படுத்துகிறார்கள்? *</string>-->
+<!--    <string name="select_the_structure_of_house">வீட்டின் கட்டமைப்பைத் தேர்ந்தெடுக்கவும் *</string>-->
+<!--    <string name="how_much_hectars_of_cultivable_land_your_family_owns">உங்கள் குடும்பத்திற்கு எவ்வளவு ஹெக்டேர் சாகுபடி நிலம் உள்ளது? *</string>-->
+<!--    <string name="enter_answer">பதிலை உள்ளிடவும்</string>-->
+<!--    <string name="enter_occupation">தொழில் உள்ளிடவும்</string>-->
+<!--    <string name="select">தேர்ந்தெடு</string>-->
     <string name="Hours">மணி</string>
     <string name="Days">நாட்கள்</string>
     <string name="Weeks">வாரங்கள்</string>
     <string name="Months">மாதங்கள்</string>
     <string name="Years">ஆண்டுகள்</string>
-    <string name="image_saved">படம் வெற்றிகரமாகச் சேமிக்கப்பட்டது!</string>
-    <string name="emergency_confirmation">இந்த வருகையை அவசரநிலையாக அமைக்க விரும்புகிறீர்களா?</string>
+<!--    <string name="image_saved">படம் வெற்றிகரமாகச் சேமிக்கப்பட்டது!</string>-->
+<!--    <string name="emergency_confirmation">இந்த வருகையை அவசரநிலையாக அமைக்க விரும்புகிறீர்களா?</string>-->
     <string name="per_Hour">ஒரு மணி நேரத்திற்கு</string>
     <string name="per_Day">ஒரு நாளைக்கு</string>
     <string name="per_Week">வாரத்திற்கு</string>
     <string name="per_Month">ஒரு மாதத்திற்கு</string>
     <string name="per_Year">வருடத்திற்கு</string>
     <string name="failed_initial_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பைச் சரிபார்க்கவும். பயன்பாட்டை மறுதொடக்கம் செய்யுங்கள்.</string>
-    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>
+<!--    <string name="something_went_wrong">ஏதோ தவறு நடந்துவிட்டது. உதவி மையத்தினை தொடர்பு கொள்ளவும்</string>-->
     <string name="title_activity_question_node" translatable="false">Question node activity</string>
     <string name="enter_license_key">உரிம விசையை உள்ளிடவும்</string>
     <string name="intelehealth_name">ஏகல் ஆரோக்ய ஹெல்ப்லைன்</string>
     <string name="Ayu_name">ஆயு</string>
     <string name="active_tag_patientDetail"> செயலில் </string>
     <string name="associated_symptoms_patientDetail">தொடர்புடைய அறிகுறிகள்</string>
-    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>
-    <string name="speciality">சிறப்பு</string>
-    <string name="select_speciality">சிறப்பு என்பதைத் தேர்ந்தெடுக்கவும்</string>
+<!--    <string name="please_select_specialization">நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்</string>-->
+<!--    <string name="speciality">சிறப்பு</string>-->
+<!--    <string name="select_speciality">சிறப்பு என்பதைத் தேர்ந்தெடுக்கவும்</string>-->
     <string name="setup_internet_available">அமைப்பதற்கு வலுவான இணைய இணைப்பு தேவை.</string>
     <string name="setup_internet_not_available">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை.</string>
-    <string name="generic_info">Info!</string>
+    <string name="generic_info">தகவல்!</string>
 
-    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>
-    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>
-    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>
+<!--    <string name="take_photo">புகைப்படம் எடுக்கவும்</string>-->
+<!--    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>-->
+<!--    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>-->
     <string name="question_answer_all" translatable="false">அனைத்து கேள்விகளுக்கும் நீங்கள் நிச்சயமாக பதிலளித்திருக்கிறீர்களா?</string>
-    <string name="table_spo2" translatable="false">ஆக்ஸிஜன் செறிவு (%)</string>
     <string name="row_gender">பாலினம்</string>
-    <string name="spo2_error" translatable="false">ஆக்ஸிஜன் செறிவு %1$s முதல் %2$s வரை இருக்க வேண்டும்</string>
+    <string name="pref_ringtone_silent" translatable="false">ஓசையற்ற</string>
+    <string name="failed_synced">புதுப்பித்தல் தோல்வியுற்றது, உங்கள் இணைய இணைப்பை சரிபார்க்கவும்</string>
+    <string name="reject_permission_results">நீங்கள் அனுமதியை நிராகரித்தால், இந்த சேவையைப் பயன்படுத்த முடியாது. தயவுசெய்து [அமைத்தல்] > [அனுமதி] அனுமதிகளை இயக்கவும்</string>
+    <string name="current_time">\"நடப்பு நேரம் => \"</string>
+    <string name="question_not_answered">கேள்விக்கு பதில் அளிக்கப்படவில்லை</string>
+    <string name="version_settings">பதிப்பு 1.3</string>
+    <string name="gender_male">ஆண்</string>
+    <string name="gender_female">பெண்</string>
+    <string name="retry_again">மீண்டும் முயற்சிக்கவும்!</string>
+    <string name="ok_close_now">சரி, அதை மூடவும்</string>
+    <string name="speciality_cardview_title">தனிக்கூறு</string>
+    <string name="select_specialization_text">தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="please_select_specialization_msg">தயவு செய்து தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="chat_fab">இன்னுரையாடல் ஃபேப்</string>
+    <string name="visit_closed">வருகை மூடப்பட்டது</string>
 
 </resources>

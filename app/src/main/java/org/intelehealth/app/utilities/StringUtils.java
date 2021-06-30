@@ -262,19 +262,19 @@ public final class StringUtils {
     public static String switch_ta_education_edit(String val) {
         switch (val) {
             case "Illiterate":
-                val = "ଅଶିକ୍ଷିତ";
+                val = "எழுதப்படிக்கத்தெரியாதவர்";
                 break;
             case "Primary":
-                val = "ମୌଳିକ ଶିକ୍ଷା";
+                val = "முதல்நிலை";
                 break;
             case "Secondary":
-                val = "ମାଧ୍ୟମିକ ଶିକ୍ଷା";
+                val = "இடைநிலை";
                 break;
             case "Higher Secondary":
-                val = "ଉଚ୍ଚ ମାଧ୍ୟମିକ ଶିକ୍ଷା";
+                val = "மேல்நிலை";
                 break;
             case "Graduation & Higher":
-                val = "ସ୍ନାତକୋତର ଶିକ୍ଷା";
+                val = "பட்டம் மற்றும் உயர்";
                 break;
             default:
                 return val;
@@ -285,19 +285,19 @@ public final class StringUtils {
 
     public static String switch_ta_education(String val) {
         switch (val) {
-            case "ଅଶିକ୍ଷିତ":
+            case "எழுதப்படிக்கத்தெரியாதவர்":
                 val = "Illiterate";
                 break;
-            case "ମୌଳିକ ଶିକ୍ଷା":
+            case "முதல்நிலை":
                 val = "Primary";
                 break;
-            case "ମାଧ୍ୟମିକ ଶିକ୍ଷା":
+            case "இடைநிலை":
                 val = "Secondary";
                 break;
-            case "ଉଚ୍ଚ ମାଧ୍ୟମିକ ଶିକ୍ଷା":
+            case "மேல்நிலை":
                 val = "Higher Secondary";
                 break;
-            case "ସ୍ନାତକୋତର ଶିକ୍ଷା":
+            case "பட்டம் மற்றும் உயர்":
                 val = "Graduation & Higher";
                 break;
             default:
@@ -364,10 +364,10 @@ public final class StringUtils {
 
     public static String switch_ta_economic(String val) {
         switch (val) {
-            case "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ":
+            case "வறுமைக் கோட்டிற்கு மேல்":
                 val = "APL";
                 break;
-            case "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ":
+            case "வறுமைக் கோட்டிற்குக் கீழ்":
                 val = "BPL";
                 break;
             default:
@@ -379,10 +379,10 @@ public final class StringUtils {
     public static String switch_ta_economic_edit(String val) {
         switch (val) {
             case "APL":
-                val = "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ";
+                val = "வறுமைக் கோட்டிற்கு மேல்";
                 break;
             case "BPL":
-                val = "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ";
+                val = "வறுமைக் கோட்டிற்குக் கீழ்";
                 break;
             default:
                 return val;
@@ -438,19 +438,19 @@ public final class StringUtils {
 
     public static String switch_ta_caste(String val) {
         switch (val) {
-            case "ସାଧାରଣ":
+            case "பொது":
                 val = "General";
                 break;
-            case "ଅନ୍ୟାନ୍ୟ ପଛୁଆ ବର୍ଗ":
+            case "ஓபிசி":
                 val = "OBC";
                 break;
-            case "ଅନୁସୂଚିତ ଜାତି":
+            case "எஸ்சி":
                 val = "SC";
                 break;
-            case "ଅନୁସୂଚିତ ଜନଜାତି":
+            case "எஸ்டி":
                 val = "ST";
                 break;
-            case "ଅନ୍ୟାନ୍ୟ":
+            case "மற்றவை":
                 val = "others";
                 break;
             default:
@@ -508,19 +508,19 @@ public final class StringUtils {
     public static String switch_ta_caste_edit(String val) {
         switch (val) {
             case "General":
-                val = "ସାଧାରଣ";
+                val = "பொது";
                 break;
             case "OBC":
-                val = "ଅନ୍ୟାନ୍ୟ ପଛୁଆ ବର୍ଗ";
+                val = "ஓபிசி";
                 break;
             case "SC":
-                val = "ଅନୁସୂଚିତ ଜାତି";
+                val = "எஸ்சி";
                 break;
             case "ST":
-                val = "ଅନୁସୂଚିତ ଜନଜାତି";
+                val = "எஸ்டி";
                 break;
             case "others":
-                val = "ଅନ୍ୟାନ୍ୟ";
+                val = "மற்றவை";
                 break;
             default:
                 return val;
@@ -613,18 +613,18 @@ public final class StringUtils {
 
     public static String en__ta_dob(String dob) { //English dob is replaced to Tamil text.
         String mdob_text = dob
-                .replace("January", "ଜାନୁଆରୀ")
-                .replace("February", "ଫେବୃଆରୀ")
-                .replace("March", "ମାର୍ଚ୍ଚ")
-                .replace("April", "ଏପ୍ରିଲ୍")
-                .replace("May", "ମେ")
-                .replace("June", "ଜୁନ୍")
-                .replace("July", "ଜୁଲାଇ")
-                .replace("August", "ଅଗଷ୍ଟ")
-                .replace("September", "ସେପ୍ଟେମ୍ବର")
-                .replace("October", "ଅକ୍ଟୋବର")
-                .replace("November", "ନଭେମ୍ବର")
-                .replace("December", "ଡିସେମ୍ବର");
+                .replace("January", "ஜனவரி")
+                .replace("February", "பிப்ரவரி")
+                .replace("March", "மார்ச்")
+                .replace("April", "ஏப்ரல்")
+                .replace("May", "மே")
+                .replace("June", "ஜூன்")
+                .replace("July", "ஜூலை")
+                .replace("August", "ஆகஸ்ட்")
+                .replace("September", "செப்டம்பர்")
+                .replace("October", "அக்டோபர்")
+                .replace("November", "நவம்பர்")
+                .replace("December", "டிசம்பர்");
 
         return mdob_text;
     }
@@ -717,18 +717,18 @@ public final class StringUtils {
         else if(locale.equalsIgnoreCase("ta")) {
             //Bengali
             String dob = dobString
-                    .replace("ଜାନୁଆରୀ", "January")
-                    .replace("ଫେବୃଆରୀ", "February")
-                    .replace("ମାର୍ଚ୍ଚ", "March")
-                    .replace("ଏପ୍ରିଲ୍", "April")
-                    .replace("ମେ", "May")
-                    .replace("ଜୁନ୍", "June")
-                    .replace("ଜୁଲାଇ", "July")
-                    .replace("ଅଗଷ୍ଟ", "August")
-                    .replace("ସେପ୍ଟେମ୍ବର", "September")
-                    .replace("ଅକ୍ଟୋବର", "October")
-                    .replace("ନଭେମ୍ବର", "November")
-                    .replace("ଡିସେମ୍ବର", "December");
+                    .replace("ஜனவரி", "January")
+                    .replace("பிப்ரவரி", "February")
+                    .replace("மார்ச்", "March")
+                    .replace("ஏப்ரல்", "April")
+                    .replace("மே", "May")
+                    .replace("ஜூன்", "June")
+                    .replace("ஜூலை", "July")
+                    .replace("ஆகஸ்ட்", "August")
+                    .replace("செப்டம்பர்", "September")
+                    .replace("அக்டோபர்", "October")
+                    .replace("நவம்பர்", "November")
+                    .replace("டிசம்பர்", "December");
             return dob;
         }
         else {

@@ -610,7 +610,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             dobView.setText(dob_text);
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-            String dob_text = en__ta_dob(dob); //to show text of English into Odiya...
+            String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
             dobView.setText(dob_text);
         }else {
             dobView.setText(dob);
@@ -638,6 +638,21 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             else if(sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+            {
+                if(patient_new.getGender().equalsIgnoreCase("M"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+                }
+                else if(patient_new.getGender().equalsIgnoreCase("F"))
+                {
+                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+                }
+                else
+                {
+                    genderView.setText(patient_new.getGender());
+                }
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
             {
                 if(patient_new.getGender().equalsIgnoreCase("M"))
                 {
