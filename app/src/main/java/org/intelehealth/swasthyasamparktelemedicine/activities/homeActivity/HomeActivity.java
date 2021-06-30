@@ -101,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6, cvMedicalAdvice;
     private String key = null;
     private String licenseUrl = null;
 
@@ -156,6 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        cvMedicalAdvice = findViewById(R.id.cardView_medical_advice);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -210,7 +211,8 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }*/
                 //show options for new visit or new medical advise
-                final CharSequence[] options = { getString(R.string.text_new_visit), getString(R.string.text_new_advice) };
+
+                /*final CharSequence[] options = { getString(R.string.text_new_visit), getString(R.string.text_new_advice) };
                 AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
@@ -224,28 +226,18 @@ public class HomeActivity extends AppCompatActivity {
                         }
                     }
                 });
-                builder.show();
-                /*AlertDialog dialog = builder.show();
-                dialog.findViewById(R.id.btn_close).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                dialog.findViewById(R.id.tv_new_visit).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        IdentificationActivity.start(HomeActivity.this, false);
-                    }
-                });
-                dialog.findViewById(R.id.tv_new_advice).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        IdentificationActivity.start(HomeActivity.this, true);
-                    }
-                });*/
+                builder.show();*/
+                IdentificationActivity.start(HomeActivity.this, false);
             }
         });
+
+        cvMedicalAdvice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IdentificationActivity.start(HomeActivity.this, true);
+            }
+        });
+
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

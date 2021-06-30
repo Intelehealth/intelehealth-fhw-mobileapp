@@ -703,4 +703,5 @@
     <string name="managing_mental_health">Managing Mental Health</string>
     <string name="exercises">Exercises</string>
     <string name="error_medical_visit_data">Please select or enter medical advice</string>
+    <string name="txt_additional_info">Additional information</string>
 </resources>

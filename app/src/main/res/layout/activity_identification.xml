@@ -1441,6 +1441,11 @@
                             android:text="@string/exercises"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cbOthers"
+                            android:text="@string/txt_others"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                         <com.google.android.material.textfield.TextInputLayout
                             android:hint="@string/txt_others"
                             android:layout_width="match_parent"
@@ -1448,6 +1453,28 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/et_medical_advice_extra"
+                                android:enabled="false"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:imeOptions="actionUnspecified"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:hint="@string/txt_additional_info"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_medical_advice_additional"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"

@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -212,9 +213,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
     private boolean isMedicalAdvice;;
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness, cbManageVoiceIssue,
-            cbManageEating, cbDealProblems, cbMentalHealth, cbExercises;
+            cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
-    private EditText et_medical_advice_extra;
+    private EditText et_medical_advice_extra, et_medical_advice_additional;
 
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
@@ -2224,7 +2225,21 @@ public class IdentificationActivity extends AppCompatActivity {
             cbDealProblems = llMedicalAdvice.findViewById(R.id.cbDealProblems);
             cbMentalHealth = llMedicalAdvice.findViewById(R.id.cbMentalHealth);
             cbExercises = llMedicalAdvice.findViewById(R.id.cbExercises);
+            cbOthers = llMedicalAdvice.findViewById(R.id.cbOthers);
             et_medical_advice_extra = llMedicalAdvice.findViewById(R.id.et_medical_advice_extra);
+            et_medical_advice_additional = llMedicalAdvice.findViewById(R.id.et_medical_advice_additional);
+            cbOthers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        et_medical_advice_extra.setEnabled(true);
+                        et_medical_advice_extra.requestFocus();
+                    } else {
+                        et_medical_advice_extra.setText("");
+                        et_medical_advice_extra.setEnabled(false);
+                    }
+                }
+            });
         }
         chb_agree_privacy = findViewById(R.id.chb_agree_privacy);
         txt_privacy = findViewById(R.id.txt_privacy);
@@ -3476,9 +3491,14 @@ public class IdentificationActivity extends AppCompatActivity {
             && !cbDealProblems.isChecked()
             && !cbMentalHealth.isChecked()
             && !cbExercises.isChecked()
-            && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+            && TextUtils.isEmpty(et_medical_advice_additional.getText())) {
                 Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
                 return;
+        }
+
+        if (cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
         }
 
         //check if privacy notice is checked
@@ -4613,8 +4633,10 @@ public class IdentificationActivity extends AppCompatActivity {
             insertion = insertion.concat(Node.next_line + cbMentalHealth.getText());
         if (cbExercises.isChecked())
             insertion = insertion.concat(Node.next_line + cbExercises.getText());
-        if (!TextUtils.isEmpty(et_medical_advice_extra.getText()))
-            insertion = insertion.concat(Node.next_line + et_medical_advice_extra.getText());
+        if (cbOthers.isChecked())
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
+        if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
         obsDTO.setValue(insertion);
 
         obsDTO.setUuid(AppConstants.NEW_UUID);
