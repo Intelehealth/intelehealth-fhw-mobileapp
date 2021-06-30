@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">ಏಕಲ್ ಆರೋಗ್ಯ ಸಹಾಯವಾಣಿ</string>
+    <string name="app_name" translatable="false">ಹಲೋ ಸಾಥಿ ಸಹಾಯವಾಣಿ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">ಏಕಲ್ ಆರೋಗ್ಯ</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">ಏಕಲ್ ಆರೋಗ್ಯ ಸಹಾಯವಾಣಿ</string>
+    <string name="title_activity_login">ಹಲೋ ಸಾಥಿ ಸಹಾಯವಾಣಿ</string>
     <string name="prompt_email">ಬಳಕೆದಾರ ಹೆಸರು</string>
     <string name="prompt_password">ಗುಪ್ತಪದ</string>
     <string name="prompt_admin_password">ನಿರ್ವಹಣೆಯ ಗುಪ್ತಪದ</string>

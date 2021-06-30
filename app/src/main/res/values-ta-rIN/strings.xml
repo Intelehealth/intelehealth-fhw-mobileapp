@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ஏகல் ஆரோக்கியம்</string>
+    <string name="app_name">வணக்கம் சாதி ஹெல்ப்லைன்</string>
     <string name="generic_the_flipping_word_next" translatable="false">அடுத்தது</string>
     <string name="hint_required" translatable="false">தேவை</string>
     <string name="hint_optional" translatable="false">விரும்பினால்</string>
@@ -18,7 +18,7 @@
     <string name="generic_warning" translatable="false">எச்சரிக்கை!</string>
     <string name="generic_update" translatable="false">புதுப்பிப்பு</string>
     <string name="generic_deleted" translatable="false">நீக்கப்பட்டது</string>
-    <string name="title_activity_login" translatable="false">ஏகல் ஆரோக்கியம்</string>
+    <string name="title_activity_login" translatable="false">வணக்கம் சாதி ஹெல்ப்லைன்</string>
     <string name="prompt_email" translatable="false">பயனர்பெயர்</string>
     <string name="prompt_password" translatable="false">கடவுச்சொல்</string>
     <string name="prompt_admin_password" translatable="false">நிர்வாகி கடவுச்சொல்</string>
