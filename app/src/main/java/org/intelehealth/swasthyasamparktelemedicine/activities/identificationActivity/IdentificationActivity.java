@@ -4493,6 +4493,7 @@ public class IdentificationActivity extends AppCompatActivity {
                                 }
                             });
                             AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.setCancelable(false);
                             alertDialog.show();
                         } else {
                             isUserExists = false;
