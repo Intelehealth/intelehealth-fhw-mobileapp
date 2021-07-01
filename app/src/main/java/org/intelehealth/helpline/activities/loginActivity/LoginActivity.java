@@ -456,4 +456,9 @@ public class LoginActivity extends AppCompatActivity {
         return salt;
 
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity(); // or finish();
+    }
 }
