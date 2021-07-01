@@ -674,7 +674,7 @@
     <string name="and_i_be_assisting_you">\" and I will be assisting you.\"</string>
     <string name="powered_by_intelehealth_ekal_arogya_amp_ntransform_rural_india">Powered by Intelehealth, Arogya Foundation of India &amp;\nTransform Rural India</string>
     <string name="self_assessment">Self Assessment</string>
-    <string name="district_identification_screen">District*</string>
+    <string name="district_identification_screen">जिला*</string>
     <string name="in_partnership_with_state_government_of">राज्य सरकार के सहयोग से</string>
     <string name="jharkhand">झारखंड</string>
     <string name="madhya_pradesh">मध्य प्रदेश</string>
@@ -685,6 +685,19 @@
     <string name="take_photo">फोटो लो</string>
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
-    <string name="sikkim">Sikkim</string>
+    <string name="sikkim">सिक्किम</string>
+    <string name="text_medical_advice">चिकित्सा सलाह</string>
+    <string name="text_new_visit">डॉक्टर का नया दौरा</string>
+    <string name="text_new_advice">नई चिकित्सा सलाह</string>
+    <string name="vaccination_guidance">टीकाकरण मार्गदर्शन</string>
+    <string name="concern_about_covid_re_infection">कोविड पुन: संक्रमण के बारे में चिंता</string>
+    <string name="managing_breathlessness">सांस फूलने का प्रबंधन</string>
+    <string name="managing_issues_with_voice">आवाज के मुद्दों का प्रबंधन</string>
+    <string name="managing_eating_drinking">ठीक होने के बाद खाने, पीने और खाना निगलने का प्रबंधन</string>
+    <string name="dealing_problems">ध्यान, स्मृति और स्पष्टता की समस्याओं को सुलझाना</string>
+    <string name="managing_mental_health">मानसिक स्वास्थ्य का प्रबंधन</string>
+    <string name="exercises">व्यायाम</string>
+    <string name="error_medical_visit_data">कृपया चिकित्सकीय सलाह चुनें या दर्ज करें</string>
+    <string name="txt_additional_info">अतिरिक्त जानकारी</string>
 
 </resources>
