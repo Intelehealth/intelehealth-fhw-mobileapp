@@ -14,14 +14,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -41,29 +33,27 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 import org.intelehealth.swasthyasamparktelemedicine.R;
+import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.swasthyasamparktelemedicine.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
+import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
 import org.intelehealth.swasthyasamparktelemedicine.database.InteleHealthDatabaseHelper;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.EncounterDAO;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.ImagesDAO;
@@ -78,16 +68,23 @@ import org.intelehealth.swasthyasamparktelemedicine.utilities.DateAndTimeUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.DownloadFilesUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.FileUtils;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.Logger;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.UrlModifiers;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.UuidDictionary;
-
-import org.intelehealth.swasthyasamparktelemedicine.activities.homeActivity.HomeActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.swasthyasamparktelemedicine.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.swasthyasamparktelemedicine.utilities.NetworkConnection;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -103,6 +100,7 @@ import okhttp3.ResponseBody;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    public static final String EXTRA_SHOW_MEDICAL_ADVICE = "EXTRA_SHOW_MEDICAL_ADVICE";
     String patientName;
     String visitUuid = null;
     List<String> visitUuidList;
@@ -127,7 +125,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, newAdvice;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView, whatsapp_no, calling;
@@ -170,6 +168,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -346,6 +345,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //  LoadFamilyMembers();
 
+        if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
+            newAdvice.setVisibility(View.VISIBLE);
+            newAdvice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                }
+            });
+        }
     }
 
     private void LoadFamilyMembers() {

@@ -177,6 +177,12 @@
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name="org.intelehealth.swasthyasamparktelemedicine.activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
+            android:label="@string/text_medical_advice"
+            android:screenOrientation="portrait"
+            android:configChanges="uiMode"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name="org.intelehealth.swasthyasamparktelemedicine.activities.settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
