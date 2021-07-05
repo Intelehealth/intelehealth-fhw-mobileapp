@@ -1926,6 +1926,22 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        if (isMedicalAdvice
+                && !cbCovidConcern.isChecked()
+                && !cbVaccineGuide.isChecked()
+                && !cbCovidConcern.isChecked()
+                && !cbManagingBreathlessness.isChecked()
+                && !cbManageVoiceIssue.isChecked()
+                && !cbManageEating.isChecked()
+                && !cbDealProblems.isChecked()
+                && !cbMentalHealth.isChecked()
+                && !cbExercises.isChecked()
+                && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
    /*     ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
         values.add(mMiddleName);
