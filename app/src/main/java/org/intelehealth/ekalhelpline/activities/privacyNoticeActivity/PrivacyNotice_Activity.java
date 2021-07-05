@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.privacyNoticeActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -38,6 +39,14 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
     private boolean hasLicense = false;
     Button accept, reject;
     MaterialCheckBox checkBox_cho;
+    private static final String EXTRA_DISABLE_ACTIONS = "EXTRA_DISABLE_ACTIONS";
+    boolean disableActions;
+
+    public static void start(Context context, boolean disableActions) {
+        Intent starter = new Intent(context, PrivacyNotice_Activity.class);
+        starter.putExtra(EXTRA_DISABLE_ACTIONS, disableActions);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,6 +223,15 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
+        }
+
+
+        disableActions = getIntent().getBooleanExtra(EXTRA_DISABLE_ACTIONS, false);
+        // no need to accept here if redirected from identification activity
+        if (disableActions) {
+            accept.setVisibility(View.GONE);
+            reject.setVisibility(View.GONE);
+            checkBox_cho.setVisibility(View.GONE);
         }
     }
 
