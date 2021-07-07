@@ -112,7 +112,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         notesSpinner = findViewById(R.id.noteSpinner);
         patientNoteList = getPatientNoteList();
-        patientNoteAdapter = new ArrayAdapter<>(PatientSurveyActivity.this, android.R.layout.simple_spinner_item, patientNoteList);
+        patientNoteAdapter = new ArrayAdapter<>(PatientSurveyActivity.this, android.R.layout.simple_spinner_dropdown_item, patientNoteList);
         notesSpinner.setAdapter(patientNoteAdapter);
         mScaleButton1 = findViewById(R.id.button_scale_1);
         mScaleButton2 = findViewById(R.id.button_scale_2);
