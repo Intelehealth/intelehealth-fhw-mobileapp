@@ -1,6 +1,7 @@
 package org.intelehealth.ekalhelpline.activities.identificationActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -27,6 +29,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -1575,6 +1578,9 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 onPatientCreateClicked();
             }
+
+            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
         });
 
 /*
@@ -2656,10 +2662,13 @@ public class IdentificationActivity extends AppCompatActivity {
 //            else {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
 //            }
+            boolean medicalboolean = false;
             if (isPatientInserted && isPatientImageInserted) {
                 if (isMedicalAdvice) {
                     //if from medical advise option then create medical advice visit first(automatically)
                     createMedicalAdviceVisit();
+                    medicalboolean = true;
+
                 }
 
                 Logger.logD(TAG, "inserted");
@@ -2669,6 +2678,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
+                i.putExtra("MedicalAdvice", medicalboolean);
+               // i.putExtra("MedicalAdvice", "MedicalAdvice");
                 Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
@@ -3543,7 +3554,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-            Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
