@@ -1032,6 +1032,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
                 intent1.putExtra("name", patientName);
                 intent1.putExtra("tag", "edit");
+                intent1.putExtra("gender",patientGender);
                 startActivity(intent1);
             }
         });
@@ -1105,6 +1106,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("visitUuid", visitUuid);
                         intent1.putExtra("encounterUuidVitals", encounterVitals);
                         intent1.putExtra("edit_FamHist", "edit_FamHist");
+                        intent1.putExtra("gender",patientGender);
                      /*   if(EncounterAdultInitial_LatestVisit != null &&
                                 !EncounterAdultInitial_LatestVisit.isEmpty()) {
                             intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
@@ -1217,6 +1219,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("gender",patientGender);
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1323,6 +1326,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("gender",patientGender);
+
                         //    intent1.putStringArrayListExtra("exams", physicalExams);
                         for (String string : physicalExams)
                             Log.i(TAG, "onClick: " + string);
@@ -1427,6 +1432,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent1.putExtra("name", patientName);
                         intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                         intent1.putExtra("tag", "edit");
+                        intent1.putExtra("gender",patientGender);
+
                         startActivity(intent1);
                         dialogInterface.dismiss();
                     }
@@ -1465,6 +1472,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 addDocs.putExtra("visitUuid", visitUuid);
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
                 addDocs.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                addDocs.putExtra("gender",patientGender);
+
                 startActivity(addDocs);
             }
         });
