@@ -323,6 +323,7 @@
     <string name="bpdia_error">ଡାୟାଷ୍ଟୋଲିକ୍ ପ୍ରେସର୍ %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="resp_error">शଶ୍ୱାସକ୍ରିୟା ହାର %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
     <string name="temp_error">ତାପମାତ୍ରା %1$s ଓ %2$s ମଧ୍ୟରେ ରହିବା ଆବଶ୍ୟକ</string>
+    <string name="enter_field">କ୍ଷେତ୍ର ପ୍ରବେଶ କରନ୍ତୁ |</string>
     <string name="not_provided">ଦିଅ ଯାଇ ନାହିଁ</string>
     <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>

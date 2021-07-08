@@ -369,7 +369,7 @@
     <string name="bpdia_error" translatable="false">Diastolic pressure should be in between %1$s and %2$s</string>
     <string name="resp_error" translatable="false">Respiratory rate should be in between %1$s and %2$s</string>
     <string name="temp_error" translatable="false">Temperature should be in between %1$s and %2$s</string>
-
+    <string name="enter_field">Enter Field</string>
     <string name="not_provided">Not provided</string>
 
     <!-- Patient Exit Survey -->

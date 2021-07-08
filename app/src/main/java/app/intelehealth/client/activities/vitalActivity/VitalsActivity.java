@@ -587,12 +587,12 @@ public class VitalsActivity extends AppCompatActivity {
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
             if(mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
-                mBpSys.setError("Enter field");
+                mBpSys.setError(getResources().getString(R.string.enter_field));
                 return;
             }
             else if(mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
-                mBpDia.setError("Enter field");
+                mBpDia.setError(getResources().getString(R.string.enter_field));
                 return;
             }
         }

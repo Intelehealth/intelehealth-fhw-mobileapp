@@ -367,7 +367,7 @@
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s और %2$s के बीच होना चाहिए</string>
     <string name="resp_error">श्वसन दर %1$s और %2$s के बीच होनी चाहिए</string>
     <string name="temp_error">तापमान %1$s और %2$s के बीच होना चाहिए</string>
-
+    <string name="enter_field">क्षेत्र दर्ज करें</string>
     <string name="not_provided">नहीं दिया गया</string>
 
     <!-- Patient Exit Survey -->
