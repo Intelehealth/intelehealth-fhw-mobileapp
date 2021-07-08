@@ -9,6 +9,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -31,8 +33,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,6 +64,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 public class ComplaintNodeActivity extends AppCompatActivity {
+    private static final int INTENT_FOR_QUESTION_NODE = 1003;
     final String TAG = "Complaint Node Activity";
 
     String patientUuid;
@@ -134,7 +141,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         img_question = findViewById(R.id.img_question);
         tv_selectComplaint = findViewById(R.id.tv_selectComplaint);
@@ -379,7 +386,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                         }
                         intent.putStringArrayListExtra("complaints", selection);
 
-                        startActivity(intent);
+                        startActivityForResult(intent, INTENT_FOR_QUESTION_NODE);
                     }
                 });
                 alertDialogBuilder.setNegativeButton(getResources().getString(R.string.complaint_change_selected), new DialogInterface.OnClickListener() {
@@ -456,4 +463,54 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         v.startAnimation(bottomUp);
 
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INTENT_FOR_QUESTION_NODE) {
+            setResult(resultCode);
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setMessage("New started visit will be not saved!");
+                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        try {
+                            // remove the visit
+                            VisitsDAO visitsDAO = new VisitsDAO();
+                            visitsDAO.deleteByVisitUUID(visitUuid);
+
+                            ObsDAO obsDAO = new ObsDAO();
+                            obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                            // remove the Encounter
+                            EncounterDAO encounterDAO = new EncounterDAO();
+                            encounterDAO.deleteByVisitUUID(visitUuid);
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(ComplaintNodeActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

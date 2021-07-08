@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -97,6 +98,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edi
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    private static final int INTENT_FOR_VITALS = 1001;
     String patientName;
     String mGender;
     String visitUuid = null;
@@ -158,7 +160,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sessionManager = new SessionManager(this);
         reMyreceive = new Myreceiver();
@@ -333,7 +335,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("gender", mGender);
                 intent2.putExtra("tag", "new");
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-                startActivity(intent2);
+                startActivityForResult(intent2, INTENT_FOR_VITALS);
             }
         });
 
@@ -694,11 +696,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
 //
-        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+        if ((patient_new.getEducation_level()==null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             education_statusView.setText("नहीं दिया गया");
         }
-        else if(patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+        else if((patient_new.getEducation_level()==null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             education_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
         }
@@ -714,11 +716,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
             // education_statusView.setText(patient_new.getEducation_level());
-            if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+            if ((patient_new.getEconomic_status()==null || patient_new.getEconomic_status().equalsIgnoreCase("Not provided")) &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 economic_statusView.setText("नहीं दिया गया");
             }
-            else if(patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+            else if((patient_new.getEconomic_status()==null || patient_new.getEconomic_status().equalsIgnoreCase("Not provided")) &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 economic_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
             }
@@ -738,11 +740,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // economic_statusView.setText(patient_new.getEconomic_status());
             }
 
-        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+        if ((patient_new.getCaste()==null || patient_new.getCaste().equalsIgnoreCase("Not provided")) &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             casteView.setText("नहीं दिया गया");
         }
-        else if(patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+        else if((patient_new.getCaste()==null || patient_new.getCaste().equalsIgnoreCase("Not provided")) &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             casteView.setText("ଦିଅ ଯାଇ ନାହିଁ");
         }
@@ -1297,18 +1299,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    /*public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XML
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.detail_home:
+            //case R.id.detail_home:
+            case android.R.id.home:
                 Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1316,6 +1319,14 @@ public class PatientDetailActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == INTENT_FOR_VITALS){
+            recreate();
         }
     }
 }

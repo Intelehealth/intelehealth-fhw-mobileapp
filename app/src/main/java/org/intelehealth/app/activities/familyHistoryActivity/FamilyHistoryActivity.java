@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -26,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -35,9 +37,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,6 +72,7 @@ import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
 public class FamilyHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
     private static final String TAG = FamilyHistoryActivity.class.getSimpleName();
+    private static final int INTENT_FOR_PHYSICAL_EXAM = 1007;
 
     String patientUuid;
     String visitUuid;
@@ -201,7 +207,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, INTENT_FOR_PHYSICAL_EXAM);
 
                 }
             });
@@ -232,7 +238,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle(patientName + ": " + getTitle());
 
@@ -415,7 +421,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //   intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);
+            startActivityForResult(intent, INTENT_FOR_PHYSICAL_EXAM);
         }
 
 
@@ -528,6 +534,61 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INTENT_FOR_PHYSICAL_EXAM) {
+            setResult(resultCode);
+            finish();
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                if (intentTag != null && intentTag.equals("edit")) {
+                    finish();
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setMessage("New started visit will be not saved!");
+                    dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            try {
+                                // remove the visit
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                visitsDAO.deleteByVisitUUID(visitUuid);
+
+                                ObsDAO obsDAO = new ObsDAO();
+                                obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                // remove the Encounter
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.deleteByVisitUUID(visitUuid);
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(FamilyHistoryActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
 
 

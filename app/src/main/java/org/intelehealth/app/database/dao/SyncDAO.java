@@ -199,7 +199,8 @@ public class SyncDAO {
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
 //        String url = "https://" + sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic " + encoded);
-        Logger.logD("Start pull request", "Started");
+        Logger.logD(TAG, "Start pull request - Started");
+        Logger.logD(TAG, "Start pull url"+ url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -212,6 +213,7 @@ public class SyncDAO {
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
                     try {
+                        Log.v(TAG, new Gson().toJson(response.body()));
                         sync = SyncData(response.body());
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
