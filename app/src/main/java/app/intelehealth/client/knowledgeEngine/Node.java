@@ -1164,11 +1164,19 @@ public class Node implements Serializable {
         });
         durationDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
                 dialog.dismiss();
             }
         });
         AlertDialog dialog = durationDialog.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
