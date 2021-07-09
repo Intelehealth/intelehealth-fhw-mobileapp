@@ -13,6 +13,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -27,8 +29,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.view.animation.LinearInterpolator;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,18 +46,6 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
@@ -77,6 +67,18 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -121,6 +123,7 @@ public class HomeActivity extends AppCompatActivity {
     TextView findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
     private ObjectAnimator syncAnimator;
+    private TextView mActiveVitCountTextView, mTodayVisitCountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +134,8 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
+        mActiveVitCountTextView = findViewById(R.id.active_visit_count);
+        mTodayVisitCountTextView = findViewById(R.id.today_visit_count);
 
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -535,7 +540,7 @@ public class HomeActivity extends AppCompatActivity {
                                             sessionManager.setMindMapServerUrl(licenseUrl);
 
                                             if (keyVerified(key)) {
-                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/",key);
+                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
                                                 alertDialog.dismiss();
                                             }
                                         } else {
@@ -750,7 +755,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
         ApiClient.changeApiBaseUrl(url);
@@ -939,6 +943,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
+            updateUIForCounts();
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
                 syncAnimator.cancel();
@@ -968,4 +973,35 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        updateUIForCounts();
+    }
+
+    private void updateUIForCounts() {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+        Cursor c1 = db.rawQuery(query, null);
+
+        mActiveVitCountTextView.setText("( " + String.valueOf(c1.getCount()) + " )");
+
+
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " +
+                "FROM tbl_visit a, tbl_patient b  " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
+        Logger.logD(TAG, query);
+        Cursor c2 = db.rawQuery(query, null);
+        mTodayVisitCountTextView.setText("( " + String.valueOf(c2.getCount()) + " )");
+
+    }
+
 }
