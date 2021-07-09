@@ -548,4 +548,14 @@
     <string name="text_new_visit">புதிய மருத்துவர் வருகை</string>
     <string name="text_new_advice">புதிய மருத்துவ ஆலோசனை</string>
 
+    <string name="vaccination_guidance">தடுப்பூசி வழிகாட்டுதல்</string>
+    <string name="concern_about_covid_re_infection">COVID மறு தொற்று பற்றிய கவலை</string>
+    <string name="managing_breathlessness">மூச்சுத் திணறலை நிர்வகித்தல்</string>
+    <string name="managing_issues_with_voice">குரலுடன் சிக்கல்களை நிர்வகித்தல்</string>
+    <string name="managing_eating_drinking">மீட்கப்பட்ட பிறகு சாப்பிடுவது, குடிப்பது மற்றும் விழுங்குவதை நிர்வகித்தல்</string>
+    <string name="dealing_problems">கவனம், நினைவகம் மற்றும் தெளிவின் சிக்கல்களைக் கையாளுதல்</string>
+    <string name="managing_mental_health">மன ஆரோக்கியத்தை நிர்வகித்தல்</string>
+    <string name="exercises">பயிற்சிகள்</string>
+    <string name="txt_additional_info">கூடுதல் தகவல்</string>
+
 </resources>

@@ -555,5 +555,15 @@
     <string name="text_new_visit">ନୂତନ ଡାକ୍ତର ପରିଦର୍ଶନ |</string>
     <string name="text_new_advice">ନୂତନ ଚିକିତ୍ସା ପରାମର୍ଶ |</string>
 
+    <string name="vaccination_guidance">ଟୀକାକରଣ ନିର୍ଦ୍ଦେଶାବଳୀ</string>
+    <string name="concern_about_covid_re_infection">କୋଭିଡ୍ ପୁନ - ସଂକ୍ରମଣ ବିଷୟରେ ଚିନ୍ତା</string>
+    <string name="managing_breathlessness">ନିଶ୍ୱାସ ପ୍ରଶ୍ୱାସ ପରିଚାଳନା</string>
+    <string name="managing_issues_with_voice">ସ୍ୱର ସହିତ ସମସ୍ୟାଗୁଡିକ ପରିଚାଳନା କରିବା</string>
+    <string name="managing_eating_drinking">ସୁସ୍ଥ ହେବା ପରେ ଖାଇବା, ପିଇବା ଏବଂ ଗିଳିବା ପରିଚାଳନା</string>
+    <string name="dealing_problems">ଧ୍ୟାନ, ସ୍ମୃତି ଏବଂ ସ୍ୱଚ୍ଛତାର ସମସ୍ୟାର ମୁକାବିଲା</string>
+    <string name="managing_mental_health">ମାନସିକ ସ୍ୱାସ୍ଥ୍ୟ ପରିଚାଳନା</string>
+    <string name="exercises">ବ୍ୟାୟାମ</string>
+    <string name="txt_additional_info">ଅତିରିକ୍ତ ସୂଚନା</string>
+
 
 </resources>

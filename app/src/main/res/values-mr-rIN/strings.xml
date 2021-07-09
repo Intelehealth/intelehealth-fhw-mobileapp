@@ -682,6 +682,16 @@
         <string name="text_new_visit">नवीन डॉक्टर भेट</string>
         <string name="text_new_advice">नवीन वैद्यकीय सल्ला</string>
 
+        <string name="vaccination_guidance">लसीकरण मार्गदर्शन</string>
+        <string name="concern_about_covid_re_infection">कोविड री-इन्फेक्शनबद्दल चिंता</string>
+        <string name="managing_breathlessness">श्वास घेणे व्यवस्थापित</string>
+        <string name="managing_issues_with_voice">आवाजासह समस्या व्यवस्थापित करणे</string>
+        <string name="managing_eating_drinking">पुनर्प्राप्तीनंतर खाणे, पिणे आणि गिळणे व्यवस्थापित करणे</string>
+        <string name="dealing_problems">लक्ष, स्मृती आणि स्पष्टतेच्या समस्यांचे निराकरण करणे</string>
+        <string name="managing_mental_health">मानसिक आरोग्य व्यवस्थापित करणे</string>
+        <string name="exercises">व्यायाम</string>
+        <string name="txt_additional_info">अतिरिक्त माहिती</string>
+
 
 
 </resources>

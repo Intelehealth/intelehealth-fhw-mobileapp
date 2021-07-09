@@ -544,4 +544,14 @@
     <string name="text_new_visit">కొత్త డాక్టర్ సందర్శన</string>
     <string name="text_new_advice">కొత్త వైద్య సలహా</string>
 
+    <string name="vaccination_guidance">టీకా మార్గదర్శకత్వం</string>
+    <string name="concern_about_covid_re_infection">COVID తిరిగి సంక్రమణ గురించి ఆందోళన</string>
+    <string name="managing_breathlessness">శ్వాస తీసుకోకపోవడం</string>
+    <string name="managing_issues_with_voice">వాయిస్‌తో సమస్యలను నిర్వహించడం</string>
+    <string name="managing_eating_drinking">కోలుకున్న తర్వాత తినడం, త్రాగటం మరియు మింగడం</string>
+    <string name="dealing_problems">శ్రద్ధ, జ్ఞాపకశక్తి మరియు స్పష్టత యొక్క సమస్యలను పరిష్కరించడం</string>
+    <string name="managing_mental_health">మానసిక ఆరోగ్యాన్ని నిర్వహించడం</string>
+    <string name="exercises">వ్యాయామాలు</string>
+    <string name="txt_additional_info">అదనపు సమాచారం</string>
+
 </resources>

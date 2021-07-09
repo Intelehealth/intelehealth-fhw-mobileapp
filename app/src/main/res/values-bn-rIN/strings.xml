@@ -515,4 +515,14 @@
     <string name="text_new_visit">নতুন ডাক্তার দর্শন</string>
     <string name="text_new_advice">নতুন মেডিকেল পরামর্শ</string>
 
+    <string name="vaccination_guidance">টিকা নির্দেশিকা</string>
+    <string name="concern_about_covid_re_infection">COVID পুনরায় সংক্রমণ সম্পর্কে উদ্বেগ |</string>
+    <string name="managing_breathlessness">শ্বাসকষ্ট পরিচালনা</string>
+    <string name="managing_issues_with_voice">কণ্ঠ দিয়ে সমস্যা পরিচালনা করা |</string>
+    <string name="managing_eating_drinking">খাওয়া, মদ্যপান এবং পুনরুদ্ধারের পরে গিলতে পরিচালনা করা |</string>
+    <string name="dealing_problems">মনোযোগ, স্মৃতি এবং স্পষ্টতার সমস্যার সাথে মোকাবিলা করা</string>
+    <string name="managing_mental_health">মানসিক স্বাস্থ্য পরিচালনা করা</string>
+    <string name="exercises">সামরিক ব্যায়াম |</string>
+    <string name="txt_additional_info">অতিরিক্ত তথ্য</string>
+
 </resources>
