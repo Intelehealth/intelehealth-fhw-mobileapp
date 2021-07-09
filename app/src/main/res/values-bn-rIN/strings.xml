@@ -511,4 +511,8 @@
     <string name="choose_from_gallery">গ্যালারী থেকে চয়ন করুন</string>
     <string name="additional_doc_image_picker_title">অতিরিক্ত নথি যুক্ত করুন!</string>
 
+    <string name="text_medical_advice">নতুন মেডিকেল পরামর্শ</string>
+    <string name="text_new_visit">নতুন ডাক্তার দর্শন</string>
+    <string name="text_new_advice">নতুন মেডিকেল পরামর্শ</string>
+
 </resources>

@@ -540,4 +540,8 @@
     <string name="choose_from_gallery">గ్యాలరీ నుండి ఎంచుకోండి</string>
     <string name="additional_doc_image_picker_title">అదనపు పత్రాన్ని జోడించండి!</string>
 
+    <string name="text_medical_advice">కొత్త వైద్య సలహా</string>
+    <string name="text_new_visit">కొత్త డాక్టర్ సందర్శన</string>
+    <string name="text_new_advice">కొత్త వైద్య సలహా</string>
+
 </resources>

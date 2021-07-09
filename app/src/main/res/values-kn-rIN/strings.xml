@@ -667,4 +667,8 @@
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
 
+    <string name="text_medical_advice">ಹೊಸ ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+    <string name="text_new_visit">ಹೊಸ ವೈದ್ಯರ ಭೇಟಿ</string>
+    <string name="text_new_advice">ಹೊಸ ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+
 </resources>

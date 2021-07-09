@@ -515,5 +515,9 @@
     <string name="choose_from_gallery">গেলেৰীৰ পৰা বাছক</string>
     <string name="additional_doc_image_picker_title">অতিৰিক্ত দস্তাবেজ যোগ কৰক!</string>
 
+    <string name="text_medical_advice">নতুন চিকিৎসা পৰামৰ্শ</string>
+    <string name="text_new_visit">নতুন চিকিৎসকৰ সাক্ষাত</string>
+    <string name="text_new_advice">নতুন চিকিৎসা পৰামৰ্শ</string>
+
 
 </resources>

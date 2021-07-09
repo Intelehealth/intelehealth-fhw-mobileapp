@@ -678,7 +678,9 @@
         <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
         <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
 
-
+        <string name="text_medical_advice">नवीन वैद्यकीय सल्ला</string>
+        <string name="text_new_visit">नवीन डॉक्टर भेट</string>
+        <string name="text_new_advice">नवीन वैद्यकीय सल्ला</string>
 
 
 

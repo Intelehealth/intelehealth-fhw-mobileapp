@@ -544,6 +544,10 @@
     <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
 
+    <string name="text_medical_advice">പുതിയ മെഡിക്കൽ ഉപദേശം</string>
+    <string name="text_new_visit">പുതിയ ഡോക്ടർ സന്ദർശനം</string>
+    <string name="text_new_advice">പുതിയ മെഡിക്കൽ ഉപദേശം</string>
+
 </resources>
 
 

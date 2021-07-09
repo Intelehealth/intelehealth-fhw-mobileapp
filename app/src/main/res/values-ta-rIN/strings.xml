@@ -544,4 +544,8 @@
     <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>
     <string name="question_answer_all" translatable="false">அனைத்து கேள்விகளுக்கும் நீங்கள் நிச்சயமாக பதிலளித்திருக்கிறீர்களா?</string>
 
+    <string name="text_medical_advice">புதிய மருத்துவ ஆலோசனை</string>
+    <string name="text_new_visit">புதிய மருத்துவர் வருகை</string>
+    <string name="text_new_advice">புதிய மருத்துவ ஆலோசனை</string>
+
 </resources>

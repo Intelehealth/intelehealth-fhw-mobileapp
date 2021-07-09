@@ -662,5 +662,8 @@
         <string name="choose_from_gallery">ગેલેરીમાંથી પસંદ કરો</string>
         <string name="additional_doc_image_picker_title">વધારાના દસ્તાવેજ ઉમેરો!</string>
 
+        <string name="text_medical_advice">નવી તબીબી સલાહ</string>
+        <string name="text_new_visit">નવા ડોક્ટરની મુલાકાત</string>
+        <string name="text_new_advice">નવી તબીબી સલાહ</string>
 
 </resources>
