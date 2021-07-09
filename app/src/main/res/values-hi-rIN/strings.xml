@@ -680,4 +680,15 @@
     <string name="text_new_visit">नए डॉक्टर का दौरा</string>
     <string name="text_new_advice">नई चिकित्सा सलाह</string>
 
+    <string name="vaccination_guidance">Vटीकाकरण मार्गदर्शन</string>
+    <string name="concern_about_covid_re_infection">COVID पुन: संक्रमण के बारे में चिंता</string>
+    <string name="managing_breathlessness">सांस फूलने का प्रबंधन</string>
+    <string name="managing_issues_with_voice">आवाज के साथ मुद्दों का प्रबंधन</string>
+    <string name="managing_eating_drinking">ठीक होने के बाद खाने, पीने और निगलने का प्रबंध करना</string>
+    <string name="dealing_problems">ध्यान, स्मृति और स्पष्टता की समस्याओं से निपटना</string>
+    <string name="managing_mental_health">मानसिक स्वास्थ्य का प्रबंधन</string>
+    <string name="exercises">अभ्यास</string>
+    <string name="txt_additional_info">अतिरिक्त जानकारी</string>
+    <string name="medical_advice">वैद्यकीय सलाह</string>
+
 </resources>

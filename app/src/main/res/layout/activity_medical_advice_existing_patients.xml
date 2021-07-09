@@ -77,7 +77,7 @@
                             android:fontFamily="@font/lato_bold"
                             android:gravity="center_vertical"
                             android:includeFontPadding="false"
-                            android:text="Medical Advice"
+                            android:text="@string/medical_advice"
                             android:textSize="@dimen/card_content_text_size" />
 
                     </LinearLayout>
