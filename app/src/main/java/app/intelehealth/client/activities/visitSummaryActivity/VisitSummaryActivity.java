@@ -1871,7 +1871,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Locale.setDefault(locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf); }
+            VisitSummaryActivity.this.createConfigurationContext(conf); }
         DisplayMetrics dm = res.getDisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             conf.setLocales(new LocaleList(locale));
