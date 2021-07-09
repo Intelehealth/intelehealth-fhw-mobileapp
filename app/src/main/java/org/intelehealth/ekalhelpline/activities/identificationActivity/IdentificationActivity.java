@@ -1,7 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.identificationActivity;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,20 +8,9 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
-
-import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputLayout;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.os.LocaleList;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -46,27 +34,56 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity;
+import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
+import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ekalhelpline.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.ekalhelpline.activities.setupActivity.SetupActivity;
+import org.intelehealth.ekalhelpline.app.AppConstants;
+import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
+import org.intelehealth.ekalhelpline.database.dao.ImagesDAO;
+import org.intelehealth.ekalhelpline.database.dao.ImagesPushDAO;
 import org.intelehealth.ekalhelpline.database.dao.ObsDAO;
+import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
+import org.intelehealth.ekalhelpline.database.dao.SyncDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitAttributeListDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
 import org.intelehealth.ekalhelpline.knowledgeEngine.Node;
+import org.intelehealth.ekalhelpline.models.Patient;
 import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
 import org.intelehealth.ekalhelpline.models.dto.ObsDTO;
+import org.intelehealth.ekalhelpline.models.dto.PatientAttributesDTO;
+import org.intelehealth.ekalhelpline.models.dto.PatientDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
 import org.intelehealth.ekalhelpline.syncModule.SyncUtils;
+import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalhelpline.utilities.EditTextUtils;
+import org.intelehealth.ekalhelpline.utilities.FileUtils;
+import org.intelehealth.ekalhelpline.utilities.IReturnValues;
+import org.intelehealth.ekalhelpline.utilities.Logger;
+import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
+import org.intelehealth.ekalhelpline.utilities.UuidGenerator;
+import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -79,38 +96,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
-import org.intelehealth.ekalhelpline.app.AppConstants;
-import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
-import org.intelehealth.ekalhelpline.database.dao.ImagesDAO;
-import org.intelehealth.ekalhelpline.database.dao.ImagesPushDAO;
-import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
-import org.intelehealth.ekalhelpline.database.dao.SyncDAO;
-import org.intelehealth.ekalhelpline.models.Patient;
-import org.intelehealth.ekalhelpline.models.dto.PatientAttributesDTO;
-import org.intelehealth.ekalhelpline.models.dto.PatientDTO;
-import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
-import org.intelehealth.ekalhelpline.utilities.EditTextUtils;
-import org.intelehealth.ekalhelpline.utilities.FileUtils;
-import org.intelehealth.ekalhelpline.utilities.IReturnValues;
-import org.intelehealth.ekalhelpline.utilities.Logger;
-import org.intelehealth.ekalhelpline.utilities.SessionManager;
-import org.intelehealth.ekalhelpline.utilities.UuidGenerator;
-
-import org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity;
-import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
-import org.intelehealth.ekalhelpline.activities.setupActivity.SetupActivity;
-import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
-import org.intelehealth.ekalhelpline.utilities.StringUtils;
-import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
-
-//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -154,11 +141,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -197,7 +184,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
-    private boolean isMedicalAdvice;;
+    private boolean isMedicalAdvice;
+    ;
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
@@ -301,7 +289,7 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-      //  mImageView = findViewById(R.id.imageview_id_picture);
+        //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
@@ -329,7 +317,7 @@ public class IdentificationActivity extends AppCompatActivity {
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);*/
 
         //Cardview
-       // cardview_household = findViewById(R.id.cardview_household);
+        // cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -535,7 +523,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PrivacyNotice_Activity.start(IdentificationActivity.this, true);
-               // startActivity(intent);
+                // startActivity(intent);
             }
         });
         if (!TextUtils.isEmpty(patientID_edit)) {
@@ -1579,8 +1567,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
 
-            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
         });
 
 /*
@@ -1680,7 +1668,6 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
 
-
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
         @Override
         public CharSequence filter(CharSequence charSequence, int i, int i1, Spanned spanned, int i2, int i3) {
@@ -1736,7 +1723,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -2007,7 +1994,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2679,7 +2666,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
                 i.putExtra("MedicalAdvice", medicalboolean);
-               // i.putExtra("MedicalAdvice", "MedicalAdvice");
+                // i.putExtra("MedicalAdvice", "MedicalAdvice");
                 Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
@@ -2795,7 +2782,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -3454,7 +3441,7 @@ public class IdentificationActivity extends AppCompatActivity {
         today.set(Calendar.MILLISECOND, 0);
         Date todayDate = today.getTime();
         String endDate = startFormat.format(todayDate);
-        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
 
         //create & save visit visitUuid & encounter in the DB
@@ -3508,25 +3495,25 @@ public class IdentificationActivity extends AppCompatActivity {
         //append all the selected items to the OBS value
         String insertion = Node.bullet_arrow + "<b>" + "Medical Advice" + "</b>" + ": ";
         if (cbVaccineGuide.isChecked())
-            insertion = insertion.concat(Node.next_line + cbVaccineGuide.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.vaccination_guidance));//cbVaccineGuide.getText());
         if (cbCovidConcern.isChecked())
-            insertion = insertion.concat(Node.next_line + cbCovidConcern.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.concern_about_covid_re_infection));//cbCovidConcern.getText());
         if (cbManagingBreathlessness.isChecked())
-            insertion = insertion.concat(Node.next_line + cbManagingBreathlessness.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_breathlessness));//cbManagingBreathlessness.getText());
         if (cbManageVoiceIssue.isChecked())
-            insertion = insertion.concat(Node.next_line + cbManageVoiceIssue.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_issues_with_voice));//cbManageVoiceIssue.getText());
         if (cbManageEating.isChecked())
-            insertion = insertion.concat(Node.next_line + cbManageEating.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_eating_drinking));//cbManageEating.getText());
         if (cbDealProblems.isChecked())
-            insertion = insertion.concat(Node.next_line + cbDealProblems.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.dealing_problems));//cbDealProblems.getText());
         if (cbMentalHealth.isChecked())
-            insertion = insertion.concat(Node.next_line + cbMentalHealth.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_mental_health));//cbMentalHealth.getText());
         if (cbExercises.isChecked())
-            insertion = insertion.concat(Node.next_line + cbExercises.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.exercises));//cbExercises.getText());
         if (cbOthers.isChecked())
-            insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getDefaultString(R.string.txt_others)/*cbOthers.getText()*/, et_medical_advice_extra.getText()));
         if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
-            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getDefaultString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
 
         obsDTO.setValue(insertion);
 
@@ -3542,7 +3529,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
             speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.SPECIALIST_DOCTOR_NOT_NEEDED);
-           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -3554,7 +3541,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-           // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -3563,5 +3550,21 @@ public class IdentificationActivity extends AppCompatActivity {
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
     }
 
-
+    /**
+     *
+     * @param stringId
+     * @return
+     */
+    public String getDefaultString(int stringId) {
+        Resources resources = getResources();
+        Configuration configuration = new Configuration(resources.getConfiguration());
+        Locale defaultLocale = new Locale("en");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleList localeList = new LocaleList(defaultLocale);
+            configuration.setLocales(localeList);
+        } else {
+            configuration.setLocale(defaultLocale);
+        }
+        return createConfigurationContext(configuration).getString(stringId);
+    }
 }
