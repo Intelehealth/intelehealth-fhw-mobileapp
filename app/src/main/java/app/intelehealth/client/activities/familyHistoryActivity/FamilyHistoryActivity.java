@@ -342,7 +342,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = node.generateLanguage();
-                    String toInsert = node.getText() + " : " + familyString;
+                    String toInsert = node.getLanguage() + " : " + familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
