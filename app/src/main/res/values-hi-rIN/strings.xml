@@ -680,7 +680,7 @@
     <string name="text_new_visit">नए डॉक्टर का दौरा</string>
     <string name="text_new_advice">नई चिकित्सा सलाह</string>
 
-    <string name="vaccination_guidance">Vटीकाकरण मार्गदर्शन</string>
+    <string name="vaccination_guidance">टीकाकरण मार्गदर्शन</string>
     <string name="concern_about_covid_re_infection">COVID पुन: संक्रमण के बारे में चिंता</string>
     <string name="managing_breathlessness">सांस फूलने का प्रबंधन</string>
     <string name="managing_issues_with_voice">आवाज के साथ मुद्दों का प्रबंधन</string>
