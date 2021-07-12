@@ -654,4 +654,5 @@
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
+    <string name="saving_captured_image">कैप्चर की गई छवि सहेजी जा रही है...</string>
 </resources>

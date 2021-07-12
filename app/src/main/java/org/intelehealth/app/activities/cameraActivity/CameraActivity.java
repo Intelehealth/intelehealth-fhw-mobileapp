@@ -109,6 +109,8 @@ public class CameraActivity extends AppCompatActivity {
 
         @Override
         public void onPictureTaken(CameraView cameraView, final byte[] data) {
+            findViewById(R.id.processing_tv).setVisibility(View.VISIBLE);
+            findViewById(R.id.take_picture).setVisibility(View.INVISIBLE);
             Log.d(TAG, "onPictureTaken " + data.length);
             Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
                     .show();
@@ -116,6 +118,7 @@ public class CameraActivity extends AppCompatActivity {
             // check and correct the image rotation
             try {
                 Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
+
                 compressImageAndSave(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

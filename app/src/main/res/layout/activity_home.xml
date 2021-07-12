@@ -336,7 +336,7 @@
                                     android:layout_gravity="center_horizontal"
                                     android:fontFamily="@font/lato_regular"
                                     android:includeFontPadding="false"
-                                    android:text="@string/lastsync"
+                                    android:text="@string/last_synced"
                                     android:textAlignment="center"
                                     android:textSize="14sp" />
 

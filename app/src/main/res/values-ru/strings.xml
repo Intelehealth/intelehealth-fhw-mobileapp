@@ -532,7 +532,7 @@
     <string name="protocols_downloaded_successfully">Протоколы загружены успешно!</string>
     <string name="no_protocols_found">Протоколы не найдены</string>
     <string name="unable_to_get_proper_response">Возникла проблема с загрузкой протоколов, пожалуйста, свяжитесь с системным администратором</string>
-    <string name="last_synced">Last Refreshed - </string>
+    <string name="last_synced">Последнее обновление - </string>
     <string name="today_visits">Сегодняшние посещения</string>
     <string name="active_visits">Активные посещения</string>
     <string name="day">день</string>
@@ -658,4 +658,5 @@
     <string name="please_select_specialization_msg">Пожалуйста, выберите специализацию</string>
 
     <string name="visit_closed">Посещение закрыто</string>
+    <string name="saving_captured_image">Сохранение захваченного изображения ...</string>
 </resources>
