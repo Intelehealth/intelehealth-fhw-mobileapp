@@ -143,7 +143,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetScale();
-                rating = String.valueOf(v.getTag());
+                rating = "0"; //String.valueOf(v.getTag())
                 v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             }
         };
@@ -165,27 +165,27 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(notesSpinner.getSelectedItem().equals("Other")) {
-                    if(mComments.getText().toString().equalsIgnoreCase(""))
-                        mComments.setError("This field is required");
-                    else
-                    {
-                        noteText = mComments.getText().toString();
-                    }
-                }
-                else
-                    noteText = notesSpinner.getSelectedItem().toString();
+//                if(notesSpinner.getSelectedItem().equals("Other")) {
+//                    if(mComments.getText().toString().equalsIgnoreCase(""))
+//                        mComments.setError("This field is required");
+//                    else
+//                    {
+//                        noteText = mComments.getText().toString();
+//                    }
+//                }
+//                else
+                noteText = notesSpinner.getSelectedItem().toString();
                 if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
-                } else {
-                    if(noteText.equalsIgnoreCase(""))
-                        mComments.setError("This field is required");
-                    else
-                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
+//                } else {
+//                    if(noteText.equalsIgnoreCase(""))
+//                        mComments.setError("This field is required");
+//                    else
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
+//                }
                 }
-
             }
         });
 
@@ -200,11 +200,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
     private ArrayList<String> getPatientNoteList()
     {
         ArrayList<String> notes = new ArrayList<>();
-        notes.add("Patient have recovered");
-        notes.add("Patient is unwell");
-        notes.add("Patient needs secondary consultation");
-        notes.add("Patient is unsatified");
-        notes.add("Other");
+        notes.add(getString(R.string.spinner_recovered));
+        notes.add(getString(R.string.spinner_referred));
+        notes.add(getString(R.string.spinner_died));
+        notes.add(getString(R.string.spinner_loss_followUp));
+        notes.add(getString(R.string.spinner_refuse_followUp));
         return notes;
     }
     private void resetScale() {
@@ -218,7 +218,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             ImageButton button = scale.get(i);
             button.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
-        rating = "";
+        rating = "0";
     }
 
     private void uploadSurvey() {
