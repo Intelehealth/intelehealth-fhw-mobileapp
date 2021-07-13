@@ -551,8 +551,8 @@
     <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
     <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
 
-    <string name="text_patient_and_advice_created">Patient &amp; Medical Advice is Registered Successfully</string>
-    <string name="text_advice_created">Medical Advice is Registered Successfully</string>
+    <string name="text_patient_and_advice_created">ରୋଗୀ &amp; ଡାକ୍ତରୀ ପରାମର୍ଶ ସଫଳତାର ସହିତ ପଞ୍ଜିକୃତ ହୋଇଛି |</string>
+    <string name="text_advice_created">ଡାକ୍ତରୀ ପରାମର୍ଶ ସଫଳତାର ସହିତ ପଞ୍ଜିକୃତ ହୋଇଛି |</string>
 
     <string name="text_medical_advice">ନୂତନ ଚିକିତ୍ସା ପରାମର୍ଶ |</string>
     <string name="text_new_visit">ନୂତନ ଡାକ୍ତର ପରିଦର୍ଶନ |</string>

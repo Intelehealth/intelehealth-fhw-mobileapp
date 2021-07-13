@@ -536,6 +536,10 @@
     <string name="select_speciality">స్పెషలైజేషన్ ఎంచుకోండి</string>
     <string name="please_select_specialization">దయచేసి స్పెషలైజేషన్ ఎంచుకోండి</string>
 
+    <string name="text_patient_and_advice_created">రోగి &amp; వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
+    <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
+
+
     <string name="take_photo">ఫోటో తీసుకో</string>
     <string name="choose_from_gallery">గ్యాలరీ నుండి ఎంచుకోండి</string>
     <string name="additional_doc_image_picker_title">అదనపు పత్రాన్ని జోడించండి!</string>

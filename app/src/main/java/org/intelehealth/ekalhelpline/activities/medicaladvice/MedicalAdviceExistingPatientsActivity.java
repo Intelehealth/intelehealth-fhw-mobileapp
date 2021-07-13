@@ -287,7 +287,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-            Toast.makeText(this, R.string.text_advice_created, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.text_advice_created), Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

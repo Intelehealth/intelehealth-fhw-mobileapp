@@ -1433,13 +1433,14 @@
                         android:id="@+id/chb_agree_privacy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.75"
+                        android:layout_weight="1"
                         android:fontFamily="@fonts/Lato_Regular"
                         android:text="@string/i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient" />
 
                     <TextView
                         android:id="@+id/txt_privacy"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:drawableEnd="@drawable/ic_keyboard_arrow_right"
