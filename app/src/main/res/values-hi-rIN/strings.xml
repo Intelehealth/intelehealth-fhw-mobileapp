@@ -676,6 +676,9 @@
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
 
+    <string name="text_patient_and_advice_created">रोगी और चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
+    <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
+
     <string name="text_medical_advice">नई चिकित्सा सलाह</string>
     <string name="text_new_visit">नए डॉक्टर का दौरा</string>
     <string name="text_new_advice">नई चिकित्सा सलाह</string>

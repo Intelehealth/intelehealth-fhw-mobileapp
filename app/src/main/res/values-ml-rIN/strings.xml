@@ -540,6 +540,9 @@
     <string name="setup_internet_not_available">നിങ്ങൾ ഇന്റർനെറ്റിലേക്ക് കണക്റ്റുചെയ്‌തിട്ടില്ല.</string>
     <string name="generic_info">വിവരം!</string>
 
+    <string name="text_advice_created">വൈദ്യോപദേശവും വിജയകരമായി രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്</string>
+    <string name="text_patient_and_advice_created">രോഗിയും വൈദ്യോപദേശവും വിജയകരമായി രജിസ്റ്റർ ചെയ്തിട്ടുണ്ട്</string>
+
     <string name="take_photo">ഫോട്ടോ എടുക്കുക</string>
     <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
