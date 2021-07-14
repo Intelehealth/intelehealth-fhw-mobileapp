@@ -44,6 +44,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,6 +101,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    public static final String EXTRA_SHOW_MEDICAL_ADVICE = "EXTRA_SHOW_MEDICAL_ADVICE";
     String patientName;
     String visitUuid = null;
     List<String> visitUuidList;
@@ -124,7 +126,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, newAdvice;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -166,6 +168,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -341,6 +344,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
 
         //  LoadFamilyMembers();
+        if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
+            newAdvice.setVisibility(View.VISIBLE);
+            newAdvice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                }
+            });
+        }
 
     }
 
