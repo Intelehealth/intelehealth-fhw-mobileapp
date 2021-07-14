@@ -240,7 +240,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
 
-        if(MedicalAdvice == true) {
+        if (MedicalAdvice == true) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PatientDetailActivity.this)
                     .setMessage(R.string.text_patient_and_advice_created)
                     .setCancelable(false)
@@ -1057,7 +1057,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         return false;
     }
-
 
 
     /**

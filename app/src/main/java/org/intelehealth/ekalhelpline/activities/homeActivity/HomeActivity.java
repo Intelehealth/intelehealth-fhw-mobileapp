@@ -74,6 +74,7 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.OfflineLogin;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -101,8 +102,8 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-   // CardView c1, c2, c3, c4, c5, c6;
-   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
+    // CardView c1, c2, c3, c4, c5, c6;
+    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -151,7 +152,7 @@ public class HomeActivity extends AppCompatActivity {
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-       // c1 = findViewById(R.id.cardview_newpat);
+        // c1 = findViewById(R.id.cardview_newpat);
         c1_doctor = findViewById(R.id.cardview_newpat);
         c1_medadvice = findViewById(R.id.cardview_newpat_1);
         c2 = findViewById(R.id.cardview_find_patient);

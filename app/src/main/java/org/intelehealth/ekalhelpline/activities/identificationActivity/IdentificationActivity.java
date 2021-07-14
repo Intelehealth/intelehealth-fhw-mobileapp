@@ -154,11 +154,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -197,7 +197,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
-    private boolean isMedicalAdvice;;
+    private boolean isMedicalAdvice;
+    ;
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
@@ -301,7 +302,7 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-      //  mImageView = findViewById(R.id.imageview_id_picture);
+        //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
@@ -329,7 +330,7 @@ public class IdentificationActivity extends AppCompatActivity {
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);*/
 
         //Cardview
-       // cardview_household = findViewById(R.id.cardview_household);
+        // cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -536,7 +537,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PrivacyNotice_Activity.start(IdentificationActivity.this, true);
-               // startActivity(intent);
+                // startActivity(intent);
             }
         });
         if (!TextUtils.isEmpty(patientID_edit)) {
@@ -1581,8 +1582,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
 
-            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
         });
 
 /*
@@ -1733,7 +1734,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -2006,7 +2007,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2794,7 +2795,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") &&
+                && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -3452,7 +3453,7 @@ public class IdentificationActivity extends AppCompatActivity {
         today.set(Calendar.MILLISECOND, 0);
         Date todayDate = today.getTime();
         String endDate = startFormat.format(todayDate);
-        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
 
         //create & save visit visitUuid & encounter in the DB
@@ -3483,7 +3484,7 @@ public class IdentificationActivity extends AppCompatActivity {
         visitDTO.setUuid(visitUuid);
         visitDTO.setPatientuuid(this.uuid);
         visitDTO.setStartdate(startDate);
-       // visitDTO.setEnddate(endDate);
+        // visitDTO.setEnddate(endDate);
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
@@ -3540,8 +3541,8 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
             speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.SPECIALIST_DOCTOR_NOT_NEEDED);
-           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
-           // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+            // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -3553,7 +3554,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-          //  Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -3564,7 +3565,6 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param stringId
      * @return
      */
@@ -3580,7 +3580,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         return createConfigurationContext(configuration).getString(stringId);
     }
-
 
 
 }

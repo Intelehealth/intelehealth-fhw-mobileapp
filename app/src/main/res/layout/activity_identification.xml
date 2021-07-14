@@ -58,18 +58,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_person_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_person_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/personal_information"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -134,8 +133,8 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:visibility="gone"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone">
 
                                     <EditText
                                         android:id="@+id/identification_middle_name"
@@ -212,15 +211,15 @@
 
                             </LinearLayout>
 
-                           <!-- <ImageView
-                                android:id="@+id/imageview_id_picture"
-                                android:layout_width="0dp"
-                                android:layout_height="170dp"
-                                android:layout_gravity="right|center_vertical"
-                                android:layout_weight="1"
-                                android:contentDescription="TODO"
-                                android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/ic_person_camera_intele" />-->
+                            <!-- <ImageView
+                                 android:id="@+id/imageview_id_picture"
+                                 android:layout_width="0dp"
+                                 android:layout_height="170dp"
+                                 android:layout_gravity="right|center_vertical"
+                                 android:layout_weight="1"
+                                 android:contentDescription="TODO"
+                                 android:scaleType="centerCrop"
+                                 app:srcCompat="@drawable/ic_person_camera_intele" />-->
                         </LinearLayout>
 
                         <Space
@@ -267,8 +266,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_birth_date_text_view"
@@ -292,30 +291,30 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-<!--                        <com.google.android.material.textfield.TextInputLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content">-->
+                        <!--                        <com.google.android.material.textfield.TextInputLayout-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content">-->
 
-<!--                            <EditText-->
-<!--                                android:id="@+id/identification_age"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_weight="1"-->
-<!--                                android:drawableStart="@drawable/event_icon"-->
-<!--                                android:drawableLeft="@drawable/event_icon"-->
-<!--                                android:drawablePadding="10dp"-->
-<!--                                android:ems="10"-->
-<!--                                android:focusable="false"-->
-<!--                                android:fontFamily="@font/lato_regular"-->
-<!--                                android:freezesText="true"-->
-<!--                                android:hint="@string/identification_screen_prompt_age"-->
-<!--                                android:imeOptions="actionUnspecified"-->
-<!--                                android:inputType=""-->
-<!--                                android:maxLines="1"-->
-<!--                                android:singleLine="true"-->
-<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
+                        <!--                            <EditText-->
+                        <!--                                android:id="@+id/identification_age"-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_weight="1"-->
+                        <!--                                android:drawableStart="@drawable/event_icon"-->
+                        <!--                                android:drawableLeft="@drawable/event_icon"-->
+                        <!--                                android:drawablePadding="10dp"-->
+                        <!--                                android:ems="10"-->
+                        <!--                                android:focusable="false"-->
+                        <!--                                android:fontFamily="@font/lato_regular"-->
+                        <!--                                android:freezesText="true"-->
+                        <!--                                android:hint="@string/identification_screen_prompt_age"-->
+                        <!--                                android:imeOptions="actionUnspecified"-->
+                        <!--                                android:inputType=""-->
+                        <!--                                android:maxLines="1"-->
+                        <!--                                android:singleLine="true"-->
+                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-<!--                        </com.google.android.material.textfield.TextInputLayout>-->
+                        <!--                        </com.google.android.material.textfield.TextInputLayout>-->
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -331,6 +330,8 @@
                                 android:drawableLeft="@drawable/phone_icon"
                                 android:drawablePadding="10dp"
                                 android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
@@ -340,9 +341,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"/>
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -364,18 +363,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_location">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_location"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/address_details"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -416,8 +414,8 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:visibility="gone"
-                                    android:layout_weight="1">
+                                    android:layout_weight="1"
+                                    android:visibility="gone">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -471,43 +469,42 @@
                                     <AutoCompleteTextView
                                         android:id="@+id/autocomplete_state"
                                         android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
                                         android:hint="@string/identification_screen_prompt_state"
-                                        android:maxLength="45"
-                                        android:layout_height="wrap_content" />
+                                        android:maxLength="45" />
 
-<!--                                    <LinearLayout-->
-<!--                                        android:layout_width="match_parent"-->
-<!--                                        android:layout_height="match_parent"-->
-<!--                                        android:orientation="vertical">-->
+                                    <!--                                    <LinearLayout-->
+                                    <!--                                        android:layout_width="match_parent"-->
+                                    <!--                                        android:layout_height="match_parent"-->
+                                    <!--                                        android:orientation="vertical">-->
 
-<!--                                        <EditText-->
-<!--                                            android:id="@+id/identification_state"-->
-<!--                                            android:layout_width="match_parent"-->
-<!--                                            android:layout_height="wrap_content"-->
-<!--                                            android:layout_weight="3"-->
-<!--                                            android:clickable="false"-->
-<!--                                            android:cursorVisible="false"-->
-<!--                                            android:drawableStart="@drawable/state_list_icon"-->
-<!--                                            android:drawableLeft="@drawable/state_list_icon"-->
-<!--                                            android:drawablePadding="10dp"-->
-<!--                                            android:focusable="false"-->
-<!--                                            android:focusableInTouchMode="false"-->
-<!--                                            android:fontFamily="@font/lato_regular"-->
-<!--                                            android:freezesText="true"-->
-<!--                                            android:imeOptions="actionUnspecified"-->
-<!--                                            android:inputType="textCapWords"-->
-<!--                                            android:maxLines="1"-->
-<!--                                            android:text="@string/identification_screen_prompt_state"-->
-<!--                                            android:textSize="@dimen/card_content_sub_text_size" />-->
-
+                                    <!--                                        <EditText-->
+                                    <!--                                            android:id="@+id/identification_state"-->
+                                    <!--                                            android:layout_width="match_parent"-->
+                                    <!--                                            android:layout_height="wrap_content"-->
+                                    <!--                                            android:layout_weight="3"-->
+                                    <!--                                            android:clickable="false"-->
+                                    <!--                                            android:cursorVisible="false"-->
+                                    <!--                                            android:drawableStart="@drawable/state_list_icon"-->
+                                    <!--                                            android:drawableLeft="@drawable/state_list_icon"-->
+                                    <!--                                            android:drawablePadding="10dp"-->
+                                    <!--                                            android:focusable="false"-->
+                                    <!--                                            android:focusableInTouchMode="false"-->
+                                    <!--                                            android:fontFamily="@font/lato_regular"-->
+                                    <!--                                            android:freezesText="true"-->
+                                    <!--                                            android:imeOptions="actionUnspecified"-->
+                                    <!--                                            android:inputType="textCapWords"-->
+                                    <!--                                            android:maxLines="1"-->
+                                    <!--                                            android:text="@string/identification_screen_prompt_state"-->
+                                    <!--                                            android:textSize="@dimen/card_content_sub_text_size" />-->
 
 
-<!--                                        <Spinner-->
-<!--                                            android:id="@+id/spinner_state"-->
-<!--                                            android:layout_width="match_parent"-->
-<!--                                            android:layout_height="wrap_content"-->
-<!--                                            android:layout_weight="1" />-->
-<!--                                    </LinearLayout>-->
+                                    <!--                                        <Spinner-->
+                                    <!--                                            android:id="@+id/spinner_state"-->
+                                    <!--                                            android:layout_width="match_parent"-->
+                                    <!--                                            android:layout_height="wrap_content"-->
+                                    <!--                                            android:layout_weight="1" />-->
+                                    <!--                                    </LinearLayout>-->
 
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -517,8 +514,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <AutoCompleteTextView
                                 android:id="@+id/identification_city"
@@ -540,8 +537,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_address1"
@@ -566,8 +563,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_address2"
@@ -591,8 +588,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_postal_code"
@@ -624,25 +621,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
-                    android:visibility="gone"
                     android:layout_marginEnd="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_other_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_other_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/txt_others"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -653,9 +649,9 @@
                     android:id="@+id/cardview3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false">
@@ -691,33 +687,33 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-<!--
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                        <!--
+                                                <com.google.android.material.textfield.TextInputLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content">
 
 
-                            <EditText
-                                android:id="@+id/identification_occupation"
-                                android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:drawableStart="@drawable/occupation_icon"
-                                android:drawableLeft="@drawable/occupation_icon"
-                                android:drawablePadding="10dp"
-                                android:ems="10"
-                                android:fontFamily="@font/lato_regular"
-                                android:freezesText="true"
-                                android:hint="@string/identification_screen_prompt_occupation"
-                                android:imeOptions="actionUnspecified"
-                                android:inputType="textCapWords"
+                                                    <EditText
+                                                        android:id="@+id/identification_occupation"
+                                                        android:layout_width="fill_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:drawableStart="@drawable/occupation_icon"
+                                                        android:drawableLeft="@drawable/occupation_icon"
+                                                        android:drawablePadding="10dp"
+                                                        android:ems="10"
+                                                        android:fontFamily="@font/lato_regular"
+                                                        android:freezesText="true"
+                                                        android:hint="@string/identification_screen_prompt_occupation"
+                                                        android:imeOptions="actionUnspecified"
+                                                        android:inputType="textCapWords"
 
-                                android:maxLength="25"
-                                android:maxLines="1"
-                                android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                                        android:maxLength="25"
+                                                        android:maxLines="1"
+                                                        android:tag="@string/tag_optional"
+                                                        android:textSize="@dimen/card_content_sub_text_size" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
--->
+                                                </com.google.android.material.textfield.TextInputLayout>
+                        -->
 
 
                         <Space
@@ -845,438 +841,440 @@
                 </androidx.cardview.widget.CardView>
 
                 <!-- Here we will add Occupation UI which is common fields for all -->
-<!--
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="10sp"
-                app:cardElevation="3dp"
-                app:cardPreventCornerOverlap="false">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
+                <!--
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:text="@string/what_is_your_occupation"
-                                android:paddingStart="5dp"/>
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginTop="10dp"
+                                app:cardCornerRadius="10sp"
+                                app:cardElevation="3dp"
+                                app:cardPreventCornerOverlap="false">
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
 
-                            <Spinner
-                                android:id="@+id/occupation_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                            <EditText
-                                android:id="@+id/occupation_edittext"
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:hint="@string/enter_occupation"
-                                android:visibility="gone"
-                                tools:visibility="visible"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"/>
+                                android:orientation="vertical"
+                                android:padding="8dp">
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider"/>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:text="@string/do_you_have_a_bank_account"
-                                android:paddingStart="5dp"/>
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textSize="@dimen/card_content_sub_text_size"
+                                                android:text="@string/what_is_your_occupation"
+                                                android:paddingStart="5dp"/>
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-                            <Spinner
-                                android:id="@+id/bankaccount_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                            <Space
+                                                android:layout_width="10dp"
+                                                android:layout_height="10dp" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider"/>
+                                            <Spinner
+                                                android:id="@+id/occupation_spinner"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:paddingStart="5dp"
-                                android:text="@string/what_kind_of_mobile_phone_do_you_personally_own" />
+                                            <EditText
+                                                android:id="@+id/occupation_edittext"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textSize="@dimen/card_content_sub_text_size"
+                                                android:hint="@string/enter_occupation"
+                                                android:visibility="gone"
+                                                tools:visibility="visible"
+                                                android:focusable="true"
+                                                android:focusableInTouchMode="true"/>
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+                                            <View
+                                                android:layout_width="match_parent"
+                                                android:layout_height="1dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_marginBottom="10dp"
+                                                android:background="?android:attr/listDivider"/>
 
-                            <Spinner
-                                android:id="@+id/mobilephone_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textSize="@dimen/card_content_sub_text_size"
+                                                android:text="@string/do_you_have_a_bank_account"
+                                                android:paddingStart="5dp"/>
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider"/>
+                                            <Space
+                                                android:layout_width="10dp"
+                                                android:layout_height="10dp" />
+                                            <Spinner
+                                                android:id="@+id/bankaccount_spinner"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:paddingStart="5dp"
-                                android:text="@string/do_you_or_any_of_your_family_member_use_whatsapp"/>
+                                            <View
+                                                android:layout_width="match_parent"
+                                                android:layout_height="1dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_marginBottom="10dp"
+                                                android:background="?android:attr/listDivider"/>
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textSize="@dimen/card_content_sub_text_size"
+                                                android:paddingStart="5dp"
+                                                android:text="@string/what_kind_of_mobile_phone_do_you_personally_own" />
 
-                            <Spinner
-                                android:id="@+id/whatsapp_spinner"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                                            <Space
+                                                android:layout_width="10dp"
+                                                android:layout_height="10dp" />
 
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp"/>
-                        </LinearLayout>
-            </LinearLayout>
-            </androidx.cardview.widget.CardView>
--->
+                                            <Spinner
+                                                android:id="@+id/mobilephone_spinner"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content" />
+
+                                            <View
+                                                android:layout_width="match_parent"
+                                                android:layout_height="1dp"
+                                                android:layout_marginTop="5dp"
+                                                android:layout_marginBottom="10dp"
+                                                android:background="?android:attr/listDivider"/>
+
+                                            <TextView
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:textSize="@dimen/card_content_sub_text_size"
+                                                android:paddingStart="5dp"
+                                                android:text="@string/do_you_or_any_of_your_family_member_use_whatsapp"/>
+
+                                            <Space
+                                                android:layout_width="10dp"
+                                                android:layout_height="10dp" />
+
+                                            <Spinner
+                                                android:id="@+id/whatsapp_spinner"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content" />
+
+                                            <Space
+                                                android:layout_width="10dp"
+                                                android:layout_height="10dp"/>
+                                        </LinearLayout>
+                            </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                -->
 
                 <!-- End of Occupation UI -->
 
                 <!-- Here we will add the Cardview and Checkbox for Head Of Household -->
-<!--
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/familyhead_checkbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/are_you_head_of_the_family"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="@dimen/card_content_text_size">
+                <!--
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:id="@+id/familyhead_checkbox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/are_you_head_of_the_family"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginTop="10dp"
+                                    android:textSize="@dimen/card_content_text_size">
 
-                </com.google.android.material.checkbox.MaterialCheckBox>
--->
+                                </com.google.android.material.checkbox.MaterialCheckBox>
+                -->
 
-<!--
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardview_household"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                app:cardCornerRadius="10sp"
-                app:cardElevation="3dp"
-                app:cardPreventCornerOverlap="false"
-                android:visibility="gone"
-                tools:visibility="visible">
+                <!--
+                            <androidx.cardview.widget.CardView
+                                android:id="@+id/cardview_household"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginTop="10dp"
+                                app:cardCornerRadius="10sp"
+                                app:cardElevation="3dp"
+                                app:cardPreventCornerOverlap="false"
+                                android:visibility="gone"
+                                tools:visibility="visible">
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="8dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/total_number_of_members_in_the_household"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/total_number_of_members_in_the_household"/>
 
-                <EditText
-                    android:id="@+id/no_of_member_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:hint="@string/enter_number"/>
+                                <EditText
+                                    android:id="@+id/no_of_member_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:hint="@string/enter_number"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                                <Space
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/how_many_members_usually_live_in_your_household_or_are_staying_with_you_now"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/how_many_members_usually_live_in_your_household_or_are_staying_with_you_now"/>
 
-                <EditText
-                    android:id="@+id/no_of_staying_members_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:hint="@string/enter_number"/>
+                                <EditText
+                                    android:id="@+id/no_of_staying_members_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:hint="@string/enter_number"/>
 
-                <Space
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"/>
+                                <Space
+                                    android:layout_width="15dp"
+                                    android:layout_height="15dp"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/what_is_the_main_source_of_drinking_water_for_members_of_your_household"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/what_is_the_main_source_of_drinking_water_for_members_of_your_household"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <Spinner
-                    android:id="@+id/source_of_water_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                                <Spinner
+                                    android:id="@+id/source_of_water_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="?android:attr/listDivider"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/what_do_you_do_to_make_drinking_water_safer"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/what_do_you_do_to_make_drinking_water_safer"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <Spinner
-                    android:id="@+id/howtomake_water_safe_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                                <Spinner
+                                    android:id="@+id/howtomake_water_safe_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
 
-                <EditText
-                    android:id="@+id/watersafe_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:hint="@string/enter_answer"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"/>
+                                <EditText
+                                    android:id="@+id/watersafe_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:hint="@string/enter_answer"
+                                    android:visibility="gone"
+                                    tools:visibility="visible"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="?android:attr/listDivider"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/time_water_checkbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/declined"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    />
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:id="@+id/time_water_checkbox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/declined"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp">
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="15dp">
 
-                    <EditText
-                        android:id="@+id/time_water_editText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:focusableInTouchMode="true"
-                        android:fontFamily="@font/lato_regular"
-                        android:freezesText="true"
-                        android:hint="@string/enter_time"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textSize="@dimen/card_content_sub_text_size" />
+                                    <EditText
+                                        android:id="@+id/time_water_editText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:focusable="false"
+                                        android:focusableInTouchMode="true"
+                                        android:fontFamily="@font/lato_regular"
+                                        android:freezesText="true"
+                                        android:hint="@string/enter_time"
+                                        android:imeOptions="actionUnspecified"
+                                        android:inputType="number"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                                </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <Spinner
-                    android:id="@+id/water_availability_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                                <Spinner
+                                    android:id="@+id/water_availability_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="?android:attr/listDivider"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/what_kind_of_toilet_facility_do_members_of_your_household_usually_use"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/what_kind_of_toilet_facility_do_members_of_your_household_usually_use"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <Spinner
-                    android:id="@+id/toilet_facility_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                                <Spinner
+                                    android:id="@+id/toilet_facility_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
 
-                <EditText
-                    android:id="@+id/toiletfacility_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:hint="@string/enter_answer"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"/>
+                                <EditText
+                                    android:id="@+id/toiletfacility_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:hint="@string/enter_answer"
+                                    android:visibility="gone"
+                                    tools:visibility="visible"
+                                    android:focusableInTouchMode="true"
+                                    android:focusable="true"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="?android:attr/listDivider"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/select_the_structure_of_house"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/select_the_structure_of_house"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <Spinner
-                    android:id="@+id/structure_of_house_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                                <Spinner
+                                    android:id="@+id/structure_of_house_spinner"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="?android:attr/listDivider"/>
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    android:paddingStart="5dp"
-                    android:text="@string/how_much_hectars_of_cultivable_land_your_family_owns"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:paddingStart="5dp"
+                                    android:text="@string/how_much_hectars_of_cultivable_land_your_family_owns"/>
 
-                <Space
-                    android:layout_width="10dp"
-                    android:layout_height="10dp" />
+                                <Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="10dp" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/hectars_land_checkbox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/declined"
-                    android:textSize="@dimen/card_content_sub_text_size"
-                    />
+                                <com.google.android.material.checkbox.MaterialCheckBox
+                                    android:id="@+id/hectars_land_checkbox"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/declined"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/hectars_land_editText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:fontFamily="@font/lato_regular"
-                        android:freezesText="true"
-                        android:hint="@string/enter_number"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:textSize="@dimen/card_content_sub_text_size" />
+                                    <EditText
+                                        android:id="@+id/hectars_land_editText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:focusable="true"
+                                        android:focusableInTouchMode="true"
+                                        android:fontFamily="@font/lato_regular"
+                                        android:freezesText="true"
+                                        android:hint="@string/enter_number"
+                                        android:imeOptions="actionUnspecified"
+                                        android:inputType="number"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                                </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
-            </androidx.cardview.widget.CardView>
--->
+                            </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                -->
 
                 <!-- End of HOH -->
 
-                <LinearLayout android:layout_width="match_parent"
+                <LinearLayout
                     android:id="@+id/ll_medical_advice"
-                    android:visibility="gone"
-                    tools:visibility="visible"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1288,18 +1286,17 @@
                         <ImageView
                             android:layout_width="22dp"
                             android:layout_height="22dp"
-                            app:srcCompat = "@drawable/svg_other_details">
-                        </ImageView>
+                            app:srcCompat="@drawable/svg_other_details"></ImageView>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ems="10"
                             android:layout_gravity="center_vertical"
-                            android:includeFontPadding="false"
-                            android:gravity="center_vertical"
                             android:layout_marginStart="5dp"
+                            android:ems="10"
                             android:fontFamily="@font/lato_bold"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:text="@string/medical_advice"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -1312,9 +1309,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
-                        android:layout_marginBottom="4dp"
                         app:cardPreventCornerOverlap="false">
 
 
@@ -1326,62 +1323,71 @@
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbVaccineGuide"
-                                android:text="@string/vaccination_guidance"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/vaccination_guidance" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbCovidConcern"
-                                android:text="@string/concern_about_covid_re_infection"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/concern_about_covid_re_infection" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManagingBreathlessness"
-                                android:text="@string/managing_breathlessness"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_breathlessness" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageVoiceIssue"
-                                android:text="@string/managing_issues_with_voice"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_issues_with_voice" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageEating"
-                                android:text="@string/managing_eating_drinking"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_eating_drinking" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbDealProblems"
-                                android:text="@string/dealing_problems"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/dealing_problems" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbMentalHealth"
-                                android:text="@string/managing_mental_health"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_mental_health" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbExercises"
-                                android:text="@string/exercises"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/exercises" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbOthers"
-                                android:text="@string/txt_others"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/txt_others" />
+
                             <com.google.android.material.textfield.TextInputLayout
-                                android:hint="@string/txt_others"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:hint="@string/txt_others">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/et_medical_advice_extra"
-                                    android:enabled="false"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:drawablePadding="10dp"
                                     android:ems="10"
+                                    android:enabled="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:imeOptions="actionUnspecified"
@@ -1391,10 +1397,11 @@
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
                             <com.google.android.material.textfield.TextInputLayout
-                                android:hint="@string/txt_additional_info"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:hint="@string/txt_additional_info">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/et_medical_advice_additional"
@@ -1413,6 +1420,7 @@
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
                             <Space
                                 android:layout_width="20dp"
                                 android:layout_height="10dp" />
@@ -1450,7 +1458,6 @@
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/colorPrimaryDark" />
                 </LinearLayout>
-
 
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
