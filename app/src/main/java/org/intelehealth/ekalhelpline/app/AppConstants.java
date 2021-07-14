@@ -100,6 +100,7 @@ public class AppConstants {
     public static final int SYNC_PUSH_DATA_DONE = 2;
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
+    public static final String SPECIALIST_DOCTOR_NOT_NEEDED = "Specialist Doctor Not Needed";
 
 
 }
