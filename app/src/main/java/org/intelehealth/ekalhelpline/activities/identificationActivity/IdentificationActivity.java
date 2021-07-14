@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.os.LocaleList;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -3504,25 +3506,25 @@ public class IdentificationActivity extends AppCompatActivity {
         //append all the selected items to the OBS value
         String insertion = Node.bullet_arrow + "<b>" + "Medical Advice" + "</b>" + ": ";
         if (cbVaccineGuide.isChecked())
-            insertion = insertion.concat(Node.next_line + cbVaccineGuide.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.vaccination_guidance)); //cbVaccineGuide.getText());
         if (cbCovidConcern.isChecked())
-            insertion = insertion.concat(Node.next_line + cbCovidConcern.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.concern_about_covid_re_infection)); //cbCovidConcern.getText());
         if (cbManagingBreathlessness.isChecked())
-            insertion = insertion.concat(Node.next_line + cbManagingBreathlessness.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_breathlessness)); //cbManagingBreathlessness.getText());
         if (cbManageVoiceIssue.isChecked())
-            insertion = insertion.concat(Node.next_line + cbManageVoiceIssue.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_issues_with_voice)); //cbManageVoiceIssue.getText());
         if (cbManageEating.isChecked())
-            insertion = insertion.concat(Node.next_line + cbManageEating.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_eating_drinking)); //cbManageEating.getText());
         if (cbDealProblems.isChecked())
-            insertion = insertion.concat(Node.next_line + cbDealProblems.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.dealing_problems)); //cbDealProblems.getText());
         if (cbMentalHealth.isChecked())
-            insertion = insertion.concat(Node.next_line + cbMentalHealth.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.managing_mental_health)); //cbMentalHealth.getText());
         if (cbExercises.isChecked())
-            insertion = insertion.concat(Node.next_line + cbExercises.getText());
+            insertion = insertion.concat(Node.next_line + getDefaultString(R.string.exercises)); //cbExercises.getText());
         if (cbOthers.isChecked())
-            insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getDefaultString(R.string.txt_others) /*cbOthers.getText()*/, et_medical_advice_extra.getText()));
         if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
-            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getDefaultString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
 
         obsDTO.setValue(insertion);
 
@@ -3561,6 +3563,23 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param stringId
+     * @return
+     */
+    public String getDefaultString(int stringId) {
+        Resources resources = getResources();
+        Configuration configuration = new Configuration(resources.getConfiguration());
+        Locale defaultLocale = new Locale("en");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleList localeList = new LocaleList(defaultLocale);
+            configuration.setLocales(localeList);
+        } else {
+            configuration.setLocale(defaultLocale);
+        }
+        return createConfigurationContext(configuration).getString(stringId);
+    }
 
 
 
