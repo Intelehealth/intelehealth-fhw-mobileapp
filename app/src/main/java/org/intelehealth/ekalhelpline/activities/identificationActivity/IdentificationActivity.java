@@ -73,6 +73,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
@@ -515,7 +516,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PrivacyNotice_Activity.start(IdentificationActivity.this, true);
-                startActivity(intent);
+               // startActivity(intent);
             }
         });
         if (!TextUtils.isEmpty(patientID_edit)) {
@@ -3389,23 +3390,24 @@ public class IdentificationActivity extends AppCompatActivity {
 
     void createMedicalAdviceVisit() {
         //formats used in databases to store the start & end date
-        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
-        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
-        Calendar instance = Calendar.getInstance();
-        instance.set(Calendar.MILLISECOND, 0);
-        Date todayDate = instance.getTime();
-        String startDate = currentDate.format(todayDate);
-        instance.add(Calendar.MINUTE, 5);
-        String endDate = endFormat.format(instance.getTime());
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.MINUTE, -1);
+        today.set(Calendar.MILLISECOND, 0);
+        Date todayDate = today.getTime();
+        String endDate = startFormat.format(todayDate);
+        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        String startDate = startFormat.format(today.getTime());
 
-        //create & save visit uuid & encounter in the DB
-        String uuid = UUID.randomUUID().toString();
+        //create & save visit visitUuid & encounter in the DB
+        String visitUuid = UUID.randomUUID().toString();
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(UUID.randomUUID().toString());
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADULTINITIAL);
         encounterDTO.setEncounterTime(startDate);
-        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
         Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
@@ -3423,10 +3425,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //create & save visit in the DB
         VisitDTO visitDTO = new VisitDTO();
-        visitDTO.setUuid(uuid);
+        visitDTO.setUuid(visitUuid);
         visitDTO.setPatientuuid(this.uuid);
         visitDTO.setStartdate(startDate);
-        visitDTO.setEnddate(endDate);
+       // visitDTO.setEnddate(endDate);
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
@@ -3479,13 +3481,26 @@ public class IdentificationActivity extends AppCompatActivity {
         //create & save visit attributes - required for syncing the data
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
-            speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+            speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+           // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
         } catch (DAOException e) {
             e.printStackTrace();
         }
 
-        SyncUtils syncUtils = new SyncUtils();
-        syncUtils.syncForeground(IdentificationActivity.class.getSimpleName());
+        endVisit(visitUuid, uuid, endDate);
+    }
+
+    private void endVisit(String visitUuid, String patientUuid, String endTime) {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endTime);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        new SyncUtils().syncForeground(""); //Sync function will work in foreground of app and
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+
     }
 
 
