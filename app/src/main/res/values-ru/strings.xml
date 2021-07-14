@@ -363,7 +363,7 @@
 
     <string name="weight_error" translatable="false">Вес не должен превышать %1$s кг.</string>
     <string name="height_error" translatable="false">Высота должна быть от 0 до %1$s см.</string>
-    <string name="spo2_error" translatable="false">SpO2 должно находиться в диапазоне от %1$s до % 2$s.</string>
+    <string name="spo2_error" translatable="false">SpO2 должно находиться в диапазоне от %1$s до %2$s.</string>
     <string name="pulse_error" translatable="false">Пульс должен находиться в диапазоне от %1$s до %2$s.</string>
     <string name="bpsys_error" translatable="false">Систолическое давление должно находиться в диапазоне от %1$s до %2$s.</string>
     <string name="bpdia_error" translatable="false">Диастолическое давление должно находиться в диапазоне от %1$s до %2$s.</string>
