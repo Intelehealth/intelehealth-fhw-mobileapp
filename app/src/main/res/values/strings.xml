@@ -689,5 +689,6 @@
     <string name="txt_additional_info">Additional information</string>
     <string name="text_patient_and_advice_created">Patient &amp; Medical Advice is Registered Successfully</string>
     <string name="text_advice_created">Medical Advice is Registered Successfully</string>
+    <string name="medical_advice">Medical Advice</string>
 
 </resources>
