@@ -646,8 +646,8 @@ public class CompleteActivity extends AppCompatActivity {
 
     private PeerConnection createPeerConnection(PeerConnectionFactory factory) {
         ArrayList<PeerConnection.IceServer> iceServers = new ArrayList<>();
-        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
-        iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
+        //iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_1_URL));
+        //iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_2_URL));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_3_URL, Constants.ICE_SERVER_3_USER, Constants.ICE_SERVER_3_PASSWORD));
         iceServers.add(new PeerConnection.IceServer(Constants.ICE_SERVER_4_URL, Constants.ICE_SERVER_4_USER, Constants.ICE_SERVER_4_PASSWORD));
 
