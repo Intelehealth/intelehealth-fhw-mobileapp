@@ -41,6 +41,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,7 +101,8 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+   // CardView c1, c2, c3, c4, c5, c6;
+   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -150,6 +152,8 @@ public class HomeActivity extends AppCompatActivity {
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
        // c1 = findViewById(R.id.cardview_newpat);
+        c1_doctor = findViewById(R.id.cardview_newpat);
+        c1_medadvice = findViewById(R.id.cardview_newpat_1);
         c2 = findViewById(R.id.cardview_find_patient);
         c3 = findViewById(R.id.cardview_today_patient);
         c4 = findViewById(R.id.cardview_active_patients);
@@ -212,6 +216,35 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 */
+
+
+        c1_doctor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IdentificationActivity.start(HomeActivity.this, false);
+
+              /*  //Loads the config file values and check for the boolean value of privacy key.
+                ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
+                if (configUtils.privacy_notice()) {
+                    Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
+                    startActivity(intent);
+                } else {
+                    //Clear HouseHold UUID from Session for new registration
+                    sessionManager.setHouseholdUuid("");
+
+                    Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
+                    startActivity(intent);
+                }*/
+            }
+        });
+
+        c1_medadvice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IdentificationActivity.start(HomeActivity.this, true);
+            }
+        });
+
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
