@@ -507,6 +507,7 @@
     <string name="setup_internet_not_available">আপনি ইন্টারনেটের সাথে সংযুক্ত নন।</string>
     <string name="enter_license_key">লাইসেন্স কী প্রবেশ করান</string>
 
+    <string name="error_medical_visit_data">চিকিত্সা পরামর্শ নির্বাচন বা প্রবেশ করুন</string>
     <string name="text_patient_and_advice_created">রোগী &amp; মেডিকেল পরামর্শ সফলভাবে নিবন্ধিত হয়</string>
     <string name="text_advice_created">মেডিকেল পরামর্শ সফলভাবে নিবন্ধিত হয়</string>
 

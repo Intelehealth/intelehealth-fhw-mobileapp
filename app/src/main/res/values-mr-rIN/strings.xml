@@ -674,6 +674,7 @@
         <string name="select_speciality">Select Speciality</string>
         <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>
 
+        <string name="error_medical_visit_data">कृपया वैद्यकीय सल्ला निवडा किंवा प्रविष्ट करा</string>
         <string name="text_patient_and_advice_created">रुग्ण आणि वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे </string>
         <string name="text_advice_created">वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
 

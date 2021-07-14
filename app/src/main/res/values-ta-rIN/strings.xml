@@ -539,6 +539,7 @@
     <string name="setup_internet_not_available">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை.</string>
     <string name="generic_info">Info!</string>
 
+    <string name="error_medical_visit_data"> தயவுசெய்து மருத்துவ ஆலோசனையைத் தேர்ந்தெடுக்கவும் அல்லது உள்ளிடவும்</string>
     <string name="text_patient_and_advice_created">நோயாளி &amp; மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
     <string name="text_advice_created">மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
 

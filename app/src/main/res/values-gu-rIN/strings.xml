@@ -658,6 +658,7 @@
         <string name="per_Month">પ્રતિ મહિના</string>
         <string name="per_Year">પ્રતિ વર્ષ</string>
 
+        <string name="error_medical_visit_data">કૃપા કરીને તબીબી સલાહ પસંદ કરો અથવા દાખલ કરો</string>
         <string name="text_patient_and_advice_created">દર્દી &amp; તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
         <string name="text_advice_created">તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
 

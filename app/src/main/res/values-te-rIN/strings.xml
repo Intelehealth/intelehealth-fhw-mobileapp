@@ -536,6 +536,7 @@
     <string name="select_speciality">స్పెషలైజేషన్ ఎంచుకోండి</string>
     <string name="please_select_specialization">దయచేసి స్పెషలైజేషన్ ఎంచుకోండి</string>
 
+    <string name="error_medical_visit_data">దయచేసి వైద్య సలహాను ఎంచుకోండి లేదా నమోదు చేయండి</string>
     <string name="text_patient_and_advice_created">రోగి &amp; వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
     <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
 

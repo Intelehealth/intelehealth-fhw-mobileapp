@@ -662,6 +662,7 @@
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"ಹಲೋ, ಇಂಟೆಲ್‌ಹೆಲ್ತ್ ಬಳಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಪ್ರಿಸ್‌ಕ್ರಿಪ್‌ಷನ್‌  ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಇಲ್ಲಿ    ಕ್ಲಿಕ್ಕಿಸಿ</string>
     <string name="and_enter_your_patient_id">\"ಮತ್ತು ನಿಮ್ಮ ರೋಗಿಯ ID ಅನ್ನು ನಮೂದಿಸಿ”</string>
 
+    <string name="error_medical_visit_data">ದಯವಿಟ್ಟು ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಅಥವಾ ನಮೂದಿಸಿ</string>
     <string name="text_patient_and_advice_created">ರೋಗಿ &amp; ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
     <string name="text_advice_created">ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
 
