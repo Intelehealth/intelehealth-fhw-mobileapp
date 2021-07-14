@@ -590,4 +590,10 @@
         <item>Select Village</item>
     </string-array>
 
+    <string-array name="others">
+        <item>Select District</item>
+        <item>Others</item>
+    </string-array>
+
+
 </resources>

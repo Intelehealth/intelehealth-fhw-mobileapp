@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -21,8 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -140,6 +143,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText casteText;
     Spinner mCountry;
 //    Spinner mState;
+    Spinner mDistrict;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -247,6 +251,8 @@ public class IdentificationActivity extends AppCompatActivity {
 //        stateText = findViewById(R.id.identification_state);
         autocompleteState = findViewById(R.id.autocomplete_state);
 //        mState = findViewById(R.id.spinner_state);
+        mDistrict = findViewById(R.id.spinner_district);
+
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
@@ -478,6 +484,28 @@ public class IdentificationActivity extends AppCompatActivity {
 //                R.array.caste, R.layout.custom_spinner);
 //        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
+
+        try {
+            if (!patient1.getState_province().equalsIgnoreCase("Uttarakhand")) {
+                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.others, R.layout.custom_spinner);
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterOther);
+                mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(patient1.getCity_village())));
+            } else {
+                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.district, R.layout.custom_spinner);
+                mDistrict.setAdapter(stateAdapterUttrakhand);
+                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(patient1.getCity_village()));
+//
+//                if (autocompleteState.getText().equals("")) {
+//                    mDistrict.setEnabled(false);
+//                } else {
+//                    mDistrict.setEnabled(true);
+//                }
+            }
+
+        } catch (Exception e) {
+        }
+
 
         try { //Caste adapter setting...
             String casteLanguage = "caste_" + sessionManager.getAppLanguage();
@@ -1170,7 +1198,55 @@ public class IdentificationActivity extends AppCompatActivity {
         // Create the adapter and set it to the AutoCompleteTextView
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        autocompleteState.setThreshold(1);
         autocompleteState.setAdapter(adapter);
+
+        if (autocompleteState.getText().toString().equals("")) {
+            mDistrict.setEnabled(false);
+        }
+
+        /** this is used for correct state value selectn otherwise district will not selected*/
+        autocompleteState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                mDistrict.setEnabled(false);
+                mDistrict.setSelection(0);
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mDistrict.setEnabled(false);
+                mDistrict.setSelection(0);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+
+        });
+        autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                String mSelectedValue = arg0.getItemAtPosition(arg2).toString();
+                if (mSelectedValue.equalsIgnoreCase("")||autocompleteState.getText().equals("")) {
+                    mDistrict.setEnabled(false);
+                } else {
+                    mDistrict.setEnabled(true);
+                }
+                if (!mSelectedValue.equalsIgnoreCase("Uttarakhand")) {
+                    ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.others, R.layout.custom_spinner);
+
+                    //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mDistrict.setAdapter(stateAdapterOther);
+                } else {
+                    ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.district, R.layout.custom_spinner);
+                    //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    mDistrict.setAdapter(stateAdapterUttrakhand);
+                }
+            }
+        });
 
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1975,6 +2051,17 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         // TODO: Add validations for all Spinners here...
+
+        if (mDistrict.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_field_required, Toast.LENGTH_SHORT).show();
+
+            TextView t = (TextView) mDistrict.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = occupation_spinner;
+            cancel = true;
+            return;
+        }
      /*   if (occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2199,7 +2286,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
+//            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
@@ -2731,6 +2819,16 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         // TODO: Add validations for all Spinners here...
+
+        if (mDistrict.getSelectedItemPosition() == 0) {
+            Toast.makeText(context, R.string.error_field_required, Toast.LENGTH_SHORT).show();
+            TextView t = (TextView) mDistrict.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+//            focusView = occupation_spinner;
+//            cancel = true;
+            return;
+        }
 /*
         if (occupation_spinner.getSelectedItemPosition() == 0) {
             TextView t = (TextView) occupation_spinner.getSelectedView();
@@ -2958,12 +3056,14 @@ public class IdentificationActivity extends AppCompatActivity {
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCity_village(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
+//            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+            patientdto.setState_province(StringUtils.getValue(autocompleteState.getText().toString()));
+//            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
