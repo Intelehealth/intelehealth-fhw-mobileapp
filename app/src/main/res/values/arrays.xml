@@ -16,7 +16,7 @@
     </string-array>
 
     <string-array name="language_values">
-        <item>hi</item>
+<!--        <item>hi</item>-->
         <item>en</item>
 <!--        <item>mr</item>-->
 <!--        <item>kn</item>-->
@@ -54,6 +54,23 @@
         <item>India</item>
         <item>United States</item>
         <item>Philippines</item>
+    </string-array>
+
+    <string-array name="district">
+        <item>Select District</item>
+        <item>Almora</item>
+        <item>Bageshwar</item>
+        <item>Chamoli</item>
+        <item>Champawat</item>
+        <item>Dehradun</item>
+        <item>Haridwar</item>
+        <item>Nainital</item>
+        <item>Pauri</item>
+        <item>Pithoragarh</item>
+        <item>Rudraprayag</item>
+        <item>Tehri</item>
+        <item>Udham</item>
+        <item>Uttarkashi</item>
     </string-array>
 
     <string-array name="education_or">
