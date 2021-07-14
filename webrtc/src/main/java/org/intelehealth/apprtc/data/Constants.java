@@ -6,8 +6,8 @@ public class Constants {
     public static final String BASE_URL = Manager.getInstance().getBaseUrl() + ":3004";
     //public static final String BASE_URL = "https://testing.intelehealth.org:3004";
 
-    //public static final String ICE_SERVER_1_URL = "stun:stun.l.google.com:19302";
-    //public static final String ICE_SERVER_2_URL = "stun:stun1.l.google.com:19302";
+    public static final String ICE_SERVER_1_URL = "stun:stun.l.google.com:19302";
+    public static final String ICE_SERVER_2_URL = "stun:stun1.l.google.com:19302";
 
     public static final String ICE_SERVER_3_URL = "turn:demo.intelehealth.org:3478";
     public static final String ICE_SERVER_3_USER = "ihuser";
