@@ -1956,7 +1956,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -2738,7 +2738,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
