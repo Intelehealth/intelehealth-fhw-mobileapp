@@ -1009,7 +1009,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return false;
     }
 
