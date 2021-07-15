@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -142,6 +144,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     Context context;
     float float_ageYear_Month;
     private boolean isMedicalAdvice;
+    private boolean MedicalAdvice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +183,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
             hasPrescription = intent.getStringExtra("hasPrescription");
+            MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
             intentTag = intent.getStringExtra("tag");
@@ -235,6 +239,27 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
+
+        if(MedicalAdvice == true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PatientDetailActivity.this)
+                    .setMessage(R.string.text_patient_and_advice_created)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+
+            Button positive = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positive.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        }
+
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
