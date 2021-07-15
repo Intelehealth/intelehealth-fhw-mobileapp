@@ -1951,6 +1951,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 && !cbDealProblems.isChecked()
                 && !cbMentalHealth.isChecked()
                 && !cbExercises.isChecked()
+                && !cbOthers.isChecked()
                 && TextUtils.isEmpty(et_medical_advice_additional.getText())) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
@@ -2733,6 +2734,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 && !cbDealProblems.isChecked()
                 && !cbMentalHealth.isChecked()
                 && !cbExercises.isChecked()
+                && !cbOthers.isChecked()
                 && TextUtils.isEmpty(et_medical_advice_additional.getText())) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
@@ -3539,6 +3541,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
+            Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
