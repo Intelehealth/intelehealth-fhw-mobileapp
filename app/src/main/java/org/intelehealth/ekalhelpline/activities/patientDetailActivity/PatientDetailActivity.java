@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -994,6 +995,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     //function to check if visit is of medical advise type
     //end date must be exact 5 minutes greater than start date
     private boolean isMedicalAdvice(String datetime, String end_datetime) {
+        if (TextUtils.isEmpty(datetime) || TextUtils.isEmpty(end_datetime))
+            return false;
+
         SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
         try {
@@ -1002,11 +1006,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             long diff = endTime.getTime() - startTime.getTime();
             if (diff == 60000 * 5)
                 return true;
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        
         return false;
     }
 
