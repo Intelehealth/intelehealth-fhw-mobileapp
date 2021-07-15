@@ -1184,9 +1184,11 @@ public class IdentificationActivity extends AppCompatActivity {
         autocompleteState.setAdapter(adapter);
 
         JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+
         autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 autocompleteDistrict.setEnabled(true);
                 districtList.clear();
                 try {
@@ -1201,10 +1203,14 @@ public class IdentificationActivity extends AppCompatActivity {
                                 String district = districtArray.getJSONObject(j).getString("name");
                                 districtList.add(district);
                             }
-                            break; } }
-                } catch (JSONException e) {
+                            break;
+                        }
+                    }
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
-                } }
+                }
+            }
         });
 
         ArrayAdapter<String> districtAdapter =
@@ -3024,6 +3030,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCity_village(StringUtils.getValue(autocompleteDistrict.getText().toString())); //mCity.getText().toString())
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
+            patientdto.setState_province(StringUtils.getValue(autocompleteState.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
