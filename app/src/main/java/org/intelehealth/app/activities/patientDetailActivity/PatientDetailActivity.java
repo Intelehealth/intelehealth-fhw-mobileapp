@@ -520,11 +520,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("casteLayout")) {
+           /* if (obj.getBoolean("casteLayout")) {
                 casteRow.setVisibility(View.VISIBLE);
             } else {
                 casteRow.setVisibility(View.GONE);
-            }
+            }*/
             if (obj.getBoolean("educationLayout")) {
                 educationRow.setVisibility(View.VISIBLE);
             } else {
@@ -703,6 +703,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         else if((patient_new.getEducation_level()==null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             education_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
+        } else if((patient_new.getEducation_level()==null || patient_new.getEducation_level().equalsIgnoreCase("Not provided")) &&
+                sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            education_statusView.setText("Не предоставлен");
         }
         else {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -723,6 +726,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             else if((patient_new.getEconomic_status()==null || patient_new.getEconomic_status().equalsIgnoreCase("Not provided")) &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 economic_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
+            }else if((patient_new.getEconomic_status()==null || patient_new.getEconomic_status().equalsIgnoreCase("Not provided")) &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                economic_statusView.setText("Не предоставлен");
             }
             else {
                 economic_statusView.setText(patient_new.getEconomic_status());
@@ -740,7 +746,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // economic_statusView.setText(patient_new.getEconomic_status());
             }
 
-        if ((patient_new.getCaste()==null || patient_new.getCaste().equalsIgnoreCase("Not provided")) &&
+        /*if ((patient_new.getCaste()==null || patient_new.getCaste().equalsIgnoreCase("Not provided")) &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             casteView.setText("नहीं दिया गया");
         }
@@ -762,7 +768,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 casteView.setText(patient_new.getCaste());
             }
             // casteView.setText(patient_new.getCaste());
-        }
+        }*/
 
         if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
             sdwView.setText(patient_new.getSdw());

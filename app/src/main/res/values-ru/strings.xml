@@ -194,7 +194,7 @@
     <string name="visit_summary_button_upload" translatable="false">Загрузить</string>
     <string name="name_button_download" translatable="false">button_download</string>
     <string name="visit_summary_follow_up_date" translatable="false">Дата последующего наблюдения</string>
-    <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
+    <string name="visit_summary_follow_up_reminder" translatable="false">Напомните пациенту дату последующего наблюдения: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Пожалуйста, сначала загрузите информацию, прежде чем пытаться завершить визит.</string>
 
 
@@ -230,8 +230,8 @@
     <string name="pref_header_general" translatable="false">Общие</string>
 
     <string name="pref_title_social_recommendations" translatable="false">Включить социальные рекомендации</string>
-    <string name="pref_description_social_recommendations" translatable="false">Recommendations for people to contact based on your message
-        history
+    <string name="pref_description_social_recommendations" translatable="false">Рекомендации для людей, с которыми можно связаться на основе вашего сообщения
+         история
     </string>
 
     <string name="pref_title_display_name" translatable="false">Отображаемое имя</string>
@@ -658,5 +658,12 @@
     <string name="please_select_specialization_msg">Пожалуйста, выберите специализацию</string>
 
     <string name="visit_closed">Посещение закрыто</string>
+
+    <string name="take_photo">Сфотографировать</string>
+    <string name="choose_from_gallery">Выбрать из галереи</string>
+    <string name="additional_doc_image_picker_title">Добавить дополнительный документ!</string>
+    <string name="something_went_wrong">Что-то пошло не так. Обратитесь в службу поддержки</string>
+
     <string name="saving_captured_image">Сохранение захваченного изображения ...</string>
+    <string name="alert_message_for_discard_visit">Новое начатое посещение не будет сохранено!</string>
 </resources>

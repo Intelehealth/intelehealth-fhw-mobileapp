@@ -359,11 +359,11 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mOccupation.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("casteLayout")) {
+            /*if (obj.getBoolean("casteLayout")) {
                 casteLayout.setVisibility(View.VISIBLE);
             } else {
                 casteLayout.setVisibility(View.GONE);
-            }
+            }*/
             if (obj.getBoolean("educationLayout")) {
                 educationLayout.setVisibility(View.VISIBLE);
             } else {

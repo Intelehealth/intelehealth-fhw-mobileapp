@@ -529,4 +529,5 @@
     <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
     <string name="saving_captured_image">କ୍ୟାପଚର ପ୍ରତିଛବି ସଞ୍ଚୟ ...</string>
+    <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
 </resources>

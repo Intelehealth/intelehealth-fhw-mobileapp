@@ -663,4 +663,5 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
     <string name="saving_captured_image">Saving Captured Image...</string>
+    <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
 </resources>

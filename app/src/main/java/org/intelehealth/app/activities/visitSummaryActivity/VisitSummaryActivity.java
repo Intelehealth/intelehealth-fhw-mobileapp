@@ -117,6 +117,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -996,6 +997,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
+                    Log.d("temp", "temp_F: " + temperature.getValue());
                     tempView.setText(convertCtoF(temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
@@ -1611,7 +1613,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         double a = Double.parseDouble(String.valueOf(temperature));
         Double b = (a * 9 / 5) + 32;
 
-        DecimalFormat dtime = new DecimalFormat("#.##");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        DecimalFormat dtime = new DecimalFormat("#.##", symbols);
         b = Double.valueOf(dtime.format(b));
 
         result = String.valueOf(b);

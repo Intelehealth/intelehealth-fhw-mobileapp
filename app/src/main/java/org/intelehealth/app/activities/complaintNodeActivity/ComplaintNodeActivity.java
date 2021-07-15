@@ -4,20 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -35,10 +21,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,18 +55,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.dto.EncounterDTO;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-
-import org.intelehealth.app.utilities.exception.DAOException;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
@@ -479,8 +474,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                dialog.setMessage("New started visit will be not saved!");
-                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
+                dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         try {
@@ -500,7 +495,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                             Toast.makeText(ComplaintNodeActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         dialog.dismiss();

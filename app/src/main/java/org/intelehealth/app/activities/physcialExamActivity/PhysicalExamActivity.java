@@ -661,8 +661,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     finish();
                 }else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-                    dialog.setMessage("New started visit will be not saved!");
-                    dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
+                    dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             try {
@@ -682,7 +682,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                                 Toast.makeText(PhysicalExamActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
-                    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int i) {
                             dialog.dismiss();
