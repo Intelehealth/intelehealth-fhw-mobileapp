@@ -87,6 +87,7 @@
     <string name="identification_screen_prompt_relationship">"ପୁଅ/ଟିଅ / ସ୍ତ୍ରୀର "</string>
     <string name="identification_screen_prompt_postal_code">"ପୋଷ୍ଟାଲ କୋଡ଼୍ "</string>
     <string name="identification_screen_prompt_state">ରାଜ୍ଯ *</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_snack_patient_created">"ରୋଗୀ ନିର୍ମାଣ "</string>
     <string name="logging_in">"ଲଗିଙ୍ଗ୍ ଇନ କରିବା "</string>
     <string name="login_location_select">"ସତ୍ର ସ୍ଥାନ "</string>

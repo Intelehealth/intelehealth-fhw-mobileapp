@@ -46,10 +46,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -136,7 +138,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //  EditText mOccupation;
     EditText countryText;
 //    EditText stateText;
-    AutoCompleteTextView autocompleteState;
+    AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText casteText;
     Spinner mCountry;
 //    Spinner mState;
@@ -177,6 +179,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+
+    List<String> districtList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,6 +226,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
 
+
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -245,7 +250,12 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
 //        stateText = findViewById(R.id.identification_state);
+
         autocompleteState = findViewById(R.id.autocomplete_state);
+        autocompleteDistrict = findViewById(R.id.autocomplete_district);
+        autocompleteDistrict.setEnabled(false);
+        districtList = new ArrayList<>();
+
 //        mState = findViewById(R.id.spinner_state);
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
@@ -269,7 +279,8 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-      //  mImageView = findViewById(R.id.imageview_id_picture);
+
+        //  mImageView = findViewById(R.id.imageview_id_picture);
 
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
@@ -455,15 +466,15 @@ public class IdentificationActivity extends AppCompatActivity {
             mDOB.setText(patient1.getDate_of_birth());
         }*/
         mDOB.setText(patient1.getDate_of_birth());
-
-
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
         mAddress2.setText(patient1.getAddress2());
         mCity.setText(patient1.getCity_village());
+
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
         autocompleteState.setText(patient1.getState_province());
+        autocompleteDistrict.setText(patient1.getCity_village());
 
        /* if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -1172,6 +1183,33 @@ public class IdentificationActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         autocompleteState.setAdapter(adapter);
 
+        JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+        autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                autocompleteDistrict.setEnabled(true);
+                districtList.clear();
+                try {
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for(int i = 0; i< stateArray.length(); i++){
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if(state.equals(autocompleteState.getText().toString()))
+                        {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for(int j = 0; j< districtArray.length(); j++) {
+                                String district = districtArray.getJSONObject(j).getString("name");
+                                districtList.add(district);
+                            }
+                            break; } }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } }
+        });
+
+        ArrayAdapter<String> districtAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, districtList);
+        autocompleteDistrict.setAdapter(districtAdapter);
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1742,7 +1780,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onBackPressed() {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -1895,7 +1932,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                  && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -1923,6 +1960,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
+            }
+
+            if (autocompleteDistrict.getText().toString().equals("")) {
+                autocompleteDistrict.setError(getString(R.string.error_field_required));
             }
 
 
@@ -1972,6 +2013,15 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             autocompleteState.setError(null);
+        }
+
+        if (autocompleteDistrict.getText().toString().equalsIgnoreCase("")) {
+            autocompleteDistrict.setError(getString(R.string.error_field_required));
+            focusView = autocompleteDistrict;
+            cancel = true;
+            return;
+        } else {
+            autocompleteDistrict.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2199,7 +2249,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCityvillage(StringUtils.getValue(autocompleteDistrict.getText().toString())); //mCity.getText().toString()
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
@@ -2652,7 +2702,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -2680,6 +2730,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
+            }
+
+            if (autocompleteDistrict.getText().toString().equals("")) {
+                autocompleteDistrict.setError(getString(R.string.error_field_required));
             }
 
 //            if (mCity.getText().toString().equals("")) {
@@ -2729,6 +2783,16 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             autocompleteState.setError(null);
         }
+
+        if (autocompleteDistrict.getText().toString().equalsIgnoreCase("")) {
+            autocompleteDistrict.setError(getString(R.string.error_field_required));
+            focusView = autocompleteDistrict;
+            cancel = true;
+            return;
+        } else {
+            autocompleteDistrict.setError(null);
+        }
+
 
         // TODO: Add validations for all Spinners here...
 /*
@@ -2958,7 +3022,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCity_village(StringUtils.getValue(autocompleteDistrict.getText().toString())); //mCity.getText().toString())
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
@@ -3300,5 +3364,27 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
+    //This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita
+
+    public JSONObject loadJsonObjectFromAsset(String assetName) {
+        try {
+            String json = loadStringFromAsset(assetName);
+            if (json != null)
+                return new JSONObject(json);
+        } catch (Exception e) {
+            Log.e("JsonUtils", e.toString());
+        }
+
+        return null;
+    }
+
+    private String loadStringFromAsset(String assetName) throws Exception {
+        InputStream is = getApplicationContext().getAssets().open(assetName);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        return new String(buffer, "UTF-8");
+    }
 
 }

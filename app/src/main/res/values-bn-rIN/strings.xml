@@ -61,6 +61,7 @@
     <string name="identification_screen_prompt_age">বয়স *</string>
     <string name="identification_screen_prompt_city">গ্রাম/শহর/মহানগর *</string>
     <string name="identification_screen_prompt_state">রাজ্য *</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">জাতি</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">অর্থনৈতিক অবস্থা</string>
     <string name="identification_screen_prompt_education" translatable="false">শিক্ষা স্তর</string>

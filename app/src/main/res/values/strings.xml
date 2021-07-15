@@ -89,6 +89,7 @@
     <string name="identification_screen_prompt_time">Time:</string>
     <string name="identification_screen_prompt_city">Village/Town/City *</string>
     <string name="identification_screen_prompt_state">State *</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste">Caste</string>
     <string name="identification_screen_prompt_economic_status">Economic status</string>
     <string name="identification_screen_prompt_education">Education level</string>

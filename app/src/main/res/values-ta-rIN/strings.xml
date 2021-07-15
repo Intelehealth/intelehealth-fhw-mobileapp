@@ -63,6 +63,7 @@
     <string name="identification_screen_prompt_time">நேரம்:</string>
     <string name="identification_screen_prompt_city">கிராமம் / நகரம் / நகரம்*</string>
     <string name="identification_screen_prompt_state">மாநிலம்*</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">சாதி</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">பொருளாதார நிலை</string>
     <string name="identification_screen_prompt_education" translatable="false">கல்வி நிலை</string>

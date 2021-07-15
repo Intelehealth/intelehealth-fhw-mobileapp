@@ -386,11 +386,10 @@
                     android:id="@+id/cardview2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardElevation="8dp"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="10dp"
-                    app:cardCornerRadius="10sp"
-                    app:cardElevation="3dp"
-                    app:cardPreventCornerOverlap="false">
+                    android:layout_marginTop="30dp"
+                    app:cardCornerRadius="5dp">
 
 
                     <LinearLayout
@@ -457,7 +456,6 @@
                                 </com.google.android.material.textfield.TextInputLayout>
                             </LinearLayout>
 
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -473,47 +471,37 @@
                                         android:layout_width="fill_parent"
                                         android:hint="@string/identification_screen_prompt_state"
                                         android:maxLength="45"
-                                        android:layout_height="wrap_content" />
-
-<!--                                    <LinearLayout-->
-<!--                                        android:layout_width="match_parent"-->
-<!--                                        android:layout_height="match_parent"-->
-<!--                                        android:orientation="vertical">-->
-
-<!--                                        <EditText-->
-<!--                                            android:id="@+id/identification_state"-->
-<!--                                            android:layout_width="match_parent"-->
-<!--                                            android:layout_height="wrap_content"-->
-<!--                                            android:layout_weight="3"-->
-<!--                                            android:clickable="false"-->
-<!--                                            android:cursorVisible="false"-->
-<!--                                            android:drawableStart="@drawable/state_list_icon"-->
-<!--                                            android:drawableLeft="@drawable/state_list_icon"-->
-<!--                                            android:drawablePadding="10dp"-->
-<!--                                            android:focusable="false"-->
-<!--                                            android:focusableInTouchMode="false"-->
-<!--                                            android:fontFamily="@font/lato_regular"-->
-<!--                                            android:freezesText="true"-->
-<!--                                            android:imeOptions="actionUnspecified"-->
-<!--                                            android:inputType="textCapWords"-->
-<!--                                            android:maxLines="1"-->
-<!--                                            android:text="@string/identification_screen_prompt_state"-->
-<!--                                            android:textSize="@dimen/card_content_sub_text_size" />-->
-
-
-
-<!--                                        <Spinner-->
-<!--                                            android:id="@+id/spinner_state"-->
-<!--                                            android:layout_width="match_parent"-->
-<!--                                            android:layout_height="wrap_content"-->
-<!--                                            android:layout_weight="1" />-->
-<!--                                    </LinearLayout>-->
-
+                                        android:layout_height="wrap_content"
+                                        android:completionThreshold="1"/>
 
                                 </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_weight="1">
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/autocomplete_district"
+                                        android:layout_width="fill_parent"
+                                        android:hint="@string/identification_screen_prompt_district"
+                                        android:maxLength="45"
+                                        android:layout_height="wrap_content"
+                                        android:completionThreshold="1"/>
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
                             </LinearLayout>
 
                         </LinearLayout>
+
+<!--                        <Spinner-->
+<!--                            android:id="@+id/district_spinner"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:layout_margin="10dp"-->
+<!--                            android:textColor="#000000"/>-->
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -611,7 +599,6 @@
                                 android:maxLines="1"
                                 android:tag="@string/tag_optional"
                                 android:textSize="@dimen/card_content_sub_text_size" />
-
 
                         </com.google.android.material.textfield.TextInputLayout>
 

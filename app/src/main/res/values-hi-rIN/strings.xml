@@ -92,6 +92,7 @@
     <string name="identification_screen_prompt_time">समय:</string>
     <string name="identification_screen_prompt_city">गांव / कस्बा / शहर *</string>
     <string name="identification_screen_prompt_state">राज्य *</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">जाति</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">आर्थिक स्थिति</string>
     <string name="identification_screen_prompt_education" translatable="false">शिक्षा का स्तर</string>

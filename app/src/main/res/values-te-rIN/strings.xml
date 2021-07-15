@@ -47,6 +47,7 @@
     <string name="identification_screen_prompt_time">సమయం:</string>
     <string name="identification_screen_prompt_city">గ్రామం / పట్టణం / నగరం *</string>
     <string name="identification_screen_prompt_state">రాష్ట్రం *</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">కులం</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">ఆర్థిక స్థితి</string>
     <string name="identification_screen_prompt_education" translatable="false">విద్యా స్థాయి</string>

@@ -61,6 +61,7 @@
     <string name="identification_screen_prompt_time">সময়:</string>
     <string name="identification_screen_prompt_city">গাওঁ / চহৰ /মহানগৰ *</string>
     <string name="identification_screen_prompt_state">ৰাষ্ট্র *</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">জাতি</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">অর্থনৈতিক অৱস্থা</string>
     <string name="identification_screen_prompt_education" translatable="false">শিক্ষা স্তৰ</string>
