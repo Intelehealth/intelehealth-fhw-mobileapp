@@ -511,7 +511,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
-            if (patient1.getEconomic_status()==null || patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEconomic_status() == null || patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mEconomicStatus.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
@@ -572,7 +572,19 @@ public class IdentificationActivity extends AppCompatActivity {
                         else
                             mState.setSelection(stateAdapter.getPosition(state));
 
-                    } else if (country.matches("United States")) {
+                    } else if (country.matches("kyrgyzstan")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_kyrgyzstan, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                        // setting state according database when user clicks edit details
+
+                       /* if (patientID_edit != null)
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        else*/
+                        mState.setSelection(0);
+
+                    } /*else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.states_us, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -593,7 +605,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         } else {
                             mState.setSelection(stateAdapter.getPosition("Bukidnon"));
                         }
-                    }
+                    }*/
                 } else {
                     ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
                             R.array.state_error, R.layout.custom_spinner);
@@ -1276,14 +1288,14 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (mState.getSelectedItemPosition() == 0) {
+       /* if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
             focusView = stateText;
             cancel = true;
             return;
         } else {
             stateText.setError(null);
-        }
+        }*/
         if (cancel) {
             focusView.requestFocus();
         } else {

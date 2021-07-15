@@ -20,6 +20,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
+import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 
@@ -46,7 +47,8 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-
+        // refresh the fcm token
+        TokenRefreshUtils.refreshToken(this);
         checkPerm();
     }
 

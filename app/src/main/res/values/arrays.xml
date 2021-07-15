@@ -45,9 +45,10 @@
     </string-array>
     <string-array name="countries">
         <item>Select Country</item>
+        <item>kyrgyzstan</item>
         <item>India</item>
-        <item>United States</item>
-        <item>Philippines</item>
+       <!-- <item>United States</item>
+        <item>Philippines</item>-->
     </string-array>
 
     <string-array name="education_or">
@@ -189,6 +190,10 @@
         <item>Uttar Pradesh</item>
         <item>Uttarakhand</item>
         <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="states_kyrgyzstan">
+        <item>Select State</item>
     </string-array>
 
     <string-array name="states_philippines">

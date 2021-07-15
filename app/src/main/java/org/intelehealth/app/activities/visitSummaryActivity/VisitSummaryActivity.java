@@ -75,6 +75,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -94,13 +95,16 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -112,6 +116,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.apprtc.ChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -501,6 +506,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
+                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
+                chatIntent.putExtra("patientName", patientName);
+                chatIntent.putExtra("visitUuid", visitUuid);
+                chatIntent.putExtra("patientUuid", patientUuid);
+                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+
+                if (rtcConnectionDTO != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+                }
+                startActivity(chatIntent);
+            }
+        });
+
 //we can remove by data binding
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);

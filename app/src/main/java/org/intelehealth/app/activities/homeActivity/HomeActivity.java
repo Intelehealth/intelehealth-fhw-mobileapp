@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -67,6 +68,9 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,6 +98,7 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
     private ProgressDialog mSyncProgressDialog;
@@ -125,11 +130,68 @@ public class HomeActivity extends AppCompatActivity {
     private ObjectAnimator syncAnimator;
     private TextView mActiveVitCountTextView, mTodayVisitCountTextView;
 
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
+    }
+    private void catchFCMMessageData() {
+        // get the chat notification click info
+        if (getIntent().getExtras() != null) {
+            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+            Bundle remoteMessage = getIntent().getExtras();
+            try {
+                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+                    //Log.d(TAG, "actionType : TEXT_CHAT");
+                    String fromUUId = remoteMessage.getString("toUser");
+                    String toUUId = remoteMessage.getString("fromUser");
+                    String patientUUid = remoteMessage.getString("patientId");
+                    String visitUUID = remoteMessage.getString("visitId");
+                    String patientName = remoteMessage.getString("patientName");
+                    JSONObject connectionInfoObject = new JSONObject();
+                    connectionInfoObject.put("fromUUID", fromUUId);
+                    connectionInfoObject.put("toUUID", toUUId);
+                    connectionInfoObject.put("patientUUID", patientUUid);
+
+                    Intent intent = new Intent(ACTION_NAME);
+                    intent.putExtra("visit_uuid", visitUUID);
+                    intent.putExtra("connection_info", connectionInfoObject.toString());
+                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    getApplicationContext().sendBroadcast(intent);
+
+                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    chatIntent.putExtra("patientName", patientName);
+                    chatIntent.putExtra("visitUuid", visitUUID);
+                    chatIntent.putExtra("patientUuid", patientUUid);
+                    chatIntent.putExtra("fromUuid", fromUUId);
+                    chatIntent.putExtra("toUuid", toUUId);
+                    startActivity(chatIntent);
+
+                } /*else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                    //Log.d(TAG, "actionType : VIDEO_CALL");
+                    Intent in = new Intent(this, CompleteActivity.class);
+                    String roomId = remoteMessage.getString("roomId");
+                    String doctorName = remoteMessage.getString("doctorName");
+                    String nurseId = remoteMessage.getString("nurseId");
+                    in.putExtra("roomId", roomId);
+                    in.putExtra("isInComingRequest", true);
+                    in.putExtra("doctorname", doctorName);
+                    in.putExtra("nurseId", nurseId);
+                    startActivity(in);
+                }*/
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
+        saveToken();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -145,7 +207,7 @@ public class HomeActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-
+        catchFCMMessageData();
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
