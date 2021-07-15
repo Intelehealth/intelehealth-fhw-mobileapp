@@ -6,7 +6,7 @@
     <string name="hint_required">अपेक्षित</string>
     <string name="hint_optional">ऐच्छिक</string>
     <string name="tag_optional">ऐच्छिक</string>
-    <string name="generic_ok" >ठीक</string>
+    <string name="generic_ok">ठीक</string>
     <string name="generic_cancel">रद्द करना</string>
     <string name="generic_yes">हाँ</string>
     <string name="generic_no">नहीं</string>
@@ -557,7 +557,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >आपकी विज़िट का कारण क्या है?</string>
+    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>
     <string name="swipe_down_to_return">अगले/ पिछले के लिए निचे स्वाइप करें</string>
     <string name="swipe_up">अगले के लिए ऊपर स्वाइप करें</string>
     <string name="swipe_down">पिछले के लिए निचे स्वाइप करें</string>
@@ -675,5 +675,26 @@
     <string name="take_photo">फोटो लो</string>
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
+
+    <string name="self_assessment">आत्म मूल्यांकन</string>
+    <string name="error_medical_visit_data">कृपया चिकित्सकीय सलाह चुनें या दर्ज करें</string>
+    <string name="text_patient_and_advice_created">रोगी और चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
+    <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
+
+    <string name="text_medical_advice">नई चिकित्सा सलाह</string>
+    <string name="text_new_visit">नए डॉक्टर का दौरा</string>
+    <string name="text_new_advice">नई चिकित्सा सलाह</string>
+
+    <string name="vaccination_guidance">टीकाकरण मार्गदर्शन</string>
+    <string name="concern_about_covid_re_infection">COVID पुन: संक्रमण के बारे में चिंता</string>
+    <string name="managing_breathlessness">सांस फूलने का प्रबंधन</string>
+    <string name="managing_issues_with_voice">आवाज के साथ मुद्दों का प्रबंधन</string>
+    <string name="managing_eating_drinking">ठीक होने के बाद खाने, पीने और निगलने का प्रबंध करना</string>
+    <string name="dealing_problems">ध्यान, स्मृति और स्पष्टता की समस्याओं से निपटना</string>
+    <string name="managing_mental_health">मानसिक स्वास्थ्य का प्रबंधन</string>
+    <string name="exercises">अभ्यास</string>
+    <string name="txt_additional_info">अतिरिक्त जानकारी</string>
+    <string name="medical_advice">वैद्यकीय सलाह</string>
+
 
 </resources>
