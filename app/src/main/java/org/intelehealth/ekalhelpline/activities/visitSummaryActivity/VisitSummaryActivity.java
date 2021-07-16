@@ -1118,6 +1118,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
+mMedicalAdviceCheck();
         weightView.setText(weight.getValue());
         pulseView.setText(pulse.getValue());
 
@@ -1658,7 +1659,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
     }
-
     private String sms_prescription() {
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name()))
                 ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
@@ -2019,7 +2019,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     * @param uuid the visit uuid of the patient visit records is passed to the function.
+//     * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
 
@@ -4150,5 +4150,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
             downloadButton.setAlpha(0.8f);
         }
+    }
+    private void mMedicalAdviceCheck() {
+        if(complaint.getValue().contains("Medical Advice"))
+        {   card_print.setVisibility(View.GONE);
+            card_share.setVisibility(View.GONE);
+        }
+
     }
 }
