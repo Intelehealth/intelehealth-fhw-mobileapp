@@ -529,6 +529,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
         TextView phoneView = findViewById(R.id.textView_phone);
+        TextView districtView = findViewById(R.id.textView_district);
+        TextView stateView = findViewById(R.id.textView_state);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -712,6 +714,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+        stateView.setText(patient_new.getState_province());
+        districtView.setText(patient_new.getCity_village());
 
         //english = en
         //hindi = hi

@@ -719,7 +719,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = findViewById(R.id.button_upload);
         downloadButton = findViewById(R.id.button_download);
-
+        setDownloadButtonState();
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
 
@@ -1008,6 +1008,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 }
                                 uploaded = true;
+                                setDownloadButtonState();
 
                             }
                         }, 4000);
@@ -1595,7 +1596,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //return if button disabled
+                if (downloadButton.getAlpha() < 1f) {
+                    return;
+                }
                 if (NetworkConnection.isOnline(getApplication())) {
                     Toast.makeText(context1, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
                 } else {
@@ -3906,6 +3910,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 }
                 downloadDoctorDetails();
+                setDownloadButtonState();
             }
 
             additionalDocumentImagesDownload();
@@ -3950,6 +3955,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
+        setDownloadButtonState();
+
     }
 
     @Override
@@ -4135,5 +4142,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
-
+    void setDownloadButtonState() {
+        if (!NetworkConnection.isOnline(this)) {
+            downloadButton.setAlpha(0.8f);
+        } else if (uploaded) {
+            downloadButton.setAlpha(1);
+        } else {
+            downloadButton.setAlpha(0.8f);
+        }
+    }
 }

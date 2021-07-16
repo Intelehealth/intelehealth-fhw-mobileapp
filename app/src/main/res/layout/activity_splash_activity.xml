@@ -21,7 +21,7 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            android:src="@drawable/intelehealth_i_icon" />
+            android:src="@drawable/ic_app_svhm_" />
 
 <!--        <ImageView-->
 <!--            android:layout_width="160dp"-->
