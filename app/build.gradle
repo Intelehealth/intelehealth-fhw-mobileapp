@@ -5,12 +5,12 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "org.intelehealth.ekalhelpline"
+        applicationId "org.intelehealth.svhmhelpline"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 7
+        versionCode 2
         buildToolsVersion('29.0.2')
-        versionName "1.6"
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
