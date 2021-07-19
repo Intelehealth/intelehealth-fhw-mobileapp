@@ -143,7 +143,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
-        //In case of crash still the app should hold the current lang fix.
+        //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -1274,7 +1274,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    // Called when we close app on vitals screen and Didn't select any complaints
+                    // Called when we close org on vitals screen and Didn't select any complaints
                     else {
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                         try {

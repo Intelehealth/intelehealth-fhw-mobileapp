@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,8 +28,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.view.animation.LinearInterpolator;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,18 +45,6 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
@@ -77,6 +66,22 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.apprtc.utils.FirebaseUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -92,6 +97,7 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
     private ProgressDialog mSyncProgressDialog;
@@ -132,6 +138,8 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
 
+
+        catchFCMMessageData();
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -289,6 +297,7 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            saveToken();
         }
         /*sessionManager.setMigration(true);
 
@@ -297,6 +306,63 @@ public class HomeActivity extends AppCompatActivity {
         }*/
 
         showProgressbar();
+    }
+
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
+    }
+
+    private void catchFCMMessageData() {
+        // get the chat notification click info
+        if (getIntent().getExtras() != null) {
+            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+            Bundle remoteMessage = getIntent().getExtras();
+            try {
+                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+                    //Log.d(TAG, "actionType : TEXT_CHAT");
+                    String fromUUId = remoteMessage.getString("toUser");
+                    String toUUId = remoteMessage.getString("fromUser");
+                    String patientUUid = remoteMessage.getString("patientId");
+                    String visitUUID = remoteMessage.getString("visitId");
+                    String patientName = remoteMessage.getString("patientName");
+                    JSONObject connectionInfoObject = new JSONObject();
+                    connectionInfoObject.put("fromUUID", fromUUId);
+                    connectionInfoObject.put("toUUID", toUUId);
+                    connectionInfoObject.put("patientUUID", patientUUid);
+
+                    Intent intent = new Intent(ACTION_NAME);
+                    intent.putExtra("visit_uuid", visitUUID);
+                    intent.putExtra("connection_info", connectionInfoObject.toString());
+                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    getApplicationContext().sendBroadcast(intent);
+
+                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    chatIntent.putExtra("patientName", patientName);
+                    chatIntent.putExtra("visitUuid", visitUUID);
+                    chatIntent.putExtra("patientUuid", patientUUid);
+                    chatIntent.putExtra("fromUuid", fromUUId);
+                    chatIntent.putExtra("toUuid", toUUId);
+                    startActivity(chatIntent);
+
+                } /*else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                    //Log.d(TAG, "actionType : VIDEO_CALL");
+                    Intent in = new Intent(this, CompleteActivity.class);
+                    String roomId = remoteMessage.getString("roomId");
+                    String doctorName = remoteMessage.getString("doctorName");
+                    String nurseId = remoteMessage.getString("nurseId");
+                    in.putExtra("roomId", roomId);
+                    in.putExtra("isInComingRequest", true);
+                    in.putExtra("doctorname", doctorName);
+                    in.putExtra("nurseId", nurseId);
+                    startActivity(in);
+                }*/
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //function for handling the video library feature...
@@ -535,7 +601,7 @@ public class HomeActivity extends AppCompatActivity {
                                             sessionManager.setMindMapServerUrl(licenseUrl);
 
                                             if (keyVerified(key)) {
-                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/",key);
+                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
                                                 alertDialog.dismiss();
                                             }
                                         } else {
@@ -750,7 +816,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
         ApiClient.changeApiBaseUrl(url);
@@ -952,7 +1017,7 @@ public class HomeActivity extends AppCompatActivity {
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
             if (isSuccess) {
-
+                saveToken();
                 sessionManager.setFirstTimeLaunched(false);
                 sessionManager.setMigration(true);
                 // initial setup/sync done and now we can set the periodic background sync job

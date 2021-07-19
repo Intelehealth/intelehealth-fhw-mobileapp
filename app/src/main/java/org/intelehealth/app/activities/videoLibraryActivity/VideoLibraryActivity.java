@@ -99,7 +99,7 @@ public class VideoLibraryActivity extends AppCompatActivity implements VideoLibr
     }
 
     public File getExtVideoStorageDir(Context context, String folderName) {
-        // Get the directory for the app's private pictures directory.
+        // Get the directory for the org's private pictures directory.
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_MOVIES), folderName);
         Logger.logD(TAG, file.getAbsolutePath());

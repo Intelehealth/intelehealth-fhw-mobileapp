@@ -141,9 +141,9 @@ public class VitalsActivity extends AppCompatActivity {
                 mWeight.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mPulse")) {
-                mPulse.setVisibility(View.VISIBLE);
+                findViewById(R.id.tinput_bpm).setVisibility(View.VISIBLE);
             } else {
-                mPulse.setVisibility(View.GONE);
+                findViewById(R.id.tinput_bpm).setVisibility(View.GONE);
             }
             if (obj.getBoolean("mBpSys")) {
                 mBpSys.setVisibility(View.VISIBLE);
@@ -159,20 +159,20 @@ public class VitalsActivity extends AppCompatActivity {
                 if (obj.getBoolean("mCelsius")) {
 
                     mTemperature = findViewById(R.id.table_temp);
-                    findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
+                    findViewById(R.id.tinput_f).setVisibility(View.GONE);
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
                     mTemperature = findViewById(R.id.table_temp_faren);
-                    findViewById(R.id.table_temp).setVisibility(View.GONE);
+                    findViewById(R.id.tinput_c).setVisibility(View.GONE);
                 }
             } else {
                 mTemperature.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mSpo2")) {
-                mSpo2.setVisibility(View.VISIBLE);
+                findViewById(R.id.tinput_spo).setVisibility(View.VISIBLE);
             } else {
-                mSpo2.setVisibility(View.GONE);
+                findViewById(R.id.tinput_spo).setVisibility(View.GONE);
             }
             if (obj.getBoolean("mBMI")) {
                 mBMI.setVisibility(View.VISIBLE);
@@ -181,9 +181,9 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
             if (obj.getBoolean("mResp")) {
-                mResp.setVisibility(View.VISIBLE);
+                findViewById(R.id.tinput_rr).setVisibility(View.VISIBLE);
             } else {
-                mResp.setVisibility(View.GONE);
+                findViewById(R.id.tinput_rr).setVisibility(View.GONE);
             }
         } catch (JSONException e) {
             Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
@@ -551,7 +551,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mBpDia.setText(value);
                 break;
             case UuidDictionary.TEMPERATURE: //Temperature
-                if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
+                if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
                     if (value != null && !value.isEmpty()) {
                         mTemperature.setText(convertCtoF(value));
@@ -787,7 +787,7 @@ public class VitalsActivity extends AppCompatActivity {
                 }
                 if (mTemperature.getText() != null) {
 
-                    if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
+                    if (findViewById(R.id.tinput_c).getVisibility() == View.GONE) {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
 

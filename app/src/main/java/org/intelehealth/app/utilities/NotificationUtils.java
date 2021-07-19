@@ -17,7 +17,7 @@ public class NotificationUtils {
     private int mId = 1;
     Context context;
 
-//    notifcation id for the inteleHealth app
+//    notifcation id for the inteleHealth org
 //    #1 for sync module
 //    #2 for patient Details upload and download
 //    #3 for visit uploadand download and end visit
