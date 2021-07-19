@@ -100,4 +100,7 @@ public interface ApiInterface {
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
+
+    @GET
+    Single<String> CALL_PATIENT_IVR(@Url String url);
 }

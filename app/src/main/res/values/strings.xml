@@ -695,4 +695,7 @@
     <string name="text_advice_created">Medical Advice is Registered Successfully</string>
     <string name="medical_advice">Medical Advice</string>
 
+    <string name="calling_patient">Calling patient…</string>
+    <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
+    <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
 </resources>
