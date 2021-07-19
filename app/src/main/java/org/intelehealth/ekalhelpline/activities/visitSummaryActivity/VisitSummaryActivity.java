@@ -1010,6 +1010,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 uploaded = true;
                                 setDownloadButtonState();
 
+
                             }
                         }, 4000);
                     } else {
@@ -1595,6 +1596,7 @@ mMedicalAdviceCheck();
         });
 
         downloadButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 //return if button disabled
@@ -1607,6 +1609,9 @@ mMedicalAdviceCheck();
                     Toast.makeText(context1, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                 }
 
+                if (downloadButton.getAlpha() < 1f) {
+                    return;
+                }
                 SyncUtils syncUtils = new SyncUtils();
                 syncUtils.syncForeground("downloadPrescription");
                 uploaded = true;
