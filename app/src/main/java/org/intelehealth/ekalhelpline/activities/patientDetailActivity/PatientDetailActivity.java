@@ -89,10 +89,6 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_occupation_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 

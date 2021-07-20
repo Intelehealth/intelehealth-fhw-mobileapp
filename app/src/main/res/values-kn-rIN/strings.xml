@@ -85,6 +85,7 @@
     <string name="identification_screen_prompt_time">ಸಮಯ:</string>
     <string name="identification_screen_prompt_city">ಗ್ರಾಮ / ಪಟ್ಟಣ / ನಗರ*</string>
     <string name="identification_screen_prompt_state">ರಾಜ್ಯ*</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">ಜಾತಿ</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">ಆರ್ಥಿಕ ಸ್ಥಿತಿ</string>
     <string name="identification_screen_prompt_education" translatable="false">ಶಿಕ್ಷಣ ಮಟ್ಟ</string>

@@ -93,6 +93,7 @@
         <string name="identification_screen_prompt_time">वेळः</string>
         <string name="identification_screen_prompt_city">गाव / नगर / शहर *</string>
         <string name="identification_screen_prompt_state">राज्य *</string>
+        <string name="identification_screen_prompt_district">District *</string>
         <string name="identification_screen_prompt_caste">जाति</string>
         <string name="identification_screen_prompt_economic_status">आर्थिक स्थिति</string>
         <string name="identification_screen_prompt_education">शैक्षणिक पातळी</string>

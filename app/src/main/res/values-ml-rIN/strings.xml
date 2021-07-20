@@ -64,6 +64,7 @@
     <string name="identification_screen_prompt_time">" സമയം:"</string>
     <string name="identification_screen_prompt_city">ഗ്രാമം പട്ടണം നഗരം*</string>
     <string name="identification_screen_prompt_state">സംസ്ഥാനം*</string>
+    <string name="identification_screen_prompt_district">District *</string>
     <string name="identification_screen_prompt_caste" translatable="false">" ജാതി"</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">" സാമ്പത്തിക നിലവാരം"</string>
     <string name="identification_screen_prompt_education" translatable="false">വിദ്യാഭ്യാസ നിലവാരം</string>

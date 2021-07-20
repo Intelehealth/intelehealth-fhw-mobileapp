@@ -38,26 +38,47 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
 
+<<<<<<< Updated upstream
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.privacyNoticeActivity.PrivacyNotice_Activity"
+=======
+        <activity android:name="org.intelehealth.ekalhelpline.activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name="org.intelehealth.ekalhelpline.activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_additional_documents"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSurveyActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.physcialExamActivity.PhysicalExamActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName="org.intelehealth.ekalhelpline.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
@@ -66,14 +87,23 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.familyHistoryActivity.FamilyHistoryActivity"
+<<<<<<< Updated upstream
             android:label="@string/title_activity_family_history"
             android:configChanges="uiMode"
+=======
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_family_history"
+>>>>>>> Stashed changes
             android:parentActivityName="org.intelehealth.ekalhelpline.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_past_medical_history"
             android:parentActivityName="org.intelehealth.ekalhelpline.activities.questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
@@ -82,6 +112,10 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.questionNodeActivity.QuestionNodeActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_question_node"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
@@ -89,8 +123,13 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.complaintNodeActivity.ComplaintNodeActivity"
+<<<<<<< Updated upstream
             android:label="@string/title_activity_complaint_node"
             android:configChanges="uiMode"
+=======
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_complaint_node"
+>>>>>>> Stashed changes
             android:parentActivityName="org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
@@ -98,6 +137,10 @@
 
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.IntroActivity.IntroActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -115,47 +158,79 @@
         </activity>
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_vitals"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.activitySync.ActivitySync"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_sync"
             android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.videoLibraryActivity.VideoLibraryActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_video_library"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.todayPatientActivity.TodayPatientActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchPatientActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
@@ -173,6 +248,10 @@
         </activity>
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
@@ -189,12 +268,20 @@
         </activity>
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.loginActivity.LoginActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
@@ -216,6 +303,10 @@
         </activity>
         <activity
             android:name="org.intelehealth.ekalhelpline.activities.setupActivity.SetupActivity"
+<<<<<<< Updated upstream
+=======
+            android:configChanges="uiMode"
+>>>>>>> Stashed changes
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
             android:configChanges="uiMode"
