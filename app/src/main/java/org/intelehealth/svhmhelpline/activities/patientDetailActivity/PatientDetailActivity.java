@@ -1420,7 +1420,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(receiver))
             return;
         UrlModifiers urlModifiers = new UrlModifiers();
-        String caller = "1246825811"; //dummy
+       // String caller = "1246825811"; //dummy
+        String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
         String url = urlModifiers.getIvrCallUrl(caller, receiver);
         Logger.logD(TAG, "ivr call url" + url);
         Single<String> patientIvrCall = AppConstants.ivrApiInterface.CALL_PATIENT_IVR(url);
