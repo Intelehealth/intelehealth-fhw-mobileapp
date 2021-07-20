@@ -21,8 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -1183,19 +1185,50 @@ public class IdentificationActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         autocompleteState.setAdapter(adapter);
 
+        if(autocompleteState.getText().toString().equals(""))
+        {
+            autocompleteDistrict.setText("");
+            autocompleteDistrict.setEnabled(false);
+        }
+
+        autocompleteState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
 
         autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                String selectedState = parent.getItemAtPosition(position).toString();
+                if(selectedState.equalsIgnoreCase("")|| autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State"))
+                {
+                    autocompleteDistrict.setText("");
+                    autocompleteDistrict.setEnabled(false);
+                }
+                else
                 autocompleteDistrict.setEnabled(true);
                 districtList.clear();
                 try {
                     JSONArray stateArray = json.getJSONArray("states");
                     for(int i = 0; i< stateArray.length(); i++){
                         String state = stateArray.getJSONObject(i).getString("state");
-                        if(state.equals(autocompleteState.getText().toString()))
+                        if(state.equalsIgnoreCase(selectedState))
                         {
                             JSONObject districtObj = stateArray.getJSONObject(i);
                             JSONArray districtArray = districtObj.getJSONArray("districts");
@@ -1205,6 +1238,8 @@ public class IdentificationActivity extends AppCompatActivity {
                             }
                             break;
                         }
+                        ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
+                        autocompleteDistrict.setAdapter(districtAdapter);
                     }
                 }
                 catch (JSONException e) {
@@ -1213,9 +1248,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> districtAdapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, districtList);
-        autocompleteDistrict.setAdapter(districtAdapter);
+
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
