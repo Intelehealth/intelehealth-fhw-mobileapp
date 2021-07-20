@@ -557,7 +557,8 @@ public class IdentificationActivity extends AppCompatActivity {
 //        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
 
-        try {
+        //TODO: FIX for edit State and District - @Prajwal - uncomment the below block...
+        /*try {
             if (!patient1.getState_province().equalsIgnoreCase("Uttarakhand")) {
                 ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.others, R.layout.custom_spinner);
                 //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -576,7 +577,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-        }
+        }*/
 
 
         try { //Caste adapter setting...
@@ -1307,15 +1308,37 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     mDistrict.setEnabled(true);
                 }
-                if (!mSelectedValue.equalsIgnoreCase("Uttarakhand")) {
-                    ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.others, R.layout.custom_spinner);
 
-                    //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mDistrict.setAdapter(stateAdapterOther);
+                if (!mSelectedValue.equalsIgnoreCase(getResources().getString(R.string.uttarakhand))) {
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.others_district, R.layout.custom_spinner);
+
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterOther);
+                    }
+                    else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.others_district_hi, R.layout.custom_spinner);
+
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterOther);
+                    }
+
                 } else {
-                    ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.district, R.layout.custom_spinner);
-                    //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mDistrict.setAdapter(stateAdapterUttrakhand);
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.district_uk, R.layout.custom_spinner);
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterUttrakhand);
+                    }
+                    else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.district_uk_hi, R.layout.custom_spinner);
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterUttrakhand);
+                    }
+
                 }
             }
         });

@@ -2,7 +2,7 @@
 
 
     <string-array name="language_names">
-<!--        <item>Hindi</item>-->
+        <item>Hindi</item>
         <item>English</item>
 <!--        <item>Marathi</item>-->
 <!--        <item>Kannada</item>-->
@@ -16,7 +16,7 @@
     </string-array>
 
     <string-array name="language_values">
-<!--        <item>hi</item>-->
+        <item>hi</item>
         <item>en</item>
 <!--        <item>mr</item>-->
 <!--        <item>kn</item>-->
@@ -56,7 +56,7 @@
         <item>Philippines</item>
     </string-array>
 
-    <string-array name="district">
+    <string-array name="district_uk">
         <item>Select District</item>
         <item>Almora</item>
         <item>Bageshwar</item>
@@ -71,6 +71,33 @@
         <item>Tehri</item>
         <item>Udham</item>
         <item>Uttarkashi</item>
+    </string-array>
+
+    <string-array name="district_uk_hi">
+        <item>जिला चुनें</item>
+        <item>अल्मोड़ा</item>
+        <item>बागेश्वर</item>
+        <item>चमोली</item>
+        <item>चम्पावत</item>
+        <item>देहरादून</item>
+        <item>हरिद्वार</item>
+        <item>नैनीताल</item>
+        <item>पौरीस</item>
+        <item>पिथोरागढ़</item>
+        <item>रुद्रप्रयाग</item>
+        <item>टिहरी</item>
+        <item>ऊधम</item>
+        <item>उत्तरकाशी</item>
+
+    </string-array>
+
+    <string-array name="others_district">
+        <item>Select District</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="others_district_hi">
+        <item>जिला चुनें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="education_or">
@@ -590,10 +617,7 @@
         <item>Select Village</item>
     </string-array>
 
-    <string-array name="others">
-        <item>Select District</item>
-        <item>Others</item>
-    </string-array>
+
 
 
 </resources>
