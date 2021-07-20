@@ -39,7 +39,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">हेलो साथी हेल्पलाइन</string>
+    <string name="title_activity_login">एसवीएचएम टेलीचिकिट्स</string>
     <string name="prompt_email">उपयोगकर्ता नाम</string>
     <string name="prompt_password">कुंजिका</string>
     <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>
@@ -695,6 +695,10 @@
     <string name="exercises">अभ्यास</string>
     <string name="txt_additional_info">अतिरिक्त जानकारी</string>
     <string name="medical_advice">वैद्यकीय सलाह</string>
+    <string name="identification_screen_prompt_district">जिला *</string>
+    <string name="row_state">राज्य</string>
+    <string name="row_district">जिला</string>
+    <string name="uttarakhand">उत्तराखंड</string>
 
 
 </resources>
