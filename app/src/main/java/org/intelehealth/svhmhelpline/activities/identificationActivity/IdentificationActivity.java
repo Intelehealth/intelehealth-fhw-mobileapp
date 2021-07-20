@@ -560,6 +560,14 @@ public class IdentificationActivity extends AppCompatActivity {
         //TODO: FIX for edit State and District - @Prajwal - uncomment the below block...
         try {
         if (patient1.getState_province().equalsIgnoreCase("Uttarakhand")) {
+            ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                    R.array.district_uk, R.layout.custom_spinner);
+            //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mDistrict.setAdapter(stateAdapterUttrakhand);
+            mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
+        }
+
+       /* if (patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
                         R.array.district_uk, R.layout.custom_spinner);
@@ -573,25 +581,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDistrict.setAdapter(stateAdapterUttrakhand);
                 mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
             }
-        }
+        }*/
 
-        if (patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
-                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                        R.array.district_uk, R.layout.custom_spinner);
-                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mDistrict.setAdapter(stateAdapterUttrakhand);
-                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
-            } else {
-                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                        R.array.district_uk_hi, R.layout.custom_spinner);
-                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mDistrict.setAdapter(stateAdapterUttrakhand);
-                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
-            }
-        }
-
-        if (!patient1.getState_province().equalsIgnoreCase("Uttarakhand") && !patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
+   /*     if (!patient1.getState_province().equalsIgnoreCase("Uttarakhand") &&
+                !patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
                         R.array.others_district, R.layout.custom_spinner);
@@ -607,7 +600,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDistrict.setAdapter(stateAdapterOther);
                 mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(patient1.getCity_village())));
             }
-        }
+        }*/
     }
         catch (Exception e) {
 
