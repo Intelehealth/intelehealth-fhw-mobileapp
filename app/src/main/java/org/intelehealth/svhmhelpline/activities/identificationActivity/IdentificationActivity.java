@@ -558,14 +558,73 @@ public class IdentificationActivity extends AppCompatActivity {
 //        mCaste.setAdapter(casteAdapter);
 
         //TODO: FIX for edit State and District - @Prajwal - uncomment the below block...
-        /*try {
+        try {
+        if (patient1.getState_province().equalsIgnoreCase("Uttarakhand")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.district_uk, R.layout.custom_spinner);
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterUttrakhand);
+                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
+            } else {
+                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.district_uk_hi, R.layout.custom_spinner);
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterUttrakhand);
+                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
+            }
+        }
+
+        if (patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.district_uk, R.layout.custom_spinner);
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterUttrakhand);
+                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
+            } else {
+                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.district_uk_hi, R.layout.custom_spinner);
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterUttrakhand);
+                mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(patient1.getCity_village())));
+            }
+        }
+
+        if (!patient1.getState_province().equalsIgnoreCase("Uttarakhand") && !patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.others_district, R.layout.custom_spinner);
+
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterOther);
+                mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(patient1.getCity_village())));
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.others_district_hi, R.layout.custom_spinner);
+
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterOther);
+                mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(patient1.getCity_village())));
+            }
+        }
+    }
+        catch (Exception e) {
+
+
+        }
+
+        /*
+        try {
             if (!patient1.getState_province().equalsIgnoreCase("Uttarakhand")) {
-                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.others, R.layout.custom_spinner);
+                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.others_district, R.layout.custom_spinner);
                 //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mDistrict.setAdapter(stateAdapterOther);
                 mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(patient1.getCity_village())));
             } else {
-                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this, R.array.district, R.layout.custom_spinner);
+                ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.district, R.layout.custom_spinner);
                 mDistrict.setAdapter(stateAdapterUttrakhand);
                 mDistrict.setSelection(stateAdapterUttrakhand.getPosition(patient1.getCity_village()));
 //
@@ -577,7 +636,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-        }*/
+        }
+*/
 
 
         try { //Caste adapter setting...
@@ -2179,6 +2239,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
 
+
 //            if (mCity.getText().toString().equals("")) {
 //                mCity.setError(getString(R.string.error_field_required));
 //            }
@@ -2463,13 +2524,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
 //            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
+
+            patientdto.setStateprovince(StringUtils.getValue(getState(autocompleteState.getText().toString())));
+            patientdto.setCityvillage(StringUtils.getValue(getDistrict(mDistrict.getSelectedItem().toString())));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3743,6 +3805,156 @@ public class IdentificationActivity extends AppCompatActivity {
             configuration.setLocale(defaultLocale);
         }
         return createConfigurationContext(configuration).getString(stringId);
+    }
+
+    public String getState(String m_State) {
+
+        switch(m_State) {
+            case "आंध्र प्रदेश":
+                m_State = "Andhra Pradesh";
+                break;
+            case "अरुणाचल प्रदेश":
+                m_State = "Arunachal Pradesh";
+                break;
+            case "असम":
+                m_State = "Assam";
+                break;
+            case "बिहार":
+                m_State = "Bihar";
+                break;
+            case "छत्तीसगढ":
+                m_State = "Chhattisgarh";
+                break;
+            case "दिल्ली":
+                m_State = "Delhi";
+                break;
+            case "गोवा":
+                m_State = "Goa";
+                break;
+            case "गुजरात":
+                m_State = "Gujarat";
+                break;
+            case "हरियाणा":
+                m_State = "Haryana";
+                break;
+            case "हिमाचल प्रदेश":
+                m_State = "Himachal Pradesh";
+                break;
+            case "जम्मू - कश्मीर":
+                m_State = "Jammu &amp; Kashmir";
+                break;
+            case "झारखंड":
+                m_State = "Jharkhand";
+                break;
+            case "कर्नाटक":
+                m_State = "Karnataka";
+                break;
+            case "केरल":
+                m_State = "Kerala";
+                break;
+            case "मध्य प्रदेश":
+                m_State = "Madhya Pradesh";
+                break;
+            case "महाराष्ट्र":
+                m_State = "Maharashtra";
+                break;
+            case "मणिपुर":
+                m_State = "Manipur";
+                break;
+            case "मेघालय":
+                m_State = "Meghalaya";
+                break;
+            case "मिजोरम":
+                m_State = "Mizoram";
+                break;
+            case "नगालैंड":
+                m_State = "Nagaland";
+                break;
+            case "ओडिशा":
+                m_State = "Odisha";
+                break;
+            case "पंजाब":
+                m_State = "Punjab";
+                break;
+            case "राजस्थान":
+                m_State = "Rajasthan";
+                break;
+            case "सिक्किम":
+                m_State = "Sikkim";
+                break;
+            case "तमिलनाडु":
+                m_State = "Tamil";
+                break;
+            case "तेलंगाना":
+                m_State = "Telangana";
+                break;
+            case "त्रिपुरा":
+                m_State = "Tripura";
+                break;
+            case "उत्तर प्रदेश":
+                m_State = "Uttar Pradesh";
+                break;
+            case "उत्तराखंड":
+                m_State = "Uttarakhand";
+                break;
+            case "पश्चिम बंगाल":
+                m_State = "West Bengal";
+                break;
+            default:
+                return m_State;
+
+        }
+        return m_State;
+    }
+
+    public String getDistrict(String m_District) {
+        switch (m_District) {
+            case "अल्मोड़ा":
+                m_District = "Almora";
+                break;
+            case "बागेश्वर":
+                m_District = "Bageshwar";
+                break;
+            case "चमोली":
+                m_District = "Chamoli";
+                break;
+            case "चम्पावत":
+                m_District = "Champawat";
+                break;
+            case "देहरादून":
+                m_District = "Dehradun";
+                break;
+            case "हरिद्वार":
+                m_District = "Haridwar";
+                break;
+            case "नैनीताल":
+                m_District = "Nainital";
+                break;
+            case "पौरीस":
+                m_District = "Pauri";
+                break;
+            case "पिथोरागढ़":
+                m_District = "Pithoragarh";
+                break;
+            case "रुद्रप्रयाग":
+                m_District = "Rudraprayag";
+                break;
+            case "टिहरी":
+                m_District = "Tehri";
+                break;
+            case "ऊधम":
+                m_District = "Udham";
+                break;
+            case "उत्तरकाशी":
+                m_District = "Uttarkashi";
+                break;
+            case "अन्य":
+                m_District = "Others";
+                break;
+            default:
+                return m_District;
+        }
+        return m_District;
     }
 
 
