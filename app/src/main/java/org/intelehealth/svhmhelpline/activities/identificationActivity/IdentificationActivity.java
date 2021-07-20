@@ -1309,7 +1309,56 @@ public class IdentificationActivity extends AppCompatActivity {
                     mDistrict.setEnabled(true);
                 }
 
-                if (!mSelectedValue.equalsIgnoreCase(getResources().getString(R.string.uttarakhand))) {
+                /////
+                if(mSelectedValue.equalsIgnoreCase("Uttarakhand")) {
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.district_uk, R.layout.custom_spinner);
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterUttrakhand);
+                    }
+                    else {
+                        ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.district_uk_hi, R.layout.custom_spinner);
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterUttrakhand);
+                    }
+                }
+
+                if(mSelectedValue.equalsIgnoreCase("उत्तराखंड")) {
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.district_uk, R.layout.custom_spinner);
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterUttrakhand);
+                    }
+                    else {
+                        ArrayAdapter<CharSequence> stateAdapterUttrakhand = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.district_uk_hi, R.layout.custom_spinner);
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterUttrakhand);
+                    }
+                }
+
+                if(!mSelectedValue.equalsIgnoreCase("Uttarakhand") && !mSelectedValue.equalsIgnoreCase("उत्तराखंड")) {
+                    if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                        ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.others_district, R.layout.custom_spinner);
+
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterOther);
+                    }
+                    else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.others_district_hi, R.layout.custom_spinner);
+
+                        //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mDistrict.setAdapter(stateAdapterOther);
+                    }
+                }
+                ////
+
+             /*   if (!mSelectedValue.equalsIgnoreCase("Uttarakhand")) {
                     if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                         ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
                                 R.array.others_district, R.layout.custom_spinner);
@@ -1339,7 +1388,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDistrict.setAdapter(stateAdapterUttrakhand);
                     }
 
-                }
+                }*/
             }
         });
 
