@@ -24,7 +24,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-<!--
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_newpat"
                     android:layout_width="match_parent"
@@ -56,15 +56,55 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_new_patient"
-                            android:text="@string/new_patient"
+                            android:text="@string/text_new_visit"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
--->
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_newpat_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="16dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/iv_new_patient_1"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="TODO"
+                            app:srcCompat="@drawable/ic_person_add_24dp" />
+
+                        <TextView
+                            android:id="@+id/newPatient_textview_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_new_patient_1"
+                            android:text="@string/text_medical_advice"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
+                            android:textSize="26sp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_find_patient"
@@ -100,7 +140,7 @@
                             android:text="@string/find_patient"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                     </RelativeLayout>
 
@@ -139,7 +179,7 @@
                             android:text="@string/today_visits"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                     </RelativeLayout>
 
@@ -178,7 +218,7 @@
                             android:text="@string/active_visits"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                     </RelativeLayout>
 
@@ -218,7 +258,7 @@
                             android:text="@string/video_library"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
-                            android:textSize="28sp" />
+                            android:textSize="26sp" />
 
                     </RelativeLayout>
 
@@ -259,7 +299,7 @@
                                 android:text="@string/Whatsapp_Help_Cardview"
                                 android:includeFontPadding="false"
                                 android:fontFamily="@font/lato_medium"
-                                android:textSize="28sp"/>
+                                android:textSize="26sp"/>
 
                             <!-- Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
 

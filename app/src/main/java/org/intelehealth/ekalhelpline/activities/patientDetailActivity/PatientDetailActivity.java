@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -43,6 +46,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +58,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.app.AppConstants;
@@ -94,6 +99,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    public static final String EXTRA_SHOW_MEDICAL_ADVICE = "EXTRA_SHOW_MEDICAL_ADVICE";
     String patientName;
     String visitUuid = null;
     List<String> visitUuidList;
@@ -118,7 +124,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, newAdvice;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -133,6 +139,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+    private boolean isMedicalAdvice;
+    private boolean MedicalAdvice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +167,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -170,6 +179,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
             hasPrescription = intent.getStringExtra("hasPrescription");
+            MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
             intentTag = intent.getStringExtra("tag");
@@ -225,6 +235,27 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
+
+        if(MedicalAdvice == true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PatientDetailActivity.this)
+                    .setMessage(R.string.text_patient_and_advice_created)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+
+            Button positive = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positive.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        }
+
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,6 +365,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
 
         //  LoadFamilyMembers();
+        if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
+            newAdvice.setVisibility(View.VISIBLE);
+            newAdvice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                }
+            });
+        }
 
     }
 
@@ -934,6 +974,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
                         Log.e("Check", "No complaint");
+                        //if medical advice change heading accordingly
+                        if (isMedicalAdvice)
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.text_medical_advice));
+                        else
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
+
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     // complaintxt1.setLayoutParams(layoutParams);
@@ -979,6 +1025,38 @@ public class PatientDetailActivity extends AppCompatActivity {
         //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
     }
+
+    //function to check if visit is of medical advise type
+    //end date must be exact 5 minutes greater than start date
+    private boolean isMedicalAdvice(String datetime, String end_datetime) {
+        if (TextUtils.isEmpty(datetime) || TextUtils.isEmpty(end_datetime))
+            return false;
+
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        try {
+            Date startTime = startFormat.parse(datetime);
+            Date endTime = endFormat.parse(end_datetime);
+            long diff = endTime.getTime() - startTime.getTime();
+            if (diff == TimeUnit.MINUTES.toMillis(5))
+                return true;
+        } catch (Exception e) {
+            try {
+                Date startTime = startFormat.parse(datetime);
+                Date endTime = startFormat.parse(end_datetime);
+                long diff = endTime.getTime() - startTime.getTime();
+                if (diff == TimeUnit.MINUTES.toMillis(5))
+                    return true;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+
+
 
     /**
      * This method is called when patient has no prior visits.
@@ -1175,6 +1253,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                    isMedicalAdvice = isMedicalAdvice(date, end_date);
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;

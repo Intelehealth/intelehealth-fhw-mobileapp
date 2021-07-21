@@ -30,13 +30,17 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -51,6 +55,17 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.intelehealth.ekalhelpline.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
+import org.intelehealth.ekalhelpline.database.dao.ObsDAO;
+import org.intelehealth.ekalhelpline.database.dao.VisitAttributeListDAO;
+import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
+import org.intelehealth.ekalhelpline.knowledgeEngine.Node;
+import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
+import org.intelehealth.ekalhelpline.models.dto.ObsDTO;
+import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
+import org.intelehealth.ekalhelpline.syncModule.SyncUtils;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,10 +77,12 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
@@ -181,8 +198,22 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+    private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
+    private boolean isMedicalAdvice;;
+    private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
+            cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
+    private TextView txt_privacy;
+    private EditText et_medical_advice_extra, et_medical_advice_additional;
 
     List<String> districtList;
+
+
+
+    public static void start(Context context, boolean medicalAdvice) {
+        Intent starter = new Intent(context, IdentificationActivity.class);
+        starter.putExtra(EXTRA_MEDICAL_ADVICE, medicalAdvice);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -322,6 +353,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
             }
+            isMedicalAdvice = intent.getBooleanExtra(EXTRA_MEDICAL_ADVICE, false); //fetches the boolean value to know if its a doctor or medical advice...
         }
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -477,6 +509,52 @@ public class IdentificationActivity extends AppCompatActivity {
         mRelationship.setText(patient1.getSdw());
         autocompleteState.setText(patient1.getState_province());
         autocompleteDistrict.setText(patient1.getCity_village());
+
+        //if medical advise enable the card visibility to input data
+        if (isMedicalAdvice) {
+            View llMedicalAdvice = findViewById(R.id.ll_medical_advice);
+            llMedicalAdvice.setVisibility(View.VISIBLE);
+
+            cbVaccineGuide = llMedicalAdvice.findViewById(R.id.cbVaccineGuide);
+            cbCovidConcern = llMedicalAdvice.findViewById(R.id.cbCovidConcern);
+            cbManagingBreathlessness = llMedicalAdvice.findViewById(R.id.cbManagingBreathlessness);
+            cbManageVoiceIssue = llMedicalAdvice.findViewById(R.id.cbManageVoiceIssue);
+            cbManageEating = llMedicalAdvice.findViewById(R.id.cbManageEating);
+            cbDealProblems = llMedicalAdvice.findViewById(R.id.cbDealProblems);
+            cbMentalHealth = llMedicalAdvice.findViewById(R.id.cbMentalHealth);
+            cbExercises = llMedicalAdvice.findViewById(R.id.cbExercises);
+            et_medical_advice_extra = llMedicalAdvice.findViewById(R.id.et_medical_advice_extra);
+            cbOthers = llMedicalAdvice.findViewById(R.id.cbOthers);
+
+            et_medical_advice_additional = llMedicalAdvice.findViewById(R.id.et_medical_advice_additional);
+            cbOthers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        et_medical_advice_extra.setEnabled(true);
+                        et_medical_advice_extra.requestFocus();
+                    } else {
+                        et_medical_advice_extra.setText("");
+                        et_medical_advice_extra.setEnabled(false);
+                    }
+                }
+            });
+
+        }
+        chb_agree_privacy = findViewById(R.id.chb_agree_privacy);
+        txt_privacy = findViewById(R.id.txt_privacy);
+        txt_privacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrivacyNotice_Activity.start(IdentificationActivity.this, true);
+              //  startActivity(intent);
+            }
+        });
+        if (!TextUtils.isEmpty(patientID_edit)) {
+            findViewById(R.id.buttons).setVisibility(View.GONE);
+        }
+
+
 
        /* if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -1578,6 +1656,9 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 onPatientCreateClicked();
             }
+
+            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
         });
 
 /*
@@ -1900,6 +1981,12 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
+        //check if privacy notice is checked
+        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
@@ -1933,6 +2020,28 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+
+        if (isMedicalAdvice
+                && !cbCovidConcern.isChecked()
+                && !cbVaccineGuide.isChecked()
+                && !cbCovidConcern.isChecked()
+                && !cbManagingBreathlessness.isChecked()
+                && !cbManageVoiceIssue.isChecked()
+                && !cbManageEating.isChecked()
+                && !cbDealProblems.isChecked()
+                && !cbMentalHealth.isChecked()
+                && !cbExercises.isChecked()
+                && !cbOthers.isChecked()
+                && TextUtils.isEmpty(et_medical_advice_additional.getText())) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
 
    /*     ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -2638,7 +2747,13 @@ public class IdentificationActivity extends AppCompatActivity {
 //            else {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.patient_data_failed), getString(R.string.check_your_connectivity), 2, IdentificationActivity.this);
 //            }
+            boolean medicalboolean = false;
             if (isPatientInserted && isPatientImageInserted) {
+                if (isMedicalAdvice) {
+                    //if from medical advise option then create medical advice visit first(automatically)
+                    createMedicalAdviceVisit();
+                    medicalboolean = true;
+                }
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
@@ -2646,6 +2761,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
+                i.putExtra("MedicalAdvice", medicalboolean);
+                // i.putExtra("MedicalAdvice", "MedicalAdvice");
                 Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
@@ -2703,6 +2820,29 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+
+        if (isMedicalAdvice
+                && !cbCovidConcern.isChecked()
+                && !cbVaccineGuide.isChecked()
+                && !cbCovidConcern.isChecked()
+                && !cbManagingBreathlessness.isChecked()
+                && !cbManageVoiceIssue.isChecked()
+                && !cbManageEating.isChecked()
+                && !cbDealProblems.isChecked()
+                && !cbMentalHealth.isChecked()
+                && !cbExercises.isChecked()
+                && !cbOthers.isChecked()
+                && TextUtils.isEmpty(et_medical_advice_additional.getText())) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
 
        /* ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -3404,7 +3544,131 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
-    //This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita
+    void createMedicalAdviceVisit() {
+        //formats used in databases to store the start & end date
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+//        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.MINUTE, -1);
+        today.set(Calendar.MILLISECOND, 0);
+        Date todayDate = today.getTime();
+        String endDate = startFormat.format(todayDate);
+        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        String startDate = startFormat.format(today.getTime());
+    
+
+
+
+
+        //create & save visit visitUuid & encounter in the DB
+        String visitUuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_ADULTINITIAL);
+        encounterDTO.setEncounterTime(startDate);
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(getString(R.string.accept));//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        boolean returning = false;
+        sessionManager.setReturning(returning);
+
+        //create & save visit in the DB
+        VisitDTO visitDTO = new VisitDTO();
+        visitDTO.setUuid(visitUuid);
+        visitDTO.setPatientuuid(this.uuid);
+        visitDTO.setStartdate(startDate);
+       // visitDTO.setEnddate(endDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //create & save obs data in the DB
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+        obsDTO.setEncounteruuid(encounterDTO.getUuid());
+        obsDTO.setCreator(sessionManager.getCreatorID());
+
+        //append all the selected items to the OBS value
+        String insertion = Node.bullet_arrow + "<b>" + "Medical Advice" + "</b>" + ": ";
+        if (cbVaccineGuide.isChecked())
+            insertion = insertion.concat(Node.next_line + cbVaccineGuide.getText());
+        if (cbCovidConcern.isChecked())
+            insertion = insertion.concat(Node.next_line + cbCovidConcern.getText());
+        if (cbManagingBreathlessness.isChecked())
+            insertion = insertion.concat(Node.next_line + cbManagingBreathlessness.getText());
+        if (cbManageVoiceIssue.isChecked())
+            insertion = insertion.concat(Node.next_line + cbManageVoiceIssue.getText());
+        if (cbManageEating.isChecked())
+            insertion = insertion.concat(Node.next_line + cbManageEating.getText());
+        if (cbDealProblems.isChecked())
+            insertion = insertion.concat(Node.next_line + cbDealProblems.getText());
+        if (cbMentalHealth.isChecked())
+            insertion = insertion.concat(Node.next_line + cbMentalHealth.getText());
+        if (cbExercises.isChecked())
+            insertion = insertion.concat(Node.next_line + cbExercises.getText());
+        if (cbOthers.isChecked())
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
+        if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
+
+        obsDTO.setValue(insertion);
+
+        obsDTO.setUuid(AppConstants.NEW_UUID);
+
+        try {
+            obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //create & save visit attributes - required for syncing the data
+        VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+        try {
+            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.SPECIALIST_DOCTOR_NOT_NEEDED);
+           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+           // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+
+        endVisit(visitUuid, uuid, endDate);
+    }
+
+    private void endVisit(String visitUuid, String patientUuid, String endTime) {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, endTime);
+           // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        new SyncUtils().syncForeground(""); //Sync function will work in foreground of app and
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+
+    }
+
+//This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita
 
     public JSONObject loadJsonObjectFromAsset(String assetName) {
         try {
