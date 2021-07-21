@@ -496,7 +496,19 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity.setText(patient1.getCity_village());
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
-        autocompleteState.setText(getState_edit(patient1.getState_province()));
+
+        if(patient1.getState_province() != null) {
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                autocompleteState.setText(getState_edit(patient1.getState_province()));
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                autocompleteState.setText(patient1.getState_province());
+            }
+
+        }
+        else {
+            autocompleteState.setText(patient1.getState_province());
+        }
 
         //if medical advise enable the card visibility to input data
         if (isMedicalAdvice) {
@@ -574,9 +586,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDistrict.setAdapter(stateAdapterUttrakhand);
                 mDistrict.setSelection(stateAdapterUttrakhand.getPosition(String.valueOf(getDistrict_edit(patient1.getCity_village()))));
             }
-
-
-
+        }
+        else {
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.others_district, R.layout.custom_spinner);
+                mDistrict.setAdapter(stateAdapterOther);
+                mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(patient1.getCity_village())));
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                ArrayAdapter<CharSequence> stateAdapterOther = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                        R.array.others_district_hi, R.layout.custom_spinner);
+                //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mDistrict.setAdapter(stateAdapterOther);
+                mDistrict.setSelection(stateAdapterOther.getPosition(String.valueOf(getDistrict_edit(patient1.getCity_village()))));
+            }
         }
 
        /* if (patient1.getState_province().equalsIgnoreCase("उत्तराखंड")) {
@@ -3897,7 +3921,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 m_State = "Sikkim";
                 break;
             case "तमिलनाडु":
-                m_State = "Tamil";
+                m_State = "Tamil Nadu";
                 break;
             case "तेलंगाना":
                 m_State = "Telangana";
@@ -3995,7 +4019,7 @@ public class IdentificationActivity extends AppCompatActivity {
             case "Sikkim":
                 m_State = "सिक्किम";
                 break;
-            case "Tamil":
+            case "Tamil Nadu":
                 m_State = "तमिलनाडु";
                 break;
             case "Telangana":
