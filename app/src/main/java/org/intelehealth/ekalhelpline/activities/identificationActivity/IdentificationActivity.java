@@ -2637,10 +2637,10 @@ public class IdentificationActivity extends AppCompatActivity {
 //                        getString(R.string.uploading) + patientdto.getFirstname() + "" + patientdto.getLastname() +
 //                                "'s data", 2, getApplication());
 
-                SyncDAO syncDAO = new SyncDAO();
+               /* SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
-                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();*/
 
 //                if (push)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirstname() + "" + patientdto.getLastname() + "'s data upload complete.", 2, getApplication());
@@ -2665,6 +2665,13 @@ public class IdentificationActivity extends AppCompatActivity {
                     createMedicalAdviceVisit();
                     medicalboolean = true;
                 }
+                else {
+                    SyncDAO syncDAO = new SyncDAO();
+                    ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                    boolean push = syncDAO.pushDataApi();
+                    boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                }
+
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
