@@ -102,6 +102,8 @@ import okhttp3.ResponseBody;
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.svhmhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.svhmhelpline.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.svhmhelpline.utilities.StringUtils.getDistrict_edit;
+import static org.intelehealth.svhmhelpline.utilities.StringUtils.getState_edit;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -719,8 +721,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
-        stateView.setText(patient_new.getState_province());
-        districtView.setText(patient_new.getCity_village());
+
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            stateView.setText(getState_edit(patient_new.getState_province()));
+            districtView.setText(getDistrict_edit(patient_new.getCity_village()));
+        }
+        else {
+            stateView.setText(patient_new.getState_province());
+            districtView.setText(patient_new.getCity_village());
+        }
+
 
         //english = en
         //hindi = hi

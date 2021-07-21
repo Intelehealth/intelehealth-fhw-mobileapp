@@ -987,10 +987,306 @@ public final class StringUtils {
             return dob;
         }
 */
-
         else {
             return dobString;
         }
+    }
 
+    public static String getState(String m_State) {
+        switch(m_State) {
+            case "आंध्र प्रदेश":
+                m_State = "Andhra Pradesh";
+                break;
+            case "अरुणाचल प्रदेश":
+                m_State = "Arunachal Pradesh";
+                break;
+            case "असम":
+                m_State = "Assam";
+                break;
+            case "बिहार":
+                m_State = "Bihar";
+                break;
+            case "छत्तीसगढ":
+                m_State = "Chhattisgarh";
+                break;
+            case "दिल्ली":
+                m_State = "Delhi";
+                break;
+            case "गोवा":
+                m_State = "Goa";
+                break;
+            case "गुजरात":
+                m_State = "Gujarat";
+                break;
+            case "हरियाणा":
+                m_State = "Haryana";
+                break;
+            case "हिमाचल प्रदेश":
+                m_State = "Himachal Pradesh";
+                break;
+            case "जम्मू - कश्मीर":
+                m_State = "Jammu &amp; Kashmir";
+                break;
+            case "झारखंड":
+                m_State = "Jharkhand";
+                break;
+            case "कर्नाटक":
+                m_State = "Karnataka";
+                break;
+            case "केरल":
+                m_State = "Kerala";
+                break;
+            case "मध्य प्रदेश":
+                m_State = "Madhya Pradesh";
+                break;
+            case "महाराष्ट्र":
+                m_State = "Maharashtra";
+                break;
+            case "मणिपुर":
+                m_State = "Manipur";
+                break;
+            case "मेघालय":
+                m_State = "Meghalaya";
+                break;
+            case "मिजोरम":
+                m_State = "Mizoram";
+                break;
+            case "नगालैंड":
+                m_State = "Nagaland";
+                break;
+            case "ओडिशा":
+                m_State = "Odisha";
+                break;
+            case "पंजाब":
+                m_State = "Punjab";
+                break;
+            case "राजस्थान":
+                m_State = "Rajasthan";
+                break;
+            case "सिक्किम":
+                m_State = "Sikkim";
+                break;
+            case "तमिलनाडु":
+                m_State = "Tamil Nadu";
+                break;
+            case "तेलंगाना":
+                m_State = "Telangana";
+                break;
+            case "त्रिपुरा":
+                m_State = "Tripura";
+                break;
+            case "उत्तर प्रदेश":
+                m_State = "Uttar Pradesh";
+                break;
+            case "उत्तराखंड":
+                m_State = "Uttarakhand";
+                break;
+            case "पश्चिम बंगाल":
+                m_State = "West Bengal";
+                break;
+            default:
+                return m_State;
+
+        }
+        return m_State;
+    }
+
+    public static String getState_edit(String m_State) {
+        switch(m_State) {
+            case "Andhra Pradesh":
+                m_State = "आंध्र प्रदेश";
+                break;
+            case "Arunachal Pradesh":
+                m_State = "अरुणाचल प्रदेश";
+                break;
+            case "Assam":
+                m_State = "असम";
+                break;
+            case "Bihar":
+                m_State = "बिहार";
+                break;
+            case "Chhattisgarh":
+                m_State = "छत्तीसगढ";
+                break;
+            case "Delhi":
+                m_State = "दिल्ली";
+                break;
+            case "Goa":
+                m_State = "गोवा";
+                break;
+            case "Gujarat":
+                m_State = "गुजरात";
+                break;
+            case "Haryana":
+                m_State = "हरियाणा";
+                break;
+            case "Himachal Pradesh":
+                m_State = "हिमाचल प्रदेश";
+                break;
+            case "Jammu &amp; Kashmir":
+                m_State = "जम्मू - कश्मीर";
+                break;
+            case "Jharkhand":
+                m_State = "झारखंड";
+                break;
+            case "Karnataka":
+                m_State = "कर्नाटक";
+                break;
+            case "Kerala":
+                m_State = "केरल";
+                break;
+            case "Madhya Pradesh":
+                m_State = "मध्य प्रदेश";
+                break;
+            case "Maharashtra":
+                m_State = "महाराष्ट्र";
+                break;
+            case "Manipur":
+                m_State = "मणिपुर";
+                break;
+            case "Meghalaya":
+                m_State = "मेघालय";
+                break;
+            case "Mizoram":
+                m_State = "मिजोरम";
+                break;
+            case "Nagaland":
+                m_State = "नगालैंड";
+                break;
+            case "Odisha":
+                m_State = "ओडिशा";
+                break;
+            case "Punjab":
+                m_State = "पंजाब";
+                break;
+            case "Rajasthan":
+                m_State = "राजस्थान";
+                break;
+            case "Sikkim":
+                m_State = "सिक्किम";
+                break;
+            case "Tamil Nadu":
+                m_State = "तमिलनाडु";
+                break;
+            case "Telangana":
+                m_State = "तेलंगाना";
+                break;
+            case "Tripura":
+                m_State = "त्रिपुरा";
+                break;
+            case "Uttar Pradesh":
+                m_State = "उत्तर प्रदेश";
+                break;
+            case "Uttarakhand":
+                m_State = "उत्तराखंड";
+                break;
+            case "West Bengal":
+                m_State = "पश्चिम बंगाल";
+                break;
+            default:
+                return m_State;
+
+        }
+        return m_State;
+    }
+
+    public static String getDistrict(String m_District) {
+        switch (m_District) {
+            case "अल्मोड़ा":
+                m_District = "Almora";
+                break;
+            case "बागेश्वर":
+                m_District = "Bageshwar";
+                break;
+            case "चमोली":
+                m_District = "Chamoli";
+                break;
+            case "चम्पावत":
+                m_District = "Champawat";
+                break;
+            case "देहरादून":
+                m_District = "Dehradun";
+                break;
+            case "हरिद्वार":
+                m_District = "Haridwar";
+                break;
+            case "नैनीताल":
+                m_District = "Nainital";
+                break;
+            case "पौरीस":
+                m_District = "Pauri";
+                break;
+            case "पिथोरागढ़":
+                m_District = "Pithoragarh";
+                break;
+            case "रुद्रप्रयाग":
+                m_District = "Rudraprayag";
+                break;
+            case "टिहरी":
+                m_District = "Tehri";
+                break;
+            case "ऊधम":
+                m_District = "Udham";
+                break;
+            case "उत्तरकाशी":
+                m_District = "Uttarkashi";
+                break;
+            case "अन्य":
+                m_District = "Others";
+                break;
+            default:
+                return m_District;
+        }
+        return m_District;
+    }
+
+    public static String getDistrict_edit(String m_District) {
+        switch (m_District) {
+            case "Almora":
+                m_District = "अल्मोड़ा";
+                break;
+            case "Bageshwar":
+                m_District = "बागेश्वर";
+                break;
+            case "Chamoli":
+                m_District = "चमोली";
+                break;
+            case "Champawat":
+                m_District = "चम्पावत";
+                break;
+            case "Dehradun":
+                m_District = "देहरादून";
+                break;
+            case "Haridwar":
+                m_District = "हरिद्वार";
+                break;
+            case "Nainital":
+                m_District = "नैनीताल";
+                break;
+            case "Pauri":
+                m_District = "पौरीस";
+                break;
+            case "Pithoragarh":
+                m_District = "पिथोरागढ़";
+                break;
+            case "Rudraprayag":
+                m_District = "रुद्रप्रयाग";
+                break;
+            case "Tehri":
+                m_District = "टिहरी";
+                break;
+            case "Udham":
+                m_District = "ऊधम";
+                break;
+            case "Uttarkashi":
+                m_District = "उत्तरकाशी";
+                break;
+            case "Others":
+                m_District = "अन्य";
+                break;
+            default:
+                return m_District;
+        }
+        return m_District;
     }
 }
