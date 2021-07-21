@@ -3337,13 +3337,17 @@ public class IdentificationActivity extends AppCompatActivity {
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
+         //   patientdto.setCity_village(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
 //            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setState_province(StringUtils.getValue(autocompleteState.getText().toString()));
+          //  patientdto.setState_province(StringUtils.getValue(autocompleteState.getText().toString()));
+
+            patientdto.setState_province(StringUtils.getValue(getState(autocompleteState.getText().toString())));
+            patientdto.setCity_village(StringUtils.getValue(getDistrict(mDistrict.getSelectedItem().toString())));
+
 //            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
