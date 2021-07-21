@@ -102,6 +102,8 @@ import okhttp3.ResponseBody;
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.svhmhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.svhmhelpline.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.svhmhelpline.utilities.StringUtils.getDistrict_edit;
+import static org.intelehealth.svhmhelpline.utilities.StringUtils.getState_edit;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -719,8 +721,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
-        stateView.setText(patient_new.getState_province());
-        districtView.setText(patient_new.getCity_village());
+
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            stateView.setText(getState_edit(patient_new.getState_province()));
+            districtView.setText(getDistrict_edit(patient_new.getCity_village()));
+        }
+        else {
+            stateView.setText(patient_new.getState_province());
+            districtView.setText(patient_new.getCity_village());
+        }
+
 
         //english = en
         //hindi = hi
@@ -937,7 +947,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+         String visitString = "";
+
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+             visitString = String.format("पे देखा (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+            visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        }
+
+
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
@@ -1005,8 +1024,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             past_visit = true;
             for (int i = 1; i <= 2; i++) {
                 if (i == 1) {
-                    textView.setText(visitString);
-                    textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    SpannableString spannableString = new SpannableString(visitString);
+                    Object underlineSpan = new UnderlineSpan();
+                    spannableString.setSpan(underlineSpan, 0, visitString.length(), 0);
+                    textView.setText(spannableString);
+
+                  //  textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     textView.setTypeface(typeface);
                     textView.setTextSize(16);

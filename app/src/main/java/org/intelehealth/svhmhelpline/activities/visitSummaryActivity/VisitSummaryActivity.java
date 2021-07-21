@@ -643,7 +643,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayAdapter<String> stringArrayAdapter;
 
         if (items != null) {
-            items.add(0, "Select Specialization");
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                items.add(0, "विशेषज्ञता का चयन करें");
+            }
+            else {
+                items.add(0, "Select Specialization");
+            }
+
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -4155,9 +4161,11 @@ mMedicalAdviceCheck();
         }
     }
     private void mMedicalAdviceCheck() {
-        if(complaint.getValue().contains("Medical Advice"))
-        {   card_print.setVisibility(View.GONE);
-            card_share.setVisibility(View.GONE);
+        if(complaint.getValue() != null) {
+            if (complaint.getValue().contains("Medical Advice")) {
+                card_print.setVisibility(View.GONE);
+                card_share.setVisibility(View.GONE);
+            }
         }
 
     }
