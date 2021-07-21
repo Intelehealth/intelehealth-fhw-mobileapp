@@ -14,8 +14,12 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +76,13 @@ public class PatientSurveyActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     String appLanguage;
 
+    //Pre-defined note: By Nishita
+    Spinner notesSpinner;
+    ArrayList<String> patientNoteList;
+    ArrayAdapter<String> patientNoteAdapter;
+    String noteText = "";
+
+
     @Override
     public void onBackPressed() {
         //do nothing
@@ -99,6 +110,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
 
+        notesSpinner = findViewById(R.id.noteSpinner);
+        patientNoteList = getPatientNoteList();
+        patientNoteAdapter = new ArrayAdapter<>(PatientSurveyActivity.this, android.R.layout.simple_spinner_dropdown_item, patientNoteList);
+        notesSpinner.setAdapter(patientNoteAdapter);
         mScaleButton1 = findViewById(R.id.button_scale_1);
         mScaleButton2 = findViewById(R.id.button_scale_2);
         mScaleButton3 = findViewById(R.id.button_scale_3);
@@ -108,11 +123,27 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSkip = findViewById(R.id.button_survey_skip);
         mSubmit = findViewById(R.id.button_survey_submit);
 
+
+        notesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(notesSpinner.getSelectedItem().equals("Other"))
+                     mComments.setVisibility(View.VISIBLE);
+                else
+                    mComments.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 resetScale();
-                rating = String.valueOf(v.getTag());
+                rating = "0"; //String.valueOf(v.getTag())
                 v.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             }
         };
@@ -127,20 +158,34 @@ public class PatientSurveyActivity extends AppCompatActivity {
             ImageButton button = scale.get(i);
             button.setOnClickListener(listener);
         }
+
         resetScale();
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (rating != null && !TextUtils.isEmpty(rating)) {
+//                if(notesSpinner.getSelectedItem().equals("Other")) {
+//                    if(mComments.getText().toString().equalsIgnoreCase(""))
+//                        mComments.setError("This field is required");
+//                    else
+//                    {
+//                        noteText = mComments.getText().toString();
+//                    }
+//                }
+//                else
+                noteText = notesSpinner.getSelectedItem().toString();
+                if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
-                } else {
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
+//                } else {
+//                    if(noteText.equalsIgnoreCase(""))
+//                        mComments.setError("This field is required");
+//                    else
+//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
+//                }
                 }
-
             }
         });
 
@@ -152,6 +197,16 @@ public class PatientSurveyActivity extends AppCompatActivity {
         });
     }
 
+    private ArrayList<String> getPatientNoteList()
+    {
+        ArrayList<String> notes = new ArrayList<>();
+        notes.add(getString(R.string.spinner_recovered));
+        notes.add(getString(R.string.spinner_referred));
+        notes.add(getString(R.string.spinner_died));
+        notes.add(getString(R.string.spinner_loss_followUp));
+        notes.add(getString(R.string.spinner_refuse_followUp));
+        return notes;
+    }
     private void resetScale() {
         ArrayList<ImageButton> scale = new ArrayList<>();
         scale.add(mScaleButton1);
@@ -163,7 +218,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             ImageButton button = scale.get(i);
             button.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
-        rating = "";
+        rating = "0";
     }
 
     private void uploadSurvey() {
@@ -206,7 +261,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
         obsDTO.setEncounteruuid(uuid);
-        obsDTO.setValue(mComments.getText().toString());
+        obsDTO.setValue(noteText);
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
         obsDTOList.add(obsDTO);
         try {

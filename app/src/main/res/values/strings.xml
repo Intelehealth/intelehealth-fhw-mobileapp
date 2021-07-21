@@ -362,10 +362,17 @@
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label">How was your experience?</string>
+    <string name="exit_survey_select_spinner">Is this end of follow up? \nIf yes please select one of the options below</string>
     <string name="exit_survey_prompt">Enter your comments here</string>
     <string name="exit_survey_skip">SKIP</string>
     <string name="exit_survey_submit">Submit</string>
     <string name="exit_survey_toast">Please select a smiley before submitting</string>
+    <string name="spinner_recovered">Recovered</string>
+    <string name="spinner_referred">Referred</string>
+    <string name="spinner_died">Died</string>
+    <string name="spinner_loss_followUp">Loss to Follow up</string>
+    <string name="spinner_refuse_followUp">Refusing Follow up</string>
+    <string name="spinner_other">Other</string>
 
 
     <!--DB Backup-->
