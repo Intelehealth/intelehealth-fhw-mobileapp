@@ -8,12 +8,12 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-<<<<<<< Updated upstream
+
 import android.graphics.BitmapFactory;
-=======
+
 import android.graphics.Color;
 import android.os.Build;
->>>>>>> Stashed changes
+
 import android.os.Bundle;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -69,7 +69,7 @@ import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-<<<<<<< Updated upstream
+
 import java.io.File;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
