@@ -4161,9 +4161,11 @@ mMedicalAdviceCheck();
         }
     }
     private void mMedicalAdviceCheck() {
-        if(complaint.getValue().contains("Medical Advice"))
-        {   card_print.setVisibility(View.GONE);
-            card_share.setVisibility(View.GONE);
+        if(complaint.getValue() != null) {
+            if (complaint.getValue().contains("Medical Advice")) {
+                card_print.setVisibility(View.GONE);
+                card_share.setVisibility(View.GONE);
+            }
         }
 
     }
