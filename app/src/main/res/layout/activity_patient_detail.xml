@@ -407,7 +407,7 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
+                                android:layout_weight="1.5"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
