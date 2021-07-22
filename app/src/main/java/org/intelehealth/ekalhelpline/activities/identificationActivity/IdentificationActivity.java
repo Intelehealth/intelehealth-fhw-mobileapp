@@ -1314,10 +1314,11 @@ public class IdentificationActivity extends AppCompatActivity {
                                 String district = districtArray.getJSONObject(j).getString("name");
                                 districtList.add(district);
                             }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
                             break;
                         }
-                        ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
-                        autocompleteDistrict.setAdapter(districtAdapter);
+
                     }
                 }
                 catch (JSONException e) {
