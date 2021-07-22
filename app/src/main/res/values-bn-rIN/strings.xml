@@ -525,5 +525,7 @@
     <string name="exercises">সামরিক ব্যায়াম |</string>
     <string name="txt_additional_info">অতিরিক্ত তথ্য</string>
     <string name="medical_advice">ডাক্তারি পরামর্শ</string>
+    <string name="text_patient_and_advice_created">রোগী এবং চিকিত্সা পরামর্শ সফলভাবে নিবন্ধিত হয়</string>
+    <string name="text_advice_created">মেডিকেল পরামর্শ সফলভাবে নিবন্ধিত হয়</string>
 
 </resources>

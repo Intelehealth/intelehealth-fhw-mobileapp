@@ -558,6 +558,8 @@
     <string name="exercises">വ്യായാമങ്ങൾ</string>
     <string name="txt_additional_info">അധിക വിവരം</string>
     <string name="medical_advice">മെഡിക്കൽ ഉപദേശം</string>
+    <string name="text_patient_and_advice_created">രോഗിയും മെഡിക്കൽ ഉപദേശവും വിജയകരമായി രജിസ്റ്റർ ചെയ്തു</string>
+    <string name="text_advice_created">മെഡിക്കൽ ഉപദേശം വിജയകരമായി രജിസ്റ്റർ ചെയ്തു</string>
 
 </resources>
 

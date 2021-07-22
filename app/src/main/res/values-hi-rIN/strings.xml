@@ -690,5 +690,7 @@
     <string name="exercises">अभ्यास</string>
     <string name="txt_additional_info">अतिरिक्त जानकारी</string>
     <string name="medical_advice">वैद्यकीय सलाह</string>
+    <string name="text_patient_and_advice_created">रोगी और चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
+    <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
 
 </resources>

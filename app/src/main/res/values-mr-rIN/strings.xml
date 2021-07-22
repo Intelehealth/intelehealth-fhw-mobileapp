@@ -692,6 +692,8 @@
         <string name="exercises">व्यायाम</string>
         <string name="txt_additional_info">अतिरिक्त माहिती</string>
     <string name="medical_advice">वैद्यकीय सल्ला</string>
+        <string name="text_patient_and_advice_created">रुग्ण आणि वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
+        <string name="text_advice_created">वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
 
 
 </resources>

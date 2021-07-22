@@ -565,6 +565,8 @@
     <string name="exercises">ବ୍ୟାୟାମ</string>
     <string name="txt_additional_info">ଅତିରିକ୍ତ ସୂଚନା</string>
     <string name="medical_advice">ଚିକିତ୍ସା ପରାମର୍ଶ</string>
+    <string name="text_patient_and_advice_created">ରୋଗୀ ଏବଂ ଚିକିତ୍ସା ପରାମର୍ଶ ସଫଳତାର ସହିତ ପଞ୍ଜିକୃତ ହୋଇଛି |</string>
+    <string name="text_advice_created">ଡାକ୍ତରୀ ପରାମର୍ଶ ସଫଳତାର ସହିତ ପଞ୍ଜିକୃତ ହୋଇଛି |</string>
 
 
 </resources>
