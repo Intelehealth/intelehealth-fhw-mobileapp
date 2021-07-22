@@ -13,6 +13,16 @@ public class UrlModifiers {
         return BASE_URL + urlModifier;
     }
 
+    /**
+     * @param CLEAN_URL : The base url that user has entered in the editText of setup screen.
+     * @param USER_UUID : The uuid of the provider who has been authenticated in the app.
+     * @return : formatted completed url to the hit by RX.
+     */
+    public String loginUrlProvider_phone(String CLEAN_URL, String USER_UUID) {
+        return String.format("https://%s/openmrs/ws/rest/v1/provider?user=%s&v=custom:(uuid,person:(uuid,display,gender),attributes)",
+                CLEAN_URL, USER_UUID);
+    }
+
     public String loginUrlProvider(String CLEAN_URL, String USER_UUID) {
 
         String provider = "provider?user=" + USER_UUID;
@@ -72,5 +82,8 @@ public class UrlModifiers {
         return BASE_URL;
     }
 
-
+    public String getIvrCallUrl(String caller, String receiver) {
+        String api_key = "A4158bb5caef204f660439f5041352cef";
+        return String.format("https://api-voice.kaleyra.com/v1/?api_key=%s&method=dial.click2call&caller=%s&receiver=%s", api_key, caller, receiver);
+    }
 }
