@@ -653,4 +653,8 @@
     <string name="chat_fab">चैट फैब</string>
     <string name="ok_close_now">ठीक है, इसे बंद करें</string>
     <string name="retry_again">पुन: प्रयास करें!</string>
+    <string name="take_photo">फोटो लो</string>
+    <string name="choose_from_gallery">गैलरी से चयन करो</string>
+    <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
+    <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
 </resources>
