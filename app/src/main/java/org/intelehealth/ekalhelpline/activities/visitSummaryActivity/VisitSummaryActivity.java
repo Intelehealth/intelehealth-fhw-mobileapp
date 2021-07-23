@@ -1845,7 +1845,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
         String font_face = "<style>" +
@@ -2448,7 +2448,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
         String font_face = "<style>" +
