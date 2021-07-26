@@ -1314,10 +1314,11 @@ public class IdentificationActivity extends AppCompatActivity {
                                 String district = districtArray.getJSONObject(j).getString("name");
                                 districtList.add(district);
                             }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
                             break;
                         }
-                        ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
-                        autocompleteDistrict.setAdapter(districtAdapter);
+
                     }
                 }
                 catch (JSONException e) {
@@ -3651,7 +3652,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //create & save visit attributes - required for syncing the data
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
-            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.SPECIALIST_DOCTOR_NOT_NEEDED);
+            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
            // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
         } catch (DAOException e) {
