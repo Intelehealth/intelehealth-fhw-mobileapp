@@ -5,31 +5,30 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
-import java.util.List;
-import java.util.Locale;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
+import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 
-import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import java.util.List;
+import java.util.Locale;
 
 
 public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
-//    ProgressDialog TempDialog;
+    //    ProgressDialog TempDialog;
     int i = 5;
 
     @Override
@@ -38,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_activity);
 //        Getting App language through the session manager
         sessionManager = new SessionManager(SplashActivity.this);
-      //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
+        //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
             Locale locale = new Locale(appLanguage);
@@ -110,28 +109,34 @@ public class SplashActivity extends AppCompatActivity {
 
     private void nextActivity() {
         boolean setup = sessionManager.isSetupComplete();
-
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
-        if (setup) {
 
-            if (sessionManager.isLogout()) {
-                Logger.logD(LOG_TAG, "Starting login");
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+        if (sessionManager.isFirstTimeLaunch()) {
+            Logger.logD(LOG_TAG, "Starting setup");
+            Intent intent = new Intent(this, ChooseLanguageActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            if (setup) {
+                if (sessionManager.isLogout()) {
+                    Logger.logD(LOG_TAG, "Starting login");
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Logger.logD(LOG_TAG, "Starting home");
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             } else {
-                Logger.logD(LOG_TAG, "Starting home");
-                Intent intent = new Intent(this, HomeActivity.class);
+                Logger.logD(LOG_TAG, "Starting setup");
+                Intent intent = new Intent(this, IntroActivity.class);
                 startActivity(intent);
                 finish();
             }
-
-        } else {
-            Logger.logD(LOG_TAG, "Starting setup");
-            Intent intent = new Intent(this, IntroActivity.class);
-            startActivity(intent);
-            finish();
         }
     }
 

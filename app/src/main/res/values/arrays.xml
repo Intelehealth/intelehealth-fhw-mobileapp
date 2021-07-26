@@ -2,16 +2,16 @@
 
 
     <string-array name="language_names">
-        <item>हिंदी</item>
+        <!--<item>हिंदी</item>-->
         <item>English</item>
-        <item>ଓଡିଆ</item>
+        <!-- <item>ଓଡିଆ</item>-->
         <item>Russian</item>
     </string-array>
 
     <string-array name="language_values">
-        <item>hi</item>
+        <!-- <item>hi</item>-->
         <item>en</item>
-        <item>or</item>
+        <!-- <item>or</item>-->
         <item>ru</item>
     </string-array>
 
@@ -47,8 +47,8 @@
         <item>Select Country</item>
         <item>kyrgyzstan</item>
         <item>India</item>
-       <!-- <item>United States</item>
-        <item>Philippines</item>-->
+        <!-- <item>United States</item>
+         <item>Philippines</item>-->
     </string-array>
 
     <string-array name="education_or">
@@ -67,23 +67,6 @@
         <item>Secondary</item>
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
-    </string-array>
-    <string-array name="education_cb">
-        <item>Select Education</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
-    </string-array>
-
-    <string-array name="education_hi">
-        <item> चयन करें</item>
-        <item>अशिक्षित</item>
-        <item>प्रथम</item>
-        <item>माध्यमिक</item>
-        <item>उच्च माध्यमिक</item>
-        <item>स्नातक और उच्चतर</item>
     </string-array>
 
     <string-array name="education_ru">
@@ -104,24 +87,6 @@
         <item>others</item>
     </string-array>
 
-    <string-array name="caste_or">
-        <item>ଚୟନ କରନ୍ତୁ</item>
-        <item>ସାଧାରଣ</item>
-        <item>ଅନ୍ୟାନ୍ୟ ପଛୁଆ ବର୍ଗ</item>
-        <item>ଅନୁସୂଚିତ ଜାତି</item>
-        <item>ଅନୁସୂଚିତ ଜନଜାତି</item>
-        <item>ଅନ୍ୟାନ୍ୟ</item>
-    </string-array>
-
-    <string-array name="caste_hi">
-        <item>चयन करें</item>
-        <item>सामान्य</item>
-        <item>अन्य पिछड़ा वर्ग</item>
-        <item>अनुसूचित जाति</item>
-        <item>अनुसूचित जनजाति</item>
-        <item>अन्य</item>
-    </string-array>
-
     <string-array name="caste_ru">
         <item>Select</item>
         <item>General</item>
@@ -137,23 +102,6 @@
         <item>BPL</item>
     </string-array>
 
-    <string-array name="economic_or">
-        <item>ଚୟନ</item>
-        <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ</item>
-        <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ</item>
-    </string-array>
-
-    <string-array name="economic_cb">
-        <item>Select</item>
-        <item>APL</item>
-        <item>BPL</item>
-    </string-array>
-
-    <string-array name="economic_hi">
-        <item>चयन करें</item>
-        <item>गरीबी रेखा से ऊपर</item>
-        <item>गरीबी रेखा से नीचे</item>
-    </string-array>
     <string-array name="economic_ru">
         <item>Select</item>
         <item>APL</item>
@@ -192,152 +140,49 @@
         <item>West Bengal</item>
     </string-array>
 
+    <string-array name="states_kyrgyzstan_ru">
+        <item>Select State</item>
+        <item>г. Бишкек</item>
+        <item>г. Токмок</item>
+        <item>г. Кара-Балта</item>
+        <item>Чуйская область</item>
+        <item>г. Балыкчи</item>
+        <item>г. Чолпон-Ата</item>
+        <item>г. Каракол</item>
+        <item>Иссык-Кульская область</item>
+        <item>г. Талас</item>
+        <item>Таласская область</item>
+        <item>г. Жалалабад</item>
+        <item>Жалалабадская область</item>
+        <item>г. Ош</item>
+        <item>Ошская область</item>
+        <item>г. Нарын</item>
+        <item>Нарынская область</item>
+        <item>г. Баткен</item>
+        <item>Баткенская область</item>
+    </string-array>
+
     <string-array name="states_kyrgyzstan">
         <item>Select State</item>
-    </string-array>
+        <item>Bishkek</item>
+        <item>Tokmok</item>
+        <item>Kara–Balta</item>
+        <item>Chuy Oblast\'</item>
+        <item>Balykchi</item>
+        <item>Cholpon-Ata</item>
+        <item>Karakol</item>
+        <item>Issyk-Kul\' Oblast\'</item>
+        <item>Talas</item>
+        <item>Talas Oblast\'</item>
+        <item>Dzhalalаbad</item>
+        <item>Dzhalаlabad Oblast\'</item>
+        <item>Osh</item>
+        <item>Osh Oblast\'</item>
+        <item>Naryn</item>
+        <item>Naryn Oblast\'</item>
+        <item>Batken</item>
+        <item>Batken Oblast\'</item>
 
-    <string-array name="states_philippines">
-        <item>Select State</item>
-        <item>Bukidnon</item>
-    </string-array>
-    <string-array name="bukidnon_villages">
-        <item>Adtuyon-Pangantucan</item>
-        <item>Bacusanon-Pangantucan</item>
-        <item>Bangahan-Pangantucan</item>
-        <item>Barandias-Pangantucan</item>
-        <item>Concepcion-Pangantucan</item>
-        <item>Gandingan-Pangantucan</item>
-        <item>Kimanait-Pangantucan</item>
-        <item>Kipadukan-Pangantucan</item>
-        <item>Langcataon-Pangantucan</item>
-        <item>Lantay-Pangantucan</item>
-        <item>Madaya-Pangantucan</item>
-        <item>Malipayon-Pangantucan</item>
-        <item>Mendis-Pangantucan</item>
-        <item>Nabaliwa-Pangantucan</item>
-        <item>New Eden-Pangantucan</item>
-        <item>Payad-Pangantucan</item>
-        <item>Pigtauranan-Pangantucan</item>
-        <item>Poblacion-Pangantucan</item>
-        <item>Portulin-Pangantucan</item>
-        <item></item>
-
-    </string-array>
-
-    <string-array name="states_us">
-        <item>Select State</item>
-        <item>Alabama</item>
-        <item>Alaska</item>
-        <item>Arizona</item>
-        <item>Arkansas</item>
-        <item>California</item>
-        <item>Colorado</item>
-        <item>Connecticut</item>
-        <item>Delaware</item>
-        <item>Florida</item>
-        <item>Georgia</item>
-        <item>Hawaii</item>
-        <item>Idaho</item>
-        <item>Illinois</item>
-        <item>Indiana</item>
-        <item>Iowa</item>
-        <item>Kansas</item>
-        <item>Kentucky</item>
-        <item>Louisiana</item>
-        <item>Maine</item>
-        <item>Maryland</item>
-        <item>Massachusetts</item>
-        <item>Michigan</item>
-        <item>Minnesota</item>
-        <item>Mississippi</item>
-        <item>Missouri</item>
-        <item>Montana</item>
-        <item>Nebraska</item>
-        <item>Nevada</item>
-        <item>New Hampshire</item>
-        <item>New Jersey</item>
-        <item>New Mexico</item>
-        <item>New York</item>
-        <item>North Carolina</item>
-        <item>North Dakota</item>
-        <item>Ohio</item>
-        <item>Oklahoma</item>
-        <item>Oregon</item>
-        <item>Pennsylvania</item>
-        <item>Rhode Island</item>
-        <item>South Carolina</item>
-        <item>South Dakota</item>
-        <item>Tennessee</item>
-        <item>Texas</item>
-        <item>Utah</item>
-        <item>Vermont</item>
-        <item>Virginia</item>
-        <item>Washington</item>
-        <item>West Virginia</item>
-        <item>Wisconsin</item>
-        <item>Wyoming</item>
-    </string-array>
-
-    <string-array name="odisha_villages">
-        <item>Satygaon</item>
-        <item>Bhanjamunda</item>
-        <item>Baidehipur</item>
-        <item>Bhadramunda</item>
-        <item>Patamara</item>
-        <item>Ditikrushnapur</item>
-        <item>Pita Kulha Sahi</item>
-        <item>Kusumapal</item>
-        <item>Paunsia</item>
-        <item>Genjeimuni</item>
-        <item>Sagamanji Sahi</item>
-        <item>Bankhuli</item>
-        <item>Tandiberani</item>
-        <item>Nalasahi</item>
-        <item>Chanapala</item>
-        <item>Magarmuhan</item>
-        <item>Rangamatia</item>
-        <item>Suabasa</item>
-        <item>Kurumula</item>
-        <item>Ghenakani</item>
-        <item>Gopinnathpur</item>
-        <item>Kusubania</item>
-        <item>Hathimunda</item>
-        <item>Dhipasahi</item>
-        <item>Kuchinda</item>
-        <item>Chadakamara</item>
-        <item>Phuljhari</item>
-        <item>Khuntaposi</item>
-        <item>Jenapada</item>
-        <item>Monnakhul</item>
-        <item>Gopinathpur</item>
-        <item>Siarimalia Colony Sai</item>
-        <item>Siarimalia</item>
-        <item>Dangapala</item>
-        <item>Ditikrushnapur</item>
-        <item>Sanadhauragotha</item>
-        <item>Kunjam</item>
-        <item>Padang</item>
-        <item>Khulamunda</item>
-        <item>Priyambadapur</item>
-        <item>Jaganathpur</item>
-        <item>Roghunathpur</item>
-        <item>Muharmuhan</item>
-        <item>Saubasa</item>
-        <item>Bankuli</item>
-        <item>Sagamanghi Sai</item>
-        <item>Rengaromunda</item>
-        <item>Rangiapala</item>
-        <item>Benipathar</item>
-        <item>Debahali</item>
-        <item>Gentunali</item>
-        <item>Kakichanda(Munduribeda)</item>
-        <item>Dipasahi</item>
-        <item>Badasada</item>
-        <item>Kanteikali(Kanteigiri)</item>
-        <item>Purunapani</item>
-        <item>Fingamunda</item>
-        <item>Bijapani</item>
-        <item>Charakmunda</item>
     </string-array>
 
     <string-array name="units">

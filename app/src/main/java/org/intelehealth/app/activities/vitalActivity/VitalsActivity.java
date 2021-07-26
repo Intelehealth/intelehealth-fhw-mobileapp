@@ -51,6 +51,12 @@ public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
     private static final int INTENT_FOR_COMPALINTNODE = 1002;
     SessionManager sessionManager;
+    int flag_height = 0, flag_weight = 0;
+    String heightvalue;
+    String weightvalue;
+    ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
+    VitalsObject results = new VitalsObject();
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperatureEditText, mtempfaren, mSpo2, mBMI, mResp;
     private String patientName = "";
     private String patientGender = "";
     private String intentTag;
@@ -59,14 +65,8 @@ public class VitalsActivity extends AppCompatActivity {
     private String visitUuid;
     private String encounterVitals;
     private float float_ageYear_Month;
-    int flag_height = 0, flag_weight = 0;
-    String heightvalue;
-    String weightvalue;
-    ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
-
-    VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    private double mBMIValue = 0d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class VitalsActivity extends AppCompatActivity {
         mPulse = findViewById(R.id.table_pulse);
         mBpSys = findViewById(R.id.table_bpsys);
         mBpDia = findViewById(R.id.table_bpdia);
-        mTemperature = findViewById(R.id.table_temp);
+        mTemperatureEditText = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
 
         mBMI = findViewById(R.id.table_bmi);
@@ -160,16 +160,17 @@ public class VitalsActivity extends AppCompatActivity {
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemperature = findViewById(R.id.table_temp);
+                    mTemperatureEditText = findViewById(R.id.table_temp);
                     findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
-                    mTemperature = findViewById(R.id.table_temp_faren);
+                    mTemperatureEditText = findViewById(R.id.table_temp_faren);
                     findViewById(R.id.table_temp).setVisibility(View.GONE);
+                    findViewById(R.id.table_temp_til).setVisibility(View.GONE);
                 }
             } else {
-                mTemperature.setVisibility(View.GONE);
+                mTemperatureEditText.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mSpo2")) {
                 mSpo2.setVisibility(View.VISIBLE);
@@ -188,7 +189,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mResp.setVisibility(View.GONE);
             }
         } catch (JSONException e) {
-            Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.config_file_error), Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (intentTag != null && intentTag.equals("edit")) {
@@ -305,7 +306,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mTemperature.addTextChangedListener(new TextWatcher() {
+        mTemperatureEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -313,24 +314,27 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                String val = s.toString().trim();
+               /* if (val.contains(",") ) {
+                    val = val.replace(",",".");
+                }*/
                 if (configUtils.celsius()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                    if (val.length() > 0 && !val.startsWith(".")) {
+                        if (Double.valueOf(val) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                                Double.valueOf(val) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                            mTemperatureEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
                         } else {
-                            mTemperature.setError(null);
+                            mTemperatureEditText.setError(null);
                         }
 
                     }
                 } else if (configUtils.fahrenheit()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                    if (val.length() > 0 && !val.startsWith(".")) {
+                        if (Double.valueOf(val) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
+                                Double.valueOf(val) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
+                            mTemperatureEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
                         } else {
-                            mTemperature.setError(null);
+                            mTemperatureEditText.setError(null);
                         }
                     }
 
@@ -340,10 +344,12 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mTemperature.getText().toString().startsWith(".")) {
-                    mTemperature.setText("");
+                if (mTemperatureEditText.getText().toString().startsWith(".")) {
+                    mTemperatureEditText.setText("");
                 } else {
-
+                    /*if (sessionManager.getAppLanguage().equals("ru")) {
+                        mTemperatureEditText.setText(mTemperatureEditText.getText().toString().trim().replace(".",","));
+                    }*/
                 }
 
             }
@@ -483,9 +489,10 @@ public class VitalsActivity extends AppCompatActivity {
             mBMI.getText().clear();
             double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
             double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
-            double bmi_value = numerator / denominator;
+            mBMIValue = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value));
+            String displayText = sessionManager.getAppLanguage().equals("ru") ? df.format(mBMIValue).replace(".", ",") : df.format(mBMIValue);
+            mBMI.setText(displayText);
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
@@ -497,15 +504,16 @@ public class VitalsActivity extends AppCompatActivity {
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
-        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
-                weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
+        if (height.trim().length() > 0 && !height.startsWith(".") &&
+                weight.trim().length() > 0 && !weight.startsWith(".")) {
 
             mBMI.getText().clear();
             double numerator = Double.parseDouble(weight) * 10000;
             double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
-            double bmi_value = numerator / denominator;
+            mBMIValue = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value));
+            String displayText = sessionManager.getAppLanguage().equals("ru") ? df.format(mBMIValue).replace(".", ",") : df.format(mBMIValue);
+            mBMI.setText(displayText);
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else {
@@ -553,10 +561,10 @@ public class VitalsActivity extends AppCompatActivity {
                 if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
                     if (value != null && !value.isEmpty()) {
-                        mTemperature.setText(convertCtoF(value));
+                        mTemperatureEditText.setText(convertCtoF(value));
                     }
                 } else {
-                    mTemperature.setText(value);
+                    mTemperatureEditText.setText(value);
                 }
 
                 break;
@@ -602,7 +610,7 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mPulse);
         values.add(mBpSys);
         values.add(mBpDia);
-        values.add(mTemperature);
+        values.add(mTemperatureEditText);
         values.add(mResp);
         values.add(mSpo2);
 
@@ -783,15 +791,15 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mBpSys.getText() != null) {
                     results.setBpsys((mBpSys.getText().toString()));
                 }
-                if (mTemperature.getText() != null) {
+                if (mTemperatureEditText.getText() != null) {
 
                     if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
 
-                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
+                        results.setTemperature(ConvertFtoC(mTemperatureEditText.getText().toString()));
                     } else {
-                        results.setTemperature((mTemperature.getText().toString()));
+                        results.setTemperature((mTemperatureEditText.getText().toString()));
                     }
 
                 }

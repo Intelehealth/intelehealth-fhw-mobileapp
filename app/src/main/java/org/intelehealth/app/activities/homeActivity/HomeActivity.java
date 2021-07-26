@@ -387,7 +387,7 @@ public class HomeActivity extends AppCompatActivity {
                 intent.setData(uri);
                 startActivity(intent);
             } else {
-                Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.config_not_found_alert_message), Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);

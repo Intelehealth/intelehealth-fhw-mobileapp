@@ -666,4 +666,16 @@
 
     <string name="saving_captured_image">Сохранение захваченного изображения ...</string>
     <string name="alert_message_for_discard_visit">Новое начатое посещение не будет сохранено!</string>
+
+    //Language Screen
+    <string name="choose_lang_title">Choose your Language</string>
+    <string name="save_button">Save</string>
+    <string name="selectLanguageToast">Please select Language</string>
+    <string name="config_not_found_alert_message">No config attribute found</string>
+    <string name="error_login_title">Error Login</string>
+    <string name="config_file_error">config file error</string>
+
+    <string name="internet_connected_txt">Подключен к Интернету!</string>
+    <string name="not_connected_txt">Нет подключения к Интернету!</string>
+    <string name="config_error">Config Error</string>
 </resources>

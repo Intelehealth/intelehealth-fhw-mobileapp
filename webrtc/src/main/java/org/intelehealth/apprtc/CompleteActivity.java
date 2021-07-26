@@ -311,7 +311,7 @@ public class CompleteActivity extends AppCompatActivity {
             if (allGranted) {
                 start();
             } else {
-                Toast.makeText(CompleteActivity.this, "Permission Denied!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CompleteActivity.this, R.string.permission_denied, Toast.LENGTH_SHORT).show();
                 finish();
             }
 

@@ -30,7 +30,7 @@
         android:maxLines="4"
         android:minHeight="36dip"
         android:padding="16dip"
-        android:text="@string/dummy_text"
+        android:text="dummy_text"
         android:textColor="@color/white"
         android:textSize="13sp" />
 

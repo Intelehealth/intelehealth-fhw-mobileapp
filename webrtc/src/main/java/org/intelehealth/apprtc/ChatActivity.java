@@ -404,11 +404,11 @@ public class ChatActivity extends AppCompatActivity {
             } else {
                 jsonObject.put("type", Constants.LEFT_ITEM);
             }
-            if (!jsonObject.has("createdAt")) {
+            /*if (!jsonObject.has("createdAt")) {
                 SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-                rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                //rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                 jsonObject.put("createdAt", rawSimpleDateFormat.format(new Date()));
-            }
+            }*/
             mChatList.add(jsonObject);
 
             mEmptyLinearLayout.setVisibility(View.GONE);
