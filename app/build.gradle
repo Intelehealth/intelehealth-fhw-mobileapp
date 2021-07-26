@@ -8,9 +8,9 @@ android {
         applicationId "app.intelehealth.client"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 48
+        versionCode 49
         buildToolsVersion('29.0.2')
-        versionName "2.1.5"
+        versionName "2.1.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -32,7 +32,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    android {
+        bundle {
+            language {
+                // Specifies that the app bundle should not support
+                // configuration APKs for language resources. These
+                // resources are instead packaged with each base and
+                // dynamic feature APK.
+                enableSplit = false
+            }
+        }
+    }
 }
 
 dependencies {
