@@ -94,7 +94,7 @@ public class AppConstants {
                     .build();
 
     /*@Lincon*/
-    public static final String SYNC_INTENT_ACTION = "app.intelehealth.client.LAST_SYNC";
+    public static final String SYNC_INTENT_ACTION = "org.intelehealth.app.LAST_SYNC";
     public static final String SYNC_INTENT_DATA_KEY = "SYNC_JOB_TYPE";
     public static final int SYNC_FAILED = 0;
     public static final int SYNC_PULL_DATA_DONE = 1;

@@ -644,10 +644,17 @@
     <string name="document_">"दस्तावेज़ - "</string>
 
     <!--@lincon-->
-    <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+    <string name="failed_initial_synced">रीफ़्रेश करने में विफल, अपने इंटरनेट कनेक्शन की जाँच करें। कृपया ऐप को पुनरारंभ करें।</string>
     <string name="speciality_cardview_title">स्पेशलिटी</string>
     <string name="select_specialization_text">स्पेशलाइज़ेशन चुनिए</string>
     <string name="please_select_specialization_msg">कृपया विशेषज्ञता का चयन करें</string>
 
     <string name="visit_closed">विजिट बंद हुई</string>
+    <string name="chat_fab">चैट फैब</string>
+    <string name="ok_close_now">ठीक है, इसे बंद करें</string>
+    <string name="retry_again">पुन: प्रयास करें!</string>
+    <string name="take_photo">फोटो लो</string>
+    <string name="choose_from_gallery">गैलरी से चयन करो</string>
+    <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
+    <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
 </resources>

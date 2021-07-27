@@ -19,5 +19,5 @@ salt.env
 *.jpg
 
 .idea/
-/app/release/
 /webrtc/build/
+/app/release/

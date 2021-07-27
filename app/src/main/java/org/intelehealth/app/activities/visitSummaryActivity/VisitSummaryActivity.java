@@ -25,6 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.preference.PreferenceManager;
+import android.print.PdfPrint;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
@@ -74,12 +75,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.VisitUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -99,7 +102,10 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -107,28 +113,25 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
+import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
-import android.print.PdfPrint;
+import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
-import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.app.utilities.NetworkConnection;
-import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 public class VisitSummaryActivity extends AppCompatActivity {
@@ -500,6 +503,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDTO encounterDTO = encounterDAO.getEncounterByVisitUUID(visitUuid);
+                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(visitUuid);
+                Intent chatIntent = new Intent(VisitSummaryActivity.this, ChatActivity.class);
+                chatIntent.putExtra("patientName", patientName);
+                chatIntent.putExtra("visitUuid", visitUuid);
+                chatIntent.putExtra("patientUuid", patientUuid);
+                chatIntent.putExtra("fromUuid", /*sessionManager.getProviderID()*/ encounterDTO.getProvideruuid()); // provider uuid
+
+                if (rtcConnectionDTO != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                        chatIntent.putExtra("toUuid", jsonObject.getString("toUUID")); // assigned doctor uuid
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    chatIntent.putExtra("toUuid", ""); // assigned doctor uuid
+                }
+                startActivity(chatIntent);
+            }
+        });
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
 //we can remove by data binding
@@ -1974,17 +2005,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //String advice_web = stringToWeb(adviceReturned);
         String advice_web = "";
-        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
-                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
+//        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
+//                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
+        String advice_doctor__ = medicalAdviceTextView.getText().toString()
+                .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
+                .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
+
+        if(advice_doctor__.indexOf("Start") != -1 ||
+                advice_doctor__.lastIndexOf(("Doctor_") + 9) != -1) {
+
+
 
 
 //        String advice_web = stringToWeb(medicalAdvice_string.trim().replace("\n\n", "\n"));
 //        Log.d("Hyperlink", "hyper_print: " + advice_web);
-        String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
-                .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
-                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
+//        String advice_split = new StringBuilder(medicalAdviceTextView.getText().toString())
+//                .delete(medicalAdviceTextView.getText().toString().indexOf("Start"),
+//                        medicalAdviceTextView.getText().toString().lastIndexOf("User")+6).toString();
         //lastIndexOf("User") will give index of U of User
         //so the char this will return is U...here User + 6 will return W eg: User\n\nWatch as +6 will give W
+
+            String advice_split = new StringBuilder(advice_doctor__)
+                    .delete(advice_doctor__.indexOf("Start"),
+                            advice_doctor__.lastIndexOf("Doctor_")+9).toString();
+            //lastIndexOf("Doctor_") will give index of D of Doctor_
+            //so the char this will return is D...here Doctor_ + 9 will return W eg: Doctor_\n\nWatch as +9 will give W
+
 
 //        String advice_web = stringToWeb(advice_split.replace("\n\n", "\n")); //showing advice here...
 //        Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
@@ -1992,7 +2038,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }
         else {
-            advice_web = stringToWeb(medicalAdviceTextView.getText().toString().replace("\n\n", "\n")); //showing advice here...
+            advice_web = stringToWeb(advice_doctor__.replace("\n\n", "\n")); //showing advice here...
             Log.d("Hyperlink", "hyper_print: " + advice_web); //gets called when clicked on button of print button
         }
 
@@ -3386,7 +3432,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
                 adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
-                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+              //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
+                medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
                 Log.d("hyper_textview", "hyper_textview: " + medicalAdviceTextView.getText().toString());
                 //checkForDoctor();

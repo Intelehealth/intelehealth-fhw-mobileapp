@@ -7,14 +7,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.Settings;
-
-import androidx.core.content.res.ResourcesCompat;
-import androidx.multidex.MultiDex;
-import androidx.multidex.MultiDexApplication;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
@@ -22,7 +22,7 @@ import com.parse.Parse;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.SessionManager;
-
+import org.intelehealth.apprtc.data.Manager;
 
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -36,6 +36,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static String androidId;
     private Activity currentActivity;
     SessionManager sessionManager;
+
     public static Context getAppContext() {
         return mContext;
     }
@@ -44,6 +45,11 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         return androidId;
     }
 
+    private static IntelehealthApplication sIntelehealthApplication;
+    public String refreshedFCMTokenID = "";
+    public static IntelehealthApplication getInstance() {
+        return sIntelehealthApplication;
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -54,10 +60,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     @Override
     public void onCreate() {
         super.onCreate();
+        sIntelehealthApplication = this;
         //For Vector Drawables Backward Compatibility(<API 21)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();
 
@@ -145,10 +153,11 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     /**
      * for setting the Alert Dialog Custom Font.
+     *
      * @param context
      * @param builderDialog
      */
-    public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog){
+    public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         // Getting the view elements
         TextView textView = (TextView) builderDialog.getWindow().findViewById(android.R.id.message);
         TextView alertTitle = (TextView) builderDialog.getWindow().findViewById(R.id.alertTitle);

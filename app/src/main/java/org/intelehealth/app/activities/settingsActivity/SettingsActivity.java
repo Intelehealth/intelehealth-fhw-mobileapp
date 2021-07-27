@@ -398,7 +398,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
     }
 
-    //this activity is called to select a different language for the app.
+    //this activity is called to select a different language for the org.
     //prajwal
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class LanguagePreferenceFragment extends PreferenceFragment {

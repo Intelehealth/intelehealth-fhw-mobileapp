@@ -64,7 +64,7 @@ public class SmoothUpgrade {
                 //String currentDBPath = "filepath here"+DATABASE_NAME;
                 //Replace with YOUR_FOLDER_PATH and TARGET_DB_NAME in the SD card
                 //String copieDBPath = DATABASE_NAME;
-                File currentDB = new File(data + "/data/io.intelehealth.client/databases/", "localRecords.db");
+                File currentDB = new File(data + "/data/io.intelehealth.app/databases/", "localRecords.db");
                 File copieDB = new File(AppConstants.dbfilepath);
                 if (currentDB.exists()) {
                     Log.d("TAG", "DatabaseHandler: DB exist");

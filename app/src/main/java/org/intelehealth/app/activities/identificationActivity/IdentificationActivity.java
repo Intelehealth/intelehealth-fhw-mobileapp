@@ -172,7 +172,7 @@ public class IdentificationActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         Log.d("lang", "lang: "+language);
-        //In case of crash still the app should hold the current lang fix.
+        //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);

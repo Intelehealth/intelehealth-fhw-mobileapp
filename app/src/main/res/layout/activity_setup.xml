@@ -102,7 +102,6 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
                                 android:layout_marginBottom="5dp">
 
                                 <Spinner
@@ -121,10 +120,10 @@
 <!--                        android:layout_width="match_parent"-->
 <!--                        android:layout_height="wrap_content"-->
 <!--                        android:layout_marginHorizontal="10dp"-->
-<!--                        app:cardCornerRadius="10sp"-->
+<!--                        org:cardCornerRadius="10sp"-->
 <!--                        android:layout_marginTop="15dp"-->
-<!--                        app:cardElevation="5sp"-->
-<!--                        app:cardPreventCornerOverlap="false">-->
+<!--                        org:cardElevation="5sp"-->
+<!--                        org:cardPreventCornerOverlap="false">-->
 
 <!--                        <LinearLayout-->
 <!--                            android:layout_width="match_parent"-->
@@ -348,6 +347,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content">
 
                         <EditText

@@ -51,6 +51,8 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.apprtc.data.Manager;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -293,7 +295,10 @@ public class IntroActivity extends AppCompatActivity {
                             if (locationResults.getResults() != null) {
                                 Results<Location> locationList = locationResults;
                                 mLocations = locationList.getResults();
-                                location = mLocations.get(0);
+                                if (mLocations.size() > 1)
+                                    location = mLocations.get(1);
+                                else
+                                    location = mLocations.get(0);
 
                                 TestSetup("demo.intelehealth.org", "nurse1", "Nurse123", "", location);
 
@@ -378,6 +383,8 @@ public class IntroActivity extends AppCompatActivity {
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
+                                            // keeping the base url in one singleton object for using in apprtc module
+                                            Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
