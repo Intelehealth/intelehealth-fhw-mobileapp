@@ -11,7 +11,7 @@ public class WelcomeSms {
         this.type = "TXN";
         this.sender = "TIFDOC";
         this.source = "API";
-        this.template_id = "1107162701346823339";
+        this.template_id = "1107162737761872388";
     }
 
     @SerializedName("api-key")
