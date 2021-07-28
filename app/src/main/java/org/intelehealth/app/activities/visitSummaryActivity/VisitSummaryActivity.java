@@ -538,12 +538,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 if(hasPrescription.equalsIgnoreCase("true"))
                 {
-//                    try {
-//                        doWebViewPrint();
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
                     editText.setInputType(InputType.TYPE_CLASS_PHONE);
