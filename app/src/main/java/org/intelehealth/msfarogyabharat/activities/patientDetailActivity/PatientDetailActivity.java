@@ -14,15 +14,6 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -42,15 +33,48 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
+import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.msfarogyabharat.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.database.InteleHealthDatabaseHelper;
+import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
+import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
+import org.intelehealth.msfarogyabharat.database.dao.PatientsDAO;
+import org.intelehealth.msfarogyabharat.database.dao.VisitsDAO;
+import org.intelehealth.msfarogyabharat.knowledgeEngine.Node;
+import org.intelehealth.msfarogyabharat.models.FamilyMemberRes;
+import org.intelehealth.msfarogyabharat.models.Patient;
+import org.intelehealth.msfarogyabharat.models.WelcomeSms;
+import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
+import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
+import org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils;
+import org.intelehealth.msfarogyabharat.utilities.DownloadFilesUtils;
+import org.intelehealth.msfarogyabharat.utilities.FileUtils;
+import org.intelehealth.msfarogyabharat.utilities.Logger;
+import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
+import org.intelehealth.msfarogyabharat.utilities.SessionManager;
+import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
+import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
+import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,33 +88,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.intelehealth.msfarogyabharat.R;
-import org.intelehealth.msfarogyabharat.app.AppConstants;
-import org.intelehealth.msfarogyabharat.database.InteleHealthDatabaseHelper;
-import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
-import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
-import org.intelehealth.msfarogyabharat.database.dao.PatientsDAO;
-import org.intelehealth.msfarogyabharat.database.dao.VisitsDAO;
-import org.intelehealth.msfarogyabharat.knowledgeEngine.Node;
-import org.intelehealth.msfarogyabharat.models.FamilyMemberRes;
-import org.intelehealth.msfarogyabharat.models.Patient;
-import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
-import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
-import org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils;
-import org.intelehealth.msfarogyabharat.utilities.DownloadFilesUtils;
-import org.intelehealth.msfarogyabharat.utilities.FileUtils;
-import org.intelehealth.msfarogyabharat.utilities.Logger;
-import org.intelehealth.msfarogyabharat.utilities.SessionManager;
-import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
-import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
-
-import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
-import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity;
-import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
-import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
-
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -99,9 +96,10 @@ import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
-//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
+
+//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -187,6 +185,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             hasPrescription = intent.getStringExtra("hasPrescription");
             MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
+            String phoneNumber = intent.getStringExtra("phoneNumber");
+            if (!TextUtils.isEmpty(phoneNumber)) {
+                sendWelcomeSms(phoneNumber);
+            }
 
             intentTag = intent.getStringExtra("tag");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
@@ -381,6 +383,33 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void sendWelcomeSms(String phoneNumber) {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(phoneNumber))
+            return;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getSendSmsUrl();
+        WelcomeSms welcomeSms = new WelcomeSms(String.format("%s%s", "91", phoneNumber));
+        Single<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, welcomeSms);
+        patientIvrCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull ResponseBody s) {
+                        System.out.println(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private void LoadFamilyMembers() {
