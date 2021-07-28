@@ -172,7 +172,8 @@ public class IdentificationActivity extends AppCompatActivity {
     Context context;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
-
+    String intentTag1 = "";
+    String intentTag2 = "";
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
@@ -344,6 +345,8 @@ public class IdentificationActivity extends AppCompatActivity {
             if (intent.hasExtra("patientUuid")) {
                 this.setTitle(R.string.update_patient_identification);
                 patientID_edit = intent.getStringExtra("patientUuid");
+                intentTag1 = intent.getStringExtra("intentTag1");
+                intentTag2 = intent.getStringExtra("intentTag2");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
             }
@@ -3536,6 +3539,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
                 i.putExtra("tag", "newPatient");
+                i.putExtra("intentTag1",intentTag1);
+                i.putExtra("intentTag2",intentTag2);
                 i.putExtra("hasPrescription", "false");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);

@@ -67,6 +67,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "search");
+                intent.putExtra("intentTag2","findPatient");
                 intent.putExtra("hasPrescription", "false");
                 intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
                 context.startActivity(intent);

@@ -111,6 +111,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     List<String> visitUuidList;
     String patientUuid;
     String intentTag = "";
+    String intentTag1 = "";
+    String intentTag2 = "";
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager = null;
@@ -189,18 +191,25 @@ public class PatientDetailActivity extends AppCompatActivity {
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
 
             intentTag = intent.getStringExtra("tag");
+            intentTag1 = intent.getStringExtra("intentTag1");
+            intentTag2 = intent.getStringExtra("intentTag2");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
             Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
 
-            newAdvice.setVisibility(View.VISIBLE);
-            newAdvice.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
-                }
-            });
+            if(intentTag2!= null && intentTag2.equalsIgnoreCase("findPatient") && intentTag1!=null && intentTag1.equalsIgnoreCase("editDetails"))
+            {
+                newAdvice.setVisibility(View.VISIBLE);
+                newAdvice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                    }
+                });
+
+            }
+
         }
 
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -214,6 +223,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
+                intent2.putExtra("intentTag1", "editDetails");
+                intent2.putExtra("intentTag2", intentTag2);
                 startActivity(intent2);
 
             }
