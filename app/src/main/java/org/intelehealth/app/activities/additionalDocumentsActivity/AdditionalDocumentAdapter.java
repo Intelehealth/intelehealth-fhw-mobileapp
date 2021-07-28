@@ -109,28 +109,22 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, documentList.size());
                 String imageName = holder.getDocumentNameTextView().getText().toString();
-                Log.d("ritika", "log" + imageName);
-                try {
-                    ObsDAO obsDAO = new ObsDAO();
-                    obsDAO.getObsuuid(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
-//                    Log.d("ritika", "getObsuuid===" + obsDAO.getObsuuid(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD));
-//                    Log.d("ritika", "mEncounterUUID===" + mEncounterUUID);
-//
+
+
                     try {
                         List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
                         for (String images : imageList) {
-                           Log.d("ritika","image"+images);
+                           Log.d(TAG,"image= "+images);
 
                         }
                         imagesDAO.deleteImageFromDatabase(imageList.get(position));
                     } catch (DAOException e) {
+
                         e.printStackTrace();
+                        FirebaseCrashlytics.getInstance().recordException(e);
                     }
 //                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
-//                    imagesDAO.deleteImageFromDatabase(obsDAO.getObsuuid(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD));
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
+
             }
         });
     }
