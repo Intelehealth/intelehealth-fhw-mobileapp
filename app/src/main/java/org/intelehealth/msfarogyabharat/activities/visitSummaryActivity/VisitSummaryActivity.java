@@ -1302,7 +1302,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String originalComplaint = dialogEditText.getText().toString();
+                                String tag1 = "<b>";
+                                String tag2 = "</b>";
+                                int originalCompLength = originalComplaint.length();
+                                int indexColon = originalComplaint.indexOf(":");
+                                String formatedComplaint = Node.bullet_arrow + tag1 + originalComplaint.substring(1,indexColon) + tag2 + originalComplaint.substring(indexColon,originalCompLength-1) ;
+                                String finalFormattedComplaint = formatedComplaint.replace("\n","<br>");
+                                complaint.setValue(finalFormattedComplaint); //dialogEditText.getText().toString().replace("\n", "<br>")
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
