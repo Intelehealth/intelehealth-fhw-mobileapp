@@ -657,4 +657,11 @@
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
+
+<!--    Strings for special Check-->
+    <string name="str_check_Odisha">Odisha</string>
+    <string name="str_check_Bukidnon">Bukidnon</string>
+   <string name="str_check_India">इंडिया</string>
+    <string name="str_check_UnitedStates">संयुक्त राज्य अमेरिका</string>
+     <string name="str_check_Philippines">फिलीपींस</string>
 </resources>

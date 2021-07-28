@@ -580,11 +580,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
+                assoSympObj.put("display-te", "మీకు ఈ క్రింది లక్షణం (లు) ఉన్నాయా?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
+                finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
                 finalAssoSympObj.put("perform-physical-exam", "");
@@ -615,6 +617,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.getText());
+            setTitle(patientName + ": " + currentNode.findDisplay());
 
         }
     }
@@ -656,6 +659,20 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ")
                     .replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
+                    .replace("Patient reports -", "రోగి నివేదికలు -")
+                    .replace("Patient denies -", "రోగి నిరాకరించాడు -")
+                    .replace("Hours", "గంటలు").replace("Days", "రోజులు")
+                    .replace("Weeks", "వారాలు").replace("Months", "నెలల")
+                    .replace("Years", "సంవత్సరాలు")
+                    .replace("times per hour", "గంటకు సార్లు")
+                    .replace("time per day", "రోజుకు సార్లు")
+                    .replace("times per week", "వారానికి సార్లు")
+                    .replace("times per month", "నెలకు సార్లు")
+                    .replace("times per year", "సంవత్సరానికి సార్లు")));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));

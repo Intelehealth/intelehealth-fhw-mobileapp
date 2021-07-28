@@ -5,6 +5,7 @@
         <item>हिंदी</item>
         <item>English</item>
         <item>ଓଡିଆ</item>
+        <item>తెలుగు</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -12,6 +13,7 @@
         <item>hi</item>
         <item>en</item>
         <item>or</item>
+        <item>te</item>
 <!--        <item>cb</item>-->
     </string-array>
 
@@ -49,6 +51,24 @@
         <item>United States</item>
         <item>Philippines</item>
     </string-array>
+    <string-array name="countries_en">
+        <item>Select Country</item>
+        <item>India</item>
+        <item>United States</item>
+        <item>Philippines</item>
+    </string-array>
+    <string-array name="countries_hi">
+        <item>देश चुनें</item>
+        <item>इंडिया</item>
+        <item>संयुक्त राज्य अमेरिका</item>
+        <item>फिलीपींस</item>
+    </string-array>
+    <string-array name="countries_te">
+        <item>దేశాన్ని ఎంచుకోండి</item>
+        <item>భారతదేశం</item>
+        <item>సంయుక్త రాష్ట్రాలు</item>
+        <item>ఫిలిప్పీన్స్</item>
+    </string-array>
 
     <string-array name="education_or">
         <item>ଶିକ୍ଷା ଚୟନ</item>
@@ -66,6 +86,14 @@
         <item>Secondary</item>
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
+    </string-array>
+    <string-array name="education_te">
+        <item>ఎంచుకొను చదువు</item>
+        <item>నిరక్షరాస్యులు</item>
+        <item>ప్రాథమిక</item>
+        <item>ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
+        <item>ଉଚ୍ଚ ମାଧ୍ୟମିକ ଶିକ୍ଷା</item>
+        <item>ସగ్రాడ్యుయేషన్ &amp; ఉన్నత</item>
     </string-array>
     <string-array name="education_cb">
         <item>Select Education</item>
@@ -103,6 +131,15 @@
         <item>ଅନ୍ୟାନ୍ୟ</item>
     </string-array>
 
+    <string-array name="caste_te">
+        <item>ఎంచుకోండి</item>
+        <item>జనరల్</item>
+        <item>ఓబిసి</item>
+        <item>ఎస్సీఎస్సీ</item>
+        <item>ఎస్టీ</item>
+        <item>ఇతరులు</item>
+    </string-array>
+
     <string-array name="caste_hi">
         <item>चयन करें</item>
         <item>सामान्य</item>
@@ -122,6 +159,12 @@
         <item>ଚୟନ</item>
         <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ</item>
         <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ</item>
+    </string-array>
+
+    <string-array name="economic_te">
+        <item>ఎంచుకోండి</item>
+        <item>ఎపిఎల్</item>
+        <item>బిపిఎల్</item>
     </string-array>
 
     <string-array name="economic_cb">
@@ -169,10 +212,121 @@
         <item>West Bengal</item>
     </string-array>
 
+    <string-array name="states_india_en">
+        <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+    <string-array name="states_india_hi">
+        <item>राज्य चुनें</item>
+        <item>आंध्र प्रदेश</item>
+        <item>अरुणाचल प्रदेश</item>
+        <item>असम</item>
+        <item>बिहार</item>
+        <item>छत्तीसगढ</item>
+        <item>गोवा</item>
+        <item>गुजरात</item>
+        <item>हरयाणा</item>
+        <item>हिमाचल प्रदेश</item>
+        <item>जम्मू कश्मीर</item>
+        <item>झारखंड</item>
+        <item>कर्नाटक</item>
+        <item>केरल</item>
+        <item>मध्य प्रदेश</item>
+        <item>महाराष्ट्र</item>
+        <item>मणिपुर</item>
+        <item>मेघालय</item>
+        <item>मिजोरम</item>
+        <item>नगालैंड</item>
+        <item>उड़ीसा</item>
+        <item>पंजाब</item>
+        <item>राजस्थान</item>
+        <item>सिक्किम</item>
+        <item>तमिलनाडु</item>
+        <item>तेलंगाना</item>
+        <item>त्रिपुरा</item>
+        <item>उत्तर प्रदेश</item>
+        <item>उत्तराखंड</item>
+        <item>पश्चिम बंगाल</item>
+    </string-array>
+
+   <string-array name="states_india_te">
+        <item>రాష్ట్రం ఎంచుకోండి</item>
+        <item>ఆంధ్రప్రదేశ్</item>
+        <item>అరుణాచల్ ప్రదేశ్</item>
+        <item>అస్సాం</item>
+        <item>బీహార్</item>
+        <item>ఛత్తీస్‌గ h ్</item>
+        <item>గోవా</item>
+        <item>గుజరాత్</item>
+        <item>హర్యానా</item>
+        <item>హిమాచల్ ప్రదేశ్</item>
+        <item>జమ్మూ కాశ్మీర్</item>
+        <item>జార్ఖండ్</item>
+        <item>కర్ణాటక</item>
+        <item>కేరళ</item>
+        <item>మధ్యప్రదేశ్</item>
+        <item>మహారాష్ట్ర</item>
+        <item>మణిపూర్</item>
+        <item>మేఘాలయ</item>
+        <item>మిజోరం</item>
+        <item>నాగాలాండ్</item>
+        <item>ఒడిశా</item>
+        <item>పంజాబ్</item>
+        <item>రాజస్థాన్</item>
+        <item>సిక్కిం</item>
+        <item>తమిళనాడు</item>
+        <item>తెలంగాణ</item>
+        <item>త్రిపుర</item>
+        <item>ఉత్తర ప్రదేశ్</item>
+        <item>ఉత్తరాఖండ్</item>
+        <item>పశ్చిమ బెంగాల్</item>
+    </string-array>
+
     <string-array name="states_philippines">
         <item>Select State</item>
         <item>Bukidnon</item>
     </string-array>
+    <string-array name="states_philippines_hi">
+        <item>राज्य चुनें</item>
+        <item>बुकिद्नोन</item>
+    </string-array>
+    <string-array name="states_philippines_en">
+        <item>Select State</item>
+        <item>Bukidnon</item>
+    </string-array>
+    <string-array name="states_philippines_te">
+        <item>రాష్ట్రం ఎంచుకోండి</item>
+        <item>బుకిడ్నాన్</item>
+    </string-array>
+
     <string-array name="bukidnon_villages">
         <item>Adtuyon-Pangantucan</item>
         <item>Bacusanon-Pangantucan</item>
@@ -197,7 +351,239 @@
 
     </string-array>
 
+    <string-array name="bukidnon_villages_en">
+        <item>Adtuyon-Pangantucan</item>
+        <item>Bacusanon-Pangantucan</item>
+        <item>Bangahan-Pangantucan</item>
+        <item>Barandias-Pangantucan</item>
+        <item>Concepcion-Pangantucan</item>
+        <item>Gandingan-Pangantucan</item>
+        <item>Kimanait-Pangantucan</item>
+        <item>Kipadukan-Pangantucan</item>
+        <item>Langcataon-Pangantucan</item>
+        <item>Lantay-Pangantucan</item>
+        <item>Madaya-Pangantucan</item>
+        <item>Malipayon-Pangantucan</item>
+        <item>Mendis-Pangantucan</item>
+        <item>Nabaliwa-Pangantucan</item>
+        <item>New Eden-Pangantucan</item>
+        <item>Payad-Pangantucan</item>
+        <item>Pigtauranan-Pangantucan</item>
+        <item>Poblacion-Pangantucan</item>
+        <item>Portulin-Pangantucan</item>
+        <item></item>
+
+    </string-array>
+
+    <string-array name="bukidnon_villages_hi">
+        <item>अद्तुयोन-पंगंतुकान</item>
+        <item>बाकुसानोन-पेंगंटुकान</item>
+        <item>बंगाहन-पंगंतुकन</item>
+        <item>बरंडियास-पंगंटुकान</item>
+        <item>कोंसेपसिओन-पंगंतुकान</item>
+        <item>गंडिंगन-पंगंटुकान</item>
+        <item>किमानैत-पंगंतुकान</item>
+        <item>किपादुकन-पंगंतुकान</item>
+        <item>लंगकाटन-पंगंतुकन</item>
+        <item>लांते-पंगंतुकान</item>
+        <item>मदाया-पंगंतुकान</item>
+        <item>मालिपायों-पंगंतुकन</item>
+        <item>मेंडिस-पंगंटुकान</item>
+        <item>नबालीवा-पंगंतुकान</item>
+        <item>न्यू ईडन-पंगंतुकान</item>
+        <item>पयाद-पंगंतुकन</item>
+        <item>पिगटौरानन-पंगंतुकान</item>
+        <item>पोब्लासिओन-पेंगंटुकान</item>
+        <item>पोर्टुलिन-पेंगंटुकान</item>
+        <item></item>
+
+    </string-array>
+
+    <string-array name="bukidnon_villages_te">
+        <item>अఅడ్టుయోన్-పంగంటుకాన్</item>
+        <item>बబాకుసానన్-పంగంటుకాన్</item>
+        <item>बబంగహాన్-పంగంటుకాన్</item>
+        <item>बబరాండియాస్-పంగంటుకాన్</item>
+        <item>Cకాన్సెప్షన్-పంగంటుకాన్</item>
+        <item>गగాండింగన్-పంగంటుకాన్</item>
+        <item>कకిమానైట్-పంగంటుకాన్</item>
+        <item>कకిపాదుకాన్-పంగంటుకాన్</item>
+        <item>लలాంగ్కాటాన్-పంగంటుకాన్</item>
+        <item>लలాంటె-పంగంటుకాన్</item>
+        <item>मమాడయ-పంగంటుకాన్</item>
+        <item>मమలిపాయోన్-పంగంటుకాన్</item>
+        <item>मమెండిస్-పంగంటుకాన్</item>
+        <item>नనబాలివా-పంగంటుకాన్</item>
+        <item>नన్యూ ఈడెన్-పంగంటుకాన్</item>
+        <item>पపాయాడ్-పంగంటుకాన్</item>
+        <item>पపిగ్టౌరనన్-పంగంటుకాన్</item>
+        <item>पపోబ్లాసియన్-పంగంటుకాన్</item>
+        <item>पపోర్టులిన్-పంగంటుకాన్</item>
+        <item></item>
+
+    </string-array>
+
     <string-array name="states_us">
+        <item>Select State</item>
+        <item>Alabama</item>
+        <item>Alaska</item>
+        <item>Arizona</item>
+        <item>Arkansas</item>
+        <item>California</item>
+        <item>Colorado</item>
+        <item>Connecticut</item>
+        <item>Delaware</item>
+        <item>Florida</item>
+        <item>Georgia</item>
+        <item>Hawaii</item>
+        <item>Idaho</item>
+        <item>Illinois</item>
+        <item>Indiana</item>
+        <item>Iowa</item>
+        <item>Kansas</item>
+        <item>Kentucky</item>
+        <item>Louisiana</item>
+        <item>Maine</item>
+        <item>Maryland</item>
+        <item>Massachusetts</item>
+        <item>Michigan</item>
+        <item>Minnesota</item>
+        <item>Mississippi</item>
+        <item>Missouri</item>
+        <item>Montana</item>
+        <item>Nebraska</item>
+        <item>Nevada</item>
+        <item>New Hampshire</item>
+        <item>New Jersey</item>
+        <item>New Mexico</item>
+        <item>New York</item>
+        <item>North Carolina</item>
+        <item>North Dakota</item>
+        <item>Ohio</item>
+        <item>Oklahoma</item>
+        <item>Oregon</item>
+        <item>Pennsylvania</item>
+        <item>Rhode Island</item>
+        <item>South Carolina</item>
+        <item>South Dakota</item>
+        <item>Tennessee</item>
+        <item>Texas</item>
+        <item>Utah</item>
+        <item>Vermont</item>
+        <item>Virginia</item>
+        <item>Washington</item>
+        <item>West Virginia</item>
+        <item>Wisconsin</item>
+        <item>Wyoming</item>
+    </string-array>
+
+    <string-array name="states_us_te">
+        <item>రాష్ట్రం ఎంచుకోండి</item>
+        <item>అలబామా</item>
+        <item>అలాస్కా</item>
+        <item>అరిజోనా</item>
+        <item>అర్కాన్సాస్</item>
+        <item>కాలిఫోర్నియా</item>
+        <item>కొలరాడో</item>
+        <item>కనెక్టికట్</item>
+        <item>డెలావేర్</item>
+        <item>ఫ్లోరిడా</item>
+        <item>జార్జియా</item>
+        <item>హవాయి</item>
+        <item>ఇడాహో</item>
+        <item>ఇల్లినాయిస్</item>
+        <item>ఇండియానా</item>
+        <item>అయోవా</item>
+        <item>కాన్సాస్</item>
+        <item>కెంటుకీ</item>
+        <item>లూసియానా</item>
+        <item>మైనే</item>
+        <item>మేరీల్యాండ్</item>
+        <item>మసాచుసెట్స్</item>
+        <item>మిచిగాన్</item>
+        <item>మిన్నెసోటా</item>
+        <item>మిసిసిపీ</item>
+        <item>మిస్సౌరీ</item>
+        <item>మోంటానా</item>
+        <item>నెబ్రాస్కా</item>
+        <item>నెవాడా</item>
+        <item>న్యూ హాంప్షైర్</item>
+        <item>కొత్త కోటు</item>
+        <item>న్యూ మెక్సికో</item>
+        <item>న్యూయార్క్</item>
+        <item>ఉత్తర కరొలినా</item>
+        <item>ఉత్తర డకోటా</item>
+        <item>ఒహియో</item>
+        <item>ఓక్లహోమా</item>
+        <item>ఒరెగాన్</item>
+        <item>పెన్సిల్వేనియా</item>
+        <item>రోడ్ దీవి</item>
+        <item>దక్షిణ కరోలినా</item>
+        <item>దక్షిణ డకోటా</item>
+        <item>టేనస్సీ</item>
+        <item>టెక్సాస్</item>
+        <item>ఉతా</item>
+        <item>వెర్మోంట్</item>
+        <item>వర్జీనియా</item>
+        <item>వాషింగ్టన్</item>
+        <item>వెస్ట్ వర్జీనియా</item>
+        <item>విస్కాన్సిన్</item>
+        <item>వ్యోమింగ్</item>
+    </string-array>
+   <string-array name="states_us_hi">
+        <item>राज्य चुनें</item>
+        <item>अलाबामा</item>
+        <item>अलास्का</item>
+        <item>एरिज़ोना</item>
+        <item>अर्कांसासो</item>
+        <item>कैलिफोर्निया</item>
+        <item>कोलोराडो</item>
+        <item>कनेक्टिकट</item>
+        <item>डेलावेयर</item>
+        <item>फ्लोरिडा</item>
+        <item>जॉर्जिया</item>
+        <item>हवाई</item>
+        <item>इडाहो</item>
+        <item>इलिनोइस</item>
+        <item>इंडियाना</item>
+        <item>आयोवा</item>
+        <item>कान्सास</item>
+        <item>केंटकी</item>
+        <item>लुइसियाना</item>
+        <item>मैंने</item>
+        <item>मैरीलैंड</item>
+        <item>मैसाचुसेट्स</item>
+        <item>मिशिगन</item>
+        <item>मिनेसोटा</item>
+        <item>मिसीसिपी</item>
+        <item>मिसौरी</item>
+        <item>MONTANA</item>
+        <item>नेब्रास्का</item>
+        <item>नेवादा</item>
+        <item>न्यू हैम्पशायर</item>
+        <item>नयी जर्सी</item>
+        <item>न्यू मैक्सिको</item>
+        <item>न्यूयॉर्क</item>
+        <item>उत्तरी केरोलिना</item>
+        <item>नॉर्थ डकोटा</item>
+        <item>ओहायो</item>
+        <item>ओकलाहोमा</item>
+        <item>ओरेगन</item>
+        <item>पेंसिल्वेनिया</item>
+        <item>रोड आइलैंड</item>
+        <item>दक्षिण कैरोलिना</item>
+        <item>दक्षिणी डकोटा</item>
+        <item>टेनेसी</item>
+        <item>टेक्सास</item>
+        <item>यूटा</item>
+        <item>वरमोंट</item>
+        <item>वर्जीनिया</item>
+        <item>वाशिंगटन</item>
+        <item>वेस्ट वर्जीनिया</item>
+        <item>विस्कॉन्सिन</item>
+        <item>व्योमिंग</item>
+    </string-array>
+    <string-array name="states_us_en">
         <item>Select State</item>
         <item>Alabama</item>
         <item>Alaska</item>
@@ -311,6 +697,189 @@
         <item>Fingamunda</item>
         <item>Bijapani</item>
         <item>Charakmunda</item>
+    </string-array>
+  <string-array name="odisha_villages_te">
+        <item>సత్యగావ్</item>
+        <item>భంజముండ</item>
+        <item>బైదేహిపూర్</item>
+        <item>భద్రముండ</item>
+        <item>పటమారా</item>
+        <item>దితికృష్ణపూర్</item>
+        <item>పిటా కుల్హా సాహి</item>
+        <item>కుసుమపాల్</item>
+        <item>పౌన్సియా</item>
+        <item>జెంజీముని</item>
+        <item>సాగమంజీ సాహి</item>
+        <item>బంఖూలి</item>
+        <item>తాండిబెరానీ</item>
+        <item>నలసాహి</item>
+        <item>చనపాల</item>
+        <item>మాగర్ముహాన్</item>
+        <item>రంగమాటియా</item>
+        <item>సుబాసా</item>
+        <item>కురుముల</item>
+        <item>ఘెనకని</item>
+        <item>గోపిన్నాథ్పూర్</item>
+        <item>కుసుబానియా</item>
+        <item>హతిముండ</item>
+        <item>ధిపాసాహి</item>
+        <item>కుచింద</item>
+        <item>చడకమార</item>
+        <item>ఫుల్జారీ</item>
+        <item>ఖుంటపోసి</item>
+        <item>జెనపాడ</item>
+        <item>మొన్నాఖుల్</item>
+        <item>గోపీనాథ్పూర్</item>
+        <item>సియారిమాలియా కాలనీ సాయి</item>
+        <item>సియారిమాలియా</item>
+        <item>దంగపాల</item>
+        <item>దితికృష్ణపూర్</item>
+        <item>సనాధౌరగోత</item>
+        <item>కుంజం</item>
+        <item>పదంగ్</item>
+        <item>ఖులుముండా</item>
+        <item>ప్రియాంబదాపూర్</item>
+        <item>జగనాథ్పూర్</item>
+        <item>రోఘునాథ్పూర్</item>
+        <item>ముహర్ముహాన్</item>
+        <item>సౌబాసా</item>
+        <item>బంకులి</item>
+        <item>సాగమంగి సాయి</item>
+        <item>రెంగరోముండా</item>
+        <item>రంగియాపాల</item>
+        <item>బెనిపాథర్</item>
+        <item>దేబహాలి</item>
+        <item>జెంటునాలి</item>
+        <item>కాకిచంద (ముండూరిబేదా)</item>
+        <item>దీపాసాహి</item>
+        <item>బాదసడ</item>
+        <item>కాంతెకలి (కాంటెగిరి)</item>
+        <item>పురుషనపణి</item>
+        <item>ఫింగముండా</item>
+        <item>బీజపాణి</item>
+        <item>చారక్ముండ</item>
+    </string-array>
+  <string-array name="odisha_villages_en">
+        <item>Satygaon</item>
+        <item>Bhanjamunda</item>
+        <item>Baidehipur</item>
+        <item>Bhadramunda</item>
+        <item>Patamara</item>
+        <item>Ditikrushnapur</item>
+        <item>Pita Kulha Sahi</item>
+        <item>Kusumapal</item>
+        <item>Paunsia</item>
+        <item>Genjeimuni</item>
+        <item>Sagamanji Sahi</item>
+        <item>Bankhuli</item>
+        <item>Tandiberani</item>
+        <item>Nalasahi</item>
+        <item>Chanapala</item>
+        <item>Magarmuhan</item>
+        <item>Rangamatia</item>
+        <item>Suabasa</item>
+        <item>Kurumula</item>
+        <item>Ghenakani</item>
+        <item>Gopinnathpur</item>
+        <item>Kusubania</item>
+        <item>Hathimunda</item>
+        <item>Dhipasahi</item>
+        <item>Kuchinda</item>
+        <item>Chadakamara</item>
+        <item>Phuljhari</item>
+        <item>Khuntaposi</item>
+        <item>Jenapada</item>
+        <item>Monnakhul</item>
+        <item>Gopinathpur</item>
+        <item>Siarimalia Colony Sai</item>
+        <item>Siarimalia</item>
+        <item>Dangapala</item>
+        <item>Ditikrushnapur</item>
+        <item>Sanadhauragotha</item>
+        <item>Kunjam</item>
+        <item>Padang</item>
+        <item>Khulamunda</item>
+        <item>Priyambadapur</item>
+        <item>Jaganathpur</item>
+        <item>Roghunathpur</item>
+        <item>Muharmuhan</item>
+        <item>Saubasa</item>
+        <item>Bankuli</item>
+        <item>Sagamanghi Sai</item>
+        <item>Rengaromunda</item>
+        <item>Rangiapala</item>
+        <item>Benipathar</item>
+        <item>Debahali</item>
+        <item>Gentunali</item>
+        <item>Kakichanda(Munduribeda)</item>
+        <item>Dipasahi</item>
+        <item>Badasada</item>
+        <item>Kanteikali(Kanteigiri)</item>
+        <item>Purunapani</item>
+        <item>Fingamunda</item>
+        <item>Bijapani</item>
+        <item>Charakmunda</item>
+    </string-array>
+  <string-array name="odisha_villages_hi">
+        <item>सत्यगाँव</item>
+        <item>भंजामुंडा</item>
+        <item>बैदेहीपुर</item>
+        <item>भद्रमुंडा</item>
+        <item>पटामार</item>
+        <item>दितिकृष्णपुर</item>
+        <item>पिता कुल्हा साहिब</item>
+        <item>कुसुमापाली</item>
+        <item>पौंसिया</item>
+        <item>जेनजेमुनि</item>
+        <item>सगमांजी साहिब</item>
+        <item>बंखुलि</item>
+        <item>तंडीबेरानी</item>
+        <item>नालसाही</item>
+        <item>चनापाल</item>
+        <item>मगरमुहान</item>
+        <item>रंगमटिया</item>
+        <item>सुआबासा</item>
+        <item>कुरुमुला</item>
+        <item>घेनकानि</item>
+        <item>गोपीनाथपुर</item>
+        <item>कुसुबनिया</item>
+        <item>हाथीमुंडा</item>
+        <item>धीपसाही</item>
+        <item>कुचिंडा</item>
+        <item>चडकामरा</item>
+        <item>फुलझरी</item>
+        <item>खुंटापोसी</item>
+        <item>जेनपाड़ा</item>
+        <item>मोनाखुली</item>
+        <item>गोपीनाथपुर</item>
+        <item>सियारिमालिया कॉलोनी साईं</item>
+        <item>सिरिमालिया</item>
+        <item>दंगापाल</item>
+        <item>दितिकृष्णपुर</item>
+        <item>सनाधौरगोथा</item>
+        <item>कुंजाम</item>
+        <item>Padang</item>
+        <item>खुलमुंडा</item>
+        <item>प्रियंबदापुर</item>
+        <item>जगन्नाथपुरी</item>
+        <item>रघुनाथपुर</item>
+        <item>मुहरमुहान</item>
+        <item>सौबासा</item>
+        <item>बांकुली</item>
+        <item>सगमंगी साईं</item>
+        <item>रेंगारोमुंडा</item>
+        <item>रंगियापला</item>
+        <item>बेनीपथरी</item>
+        <item>देबहाली</item>
+        <item>जेंटुनाली</item>
+        <item>काकीचंदा (मुंडूरीबेड़ा)</item>
+        <item>दीपासाही</item>
+        <item>बदासदा</item>
+        <item>कांतीकली (कांतीगिरी)</item>
+        <item>पुरुनापानी</item>
+        <item>फिंगमुंडा</item>
+        <item>बीजापानी</item>
+        <item>चरकमुंडा</item>
     </string-array>
 
     <string-array name="units">

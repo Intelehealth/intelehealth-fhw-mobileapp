@@ -666,4 +666,10 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
+    <!--    Strings for special Check-->
+    <string name="str_check_Odisha">Odisha</string>
+    <string name="str_check_Bukidnon">Bukidnon</string>
+    <string name="str_check_India">India</string>
+    <string name="str_check_UnitedStates">United States</string>
+    <string name="str_check_Philippines">Philippines</string>
 </resources>

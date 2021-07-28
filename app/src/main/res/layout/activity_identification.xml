@@ -394,13 +394,14 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:orientation="vertical"
+                                        android:paddingBottom="2dp"
                                         android:weightSum="4">
 
                                         <EditText
                                             android:id="@+id/identification_country"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="3"
+                                            android:layout_weight="2"
                                             android:clickable="false"
                                             android:cursorVisible="false"
                                             android:drawableStart="@drawable/country_flag_icon"
@@ -420,7 +421,7 @@
                                             android:id="@+id/spinner_country"
                                             android:layout_width="fill_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1" />
+                                            android:layout_weight="2" />
 
                                     </LinearLayout>
 
@@ -445,13 +446,14 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
+                                        android:paddingBottom="2dp"
                                         android:orientation="vertical">
 
                                         <EditText
                                             android:id="@+id/identification_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="3"
+                                            android:layout_weight="2"
                                             android:clickable="false"
                                             android:cursorVisible="false"
                                             android:drawableStart="@drawable/state_list_icon"
@@ -471,7 +473,7 @@
                                             android:id="@+id/spinner_state"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1" />
+                                            android:layout_weight="2" />
                                     </LinearLayout>
 
 
