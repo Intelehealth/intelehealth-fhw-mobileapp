@@ -691,4 +691,5 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="try_again_later">Something went wrong. Please try again later.</string>
     <string name="sikkim">Sikkim</string>
+    <string name="loading_more">Loading more…</string>
 </resources>
