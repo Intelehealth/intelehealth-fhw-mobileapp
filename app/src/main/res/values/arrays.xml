@@ -49,6 +49,38 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
+
+    //values for "who is caller" spinner
+    <string-array name="caller_type">
+        <item>Select</item>
+        <item>Patient themselves</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Spouse</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Sister</item>
+        <item>Brother</item>
+        <item>Other Relative</item>
+    </string-array>
+
+    //values for "helpline knowledge" spinner
+    <string-array name="helpline_knowledge">
+        <item>Select</item>
+        <item>Social Media</item>
+        <item>Wall Posters or Painting </item>
+        <item>Word of Mouth( through relatives or friends)</item>
+        <item>Other</item>
+
+    </string-array>
+
+    //values for "type of mobile device" spinner
+    <string-array name="mobile_phone_type">
+        <item>Select</item>
+        <item>Smartphone</item>
+        <item>Keypad phone</item>
+    </string-array>
+
     <string-array name="countries">
         <item>Select Country</item>
         <item>India</item>

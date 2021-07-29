@@ -522,6 +522,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -539,27 +540,27 @@ public class PatientDetailActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-               /* if (name.equalsIgnoreCase("caste")) {
+               if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
+                }
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("occupation")) {
+                /*if (name.equalsIgnoreCase("occupation")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
-                if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
-                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
+                /*if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
+                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                }*/
 
             } while (idCursor1.moveToNext());
         }
@@ -576,6 +577,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow addr2Row = findViewById(R.id.tableRow_addr2);
         TextView addr2View = findViewById(R.id.textView_address2);
         TextView addrFinalView = findViewById(R.id.textView_address_final);
+        TextView callerRelation = findViewById(R.id.textView_callerRelation);
+        TextView helplineInfo = findViewById(R.id.textView_helplineInfo);
+        TextView phoneType = findViewById(R.id.textView_phoneType);
         TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
@@ -764,6 +768,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+        callerRelation.setText(patient_new.getSdw());
+        helplineInfo.setText(patient_new.getCaste());
+        phoneType.setText(patient_new.getEconomic_status());
 
         //english = en
         //hindi = hi
