@@ -640,11 +640,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
-        if(special_value.equalsIgnoreCase("Doctor not needed"))
-        {
-            card_print.setVisibility(View.GONE);
-            card_share.setVisibility(View.GONE);
-        }
         ArrayAdapter<String> stringArrayAdapter;
 
         if (items != null) {
@@ -1302,14 +1297,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String originalComplaint = dialogEditText.getText().toString();
-                                String tag1 = "<b>";
-                                String tag2 = "</b>";
-                                int originalCompLength = originalComplaint.length();
-                                int indexColon = originalComplaint.indexOf(":");
-                                String formatedComplaint = Node.bullet_arrow + tag1 + originalComplaint.substring(1,indexColon) + tag2 + originalComplaint.substring(indexColon,originalCompLength-1) ;
-                                String finalFormattedComplaint = formatedComplaint.replace("\n","<br>");
-                                complaint.setValue(finalFormattedComplaint); //dialogEditText.getText().toString().replace("\n", "<br>")
+                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -1857,7 +1845,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
             }
         }
         String font_face = "<style>" +
@@ -1880,7 +1868,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+9118003094144" + "</span>" /*+*/
+                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+911141236457" + "</span>" /*+*/
 
                    /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
                     + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
@@ -2460,7 +2448,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
             }
         }
         String font_face = "<style>" +
