@@ -7,7 +7,7 @@ public class WelcomeSms {
     public WelcomeSms(String to) {
         this.apiKey = "A39e1e65900618ef9b6e16da473f8894d";
         this.to = to;
-        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18001203710.";
+        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18003094144.";
         this.type = "TXN";
         this.sender = "TIFDOC";
         this.source = "API";
