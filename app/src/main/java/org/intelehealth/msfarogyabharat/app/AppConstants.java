@@ -105,6 +105,7 @@ public class AppConstants {
 
     public static ApiInterface ivrApiInterface = ApiClient.createIVRService(ApiInterface.class);
 
-
+    public static String SMS_API_KEY = "A39e1e65900618ef9b6e16da473f8894d";
+    public static String SMS_TEMPLATE_ID = "1107162737761872388";
 }
 

@@ -3,15 +3,17 @@ package org.intelehealth.msfarogyabharat.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.msfarogyabharat.app.AppConstants;
+
 public class WelcomeSms {
     public WelcomeSms(String to) {
-        this.apiKey = "A39e1e65900618ef9b6e16da473f8894d";
+        this.apiKey = AppConstants.SMS_API_KEY;
         this.to = to;
-        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18001203710.";
+        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18003094144.";
         this.type = "TXN";
         this.sender = "TIFDOC";
         this.source = "API";
-        this.template_id = "1107162701346823339";
+        this.template_id = AppConstants.SMS_TEMPLATE_ID;
     }
 
     @SerializedName("api-key")
