@@ -512,8 +512,10 @@ public class SearchPatientActivity extends AppCompatActivity {
                 if (!isVisitActive) {
                     final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.COMMENTS, patientUid});
                     if (obsCursor.moveToFirst()) {
-                        comment = (obsCursor.getString(obsCursor.getColumnIndexOrThrow("value")));
+                        comment = String.format("%s: %s", getString(R.string.case_closed), obsCursor.getString(obsCursor.getColumnIndexOrThrow("value")));
                         obsCursor.close();
+                    } else {
+                        comment = getString(R.string.case_closed);
                     }
                 }
             } catch (Exception e) {

@@ -60,7 +60,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             if (TextUtils.isEmpty(patinet.comment)) {
                 holder.commentTextView.setVisibility(View.GONE);
             } else {
-                holder.commentTextView.setText(String.format("%s: %s", context.getString(R.string.case_closed), patinet.comment));
+                holder.commentTextView.setText(patinet.comment);
                 holder.commentTextView.setVisibility(View.VISIBLE);
             }
         }
