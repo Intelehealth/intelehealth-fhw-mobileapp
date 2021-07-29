@@ -667,4 +667,21 @@
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
 
+    <string name="text_medical_advice">ಹೊಸ ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+    <string name="text_new_visit">ಹೊಸ ವೈದ್ಯರ ಭೇಟಿ</string>
+    <string name="text_new_advice">ಹೊಸ ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+
+    <string name="vaccination_guidance">ವ್ಯಾಕ್ಸಿನೇಷನ್ ಮಾರ್ಗದರ್ಶನ</string>
+    <string name="concern_about_covid_re_infection">COVID ಮರು-ಸೋಂಕಿನ ಬಗ್ಗೆ ಕಾಳಜಿ</string>
+    <string name="managing_breathlessness">ಉಸಿರಾಟದ ನಿರ್ವಹಣೆ</string>
+    <string name="managing_issues_with_voice">ಧ್ವನಿಯೊಂದಿಗೆ ಸಮಸ್ಯೆಗಳನ್ನು ನಿರ್ವಹಿಸುವುದು</string>
+    <string name="managing_eating_drinking">ಚೇತರಿಸಿಕೊಂಡ ನಂತರ ತಿನ್ನುವುದು, ಕುಡಿಯುವುದು ಮತ್ತು ನುಂಗುವುದು</string>
+    <string name="dealing_problems">ಗಮನ, ಮೆಮೊರಿ ಮತ್ತು ಸ್ಪಷ್ಟತೆಯ ಸಮಸ್ಯೆಗಳನ್ನು ನಿಭಾಯಿಸುವುದು</string>
+    <string name="managing_mental_health">ಮಾನಸಿಕ ಆರೋಗ್ಯವನ್ನು ನಿರ್ವಹಿಸುವುದು</string>
+    <string name="exercises">ವ್ಯಾಯಾಮಗಳು</string>
+    <string name="txt_additional_info">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿ</string>
+    <string name="medical_advice">ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+    <string name="text_patient_and_advice_created">ರೋಗಿಯ ಮತ್ತು ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
+    <string name="text_advice_created">ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
+
 </resources>

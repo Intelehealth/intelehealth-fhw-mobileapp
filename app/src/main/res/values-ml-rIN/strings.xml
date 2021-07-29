@@ -544,6 +544,23 @@
     <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
 
+    <string name="text_medical_advice">പുതിയ മെഡിക്കൽ ഉപദേശം</string>
+    <string name="text_new_visit">പുതിയ ഡോക്ടർ സന്ദർശനം</string>
+    <string name="text_new_advice">പുതിയ മെഡിക്കൽ ഉപദേശം</string>
+
+    <string name="vaccination_guidance">വാക്സിനേഷൻ മാർഗ്ഗനിർദ്ദേശം</string>
+    <string name="concern_about_covid_re_infection">COVID വീണ്ടും അണുബാധയെക്കുറിച്ചുള്ള ആശങ്ക</string>
+    <string name="managing_breathlessness">ശ്വാസോച്ഛ്വാസം കൈകാര്യം ചെയ്യുന്നു</string>
+    <string name="managing_issues_with_voice">ശബ്‌ദത്തിലെ പ്രശ്നങ്ങൾ കൈകാര്യം ചെയ്യുന്നു</string>
+    <string name="managing_eating_drinking">സുഖം പ്രാപിച്ചതിനുശേഷം ഭക്ഷണം കഴിക്കൽ, വിഴുങ്ങൽ എന്നിവ കൈകാര്യം ചെയ്യുന്നു</string>
+    <string name="dealing_problems">ശ്രദ്ധ, മെമ്മറി, വ്യക്തത എന്നിവയുടെ പ്രശ്നങ്ങൾ കൈകാര്യം ചെയ്യുന്നു</string>
+    <string name="managing_mental_health">മാനസികാരോഗ്യം കൈകാര്യം ചെയ്യുന്നു</string>
+    <string name="exercises">വ്യായാമങ്ങൾ</string>
+    <string name="txt_additional_info">അധിക വിവരം</string>
+    <string name="medical_advice">മെഡിക്കൽ ഉപദേശം</string>
+    <string name="text_patient_and_advice_created">രോഗിയും മെഡിക്കൽ ഉപദേശവും വിജയകരമായി രജിസ്റ്റർ ചെയ്തു</string>
+    <string name="text_advice_created">മെഡിക്കൽ ഉപദേശം വിജയകരമായി രജിസ്റ്റർ ചെയ്തു</string>
+
 </resources>
 
 

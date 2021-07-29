@@ -540,4 +540,21 @@
     <string name="choose_from_gallery">గ్యాలరీ నుండి ఎంచుకోండి</string>
     <string name="additional_doc_image_picker_title">అదనపు పత్రాన్ని జోడించండి!</string>
 
+    <string name="text_medical_advice">కొత్త వైద్య సలహా</string>
+    <string name="text_new_visit">కొత్త డాక్టర్ సందర్శన</string>
+    <string name="text_new_advice">కొత్త వైద్య సలహా</string>
+
+    <string name="vaccination_guidance">టీకా మార్గదర్శకత్వం</string>
+    <string name="concern_about_covid_re_infection">COVID తిరిగి సంక్రమణ గురించి ఆందోళన</string>
+    <string name="managing_breathlessness">శ్వాస తీసుకోకపోవడం</string>
+    <string name="managing_issues_with_voice">వాయిస్‌తో సమస్యలను నిర్వహించడం</string>
+    <string name="managing_eating_drinking">కోలుకున్న తర్వాత తినడం, త్రాగటం మరియు మింగడం</string>
+    <string name="dealing_problems">శ్రద్ధ, జ్ఞాపకశక్తి మరియు స్పష్టత యొక్క సమస్యలను పరిష్కరించడం</string>
+    <string name="managing_mental_health">మానసిక ఆరోగ్యాన్ని నిర్వహించడం</string>
+    <string name="exercises">వ్యాయామాలు</string>
+    <string name="txt_additional_info">అదనపు సమాచారం</string>
+    <string name="medical_advice">వైద్య సలహా</string>
+    <string name="text_patient_and_advice_created">రోగి మరియు వైద్య సలహా విజయవంతంగా నమోదు చేయబడుతుంది</string>
+    <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
+
 </resources>

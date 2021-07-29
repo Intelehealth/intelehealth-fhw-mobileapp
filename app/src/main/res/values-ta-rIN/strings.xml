@@ -544,4 +544,21 @@
     <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்க்கவும்!</string>
     <string name="question_answer_all" translatable="false">அனைத்து கேள்விகளுக்கும் நீங்கள் நிச்சயமாக பதிலளித்திருக்கிறீர்களா?</string>
 
+    <string name="text_medical_advice">புதிய மருத்துவ ஆலோசனை</string>
+    <string name="text_new_visit">புதிய மருத்துவர் வருகை</string>
+    <string name="text_new_advice">புதிய மருத்துவ ஆலோசனை</string>
+
+    <string name="vaccination_guidance">தடுப்பூசி வழிகாட்டுதல்</string>
+    <string name="concern_about_covid_re_infection">COVID மறு தொற்று பற்றிய கவலை</string>
+    <string name="managing_breathlessness">மூச்சுத் திணறலை நிர்வகித்தல்</string>
+    <string name="managing_issues_with_voice">குரலுடன் சிக்கல்களை நிர்வகித்தல்</string>
+    <string name="managing_eating_drinking">மீட்கப்பட்ட பிறகு சாப்பிடுவது, குடிப்பது மற்றும் விழுங்குவதை நிர்வகித்தல்</string>
+    <string name="dealing_problems">கவனம், நினைவகம் மற்றும் தெளிவின் சிக்கல்களைக் கையாளுதல்</string>
+    <string name="managing_mental_health">மன ஆரோக்கியத்தை நிர்வகித்தல்</string>
+    <string name="exercises">பயிற்சிகள்</string>
+    <string name="txt_additional_info">கூடுதல் தகவல்</string>
+    <string name="medical_advice">மருத்துவ ஆலோசனை</string>
+    <string name="text_patient_and_advice_created">நோயாளி மற்றும் மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
+    <string name="text_advice_created">மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
+
 </resources>

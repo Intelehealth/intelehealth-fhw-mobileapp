@@ -515,5 +515,20 @@
     <string name="choose_from_gallery">গেলেৰীৰ পৰা বাছক</string>
     <string name="additional_doc_image_picker_title">অতিৰিক্ত দস্তাবেজ যোগ কৰক!</string>
 
+    <string name="text_medical_advice">নতুন চিকিৎসা পৰামৰ্শ</string>
+    <string name="text_new_visit">নতুন চিকিৎসকৰ সাক্ষাত</string>
+    <string name="text_new_advice">নতুন চিকিৎসা পৰামৰ্শ</string>
+
+    <string name="vaccination_guidance">টিকাকৰণ নিৰ্দেশনা</string>
+    <string name="concern_about_covid_re_infection">কোভিড পুনৰ-সংক্ৰমণৰ বিষয়ে চিন্তা</string>
+    <string name="managing_breathlessness">শ্বাসকষ্ট নিয়ন্ত্ৰণ কৰা</string>
+    <string name="managing_issues_with_voice">কণ্ঠস্বৰৰ সৈতে সমস্যাবোৰ নিয়ন্ত্ৰণ কৰা</string>
+    <string name="managing_eating_drinking">আৰোগ্য হোৱাৰ পিছত খোৱা, পান কৰা আৰু গিলা নিয়ন্ত্ৰণ কৰা</string>
+    <string name="dealing_problems">মনোযোগ, স্মৃতি শক্তি আৰু স্পষ্টতাৰ সমস্যাৰ মোকাবিলা কৰা</string>
+    <string name="managing_mental_health">মানসিক স্বাস্থ্য ব্যৱস্থাপনা কৰা</string>
+    <string name="exercises">ব্যায়াম</string>
+    <string name="txt_additional_info">অতিৰিক্ত তথ্য</string>
+    <string name="medical_advice">চিকিৎসীয় পৰামৰ্শ</string>
+
 
 </resources>

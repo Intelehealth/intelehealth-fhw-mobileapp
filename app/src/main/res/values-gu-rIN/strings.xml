@@ -662,5 +662,21 @@
         <string name="choose_from_gallery">ગેલેરીમાંથી પસંદ કરો</string>
         <string name="additional_doc_image_picker_title">વધારાના દસ્તાવેજ ઉમેરો!</string>
 
+        <string name="text_medical_advice">નવી તબીબી સલાહ</string>
+        <string name="text_new_visit">નવા ડોક્ટરની મુલાકાત</string>
+        <string name="text_new_advice">નવી તબીબી સલાહ</string>
+
+        <string name="vaccination_guidance">રસીકરણ માર્ગદર્શન</string>
+        <string name="concern_about_covid_re_infection">કોવિડ ફરીથી ચેપ અંગે ચિંતા</string>
+        <string name="managing_breathlessness">શ્વાસ લેવાનું સંચાલન કરવું</string>
+        <string name="managing_issues_with_voice">અવાજ સાથે મુદ્દાઓનું સંચાલન</string>
+        <string name="managing_eating_drinking">પુન eatingપ્રાપ્તિ પછી ખાવાનું, પીવાનું અને ગળી જવાનું સંચાલન કરવું</string>
+        <string name="dealing_problems">ધ્યાન, મેમરી અને સ્પષ્ટતાની સમસ્યાઓનું નિવારણ</string>
+        <string name="managing_mental_health">માનસિક આરોગ્યનું સંચાલન કરવું</string>
+        <string name="exercises">કસરતો</string>
+        <string name="txt_additional_info">વધારાની માહિતી</string>
+    <string name="medical_advice">તબીબી સલાહ</string>
+        <string name="text_patient_and_advice_created">દર્દી અને તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
+        <string name="text_advice_created">તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
 
 </resources>
