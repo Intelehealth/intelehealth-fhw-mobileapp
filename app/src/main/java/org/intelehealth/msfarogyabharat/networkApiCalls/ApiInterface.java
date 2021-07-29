@@ -7,6 +7,7 @@ import org.intelehealth.msfarogyabharat.models.Location;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.msfarogyabharat.models.Results;
+import org.intelehealth.msfarogyabharat.models.WelcomeSms;
 import org.intelehealth.msfarogyabharat.models.dto.ResponseDTO;
 import org.intelehealth.msfarogyabharat.models.loginModel.LoginModel;
 import org.intelehealth.msfarogyabharat.models.loginProviderModel.LoginProviderModel;
@@ -103,4 +104,7 @@ public interface ApiInterface {
 
     @GET
     Single<String> CALL_PATIENT_IVR(@Url String url);
+
+    @POST
+    Single<ResponseBody> SEND_WELCOME_SMS(@Url String url, @Body WelcomeSms welcomeSms);
 }

@@ -2767,7 +2767,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
                 i.putExtra("MedicalAdvice", medicalboolean);
-                // i.putExtra("MedicalAdvice", "MedicalAdvice");
+                if (TextUtils.isEmpty(patientID_edit)) {
+                    i.putExtra("phoneNumber", patientdto.getPhonenumber());
+                }
                 Log.d(TAG, "Privacy Value on (Identification): " + privacy_value); //privacy value transferred to PatientDetail activity.
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);

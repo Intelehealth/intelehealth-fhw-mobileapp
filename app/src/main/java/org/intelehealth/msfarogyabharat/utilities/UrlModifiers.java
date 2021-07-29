@@ -86,4 +86,8 @@ public class UrlModifiers {
         String api_key = "Ad999102331cd1308668e72c0f60cffdc";
         return String.format("https://api-voice.kaleyra.com/v1/?api_key=%s&method=dial.click2call&caller=%s&receiver=%s", api_key, caller, receiver);
     }
+
+    public String getSendSmsUrl() {
+        return "https://api.kaleyra.io/v1/HXIN1701481071IN/messages";
+    }
 }
