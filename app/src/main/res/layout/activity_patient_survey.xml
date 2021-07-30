@@ -15,19 +15,6 @@
         android:orientation="vertical"
         android:weightSum="5">
 
-        <TextView
-            android:id="@+id/textView3"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/lato_regular"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:paddingTop="@dimen/padding_card_title_text"
-            android:text="@string/exit_survey_label"
-            android:textSize="@dimen/card_title_text_size" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -161,6 +148,26 @@
                 android:fontFamily="@font/lato_regular"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/lato_regular"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingTop="@dimen/padding_card_title_text"
+            android:text="@string/exit_survey_label"
+            android:textSize="22sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:numStars="5"
+            android:stepSize="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <RelativeLayout
             android:id="@+id/button_layout"

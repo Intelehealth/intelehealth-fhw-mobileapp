@@ -228,4 +228,6 @@ public class PatientDTO {
     public void setPatientPhoto(String patientPhoto) {
         this.patientPhoto = patientPhoto;
     }
+
+    public String comment;
 }

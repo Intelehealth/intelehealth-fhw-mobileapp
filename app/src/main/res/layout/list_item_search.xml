@@ -40,6 +40,14 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/lato_regular" />
 
+            <TextView
+                android:id="@+id/list_item_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:fontFamily="@font/lato_regular" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1.5pt"></View>

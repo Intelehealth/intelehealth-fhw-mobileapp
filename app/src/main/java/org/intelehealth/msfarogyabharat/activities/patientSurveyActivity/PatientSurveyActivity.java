@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -68,7 +69,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     TextView mSkip;
     TextView mSubmit;
 
-    String rating;
+    String rating = "0";
     String comments;
 
     SessionManager sessionManager = null;
@@ -79,7 +80,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     ArrayList<String> patientNoteList;
     ArrayAdapter<String> patientNoteAdapter;
     String noteText = "";
-
+    private RatingBar ratingBar;
 
     @Override
     public void onBackPressed() {
@@ -120,7 +121,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mComments = findViewById(R.id.editText_exit_survey);
         mSkip = findViewById(R.id.button_survey_skip);
         mSubmit = findViewById(R.id.button_survey_submit);
-
+        ratingBar = findViewById(R.id.ratingBar);
 
         notesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -173,6 +174,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 //                }
 //                else
                 noteText = notesSpinner.getSelectedItem().toString();
+                rating = String.valueOf(ratingBar.getRating());
                 if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();

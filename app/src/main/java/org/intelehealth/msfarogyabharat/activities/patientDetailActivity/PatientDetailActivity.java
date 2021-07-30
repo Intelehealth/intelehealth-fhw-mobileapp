@@ -14,6 +14,13 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -46,7 +53,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
+
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
@@ -74,6 +94,12 @@ import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
+
+import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
+import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity;
+import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,6 +125,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+//import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
 
@@ -107,11 +134,14 @@ import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
     public static final String EXTRA_SHOW_MEDICAL_ADVICE = "EXTRA_SHOW_MEDICAL_ADVICE";
+
     String patientName;
     String visitUuid = null;
     List<String> visitUuidList;
     String patientUuid;
     String intentTag = "";
+    String intentTag1 = "";
+    String intentTag2 = "";
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager = null;
@@ -194,10 +224,25 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             intentTag = intent.getStringExtra("tag");
+            intentTag1 = intent.getStringExtra("intentTag1");
+            intentTag2 = intent.getStringExtra("intentTag2");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
             Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
+
+            if(intentTag2!= null && intentTag2.equalsIgnoreCase("findPatient") && intentTag1!=null && intentTag1.equalsIgnoreCase("editDetails"))
+            {
+                newAdvice.setVisibility(View.VISIBLE);
+                newAdvice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                    }
+                });
+
+            }
+
         }
 
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -211,6 +256,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
+                intent2.putExtra("intentTag1", "editDetails");
+                intent2.putExtra("intentTag2", intentTag2);
                 startActivity(intent2);
 
             }
@@ -503,6 +550,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -520,27 +568,27 @@ public class PatientDetailActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-               /* if (name.equalsIgnoreCase("caste")) {
+               if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
+                }
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("occupation")) {
+                /*if (name.equalsIgnoreCase("occupation")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
-                if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
-                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
+                /*if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
+                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                }*/
 
             } while (idCursor1.moveToNext());
         }
@@ -557,6 +605,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow addr2Row = findViewById(R.id.tableRow_addr2);
         TextView addr2View = findViewById(R.id.textView_address2);
         TextView addrFinalView = findViewById(R.id.textView_address_final);
+        TextView callerRelation = findViewById(R.id.textView_callerRelation);
+        TextView helplineInfo = findViewById(R.id.textView_helplineInfo);
+        TextView phoneType = findViewById(R.id.textView_phoneType);
         TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
@@ -745,6 +796,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+        callerRelation.setText(patient_new.getSdw());
+        helplineInfo.setText(patient_new.getCaste());
+        phoneType.setText(patient_new.getEconomic_status());
 
         //english = en
         //hindi = hi

@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +57,12 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             holder.bodyTextView.setText(body);
+            if (TextUtils.isEmpty(patinet.comment)) {
+                holder.commentTextView.setVisibility(View.GONE);
+            } else {
+                holder.commentTextView.setText(patinet.comment);
+                holder.commentTextView.setVisibility(View.VISIBLE);
+            }
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +74,7 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "search");
+                intent.putExtra("intentTag2","findPatient");
                 intent.putExtra("hasPrescription", "false");
                 intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
                 context.startActivity(intent);
@@ -84,11 +92,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
+        private TextView commentTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
+            commentTextView = itemView.findViewById(R.id.list_item_comment);
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }

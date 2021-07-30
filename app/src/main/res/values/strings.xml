@@ -125,7 +125,7 @@
     <string name="title_activity_complaint_node">Select Complaints</string>
     <string name="complaint_category_selected">Selected Categories:</string>
     <string name="complaint_complaint_selected">Selected Complaints:</string>
-    <string name="complaint_dialog_title">Reason for visit</string>
+    <string name="complaint_dialog_title">Reason for call</string>
     <string name="complaint_required">Complaint must be selected!</string>
 
     //Question Node Screen
@@ -181,7 +181,7 @@
     <string name="visit_summary_medical_history">Medical history</string>
     <string name="visit_summary_family_history">Family history</string>
     <string name="visit_summary_on_examination">On examination</string>
-    <string name="visit_summary_complaint">Reason for visit</string>
+    <string name="visit_summary_complaint">Reason for call</string>
     <string name="visit_summary_vitals">Vitals</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
@@ -555,7 +555,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your call?</string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -620,7 +620,7 @@
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Karyakarta) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (MSF Nurse) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
@@ -702,5 +702,14 @@
     <string name="calling_patient">Calling patient…</string>
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
+    <string name="loading_more">Loading more…</string>
+    //Others details
+    <string name="who_is_calling">Who is calling?*</string>
+    <string name="how_do_you_know_about_helpline">How do you know about our helpline?*</string>
+    <string name="what_kind_of_phone_do_you_personally_own">What kind of phone does the caller have?*</string>
+    <string name="caller_relation">Caller\'s Relation</string>
+    <string name="helpline_knowledge">Helpline Information</string>
+    <string name="phone_type">Mobile Phone Type</string>
+    <string name="case_closed">Case closed</string>
     <string name="welcome_sms">Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18001203710.</string>
 </resources>
