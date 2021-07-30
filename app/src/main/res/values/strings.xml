@@ -703,7 +703,6 @@
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
     <string name="loading_more">Loading more…</string>
-
     //Others details
     <string name="who_is_calling">Who is calling?*</string>
     <string name="how_do_you_know_about_helpline">How do you know about our helpline?*</string>
@@ -711,6 +710,5 @@
     <string name="caller_relation">Caller\'s Relation</string>
     <string name="helpline_knowledge">Helpline Information</string>
     <string name="phone_type">Mobile Phone Type</string>
-
-
+    <string name="case_closed">Case closed</string>
 </resources>

@@ -23,6 +23,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -56,6 +57,7 @@ import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
+import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 
 public class SearchPatientActivity extends AppCompatActivity {
@@ -306,7 +308,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
-
+                    model.comment = getComment(model.getUuid());
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
@@ -483,6 +485,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.comment = getComment(model.getUuid());
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -509,6 +512,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.comment = getComment(model.getUuid());
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -520,6 +524,37 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         return modelList;
 
+    }
+
+    private String getComment(String patientUid) {
+        String comment = null;
+        boolean isVisitActive = false;
+        final Cursor visitCursor = db.rawQuery("select v.enddate from tbl_visit as v where patientuuid = ?", new String[] { patientUid });
+        if (visitCursor.moveToFirst()) {
+            try {
+                do {
+                    String endDate = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    if (TextUtils.isEmpty(endDate)) {
+                        isVisitActive = true;
+                        break;
+                    }
+                } while (visitCursor.moveToNext());
+                visitCursor.close();
+
+                if (!isVisitActive) {
+                    final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.COMMENTS, patientUid});
+                    if (obsCursor.moveToFirst()) {
+                        comment = String.format("%s: %s", getString(R.string.case_closed), obsCursor.getString(obsCursor.getColumnIndexOrThrow("value")));
+                        obsCursor.close();
+                    } else {
+                        comment = getString(R.string.case_closed);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return comment;
     }
 
     private void doQueryWithProviders(String querytext, List<String> providersuuids) {
