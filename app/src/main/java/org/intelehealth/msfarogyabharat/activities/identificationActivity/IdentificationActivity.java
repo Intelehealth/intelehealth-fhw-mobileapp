@@ -1312,6 +1312,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else
                 {
                     helplineInfoOther.setText("");
+                    helplineInfoOther.setError(null);
                     helplineInfoOther.setEnabled(false);
                 }
             }
@@ -3102,6 +3103,22 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+
+        if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+        {
+            if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
+            {
+                helplineInfoOther.setError(getString(R.string.error_field_required));
+                focusView = helplineInfoOther;
+                cancel = true;
+                return;
+            } else {
+                helplineInfoOther.setError(null);
+            }
+        }
+
+
+
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView)mPhoneType.getSelectedView();
