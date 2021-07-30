@@ -36,6 +36,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -191,6 +192,12 @@ public class IdentificationActivity extends AppCompatActivity {
     private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther;
 
     List<String> districtList;
+
+    public static void start(Context context, boolean medicalAdvice) {
+        Intent starter = new Intent(context, IdentificationActivity.class);
+        starter.putExtra(EXTRA_MEDICAL_ADVICE, medicalAdvice);
+        context.startActivity(starter);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

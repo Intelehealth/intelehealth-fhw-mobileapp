@@ -94,6 +94,8 @@ import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
+    public static final String EXTRA_SHOW_MEDICAL_ADVICE = "EXTRA_SHOW_MEDICAL_ADVICE";
+
     String patientName;
     String visitUuid = null;
     List<String> visitUuidList;
