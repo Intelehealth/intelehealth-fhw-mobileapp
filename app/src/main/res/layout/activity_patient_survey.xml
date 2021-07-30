@@ -160,7 +160,7 @@
             android:includeFontPadding="false"
             android:paddingTop="@dimen/padding_card_title_text"
             android:text="@string/exit_survey_label"
-            android:textSize="@dimen/card_title_text_size" />
+            android:textSize="22sp" />
 
         <RatingBar
             android:id="@+id/ratingBar"
