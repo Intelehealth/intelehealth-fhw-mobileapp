@@ -702,4 +702,5 @@
     <string name="calling_patient">Calling patient…</string>
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
+    <string name="welcome_sms">Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18001203710.</string>
 </resources>
