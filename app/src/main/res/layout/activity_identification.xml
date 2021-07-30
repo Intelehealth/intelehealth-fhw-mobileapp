@@ -58,18 +58,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_person_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_person_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/personal_information"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -134,8 +133,8 @@
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:visibility="gone"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone">
 
                                     <EditText
                                         android:id="@+id/identification_middle_name"
@@ -212,7 +211,7 @@
 
                             </LinearLayout>
 
-                           <!-- <ImageView
+                            <!-- <ImageView
                                 android:id="@+id/imageview_id_picture"
                                 android:layout_width="0dp"
                                 android:layout_height="170dp"
@@ -267,8 +266,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_birth_date_text_view"
@@ -292,30 +291,30 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-<!--                        <com.google.android.material.textfield.TextInputLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content">-->
+                        <!--                        <com.google.android.material.textfield.TextInputLayout-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content">-->
 
-<!--                            <EditText-->
-<!--                                android:id="@+id/identification_age"-->
-<!--                                android:layout_width="match_parent"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_weight="1"-->
-<!--                                android:drawableStart="@drawable/event_icon"-->
-<!--                                android:drawableLeft="@drawable/event_icon"-->
-<!--                                android:drawablePadding="10dp"-->
-<!--                                android:ems="10"-->
-<!--                                android:focusable="false"-->
-<!--                                android:fontFamily="@font/lato_regular"-->
-<!--                                android:freezesText="true"-->
-<!--                                android:hint="@string/identification_screen_prompt_age"-->
-<!--                                android:imeOptions="actionUnspecified"-->
-<!--                                android:inputType=""-->
-<!--                                android:maxLines="1"-->
-<!--                                android:singleLine="true"-->
-<!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
+                        <!--                            <EditText-->
+                        <!--                                android:id="@+id/identification_age"-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_weight="1"-->
+                        <!--                                android:drawableStart="@drawable/event_icon"-->
+                        <!--                                android:drawableLeft="@drawable/event_icon"-->
+                        <!--                                android:drawablePadding="10dp"-->
+                        <!--                                android:ems="10"-->
+                        <!--                                android:focusable="false"-->
+                        <!--                                android:fontFamily="@font/lato_regular"-->
+                        <!--                                android:freezesText="true"-->
+                        <!--                                android:hint="@string/identification_screen_prompt_age"-->
+                        <!--                                android:imeOptions="actionUnspecified"-->
+                        <!--                                android:inputType=""-->
+                        <!--                                android:maxLines="1"-->
+                        <!--                                android:singleLine="true"-->
+                        <!--                                android:textSize="@dimen/card_content_sub_text_size" />-->
 
-<!--                        </com.google.android.material.textfield.TextInputLayout>-->
+                        <!--                        </com.google.android.material.textfield.TextInputLayout>-->
 
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -331,6 +330,8 @@
                                 android:drawableLeft="@drawable/phone_icon"
                                 android:drawablePadding="10dp"
                                 android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
@@ -340,9 +341,7 @@
                                 android:maxLines="1"
                                 android:singleLine="true"
                                 android:tag="@string/tag_optional"
-                                android:textSize="@dimen/card_content_sub_text_size"
-                                android:focusable="true"
-                                android:focusableInTouchMode="true"/>
+                                android:textSize="@dimen/card_content_sub_text_size" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -364,18 +363,17 @@
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_location">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_location"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/address_details"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -386,10 +384,10 @@
                     android:id="@+id/cardview2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardElevation="8dp"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginTop="30dp"
-                    app:cardCornerRadius="5dp">
+                    android:layout_marginTop="10dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="8dp">
 
 
                     <LinearLayout
@@ -415,8 +413,8 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:visibility="gone"
-                                    android:layout_weight="1">
+                                    android:layout_weight="1"
+                                    android:visibility="gone">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -469,10 +467,10 @@
                                     <AutoCompleteTextView
                                         android:id="@+id/autocomplete_state"
                                         android:layout_width="fill_parent"
-                                        android:hint="@string/identification_screen_prompt_state"
-                                        android:maxLength="45"
                                         android:layout_height="wrap_content"
-                                        android:completionThreshold="1"/>
+                                        android:completionThreshold="1"
+                                        android:hint="@string/identification_screen_prompt_state"
+                                        android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -485,10 +483,10 @@
                                     <AutoCompleteTextView
                                         android:id="@+id/autocomplete_district"
                                         android:layout_width="fill_parent"
-                                        android:hint="@string/identification_screen_prompt_district"
-                                        android:maxLength="45"
                                         android:layout_height="wrap_content"
-                                        android:completionThreshold="1"/>
+                                        android:completionThreshold="1"
+                                        android:hint="@string/identification_screen_prompt_district"
+                                        android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -496,17 +494,17 @@
 
                         </LinearLayout>
 
-<!--                        <Spinner-->
-<!--                            android:id="@+id/district_spinner"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="40dp"-->
-<!--                            android:layout_margin="10dp"-->
-<!--                            android:textColor="#000000"/>-->
+                        <!--                        <Spinner-->
+                        <!--                            android:id="@+id/district_spinner"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="40dp"-->
+                        <!--                            android:layout_margin="10dp"-->
+                        <!--                            android:textColor="#000000"/>-->
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <AutoCompleteTextView
                                 android:id="@+id/identification_city"
@@ -528,8 +526,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_address1"
@@ -554,8 +552,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_address2"
@@ -579,8 +577,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:visibility="gone"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
 
                             <EditText
                                 android:id="@+id/identification_postal_code"
@@ -611,25 +609,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="15dp"
-                    android:visibility="gone"
                     android:layout_marginEnd="10dp"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="22dp"
                         android:layout_height="22dp"
-                        app:srcCompat = "@drawable/svg_other_details">
-                    </ImageView>
+                        app:srcCompat="@drawable/svg_other_details"></ImageView>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:ems="10"
                         android:layout_gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:gravity="center_vertical"
                         android:layout_marginStart="5dp"
+                        android:ems="10"
                         android:fontFamily="@font/lato_bold"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
                         android:text="@string/txt_others"
                         android:textSize="@dimen/card_content_text_size" />
 
@@ -640,19 +636,96 @@
                     android:id="@+id/cardview3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="10dp"
                     app:cardCornerRadius="10sp"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="false">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/who_is_calling"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/relationship_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/how_do_you_know_about_helpline"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_caste"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/other_helplineInfo_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:hint="@string/txt_others"
+                            android:enabled="false"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/what_kind_of_phone_do_you_personally_own"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_economic_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:visibility="gone">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -678,7 +751,7 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-<!--
+                        <!--
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -743,7 +816,7 @@
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_caste"
+                                    android:id="@+id/spinner_caste1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -781,7 +854,7 @@
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_economic_status"
+                                    android:id="@+id/spinner_economic_status1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content" />
                             </LinearLayout>
@@ -832,7 +905,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <!-- Here we will add Occupation UI which is common fields for all -->
-<!--
+                <!--
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -960,7 +1033,7 @@
                 <!-- End of Occupation UI -->
 
                 <!-- Here we will add the Cardview and Checkbox for Head Of Household -->
-<!--
+                <!--
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/familyhead_checkbox"
                     android:layout_width="match_parent"
@@ -974,7 +1047,7 @@
                 </com.google.android.material.checkbox.MaterialCheckBox>
 -->
 
-<!--
+                <!--
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_household"
                 android:layout_width="match_parent"
@@ -1258,12 +1331,14 @@
 
                 <!-- End of HOH -->
 
-                <LinearLayout android:layout_width="match_parent"
+                <LinearLayout
                     android:id="@+id/ll_medical_advice"
-                    android:visibility="gone"
-                    tools:visibility="visible"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1275,18 +1350,17 @@
                         <ImageView
                             android:layout_width="22dp"
                             android:layout_height="22dp"
-                            app:srcCompat = "@drawable/svg_other_details">
-                        </ImageView>
+                            app:srcCompat="@drawable/svg_other_details"></ImageView>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:ems="10"
                             android:layout_gravity="center_vertical"
-                            android:includeFontPadding="false"
-                            android:gravity="center_vertical"
                             android:layout_marginStart="5dp"
+                            android:ems="10"
                             android:fontFamily="@font/lato_bold"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
                             android:text="Medical Advice"
                             android:textSize="@dimen/card_content_text_size" />
 
@@ -1299,9 +1373,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="10dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
-                        android:layout_marginBottom="4dp"
                         app:cardPreventCornerOverlap="false">
 
 
@@ -1313,62 +1387,71 @@
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbVaccineGuide"
-                                android:text="@string/vaccination_guidance"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/vaccination_guidance" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbCovidConcern"
-                                android:text="@string/concern_about_covid_re_infection"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/concern_about_covid_re_infection" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManagingBreathlessness"
-                                android:text="@string/managing_breathlessness"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_breathlessness" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageVoiceIssue"
-                                android:text="@string/managing_issues_with_voice"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_issues_with_voice" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageEating"
-                                android:text="@string/managing_eating_drinking"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_eating_drinking" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbDealProblems"
-                                android:text="@string/dealing_problems"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/dealing_problems" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbMentalHealth"
-                                android:text="@string/managing_mental_health"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/managing_mental_health" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbExercises"
-                                android:text="@string/exercises"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/exercises" />
+
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbOthers"
-                                android:text="@string/txt_others"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:text="@string/txt_others" />
+
                             <com.google.android.material.textfield.TextInputLayout
-                                android:hint="@string/txt_others"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:hint="@string/txt_others">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/et_medical_advice_extra"
-                                    android:enabled="false"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:drawablePadding="10dp"
                                     android:ems="10"
+                                    android:enabled="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:imeOptions="actionUnspecified"
@@ -1378,10 +1461,11 @@
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
                             <com.google.android.material.textfield.TextInputLayout
-                                android:hint="@string/txt_additional_info"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:hint="@string/txt_additional_info">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/et_medical_advice_additional"
@@ -1400,6 +1484,7 @@
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
                             <Space
                                 android:layout_width="20dp"
                                 android:layout_height="10dp" />
