@@ -1,0 +1,19 @@
+Index: app/src/main/java/org/intelehealth/msfarogyabharat/models/WelcomeSms.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.intelehealth.msfarogyabharat.models;\r\n\r\nimport com.google.gson.annotations.Expose;\r\nimport com.google.gson.annotations.SerializedName;\r\n\r\npublic class WelcomeSms {\r\n    public WelcomeSms(String to) {\r\n        this.apiKey = \"A39e1e65900618ef9b6e16da473f8894d\";\r\n        this.to = to;\r\n        this.body = \"Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18001203710.\";\r\n        this.type = \"TXN\";\r\n        this.sender = \"TIFDOC\";\r\n        this.source = \"API\";\r\n        this.template_id = \"1107162701346823339\";\r\n    }\r\n\r\n    @SerializedName(\"api-key\")\r\n    @Expose\r\n    private String apiKey;\r\n    @SerializedName(\"to\")\r\n    @Expose\r\n    private String to;\r\n\r\n    @SerializedName(\"body\")\r\n    @Expose\r\n    private String body;\r\n\r\n    @SerializedName(\"type\")\r\n    @Expose\r\n    private String type;\r\n\r\n    @SerializedName(\"sender\")\r\n    @Expose\r\n    private String sender;\r\n\r\n    @SerializedName(\"source\")\r\n    @Expose\r\n    private String source;\r\n\r\n    @SerializedName(\"template_id\")\r\n    @Expose\r\n    private String template_id;\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/org/intelehealth/msfarogyabharat/models/WelcomeSms.java b/app/src/main/java/org/intelehealth/msfarogyabharat/models/WelcomeSms.java
+--- a/app/src/main/java/org/intelehealth/msfarogyabharat/models/WelcomeSms.java	(revision e99bf2c6a42812444dcf0cf1b52b962ee6ed4e17)
++++ b/app/src/main/java/org/intelehealth/msfarogyabharat/models/WelcomeSms.java	(date 1627536103047)
+@@ -7,7 +7,7 @@
+     public WelcomeSms(String to) {
+         this.apiKey = "A39e1e65900618ef9b6e16da473f8894d";
+         this.to = to;
+-        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18001203710.";
++        this.body = "Thank you for calling and registering with MSF ArogyaBharat Helpline, to connect with our counsellor please call on toll-free no. 18003094144.";
+         this.type = "TXN";
+         this.sender = "TIFDOC";
+         this.source = "API";
