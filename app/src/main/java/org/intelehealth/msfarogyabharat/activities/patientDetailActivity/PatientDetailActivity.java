@@ -2,6 +2,7 @@ package org.intelehealth.msfarogyabharat.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -10,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -37,8 +40,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
@@ -56,7 +68,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
+import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.InteleHealthDatabaseHelper;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
 import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
@@ -65,12 +83,14 @@ import org.intelehealth.msfarogyabharat.database.dao.VisitsDAO;
 import org.intelehealth.msfarogyabharat.knowledgeEngine.Node;
 import org.intelehealth.msfarogyabharat.models.FamilyMemberRes;
 import org.intelehealth.msfarogyabharat.models.Patient;
+import org.intelehealth.msfarogyabharat.models.WelcomeSms;
 import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
 import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
 import org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils;
 import org.intelehealth.msfarogyabharat.utilities.DownloadFilesUtils;
 import org.intelehealth.msfarogyabharat.utilities.FileUtils;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
+import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
@@ -81,16 +101,35 @@ import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSum
 import org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 //import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
+
+//import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -101,6 +140,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     List<String> visitUuidList;
     String patientUuid;
     String intentTag = "";
+    String intentTag1 = "";
+    String intentTag2 = "";
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager = null;
@@ -120,7 +161,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, newAdvice;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -128,13 +169,15 @@ public class PatientDetailActivity extends AppCompatActivity {
     TextView idView;
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
-
+    TextView phoneView;
     String privacy_value_selected;
 
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
+    private boolean isMedicalAdvice;
+    private boolean MedicalAdvice = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +204,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -172,13 +216,33 @@ public class PatientDetailActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
             hasPrescription = intent.getStringExtra("hasPrescription");
+            MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
+            String phoneNumber = intent.getStringExtra("phoneNumber");
+            if (!TextUtils.isEmpty(phoneNumber)) {
+                sendWelcomeSms(phoneNumber);
+            }
 
             intentTag = intent.getStringExtra("tag");
+            intentTag1 = intent.getStringExtra("intentTag1");
+            intentTag2 = intent.getStringExtra("intentTag2");
             Logger.logD(TAG, "Patient ID: " + patientUuid);
             Logger.logD(TAG, "Patient Name: " + patientName);
             Logger.logD(TAG, "Intent Tag: " + intentTag);
             Logger.logD(TAG, "Privacy Value on (PatientDetail): " + privacy_value_selected);
+
+            if(intentTag2!= null && intentTag2.equalsIgnoreCase("findPatient") && intentTag1!=null && intentTag1.equalsIgnoreCase("editDetails"))
+            {
+                newAdvice.setVisibility(View.VISIBLE);
+                newAdvice.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                    }
+                });
+
+            }
+
         }
 
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -192,6 +256,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
+                intent2.putExtra("intentTag1", "editDetails");
+                intent2.putExtra("intentTag2", intentTag2);
                 startActivity(intent2);
 
             }
@@ -227,6 +293,27 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
+
+        if(MedicalAdvice == true) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(PatientDetailActivity.this)
+                    .setMessage(R.string.text_patient_and_advice_created)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.setCanceledOnTouchOutside(false);
+            alertDialog.show();
+
+            Button positive = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positive.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+        }
+
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -336,7 +423,40 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
 
         //  LoadFamilyMembers();
+        if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
+            newAdvice.setVisibility(View.VISIBLE);
+            newAdvice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                }
+            });
+        }
 
+    }
+
+    private void sendWelcomeSms(String phoneNumber) {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(phoneNumber))
+            return;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getSendSmsUrl();
+        Call<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, AppConstants.SMS_API_KEY, String.format("91%s", phoneNumber), "TIFDOC", "API", "TXN", AppConstants.SMS_TEMPLATE_ID, getString(R.string.welcome_sms));
+        patientIvrCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println(response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     private void LoadFamilyMembers() {
@@ -491,7 +611,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
-        TextView phoneView = findViewById(R.id.textView_phone);
+        phoneView = findViewById(R.id.textView_phone);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -499,7 +619,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
-
+        ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
+        ImageView calling = findViewById(R.id.calling);
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
 
@@ -798,6 +919,33 @@ public class PatientDetailActivity extends AppCompatActivity {
             pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
             pastVisits(patientUuid);
         }
+        whatsapp_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumberWithCountryCode = "+91" + phoneView.getText().toString();
+//                String message =
+//                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+//                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
+                        + getString(R.string.and_i_be_assisting_you);
+
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        phoneNumberWithCountryCode, message))));
+            }
+        });
+
+        //mobile calling is supported...
+        calling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
+                intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
+                startActivity(intent);*/
+                callPatientViaIVR();
+            }
+        });
     }
 
     public void profilePicDownloaded() {
@@ -907,17 +1055,25 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
+                newAdvice.setEnabled(false);
+
             }
             if (newVisit.isClickable()) {
                 newVisit.setClickable(false);
+                newAdvice.setClickable(false);
+
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     newVisit.setBackgroundColor
                             (getColor(R.color.divider));
                     newVisit.setTextColor(getColor(R.color.white));
+                    newAdvice.setBackgroundColor(getColor(R.color.divider));
+                    newAdvice.setTextColor(getColor(R.color.white));
                 } else {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
                     newVisit.setTextColor(getResources().getColor(R.color.white));
+                    newAdvice.setBackgroundColor(getResources().getColor(R.color.divider));
+                    newAdvice.setTextColor(getResources().getColor(R.color.white));
                 }
             }
 
@@ -943,6 +1099,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                         complaintxt1.setText(visitComplaint.replace("\n" + Node.bullet_arrow + getString(R.string.associated_symptoms_patientDetail), ""));
                     } else {
                         Log.e("Check", "No complaint");
+                        //if medical advice change heading accordingly
+                        if (isMedicalAdvice)
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.text_medical_advice));
+                        else
+                            complaintxt1.setText(Node.bullet_arrow + getString(R.string.self_assessment));
+
                     }
                     layoutParams.setMargins(5, 10, 5, 0);
                     // complaintxt1.setLayoutParams(layoutParams);
@@ -988,6 +1150,38 @@ public class PatientDetailActivity extends AppCompatActivity {
         //previousVisitsList.addView(textView);
         //TODO: add on click listener to open the previous visit
     }
+
+    //function to check if visit is of medical advise type
+    //end date must be exact 5 minutes greater than start date
+    private boolean isMedicalAdvice(String datetime, String end_datetime) {
+        if (TextUtils.isEmpty(datetime) || TextUtils.isEmpty(end_datetime))
+            return false;
+
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        SimpleDateFormat endFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a", Locale.ENGLISH);
+        try {
+            Date startTime = startFormat.parse(datetime);
+            Date endTime = endFormat.parse(end_datetime);
+            long diff = endTime.getTime() - startTime.getTime();
+            if (diff == TimeUnit.MINUTES.toMillis(5))
+                return true;
+        } catch (Exception e) {
+            try {
+                Date startTime = startFormat.parse(datetime);
+                Date endTime = startFormat.parse(end_datetime);
+                long diff = endTime.getTime() - startTime.getTime();
+                if (diff == TimeUnit.MINUTES.toMillis(5))
+                    return true;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+
+        return false;
+    }
+
+
+
 
     /**
      * This method is called when patient has no prior visits.
@@ -1184,6 +1378,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                    isMedicalAdvice = isMedicalAdvice(date, end_date);
 
                     String encounterlocalAdultintial = "";
                     String encountervitalsLocal = null;
@@ -1301,4 +1496,48 @@ public class PatientDetailActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void callPatientViaIVR() {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String receiver = phoneView.getText().toString();
+        if (TextUtils.isEmpty(receiver))
+            return;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
+        String url = urlModifiers.getIvrCallUrl(caller, receiver);
+        Logger.logD(TAG, "ivr call url" + url);
+        Single<String> patientIvrCall = AppConstants.ivrApiInterface.CALL_PATIENT_IVR(url);
+        patientIvrCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<String>() {
+                    @Override
+                    public void onSuccess(@NonNull String s) {
+                        showAlert(R.string.calling_patient);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showAlert(R.string.error_calling_patient);
+                    }
+                });
+    }
+
+    void showAlert(int messageRes) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(messageRes);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
 }
+
