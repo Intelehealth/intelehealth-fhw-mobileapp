@@ -86,6 +86,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
 import static app.intelehealth.client.utilities.StringUtils.en__gu_dob;
+import static app.intelehealth.client.utilities.StringUtils.hsc_translated;
 import static app.intelehealth.client.utilities.StringUtils.switch_gu_caste_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_gu_economic_edit;
 import static app.intelehealth.client.utilities.StringUtils.switch_gu_education_edit;
@@ -635,7 +636,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             // casteView.setText(patient_new.getCaste());
         }
 
-        healthSchemeView.setText(patient_new.getHealth_scheme());
+        String val = hsc_translated(patient_new.getHealth_scheme());
+        healthSchemeView.setText(val);
 
 //
         if (patient_new.getSdw() != null && !patient_new.getSdw().equals("")) {
