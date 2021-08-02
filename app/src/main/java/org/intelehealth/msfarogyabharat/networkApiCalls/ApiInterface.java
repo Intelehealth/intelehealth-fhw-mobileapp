@@ -23,6 +23,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -105,6 +107,17 @@ public interface ApiInterface {
     @GET
     Single<String> CALL_PATIENT_IVR(@Url String url);
 
+//    @POST
+//    Single<ResponseBody> SEND_WELCOME_SMS(@Url String url, @Body WelcomeSms welcomeSms);
+
     @POST
-    Single<ResponseBody> SEND_WELCOME_SMS(@Url String url, @Body WelcomeSms welcomeSms);
+    @FormUrlEncoded
+    Call<ResponseBody> SEND_WELCOME_SMS(@Url String url,
+                               @Field("api-key") String apiKey,
+                               @Field("to") String to,
+                               @Field("sender") String sender,
+                               @Field("source") String source,
+                               @Field("type") String type,
+                               @Field("template_id") String template_id,
+                               @Field("body") String body);
 }

@@ -121,6 +121,9 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 //import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
@@ -442,21 +445,18 @@ public class PatientDetailActivity extends AppCompatActivity {
             return;
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.getSendSmsUrl();
-        WelcomeSms welcomeSms = new WelcomeSms(String.format("%s%s", "91", phoneNumber));
-        Single<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, welcomeSms);
-        patientIvrCall.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<ResponseBody>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.annotations.NonNull ResponseBody s) {
-                        System.out.println(s);
-                    }
+        Call<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, AppConstants.SMS_API_KEY, String.format("91%s", phoneNumber), "TIFDOC", "API", "TXN", AppConstants.SMS_TEMPLATE_ID, getString(R.string.welcome_sms));
+        patientIvrCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println(response);
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     private void LoadFamilyMembers() {

@@ -105,6 +105,9 @@ public class TodayPatientActivity extends AppCompatActivity {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
+                if (mActivePatientAdapter.todayPatientModelList != null && mActivePatientAdapter.todayPatientModelList.size() < limit) {
+                    return;
+                }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
                     Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
