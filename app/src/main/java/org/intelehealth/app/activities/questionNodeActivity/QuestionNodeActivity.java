@@ -155,9 +155,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             hasLicense = true;
 
         JSONObject currentFile = null;
+
         for (int i = 0; i < complaints.size(); i++) {
+            Log.v(TAG,"complaints-"+complaints.get(i));
             if (hasLicense) {
                 try {
+
                     currentFile = new JSONObject(FileUtils.readFile(complaints.get(i) + ".json", this));
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
