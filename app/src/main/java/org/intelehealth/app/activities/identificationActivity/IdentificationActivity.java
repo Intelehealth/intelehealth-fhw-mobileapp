@@ -85,12 +85,16 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import static org.intelehealth.app.utilities.StringUtils.convertUsingStringBuilder;
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getValue;
 import static org.intelehealth.app.utilities.StringUtils.mSwitch_hi_en_te_Country;
 import static org.intelehealth.app.utilities.StringUtils.mSwitch_hi_en_te_Country_edit;
 import static org.intelehealth.app.utilities.StringUtils.mSwitch_hi_en_te_State;
+import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
@@ -538,12 +542,15 @@ public class IdentificationActivity extends AppCompatActivity {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String education = switch_or_education_edit(patient1.getEducation_level());
-
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                     String education = switch_te_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String education = switch_mr_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String education = switch_as_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
@@ -573,6 +580,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String economic = switch_mr_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String economic = switch_as_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
@@ -595,6 +605,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String caste = switch_mr_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String caste = switch_as_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
@@ -849,6 +862,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
+                    mDOB.setText(dob_text);
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                    String dob_text = en__as_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
                 } else {
                     mDOB.setText(dobString);

@@ -129,6 +129,15 @@
         <item>पदवी आणि उच्च</item>
     </string-array>
 
+    <string-array name="education_as">
+        <item>শিক্ষা বাছনি কৰক</item>
+        <item>নিৰক্ষৰ</item>
+        <item>প্ৰাথমিক</item>
+        <item>গৌণ</item>
+        <item>উচ্চতৰ মাধ্যমিক</item>
+        <item>স্নাতক আৰু উচ্চতৰ</item>
+    </string-array>
+
     <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
@@ -174,6 +183,15 @@
         <item>अन्य</item>
     </string-array>
 
+    <string-array name="caste_as">
+        <item>নিৰ্বাচন কৰক</item>
+        <item>সাধাৰণ</item>
+        <item>অবিচি</item>
+        <item>উচ্চতম ন্যায়ালয়</item>
+        <item>এচটি</item>
+        <item>আন</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
@@ -208,6 +226,12 @@
         <item>चयन करें</item>
         <item>गरीबी रेखा से ऊपर</item>
         <item>गरीबी रेखा से नीचे</item>
+    </string-array>
+
+    <string-array name="economic_as">
+        <item>নিৰ্বাচন কৰক</item>
+        <item>এপিএল</item>
+        <item>বিপিএল</item>
     </string-array>
 
     <string-array name="states_india">

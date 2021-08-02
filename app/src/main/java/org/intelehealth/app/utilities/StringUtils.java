@@ -160,6 +160,10 @@ public final class StringUtils {
             val = switch_mr_caste(val);
             val = switch_mr_economic(val);
             val = switch_mr_education(val);
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            val = switch_as_caste(val);
+            val = switch_as_economic(val);
+            val = switch_as_education(val);
         }
 
         return val;
@@ -258,17 +262,63 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_as_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "নিৰক্ষৰ";
+                break;
+            case "Primary":
+                val = "প্ৰাথমিক";
+                break;
+            case "Secondary":
+                val = "গৌণ";
+                break;
+            case "Higher Secondary":
+                val = "উচ্চতৰ মাধ্যমিক";
+                break;
+            case "Graduation & Higher":
+                val = "স্নাতক আৰু উচ্চতৰ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_as_education(String val) {
+        switch (val) {
+            case "নিৰক্ষৰ":
+                val = "Illiterate";
+                break;
+            case "প্ৰাথমিক":
+                val = "Primary";
+                break;
+            case "গৌণ":
+                val = "Secondary";
+                break;
+            case "উচ্চতৰ মাধ্যমিক":
+                val = "Higher Secondary";
+                break;
+            case "স্নাতক আৰু উচ্চতৰ":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_mr_education_edit(String val) {
         switch (val) {
             case "Illiterate":
-                val = "निरक्षर";
+                val = "নিৰক্ষৰ";
                 break;
             case "Primary":
-                val = "प्राथमिक";
+                val = "প্ৰাথমিক";
                 break;
             case "Secondary":
-                val = "दुय्यम";
+                val = "গৌণ";
                 break;
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
@@ -465,6 +515,34 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_as_economic(String val) {
+        switch (val) {
+            case "এপিএল":
+                val = "APL";
+                break;
+            case "বিপিএল":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_as_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "এপিএল";
+                break;
+            case "BPL":
+                val = "বিপিএল";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_caste(String val) {
         switch (val) {
             case "सामान्य":
@@ -558,6 +636,29 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_as_caste(String val) {
+        switch (val) {
+            case "সাধাৰণ":
+                val = "General";
+                break;
+            case "অবিচি":
+                val = "OBC";
+                break;
+            case "উচ্চতম ন্যায়ালয়":
+                val = "SC";
+                break;
+            case "এচটি":
+                val = "ST";
+                break;
+            case "আন":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_mr_caste_edit(String val) {
         switch (val) {
             case "General":
@@ -574,6 +675,29 @@ public final class StringUtils {
                 break;
             case "others":
                 val = "इतर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+   public static String switch_as_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "সাধাৰণ";
+                break;
+            case "OBC":
+                val = "অবিচি";
+                break;
+            case "SC":
+                val = "উচ্চতম ন্যায়ালয়";
+                break;
+            case "ST":
+                val = "এচটি";
+                break;
+            case "others":
+                val = "আন";
                 break;
             default:
                 return val;
@@ -818,6 +942,23 @@ public final class StringUtils {
 
         return mdob_text;
     }
+    public static String en__as_dob(String dob) { //English dob is replaced to marathi text.
+        String mdob_text = dob
+                .replace("January", "জানুৱাৰী")
+                .replace("February", "ফেব্ৰুৱাৰী")
+                .replace("March", "মাৰ্চ")
+                .replace("April", "এপ্ৰিল")
+                .replace("May", "মে")
+                .replace("June", "জুন")
+                .replace("July", "জুলাই")
+                .replace("August", "আগষ্ট")
+                .replace("September", "ছেপ্টেম্বৰ")
+                .replace("October", "অক্টোবৰ")
+                .replace("November", "নৱেম্বৰ")
+                .replace("December", "ডিচেম্বৰ");
+
+        return mdob_text;
+    }
 
     public static String hi_or__en_month(int month_index) {
         String dob_string = "";
@@ -934,6 +1075,23 @@ public final class StringUtils {
                     .replace("ऑक्टोबर", "October")
                     .replace("नोव्हेंबर", "November")
                     .replace("डिसेंबर", "December");
+            return dob;
+        }
+        else if (locale.equalsIgnoreCase("as")) {
+            //Marathi
+            String dob = dobString
+                    .replace("জানুৱাৰী", "January")
+                    .replace("ফেব্ৰুৱাৰী", "February")
+                    .replace("মাৰ্চ", "March")
+                    .replace("এপ্ৰিল", "April")
+                    .replace("মে", "May")
+                    .replace("জুন", "June")
+                    .replace("জুলাই", "July")
+                    .replace("আগষ্ট", "August")
+                    .replace("ছেপ্টেম্বৰ", "September")
+                    .replace("অক্টোবৰ", "October")
+                    .replace("নৱেম্বৰ", "November")
+                    .replace("ডিচেম্বৰ", "December");
             return dob;
         } else {
             return dobString;

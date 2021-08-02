@@ -85,6 +85,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
@@ -619,6 +620,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             String dob_text = en__mr_dob(dob); //to show text of English into telugu...
             dobView.setText(dob_text);
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            String dob_text = en__as_dob(dob); //to show text of English into telugu...
+            dobView.setText(dob_text);
         }else {
             dobView.setText(dob);
         }
@@ -751,6 +755,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String education = switch_te_education_edit(patient_new.getEducation_level());
                 education_statusView.setText(education);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String education = switch_mr_education_edit(patient_new.getEducation_level());
+                education_statusView.setText(education);
+            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String education = switch_mr_education_edit(patient_new.getEducation_level());
                 education_statusView.setText(education);
             } else {
