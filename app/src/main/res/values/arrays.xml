@@ -6,7 +6,11 @@
         <item>English</item>
         <item>ଓଡିଆ</item>
         <item>తెలుగు</item>
-<!--        <item>Cebuano</item>-->
+        <item>Marathi</item>
+        <item>Kannada</item>
+        <item>Assamese</item>
+        <item>Malyalam</item>
+        <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
@@ -14,7 +18,11 @@
         <item>en</item>
         <item>or</item>
         <item>te</item>
-<!--        <item>cb</item>-->
+        <item>mr</item>
+        <item>kn</item>
+        <item>as</item>
+        <item>ml</item>
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -105,12 +113,20 @@
     </string-array>
 
     <string-array name="education_hi">
-        <item> चयन करें</item>
+        <item>चयन करें</item>
         <item>अशिक्षित</item>
         <item>प्रथम</item>
         <item>माध्यमिक</item>
         <item>उच्च माध्यमिक</item>
         <item>स्नातक और उच्चतर</item>
+    </string-array>
+    <string-array name="education_mr">
+        <item>निवडा</item>
+        <item>निरक्षर</item>
+        <item>प्राथमिक</item>
+        <item>दुय्यम</item>
+        <item>उच्च माध्यमिक</item>
+        <item>पदवी आणि उच्च</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -120,6 +136,15 @@
         <item>SC</item>
         <item>ST</item>
         <item>others</item>
+
+    </string-array>
+    <string-array name="caste_mr">
+        <item>निवडा</item>
+        <item>सामान्य</item>
+        <item>इतर मागील वर्ग</item>
+        <item>अनुसूचित जाति</item>
+        <item>अनुसूचित जनजाती</item>
+        <item>इतर</item>
     </string-array>
 
     <string-array name="caste_or">
@@ -165,6 +190,12 @@
         <item>ఎంచుకోండి</item>
         <item>ఎపిఎల్</item>
         <item>బిపిఎల్</item>
+    </string-array>
+
+    <string-array name="economic_mr">
+        <item>निवडा</item>
+        <item>दारिद्र्य रेषेच्या वर</item>
+        <item>दारिद्र्य रेषेखाली</item>
     </string-array>
 
     <string-array name="economic_cb">
@@ -277,7 +308,7 @@
         <item>पश्चिम बंगाल</item>
     </string-array>
 
-   <string-array name="states_india_te">
+    <string-array name="states_india_te">
         <item>రాష్ట్రం ఎంచుకోండి</item>
         <item>ఆంధ్రప్రదేశ్</item>
         <item>అరుణాచల్ ప్రదేశ్</item>
@@ -530,7 +561,7 @@
         <item>విస్కాన్సిన్</item>
         <item>వ్యోమింగ్</item>
     </string-array>
-   <string-array name="states_us_hi">
+    <string-array name="states_us_hi">
         <item>राज्य चुनें</item>
         <item>अलाबामा</item>
         <item>अलास्का</item>
@@ -698,7 +729,7 @@
         <item>Bijapani</item>
         <item>Charakmunda</item>
     </string-array>
-  <string-array name="odisha_villages_te">
+    <string-array name="odisha_villages_te">
         <item>సత్యగావ్</item>
         <item>భంజముండ</item>
         <item>బైదేహిపూర్</item>
@@ -759,7 +790,7 @@
         <item>బీజపాణి</item>
         <item>చారక్ముండ</item>
     </string-array>
-  <string-array name="odisha_villages_en">
+    <string-array name="odisha_villages_en">
         <item>Satygaon</item>
         <item>Bhanjamunda</item>
         <item>Baidehipur</item>
@@ -820,7 +851,7 @@
         <item>Bijapani</item>
         <item>Charakmunda</item>
     </string-array>
-  <string-array name="odisha_villages_hi">
+    <string-array name="odisha_villages_hi">
         <item>सत्यगाँव</item>
         <item>भंजामुंडा</item>
         <item>बैदेहीपुर</item>

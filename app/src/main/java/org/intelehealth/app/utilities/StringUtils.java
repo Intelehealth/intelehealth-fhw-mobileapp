@@ -156,6 +156,11 @@ public final class StringUtils {
             val = switch_te_economic(val);
             val = switch_te_education(val);
         }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            val = switch_mr_caste(val);
+            val = switch_mr_economic(val);
+            val = switch_mr_education(val);
+        }
 
         return val;
     }
@@ -246,6 +251,53 @@ public final class StringUtils {
                 val = "Higher Secondary";
                 break;
             case "ସ୍ନାତକୋତର ଶିକ୍ଷା":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "निरक्षर";
+                break;
+            case "Primary":
+                val = "प्राथमिक";
+                break;
+            case "Secondary":
+                val = "दुय्यम";
+                break;
+            case "Higher Secondary":
+                val = "उच्च माध्यमिक";
+                break;
+            case "Graduation & Higher":
+                val = "पदवी आणि उच्च";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_mr_education(String val) {
+        switch (val) {
+            case "निरक्षर":
+                val = "Illiterate";
+                break;
+            case "प्राथमिक":
+                val = "Primary";
+                break;
+            case "दुय्यम":
+                val = "Secondary";
+                break;
+            case "उच्च माध्यमिक":
+                val = "Higher Secondary";
+                break;
+            case "पदवी आणि उच्च":
                 val = "Graduation & Higher";
                 break;
             default:
@@ -385,6 +437,34 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_mr_economic(String val) {
+        switch (val) {
+            case "दारिद्र्य रेषेच्या वर":
+                val = "APL";
+                break;
+            case "दारिद्र्य रेषेखाली":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "दारिद्र्य रेषेच्या वर";
+                break;
+            case "BPL":
+                val = "दारिद्र्य रेषेखाली";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_caste(String val) {
         switch (val) {
             case "सामान्य":
@@ -447,6 +527,53 @@ public final class StringUtils {
                 break;
             case "ఇతరులు":
                 val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_mr_caste(String val) {
+        switch (val) {
+            case "सामान्य":
+                val = "General";
+                break;
+            case "इतर मागासवर्गीय":
+                val = "OBC";
+                break;
+            case "अनुसूचित जाती":
+                val = "SC";
+                break;
+            case "अनुसूचित जमाती":
+                val = "ST";
+                break;
+            case "इतर":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "सामान्य";
+                break;
+            case "OBC":
+                val = "इतर मागासवर्गीय";
+                break;
+            case "SC":
+                val = "अनुसूचित जाती";
+                break;
+            case "ST":
+                val = "अनुसूचित जमाती";
+                break;
+            case "others":
+                val = "इतर";
                 break;
             default:
                 return val;
@@ -674,6 +801,24 @@ public final class StringUtils {
         return mdob_text;
     }
 
+ public static String en__mr_dob(String dob) { //English dob is replaced to marathi text.
+        String mdob_text = dob
+                .replace("January", "जानेवारी")
+                .replace("February", "फेब्रुवारी")
+                .replace("March", "मार्च")
+                .replace("April", "एप्रिल")
+                .replace("May", "मे")
+                .replace("June", "जून")
+                .replace("July", "जुलै")
+                .replace("August", "ऑगस्ट")
+                .replace("September", "सप्टेंबर")
+                .replace("October", "ऑक्टोबर")
+                .replace("November", "नोव्हेंबर")
+                .replace("December", "डिसेंबर");
+
+        return mdob_text;
+    }
+
     public static String hi_or__en_month(int month_index) {
         String dob_string = "";
 
@@ -773,6 +918,23 @@ public final class StringUtils {
                     .replace("నవంబర్", "November")
                     .replace("డిసెంబర్", "December");
             return dob;
+        }
+        else if (locale.equalsIgnoreCase("mr")) {
+            //Marathi
+            String dob = dobString
+                    .replace("जानेवारी", "January")
+                    .replace("फेब्रुवारी", "February")
+                    .replace("मार्च", "March")
+                    .replace("एप्रिल", "April")
+                    .replace("मे", "May")
+                    .replace("जून", "June")
+                    .replace("जुलै", "July")
+                    .replace("ऑगस्ट", "August")
+                    .replace("सप्टेंबर", "September")
+                    .replace("ऑक्टोबर", "October")
+                    .replace("नोव्हेंबर", "November")
+                    .replace("डिसेंबर", "December");
+            return dob;
         } else {
             return dobString;
         }
@@ -850,6 +1012,8 @@ public final class StringUtils {
                     return val;
             }
 
+        }    else{
+                   return val;
         }
         return val;
     }
@@ -1178,7 +1342,9 @@ public final class StringUtils {
                     break;
             }
 
-        } else if (locale.equalsIgnoreCase("te")) {
+        }
+
+        else if (locale.equalsIgnoreCase("te")) {
             switch (val) {
 
                 case "Andhra Pradesh":
@@ -1414,6 +1580,9 @@ public final class StringUtils {
                     return val;
 
             }
+        }
+        else{
+            return val;
         }
         return val;
     }

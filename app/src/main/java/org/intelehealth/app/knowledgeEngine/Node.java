@@ -73,6 +73,7 @@ public class Node implements Serializable {
     private String display_hindi;
     //telugu
     private String display_telugu;
+    private String display_marathi;
     private String language;
     private String choiceType;
     private String inputType;
@@ -205,6 +206,14 @@ public class Node implements Serializable {
             }
             if (this.display_telugu.isEmpty()) {
                 this.display_telugu = this.display;
+            }
+            //marathi
+            this.display_marathi = jsonNode.optString("display-mr");
+            if (this.display_marathi.isEmpty()) {
+                this.display_marathi = jsonNode.optString("display-mr");
+            }
+            if (this.display_marathi.isEmpty()) {
+                this.display_marathi = this.display;
             }
 
             this.language = jsonNode.optString("language");
@@ -469,6 +478,20 @@ public class Node implements Serializable {
             case "te": {
                 if (display_telugu != null && !display_telugu.isEmpty()) {
                     return display_telugu;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: mr ");
+                    return display_marathi;
                 } else {
                     if (display == null || display.isEmpty()) {
                         //Log.i(TAG, "findDisplay: eng/o txt");
@@ -805,6 +828,10 @@ public class Node implements Serializable {
                         messages.add(node_opt.pop_up_hi);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         messages.add(node_opt.pop_up_or);
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                        messages.add(node_opt.pop_up_or);
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mre")) {
+                        messages.add(node_opt.pop_up_or);
                     } else {
                         messages.add(node_opt.pop_up);
                     }
@@ -1131,6 +1158,7 @@ public class Node implements Serializable {
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(unit_text); //for Odiya...
                 unit_text = te_en(unit_text); //for telugu...
+                unit_text = mr_en(unit_text); //for telugu...
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {
@@ -1245,6 +1273,38 @@ private static String te_en(String unit) {
 
     return unit;
 }
+
+    /**
+     * marathi */
+    private static String mr_en(String unit) {
+
+        switch (unit) {
+            case "तास":
+                unit = "Hours";
+                break;
+
+            case "दिवस":
+                unit = "Days";
+                break;
+
+            case "आठवडे":
+                unit = "Weeks";
+                break;
+
+            case "महीने":
+                unit = "Months";
+                break;
+
+            case "वर्षे":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
 
 
 
@@ -1579,6 +1639,7 @@ private static String te_en(String unit) {
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(unit_text); //for Odiya...
                 unit_text = te_en(unit_text); //for Telugu...
+                unit_text = mr_en(unit_text); //for Marathi...
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1844,6 +1905,13 @@ private static String te_en(String unit) {
         this.display_hindi = display_hindi;
     }
 
+    public String getDisplay_marathi() {
+        return display_marathi;
+    }
+
+    public void setDisplay_marathi(String display_marathi) {
+        this.display_marathi = display_marathi;
+    }
     public String getDisplay_telugu() {
         return display_telugu;
     }
@@ -2177,7 +2245,8 @@ private static String te_en(String unit) {
                 ", min_age='" + min_age + '\'' +
                 ", max_age='" + max_age + '\'' +
                 ", display='" + display + '\'' +
-                ", display_tamil='" + display_telugu + '\'' +
+                ", display_marathi='" + display_marathi + '\'' +
+                ", display_telugu='" + display_telugu + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
