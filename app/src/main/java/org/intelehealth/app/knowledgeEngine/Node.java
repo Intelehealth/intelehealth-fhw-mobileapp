@@ -74,6 +74,7 @@ public class Node implements Serializable {
     //telugu
 
     private String display_telugu;
+    private String display_malyalam;;
     private String display_marathi;
     private String display_assamese;
     private String language;
@@ -226,6 +227,14 @@ public class Node implements Serializable {
                 this.display_assamese = this.display;
             }
 
+            this.display_malyalam = jsonNode.optString("display-ml");
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = jsonNode.optString("display-ml");
+            }
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = this.display;
+            }
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
@@ -302,6 +311,7 @@ public class Node implements Serializable {
         this.display_cebuno = source.display_cebuno;
         this.display_telugu = source.display_telugu;
         this.display_assamese = source.display_assamese;
+        this.display_malyalam = source.display_malyalam;
         this.display_marathi = source.display_marathi;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
@@ -525,6 +535,20 @@ public class Node implements Serializable {
                     }
                 }
             }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
             default: {
                 {
                     if (display != null && display.isEmpty()) {
@@ -1955,6 +1979,13 @@ public class Node implements Serializable {
     public void setDisplay_assamese(String display_assamese) {
         this.display_assamese = display_assamese;
     }
+    public String getDisplay_malyalam() {
+        return display_malyalam;
+    }
+
+    public void setDisplay_malyalam(String display_malyalam) {
+        this.display_malyalam = display_malyalam;
+    }
 
     public void setOptionsList(List<Node> optionsList) {
         this.optionsList = optionsList;
@@ -2282,6 +2313,7 @@ public class Node implements Serializable {
                 ", min_age='" + min_age + '\'' +
                 ", max_age='" + max_age + '\'' +
                 ", display='" + display + '\'' +
+                ", display_malyalam='" + display_malyalam + '\'' +
                 ", display_marathi='" + display_marathi + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
                 ", display_telugu='" + display_telugu + '\'' +

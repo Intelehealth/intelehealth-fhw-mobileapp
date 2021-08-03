@@ -137,6 +137,14 @@
         <item>উচ্চতৰ মাধ্যমিক</item>
         <item>স্নাতক আৰু উচ্চতৰ</item>
     </string-array>
+ <string-array name="education_ml">
+        <item>വിദ്യാഭ്യാസം തിരഞ്ഞെടുക്കുക</item>
+        <item>നിരക്ഷരൻ</item>
+        <item>പ്രാഥമിക</item>
+        <item>സെക്കൻഡറി</item>
+        <item>ഹയർ സെക്കൻഡറി</item>
+        <item>ബിരുദവും ഉന്നതവും</item>
+    </string-array>
 
     <string-array name="caste_en">
         <item>Select</item>
@@ -192,6 +200,15 @@
         <item>আন</item>
     </string-array>
 
+    <string-array name="caste_ml">
+        <item>തിരഞ്ഞെടുക്കുക</item>
+        <item>ജനറൽ</item>
+        <item>ഒ.ബി.സി.</item>
+        <item>എസ്.സി.</item>
+        <item>എസ്.ടി</item>
+        <item>മറ്റുള്ളവർ</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
@@ -232,6 +249,12 @@
         <item>নিৰ্বাচন কৰক</item>
         <item>এপিএল</item>
         <item>বিপিএল</item>
+    </string-array>
+
+    <string-array name="economic_ml">
+        <item>തിരഞ്ഞെടുക്കുക</item>
+        <item>എ.പി.എൽ</item>
+        <item>ബിപിഎൽ</item>
     </string-array>
 
     <string-array name="states_india">
@@ -331,7 +354,6 @@
         <item>उत्तराखंड</item>
         <item>पश्चिम बंगाल</item>
     </string-array>
-
     <string-array name="states_india_te">
         <item>రాష్ట్రం ఎంచుకోండి</item>
         <item>ఆంధ్రప్రదేశ్</item>

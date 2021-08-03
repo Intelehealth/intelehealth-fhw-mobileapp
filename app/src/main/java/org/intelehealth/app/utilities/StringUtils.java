@@ -164,6 +164,10 @@ public final class StringUtils {
             val = switch_as_caste(val);
             val = switch_as_economic(val);
             val = switch_as_education(val);
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            val = switch_ml_caste(val);
+            val = switch_ml_economic(val);
+            val = switch_ml_education(val);
         }
 
         return val;
@@ -286,7 +290,7 @@ public final class StringUtils {
     }
 
 
-    public static String switch_as_education(String val) {
+ public static String switch_as_education(String val) {
         switch (val) {
             case "নিৰক্ষৰ":
                 val = "Illiterate";
@@ -301,6 +305,61 @@ public final class StringUtils {
                 val = "Higher Secondary";
                 break;
             case "স্নাতক আৰু উচ্চতৰ":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ml_education_edit(String val) {
+
+
+
+
+
+
+
+
+        switch (val) {
+            case "Illiterate":
+                val = "നിരക്ഷരൻ";
+                break;
+            case "Primary":
+                val = "പ്രാഥമിക";
+                break;
+            case "Secondary":
+                val = "സെക്കൻഡറി";
+                break;
+            case "Higher Secondary":
+                val = "ഹയർ സെക്കൻഡറി";
+                break;
+            case "Graduation & Higher":
+                val = "সബിരുദവും ഉന്നതവും";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_ml_education(String val) {
+        switch (val) {
+            case "നിരക്ഷരൻ":
+                val = "Illiterate";
+                break;
+            case "പ്രാഥമിക":
+                val = "Primary";
+                break;
+            case "സെക്കൻഡറി":
+                val = "Secondary";
+                break;
+            case "ഹയർ സെക്കൻഡറി":
+                val = "Higher Secondary";
+                break;
+            case "সബിരുദവും ഉന്നതവും":
                 val = "Graduation & Higher";
                 break;
             default:
@@ -543,6 +602,34 @@ public final class StringUtils {
         return val;
     }
 
+ public static String switch_ml_economic(String val) {
+        switch (val) {
+            case "എ.പി.എൽ":
+                val = "APL";
+                break;
+            case "ബിപിഎൽ":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ml_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "എ.പി.എൽ";
+                break;
+            case "BPL":
+                val = "ബിപിഎൽ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_caste(String val) {
         switch (val) {
             case "सामान्य":
@@ -675,6 +762,52 @@ public final class StringUtils {
                 break;
             case "others":
                 val = "इतर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+ public static String switch_ml_caste(String val) {
+        switch (val) {
+            case "ജനറൽ":
+                val = "General";
+                break;
+            case "ഒ.ബി.സി.":
+                val = "OBC";
+                break;
+            case "എസ്.സി.":
+                val = "SC";
+                break;
+            case "എസ്.ടി":
+                val = "ST";
+                break;
+            case "മറ്റുള്ളവർ":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ml_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "ജനറൽ";
+                break;
+            case "OBC":
+                val = "ഒ.ബി.സി.";
+                break;
+            case "SC":
+                val = "എസ്.സി.";
+                break;
+            case "ST":
+                val = "എസ്.ടി";
+                break;
+            case "others":
+                val = "മറ്റുള്ളവർ";
                 break;
             default:
                 return val;
@@ -960,6 +1093,24 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en__ml_dob(String dob) { //English dob is replaced to marathi text.
+        String mdob_text = dob
+                .replace("January", "ജനുവരി")
+                .replace("February", "ഫെബ്രുവരി")
+                .replace("March", "മാർച്ച്")
+                .replace("April", "ഏപ്രിൽ")
+                .replace("May", "മെയ്")
+                .replace("June", "ജൂൺ")
+                .replace("July", "ജൂലൈ")
+                .replace("August", "ആഗസ്റ്റ്")
+                .replace("September", "സെപ്റ്റംബർ")
+                .replace("October", "ഒക്ടോബർ")
+                .replace("November", "നവംബർ")
+                .replace("December", "ഡിസംബർ");
+
+        return mdob_text;
+    }
+
     public static String hi_or__en_month(int month_index) {
         String dob_string = "";
 
@@ -1092,6 +1243,23 @@ public final class StringUtils {
                     .replace("অক্টোবৰ", "October")
                     .replace("নৱেম্বৰ", "November")
                     .replace("ডিচেম্বৰ", "December");
+            return dob;
+        }
+        else if (locale.equalsIgnoreCase("ml")) {
+            //Marathi
+            String dob = dobString
+                    .replace("ജനുവരി", "January")
+                    .replace("ഫെബ്രുവരി", "February")
+                    .replace("മാർച്ച്", "March")
+                    .replace("ഏപ്രിൽ", "April")
+                    .replace("മെയ്", "May")
+                    .replace("ജൂൺ", "June")
+                    .replace("ജൂലൈ", "July")
+                    .replace("ആഗസ്റ്റ്", "August")
+                    .replace("സെപ്റ്റംബർ", "September")
+                    .replace("ഒക്ടോബർ", "October")
+                    .replace("നവംബർ", "November")
+                    .replace("ഡിസംബർ", "December");
             return dob;
         } else {
             return dobString;
