@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -66,6 +67,7 @@ public class VitalsActivity extends AppCompatActivity {
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    TextInputLayout mTemperatureTIL, mtempfarenTIL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +111,7 @@ public class VitalsActivity extends AppCompatActivity {
         mBpDia = findViewById(R.id.table_bpdia);
         mTemperature = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
-
+        mTemperatureTIL = findViewById(R.id.table_temp_til);
         mBMI = findViewById(R.id.table_bmi);
 //    Respiratory added by mahiti dev team
 
@@ -159,15 +161,20 @@ public class VitalsActivity extends AppCompatActivity {
                 if (obj.getBoolean("mCelsius")) {
 
                     mTemperature = findViewById(R.id.table_temp);
+                    mTemperatureTIL = findViewById(R.id.table_temp_til);
                     findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
+                    findViewById(R.id.table_temp_faren_til).setVisibility(View.GONE);
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
                     mTemperature = findViewById(R.id.table_temp_faren);
+                    mTemperatureTIL = findViewById(R.id.table_temp_faren_til);
                     findViewById(R.id.table_temp).setVisibility(View.GONE);
+                    findViewById(R.id.table_temp_til).setVisibility(View.GONE);
                 }
             } else {
                 mTemperature.setVisibility(View.GONE);
+                mTemperatureTIL.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mSpo2")) {
                 mSpo2.setVisibility(View.VISIBLE);

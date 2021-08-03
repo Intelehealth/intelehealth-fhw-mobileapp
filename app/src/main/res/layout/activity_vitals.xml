@@ -285,7 +285,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/table_temp_til">
 
                             <EditText
                                 android:id="@+id/table_temp"
@@ -306,7 +307,8 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:id="@+id/table_temp_faren_til">
 
                             <EditText
                                 android:id="@+id/table_temp_faren"
