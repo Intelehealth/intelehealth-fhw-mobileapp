@@ -84,6 +84,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -144,7 +145,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     boolean uploaded = false;
     boolean downloaded = false;
 
-    Context context;
+    Context context, context1;
 
     String patientUuid;
     String visitUuid;
@@ -377,7 +378,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             case R.id.summary_endVisit: {
                 //meera
                 if (downloaded) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
                     alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
@@ -506,6 +507,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
+        context1 = VisitSummaryActivity.this;
 //we can remove by data binding
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
@@ -1595,9 +1597,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (NetworkConnection.isOnline(getApplication())) {
-                    Toast.makeText(context, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context1, getResources().getString(R.string.downloading), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(context, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context1, getResources().getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
                 }
 
                 SyncUtils syncUtils = new SyncUtils();
@@ -1939,11 +1941,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 
                         /*pat_hist, fam_hist,*/ /*mComplaint,*/
-                        diagnosis_web,
-                        rx_web,
-                        tests_web,
-                        advice_web,
-                        followUp_web, doctor_web);
+                        !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
+                        !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
+                        !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
+                        !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
+                        !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
+                        !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
 
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
         //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
@@ -2056,15 +2059,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private String convertCtoF(String temperature) {
 
-        String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
-
-        DecimalFormat dtime = new DecimalFormat("#.##");
-        b = Double.valueOf(dtime.format(b));
-
-        result = String.valueOf(b);
-        return result;
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+//        DecimalFormat dtime = new DecimalFormat("0.00");
+//        b = Double.parseDouble(dtime.format(b));
+//        int IntValue = (int) Math.round(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
 
     }
 
@@ -2226,8 +2231,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public String parseDateToddMMyyyy(String time) {
         String inputPattern = "dd-MM-yyyy";
         String outputPattern = "dd MMM yyyy";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
         Date date = null;
         String str = null;

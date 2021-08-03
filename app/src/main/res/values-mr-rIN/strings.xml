@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="app_name">Ekal Arogya Helpline</string>
+        <string name="app_name">एकल आरोग्य हेल्प लाइन</string>
 
         //Generic
         <string name="generic_the_flipping_word_next">पुढे</string>
@@ -40,7 +40,7 @@
         <string name="db_patient_id3">patient_identifier3</string>
 
         //Login Screen
-        <string name="title_activity_login">एकल आरोग्य</string>
+        <string name="title_activity_login">एकल आरोग्य हेल्प लाइन</string>
         <string name="prompt_email">वापरकर्तानाव</string>
         <string name="prompt_password">संकेतशब्द</string>
         <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
@@ -157,7 +157,7 @@
         <string name="table_bpsys">बीपी सिस</string>
         <string name="table_bpdia">बीपी डाय</string>
         <string name="table_temp">तापमान (सी)</string>
-        <string name="table_spo2">एसपीओ 2 (%)</string>
+        <string name="table_spo">एसपीओ 2 (%)</string>
 
         //Patient Search Screen
         <string name="search_hint">नावानुसार रूग्ण शोधण्यासाठी टाइप करा…</string>
@@ -364,7 +364,7 @@
 
         <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
         <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
-        <string name="spo2_error">एसपीओ 2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>
+        <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>
         <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
         <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
         <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
@@ -673,6 +673,27 @@
         <string name="speciality">वैशिष्ट्य</string>
         <string name="select_speciality">Select Speciality</string>
         <string name="please_select_specialization">कृपया विशेषज्ञता निवडा</string>
+
+        <string name="take_photo">फोटो काधा</string>
+        <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
+        <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
+
+        <string name="text_medical_advice">नवीन वैद्यकीय सल्ला</string>
+        <string name="text_new_visit">नवीन डॉक्टर भेट</string>
+        <string name="text_new_advice">नवीन वैद्यकीय सल्ला</string>
+
+        <string name="vaccination_guidance">लसीकरण मार्गदर्शन</string>
+        <string name="concern_about_covid_re_infection">कोविड री-इन्फेक्शनबद्दल चिंता</string>
+        <string name="managing_breathlessness">श्वास घेणे व्यवस्थापित</string>
+        <string name="managing_issues_with_voice">आवाजासह समस्या व्यवस्थापित करणे</string>
+        <string name="managing_eating_drinking">पुनर्प्राप्तीनंतर खाणे, पिणे आणि गिळणे व्यवस्थापित करणे</string>
+        <string name="dealing_problems">लक्ष, स्मृती आणि स्पष्टतेच्या समस्यांचे निराकरण करणे</string>
+        <string name="managing_mental_health">मानसिक आरोग्य व्यवस्थापित करणे</string>
+        <string name="exercises">व्यायाम</string>
+        <string name="txt_additional_info">अतिरिक्त माहिती</string>
+    <string name="medical_advice">वैद्यकीय सल्ला</string>
+        <string name="text_patient_and_advice_created">रुग्ण आणि वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
+        <string name="text_advice_created">वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
 
 
 </resources>

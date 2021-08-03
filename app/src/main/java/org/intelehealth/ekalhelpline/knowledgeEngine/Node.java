@@ -69,8 +69,16 @@ public class Node implements Serializable {
     private String text;
     private String display;
     private String display_oriya;
+    private String display_marathi;
     private String display_cebuno;
     private String display_hindi;
+    private String display_kannada;
+    private String display_gujarati;
+    private String display_assamese;
+    private String display_tamil;
+    private String display_telugu;
+    private String display_bengali;
+    private String display_malyalam;
     private String language;
     private String choiceType;
     private String inputType;
@@ -171,6 +179,30 @@ public class Node implements Serializable {
                 this.display = this.text;
             }
 
+            this.display_kannada = jsonNode.optString("display-kn");
+            if (this.display_kannada.isEmpty()) {
+                this.display_kannada = jsonNode.optString("display-kn");
+            }
+            if (this.display_kannada.isEmpty()) {
+                this.display_kannada = this.display;
+            }
+
+            this.display_gujarati = jsonNode.optString("display-gj");
+            if (this.display_gujarati.isEmpty()) {
+                this.display_gujarati = jsonNode.optString("display-gj");
+            }
+            if (this.display_gujarati.isEmpty()) {
+                this.display_gujarati = this.display;
+            }
+
+            this.display_marathi = jsonNode.optString("display-mr");
+            if (this.display_marathi.isEmpty()) {
+                this.display_marathi = jsonNode.optString("display-mr");
+            }
+            if (this.display_marathi.isEmpty()) {
+                this.display_marathi = this.display;
+            }
+
             this.display_oriya = jsonNode.optString("display-or");
             if (this.display_oriya.isEmpty()) {
                 this.display_oriya = jsonNode.optString("display-or");
@@ -178,6 +210,7 @@ public class Node implements Serializable {
             if (this.display_oriya.isEmpty()) {
                 this.display_oriya = this.display;
             }
+
             this.display_cebuno = jsonNode.optString("display-cb");
             if (this.display_cebuno.isEmpty()) {
                 this.display_cebuno = jsonNode.optString("display-cb");
@@ -194,11 +227,58 @@ public class Node implements Serializable {
                 this.display_hindi = this.display;
             }
 
+            //Assamese language support for display...
+            this.display_assamese = jsonNode.optString("display-as");
+            if (this.display_assamese.isEmpty()) {
+                this.display_assamese = jsonNode.optString("display-as");
+            }
+            if (this.display_assamese.isEmpty()) {
+                this.display_assamese = this.display;
+            }
+
+            //Tamil language support for display...
+
+            this.display_tamil = jsonNode.optString("display-ta");
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = jsonNode.optString("display-ta");
+            }
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = this.display;
+            }
+
+            //Telugu language support for display...
+            this.display_telugu = jsonNode.optString("display-te");
+            if (this.display_telugu.isEmpty()) {
+                this.display_telugu = jsonNode.optString("display-te");
+            }
+            if (this.display_telugu.isEmpty()) {
+                this.display_telugu = this.display;
+            }
+
+
+            //Bengali language support for display...
+            this.display_bengali = jsonNode.optString("display-bn");
+            if (this.display_bengali.isEmpty()) {
+                this.display_bengali = jsonNode.optString("display-bn");
+            }
+            if (this.display_bengali.isEmpty()) {
+                this.display_bengali = this.display;
+            }
+
+            //Malyalam language support for display...
+            this.display_malyalam = jsonNode.optString("display-ml");
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = jsonNode.optString("display-ml");
+            }
+            if (this.display_malyalam.isEmpty()) {
+                this.display_malyalam = this.display;
+            }
+
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
             }
-
 
 
             //Only for physical exams
@@ -252,8 +332,15 @@ public class Node implements Serializable {
         //this.id = source.id;
         this.text = source.text;
         this.display = source.display;
+        this.display_gujarati = source.display_gujarati;
+        this.display_marathi = source.display_marathi;
         this.display_oriya = source.display_oriya;
         this.display_cebuno = source.display_cebuno;
+        this.display_kannada = source.display_kannada;
+        this.display_tamil = source.display_tamil;
+        this.display_telugu = source.display_telugu;
+        this.display_bengali = source.display_bengali;
+        this.display_malyalam = source.display_malyalam;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
         this.language = source.language;
@@ -405,6 +492,35 @@ public class Node implements Serializable {
                     return display;
                 }
             }
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: mr ");
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "gu": {
+                //Log.i(TAG, "findDisplay: gu");
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: gu ");
+                    return display_gujarati;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
             case "or": {
                 //Log.i(TAG, "findDisplay: ori");
                 if (display_oriya != null && !display_oriya.isEmpty()) {
@@ -420,6 +536,17 @@ public class Node implements Serializable {
                     }
                 }
 
+            }
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
             }
 //            case "cb": {
 //                //Log.i(TAG, "findDisplay: cb");
@@ -451,6 +578,71 @@ public class Node implements Serializable {
                     }
                 }
             }
+
+            //Assamese language support...
+            case "as": {
+                if (display_assamese != null && !display_assamese.isEmpty()) {
+                    return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Tamil language support...
+            case "ta": {
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    return display_tamil;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Telugu language support...
+            case "te": {
+                if (display_telugu != null && !display_telugu.isEmpty()) {
+                    return display_telugu;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+            //Bengali language support...
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
             default: {
                 {
                     if (display != null && display.isEmpty()) {
@@ -633,9 +825,15 @@ public class Node implements Serializable {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
                             (associatedTest.trim().equals("H/o specific illness")) ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("এইচ/অ নিৰ্দিষ্ট ৰোগ")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")))) {
 
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                                (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                                (associatedTest.trim().equals("संबंधित लक्षणे"))
+                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -663,7 +861,10 @@ public class Node implements Serializable {
                 } else {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")) ||
+                            (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             raw = raw.substring(6);
@@ -1008,7 +1209,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+        // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1080,6 +1281,16 @@ public class Node implements Serializable {
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]);
+                unit_text = kn_en(unit_text); //for Kannada...
+                unit_text = mr_en(unit_text); //for Marathi...
+                unit_text = or_en(unit_text); //for Odia...
+                unit_text = gu_en(unit_text); //for Gujarati...
+                unit_text = as_en(unit_text);
+                unit_text = ta_en(unit_text); //For Tamil...
+                unit_text = te_en(unit_text); //For Telugu
+                unit_text = bn_en(unit_text); //For Bengali..
+                unit_text = ml_en(unit_text); //For Malayalam
+
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1105,6 +1316,44 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
+    /*
+     * @param unit The value of the duration that is passed.
+     * @return english translated duration.
+     * */
+    private static String as_en(String unit) {
+
+        switch (unit) {
+            case "ঘন্টাৰ":
+                unit = "Hours";
+                break;
+
+            case "দিনবোৰ":
+                unit = "Days";
+                break;
+
+            case "সপ্তাহ":
+                unit = "Weeks";
+                break;
+
+            case "মাহ":
+                unit = "Months";
+                break;
+
+            case "বছৰ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    /*
+     * @param unit The value of the duration that is passed.
+     * @return english translated duration.
+     */
     private static String hi_en(String unit) {
 
         switch (unit) {
@@ -1124,7 +1373,7 @@ public class Node implements Serializable {
                 unit = "Months";
                 break;
 
-            case "वर्ष":
+            case "वर्षों":
                 unit = "Years";
                 break;
 
@@ -1134,6 +1383,246 @@ public class Node implements Serializable {
 
         return unit;
     }
+
+    private static String kn_en(String unit) {
+
+        switch (unit) {
+            case "ಗಂಟೆಗಳು":
+                unit = "Hours";
+                break;
+
+            case "ದಿನಗಳು":
+                unit = "Days";
+                break;
+
+            case "ವಾರಗಳು":
+                unit = "Weeks";
+                break;
+
+            case "ತಿಂಗಳುಗಳು":
+                unit = "Months";
+                break;
+
+            case "ವರ್ಷಗಳು":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String mr_en(String unit) {
+
+        switch (unit) {
+            case "तास":
+                unit = "Hours";
+                break;
+
+            case "दिवस":
+                unit = "Days";
+                break;
+
+            case "आठवडे":
+                unit = "Weeks";
+                break;
+
+            case "महीने":
+                unit = "Months";
+                break;
+
+            case "वर्षे":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String or_en(String unit) {
+
+        switch (unit) {
+            case "ଘଣ୍ଟା":
+                unit = "Hours";
+                break;
+
+            case "ଦିନ":
+                unit = "Days";
+                break;
+
+            case "ସପ୍ତାହ":
+                unit = "Weeks";
+                break;
+
+            case "ମାସ":
+                unit = "Months";
+                break;
+
+            case "ବର୍ଷ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String gu_en(String unit) {
+
+        switch (unit) {
+            case "કલાક":
+                unit = "Hours";
+                break;
+
+            case "દિવસ":
+                unit = "Days";
+                break;
+
+            case "અઠવાડિયું":
+                unit = "Weeks";
+                break;
+
+            case "માસ":
+                unit = "Months";
+                break;
+
+            case "વર્ષ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String ta_en(String unit) {
+        switch (unit) {
+            case "மணி":
+                unit = "Hours";
+                break;
+            case "நாட்களில்":
+                unit = "Days";
+                break;
+
+            case "வாரங்கள்":
+                unit = "Weeks";
+                break;
+
+            case "மாதங்கள்":
+                unit = "Months";
+                break;
+
+            case "ஆண்டுகள்":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+   
+private static String te_en(String unit) {
+        switch (unit) {
+            case "గంటలు":
+                unit = "Hours";
+                break;
+
+            case "రోజులు":
+                unit = "Days";
+                break;
+
+            case "వారాలు":
+                unit = "Weeks";
+                break;
+
+            case "నెలలు":
+                unit = "Months";
+                break;
+
+            case "సంవత్సరాలు":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+
+private static String bn_en(String unit) {
+        switch (unit) {
+            case "ঘন্টার":
+                unit = "Hours";
+                break;
+
+            case "দিনগুলি":
+                unit = "Days";
+                break;
+
+            case "সপ্তাহ":
+                unit = "Weeks";
+                break;
+
+            case "মাস":
+                unit = "Months";
+                break;
+
+            case "বছর":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+
+private static String ml_en(String unit) {
+    
+        switch (unit) {
+            case "മണിക്കൂറുകൾ":
+                unit = "Hours";
+                break;
+
+            case "ദിവസങ്ങൾ":
+                unit = "Days";
+                break;
+
+            case "ആഴ്ചകൾ":
+                unit = "Weeks";
+                break;
+
+            case "മാസങ്ങൾ":
+                unit = "Months";
+                break;
+
+            case "വർഷങ്ങൾ":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
@@ -1390,10 +1879,11 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-      //  final String[] units = context.getResources().getStringArray(R.array.units);
+        //  final String[] units = context.getResources().getStringArray(R.array.units);
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
+
 
         final String[] doctorUnits = context.getResources().getStringArray(R.array.doctor_units);
         unitPicker.setDisplayedValues(units);
@@ -1443,7 +1933,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = context.getResources().getStringArray(R.array.duration_units);
+        // final String[] units = context.getResources().getStringArray(R.array.duration_units);
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
@@ -1459,10 +1949,20 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
+                unit_text = kn_en(unit_text); //for Hindi...
+                unit_text = mr_en(unit_text); //for Marathi...
+                unit_text = or_en(unit_text); //for Odia...
+                unit_text = gu_en(unit_text); //for Gujarati...
+                unit_text = as_en(unit_text); //for Assamese...
+                unit_text = ta_en(unit_text); //for Tamil...
+                unit_text = te_en(unit_text); //for Telugu...
+                unit_text = bn_en(unit_text); //for Bengali...
+                unit_text = ml_en(unit_text); //for Malayalam...
+
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1703,6 +2203,64 @@ public class Node implements Serializable {
 
     public void setDisplay(String display) {
         this.display = display;
+    }
+
+    public String getDisplay_kannada() {
+        return display_kannada;
+    }
+
+    public void setDisplay_kannada(String display_kannada) {
+        this.display_kannada = display_kannada;
+    }
+
+    public String getDisplay_telugu() {
+        return display_telugu;
+    }
+    public String getDisplay_bengali() {
+        return display_bengali;
+    }
+
+    public String getDisplay_tamil()
+    {
+        return display_tamil;
+    }
+    public void setDisplay_tamil(String display_tamil)
+    {
+        this.display_tamil = display_tamil;
+    }
+
+    public void setDisplay_telugu(String display_telugu) {
+        this.display_telugu = display_telugu;
+    }
+
+
+    public void setDisplay_bengali(String display_bengali) {
+        this.display_bengali = display_bengali;
+    }
+
+
+    public String getDisplay_gujarati() {
+        return display_gujarati;
+    }
+
+    public void setDisplay_gujarati(String display_gujarati) {
+        this.display_gujarati = display_gujarati;
+    }
+
+    public String getDisplay_marathi() {
+        return display_marathi;
+    }
+
+    public void setDisplay_marathi(String display_marathi) {
+        this.display_marathi = display_marathi;
+    }
+
+    public String getDisplay_malyalam() {
+        return display_malyalam;
+    }
+
+    public void setDisplay_malyalam(String display_malyalam) {
+        this.display_malyalam = display_malyalam;
     }
 
     public String getDisplay_oriya() {
@@ -1951,10 +2509,13 @@ public class Node implements Serializable {
             if (mOptions.get(i).isSelected()) {
                 String question;
                 if (level == 0) {
+                    //TODO:Add assamese support....
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("संबंधित लक्षणे"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
@@ -1987,6 +2548,7 @@ public class Node implements Serializable {
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
@@ -2054,9 +2616,17 @@ public class Node implements Serializable {
                 ", min_age='" + min_age + '\'' +
                 ", max_age='" + max_age + '\'' +
                 ", display='" + display + '\'' +
+                ", display_marathi='" + display_marathi + '\'' +
+                ", display_gujarati='" + display_gujarati + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                ", display_kannada='" + display_kannada + '\'' +
+                ", display_assamese='" + display_assamese + '\'' +
+                ", display_tamil='" + display_tamil + '\'' +
+                ", display_telugu='" + display_telugu + '\'' +
+                ", display_bengali='" + display_bengali + '\'' +
+                ", display_malyalam='" + display_malyalam + '\'' +
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
@@ -2089,16 +2659,16 @@ public class Node implements Serializable {
     public void fetchAge(float age) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if(!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
                     !optionsList.get(i).getMax_age().equalsIgnoreCase("")) {
                 if (age < Float.parseFloat(optionsList.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                     remove(optionsList, i);
                     i--;
                 }
 
-            //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-             else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
+                //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
                     remove(optionsList, i);
                     i--;
                 }
@@ -2106,10 +2676,10 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
-                    if(!optionsList.get(i).getOptionsList()
+                    if (!optionsList.get(i).getOptionsList()
                             .get(j).getMin_age().equalsIgnoreCase("") &&
                             !optionsList.get(i).getOptionsList()
                                     .get(j).getMax_age().equalsIgnoreCase("")) {
@@ -2117,9 +2687,7 @@ public class Node implements Serializable {
                                 .get(j).getMin_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
-                        }
-
-                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
+                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
                                 .get(j).getMax_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
@@ -2130,19 +2698,17 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
+                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age())) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
-                                }
-
-                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
+                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
                                 }
@@ -2154,15 +2720,15 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
 
-                                    if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                    if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMax_age().equalsIgnoreCase("")) {
 
@@ -2171,9 +2737,7 @@ public class Node implements Serializable {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
-                                        }
-
-                                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                                 .getMax_age())) {
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
@@ -2188,19 +2752,19 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {
 
-                                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMax_age().equalsIgnoreCase("")) {
                                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2209,9 +2773,7 @@ public class Node implements Serializable {
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                             .get(l).getOptionsList(), m);
                                                     m--;
-                                                }
-
-                                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                         .get(l).getOptionsList().get(m).getMax_age())) {
 
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2220,7 +2782,7 @@ public class Node implements Serializable {
 
                                                 }
                                             }
-                                    }
+                                        }
                                     }
                                 }
                             }
@@ -2236,7 +2798,7 @@ public class Node implements Serializable {
     public void fetchItem(String s) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
+        for (int i = 0; i < optionsList.size(); i++) {
             if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
                 remove(optionsList, i);
                 i--;
@@ -2244,8 +2806,8 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
                     if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
                         remove(optionsList.get(i).getOptionsList(), j);
@@ -2256,10 +2818,10 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2273,13 +2835,13 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
                                     if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2295,14 +2857,14 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {

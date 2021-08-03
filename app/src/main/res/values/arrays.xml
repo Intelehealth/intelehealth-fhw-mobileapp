@@ -5,14 +5,28 @@
         <item>Hindi</item>
         <item>English</item>
         <item>Marathi</item>
-<!--        <item>Cebuano</item>-->
+        <item>Kannada</item>
+        <item>Gujarati</item>
+        <item>Odiya</item>
+        <item>Assamese</item>
+        <item>Tamil</item>
+        <item>Telugu</item>
+        <item>Bengali</item>
+        <item>Malyalam</item>
     </string-array>
 
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
         <item>mr</item>
-<!--        <item>cb</item>-->
+        <item>kn</item>
+        <item>gu</item>
+        <item>or</item>
+        <item>as</item>
+        <item>ta</item>
+        <item>te</item>
+        <item>bn</item>
+        <item>ml</item>
     </string-array>
 
     <string-array name="speciality_values">
@@ -20,12 +34,12 @@
         <item>General Physician</item>
     </string-array>
 
-
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
         <item>Never</item>
     </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
