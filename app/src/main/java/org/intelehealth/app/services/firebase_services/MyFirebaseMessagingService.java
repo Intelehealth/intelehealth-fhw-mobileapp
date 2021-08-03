@@ -27,6 +27,11 @@ import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  * Created by Dexter Barretto on 5/25/17.
  * Github : @dbarretto
@@ -59,6 +64,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 String roomId = remoteMessage.getData().get("roomId");
                 String doctorName = remoteMessage.getData().get("doctorName");
                 String nurseId = remoteMessage.getData().get("nurseId");
+                boolean isOldNotification = false;
+                if (remoteMessage.getData().containsKey("timestamp")) {
+                    String timestamp = remoteMessage.getData().get("timestamp");
+
+                    Date date = new Date();
+                    if (timestamp != null) {
+                        date.setTime(Long.parseLong(timestamp));
+                        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+                        dateFormatter.setTimeZone(TimeZone.getDefault());
+
+                        try {
+                            Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+                            long seconds = 0;
+                            if (ourDate != null) {
+                                seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+                            }
+                            Log.v(TAG, "Current time - " + new Date());
+                            Log.v(TAG, "Notification time - " + ourDate);
+                            Log.v(TAG, "seconds - " + seconds);
+                            if (seconds >= 6) {
+                                isOldNotification = true;
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
                 in.putExtra("roomId", roomId);
                 in.putExtra("isInComingRequest", true);
                 in.putExtra("doctorname", doctorName);
@@ -68,7 +100,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 }
                 int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
-                if (callState == TelephonyManager.CALL_STATE_IDLE) {
+                if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
                     startActivity(in);
                 }else{
                     sendNotification(remoteMessage, null);
