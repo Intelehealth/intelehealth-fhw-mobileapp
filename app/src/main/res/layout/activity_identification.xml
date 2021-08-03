@@ -693,7 +693,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/card_content_sub_text_size"
                             android:hint="@string/txt_others"
-                            android:enabled="false"/>
+                            android:visibility="gone"/>
 
                         <View
                             android:layout_width="match_parent"
