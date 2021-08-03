@@ -1311,14 +1311,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 String selectedHelplineOption = parent.getItemAtPosition(position).toString();
                 if(selectedHelplineOption.equalsIgnoreCase("Other"))
                 {
-                    helplineInfoOther.setEnabled(true);
+                    helplineInfoOther.setVisibility(View.VISIBLE);
                     helplineInfoOther.setFocusable(true);
                 }
                 else
                 {
                     helplineInfoOther.setText("");
                     helplineInfoOther.setError(null);
-                    helplineInfoOther.setEnabled(false);
+//                    helplineInfoOther.setEnabled(false);
+                    helplineInfoOther.setVisibility(View.GONE);
                 }
             }
 
