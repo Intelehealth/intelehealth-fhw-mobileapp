@@ -146,6 +146,15 @@
         <item>ബിരുദവും ഉന്നതവും</item>
     </string-array>
 
+    <string-array name="education_kn">
+        <item>ಆಯ್ಕೆಮಾಡಿ</item>
+        <item>ಅಶಿಕ್ಷಿತ</item>
+        <item>ಒಂದನೆಯ</item>
+        <item>ದ್ವಿತೀಯ</item>
+        <item>ಹೈಯರ್ ಸೆಕೆಂಡರಿ</item>
+        <item>ಪದವಿ ಮತ್ತು ಹೆಚ್ಚಿನ</item>
+    </string-array>
+
     <string-array name="caste_en">
         <item>Select</item>
         <item>General</item>
@@ -208,6 +217,14 @@
         <item>എസ്.ടി</item>
         <item>മറ്റുള്ളവർ</item>
     </string-array>
+ <string-array name="caste_kn">
+        <item>ಆಯ್ಕೆಮಾಡಿ</item>
+        <item>ಸಾಮಾನ್ಯ</item>
+        <item>ಓ.ಬಿ.ಸಿ.</item>
+        <item>ಎಸ್ಸಿ</item>
+        <item>ಪರಿಶಿಷ್ಟ ಪಂಗಡ</item>
+        <item>ಇತರ</item>
+    </string-array>
 
     <string-array name="economic_en">
         <item>Select</item>
@@ -255,6 +272,11 @@
         <item>തിരഞ്ഞെടുക്കുക</item>
         <item>എ.പി.എൽ</item>
         <item>ബിപിഎൽ</item>
+    </string-array>
+<string-array name="economic_kn">
+        <item>ಆಯ್ಕೆಮಾಡಿ</item>
+        <item>ಬಡತನ ರೇಖೆಯ ಮೇಲೆ</item>
+        <item>ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ</item>
     </string-array>
 
     <string-array name="states_india">

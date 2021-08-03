@@ -155,21 +155,72 @@ public final class StringUtils {
             val = switch_te_caste(val);
             val = switch_te_economic(val);
             val = switch_te_education(val);
-        }
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             val = switch_mr_caste(val);
             val = switch_mr_economic(val);
             val = switch_mr_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             val = switch_as_caste(val);
             val = switch_as_economic(val);
             val = switch_as_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
             val = switch_ml_caste(val);
             val = switch_ml_economic(val);
             val = switch_ml_education(val);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            val = switch_kn_caste(val);
+            val = switch_kn_economic(val);
+            val = switch_kn_education(val);
         }
 
+        return val;
+    }
+
+
+    public static String switch_kn_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "ಅಶಿಕ್ಷಿತ";
+                break;
+            case "Primary":
+                val = "ಒಂದನೆಯ";
+                break;
+            case "Secondary":
+                val = "ದ್ವಿತೀಯ";
+                break;
+            case "Higher Secondary":
+                val = "ಹೈಯರ್ ಸೆಕೆಂಡರಿ";
+                break;
+            case "Graduation & Higher":
+                val = "ಪದವಿ ಮತ್ತು ಹೆಚ್ಚಿನ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_kn_education(String val) {
+        switch (val) {
+            case "ಅಶಿಕ್ಷಿತ":
+                val = "Illiterate";
+                break;
+            case "ಒಂದನೆಯ":
+                val = "Primary";
+                break;
+            case "ದ್ವಿತೀಯ":
+                val = "Secondary";
+                break;
+            case "ಹೈಯರ್ ಸೆಕೆಂಡರಿ":
+                val = "Higher Secondary";
+                break;
+            case "ಪದವಿ ಮತ್ತು ಹೆಚ್ಚಿನ":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
         return val;
     }
 
@@ -220,6 +271,7 @@ public final class StringUtils {
         return val;
     }
 
+
     public static String switch_or_education_edit(String val) {
         switch (val) {
             case "Illiterate":
@@ -266,6 +318,7 @@ public final class StringUtils {
         }
         return val;
     }
+
     public static String switch_as_education_edit(String val) {
         switch (val) {
             case "Illiterate":
@@ -290,7 +343,7 @@ public final class StringUtils {
     }
 
 
- public static String switch_as_education(String val) {
+    public static String switch_as_education(String val) {
         switch (val) {
             case "নিৰক্ষৰ":
                 val = "Illiterate";
@@ -314,12 +367,6 @@ public final class StringUtils {
     }
 
     public static String switch_ml_education_edit(String val) {
-
-
-
-
-
-
 
 
         switch (val) {
@@ -602,7 +649,7 @@ public final class StringUtils {
         return val;
     }
 
- public static String switch_ml_economic(String val) {
+    public static String switch_ml_economic(String val) {
         switch (val) {
             case "എ.പി.എൽ":
                 val = "APL";
@@ -623,6 +670,35 @@ public final class StringUtils {
                 break;
             case "BPL":
                 val = "ബിപിഎൽ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_kn_economic(String val) {
+        switch (val) {
+            case "ಬಡತನ ರೇಖೆಯ ಮೇಲೆ":
+                val = "APL";
+                break;
+            case "ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_kn_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "ಬಡತನ ರೇಖೆಯ ಮೇಲೆ";
+                break;
+            case "BPL":
+                val = "ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ";
                 break;
             default:
                 return val;
@@ -699,7 +775,6 @@ public final class StringUtils {
         return val;
     }
 
-
     public static String switch_mr_caste(String val) {
         switch (val) {
             case "सामान्य":
@@ -769,7 +844,54 @@ public final class StringUtils {
         return val;
     }
 
- public static String switch_ml_caste(String val) {
+
+    public static String switch_kn_caste(String val) {
+        switch (val) {
+            case "ಸಾಮಾನ್ಯ":
+                val = "General";
+                break;
+            case "ಓ.ಬಿ.ಸಿ.":
+                val = "OBC";
+                break;
+            case "ಎಸ್ಸಿ":
+                val = "SC";
+                break;
+            case "ಪರಿಶಿಷ್ಟ ಪಂಗಡ":
+                val = "ST";
+                break;
+            case "ಇತರ":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_kn_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "ಸಾಮಾನ್ಯ";
+                break;
+            case "OBC":
+                val = "ಓ.ಬಿ.ಸಿ.";
+                break;
+            case "SC":
+                val = "ಎಸ್ಸಿ";
+                break;
+            case "ST":
+                val = "ಪರಿಶಿಷ್ಟ ಪಂಗಡ";
+                break;
+            case "others":
+                val = "ಇತರ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ml_caste(String val) {
         switch (val) {
             case "ജനറൽ":
                 val = "General";
@@ -815,7 +937,7 @@ public final class StringUtils {
         return val;
     }
 
-   public static String switch_as_caste_edit(String val) {
+    public static String switch_as_caste_edit(String val) {
         switch (val) {
             case "General":
                 val = "সাধাৰণ";
@@ -1058,7 +1180,7 @@ public final class StringUtils {
         return mdob_text;
     }
 
- public static String en__mr_dob(String dob) { //English dob is replaced to marathi text.
+    public static String en__mr_dob(String dob) { //English dob is replaced to marathi text.
         String mdob_text = dob
                 .replace("January", "जानेवारी")
                 .replace("February", "फेब्रुवारी")
@@ -1075,6 +1197,7 @@ public final class StringUtils {
 
         return mdob_text;
     }
+
     public static String en__as_dob(String dob) { //English dob is replaced to marathi text.
         String mdob_text = dob
                 .replace("January", "জানুৱাৰী")
@@ -1107,6 +1230,24 @@ public final class StringUtils {
                 .replace("October", "ഒക്ടോബർ")
                 .replace("November", "നവംബർ")
                 .replace("December", "ഡിസംബർ");
+
+        return mdob_text;
+    }
+
+    public static String en__kn_dob(String dob) { //English dob is replaced to marathi text.
+        String mdob_text = dob
+                .replace("January", "ಜನವರಿ")
+                .replace("February", "ಫೆಬ್ರುವರಿ")
+                .replace("March", "ಮಾರ್ಚ್")
+                .replace("April", "ಏಪ್ರಿಲ್")
+                .replace("May", "ಮೇ")
+                .replace("June", "ಜೂನ")
+                .replace("July", "ಜುಲೈ")
+                .replace("August", "ಆಗಸ್ಟ್")
+                .replace("September", "ಸೆಪ್ಟೆಂಬರ್")
+                .replace("October", "ಅಕ್ಟೋಬರ್")
+                .replace("November", "ನವೆಂಬರ್")
+                .replace("December", "ಡಿಸೆಂಬರ್");
 
         return mdob_text;
     }
@@ -1210,8 +1351,7 @@ public final class StringUtils {
                     .replace("నవంబర్", "November")
                     .replace("డిసెంబర్", "December");
             return dob;
-        }
-        else if (locale.equalsIgnoreCase("mr")) {
+        } else if (locale.equalsIgnoreCase("mr")) {
             //Marathi
             String dob = dobString
                     .replace("जानेवारी", "January")
@@ -1227,8 +1367,7 @@ public final class StringUtils {
                     .replace("नोव्हेंबर", "November")
                     .replace("डिसेंबर", "December");
             return dob;
-        }
-        else if (locale.equalsIgnoreCase("as")) {
+        } else if (locale.equalsIgnoreCase("as")) {
             //Marathi
             String dob = dobString
                     .replace("জানুৱাৰী", "January")
@@ -1244,8 +1383,7 @@ public final class StringUtils {
                     .replace("নৱেম্বৰ", "November")
                     .replace("ডিচেম্বৰ", "December");
             return dob;
-        }
-        else if (locale.equalsIgnoreCase("ml")) {
+        } else if (locale.equalsIgnoreCase("ml")) {
             //Marathi
             String dob = dobString
                     .replace("ജനുവരി", "January")
@@ -1261,7 +1399,25 @@ public final class StringUtils {
                     .replace("നവംബർ", "November")
                     .replace("ഡിസംബർ", "December");
             return dob;
-        } else {
+        }
+        else if (locale.equalsIgnoreCase("kn")) {
+            //kannad
+            String dob = dobString
+                    .replace("ಜನವರಿ", "January")
+                    .replace("ಫೆಬ್ರುವರಿ", "February")
+                    .replace("ಮಾರ್ಚ್", "March")
+                    .replace("ಏಪ್ರಿಲ್", "April")
+                    .replace("ಮೇ", "May")
+                    .replace("ಜೂನ", "June")
+                    .replace("ಜುಲೈ", "July")
+                    .replace("ಆಗಸ್ಟ್", "August")
+                    .replace("ಸೆಪ್ಟೆಂಬರ್", "September")
+                    .replace("ಅಕ್ಟೋಬರ್", "October")
+                    .replace("ನವೆಂಬರ್", "November")
+                    .replace("ಡಿಸೆಂಬರ್", "December");
+            return dob;
+        }
+        else {
             return dobString;
         }
 
@@ -1338,8 +1494,8 @@ public final class StringUtils {
                     return val;
             }
 
-        }    else{
-                   return val;
+        } else {
+            return val;
         }
         return val;
     }
@@ -1668,9 +1824,7 @@ public final class StringUtils {
                     break;
             }
 
-        }
-
-        else if (locale.equalsIgnoreCase("te")) {
+        } else if (locale.equalsIgnoreCase("te")) {
             switch (val) {
 
                 case "Andhra Pradesh":
@@ -1906,8 +2060,7 @@ public final class StringUtils {
                     return val;
 
             }
-        }
-        else{
+        } else {
             return val;
         }
         return val;
@@ -2238,182 +2391,182 @@ public final class StringUtils {
                 break;
 
             //indian state According
-            case  "ఆంధ్రప్రదేశ్":
-                val ="Andhra Pradesh";
+            case "ఆంధ్రప్రదేశ్":
+                val = "Andhra Pradesh";
                 break;
-            case  "అరుణాచల్ ప్రదేశ్":
-                val ="Arunachal Pradesh";
+            case "అరుణాచల్ ప్రదేశ్":
+                val = "Arunachal Pradesh";
                 break;
-            case  "అస్సాం":
-                val ="Assam";
+            case "అస్సాం":
+                val = "Assam";
                 break;
-            case  "బీహార్":
-                val ="Bihar";
+            case "బీహార్":
+                val = "Bihar";
                 break;
-            case  "ఛత్తీస్‌గ h ్":
-                val ="Chhattisgarh";
+            case "ఛత్తీస్‌గ h ్":
+                val = "Chhattisgarh";
                 break;
-            case  "గోవా":
-                val ="Goa";
+            case "గోవా":
+                val = "Goa";
                 break;
-            case  "గుజరాత్":
-                val ="Gujarat";
+            case "గుజరాత్":
+                val = "Gujarat";
                 break;
-            case  "హర్యానా":
-                val ="Haryana";
+            case "హర్యానా":
+                val = "Haryana";
                 break;
-            case  "హిమాచల్ ప్రదేశ్":
-                val ="Himachal Pradesh";
+            case "హిమాచల్ ప్రదేశ్":
+                val = "Himachal Pradesh";
                 break;
-            case  "జమ్మూ కాశ్మీర్":
-                val ="Jammu &amp; Kashmir";
+            case "జమ్మూ కాశ్మీర్":
+                val = "Jammu &amp; Kashmir";
                 break;
-            case  "జార్ఖండ్":
-                val ="Jharkhand";
+            case "జార్ఖండ్":
+                val = "Jharkhand";
                 break;
-            case  "కర్ణాటక":
-                val ="Karnataka";
+            case "కర్ణాటక":
+                val = "Karnataka";
                 break;
-            case  "కేరళ":
-                val ="Kerala";
+            case "కేరళ":
+                val = "Kerala";
                 break;
-            case  "మధ్యప్రదేశ్":
-                val ="Madhya Pradesh";
+            case "మధ్యప్రదేశ్":
+                val = "Madhya Pradesh";
                 break;
-            case  "మహారాష్ట్ర":
-                val ="Maharashtra";
+            case "మహారాష్ట్ర":
+                val = "Maharashtra";
                 break;
-            case  "మణిపూర్":
-                val ="Manipur";
+            case "మణిపూర్":
+                val = "Manipur";
                 break;
-            case  "మేఘాలయ":
-                val ="Meghalaya";
+            case "మేఘాలయ":
+                val = "Meghalaya";
                 break;
-            case  "మిజోరం":
-                val ="Mizoram";
+            case "మిజోరం":
+                val = "Mizoram";
                 break;
-            case  "నాగాలాండ్":
-                val ="Nagaland";
+            case "నాగాలాండ్":
+                val = "Nagaland";
                 break;
-            case    "ఒడిశా":
-                val ="Odisha";
+            case "ఒడిశా":
+                val = "Odisha";
                 break;
-            case  "పంజాబ్":
-                val ="Punjab";
+            case "పంజాబ్":
+                val = "Punjab";
                 break;
-            case  "రాజస్థాన్":
-                val ="Rajasthan";
+            case "రాజస్థాన్":
+                val = "Rajasthan";
                 break;
-            case  "సిక్కిం":
-                val ="Sikkim";
+            case "సిక్కిం":
+                val = "Sikkim";
                 break;
-            case  "తమిళనాడు":
-                val ="Tamil Nadu";
+            case "తమిళనాడు":
+                val = "Tamil Nadu";
                 break;
-            case  "తెలంగాణ":
-                val ="Telangana";
+            case "తెలంగాణ":
+                val = "Telangana";
                 break;
-            case  "త్రిపుర":
-                val ="Tripura";
+            case "త్రిపుర":
+                val = "Tripura";
                 break;
-            case  "ఉత్తర ప్రదేశ్":
-                val ="Uttar Pradesh";
+            case "ఉత్తర ప్రదేశ్":
+                val = "Uttar Pradesh";
                 break;
-            case  "ఉత్తరాఖండ్":
-                val ="Uttarakhand";
+            case "ఉత్తరాఖండ్":
+                val = "Uttarakhand";
                 break;
-            case  "పశ్చిమ బెంగాల్":
-                val ="West Bengal";
+            case "పశ్చిమ బెంగాల్":
+                val = "West Bengal";
                 break;
 
-                //hindi india state
+            //hindi india state
 
             case "आंध्र प्रदेश":
-                val ="Andhra Pradesh";
+                val = "Andhra Pradesh";
                 break;
             case "अरुणाचल प्रदेश":
-                val ="Arunachal Pradesh";
+                val = "Arunachal Pradesh";
                 break;
             case "असम":
-                val ="Assam";
+                val = "Assam";
                 break;
             case "बिहार":
-                val ="Bihar";
+                val = "Bihar";
                 break;
             case "छत्तीसगढ":
-                val ="Chhattisgarh";
+                val = "Chhattisgarh";
                 break;
             case "गोवा":
-                val ="Goa";
+                val = "Goa";
                 break;
             case "गुजरात":
-                val ="Gujarat";
+                val = "Gujarat";
                 break;
             case "हरयाणा":
-                val ="Haryana";
+                val = "Haryana";
                 break;
             case "हिमाचल प्रदेश":
-                val ="Himachal Pradesh";
+                val = "Himachal Pradesh";
                 break;
             case "जम्मू कश्मीर":
-                val ="Jammu &amp; Kashmir";
+                val = "Jammu &amp; Kashmir";
                 break;
             case "झारखंड":
-                val ="Jharkhand";
+                val = "Jharkhand";
                 break;
             case "कर्नाटक":
-                val ="Karnataka";
+                val = "Karnataka";
                 break;
             case "केरल":
-                val ="Kerala";
+                val = "Kerala";
                 break;
             case "मध्य प्रदेश":
-                val ="Madhya Pradesh";
+                val = "Madhya Pradesh";
                 break;
             case "महाराष्ट्र":
-                val ="Maharashtra";
+                val = "Maharashtra";
                 break;
             case "मणिपुर":
-                val ="Manipur";
+                val = "Manipur";
                 break;
             case "मेघालय":
-                val ="Meghalaya";
+                val = "Meghalaya";
                 break;
             case "मिजोरम":
-                val ="Mizoram";
+                val = "Mizoram";
                 break;
             case "नगालैंड":
-                val ="Nagaland";
+                val = "Nagaland";
                 break;
             case "उड़ीसा":
-                val ="Odisha";
+                val = "Odisha";
                 break;
             case "पंजाब":
-                val ="Punjab";
+                val = "Punjab";
                 break;
             case "राजस्थान":
-                val ="Rajasthan";
+                val = "Rajasthan";
                 break;
             case "सिक्किम":
-                val ="Sikkim";
+                val = "Sikkim";
                 break;
             case "तमिलनाडु":
-                val ="Tamil Nadu";
+                val = "Tamil Nadu";
                 break;
             case "तेलंगाना":
-                val ="Telangana";
+                val = "Telangana";
                 break;
             case "त्रिपुरा":
-                val ="Tripura";
+                val = "Tripura";
                 break;
             case "उत्तर प्रदेश":
-                val ="Uttar Pradesh";
+                val = "Uttar Pradesh";
                 break;
             case "उत्तराखंड":
-                val ="Uttarakhand";
+                val = "Uttarakhand";
                 break;
             case "पश्चिम बंगाल":
-                val ="West Bengal";
+                val = "West Bengal";
                 break;
 
             default:
