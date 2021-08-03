@@ -92,7 +92,6 @@
     <string name="title_activity_complaint_node">புகார்களைத் தேர்ந்தெடுக்கவும்</string>
     <string name="complaint_category_selected" translatable="false">தேர்ந்தெடுக்கப்பட்ட வகைகள்:</string>
     <string name="complaint_complaint_selected" translatable="false">தேர்ந்தெடுக்கப்பட்ட புகார்கள்:</string>
-    <string name="complaint_dialog_title">வருகைக்கான காரணம்</string>
     <string name="complaint_required" translatable="false">புகார் தேர்ந்தெடுக்கப்பட வேண்டும்!</string>
     <string name="complaint_change_selected" translatable="false">மாற்றவும்</string>
     <string name="question_answer_all_phy_exam" translatable="false">அனைத்துப் பொதுத் தேர்வு கேள்விகளுக்கும் பதிலளிக்கவும்.</string>
@@ -135,7 +134,6 @@
     <string name="visit_summary_medical_history">மருத்துவ வரலாறு</string>
     <string name="visit_summary_family_history" translatable="false">குடும்ப வரலாறு</string>
     <string name="visit_summary_on_examination" translatable="false">தேர்வில்</string>
-    <string name="visit_summary_complaint" translatable="false">வருகைக்கான காரணம்</string>
     <string name="visit_summary_vitals" translatable="false">உயிர்ப்புத்திறன்</string>
     <string name="visit_summary_doctor_details" translatable="false">மருத்துவர் விவரங்கள்</string>
     <string name="visit_summary_rx" translatable="false">பரிந்துரைக்கப்பட்ட மருந்துகள்</string>
@@ -560,5 +558,8 @@
     <string name="medical_advice">மருத்துவ ஆலோசனை</string>
     <string name="text_patient_and_advice_created">நோயாளி மற்றும் மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
     <string name="text_advice_created">மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
+
+    <string name="complaint_dialog_title">அழைப்புக்கான காரணம்</string>
+    <string name="visit_summary_complaint">அழைப்புக்கான காரணம்</string>
 
 </resources>

@@ -128,7 +128,6 @@
         <string name="title_activity_complaint_node">तक्रारी निवडा</string>
         <string name="complaint_category_selected">निवडलेल्या श्रेणी:</string>
         <string name="complaint_complaint_selected">निवडलेल्या तक्रारी:</string>
-        <string name="complaint_dialog_title">भेटीचे कारण</string>
         <string name="complaint_required">तक्रार निवडणे आवश्यक आहे!</string>
 
         //Question Node Screen
@@ -184,7 +183,6 @@
         <string name="visit_summary_medical_history">वैद्यकीय इतिहास</string>
         <string name="visit_summary_family_history">कौटुंबिक इतिहास</string>
         <string name="visit_summary_on_examination">परीक्षेवर</string>
-        <string name="visit_summary_complaint">भेटीचे कारण</string>
         <string name="visit_summary_vitals">महत्वपूर्ण</string>
         <string name="visit_summary_doctor_details">डॉक्टर तपशील</string>
         <string name="visit_summary_rx">लिहून दिलेली औषधे</string>
@@ -694,6 +692,9 @@
     <string name="medical_advice">वैद्यकीय सल्ला</string>
         <string name="text_patient_and_advice_created">रुग्ण आणि वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
         <string name="text_advice_created">वैद्यकीय सल्ला यशस्वीरित्या नोंदणीकृत आहे</string>
+
+        <string name="complaint_dialog_title">कॉलचे कारण</string>
+        <string name="visit_summary_complaint">कॉलचे कारण</string>
 
 
 </resources>

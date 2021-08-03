@@ -127,7 +127,6 @@
         <string name="title_activity_complaint_node">તકલીફ/ફરીયાદ પસંદ કરો</string>
         <string name="complaint_category_selected" >પસંદ કરેલ કેટેગરી</string>
         <string name="complaint_complaint_selected">પસંદ કરેલ તકલીફ/ફરીયાદ</string>
-        <string name="complaint_dialog_title">મુલાકાતનું કારણ</string>
         <string name="complaint_required">તકલીફ/ફરીયાદ ફરજીયાત પસંદ કરો</string>
 
         //Question Node Screen
@@ -183,7 +182,6 @@
         <string name="visit_summary_medical_history">મેડીકલ હિશ્ટ્રી</string>
         <string name="visit_summary_family_history">કૌટુંબિક હિશ્ટ્રી</string>
         <string name="visit_summary_on_examination">ચકાસણી</string>
-        <string name="visit_summary_complaint">મુલાકાતનું કારણ</string>
         <string name="visit_summary_vitals">વાઇટલ્સ</string>
         <string name="visit_summary_doctor_details">ડોક્ટરની વિગતો</string>
         <string name="visit_summary_rx">સુચવેલ દવાઓ</string>
@@ -678,5 +676,8 @@
     <string name="medical_advice">તબીબી સલાહ</string>
         <string name="text_patient_and_advice_created">દર્દી અને તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
         <string name="text_advice_created">તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
+
+        <string name="complaint_dialog_title">કોલનું કારણ</string>
+        <string name="visit_summary_complaint">કોલનું કારણ</string>
 
 </resources>

@@ -75,7 +75,6 @@
     <string name="title_activity_complaint_node">" ఫిర్యాదులను ఎంచుకోండి"</string>
     <string name="complaint_category_selected" translatable="false">" ఎంచుకున్న వర్గాలు:"</string>
     <string name="complaint_complaint_selected" translatable="false">" ఎంచుకున్న ఫిర్యాదులు:"</string>
-    <string name="complaint_dialog_title">" సందర్శనకు కారణం"</string>
     <string name="complaint_required" translatable="false">" ఫిర్యాదు తప్పక ఎంచుకోవాలి!"</string>
     <string name="title_activity_question_node" translatable="false">" ప్రశ్న నోడ్ కార్యాచరణ"</string>
     <string name="complaint_change_selected" translatable="false">" సవరించండి"</string>
@@ -120,7 +119,6 @@
     <string name="visit_summary_medical_history">" వైద్య చరిత్ర"</string>
     <string name="visit_summary_family_history" translatable="false">" కుటుంబ చరిత్ర"</string>
     <string name="visit_summary_on_examination" translatable="false">" పరీక్షలో"</string>
-    <string name="visit_summary_complaint" translatable="false">" సందర్శనకు కారణం"</string>
     <string name="visit_summary_vitals" translatable="false">" ప్రాణాధారాలు"</string>
     <string name="visit_summary_doctor_details" translatable="false">" డాక్టర్ వివరాలు"</string>
     <string name="visit_summary_rx" translatable="false">" సూచించిన మందులు"</string>
@@ -556,5 +554,8 @@
     <string name="medical_advice">వైద్య సలహా</string>
     <string name="text_patient_and_advice_created">రోగి మరియు వైద్య సలహా విజయవంతంగా నమోదు చేయబడుతుంది</string>
     <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
+
+    <string name="complaint_dialog_title">కాల్ కారణం</string>
+    <string name="visit_summary_complaint">కాల్ కారణం</string>
 
 </resources>

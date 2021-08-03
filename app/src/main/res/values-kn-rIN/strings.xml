@@ -120,7 +120,6 @@
     <string name="title_activity_complaint_node">ದೂರುಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="complaint_category_selected">ಆಯ್ದ ವಿಭಾಗಗಳು:</string>
     <string name="complaint_complaint_selected">ಆಯ್ದ ದೂರುಗಳು:</string>
-    <string name="complaint_dialog_title">ಭೇಟಿಗೆ ಕಾರಣ</string>
     <string name="complaint_required">ದೂರನ್ನು ಆಯ್ಕೆ ಮಾಡಬೇಕು</string>
 
     //Question Node Screen
@@ -176,7 +175,6 @@
     <string name="visit_summary_medical_history">ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
     <string name="visit_summary_family_history">ಕುಟುಂಬದ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
     <string name="visit_summary_on_examination">ಪರೀಕ್ಷೆಯ ವಿವರಗಳು</string>
-    <string name="visit_summary_complaint">ಭೇಟಿಗೆ ಕಾರಣ</string>
     <string name="visit_summary_vitals">ಅತ್ಯಗತ್ಯವಾದ ದೈಹಿಕ ವಿವರಗಳು</string>
     <string name="visit_summary_doctor_details">ವೈದ್ಯರ ವಿವರಗಳು</string>
     <string name="visit_summary_rx">ನಿಗದಿತ ಔಷಧಿಗಳು</string>
@@ -683,5 +681,8 @@
     <string name="medical_advice">ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
     <string name="text_patient_and_advice_created">ರೋಗಿಯ ಮತ್ತು ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
     <string name="text_advice_created">ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
+
+    <string name="complaint_dialog_title">ಕರೆಯ ಕಾರಣ</string>
+    <string name="visit_summary_complaint">ಕರೆಯ ಕಾರಣ</string>
 
 </resources>

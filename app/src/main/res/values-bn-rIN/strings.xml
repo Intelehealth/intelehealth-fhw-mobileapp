@@ -88,7 +88,6 @@
     <string name="title_activity_complaint_node">অভিযোগ নির্বাচন করুন</string>
     <string name="complaint_category_selected" translatable="false">নির্বাচিত বিভাগ সমূহ</string>
     <string name="complaint_complaint_selected" translatable="false">নির্বাচিত অভিযোগ</string>
-    <string name="complaint_dialog_title">সাক্ষাতের কারণ</string>
     <string name="complaint_required" translatable="false">অভিযোগ অবশ্যই নির্বাচন করতে হবে</string>
     <string name="title_activity_question_node" translatable="false">এক্টিভ প্রশ্ন</string>
     <string name="complaint_change_selected" translatable="false">পরিবর্তন করুন</string>
@@ -133,7 +132,6 @@
     <string name="visit_summary_medical_history">ডাক্তারি ইতিহাস</string>
     <string name="visit_summary_family_history" translatable="false">পরিবার ইতিহাস</string>
     <string name="visit_summary_on_examination" translatable="false">পরীক্ষা শুরু</string>
-    <string name="visit_summary_complaint" translatable="false">সাক্ষাতের কারণ</string>
     <string name="visit_summary_vitals" translatable="false">গুরুত্বপূর্ণ</string>
     <string name="visit_summary_doctor_details" translatable="false">ডাক্তার তথ্য</string>
     <string name="visit_summary_rx" translatable="false">নির্ধারিত অসুদ</string>
@@ -527,5 +525,8 @@
     <string name="medical_advice">ডাক্তারি পরামর্শ</string>
     <string name="text_patient_and_advice_created">রোগী এবং চিকিত্সা পরামর্শ সফলভাবে নিবন্ধিত হয়</string>
     <string name="text_advice_created">মেডিকেল পরামর্শ সফলভাবে নিবন্ধিত হয়</string>
+
+    <string name="complaint_dialog_title">কল করার কারণ</string>
+    <string name="visit_summary_complaint">কল করার কারণ</string>
 
 </resources>

@@ -30,7 +30,6 @@
     <string name="complaint_category_selected">ରୟନିତ ଅଭିଯୋଗକାରୀ :</string>
     <string name="complaint_change_selected">"ସଂଶୋଧିତ "</string>
     <string name="complaint_complaint_selected">ଭିଯୋଗଗୁଡ଼ିକ :</string>
-    <string name="complaint_dialog_title">ଭିଯୋଗ ଗୁଡ଼ିକ</string>
     <string name="complaint_required">"ଭିଯୋଗ ଚୟନ ହେବା ଉଚିତ୍ "</string>
     <string name="device_id">"ଡ଼ିଭାଇସ୍ ଅାଇଡ଼ "</string>
     <string name="downloading_protocols">ମାଇଣ୍ଡ ମ୍ଯାପ୍ ଡ଼ାଉନ ଲୋଡ଼ କରିବା</string>
@@ -314,8 +313,6 @@
     <string name="downloading_prescription">ପ୍ରେସକ୍ରିପ୍ସନ୍ ଡାଉନଲୋଡ୍ ହେଉଛି</string>
     <string name="privacy_notice_title">ଗୋପନୀୟତା ନୋଟିସ୍</string>
     <string name="title_activity_privacy_notice" translatable="false">"ଗୋପନୀୟତା ନୋଟିସ୍ "</string>
-
-    <string name="visit_summary_complaint" translatable="false">"ପରିଦର୍ଶନର କାରଣ "</string>
     <string name="visit_summary_button_upload" translatable="false">"ଅପଲୋଡ୍ "</string>
     <string name="associated_symptoms">"ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"</string>
 
@@ -567,6 +564,9 @@
     <string name="medical_advice">ଚିକିତ୍ସା ପରାମର୍ଶ</string>
     <string name="text_patient_and_advice_created">ରୋଗୀ ଏବଂ ଚିକିତ୍ସା ପରାମର୍ଶ ସଫଳତାର ସହିତ ପଞ୍ଜିକୃତ ହୋଇଛି |</string>
     <string name="text_advice_created">ଡାକ୍ତରୀ ପରାମର୍ଶ ସଫଳତାର ସହିତ ପଞ୍ଜିକୃତ ହୋଇଛି |</string>
+
+    <string name="complaint_dialog_title">କଲ୍ ର କାରଣ |</string>
+    <string name="visit_summary_complaint">କଲ୍ ର କାରଣ |</string>
 
 
 </resources>

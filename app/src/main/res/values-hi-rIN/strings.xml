@@ -127,7 +127,6 @@
     <string name="title_activity_complaint_node">शिकायतों का चयन करें</string>
     <string name="complaint_category_selected">चयनित श्रेणियाँ:</string>
     <string name="complaint_complaint_selected">चयनित शिकायतें:</string>
-    <string name="complaint_dialog_title">आने का कारण</string>
     <string name="complaint_required">शिकायत का चयन करना होगा!</string>
 
     //Question Node Screen
@@ -183,7 +182,6 @@
     <string name="visit_summary_medical_history">चिकित्सक इतिहास</string>
     <string name="visit_summary_family_history">परिवार इतिहास</string>
     <string name="visit_summary_on_examination">निरिक्षण करने पर</string>
-    <string name="visit_summary_complaint">यात्रा का कारण</string>
     <string name="visit_summary_vitals">नब्ज</string>
     <string name="visit_summary_doctor_details">चिकित्सक विवरण</string>
     <string name="visit_summary_rx">निर्धारित दवाईयाँ</string>
@@ -692,5 +690,8 @@
     <string name="medical_advice">वैद्यकीय सलाह</string>
     <string name="text_patient_and_advice_created">रोगी और चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
     <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
+
+    <string name="complaint_dialog_title">कॉल करने का कारण</string>
+    <string name="visit_summary_complaint">कॉल करने का कारण</string>
 
 </resources>

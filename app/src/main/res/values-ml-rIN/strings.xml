@@ -92,7 +92,6 @@
     <string name="title_activity_complaint_node">പരാതികൾ തിരഞ്ഞെടുക്കുക</string>
     <string name="complaint_category_selected" translatable="false">തിരഞ്ഞെടുത്ത വിഭാഗങ്ങൾ</string>
     <string name="complaint_complaint_selected" translatable="false">" തിരഞ്ഞെടുത്ത പരാതികൾ"</string>
-    <string name="complaint_dialog_title">" സന്ദര്‍ശനത്തിനുള്ള ഉദ്ദേശം"</string>
     <string name="complaint_required" translatable="false">" പരാതി തിരഞ്ഞെടുക്കേണ്ടതാണ്!"</string>
     <string name="title_activity_question_node" translatable="false">" ക്വസ്റ്റ്യൻനോഡ്ആക്ടിവിറ്റി"</string>
     <string name="complaint_change_selected" translatable="false">" തിരുത്തുക"</string>
@@ -137,7 +136,6 @@
     <string name="visit_summary_medical_history">മെഡിക്കല്‍ ചരിത്രം</string>
     <string name="visit_summary_family_history" translatable="false">കുടുംബചരിത്രം</string>
     <string name="visit_summary_on_examination" translatable="false">പരിശോധനയിലാണ്</string>
-    <string name="visit_summary_complaint" translatable="false">" സന്ദര്‍ശനത്തിന്‍റെ ഉദ്ദേശം"</string>
     <string name="visit_summary_vitals" translatable="false">" വൈറ്റൽസ് "</string>
     <string name="visit_summary_doctor_details" translatable="false">" ഡോക്ടറുടെ വിശദാംശങ്ങള്‍"</string>
     <string name="visit_summary_rx" translatable="false">കുറിപ്പടിപ്രകാരമുള്ള മരുന്നുകൾ</string>
@@ -560,6 +558,9 @@
     <string name="medical_advice">മെഡിക്കൽ ഉപദേശം</string>
     <string name="text_patient_and_advice_created">രോഗിയും മെഡിക്കൽ ഉപദേശവും വിജയകരമായി രജിസ്റ്റർ ചെയ്തു</string>
     <string name="text_advice_created">മെഡിക്കൽ ഉപദേശം വിജയകരമായി രജിസ്റ്റർ ചെയ്തു</string>
+
+    <string name="complaint_dialog_title">വിളിക്കാനുള്ള കാരണം</string>
+    <string name="visit_summary_complaint">വിളിക്കാനുള്ള കാരണം</string>
 
 </resources>
 

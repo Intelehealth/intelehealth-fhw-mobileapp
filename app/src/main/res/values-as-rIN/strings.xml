@@ -90,7 +90,6 @@
     <string name="title_activity_complaint_node">অভিযোগ নির্বাচন কৰা</string>
     <string name="complaint_category_selected" translatable="false">নির্বাচিত বিভাগসমূহ:</string>
     <string name="complaint_complaint_selected" translatable="false">নির্বাচিত অভিযোগ:</string>
-    <string name="complaint_dialog_title">সাক্ষতৰ কাৰণ</string>
     <string name="complaint_required" translatable="false">অভিযোগ অৱশ্যই নির্বাচন কৰিব লাগিব!</string>
     <string name="title_activity_question_node" translatable="false">প্রশ্ন নোড ক্ৰিয়াকলাপ</string>
     <string name="complaint_change_selected" translatable="false">পৰিবর্তন কৰা</string>
@@ -135,7 +134,6 @@
     <string name="visit_summary_medical_history">চিকিৎসা ইতিহাস</string>
     <string name="visit_summary_family_history" translatable="false">পাৰিবাৰিক ইতিহাস</string>
     <string name="visit_summary_on_examination" translatable="false">পৰীক্ষাযত</string>
-    <string name="visit_summary_complaint" translatable="false">সাক্ষতাৰ কাৰণ</string>
     <string name="visit_summary_vitals" translatable="false">গুৰুত্বপূর্ণ</string>
     <string name="visit_summary_doctor_details" translatable="false">ডাক্তৰ বিষয়ৰ</string>
     <string name="visit_summary_rx" translatable="false">নির্ধাৰিত ঔষধ</string>
@@ -529,6 +527,9 @@
     <string name="exercises">ব্যায়াম</string>
     <string name="txt_additional_info">অতিৰিক্ত তথ্য</string>
     <string name="medical_advice">চিকিৎসীয় পৰামৰ্শ</string>
+
+    <string name="complaint_dialog_title">কলকৰাৰ কাৰণ</string>
+    <string name="visit_summary_complaint">কলকৰাৰ কাৰণ</string>
 
 
 </resources>
