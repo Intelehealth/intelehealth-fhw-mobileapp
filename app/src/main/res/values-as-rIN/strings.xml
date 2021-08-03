@@ -392,7 +392,7 @@
     <string name="update">আপডেট</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"হ্যালো, ইনটেলহেলথ ব্যবহাৰৰ বাবে আপোনাক ধন্যবাদ। আপোনাৰ প্রেচক্রিপশন ডাউনলোড কৰোতে দয়া কৰি ইয়াত ক্লিক কৰা\"</string>
     <string name="and_enter_your_patient_id">\"আৰু আপোনাৰ ৰোগীৰ আইডি লিখা -\"</string>
-    <string name="what_is_the_reason_for_your_visit">আপোনাৰ দেখোৱা কাৰণ কি?</string>
+    <string name="what_is_the_reason_for_your_visit">কল কৰাৰ কাৰণ কি?</string>
     <string name="swipe_down_to_return">পৰবর্তী / পৰবর্তী পৰা তলত সোয়াইপ কৰা</string>
     <string name="swipe_up">পৰবর্তী পৰা সোয়াইপ কৰা</string>
     <string name="swipe_down">আগৰ পৰা ডাউন সোয়াইপ কৰা</string>

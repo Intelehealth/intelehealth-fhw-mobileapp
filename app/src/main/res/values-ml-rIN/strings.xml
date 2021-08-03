@@ -428,7 +428,7 @@
     <string name="update">" അപ്ഡേറ്റ്"</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">" \"ഹലോ ഇൻടെലിഹെൽത്ത് ഉപയോഗിക്കുന്നതിന് നന്ദി. പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്യുന്നതിനായി ഇവിടെ ക്ലിക്ക് ചെയ്യുക\""</string>
     <string name="and_enter_your_patient_id">" \"പിന്നെ നിങ്ങളുടെ രോഗി ഐഡി നല്‍കുക\""</string>
-    <string name="what_is_the_reason_for_your_visit">" നിങ്ങളുടെ സന്ദർശനത്തിന് കാരണമെന്താണ്? "</string>
+    <string name="what_is_the_reason_for_your_visit">എന്താണ് വിളിക്കാനുള്ള കാരണം?</string>
     <string name="swipe_down_to_return">മുൻപുള്ളതിനായി താഴേക്ക് സ്വൈപ്പ് ചെയ്യുക/അടുത്തതിന് മുകളിലേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>
     <string name="swipe_up">അടുത്തതിന് മുകളിലേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>
     <string name="swipe_down">മുൻപുള്ളതിനായി താഴേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>

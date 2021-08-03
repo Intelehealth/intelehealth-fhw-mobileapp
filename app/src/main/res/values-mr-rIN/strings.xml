@@ -556,7 +556,7 @@
 
 
         <!--New Ayu Related Changes-->
-        <string name="what_is_the_reason_for_your_visit" >आपल्या भेटीचे कारण काय आहे?</string>
+        <string name="what_is_the_reason_for_your_visit">कॉल करण्याचे कारण काय आहे?</string>
         <string name="swipe_down_to_return">पुढील साठी मागील / अप खाली स्वाइप करा</string>
         <string name="swipe_up">पुढील साठी स्वाइप करा</string>
         <string name="swipe_down">मागील साठी खाली स्वाइप करा</string>

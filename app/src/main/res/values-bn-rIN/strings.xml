@@ -395,7 +395,7 @@
     <string name="update">আপডেট</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">হ্যালো ইন্টেলিহেলথ ব্যবহারের জন্য আপনাকে ধন্যবাদ !আপনার প্রেসক্রিপশন ডাউনলোড করতে দয়া করে এখানে ক্লিক করুন</string>
     <string name="and_enter_your_patient_id">এবং আপনার রোগীর আই ডি লিখুন</string>
-    <string name="what_is_the_reason_for_your_visit">আপনার দেখার কারণ কি?</string>
+    <string name="what_is_the_reason_for_your_visit">ডাকার কারণ কি?</string>
     <string name="swipe_down_to_return">পরবর্তীর জন্য নিচে সোয়াইপ করুন</string>
     <string name="swipe_up">পরবর্তীর জন্য সোয়াইপ করুন</string>
     <string name="swipe_down">আগের জন্য ডাউন সোয়াইপ করুন</string>
@@ -528,5 +528,6 @@
 
     <string name="complaint_dialog_title">কল করার কারণ</string>
     <string name="visit_summary_complaint">কল করার কারণ</string>
+
 
 </resources>

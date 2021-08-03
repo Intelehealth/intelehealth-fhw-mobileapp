@@ -522,7 +522,7 @@
 
 
         <!--New Ayu Related Changes-->
-        <string name="what_is_the_reason_for_your_visit" >તમારી મુલાકાતનું કારણ શું છે?</string>
+        <string name="what_is_the_reason_for_your_visit">કોલનું કારણ શું છે?</string>
         <string name="swipe_down_to_return">આગલા માટે અગાઉના / ઉપર માટે નીચે સ્વાઇપ કરો</string>
         <string name="swipe_up">આગળ માટે સ્વાઇપ કરો</string>
         <string name="swipe_down">પાછલા માટે ડાઉન સ્વાઇપ કરો</string>
