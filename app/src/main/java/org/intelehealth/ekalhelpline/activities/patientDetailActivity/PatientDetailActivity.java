@@ -243,7 +243,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         if(MedicalAdvice == true) {
             AlertDialog.Builder builder = new AlertDialog.Builder(PatientDetailActivity.this)
-                    .setMessage(R.string.text_patient_and_advice_created)
+                    .setMessage(getResources().getString(R.string.text_patient_and_advice_created))
                     .setCancelable(false)
                     .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
