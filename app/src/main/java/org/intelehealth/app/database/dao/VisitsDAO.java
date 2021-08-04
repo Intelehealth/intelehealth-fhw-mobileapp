@@ -5,20 +5,20 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
-import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VisitsDAO {
 
@@ -283,7 +283,7 @@ public class VisitsDAO {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE sync=? AND visit_uuid=?",
-                new String[] {"0", visit_uuid});
+                new String[]{"0", visit_uuid});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -294,7 +294,7 @@ public class VisitsDAO {
                 speciality.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
                 list.add(speciality);
             }
-            }
+        }
         cursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -448,14 +448,17 @@ public class VisitsDAO {
         }
         return isDownloaded;
     }
-    public void deleteByVisitUUID(String visitUuid) throws DAOException {
+
+    public int deleteByVisitUUID(String visitUuid) throws DAOException {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
-            db.delete("tbl_visit","uuid = ?",new String[] {visitUuid});
+            int rows = db.delete("tbl_visit", "uuid = ? and sync = ?", new String[]{visitUuid, "0"});
             db.setTransactionSuccessful();
+            Log.v("deleteByVisitUUID", "count -" + rows);
+            return rows;
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);

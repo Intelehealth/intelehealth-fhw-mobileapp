@@ -1060,7 +1060,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String convertCtoF(String temperature) {
 
         String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
+        double a = Double.parseDouble(String.valueOf(temperature.replaceAll(",",".")));
         Double b = (a * 9 / 5) + 32;
 
         DecimalFormat dtime = new DecimalFormat("#.##");
@@ -1096,13 +1096,15 @@ public class VitalsActivity extends AppCompatActivity {
                         try {
                             // remove the visit
                             VisitsDAO visitsDAO = new VisitsDAO();
-                            visitsDAO.deleteByVisitUUID(visitUuid);
+                            int count = visitsDAO.deleteByVisitUUID(visitUuid);
+                            if(count!=0) {
 
-                            ObsDAO obsDAO = new ObsDAO();
-                            obsDAO.deleteByEncounterUud(encounterAdultIntials);
-                            // remove the Encounter
-                            EncounterDAO encounterDAO = new EncounterDAO();
-                            encounterDAO.deleteByVisitUUID(visitUuid);
+                                ObsDAO obsDAO = new ObsDAO();
+                                obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                // remove the Encounter
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.deleteByVisitUUID(visitUuid);
+                            }
                             setResult(RESULT_CANCELED);
                             finish();
                         } catch (DAOException e) {

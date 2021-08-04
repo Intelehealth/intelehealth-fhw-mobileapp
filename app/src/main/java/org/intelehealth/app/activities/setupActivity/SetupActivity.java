@@ -1587,7 +1587,7 @@ public class SetupActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
                             Log.e("MindMapURL", " " + e);
-                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response)+"\n"+e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override

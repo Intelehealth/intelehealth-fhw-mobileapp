@@ -781,13 +781,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                             try {
                                 // remove the visit
                                 VisitsDAO visitsDAO = new VisitsDAO();
-                                visitsDAO.deleteByVisitUUID(visitUuid);
+                                int count = visitsDAO.deleteByVisitUUID(visitUuid);
+                                if(count!=0) {
 
-                                ObsDAO obsDAO = new ObsDAO();
-                                obsDAO.deleteByEncounterUud(encounterAdultIntials);
-                                // remove the Encounter
-                                EncounterDAO encounterDAO = new EncounterDAO();
-                                encounterDAO.deleteByVisitUUID(visitUuid);
+                                    ObsDAO obsDAO = new ObsDAO();
+                                    obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                    // remove the Encounter
+                                    EncounterDAO encounterDAO = new EncounterDAO();
+                                    encounterDAO.deleteByVisitUUID(visitUuid);
+                                }
                                 setResult(RESULT_CANCELED);
                                 finish();
                             } catch (DAOException e) {

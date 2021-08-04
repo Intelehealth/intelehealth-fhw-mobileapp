@@ -541,7 +541,7 @@
     <string name="s">с</string>
     <string name="ago">назад</string>
     <string name="successfully_synced">Успешно обновлено</string>
-    <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
+    <string name="failed_synced"><![CDATA[Не удалось обновить, проверьте подключение к Интернету]]></string>
     <string name="visit_not_uploaded">Визит не загружен</string>
     <string name="upload_started">Загрузка...</string>
     <string name="visit_uploaded_successfully">Визит загружен успешно</string>
@@ -668,14 +668,14 @@
     <string name="alert_message_for_discard_visit">Новое начатое посещение не будет сохранено!</string>
 
     //Language Screen
-    <string name="choose_lang_title">Choose your Language</string>
-    <string name="save_button">Save</string>
-    <string name="selectLanguageToast">Please select Language</string>
-    <string name="config_not_found_alert_message">No config attribute found</string>
-    <string name="error_login_title">Error Login</string>
-    <string name="config_file_error">config file error</string>
+    <string name="choose_lang_title">Выберите свой язык</string>
+    <string name="save_button">Сохранить</string>
+    <string name="selectLanguageToast">Пожалуйста, выберите язык</string>
+    <string name="config_not_found_alert_message">Атрибут конфигурации не найден</string>
+    <string name="error_login_title">Ошибка входа</string>
+    <string name="config_file_error">ошибка файла конфигурациии</string>
 
     <string name="internet_connected_txt">Подключен к Интернету!</string>
     <string name="not_connected_txt">Нет подключения к Интернету!</string>
-    <string name="config_error">Config Error</string>
+    <string name="config_error">Ошибка конфигурации</string>
 </resources>

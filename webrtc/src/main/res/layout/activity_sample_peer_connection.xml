@@ -34,7 +34,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="24dip"
             android:background="@color/colorPrimaryDark"
-            android:elevation="4dip">
+            android:elevation="6dip">
 
             <org.webrtc.SurfaceViewRenderer
                 android:id="@+id/self_surface_view"
