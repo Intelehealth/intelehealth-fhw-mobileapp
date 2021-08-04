@@ -645,7 +645,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayAdapter<String> stringArrayAdapter;
 
         if (items != null) {
-            items.add(0, "Select Specialization");
+            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                items.add(0, "विशेषज्ञता का चयन करें");
+            }
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                items.add(0, "ବିଶେଷତା ଚୟନ କରନ୍ତୁ");
+            }
+            else {
+                items.add(0, "Select Specialization");
+            }
+
+          //items.add(0, "Select Specialization");
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
