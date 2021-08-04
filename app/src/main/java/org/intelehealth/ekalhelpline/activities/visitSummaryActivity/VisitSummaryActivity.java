@@ -642,6 +642,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
+        if(special_value.equalsIgnoreCase("Doctor not needed")) {
+            card_print.setVisibility(View.GONE);
+            card_share.setVisibility(View.GONE);
+        }
         ArrayAdapter<String> stringArrayAdapter;
 
         if (items != null) {
