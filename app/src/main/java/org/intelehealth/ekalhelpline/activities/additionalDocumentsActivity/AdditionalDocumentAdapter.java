@@ -35,6 +35,7 @@ import org.intelehealth.ekalhelpline.database.dao.ImagesDAO;
 import org.intelehealth.ekalhelpline.models.DocumentObject;
 
 import org.intelehealth.ekalhelpline.utilities.StringUtils;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 /**
@@ -43,17 +44,17 @@ import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
  */
 
 public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDocumentViewHolder> {
-
     int screen_height;
     int screen_width;
-
     private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
     private String filePath;
+    private String mEncounterUUID;
     ImagesDAO imagesDAO = new ImagesDAO();
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList, String filePath) {
+    public AdditionalDocumentAdapter(Context context, String mEncounterUUID,
+                                     List<DocumentObject> documentList, String filePath) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -61,6 +62,8 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
         this.filePath = filePath;
+        this.mEncounterUUID= mEncounterUUID;
+
 
     }
 
@@ -102,10 +105,13 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 documentList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, documentList.size());
-                String imageName = holder.getDocumentNameTextView().getText().toString();
+              //  String imageName = holder.getDocumentNameTextView().getText().toString();
 
                 try {
-                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
+                    List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID,
+                            UuidDictionary.COMPLEX_IMAGE_AD);
+                    imagesDAO.deleteImageFromDatabase(imageList.get(position));
+                   // imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
