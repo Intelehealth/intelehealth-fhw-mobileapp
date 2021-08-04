@@ -6,7 +6,7 @@
     <string name="hint_required">अपेक्षित</string>
     <string name="hint_optional">ऐच्छिक</string>
     <string name="tag_optional">ऐच्छिक</string>
-    <string name="generic_ok" >ठीक</string>
+    <string name="generic_ok">ठीक</string>
     <string name="generic_cancel">रद्द करना</string>
     <string name="generic_yes">हाँ</string>
     <string name="generic_no">नहीं</string>
@@ -692,8 +692,6 @@
     <string name="exercises">अभ्यास</string>
     <string name="txt_additional_info">अतिरिक्त जानकारी</string>
     <string name="medical_advice">वैद्यकीय सलाह</string>
-    <string name="text_patient_and_advice_created">रोगी और चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
-    <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत है</string>
 
     <string name="complaint_dialog_title">कॉल करने का कारण</string>
     <string name="visit_summary_complaint">कॉल करने का कारण</string>

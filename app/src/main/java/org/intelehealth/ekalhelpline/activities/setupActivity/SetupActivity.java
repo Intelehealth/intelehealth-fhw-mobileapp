@@ -79,6 +79,7 @@ import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
 import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -128,7 +129,7 @@ public class SetupActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
 
-//    commenting out code for NetworkChange Reciever for this helpline: Dated 17 may : Nishita
+    //    commenting out code for NetworkChange Reciever for this helpline: Dated 17 may : Nishita
     //    private BroadcastReceiver MyReceiver = null;
     CoordinatorLayout coordinatorLayout;
 
@@ -290,7 +291,7 @@ public class SetupActivity extends AppCompatActivity {
                                 village_name = entry;
                             }
                         }
-                      //  value = getLocationFromServer_District(base_url, state_uuid, "state");
+                        //  value = getLocationFromServer_District(base_url, state_uuid, "state");
                         state_count = parent.getSelectedItemPosition();
                     }
                 } else if (state_count == parent.getSelectedItemPosition()) {
@@ -303,7 +304,7 @@ public class SetupActivity extends AppCompatActivity {
                                 village_name = entry;
                             }
                         }
-                      //  value = getLocationFromServer_District(base_url, state_uuid, "state");
+                        //  value = getLocationFromServer_District(base_url, state_uuid, "state");
                     }
                 } else {
                     // Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
@@ -318,7 +319,7 @@ public class SetupActivity extends AppCompatActivity {
                                 village_name = entry;
                             }
                         }
-                      //  value = getLocationFromServer_District(base_url, state_uuid, "state");
+                        //  value = getLocationFromServer_District(base_url, state_uuid, "state");
                     }
                 }
 
@@ -536,7 +537,8 @@ public class SetupActivity extends AppCompatActivity {
             spinner_village.setAdapter(adapter_village);
         } else if (value.equalsIgnoreCase("village")) {
             //do nothing
-        }*/ else {
+        }*/
+        else {
 
             List<String> list_state = new ArrayList<>();
             list_state.add("Select Location");
@@ -673,9 +675,9 @@ public class SetupActivity extends AppCompatActivity {
             }*/
 
             //state based login...
-            if(!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) {
+            if (!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) {
                 String urlString = mUrlField.getText().toString();
-              //  TestSetup(urlString, email, password, admin_password, village_name);
+                //  TestSetup(urlString, email, password, admin_password, village_name);
                 TestSetup(urlString, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }

@@ -81,7 +81,6 @@ public class AppConstants {
                     .build();
 
 
-
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
             new OneTimeWorkRequest.Builder(VisitSummaryWork.class)

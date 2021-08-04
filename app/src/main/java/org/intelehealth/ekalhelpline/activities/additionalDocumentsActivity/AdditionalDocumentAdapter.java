@@ -62,7 +62,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
         this.filePath = filePath;
-        this.mEncounterUUID= mEncounterUUID;
+        this.mEncounterUUID = mEncounterUUID;
 
 
     }
@@ -105,13 +105,13 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 documentList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, documentList.size());
-              //  String imageName = holder.getDocumentNameTextView().getText().toString();
+                //  String imageName = holder.getDocumentNameTextView().getText().toString();
 
                 try {
                     List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID,
                             UuidDictionary.COMPLEX_IMAGE_AD);
                     imagesDAO.deleteImageFromDatabase(imageList.get(position));
-                   // imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
+                    // imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
