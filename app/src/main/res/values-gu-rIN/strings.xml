@@ -678,8 +678,6 @@
         <string name="exercises">કસરતો</string>
         <string name="txt_additional_info">વધારાની માહિતી</string>
     <string name="medical_advice">તબીબી સલાહ</string>
-        <string name="text_patient_and_advice_created">દર્દી અને તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
-        <string name="text_advice_created">તબીબી સલાહ સફળતાપૂર્વક નોંધાયેલ છે</string>
 
         <string name="complaint_dialog_title">કોલનું કારણ</string>
         <string name="visit_summary_complaint">કોલનું કારણ</string>

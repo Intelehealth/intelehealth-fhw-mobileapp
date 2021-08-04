@@ -557,8 +557,6 @@
     <string name="exercises">వ్యాయామాలు</string>
     <string name="txt_additional_info">అదనపు సమాచారం</string>
     <string name="medical_advice">వైద్య సలహా</string>
-    <string name="text_patient_and_advice_created">రోగి మరియు వైద్య సలహా విజయవంతంగా నమోదు చేయబడుతుంది</string>
-    <string name="text_advice_created">వైద్య సలహా విజయవంతంగా నమోదు చేయబడింది</string>
 
     <string name="complaint_dialog_title">కాల్ కారణం</string>
     <string name="visit_summary_complaint">కాల్ కారణం</string>

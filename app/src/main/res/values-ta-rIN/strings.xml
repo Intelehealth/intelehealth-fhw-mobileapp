@@ -560,9 +560,6 @@
     <string name="exercises">பயிற்சிகள்</string>
     <string name="txt_additional_info">கூடுதல் தகவல்</string>
     <string name="medical_advice">மருத்துவ ஆலோசனை</string>
-    <string name="text_patient_and_advice_created">நோயாளி மற்றும் மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
-    <string name="text_advice_created">மருத்துவ ஆலோசனை வெற்றிகரமாக பதிவு செய்யப்பட்டுள்ளது</string>
-
     <string name="complaint_dialog_title">அழைப்புக்கான காரணம்</string>
     <string name="visit_summary_complaint">அழைப்புக்கான காரணம்</string>
 

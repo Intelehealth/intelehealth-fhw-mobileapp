@@ -683,8 +683,6 @@
     <string name="exercises">ವ್ಯಾಯಾಮಗಳು</string>
     <string name="txt_additional_info">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿ</string>
     <string name="medical_advice">ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
-    <string name="text_patient_and_advice_created">ರೋಗಿಯ ಮತ್ತು ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
-    <string name="text_advice_created">ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
 
     <string name="complaint_dialog_title">ಕರೆಯ ಕಾರಣ</string>
     <string name="visit_summary_complaint">ಕರೆಯ ಕಾರಣ</string>
