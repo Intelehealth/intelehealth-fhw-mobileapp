@@ -1382,7 +1382,7 @@ public class SetupActivity extends AppCompatActivity {
 
         //Check is there any existing mindmaps are present, if yes then delete.
 
-        File engines = new File(context.getFilesDir().getAbsolutePath(), "/engines");
+        File engines = new File(context.getFilesDir().getAbsolutePath(), "/Engines");
         Log.e(TAG, "Engines folder=" + engines.exists());
         if (engines.exists()) {
             engines.delete();
