@@ -798,7 +798,8 @@
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:text="@string/header_family_history"
-                                android:textSize="@dimen/card_content_sub_text_size" />
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:layout_marginBottom="10dp"/>
 
 
                             <androidx.legacy.widget.Space
