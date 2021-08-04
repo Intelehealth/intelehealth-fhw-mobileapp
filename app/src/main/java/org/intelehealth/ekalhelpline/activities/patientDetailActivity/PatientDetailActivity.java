@@ -955,17 +955,24 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             if (newVisit.isEnabled()) {
                 newVisit.setEnabled(false);
+                newAdvice.setEnabled(false);
             }
+
             if (newVisit.isClickable()) {
                 newVisit.setClickable(false);
+                newAdvice.setClickable(false);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     newVisit.setBackgroundColor
                             (getColor(R.color.divider));
                     newVisit.setTextColor(getColor(R.color.white));
+                    newAdvice.setBackgroundColor(getColor(R.color.divider));
+                    newAdvice.setTextColor(getColor(R.color.white));
                 } else {
                     newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
                     newVisit.setTextColor(getResources().getColor(R.color.white));
+                    newAdvice.setBackgroundColor(getResources().getColor(R.color.divider));
+                    newAdvice.setTextColor(getResources().getColor(R.color.white));
                 }
             }
 
