@@ -216,6 +216,7 @@
     <string name="row_age">ವಯಸ್ಸು</string>
     <string name="row_address">ವಿಳಾಸ</string>
     <string name="row_phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="row_gender">ಲಿಂಗ</string>
     <string name="row_open_visit">ಭೇಟಿ ತೆರೆಯಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
     <string name="title_activity_settings">ಸೆಟ್ಟಿಂಗ್ಸ</string>
 

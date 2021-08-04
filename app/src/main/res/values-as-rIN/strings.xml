@@ -166,6 +166,8 @@
     <string name="row_dob" translatable="false">ডিওবি</string>
     <string name="row_age" translatable="false">বয়স</string>
     <string name="row_address">ঠিকনা</string>
+
+    <string name="row_gender">লিঙ্গ</string>
     <string name="row_phone_number" translatable="false">ফোন নম্বৰ</string>
     <string name="row_open_visit" translatable="false">দর্শন খোলোতে ক্লিক কৰা</string>
     <string name="title_activity_settings" translatable="false">ছেটিংস</string>

@@ -169,6 +169,7 @@
     <string name="row_age" translatable="false">" പ്രായം"</string>
     <string name="row_address">വിലാസം</string>
     <string name="row_phone_number" translatable="false">ഫോൺ നമ്പർ</string>
+    <string name="row_gender">ലിംഗഭേദം</string>
     <string name="row_open_visit" translatable="false">" സന്ദർശനം തുറക്കുന്നതിനായി ക്ലിക് ചെയ്യുക"</string>
     <string name="title_activity_settings" translatable="false">സജ്ജീകരണങ്ങള്‍</string>
     <string name="pref_header_general" translatable="false">" ജനറൽ"</string>

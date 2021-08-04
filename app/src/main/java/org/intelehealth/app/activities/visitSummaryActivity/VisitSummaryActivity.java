@@ -89,6 +89,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1684,20 +1685,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
         res.updateConfiguration(conf, dm);
     }
 
+//    private String convertCtoF(String temperature) {
+//
+//        String result = "";
+//        double a = Double.parseDouble(String.valueOf(temperature));
+//        Double b = (a * 9 / 5) + 32;
+//
+//        DecimalFormat dtime = new DecimalFormat("#.##");
+//        b = Double.valueOf(dtime.format(b));
+//
+//        result = String.valueOf(b);
+//        return result;
+//
+//    }
+
     private String convertCtoF(String temperature) {
 
-        String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
-        Double b = (a * 9 / 5) + 32;
-
-        DecimalFormat dtime = new DecimalFormat("#.##");
-        b = Double.valueOf(dtime.format(b));
-
-        result = String.valueOf(b);
-        return result;
+        String resultVal;
+        NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        double a = Double.parseDouble(temperature);
+        double b = (a * 9 / 5) + 32;
+        nf.format(b);
+//        DecimalFormat dtime = new DecimalFormat("0.00");
+//        b = Double.parseDouble(dtime.format(b));
+//        int IntValue = (int) Math.round(b);
+        double roundOff = Math.round(b * 100.0) / 100.0;
+        resultVal = nf.format(roundOff);
+        return resultVal;
 
     }
-
     private String showVisitID() {
 
         if (visitUUID != null && !visitUUID.isEmpty()) {

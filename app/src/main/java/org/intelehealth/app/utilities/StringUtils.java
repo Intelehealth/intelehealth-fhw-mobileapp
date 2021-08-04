@@ -418,13 +418,13 @@ public final class StringUtils {
     public static String switch_mr_education_edit(String val) {
         switch (val) {
             case "Illiterate":
-                val = "নিৰক্ষৰ";
+                val = "निरक्षर";
                 break;
             case "Primary":
-                val = "প্ৰাথমিক";
+                val = "प्राथमिक";
                 break;
             case "Secondary":
-                val = "গৌণ";
+                val = "दुय्यम";
                 break;
             case "Higher Secondary":
                 val = "उच्च माध्यमिक";
