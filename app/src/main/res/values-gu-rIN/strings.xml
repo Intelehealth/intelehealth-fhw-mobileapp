@@ -596,6 +596,7 @@
     <string name="and_enter_your_patient_id">"અને તમારી દરદી આઇડી લખો"</string>
     <string name="whatsapp_presc_toast">ફાઇલ એક્સ્પ્લોરર-ઇન્ટર્નલ સ્ટોરેજ/ઇન્ટેલહેલ્થ_પીડીએફમાંથી પ્રિસ્ક્રિપ્શન પસંદ કરો</string>
     <string name="health_scheme_card">હેલ્થ સ્કીમ કાર્ડ*</string>
+    <string name="health_scheme_card_dialog">હેલ્થ સ્કીમ કાર્ડ</string>
     <string name="mukhyamantri_amrutam_scheme">મુખ્યમંત્રી અમૃતમ્ યોજના</string>
     <string name="ayushman_bharat_card">આયુષમાન્ ભારત કાર્ડ</string>
     <string name="noneof_the_above">ઉપરમાંથી કોઇ નહીં</string>

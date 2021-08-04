@@ -1417,8 +1417,8 @@ public class IdentificationActivity extends AppCompatActivity {
             if (!ma_checkbox.isChecked() && !ab_checkbox.isChecked() && !none_checkbox.isChecked()) {
                 health_textview.setError(getString(R.string.error_field_required));
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle("Health Scheme Card");
-                alertDialogBuilder.setMessage(R.string.please_select_option_hsc);
+                alertDialogBuilder.setTitle(getResources().getString(R.string.health_scheme_card_dialog));
+                alertDialogBuilder.setMessage(getResources().getString(R.string.please_select_option_hsc));
                 alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

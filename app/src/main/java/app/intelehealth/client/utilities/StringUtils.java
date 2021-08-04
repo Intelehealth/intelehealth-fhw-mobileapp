@@ -116,6 +116,9 @@ public final class StringUtils {
         String val = "";
         if (value != null)
             val = value;
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+            val = hsc_gu_edit(val);
         return val;
 
     }
@@ -275,6 +278,51 @@ public final class StringUtils {
         return val;
     }
 
+    public static String hsc_gu_edit(String val)
+    {
+        switch (val) {
+            case "મુખ્યમંત્રી અમૃતમ્ યોજના":
+                val = "Mukhyamantri Amrutam scheme";
+                break;
+            case "આયુષમાન્ ભારત કાર્ડ":
+                val = "Ayushman Bharat Card";
+                break;
+            case "ઉપરમાંથી કોઇ નહીં":
+                val = "None of the above";
+                break;
+            case "મુખ્યમંત્રી અમૃતમ્ યોજના, આયુષમાન્ ભારત કાર્ડ":
+                val = "Mukhyamantri Amrutam scheme, Ayushman Bharat Card";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String hsc_translated(String val)
+    {
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+
+            switch (val) {
+                case "Mukhyamantri Amrutam scheme":
+                    val = "મુખ્યમંત્રી અમૃતમ્ યોજના";
+                    break;
+                case "Ayushman Bharat Card":
+                    val = "આયુષમાન્ ભારત કાર્ડ";
+                    break;
+                case "None of the above":
+                    val = "ઉપરમાંથી કોઇ નહીં";
+                    break;
+                case "Mukhyamantri Amrutam scheme, Ayushman Bharat Card":
+                    val = "મુખ્યમંત્રી અમૃતમ્ યોજના, આયુષમાન્ ભારત કાર્ડ";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        return val;
+    }
 
     public static String getFileNameWithoutExtension(File file) {
         String fileName = "";
@@ -388,6 +436,7 @@ public final class StringUtils {
 
         return dob_string;
     }
+
 
     public static String gu_en_noEdit(String dobString, String locale) {
 

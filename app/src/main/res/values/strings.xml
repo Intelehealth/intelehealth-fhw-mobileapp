@@ -621,6 +621,7 @@
 
     <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
     <string name="health_scheme_card">Health Scheme Card*</string>
+    <string name="health_scheme_card_dialog">Health Scheme Card</string>
     <string name="mukhyamantri_amrutam_scheme">Mukhyamantri Amrutam scheme</string>
     <string name="ayushman_bharat_card">Ayushman Bharat Card</string>
     <string name="noneof_the_above">None of the above</string>
