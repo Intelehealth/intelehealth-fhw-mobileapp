@@ -901,7 +901,20 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+       // final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        String visitString = "";
+
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            visitString = String.format("पे देखा (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            visitString = String.format("ଦେଖାଗଲା (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        }
+        else{
+            visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        }
+
+
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 
@@ -961,8 +974,14 @@ public class PatientDetailActivity extends AppCompatActivity {
             past_visit = true;
             for (int i = 1; i <= 2; i++) {
                 if (i == 1) {
-                    textView.setText(visitString);
-                    textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                    /*textView.setText(visitString);
+                    textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);*/
+
+                    SpannableString spannableString = new SpannableString(visitString);
+                    Object underlineSpan = new UnderlineSpan();
+                    spannableString.setSpan(underlineSpan, 0, visitString.length(), 0);
+                    textView.setText(spannableString);
+
                     Typeface typeface = ResourcesCompat.getFont(this, R.font.lato_regular);
                     textView.setTypeface(typeface);
                     textView.setTextSize(16);
