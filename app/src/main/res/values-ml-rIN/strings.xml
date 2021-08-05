@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ഇകാൽ ആരോഗ്യ ഹെൽപ്പ് ലൈൻ</string>
+    <string name="app_name">ഇന്റലിഹെൽത്ത്</string>
     <string name="generic_the_flipping_word_next" translatable="false">അടുത്ത</string>
     <string name="hint_required" translatable="false">" ആവശ്യമായ"</string>
     <string name="hint_optional" translatable="false">" ഓപ്ഷണൽ"</string>
@@ -18,7 +18,7 @@
     <string name="generic_warning" translatable="false">മുന്നറിയപ്പ്</string>
     <string name="generic_update" translatable="false">അപ്ഡേറ്റ്</string>
     <string name="generic_deleted" translatable="false">" ഇല്ലാതാക്കി"</string>
-    <string name="title_activity_login" translatable="false">ഇകാൽ ആരോഗ്യ ഹെൽപ്പ് ലൈൻ</string>
+    <string name="title_activity_login" translatable="false">ഇന്റലിഹെൽത്ത്</string>
     <string name="prompt_email" translatable="false">യൂസർ നെയിം</string>
     <string name="prompt_password" translatable="false">പാസ്സ്‌വേർഡ്</string>
     <string name="prompt_admin_password" translatable="false">" അഡ്മിൻ പാസ്സ്‌വേർഡ്"</string>
@@ -459,7 +459,7 @@
     <string name="economic_values_missing">സാമ്പത്തികമൂല്യങ്ങൾ കാണുന്നില്ല</string>
     <string name="education_values_missing">" വിദ്യാഭ്യാസം മൂല്യങ്ങൾ കാണുന്നില്ല"</string>
     <string name="intelehealth_a_telemedicine_platform">ഗ്രാമീണ, വിദൂര പ്രദേശങ്ങളിലെ ആരോഗ്യ പ്രവർത്തകരെ വിദൂര ഡോക്ടർമാരുമായി ബന്ധിപ്പിക്കുന്ന ഒരു ടെലിമെഡിസിൻ ആപ്ലിക്കേഷനാണ് ഇകാൽ ആരോഗ്യ. അതിനാൽ അവർക്ക് അവരുടെ രോഗികൾക്ക് ഉയർന്ന നിലവാരമുള്ള ആരോഗ്യ സേവനങ്ങൾ നൽകാൻ കഴിയും.</string>
-    <string name="intelehealth_name">ഇകാൽ ആരോഗ്യ ഹെൽപ്പ് ലൈൻ</string>
+    <string name="intelehealth_name">ഇന്റലിഹെൽത്ത്</string>
     <string name="Ayu_name">" ആയു"</string>
     <string name="close_button">അടച്ചു</string>
     <string name="active_tag_patientDetail">" \"സജീവം\""</string>

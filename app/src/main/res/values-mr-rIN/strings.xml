@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">एकल आरोग्य हेल्प लाइन</string>
+    <string name="app_name">इंटेलहेल्थ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">पुढे</string>
@@ -40,7 +40,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">एकल आरोग्य हेल्प लाइन</string>
+    <string name="title_activity_login">इंटेलहेल्थ</string>
     <string name="prompt_email">वापरकर्तानाव</string>
     <string name="prompt_password">संकेतशब्द</string>
     <string name="prompt_admin_password">प्रशासन संकेतशब्द</string>
@@ -556,7 +556,9 @@
     <string name="new_update_available">नवीन अद्यतन उपलब्ध</string>
     <string name="update_app_note">नवीन वैशिष्ट्यांसह नवीन आवृत्ती उपलब्ध आहे कृपया अनुप्रयोग अद्यतनित करा</string>
     <string name="update">अद्यतनित करा</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा"</string>
 
+    <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा -"</string>
 
     <!--New Ayu Related Changes-->
     <string name="what_is_the_reason_for_your_visit">आपल्या भेटीचे कारण काय आहे?</string>
@@ -589,7 +591,7 @@
     <string name="i_need_assistance">"आणि मला काही मदत हवी आहे."</string>
     <string name="economic_values_missing">आर्थिक मूल्ये गहाळ आहेत</string>
     <string name="education_values_missing">शैक्षणिक मूल्ये गहाळ आहेत</string>
-    <string name="intelehealth_a_telemedicine_platform">एकल आरोग्य हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
+    <string name="intelehealth_a_telemedicine_platform">इंटेलहेल्थ हा एक टेलिमेडिसिन आहे जो ग्रामीण आणि दुर्गम भागातील आरोग्य कर्मचा यांना दुर्गम डॉक्टरांशी जोडतो जेणेकरून ते रुग्णांना उच्च प्रतीची आरोग्य सेवा देऊ शकतील.</string>
     <string name="intelehealth_name">एकल आरोग्य</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>

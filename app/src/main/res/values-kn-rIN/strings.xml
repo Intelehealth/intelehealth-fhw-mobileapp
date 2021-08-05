@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">ಏಕಲ್ ಆರೋಗ್ಯ ಸಹಾಯವಾಣಿ</string>
+    <string name="app_name" translatable="false">ಇಂಟೆಲೆಹೆಲ್ತ್</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">ಏಕಲ್ ಆರೋಗ್ಯ</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">ಏಕಲ್ ಆರೋಗ್ಯ ಸಹಾಯವಾಣಿ</string>
+    <string name="title_activity_login">ಇಂಟೆಲೆಹೆಲ್ತ್</string>
     <string name="prompt_email">ಬಳಕೆದಾರ ಹೆಸರು</string>
     <string name="prompt_password">ಗುಪ್ತಪದ</string>
     <string name="prompt_admin_password">ನಿರ್ವಹಣೆಯ ಗುಪ್ತಪದ</string>
@@ -575,7 +575,7 @@
     <string name="i_need_assistance">\"ಮತ್ತು ನನಗೆ ಸ್ವಲ್ಪ ಸಹಾಯ ಬೇಕು.\"</string>
     <string name="economic_values_missing">"ಆರ್ಥಿಕ ಮೌಲ್ಯಗಳು ಕಾಣೆಯಾಗಿವೆ "</string>
     <string name="education_values_missing">ಶಿಕ್ಷಣ ಮೌಲ್ಯಗಳು ಕಾಣೆಯಾಗಿವೆ</string>
-    <string name="intelehealth_a_telemedicine_platform">ಏಕಲ್ ಆರೋಗ್ಯ ಎಂಬುದು ಟೆಲಿಮೆಡಿಸಿನ್ ಅಪ್ಲಿಕೇಶನ್‌ ಆಗಿದ್ದು, ಇದರಿಂದ ಗ್ರಾಮೀಣ ಪ್ರದೇಶದ  ಜನರಿಗೆ ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರ ಮೂಲಕ ದೂರದಲ್ಲಿರುವ ವೈದ್ಯರಿಂದ  ಉತ್ತಮ ಆರೋಗ್ಯ ಸೇವೆಗಳು ದೊರೆಯುವಂತಾಗಿದೆ.</string>
+    <string name="intelehealth_a_telemedicine_platform">ಇಂಟೆಲೆಹೆಲ್ತ್ ಟೆಲಿಮೆಡಿಸಿನ್ ಅಪ್ಲಿಕೇಶನ್‌ ಆಗಿದ್ದು, ಇದರಿಂದ ಗ್ರಾಮೀಣ ಪ್ರದೇಶದ  ಜನರಿಗೆ ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತರ ಮೂಲಕ ದೂರದಲ್ಲಿರುವ ವೈದ್ಯರಿಂದ  ಉತ್ತಮ ಆರೋಗ್ಯ ಸೇವೆಗಳು ದೊರೆಯುವಂತಾಗಿದೆ.</string>
     <string name="intelehealth_name">ಏಕಲ್ ಆರೋಗ್ಯ</string>
     <string name="Ayu_name">ಆಯು</string>
     <string name="close_button">ಮುಚ್ಚಿ</string>
