@@ -2,18 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.intelehealth.ekalhelpline">
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-<!--    <uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
-<!--    <uses-permission android:name="android.permission.READ_PROFILE" />-->
-<!--    <uses-permission android:name="android.permission.READ_CONTACTS" />-->
-<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
-<!--    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />-->
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_PROFILE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" /> -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -26,87 +25,87 @@
         android:required="false" />
 
     <application
-        android:name="org.intelehealth.ekalhelpline.app.IntelehealthApplication"
+        android:name=".app.IntelehealthApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_intelehealth"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_configuration"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
+            android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_additional_documents"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSurveyActivity"
+            android:name=".activities.patientSurveyActivity.PatientSurveyActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_patient_survey"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.physcialExamActivity.PhysicalExamActivity"
+            android:name=".activities.physcialExamActivity.PhysicalExamActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_physical_exam"
-            android:parentActivityName="org.intelehealth.ekalhelpline.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.familyHistoryActivity.FamilyHistoryActivity"
+            android:name=".activities.familyHistoryActivity.FamilyHistoryActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_family_history"
-            android:configChanges="uiMode"
-            android:parentActivityName="org.intelehealth.ekalhelpline.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:parentActivityName=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:name=".activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_past_medical_history"
-            android:parentActivityName="org.intelehealth.ekalhelpline.activities.questionNodeActivity.QuestionNodeActivity"
+            android:parentActivityName=".activities.questionNodeActivity.QuestionNodeActivity"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.questionNodeActivity.QuestionNodeActivity"
+            android:name=".activities.questionNodeActivity.QuestionNodeActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_question_node"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.complaintNodeActivity.ComplaintNodeActivity"
-            android:label="@string/title_activity_complaint_node"
+            android:name=".activities.complaintNodeActivity.ComplaintNodeActivity"
             android:configChanges="uiMode"
-            android:parentActivityName="org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity"
+            android:label="@string/title_activity_complaint_node"
+            android:parentActivityName=".activities.identificationActivity.IdentificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.IntroActivity.IntroActivity"
-            android:screenOrientation="portrait"
+            android:name=".activities.IntroActivity.IntroActivity"
             android:configChanges="uiMode"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity"
+            android:name=".activities.visitSummaryActivity.VisitSummaryActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
-            android:parentActivityName="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity"
+            android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -114,51 +113,51 @@
                 android:value="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity"
+            android:name=".activities.vitalActivity.VitalsActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_vitals"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity"
+            android:name=".activities.patientDetailActivity.PatientDetailActivity"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity"
+            android:name=".activities.cameraActivity.CameraActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_camera"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.activitySync.ActivitySync"
-            android:label="@string/title_activity_sync"
+            android:name=".activities.activitySync.ActivitySync"
             android:configChanges="uiMode"
+            android:label="@string/title_activity_sync"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.videoLibraryActivity.VideoLibraryActivity"
+            android:name=".activities.videoLibraryActivity.VideoLibraryActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_video_library"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity"
+            android:name=".activities.activePatientsActivity.ActivePatientActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_active_patient"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.todayPatientActivity.TodayPatientActivity"
+            android:name=".activities.todayPatientActivity.TodayPatientActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_today_patient"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchPatientActivity"
+            android:name=".activities.searchPatientActivity.SearchPatientActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -172,39 +171,39 @@
                 android:value="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity"
+            android:name=".activities.identificationActivity.IdentificationActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_identification"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.settingsActivity.SettingsActivity"
+            android:name=".activities.settingsActivity.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity"
+            android:parentActivityName=".activities.homeActivity.HomeActivity"
             android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.loginActivity.LoginActivity"
+            android:name=".activities.loginActivity.LoginActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity"
+            android:name=".activities.homeActivity.HomeActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_home"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.splash_activity.SplashActivity"
+            android:name=".activities.splash_activity.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -215,18 +214,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.intelehealth.ekalhelpline.activities.setupActivity.SetupActivity"
+            android:name=".activities.setupActivity.SetupActivity"
+            android:configChanges="uiMode"
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
-            android:configChanges="uiMode"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-<!--        <service-->
-<!--            android:name=".services.OnClearFromRecentService"-->
-<!--            android:stopWithTask="false" />-->
-
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
+        <!-- android:name=".services.OnClearFromRecentService" -->
+        <!-- android:stopWithTask="false" /> -->
         <service
-            android:name="org.intelehealth.ekalhelpline.utilities.OpenMRSAccountAuthenticatorService"
+            android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
@@ -237,46 +233,43 @@
                 android:resource="@xml/authenticator" />
         </service>
         <service
-            android:name="org.intelehealth.ekalhelpline.services.RunAfterBootService"
+            android:name=".services.RunAfterBootService"
             android:enabled="true"
             android:exported="false"
             android:permission="" />
 
         <receiver
-            android:name="org.intelehealth.ekalhelpline.syncModule.BootCompleteReceiver"
+            android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
-        </receiver>
-
-<!--        commenting out for this helpline: Dated 17 may-->
-<!--        <receiver-->
-<!--            android:name="org.intelehealth.ekalhelpline.utilities.NetworkChangeListener"-->
-<!--            android:enabled="true"-->
-<!--            android:label="NetworkChangeReceiver">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-<!--                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
-
+        </receiver> <!-- commenting out for this helpline: Dated 17 may -->
+        <!-- <receiver -->
+        <!-- android:name="org.intelehealth.ekalhelpline.utilities.NetworkChangeListener" -->
+        <!-- android:enabled="true" -->
+        <!-- android:label="NetworkChangeReceiver"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+        <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
         <provider
-            android:name="org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchSuggestionProvider"
+            android:name=".activities.searchPatientActivity.SearchSuggestionProvider"
             android:authorities="org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchSuggestionProvider"
             android:exported="false" />
 
-        <service android:name="org.intelehealth.ekalhelpline.services.DownloadService" />
-        <service android:name="org.intelehealth.ekalhelpline.services.MyIntentService" />
-        <service android:name="org.intelehealth.ekalhelpline.services.LastSyncIntentService" />
-        <service android:name="org.intelehealth.ekalhelpline.services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
-        <service android:name="org.intelehealth.ekalhelpline.services.firebase_services.MyFirebaseMessagingService">
+        <service android:name=".services.DownloadService" />
+        <service android:name=".services.MyIntentService" />
+        <service android:name=".services.LastSyncIntentService" />
+        <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
+        <service android:name=".services.firebase_services.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="org.intelehealth.ekalhelpline.services.firebase_services.MyFirebaseInstanceIdService">
+        <service android:name=".services.firebase_services.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>

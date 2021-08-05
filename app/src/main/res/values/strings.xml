@@ -547,7 +547,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -673,4 +673,22 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
 
+<!--    New Registration Flow-->
+    <string name="text_medical_advice">New Medical Advice</string>
+    <string name="text_new_visit">New Doctor Visit</string>
+    <string name="text_new_advice">New Medical Advice</string>
+    <string name="vaccination_guidance">Vaccination guidance</string>
+    <string name="concern_about_covid_re_infection">Concern about COVID re-infection</string>
+    <string name="managing_breathlessness">Managing breathlessness</string>
+    <string name="managing_issues_with_voice">Managing issues with voice</string>
+    <string name="managing_eating_drinking">Managing eating, drinking and swallowing after recovery</string>
+    <string name="dealing_problems">Dealing problems of attention, memory and clarity</string>
+    <string name="managing_mental_health">Managing Mental Health</string>
+    <string name="exercises">Exercises</string>
+    <string name="self_assessment">Self Assessment</string>
+    <string name="error_medical_visit_data">Please select or enter medical advice</string>
+    <string name="txt_additional_info">Additional information</string>
+    <string name="text_patient_and_advice_created">Patient &amp; Medical Advice is Registered Successfully</string>
+    <string name="text_advice_created">Medical Advice is Registered Successfully</string>
+    <string name="medical_advice">Medical Advice</string>
 </resources>
