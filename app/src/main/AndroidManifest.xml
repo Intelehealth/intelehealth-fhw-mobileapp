@@ -170,6 +170,13 @@
                 android:value="org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity" />
         </activity>
         <activity
+            android:name=".followuppatients.FollowUpPatientActivity"
+            android:configChanges="uiMode"
+            android:label="@string/title_follow_up"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name="org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_identification"

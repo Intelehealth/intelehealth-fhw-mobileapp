@@ -42,6 +42,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity;
+import org.intelehealth.msfarogyabharat.followuppatients.FollowUpPatientActivity;
+import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,7 +60,6 @@ import java.util.Objects;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.msfarogyabharat.activities.loginActivity.LoginActivity;
-import org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.msfarogyabharat.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.msfarogyabharat.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -316,6 +318,13 @@ public class HomeActivity extends AppCompatActivity {
 
 
         showProgressbar();
+        TextView tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        if (followUpCount > 0) {
+            tvFollowUpBadge.setVisibility(View.VISIBLE);
+            tvFollowUpBadge.setText(String.valueOf(followUpCount));
+        }
+        FollowUpNotificationWorker.schedule();
     }
 
     //function for handling the video library feature...
@@ -983,4 +992,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void onFollowUpClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
+        startActivity(intent);
+    }
 }
