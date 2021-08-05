@@ -117,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,12 +318,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         showProgressbar();
-        TextView tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
-        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-        if (followUpCount > 0) {
-            tvFollowUpBadge.setVisibility(View.VISIBLE);
-            tvFollowUpBadge.setText(String.valueOf(followUpCount));
-        }
+        tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
         FollowUpNotificationWorker.schedule();
     }
 
@@ -720,6 +715,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        if (followUpCount > 0) {
+            tvFollowUpBadge.setVisibility(View.VISIBLE);
+            tvFollowUpBadge.setText(String.valueOf(followUpCount));
+        }
     }
 
     @Override

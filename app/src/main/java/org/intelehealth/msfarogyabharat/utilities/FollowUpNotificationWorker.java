@@ -26,6 +26,9 @@ import java.util.concurrent.TimeUnit;
 public class FollowUpNotificationWorker extends Worker {
     private final static String TAG = "FollowUpNotificationWorker";
     private final SQLiteDatabase db;
+    private final String channelId = "1";
+    private final String channelName = "intelehealth";
+    private final int mId = 1;
 
     public FollowUpNotificationWorker(Context ctx, WorkerParameters params) {
         super(ctx, params);
@@ -79,9 +82,6 @@ public class FollowUpNotificationWorker extends Worker {
         return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", null);
     }
 
-    private String channelId = "1";
-    private String channelName = "intelehealth";
-    private int mId = 1;
     public void showNotification(String title, String text, Context context) {
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //mahiti added

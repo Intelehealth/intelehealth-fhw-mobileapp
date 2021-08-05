@@ -110,7 +110,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
 //        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
-        final Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", null);
+        final Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = 'e1761e85-9b50-48ae-8c4d-e6b7eeeba084' and o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", null);
         try {
             if (searchCursor.moveToFirst()) {
                 do {
@@ -123,6 +123,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                     model.comment = getSeverity(model.getUuid());
+//                    if (model.comment != null && model.comment.contains("Asymptomatic"))
+//                        continue;
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }

@@ -2,6 +2,7 @@ package org.intelehealth.msfarogyabharat.followuppatients;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,7 +59,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             if (TextUtils.isEmpty(patinet.comment)) {
                 holder.commentTextView.setVisibility(View.GONE);
             } else {
-                holder.commentTextView.setText(patinet.comment);
+                holder.commentTextView.setText(Html.fromHtml(patinet.comment));
                 holder.commentTextView.setVisibility(View.VISIBLE);
             }
         }
