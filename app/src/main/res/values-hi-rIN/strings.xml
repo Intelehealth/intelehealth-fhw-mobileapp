@@ -127,7 +127,8 @@
     <string name="title_activity_complaint_node">शिकायतों का चयन करें</string>
     <string name="complaint_category_selected">चयनित श्रेणियाँ:</string>
     <string name="complaint_complaint_selected">चयनित शिकायतें:</string>
-    <string name="complaint_dialog_title">आने का कारण</string>
+<!--    <string name="complaint_dialog_title">आने का कारण</string>-->
+    <string name="complaint_dialog_title">कॉल का कारण</string>
     <string name="complaint_required">शिकायत का चयन करना होगा!</string>
 
     //Question Node Screen
@@ -183,7 +184,8 @@
     <string name="visit_summary_medical_history">चिकित्सक इतिहास</string>
     <string name="visit_summary_family_history">परिवार इतिहास</string>
     <string name="visit_summary_on_examination">निरिक्षण करने पर</string>
-    <string name="visit_summary_complaint">यात्रा का कारण</string>
+    <string name="visit_summary_complaint">कॉल का कारण</string>
+<!--    <string name="visit_summary_complaint">यात्रा का कारण</string>-->
     <string name="visit_summary_vitals">नब्ज</string>
     <string name="visit_summary_doctor_details">चिकित्सक विवरण</string>
     <string name="visit_summary_rx">निर्धारित दवाईयाँ</string>
@@ -557,7 +559,8 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>
+<!--    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>-->
+    <string name="what_is_the_reason_for_your_visit">कॉल का कारण क्या है??</string>
     <string name="swipe_down_to_return">अगले/ पिछले के लिए निचे स्वाइप करें</string>
     <string name="swipe_up">अगले के लिए ऊपर स्वाइप करें</string>
     <string name="swipe_down">पिछले के लिए निचे स्वाइप करें</string>

@@ -35,6 +35,7 @@ import org.intelehealth.svhmhelpline.database.dao.ImagesDAO;
 import org.intelehealth.svhmhelpline.models.DocumentObject;
 
 import org.intelehealth.svhmhelpline.utilities.StringUtils;
+import org.intelehealth.svhmhelpline.utilities.UuidDictionary;
 import org.intelehealth.svhmhelpline.utilities.exception.DAOException;
 
 /**
@@ -46,14 +47,14 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     int screen_height;
     int screen_width;
-
+    private String mEncounterAdultIntials;
     private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
     private String filePath;
     ImagesDAO imagesDAO = new ImagesDAO();
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList, String filePath) {
+    public AdditionalDocumentAdapter(Context context,String mEdultIntialUUID ,List<DocumentObject> documentList, String filePath) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -61,6 +62,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
         this.filePath = filePath;
+        this.mEncounterAdultIntials=mEdultIntialUUID;
 
     }
 
@@ -105,7 +107,9 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
                 try {
-                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
+                    List<String> imageList = imagesDAO.isImageListObsExists(mEncounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+                    imagesDAO.deleteImageFromDatabase(imageList.get(position));
+//                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }

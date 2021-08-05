@@ -126,7 +126,8 @@
     <string name="title_activity_complaint_node">Select Complaints</string>
     <string name="complaint_category_selected">Selected Categories:</string>
     <string name="complaint_complaint_selected">Selected Complaints:</string>
-    <string name="complaint_dialog_title">Reason for visit</string>
+    <string name="complaint_dialog_title">Reason of call</string>
+<!--    <string name="complaint_dialog_title">Reason for visit</string>-->
     <string name="complaint_required">Complaint must be selected!</string>
 
     //Question Node Screen
@@ -182,7 +183,8 @@
     <string name="visit_summary_medical_history">Medical history</string>
     <string name="visit_summary_family_history">Family history</string>
     <string name="visit_summary_on_examination">On examination</string>
-    <string name="visit_summary_complaint">Reason for visit</string>
+<!--    <string name="visit_summary_complaint">Reason for visit</string>-->
+    <string name="visit_summary_complaint">Reason of call</string>
     <string name="visit_summary_vitals">Vitals</string>
     <string name="visit_summary_doctor_details">Doctor Details</string>
     <string name="visit_summary_rx">Prescribed Medications</string>
@@ -551,7 +553,8 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason of call?</string>
+<!--    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>-->
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
