@@ -6,7 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.database.DatabaseUtils;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
@@ -89,7 +89,36 @@ public class FollowUpNotificationWorker extends Worker {
         boolean result = searchCursor.moveToFirst();
         searchCursor.close();
         return result;*/
-        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and (o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%'))))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
+//        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and (o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%'))))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
+        int count = 0;
+        final Cursor searchCursor = db.rawQuery("SELECT uuid FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
+        try {
+            if (searchCursor.moveToFirst()) {
+                do {
+                    String uuid = searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"));
+                    String severity = getSeverity(uuid, db);
+                    if (severity != null && severity.contains("Asymptomatic"))
+                        continue;
+                    count++;
+                } while (searchCursor.moveToNext());
+            }
+            searchCursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
+    private static String getSeverity(String patientUid, SQLiteDatabase db) {
+        String severity = null;
+        final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
+        if (obsCursor.moveToFirst()) {
+            do {
+                severity = obsCursor.getString(obsCursor.getColumnIndexOrThrow("value"));
+            } while (obsCursor.moveToNext());
+            obsCursor.close();
+        }
+        return severity;
     }
 
     public void showNotification(String title, String text, Context context) {

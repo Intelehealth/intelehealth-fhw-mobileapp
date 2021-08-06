@@ -123,8 +123,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                     model.comment = getSeverity(model.getUuid());
-//                    if (model.comment != null && model.comment.contains("Asymptomatic"))
-//                        continue;
+                    if (model.comment != null && model.comment.contains("Asymptomatic"))
+                        continue;
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
