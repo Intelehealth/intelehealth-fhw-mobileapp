@@ -1,4 +1,3 @@
-
 package org.intelehealth.ekalhelpline.models.loginProviderModel;
 
 import com.google.gson.annotations.Expose;
@@ -6,8 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Result {
-
+public class AttributeType {
     @SerializedName("uuid")
     @Expose
     private String uuid;
@@ -17,9 +15,6 @@ public class Result {
     @SerializedName("links")
     @Expose
     private List<Link> links = null;
-    @SerializedName("attributes")
-    @Expose
-    private List<Attribute> attributes = null;
 
     public String getUuid() {
         return uuid;
@@ -45,12 +40,5 @@ public class Result {
         this.links = links;
     }
 
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
 }
+
