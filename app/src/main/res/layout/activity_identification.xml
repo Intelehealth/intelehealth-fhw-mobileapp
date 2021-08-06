@@ -473,7 +473,8 @@
                                         android:layout_width="fill_parent"
                                         android:hint="@string/identification_screen_prompt_state"
                                         android:maxLength="45"
-                                        android:layout_height="wrap_content" />
+                                        android:layout_height="wrap_content"
+                                        android:completionThreshold="1"/>
 
 <!--                                    <LinearLayout-->
 <!--                                        android:layout_width="match_parent"-->
@@ -511,6 +512,23 @@
 
 
                                 </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:layout_weight="1">
+
+                                    <AutoCompleteTextView
+                                        android:id="@+id/autocomplete_district"
+                                        android:layout_width="fill_parent"
+                                        android:hint="@string/identification_screen_prompt_district"
+                                        android:maxLength="45"
+                                        android:layout_height="wrap_content"
+                                        android:completionThreshold="1"/>
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
                             </LinearLayout>
 
                         </LinearLayout>
