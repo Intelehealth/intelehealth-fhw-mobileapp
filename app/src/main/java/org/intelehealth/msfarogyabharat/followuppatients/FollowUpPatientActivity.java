@@ -232,20 +232,15 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     }
 
     private String getSeverity(String patientUid) {
-        String comment = null;
+        String severity = null;
         final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
         if (obsCursor.moveToFirst()) {
             do {
-                String value = obsCursor.getString(obsCursor.getColumnIndexOrThrow("value"));
-                if (!TextUtils.isEmpty(value)) {
-                    comment = String.format("%s: %s", getString(R.string.case_closed), value);
-                }
+                severity = obsCursor.getString(obsCursor.getColumnIndexOrThrow("value"));
             } while (obsCursor.moveToNext());
             obsCursor.close();
-        } else {
-            comment = getString(R.string.case_closed);
         }
-        return comment;
+        return severity;
     }
 
     private String phoneNumber(String patientuuid) throws DAOException {
