@@ -16,6 +16,7 @@ import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import org.intelehealth.msfarogyabharat.BuildConfig;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -66,6 +67,9 @@ public class FollowUpNotificationWorker extends Worker {
             dueDate.add(Calendar.HOUR_OF_DAY, 24);
         }
         long timeDiff = dueDate.getTimeInMillis() - currentDate.getTimeInMillis();
+        if (BuildConfig.DEBUG) {
+            timeDiff = TimeUnit.MINUTES.toMillis(15);
+        }
         WorkManager.getInstance().cancelAllWorkByTag(TAG);
         OneTimeWorkRequest dailyWorkRequest = new OneTimeWorkRequest.Builder(FollowUpNotificationWorker.class)
                 .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
