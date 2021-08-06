@@ -79,7 +79,7 @@ public class FollowUpNotificationWorker extends Worker {
         boolean result = searchCursor.moveToFirst();
         searchCursor.close();
         return result;*/
-        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", null);
+        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and (o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%'))))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
     }
 
     public void showNotification(String title, String text, Context context) {
