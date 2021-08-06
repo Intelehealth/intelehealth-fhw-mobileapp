@@ -702,4 +702,6 @@
     <string name="calling_patient">Calling patient…</string>
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
+    <string name="loading_more">Loading more…</string>
+
 </resources>
