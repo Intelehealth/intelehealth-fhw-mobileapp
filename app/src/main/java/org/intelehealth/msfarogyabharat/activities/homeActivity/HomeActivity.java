@@ -715,6 +715,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+        showFollowUpBadge();
+    }
+
+    private void showFollowUpBadge() {
         long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
         if (followUpCount > 0) {
             tvFollowUpBadge.setVisibility(View.VISIBLE);
@@ -814,6 +818,7 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
+                    showFollowUpBadge();
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
