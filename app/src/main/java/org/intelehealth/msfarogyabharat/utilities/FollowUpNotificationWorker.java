@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
@@ -30,6 +31,7 @@ public class FollowUpNotificationWorker extends Worker {
     private final String channelId = "1";
     private final String channelName = "intelehealth";
     private final int mId = 1;
+    private static boolean scheduled;
 
     public FollowUpNotificationWorker(Context ctx, WorkerParameters params) {
         super(ctx, params);
@@ -42,11 +44,14 @@ public class FollowUpNotificationWorker extends Worker {
         if (getFollowUpCount(db) > 0) {
             showNotification(getApplicationContext().getString(R.string.title_follow_reminder), getApplicationContext().getString(R.string.title_follow_up_reminder_desc), getApplicationContext());
         }
+        scheduled = false;
         schedule();
         return Result.success();
     }
 
     public static void schedule() {
+        if (scheduled)
+            return;
         Calendar currentDate = Calendar.getInstance();
         Calendar dueDate = Calendar.getInstance();
         int hourOfDay = currentDate.get(Calendar.HOUR_OF_DAY);
@@ -68,14 +73,15 @@ public class FollowUpNotificationWorker extends Worker {
         }
         long timeDiff = dueDate.getTimeInMillis() - currentDate.getTimeInMillis();
         if (BuildConfig.DEBUG) {
-            timeDiff = TimeUnit.MINUTES.toMillis(15);
+            timeDiff = TimeUnit.MINUTES.toMillis(5);
         }
-        WorkManager.getInstance().cancelAllWorkByTag(TAG);
+//        WorkManager.getInstance().cancelAllWorkByTag(TAG);
         OneTimeWorkRequest dailyWorkRequest = new OneTimeWorkRequest.Builder(FollowUpNotificationWorker.class)
                 .setInitialDelay(timeDiff, TimeUnit.MILLISECONDS)
                 .addTag(TAG)
                 .build();
-        WorkManager.getInstance().enqueue(dailyWorkRequest);
+        WorkManager.getInstance().enqueueUniqueWork(TAG, ExistingWorkPolicy.REPLACE, dailyWorkRequest);
+        scheduled = true;
     }
 
     public static long getFollowUpCount(SQLiteDatabase db) {
