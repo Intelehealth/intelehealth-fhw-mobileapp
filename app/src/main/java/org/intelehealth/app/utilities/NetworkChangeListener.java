@@ -8,9 +8,8 @@ public abstract class NetworkChangeListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        String status = NetworkConnection.getConnectivityStatusString(context);
-        onNetworkChange(status);
+        onNetworkChange(NetworkConnection.getConnectivityStatusString(context));
     }
 
-    protected abstract void onNetworkChange(String status);
+    protected abstract void onNetworkChange(String[] status);
 }

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -20,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -27,8 +31,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.view.animation.LinearInterpolator;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -44,18 +48,6 @@ import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
@@ -77,6 +69,24 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.apprtc.utils.FirebaseUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.TimeZone;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -92,6 +102,7 @@ import io.reactivex.schedulers.Schedulers;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
+    private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
     private ProgressDialog mSyncProgressDialog;
@@ -121,16 +132,110 @@ public class HomeActivity extends AppCompatActivity {
     TextView findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
     private ObjectAnimator syncAnimator;
+    private TextView mActiveVitCountTextView, mTodayVisitCountTextView;
+
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
+    }
+    private void catchFCMMessageData() {
+        // get the chat notification click info
+        if (getIntent().getExtras() != null) {
+            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+            Bundle remoteMessage = getIntent().getExtras();
+            try {
+                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+                    //Log.d(TAG, "actionType : TEXT_CHAT");
+                    String fromUUId = remoteMessage.getString("toUser");
+                    String toUUId = remoteMessage.getString("fromUser");
+                    String patientUUid = remoteMessage.getString("patientId");
+                    String visitUUID = remoteMessage.getString("visitId");
+                    String patientName = remoteMessage.getString("patientName");
+                    JSONObject connectionInfoObject = new JSONObject();
+                    connectionInfoObject.put("fromUUID", fromUUId);
+                    connectionInfoObject.put("toUUID", toUUId);
+                    connectionInfoObject.put("patientUUID", patientUUid);
+
+                    Intent intent = new Intent(ACTION_NAME);
+                    intent.putExtra("visit_uuid", visitUUID);
+                    intent.putExtra("connection_info", connectionInfoObject.toString());
+                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
+                    getApplicationContext().sendBroadcast(intent);
+
+                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    chatIntent.putExtra("patientName", patientName);
+                    chatIntent.putExtra("visitUuid", visitUUID);
+                    chatIntent.putExtra("patientUuid", patientUUid);
+                    chatIntent.putExtra("fromUuid", fromUUId);
+                    chatIntent.putExtra("toUuid", toUUId);
+                    startActivity(chatIntent);
+
+                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                    //Log.d(TAG, "actionType : VIDEO_CALL");
+                    Intent in = new Intent(this, CompleteActivity.class);
+                    String roomId = remoteMessage.getString("roomId");
+                    String doctorName = remoteMessage.getString("doctorName");
+                    String nurseId = remoteMessage.getString("nurseId");
+                    boolean isOldNotification = false;
+                    if (remoteMessage.containsKey("timestamp")) {
+                        String timestamp = remoteMessage.getString("timestamp");
+
+                        Date date = new Date();
+                        if (timestamp != null) {
+                            date.setTime(Long.parseLong(timestamp));
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+                            dateFormatter.setTimeZone(TimeZone.getDefault());
+
+                            try {
+                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+                                long seconds = 0;
+                                if (ourDate != null) {
+                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+                                }
+                                Log.v(TAG, "Current time - " + new Date());
+                                Log.v(TAG, "Notification time - " + ourDate);
+                                Log.v(TAG, "seconds - " + seconds);
+                                if (seconds >= 10) {
+                                    isOldNotification = true;
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+
+
+                    in.putExtra("roomId", roomId);
+                    in.putExtra("isInComingRequest", true);
+                    in.putExtra("doctorname", doctorName);
+                    in.putExtra("nurseId", nurseId);
+
+                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
+                        startActivity(in);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
+        saveToken();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
+        mActiveVitCountTextView = findViewById(R.id.active_visit_count);
+        mTodayVisitCountTextView = findViewById(R.id.today_visit_count);
 
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -140,7 +245,7 @@ public class HomeActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-
+        catchFCMMessageData();
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
@@ -320,7 +425,7 @@ public class HomeActivity extends AppCompatActivity {
                 intent.setData(uri);
                 startActivity(intent);
             } else {
-                Toast.makeText(context, "No config attribute found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.config_not_found_alert_message), Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -535,7 +640,7 @@ public class HomeActivity extends AppCompatActivity {
                                             sessionManager.setMindMapServerUrl(licenseUrl);
 
                                             if (keyVerified(key)) {
-                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/",key);
+                                                getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
                                                 alertDialog.dismiss();
                                             }
                                         } else {
@@ -750,7 +855,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
     private void getMindmapDownloadURL(String url, String key) {
         customProgressDialog.show();
         ApiClient.changeApiBaseUrl(url);
@@ -939,6 +1043,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
+            updateUIForCounts();
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
                 syncAnimator.cancel();
@@ -968,4 +1073,35 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        updateUIForCounts();
+    }
+
+    private void updateUIForCounts() {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender " +
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+        Cursor c1 = db.rawQuery(query, null);
+
+        mActiveVitCountTextView.setText("( " + String.valueOf(c1.getCount()) + " )");
+
+
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " +
+                "FROM tbl_visit a, tbl_patient b  " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
+        Logger.logD(TAG, query);
+        Cursor c2 = db.rawQuery(query, null);
+        mTodayVisitCountTextView.setText("( " + String.valueOf(c2.getCount()) + " )");
+
+    }
+
 }

@@ -1,35 +1,30 @@
 package org.intelehealth.app.activities.vitalActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Objects;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -37,18 +32,31 @@ import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
-
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class VitalsActivity extends AppCompatActivity {
     private static final String TAG = VitalsActivity.class.getSimpleName();
+    private static final int INTENT_FOR_COMPALINTNODE = 1002;
     SessionManager sessionManager;
+    int flag_height = 0, flag_weight = 0;
+    String heightvalue;
+    String weightvalue;
+    ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
+    VitalsObject results = new VitalsObject();
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperatureEditText, mtempfaren, mSpo2, mBMI, mResp;
     private String patientName = "";
     private String patientGender = "";
     private String intentTag;
@@ -57,14 +65,8 @@ public class VitalsActivity extends AppCompatActivity {
     private String visitUuid;
     private String encounterVitals;
     private float float_ageYear_Month;
-    int flag_height = 0, flag_weight = 0;
-    String heightvalue;
-    String weightvalue;
-    ConfigUtils configUtils = new ConfigUtils(VitalsActivity.this);
-
-    VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    private double mBMIValue = 0d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class VitalsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         sessionManager = new SessionManager(this);
 
@@ -107,7 +109,7 @@ public class VitalsActivity extends AppCompatActivity {
         mPulse = findViewById(R.id.table_pulse);
         mBpSys = findViewById(R.id.table_bpsys);
         mBpDia = findViewById(R.id.table_bpdia);
-        mTemperature = findViewById(R.id.table_temp);
+        mTemperatureEditText = findViewById(R.id.table_temp);
         mSpo2 = findViewById(R.id.table_spo2);
 
         mBMI = findViewById(R.id.table_bmi);
@@ -158,16 +160,17 @@ public class VitalsActivity extends AppCompatActivity {
             if (obj.getBoolean("mTemperature")) {
                 if (obj.getBoolean("mCelsius")) {
 
-                    mTemperature = findViewById(R.id.table_temp);
+                    mTemperatureEditText = findViewById(R.id.table_temp);
                     findViewById(R.id.table_temp_faren).setVisibility(View.GONE);
 
                 } else if (obj.getBoolean("mFahrenheit")) {
 
-                    mTemperature = findViewById(R.id.table_temp_faren);
+                    mTemperatureEditText = findViewById(R.id.table_temp_faren);
                     findViewById(R.id.table_temp).setVisibility(View.GONE);
+                    findViewById(R.id.table_temp_til).setVisibility(View.GONE);
                 }
             } else {
-                mTemperature.setVisibility(View.GONE);
+                mTemperatureEditText.setVisibility(View.GONE);
             }
             if (obj.getBoolean("mSpo2")) {
                 mSpo2.setVisibility(View.VISIBLE);
@@ -186,7 +189,7 @@ public class VitalsActivity extends AppCompatActivity {
                 mResp.setVisibility(View.GONE);
             }
         } catch (JSONException e) {
-            Toast.makeText(this, "config file error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.config_file_error), Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         if (intentTag != null && intentTag.equals("edit")) {
@@ -303,7 +306,7 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mTemperature.addTextChangedListener(new TextWatcher() {
+        mTemperatureEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -311,24 +314,27 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                String val = s.toString().trim();
+               /* if (val.contains(",") ) {
+                    val = val.replace(",",".");
+                }*/
                 if (configUtils.celsius()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                    if (val.length() > 0 && !val.startsWith(".")) {
+                        if (Double.valueOf(val) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                                Double.valueOf(val) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                            mTemperatureEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
                         } else {
-                            mTemperature.setError(null);
+                            mTemperatureEditText.setError(null);
                         }
 
                     }
                 } else if (configUtils.fahrenheit()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                    if (val.length() > 0 && !val.startsWith(".")) {
+                        if (Double.valueOf(val) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
+                                Double.valueOf(val) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
+                            mTemperatureEditText.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
                         } else {
-                            mTemperature.setError(null);
+                            mTemperatureEditText.setError(null);
                         }
                     }
 
@@ -338,10 +344,12 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mTemperature.getText().toString().startsWith(".")) {
-                    mTemperature.setText("");
+                if (mTemperatureEditText.getText().toString().startsWith(".")) {
+                    mTemperatureEditText.setText("");
                 } else {
-
+                    /*if (sessionManager.getAppLanguage().equals("ru")) {
+                        mTemperatureEditText.setText(mTemperatureEditText.getText().toString().trim().replace(".",","));
+                    }*/
                 }
 
             }
@@ -481,39 +489,38 @@ public class VitalsActivity extends AppCompatActivity {
             mBMI.getText().clear();
             double numerator = Double.parseDouble(mWeight.getText().toString()) * 10000;
             double denominator = (Double.parseDouble(mHeight.getText().toString())) * (Double.parseDouble(mHeight.getText().toString()));
-            double bmi_value = numerator / denominator;
+            mBMIValue = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value));
+            String displayText = sessionManager.getAppLanguage().equals("ru") ? df.format(mBMIValue).replace(".", ",") : df.format(mBMIValue);
+            mBMI.setText(displayText);
             Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
-        }
-        else
-        {
+        } else {
             mBMI.getText().clear();
         }
     }
 
     public void calculateBMI_onEdit(String height, String weight) {
-        if (height.toString().trim().length() > 0 && !height.toString().startsWith(".") &&
-                weight.toString().trim().length() > 0 && !weight.toString().startsWith(".")) {
+        if (height.trim().length() > 0 && !height.startsWith(".") &&
+                weight.trim().length() > 0 && !weight.startsWith(".")) {
 
             mBMI.getText().clear();
             double numerator = Double.parseDouble(weight) * 10000;
             double denominator = (Double.parseDouble(height)) * (Double.parseDouble(height));
-            double bmi_value = numerator / denominator;
+            mBMIValue = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
-            mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            String displayText = sessionManager.getAppLanguage().equals("ru") ? df.format(mBMIValue).replace(".", ",") : df.format(mBMIValue);
+            mBMI.setText(displayText);
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else  {
+        } else {
             // do nothing
             mBMI.getText().clear();
         }
     }
-
 
 
     public void loadPrevious() {
@@ -554,10 +561,10 @@ public class VitalsActivity extends AppCompatActivity {
                 if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                     //Converting Celsius to Fahrenheit
                     if (value != null && !value.isEmpty()) {
-                        mTemperature.setText(convertCtoF(value));
+                        mTemperatureEditText.setText(convertCtoF(value));
                     }
                 } else {
-                    mTemperature.setText(value);
+                    mTemperatureEditText.setText(value);
                 }
 
                 break;
@@ -573,7 +580,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
@@ -583,14 +590,13 @@ public class VitalsActivity extends AppCompatActivity {
         View focusView = null;
 
         //BP vaidations added by Prajwal.
-        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if(mBpSys.getText().toString().isEmpty()) {
+            if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
                 return;
-            }
-            else if(mBpDia.getText().toString().isEmpty()) {
+            } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
                 mBpDia.setError("Enter field");
                 return;
@@ -604,7 +610,7 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mPulse);
         values.add(mBpSys);
         values.add(mBpDia);
-        values.add(mTemperature);
+        values.add(mTemperatureEditText);
         values.add(mResp);
         values.add(mSpo2);
 
@@ -785,15 +791,15 @@ public class VitalsActivity extends AppCompatActivity {
                 if (mBpSys.getText() != null) {
                     results.setBpsys((mBpSys.getText().toString()));
                 }
-                if (mTemperature.getText() != null) {
+                if (mTemperatureEditText.getText() != null) {
 
                     if (findViewById(R.id.table_temp).getVisibility() == View.GONE) {
                         //Converting Fahrenheit to Celsius
 //                        results.setTemperature((mTemperature.getText().toString()));
 
-                        results.setTemperature(ConvertFtoC(mTemperature.getText().toString()));
+                        results.setTemperature(ConvertFtoC(mTemperatureEditText.getText().toString()));
                     } else {
-                        results.setTemperature((mTemperature.getText().toString()));
+                        results.setTemperature((mTemperatureEditText.getText().toString()));
                     }
 
                 }
@@ -1030,13 +1036,14 @@ public class VitalsActivity extends AppCompatActivity {
             intent.putExtra("gender", patientGender);
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
-            startActivity(intent);
+            startActivityForResult(intent, INTENT_FOR_COMPALINTNODE);
+
         }
     }
 
     private String ConvertFtoC(String temperature) {
 
-        if(temperature != null && temperature.length() > 0) {
+        if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
@@ -1053,7 +1060,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String convertCtoF(String temperature) {
 
         String result = "";
-        double a = Double.parseDouble(String.valueOf(temperature));
+        double a = Double.parseDouble(String.valueOf(temperature.replaceAll(",",".")));
         Double b = (a * 9 / 5) + 32;
 
         DecimalFormat dtime = new DecimalFormat("#.##");
@@ -1066,6 +1073,56 @@ public class VitalsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INTENT_FOR_COMPALINTNODE) {
+            setResult(resultCode);
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
+                dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        try {
+                            // remove the visit
+                            VisitsDAO visitsDAO = new VisitsDAO();
+                            int count = visitsDAO.deleteByVisitUUID(visitUuid);
+                            if(count!=0) {
+
+                                ObsDAO obsDAO = new ObsDAO();
+                                obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                // remove the Encounter
+                                EncounterDAO encounterDAO = new EncounterDAO();
+                                encounterDAO.deleteByVisitUUID(visitUuid);
+                            }
+                            setResult(RESULT_CANCELED);
+                            finish();
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(VitalsActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

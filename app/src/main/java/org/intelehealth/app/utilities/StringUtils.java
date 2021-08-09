@@ -17,11 +17,11 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.widget.Spinner;
 
-import java.io.File;
-import java.util.List;
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+
+import java.io.File;
+import java.util.List;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -135,23 +135,19 @@ public final class StringUtils {
             val = "Not provided";
 
 
-        else if(spinner.getSelectedItem() == null)
-        {
+        else if (spinner.getSelectedItem() == null) {
             val = "Not provided";
 
-        }
-        else
-        {
+        } else {
             val = spinner.getSelectedItem().toString();
         }
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             val = switch_or_caste(val);
             val = switch_or_economic(val);
             val = switch_or_education(val);
@@ -485,6 +481,24 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String ru__or_dob(String dob) { //English dob is replaced to Odiya text.
+        String mdob_text = dob
+                .replace("January", "Январь")
+                .replace("February", "Февраль")
+                .replace("March", "Март")
+                .replace("April", "апреля")
+                .replace("May", "Май")
+                .replace("June", "июнь")
+                .replace("July", "июль")
+                .replace("August", "август")
+                .replace("September", "сентябрь")
+                .replace("October", "Октябрь")
+                .replace("November", "Ноябрь")
+                .replace("December", "Декабрь");
+
+        return mdob_text;
+    }
+
     public static String hi_or__en_month(int month_index) {
         String dob_string = "";
 
@@ -536,7 +550,23 @@ public final class StringUtils {
 
     public static String hi_or__en_noEdit(String dobString, String locale) {
 
-        if(locale.equalsIgnoreCase("hi")) {
+        if (locale.equalsIgnoreCase("ru")) {
+            String dob = dobString
+                    //Russian
+                    .replace("Январь", "January")
+                    .replace("Февраль", "February")
+                    .replace("Март", "March")
+                    .replace("апреля", "April")
+                    .replace("Май", "May")
+                    .replace("июнь", "June")
+                    .replace("июль", "July")
+                    .replace("август", "August")
+                    .replace("сентябрь", "September")
+                    .replace("Октябрь", "October")
+                    .replace("Ноябрь", "November")
+                    .replace("Декабрь", "December");
+            return dob;
+        } else if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
                     //Hindi
                     .replace("जनवरी", "January")
@@ -552,8 +582,7 @@ public final class StringUtils {
                     .replace("नवंबर", "November")
                     .replace("दिसंबर", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("or")) {
+        } else if (locale.equalsIgnoreCase("or")) {
             //Odiya
             String dob = dobString
                     .replace("ଜାନୁଆରୀ", "January")
@@ -569,8 +598,7 @@ public final class StringUtils {
                     .replace("ନଭେମ୍ବର", "November")
                     .replace("ଡିସେମ୍ବର", "December");
             return dob;
-        }
-        else {
+        } else {
             return dobString;
         }
 

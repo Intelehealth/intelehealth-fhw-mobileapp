@@ -7,11 +7,19 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,17 +28,27 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Html;
-import android.util.Log;
-import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
+import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,28 +64,12 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
-import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
-
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
+    private static final int INTENT_FOR_PHY_EXAM = 1004;
+    private static final int INTENT_FOR_PAST_MEDICAL_HIST = 1005;
     final String TAG = "Question Node Activity";
     String patientUuid;
     String visitUuid;
@@ -153,9 +155,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             hasLicense = true;
 
         JSONObject currentFile = null;
+
         for (int i = 0; i < complaints.size(); i++) {
+            Log.v(TAG,"complaints-"+complaints.get(i));
             if (hasLicense) {
                 try {
+
                     currentFile = new JSONObject(FileUtils.readFile(complaints.get(i) + ".json", this));
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
@@ -176,7 +181,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // questionListView = findViewById(R.id.complaint_question_expandable_list_view);
 
@@ -387,7 +392,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, INTENT_FOR_PHY_EXAM);
                 } else {
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
@@ -406,7 +411,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
-                    startActivity(intent);
+                    startActivityForResult(intent, INTENT_FOR_PAST_MEDICAL_HIST);
                 }
             }
         }
@@ -627,14 +632,14 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String a = currentNode.formQuestionAnswer(0);
             Log.d("tag", a);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "सवाल का जवाब नहीं दिया")
                     .replace("Patient reports -", "पेशेंट ने सूचित किया -")
                     .replace("Patient denies -", "पेशेंट ने मना कर दिया -")
-                    .replace("Hours", "घंटे").replace("Days","दिन")
+                    .replace("Hours", "घंटे").replace("Days", "दिन")
                     .replace("Weeks", "हफ्तों").replace("Months", "महीने")
                     .replace("Years", "वर्ष")
                     .replace("times per hour", "प्रति घंटे बार")
@@ -642,8 +647,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "प्रति सप्ताह बार")
                     .replace("times per month", "प्रति माह बार")
                     .replace("times per year", "प्रति वर्ष बार")));
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")){
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |")
                     .replace("Patient reports -", "ରୋଗୀ ରିପୋର୍ଟ -")
@@ -656,12 +660,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "ସମୟ ପ୍ରତି ସପ୍ତାହ")
                     .replace("times per month", "ସମୟ ପ୍ରତି ମାସରେ |")
                     .replace("times per year", "ସମୟ ପ୍ରତିବର୍ଷ")));
-        }
-        else {
+        } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 
-      //  alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
+        //  alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         alertDialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -693,17 +696,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         return null;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                currentNode.setImagePath(mCurrentPhotoPath);
-                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -755,6 +747,68 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     @Override
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClicked(null, groupPos, childPos);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                currentNode.setImagePath(mCurrentPhotoPath);
+                currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
+            }
+        } else if (requestCode == INTENT_FOR_PHY_EXAM || requestCode == INTENT_FOR_PAST_MEDICAL_HIST) {
+            setResult(resultCode);
+            finish();
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                if (intentTag != null && intentTag.equals("edit")) {
+                    finish();
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
+                    dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            try {
+                                // remove the visit
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                int count = visitsDAO.deleteByVisitUUID(visitUuid);
+                                if(count!=0) {
+
+                                    ObsDAO obsDAO = new ObsDAO();
+                                    obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                    // remove the Encounter
+                                    EncounterDAO encounterDAO = new EncounterDAO();
+                                    encounterDAO.deleteByVisitUUID(visitUuid);
+                                }
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(QuestionNodeActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 

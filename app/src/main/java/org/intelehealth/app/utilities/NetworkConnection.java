@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.intelehealth.app.R;
+
 public class NetworkConnection {
 
     public static final String TYPE_WIFI = "WIFI";
@@ -37,17 +39,21 @@ public class NetworkConnection {
         return TYPE_NOT_CONNECTED;
     }
 
-    public static String getConnectivityStatusString(Context context) {
+    public static String[] getConnectivityStatusString(Context context) {
         String conn = NetworkConnection.getConnectionType(context);
         String status = null;
-        if (conn == NetworkConnection.TYPE_WIFI) {
-            status = "Connected to Internet!";
-        } else if (conn == NetworkConnection.TYPE_MOBILE) {
-            status = "Connected to Internet!";
-        } else if (conn == NetworkConnection.TYPE_NOT_CONNECTED) {
-            status = "Not connected to Internet!";
+        String flag = "0"; // 0- not connected, 1- connected
+        switch (conn) {
+            case NetworkConnection.TYPE_WIFI:
+            case NetworkConnection.TYPE_MOBILE:
+                status = context.getString(R.string.internet_connected_txt);
+                flag = "1";
+                break;
+            case NetworkConnection.TYPE_NOT_CONNECTED:
+                status = context.getString(R.string.not_connected_txt);
+                break;
         }
-        return status;
+        return new String[]{status,flag};
     }
 }
 

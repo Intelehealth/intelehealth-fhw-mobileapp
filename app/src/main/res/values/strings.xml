@@ -662,4 +662,17 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
+    <string name="saving_captured_image">Saving Captured Image...</string>
+    <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
+
+    //Language Screen
+    <string name="choose_lang_title">Choose your Language</string>
+    <string name="save_button">Save</string>
+    <string name="selectLanguageToast">Please select Language</string>
+    <string name="config_not_found_alert_message">No config attribute found</string>
+    <string name="error_login_title">Error Login</string>
+    <string name="config_file_error">config file error</string>
+    <string name="internet_connected_txt">Connected to Internet!</string>
+    <string name="not_connected_txt">Not connected to Internet!</string>
+    <string name="config_error">Config Error</string>
 </resources>

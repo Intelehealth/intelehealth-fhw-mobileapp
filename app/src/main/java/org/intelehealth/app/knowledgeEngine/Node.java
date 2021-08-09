@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import androidx.appcompat.app.AlertDialog;
-
 import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -25,15 +22,23 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.cameraActivity.CameraActivity;
+import org.intelehealth.app.activities.complaintNodeActivity.CustomArrayAdapter;
+import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.utilities.InputFilterMinMax;
+import org.intelehealth.app.utilities.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,15 +54,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.utilities.InputFilterMinMax;
-import org.intelehealth.app.utilities.SessionManager;
-
-import org.intelehealth.app.activities.cameraActivity.CameraActivity;
-import org.intelehealth.app.activities.complaintNodeActivity.CustomArrayAdapter;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -153,6 +149,11 @@ public class Node implements Serializable {
 
             this.text = jsonNode.getString("text");
 
+            this.language = jsonNode.optString("language");
+            if (this.language.isEmpty()) {
+                this.language = this.text;
+            }
+
             this.gender = jsonNode.optString("gender");
 
             this.min_age = jsonNode.optString("age_min");
@@ -172,7 +173,8 @@ public class Node implements Serializable {
                 this.display = jsonNode.optString("display ");
             }
             if (this.display.isEmpty()) {
-                this.display = this.text;
+                //this.display = this.text;
+                this.display = this.language;
             }
 
             this.display_russian = jsonNode.optString("display-ru");
@@ -204,11 +206,6 @@ public class Node implements Serializable {
             }
             if (this.display_hindi.isEmpty()) {
                 this.display_hindi = this.display;
-            }
-
-            this.language = jsonNode.optString("language");
-            if (this.language.isEmpty()) {
-                this.language = this.text;
             }
 
 
@@ -473,14 +470,14 @@ public class Node implements Serializable {
             case "ru": {
                 //Log.i(TAG, "findDisplay: cb");
                 if (display_russian != null && !display_russian.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: cb ");
+                    Log.i(TAG, "findDisplay: cb ");
                     return display_russian;
                 } else {
                     if (display == null || display.isEmpty()) {
-                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        Log.i(TAG, "findDisplay: ru txt");
                         return text;
                     } else {
-                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        Log.i(TAG, "findDisplay: ru dis");
                         return display;
                     }
                 }
@@ -810,7 +807,7 @@ public class Node implements Serializable {
                         messages.add(node_opt.pop_up_or);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         messages.add(node_opt.pop_up_ru);
-                    }else {
+                    } else {
                         messages.add(node_opt.pop_up);
                     }
 
@@ -1053,7 +1050,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-      //  final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+        //  final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1069,7 +1066,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-               // String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
+                // String durationString = quantityPicker.getValue() + " " + doctorUnits[unitPicker.getValue()];
                 //translate back to English from Hindi if present...
 //                String unit_text = "";
 //                unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
@@ -1114,7 +1111,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
+        // final String[] units = new String[]{"Hours", "Days", "Weeks", "Months", "Years"};
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
@@ -1130,7 +1127,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
@@ -1218,8 +1215,6 @@ public class Node implements Serializable {
 
         return unit;
     }
-
-
 
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -1477,7 +1472,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = context.getResources().getStringArray(R.array.units);
+        // final String[] units = context.getResources().getStringArray(R.array.units);
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1530,7 +1525,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = context.getResources().getStringArray(R.array.duration_units);
+        // final String[] units = context.getResources().getStringArray(R.array.duration_units);
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
@@ -1546,7 +1541,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-               // String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                // String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
@@ -2125,7 +2120,7 @@ public class Node implements Serializable {
         Log.i(TAG, "formQuestionAnswer: " + mLanguage);
 
         if (mLanguage.equalsIgnoreCase("")) {
-            mLanguage = "Question not answered" + next_line;
+            mLanguage = IntelehealthApplication.getAppContext().getString(R.string.question_not_answered) + next_line;
         }
 
         return mLanguage;

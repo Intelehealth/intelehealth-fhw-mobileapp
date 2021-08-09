@@ -14,6 +14,13 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = AppConstants.DATABASE_VERSION;
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
     public static SQLiteDatabase database;
+    /**
+     * This take will keep the log of the connection info wrt the visit-uuid
+     */
+    public static final String CREATE_RTC_LOGS = "CREATE TABLE IF NOT EXISTS tbl_rtc_connection_log (" +
+            "uuid TEXT PRIMARY KEY," +
+            "visit_uuid TEXT," +
+            "connection_info TEXT )";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +
@@ -229,6 +236,8 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
+        db.execSQL(CREATE_RTC_LOGS);
+
         uuidInsert(db);
         database = db;
 

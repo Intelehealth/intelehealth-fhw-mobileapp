@@ -3,24 +3,18 @@ package org.intelehealth.app.activities.setupActivity;
 import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -40,6 +34,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,15 +45,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.parse.Parse;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
@@ -77,7 +68,14 @@ import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
-import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -194,8 +192,9 @@ public class SetupActivity extends AppCompatActivity {
 
         MyReceiver = new NetworkChangeListener() {
             @Override
-            protected void onNetworkChange(String status) {
-                Snackbar.make(coordinatorLayout, status, Snackbar.LENGTH_SHORT)
+            protected void onNetworkChange(String[] status) {
+                Snackbar.make(coordinatorLayout, status[0], Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) : getResources().getColor(R.color.green3))
                         .setTextColor(getResources().getColor(R.color.white)).show();
             }
         };
@@ -229,8 +228,8 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
-        if(!mUrlField.getText().toString().trim().isEmpty() ||
-        !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
+        if (!mUrlField.getText().toString().trim().isEmpty() ||
+                !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
 
             isLocationFetched = false;
             mEmailView.setError(null);
@@ -251,8 +250,7 @@ public class SetupActivity extends AppCompatActivity {
                 }
             }
 
-        }
-        else {
+        } else {
 
         }
         mUrlField.addTextChangedListener(new TextWatcher() {
@@ -721,16 +719,14 @@ public class SetupActivity extends AppCompatActivity {
         }
     }
 
-    public boolean isOnline () {
+    public boolean isOnline() {
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = conMgr.getActiveNetworkInfo();
-        if(netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()){
+        if (netInfo == null || !netInfo.isConnected() || !netInfo.isAvailable()) {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_info), getString(R.string.setup_internet_not_available), getString(R.string.generic_ok));
             return false;
-        }
-        else
-        {
+        } else {
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet_available), getString(R.string.generic_ok));
             return true;
@@ -1517,7 +1513,7 @@ public class SetupActivity extends AppCompatActivity {
                 Logger.logD(TAG, "Login Failure" + e.getMessage());
                 progress.dismiss();
                 DialogUtils dialogUtils = new DialogUtils();
-                dialogUtils.showerrorDialog(SetupActivity.this, "Error Login", getString(R.string.error_incorrect_password), "ok");
+                dialogUtils.showerrorDialog(SetupActivity.this, getString(R.string.error_login_title), getString(R.string.error_incorrect_password), getString(R.string.ok));
                 mEmailView.requestFocus();
                 mPasswordView.requestFocus();
             }
@@ -1591,7 +1587,7 @@ public class SetupActivity extends AppCompatActivity {
                         public void onError(Throwable e) {
                             customProgressDialog.dismiss();
                             Log.e("MindMapURL", " " + e);
-                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_LONG).show();
+                            Toast.makeText(SetupActivity.this, getResources().getString(R.string.unable_to_get_proper_response)+"\n"+e.getMessage(), Toast.LENGTH_LONG).show();
                         }
 
                         @Override

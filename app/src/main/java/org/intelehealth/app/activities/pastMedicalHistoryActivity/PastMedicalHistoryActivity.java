@@ -10,22 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -35,8 +23,39 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
+import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,29 +65,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.activities.familyHistoryActivity.FamilyHistoryActivity;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
-
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
+    private static final int INTENT_FOR_FAMILY_HISTORY = 1006;
     String patient = "patient";
     String patientUuid;
     String visitUuid;
@@ -147,7 +148,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_PatHist == null)
+            if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
         }
 
@@ -214,7 +215,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
                     //    intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);
+                    startActivityForResult(intent, INTENT_FOR_FAMILY_HISTORY);
 
                 }
             });
@@ -233,10 +234,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-            
+
         }
-
-
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -248,11 +247,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -291,10 +290,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
 
@@ -421,7 +419,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //       intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);
+            startActivityForResult(intent, INTENT_FOR_FAMILY_HISTORY);
 
         }
     }
@@ -496,18 +494,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                patientHistoryMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
-                patientHistoryMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -528,8 +514,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
-
-
 
 
     public void AnimateView(View v) {
@@ -570,7 +554,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
@@ -582,7 +567,73 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             result = ""; // if medical history does not exist
-        }    db.close();    return result;
+        }
+        db.close();
+        return result;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                patientHistoryMap.setImagePath(mCurrentPhotoPath);
+                Log.i(TAG, mCurrentPhotoPath);
+                patientHistoryMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+            }
+        } else if (requestCode == INTENT_FOR_FAMILY_HISTORY) {
+            setResult(resultCode);
+            finish();
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                if (intentTag != null && intentTag.equals("edit")) {
+                    finish();
+                } else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
+                    dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            try {
+                                // remove the visit
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                int count = visitsDAO.deleteByVisitUUID(visitUuid);
+                                if(count!=0) {
+
+                                    ObsDAO obsDAO = new ObsDAO();
+                                    obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                    // remove the Encounter
+                                    EncounterDAO encounterDAO = new EncounterDAO();
+                                    encounterDAO.deleteByVisitUUID(visitUuid);
+                                }
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(PastMedicalHistoryActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
 

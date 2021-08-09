@@ -242,6 +242,19 @@ public class ObsDAO {
 
         return obsuuid;
     }
+    public void deleteByEncounterUud(String encounterUuid) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
 
+        try {
+            db.delete("tbl_obs","encounteruuid = ?",new String[] {encounterUuid});
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+    }
 
 }

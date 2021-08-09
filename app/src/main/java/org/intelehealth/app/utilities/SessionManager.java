@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class SessionManager {
     // Shared preferences file name
-    private static final String PREF_NAME = "Intelehealth";
+    private static final String PROJECT_PREFIX_PREF_NAME = "Unicef_Kyrgyzstan_";
+    public static final String PREF_NAME = PROJECT_PREFIX_PREF_NAME+"Intelehealth";
     private static final String VISIT_ID = "visitID";
     private static final String BASE_URL = "base_url";
     private static final String ENCODED = "encoded";
@@ -50,6 +51,7 @@ public class SessionManager {
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
+    private static final String IS_FIRST_TIME_LAUNCH = "IS_FIRST_TIME_LAUNCH";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -445,5 +447,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void setFirstTimeLaunch(boolean isFirstTime) {
+        editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime);
+        editor.commit();
+    }
 
+    public boolean isFirstTimeLaunch() {
+        return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
+    }
 }

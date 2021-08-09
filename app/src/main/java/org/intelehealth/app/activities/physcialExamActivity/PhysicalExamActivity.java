@@ -8,23 +8,9 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -37,9 +23,41 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.R;
+import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.knowledgeEngine.PhysicalExam;
+import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
+import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,25 +70,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-
-import org.intelehealth.app.R;
-import org.intelehealth.app.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ObsDAO;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.knowledgeEngine.PhysicalExam;
-import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.FileUtils;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidDictionary;
-
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
@@ -126,7 +125,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-      //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
 
@@ -206,17 +205,17 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         setContentView(R.layout.activity_physical_exam);
         setTitle(getString(R.string.title_activity_physical_exam));
         Toolbar toolbar = findViewById(R.id.toolbar);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         setTitle(patientName + ": " + getTitle());
         physExam_recyclerView = findViewById(R.id.physExam_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         physExam_recyclerView.setLayoutManager(linearLayoutManager);
         physExam_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -262,10 +261,9 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
 
         mgender = fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             physicalExamMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             physicalExamMap.fetchItem("1");
         }
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
@@ -321,7 +319,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 Intent intent = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class);
                 intent.putExtra("patientUuid", patientUuid);
                 intent.putExtra("visitUuid", visitUuid);
-                intent.putExtra("gender",mgender);
+                intent.putExtra("gender", mgender);
                 intent.putExtra("encounterUuidVitals", encounterVitals);
                 intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
                 intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
@@ -353,6 +351,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 intent1.putExtra("hasPrescription", "false");
                 // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent1);
+                setResult(RESULT_OK);
+                finish();
             }
 
         } else {
@@ -394,7 +394,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             Node.subLevelQuestion(question, this, adapter, filePath.toString(), imageName);
         }
     }
-
 
 
     /**
@@ -479,21 +478,6 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
-            if (resultCode == RESULT_OK) {
-                String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                physicalExamMap.setImagePath(mCurrentPhotoPath);
-                Log.i(TAG, mCurrentPhotoPath);
-                physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-                updateImageDatabase();
-
-            }
-
-        }
-    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -651,6 +635,67 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             v.startAnimation(bottomUp);
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
+            if (resultCode == RESULT_OK) {
+                String mCurrentPhotoPath = data.getStringExtra("RESULT");
+                physicalExamMap.setImagePath(mCurrentPhotoPath);
+                Log.i(TAG, mCurrentPhotoPath);
+                physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
+                updateImageDatabase();
+
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (intentTag != null && intentTag.equals("edit")) {
+                    finish();
+                }else {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                    dialog.setMessage(getString(R.string.alert_message_for_discard_visit));
+                    dialog.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            try {
+                                // remove the visit
+                                VisitsDAO visitsDAO = new VisitsDAO();
+                                int count = visitsDAO.deleteByVisitUUID(visitUuid);
+                                if(count!=0) {
+
+                                    ObsDAO obsDAO = new ObsDAO();
+                                    obsDAO.deleteByEncounterUud(encounterAdultIntials);
+                                    // remove the Encounter
+                                    EncounterDAO encounterDAO = new EncounterDAO();
+                                    encounterDAO.deleteByVisitUUID(visitUuid);
+                                }
+                                setResult(RESULT_CANCELED);
+                                finish();
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(PhysicalExamActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int i) {
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

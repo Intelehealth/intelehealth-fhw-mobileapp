@@ -43,6 +43,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     public static String getAndroidId() {
         return androidId;
     }
+    private static IntelehealthApplication sIntelehealthApplication;
+    public String refreshedFCMTokenID = "";
+
+    public static IntelehealthApplication getInstance() {
+        return sIntelehealthApplication;
+    }
 
 
     @Override
@@ -58,6 +64,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        sIntelehealthApplication = this;
 
         configureCrashReporting();
 
