@@ -5,7 +5,7 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "org.intelehealth.app"
+        applicationId "org.intelehealth.unicef"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 47
@@ -41,7 +41,7 @@ android {
             // generating configuration APKs for language resources.
             // These resources are instead packaged with each base and
             // feature APK.
-            // Continue reading below to learn about situations when an app
+            // Continue reading below to learn about situations when an unicef
             // might change setting to `false`, otherwise consider leaving
             // the default on for more optimized downloads.
             enableSplit = false

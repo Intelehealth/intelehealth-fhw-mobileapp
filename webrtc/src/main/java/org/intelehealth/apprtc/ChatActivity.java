@@ -57,7 +57,7 @@ import io.socket.client.Socket;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = ChatActivity.class.getName();
-    private static final String PACKAGE_NAME = "org.intelehealth.app";
+    private static final String PACKAGE_NAME = "org.intelehealth.unicef";
     private static final String ACTION_NAME = PACKAGE_NAME+".RTC_MESSAGING_EVENT";
     private static final String RECEIVER_CLASS_NAME = PACKAGE_NAME+".utilities.RTCMessageReceiver";
     private List<JSONObject> mChatList = new ArrayList<JSONObject>();
@@ -119,7 +119,7 @@ public class ChatActivity extends AppCompatActivity {
         // Instantiate the cache
         Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
 
-        // Set up the network to use HttpURLConnection as the HTTP app.
+        // Set up the network to use HttpURLConnection as the HTTP unicef.
         Network network = new BasicNetwork(new HurlStack());
 
         // Instantiate the RequestQueue with the cache and network.

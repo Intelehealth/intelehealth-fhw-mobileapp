@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 public class ExampleInstrumentedTest {
     @Test
     public void useAppContext() {
-        // Context of the app under test.
+        // Context of the unicef under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("io.intelehealth.client", appContext.getPackageName());

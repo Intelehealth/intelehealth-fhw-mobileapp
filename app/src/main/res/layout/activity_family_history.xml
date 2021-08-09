@@ -21,7 +21,7 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
-    <org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator
+    <org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator
         android:id="@+id/recyclerViewIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
 android:layout_gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-    </org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator>
+    </org.intelehealth.unicef.utilities.pageindicator.ScrollingPagerIndicator>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/family_history_recyclerView"
