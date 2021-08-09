@@ -696,4 +696,8 @@
     <string name="txt_additional_info">अतिरिक्त जानकारी</string>
     <string name="medical_advice">वैद्यकीय सलाह</string>
 
+    <string name="calling_patient">मरीज को कॉल कर रहे हैं...</string>
+    <string name="error_calling_patient">रोगी को कॉल करने में त्रुटि, कृपया कुछ टाइमर के बाद प्रयास करें</string>
+    <string name="and_i_be_assisting_you">"और मैं तुम्हारी सहायता करूंगा।"</string>
+    <string name="loading_more">और लोड हो रहा है…</string>
 </resources>

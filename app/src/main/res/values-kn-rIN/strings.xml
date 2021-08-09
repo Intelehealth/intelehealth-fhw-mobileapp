@@ -687,5 +687,10 @@
     <string name="txt_additional_info">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿ</string>
     <string name="medical_advice">ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
 
+    <string name="calling_patient">ರೋಗಿಯನ್ನು ಕರೆಯಲಾಗುತ್ತಿದೆ ...</string>
+    <string name="error_calling_patient">ರೋಗಿಯನ್ನು ಕರೆಯುವಲ್ಲಿ ದೋಷ, ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ</string>
+    <string name="and_i_be_assisting_you">"ಮತ್ತು ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತೇನೆ. "</string>
+    <string name="loading_more">ಹೆಚ್ಚು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ...</string>
+
 
 </resources>

@@ -564,5 +564,9 @@
     <string name="txt_additional_info">கூடுதல் தகவல்</string>
     <string name="medical_advice">மருத்துவ ஆலோசனை</string>
 
+    <string name="calling_patient">நோயாளியை அழைக்கிறது ...</string>
+    <string name="error_calling_patient">நோயாளியை அழைப்பதில் பிழை, தயவுசெய்து சிறிது நேரம் கழித்து முயற்சிக்கவும்</string>
+    <string name="and_i_be_assisting_you">"மற்றும் நான் உங்களுக்கு உதவுவேன்."</string>
+    <string name="loading_more">மேலும் ஏற்றுகிறது ...</string>
 
 </resources>
