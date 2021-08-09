@@ -818,9 +818,9 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
-                    showFollowUpBadge();
                 }
             }
+            showFollowUpBadge();
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         }
     };
