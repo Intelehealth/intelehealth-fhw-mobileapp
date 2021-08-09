@@ -70,12 +70,12 @@
     </string-array>
 
     <string-array name="education_ru">
-        <item>Select Education</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
+        <item>Выберите образование</item>
+        <item>неграмотный</item>
+        <item>Начальный</item>
+        <item>вторичный</item>
+        <item>Высшее среднее</item>
+        <item>Выпускной и высшее</item>
     </string-array>
 
     <string-array name="caste_en">

@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -69,12 +70,14 @@ import org.intelehealth.app.utilities.OfflineLogin;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +85,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -168,18 +172,52 @@ public class HomeActivity extends AppCompatActivity {
                     chatIntent.putExtra("toUuid", toUUId);
                     startActivity(chatIntent);
 
-                } /*else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
                     //Log.d(TAG, "actionType : VIDEO_CALL");
                     Intent in = new Intent(this, CompleteActivity.class);
                     String roomId = remoteMessage.getString("roomId");
                     String doctorName = remoteMessage.getString("doctorName");
                     String nurseId = remoteMessage.getString("nurseId");
+                    boolean isOldNotification = false;
+                    if (remoteMessage.containsKey("timestamp")) {
+                        String timestamp = remoteMessage.getString("timestamp");
+
+                        Date date = new Date();
+                        if (timestamp != null) {
+                            date.setTime(Long.parseLong(timestamp));
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+                            dateFormatter.setTimeZone(TimeZone.getDefault());
+
+                            try {
+                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+                                long seconds = 0;
+                                if (ourDate != null) {
+                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+                                }
+                                Log.v(TAG, "Current time - " + new Date());
+                                Log.v(TAG, "Notification time - " + ourDate);
+                                Log.v(TAG, "seconds - " + seconds);
+                                if (seconds >= 10) {
+                                    isOldNotification = true;
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+
+
                     in.putExtra("roomId", roomId);
                     in.putExtra("isInComingRequest", true);
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
-                    startActivity(in);
-                }*/
+
+                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
+                        startActivity(in);
+                    }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

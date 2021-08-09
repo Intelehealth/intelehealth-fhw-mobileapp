@@ -8,7 +8,8 @@ import java.util.Set;
 
 public class SessionManager {
     // Shared preferences file name
-    private static final String PREF_NAME = "Intelehealth";
+    private static final String PROJECT_PREFIX_PREF_NAME = "Unicef_Kyrgyzstan_";
+    public static final String PREF_NAME = PROJECT_PREFIX_PREF_NAME+"Intelehealth";
     private static final String VISIT_ID = "visitID";
     private static final String BASE_URL = "base_url";
     private static final String ENCODED = "encoded";

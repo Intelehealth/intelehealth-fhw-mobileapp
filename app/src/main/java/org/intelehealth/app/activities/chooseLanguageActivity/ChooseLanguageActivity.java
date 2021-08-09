@@ -68,6 +68,7 @@ public class ChooseLanguageActivity extends AppCompatActivity {
         SaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setLocale(sessionManager.getAppLanguage());
                 if (sessionManager.isFirstTimeLaunch()) {
                     Logger.logD(LOG_TAG, "Starting setup");
 //                    Intent intent = new Intent(ChooseLanguageActivity.this, IntroActivity.class);
