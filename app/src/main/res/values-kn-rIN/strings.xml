@@ -85,6 +85,7 @@
     <string name="identification_screen_prompt_time">ಸಮಯ:</string>
     <string name="identification_screen_prompt_city">ಗ್ರಾಮ / ಪಟ್ಟಣ / ನಗರ*</string>
     <string name="identification_screen_prompt_state">ರಾಜ್ಯ*</string>
+    <string name="identification_screen_prompt_district">ಜಿಲ್ಲೆ *</string>
     <string name="identification_screen_prompt_caste" translatable="false">ಜಾತಿ</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">ಆರ್ಥಿಕ ಸ್ಥಿತಿ</string>
     <string name="identification_screen_prompt_education" translatable="false">ಶಿಕ್ಷಣ ಮಟ್ಟ</string>
@@ -662,9 +663,29 @@
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"ಹಲೋ, ಇಂಟೆಲ್‌ಹೆಲ್ತ್ ಬಳಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಪ್ರಿಸ್‌ಕ್ರಿಪ್‌ಷನ್‌  ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಇಲ್ಲಿ    ಕ್ಲಿಕ್ಕಿಸಿ</string>
     <string name="and_enter_your_patient_id">\"ಮತ್ತು ನಿಮ್ಮ ರೋಗಿಯ ID ಅನ್ನು ನಮೂದಿಸಿ”</string>
 
+    <string name="error_medical_visit_data">ದಯವಿಟ್ಟು ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಅಥವಾ ನಮೂದಿಸಿ</string>
+    <string name="text_patient_and_advice_created">ರೋಗಿ &amp; ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
+    <string name="text_advice_created">ವೈದ್ಯಕೀಯ ಸಲಹೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೋಂದಾಯಿಸಲಾಗಿದೆ</string>
+
 
     <string name="take_photo">ಭಾವಚಿತ್ರವನ್ನು ತೆಗಿರಿ</string>
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
+
+    <string name="text_medical_advice">ಹೊಸ ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+    <string name="text_new_visit">ಹೊಸ ವೈದ್ಯರ ಭೇಟಿ</string>
+    <string name="text_new_advice">ಹೊಸ ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+
+    <string name="vaccination_guidance">ವ್ಯಾಕ್ಸಿನೇಷನ್ ಮಾರ್ಗದರ್ಶನ</string>
+    <string name="concern_about_covid_re_infection">COVID ಮರು-ಸೋಂಕಿನ ಬಗ್ಗೆ ಕಾಳಜಿ</string>
+    <string name="managing_breathlessness">ಉಸಿರಾಟದ ನಿರ್ವಹಣೆ</string>
+    <string name="managing_issues_with_voice">ಧ್ವನಿಯೊಂದಿಗೆ ಸಮಸ್ಯೆಗಳನ್ನು ನಿರ್ವಹಿಸುವುದು</string>
+    <string name="managing_eating_drinking">ಚೇತರಿಸಿಕೊಂಡ ನಂತರ ತಿನ್ನುವುದು, ಕುಡಿಯುವುದು ಮತ್ತು ನುಂಗುವುದು</string>
+    <string name="dealing_problems">ಗಮನ, ಮೆಮೊರಿ ಮತ್ತು ಸ್ಪಷ್ಟತೆಯ ಸಮಸ್ಯೆಗಳನ್ನು ನಿಭಾಯಿಸುವುದು</string>
+    <string name="managing_mental_health">ಮಾನಸಿಕ ಆರೋಗ್ಯವನ್ನು ನಿರ್ವಹಿಸುವುದು</string>
+    <string name="exercises">ವ್ಯಾಯಾಮಗಳು</string>
+    <string name="txt_additional_info">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿ</string>
+    <string name="medical_advice">ವೈದ್ಯಕೀಯ ಸಲಹೆ</string>
+
 
 </resources>
