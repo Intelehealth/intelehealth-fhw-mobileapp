@@ -470,6 +470,8 @@
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_state"
+                                        android:maxLines="1"
+                                        android:imeOptions="actionNext"
                                         android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -486,6 +488,9 @@
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_district"
+                                        android:singleLine="true"
+                                        android:maxLines="1"
+                                        android:imeOptions="actionNext"
                                         android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>

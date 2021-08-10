@@ -285,7 +285,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity = findViewById(R.id.identification_city);
         mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-//        stateText = findViewById(R.id.identification_state);
+//      stateText = findViewById(R.id.identification_state);
 
         autocompleteState = findViewById(R.id.autocomplete_state);
         autocompleteDistrict = findViewById(R.id.autocomplete_district);

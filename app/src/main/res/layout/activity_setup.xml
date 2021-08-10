@@ -82,6 +82,7 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:inputType="textUri"
                                     android:focusable="true"
+                                    android:imeOptions="actionNext"
                                     android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -279,7 +280,7 @@
                             android:maxLines="1"
                             android:textSize="14sp"
                             android:fontFamily="@font/lato_regular"
-                            android:nextFocusForward="@id/password" />
+                           android:nextFocusForward="@id/password" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
