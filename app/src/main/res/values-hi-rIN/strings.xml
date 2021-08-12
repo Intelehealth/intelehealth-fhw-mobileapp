@@ -6,7 +6,7 @@
     <string name="hint_required">अपेक्षित</string>
     <string name="hint_optional">ऐच्छिक</string>
     <string name="tag_optional">ऐच्छिक</string>
-    <string name="generic_ok" >ठीक</string>
+    <string name="generic_ok">ठीक</string>
     <string name="generic_cancel">रद्द करना</string>
     <string name="generic_yes">हाँ</string>
     <string name="generic_no">नहीं</string>
@@ -41,7 +41,7 @@
     //Login Screen
 
     <string name="title_activity_login">इबिस-विकल्प-हेल्पलाइन</string>
-<!--    <string name="title_activity_login">एकल आरोग्य हेल्प लाइन</string>-->
+    <!--    <string name="title_activity_login">एकल आरोग्य हेल्प लाइन</string>-->
     <string name="prompt_email">उपयोगकर्ता नाम</string>
     <string name="prompt_password">कुंजिका</string>
     <string name="prompt_admin_password">व्यवस्थापक कुंजी</string>
@@ -94,7 +94,7 @@
     <string name="identification_screen_prompt_time">समय:</string>
     <string name="identification_screen_prompt_city">गांव / कस्बा / शहर *</string>
     <string name="identification_screen_prompt_state">राज्य *</string>
-    <string name="identification_screen_prompt_district">District *</string>
+    <string name="identification_screen_prompt_district">ज़िला *</string>
     <string name="identification_screen_prompt_caste" translatable="false">जाति</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">आर्थिक स्थिति</string>
     <string name="identification_screen_prompt_education" translatable="false">शिक्षा का स्तर</string>
@@ -562,7 +562,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >आपकी विज़िट का कारण क्या है?</string>
+    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>
     <string name="swipe_down_to_return">अगले/ पिछले के लिए निचे स्वाइप करें</string>
     <string name="swipe_up">अगले के लिए ऊपर स्वाइप करें</string>
     <string name="swipe_down">पिछले के लिए निचे स्वाइप करें</string>
@@ -622,7 +622,7 @@
     <string name="days">दिन</string>
     <string name="contact">संपर्क करें</string>
     <string name="has_a_new_prescription">एक नया पर्ची है</string>
-    <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से पर्चे पीडीएफ का चयन करें - Internal storage/EkalArogya_PDF</string>
+    <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से पर्चे पीडीएफ का चयन करें - Internal storage/इबिस-विकल्प-हेल्पलाइन_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">उस मोबाइल नंबर को दर्ज करें जिसमें आप प्रिस्क्रिप्षन (डॉक्टर की पर्ची) को साझा करना चाहते हैं।</string>
     <string name="share">साझा करें</string>
     <string name="please_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
@@ -675,10 +675,56 @@
     <string name="per_Year">प्रति वर्ष</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
     <string name="please_select_specialization">कृपया विशेषज्ञता का चयन करें</string>
+    <string name="select_specialization">विशेषज्ञता का चयन करें</string>
+
     <string name="speciality">स्पेशलिटी</string>
 
     <string name="take_photo">फोटो लो</string>
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
+
+
+    <string name="text_new_advice">नई चिकित्सा सलाह</string>
+    <string name="vaccination_guidance">टीकाकरण मार्गदर्शन</string>
+    <string name="concern_about_covid_re_infection">कोविड पुन: संक्रमण के बारे में चिंता</string>
+    <string name="managing_breathlessness">सांस फूलना प्रबंधित करना</string>
+    <string name="managing_issues_with_voice">आवाज़ से जुड़ी समस्याएं प्रबंधित करना</string>
+    <string name="managing_eating_drinking">ठीक होने के बाद खाने, पीने और निगलने का प्रबंध करना</string>
+    <string name="dealing_problems">ध्यान, स्मृति और स्पष्टता की समस्याओं से निपटना</string>
+    <string name="managing_mental_health">मानसिक स्वास्थ्य का प्रबंधन</string>
+
+    <string name="exercises">व्यायाम</string>
+    <string name="self_assessment">स्व-मूल्यांकन</string>
+    <string name="error_medical_visit_data">कृपया चिकित्सकीय सलाह चुनें या दर्ज करें</string>
+    <string name="txt_additional_info">अतिरिक्त जानकारी</string>
+    <string name="text_patient_and_advice_created">रोगी &amp; चिकित्सा सलाह सफलतापूर्वक पंजीकृत हो गई है</string>
+    <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत हो गई है</string>
+    <string name="medical_advice">चिकित्सा सलाह</string>
+
+    <string name="calling_patient">कॉलिंग पेशेंट...</string>
+    <string name="error_calling_patient">रोगी को कॉल करने में त्रुटि, कृपया कुछ समय बाद प्रयास करें</string>
+    <string name="and_i_be_assisting_you">" और मैं आपकी सहायता करूंगा।"</string>
+    <string name="loading_more">और लोड हो रहा है...</string>
+
+
+    //Others details
+    <string name="who_is_calling">कौन बुला रहा है?*</string>
+    <string name="how_do_you_know_about_helpline">आप हमारी हेल्पलाइन के बारे में कैसे जानते हैं?*</string>
+    <string name="what_kind_of_phone_do_you_personally_own">फोन करने वाले के पास किस तरह का फोन है?*</string>
+    <string name="caller_relation">फोन करने वाले का रिश्ता</string>
+    <string name="helpline_knowledge">हेल्पलाइन सूचना</string>
+    <string name="phone_type">मोबाइल फोन का प्रकार</string>
+    <string name="case_closed">मामला समाप्त</string>
+    <string name="welcome_sms">एमएसएफ आरोग्यभारत हेल्पलाइन पर कॉल करने और पंजीकरण करने के लिए धन्यवाद। यदि आप तनावग्रस्त या चिंतित महसूस कर रहे हैं, तो हमारे परामर्शदाता आपकी सहायता के लिए यहां हैं। कृपया हमारे टोल फ्री नंबर पर कॉल करें। 18001203710 - इंटेलीहेल्थ द्वारा संचालित</string>
+
+
+    <!-- Patient Exit Survey -->
+    <string name = "exit_survey_select_spinner">क्या यह अनुवर्ती कार्रवाई का अंत है? \nयदि हाँ, तो कृपया नीचे दिए विकल्पों में से किसी एक को चुनें</string>
+    <string name="spinner_recovered">पुनर्प्राप्त</string>
+    <string name = "spinner_referred">संदर्भित</string>
+    <string name = "spinner_died">मर गया</string>
+    <string name="spinner_loss_followUp">फॉलो अप करने में हानि</string>
+    <string name="spinner_refuse_followUp">फॉलो अप से मना करना</string>
+    <string name = "spinner_other">अन्य</string>
 
 </resources>

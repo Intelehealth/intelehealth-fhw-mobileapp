@@ -40,23 +40,23 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_additional_documents"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.patientSurveyActivity.PatientSurveyActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_patient_survey"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.physcialExamActivity.PhysicalExamActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_physical_exam"
             android:parentActivityName="org.intelehealth.msfarogyabharat.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
 
@@ -64,7 +64,7 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.familyHistoryActivity.FamilyHistoryActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_family_history"
             android:parentActivityName="org.intelehealth.msfarogyabharat.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
 
@@ -72,20 +72,20 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_past_medical_history"
             android:parentActivityName="org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionNodeActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionNodeActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_question_node"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.ComplaintNodeActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_complaint_node"
             android:parentActivityName="org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity"
 
@@ -93,11 +93,11 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.IntroActivity.IntroActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity"
-            android:configChanges="orientation|keyboardHidden|uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_visit_summary"
             android:parentActivityName="org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity"
 
@@ -108,41 +108,41 @@
         </activity>
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.vitalActivity.VitalsActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_vitals"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.patientDetailActivity.PatientDetailActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.cameraActivity.CameraActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_camera"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.activitySync.ActivitySync"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_sync"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.videoLibraryActivity.VideoLibraryActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_video_library"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.activePatientsActivity.ActivePatientActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_active_patient"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.todayPatientActivity.TodayPatientActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_today_patient"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchPatientActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_search_patient"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -158,12 +158,12 @@
         </activity>
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_identification"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.settingsActivity.SettingsActivity"
-            android:configChanges="orientation|keyboardHidden|uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_settings"
             android:parentActivityName="org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity"
            >
@@ -173,13 +173,13 @@
         </activity>
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.loginActivity.LoginActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_login"
 
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -198,7 +198,7 @@
         </activity>
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.setupActivity.SetupActivity"
-            android:configChanges="uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_setup"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->

@@ -122,7 +122,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_first_name"
-                                        android:imeOptions="actionUnspecified"
+                                        android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
@@ -174,7 +174,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_last_name"
-                                        android:imeOptions="actionUnspecified"
+                                        android:imeOptions="actionUnspecified|flagNoExtractUi"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
@@ -200,7 +200,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_age"
-                                        android:imeOptions="actionUnspecified"
+                                        android:imeOptions="actionNext|flagNoExtractUi"
                                         android:inputType=""
                                         android:maxLines="1"
                                         android:singleLine="true"
@@ -281,7 +281,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_birthday"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="flagNoExtractUi|actionNext"
                                 android:inputType=""
                                 android:maxLines="1"
                                 android:singleLine="true"
@@ -335,7 +335,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:maxLines="1"
@@ -436,7 +436,7 @@
                                             android:focusableInTouchMode="false"
                                             android:fontFamily="@font/lato_regular"
                                             android:freezesText="true"
-                                            android:imeOptions="actionUnspecified"
+                                            android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                             android:inputType="textCapWords"
                                             android:maxLines="1"
                                             android:text="@string/identification_screen_prompt_country"
@@ -471,7 +471,9 @@
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_state"
                                         android:maxLines="1"
-                                        android:imeOptions="actionNext"
+                                        android:inputType="textAutoComplete"
+                                        android:singleLine="true"
+                                        android:imeOptions="actionNext|flagNoExtractUi"
                                         android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -490,7 +492,9 @@
                                         android:hint="@string/identification_screen_prompt_district"
                                         android:singleLine="true"
                                         android:maxLines="1"
-                                        android:imeOptions="actionNext"
+
+                                        android:inputType="textAutoComplete"
+                                        android:imeOptions="actionNext|flagNoExtractUi"
                                         android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -521,7 +525,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_city"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|actionNext|flagNoExtractUi"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
@@ -545,7 +549,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_address"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
@@ -571,7 +575,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_address2"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
@@ -688,7 +692,7 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_caste"
+                            android:id="@+id/spinner_helpline"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -697,6 +701,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/card_content_sub_text_size"
+                            android:imeOptions="actionNext|flagNoExtractUi"
+                            android:inputType="text"
                             android:hint="@string/txt_others"
                             android:visibility="gone"/>
 
@@ -719,7 +725,7 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_economic_status"
+                            android:id="@+id/spinner_phone_status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 

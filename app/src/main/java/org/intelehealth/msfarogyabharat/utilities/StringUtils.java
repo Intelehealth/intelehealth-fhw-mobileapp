@@ -140,9 +140,32 @@ public final class StringUtils {
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//            val = switch_hi_HelplineKnowledge(val);
+//            val = switch_hi_CallRelation(val);
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
+        }
+
+        return val;
+    }
+
+    public static String getProvidedOthers(Spinner spinner) {
+        String val = "";
+        if (spinner.getSelectedItemPosition() == 0)
+            val = "Not provided";
+
+        else if (spinner.getSelectedItem() == null) {
+            val = "Not provided";
+        } else {
+            val = spinner.getSelectedItem().toString();
+        }
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            val = switch_hi_HelplineKnowledge(val);
+            val = switch_hi_CallRelation(val);
+            val = switch_hi_PhoneType(val);
         }
 
         return val;
@@ -538,6 +561,21 @@ public final class StringUtils {
     }
 
 
+    public static String switch_hi__edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "गरीबी रेखा से ऊपर";
+                break;
+            case "BPL":
+                val = "गरीबी रेखा से नीचे";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
     public static String switch_hi_caste(String val) {
         switch (val) {
             case "सामान्य":
@@ -554,6 +592,147 @@ public final class StringUtils {
                 break;
             case "अन्य":
                 val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_HelplineKnowledge(String val) {
+        switch (val) {
+
+            case "सामाजिक मीडिया":
+                val = "Social Media";
+                break;
+            case "दीवार के पोस्टर या पेंटिंग":
+                val = "Wall Posters or Painting";
+                break;
+            case "मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)":
+                val = "Word of Mouth (through relatives or friends)";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_HelplineKnowledge_edit(String val) {
+        switch (val) {
+
+            case "Social Media":
+                val = "सामाजिक मीडिया";
+                break;
+            case "Wall Posters or Painting":
+                val = "दीवार के पोस्टर या पेंटिंग";
+                break;
+            case "Word of Mouth (through relatives or friends)":
+                val = "मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_CallRelation(String val) {
+        switch (val) {
+            case "रोगी स्वयं":
+                val = "Patient themselves";
+                break;
+            case "मां":
+                val = "Mother";
+                break;
+            case "पिता":
+                val = "Father";
+                break;
+            case "पति":
+                val = "Spouse";
+                break;
+            case "बेटा":
+                val = "Son";
+                break;
+            case "बेटी":
+                val = "Daughter";
+                break;
+            case "बहन":
+                val = "Sister";
+                break;
+            case "भाई":
+                val = "Brother";
+                break;
+            case "अन्य रिश्तेदार":
+                val = "Other Relative";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_CallRelation_edit(String val) {
+        switch (val) {
+            case "Patient themselves":
+                val = "रोगी स्वयं";
+                break;
+            case "Mother":
+                val = "मां";
+                break;
+            case "Father":
+                val = "पिता";
+                break;
+            case "Spouse":
+                val = "पति";
+                break;
+            case "Son":
+                val = "बेटा";
+                break;
+            case "Daughter":
+                val = "बेटी";
+                break;
+            case "Sister":
+                val = "बहन";
+                break;
+            case "Brother":
+                val = "भाई";
+                break;
+            case "Other Relative":
+                val = "अन्य रिश्तेदार";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_PhoneType(String val) {
+        switch (val) {
+            case "स्मार्टफोन":
+                val = "Smartphone";
+                break;
+            case "कीपैड फोन":
+                val = "Keypad phone";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+  public static String switch_hi_PhoneType_edit(String val) {
+        switch (val) {
+            case "Smartphone":
+                val = "स्मार्टफोन";
+                break;
+            case "Keypad phone":
+                val = "कीपैड फोन";
                 break;
             default:
                 return val;
@@ -890,9 +1069,9 @@ public final class StringUtils {
     }
 
     /*
-    * @return mdob_text : Assamese month translation is passed.
-    * @param dob : DOB in the format DD MMMM YYYY eg. 15 January 2021
-    */
+     * @return mdob_text : Assamese month translation is passed.
+     * @param dob : DOB in the format DD MMMM YYYY eg. 15 January 2021
+     */
 /*
     public static String en__as_dob(String dob) { //English dob is replaced to Assamese text.
         String mdob_text = dob
@@ -934,7 +1113,7 @@ public final class StringUtils {
 
     public static String hi_or_as__en_noEdit(String dobString, String locale) {
 
-        if(locale.equalsIgnoreCase("hi")) {
+        if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
                     //Hindi
                     .replace("जनवरी", "January")
@@ -950,8 +1129,7 @@ public final class StringUtils {
                     .replace("नवंबर", "November")
                     .replace("दिसंबर", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("or")) {
+        } else if (locale.equalsIgnoreCase("or")) {
             //Odiya
             String dob = dobString
                     .replace("ଜାନୁଆରୀ", "January")

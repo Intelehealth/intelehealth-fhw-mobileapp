@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_email"
                 android:textColorHint="@color/font_black_5"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionNext|flagNoExtractUi"
                 android:inputType="textEmailAddress"
                 android:fontFamily="@font/lato_regular"
                 android:maxLength="100"

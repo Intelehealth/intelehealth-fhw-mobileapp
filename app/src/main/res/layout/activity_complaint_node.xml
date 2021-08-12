@@ -74,7 +74,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:visibility="gone"
-        app:srcCompat="@drawable/ic_done_24dp" />
+        app:srcCompat="@drawable/ic_done_24dp"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_recyclerView"

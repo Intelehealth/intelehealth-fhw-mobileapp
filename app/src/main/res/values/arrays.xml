@@ -4,29 +4,29 @@
     <string-array name="language_names">
         <item>Hindi</item>
         <item>English</item>
-<!--        <item>Marathi</item>-->
-<!--        <item>Kannada</item>-->
-<!--        <item>Gujarati</item>-->
-<!--        <item>Odiya</item>-->
-<!--        <item>Assamese</item>-->
-<!--        <item>Tamil</item>-->
-<!--        <item>Telugu</item>-->
-<!--        <item>Bengali</item>-->
-<!--        <item>Malyalam</item>-->
+        <!--        <item>Marathi</item>-->
+        <!--        <item>Kannada</item>-->
+        <!--        <item>Gujarati</item>-->
+        <!--        <item>Odiya</item>-->
+        <!--        <item>Assamese</item>-->
+        <!--        <item>Tamil</item>-->
+        <!--        <item>Telugu</item>-->
+        <!--        <item>Bengali</item>-->
+        <!--        <item>Malyalam</item>-->
     </string-array>
 
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
-<!--        <item>mr</item>-->
-<!--        <item>kn</item>-->
-<!--        <item>gu</item>-->
-<!--        <item>or</item>-->
-<!--        <item>as</item>-->
-<!--        <item>ta</item>-->
-<!--        <item>te</item>-->
-<!--        <item>bn</item>-->
-<!--        <item>ml</item>-->
+        <!--        <item>mr</item>-->
+        <!--        <item>kn</item>-->
+        <!--        <item>gu</item>-->
+        <!--        <item>or</item>-->
+        <!--        <item>as</item>-->
+        <!--        <item>ta</item>-->
+        <!--        <item>te</item>-->
+        <!--        <item>bn</item>-->
+        <!--        <item>ml</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -63,7 +63,42 @@
         <item>Brother</item>
         <item>Other Relative</item>
     </string-array>
+    <string-array name="caller_type_en">
+        <item>Select</item>
+        <item>Patient themselves</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Spouse</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Sister</item>
+        <item>Brother</item>
+        <item>Other Relative</item>
+    </string-array>
 
+    //values for "who is caller" spinner
+    <string-array name="caller_type_hi">
+        <item>चुनते हैं</item>
+        <item>रोगी स्वयं</item>
+        <item>मां</item>
+        <item>पिता</item>
+        <item>पति</item>
+        <item>बेटा</item>
+        <item>बेटी</item>
+        <item>बहन</item>
+        <item>भाई</item>
+        <item>अन्य रिश्तेदार</item>
+    </string-array>
+
+    //values for "helpline knowledge" spinner
+    <string-array name="helpline_knowledge_hi">
+    <item>चुनते हैं</item>
+    <item>सामाजिक मीडिया</item>
+    <item>दीवार के पोस्टर या पेंटिंग</item>
+    <item>मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)</item>
+    <item>अन्य</item>
+    </string-array>
+    
     //values for "helpline knowledge" spinner
     <string-array name="helpline_knowledge">
         <item>Select</item>
@@ -71,11 +106,29 @@
         <item>Wall Posters or Painting </item>
         <item>Word of Mouth (through relatives or friends)</item>
         <item>Other</item>
-
+    </string-array>
+    <string-array name="helpline_knowledge_en">
+        <item>Select</item>
+        <item>Social Media</item>
+        <item>Wall Posters or Painting</item>
+        <item>Word of Mouth (through relatives or friends)</item>
+        <item>Other</item>
     </string-array>
 
     //values for "type of mobile device" spinner
     <string-array name="mobile_phone_type">
+        <item>Select</item>
+        <item>Smartphone</item>
+        <item>Keypad phone</item>
+    </string-array>
+//values for "type of mobile device" spinner
+    <string-array name="mobile_phone_type_hi">
+        <item>चुनते हैं</item>
+        <item>स्मार्टफोन</item>
+        <item>कीपैड फोन</item>
+    </string-array>
+//values for "type of mobile device" spinner
+    <string-array name="mobile_phone_type_en">
         <item>Select</item>
         <item>Smartphone</item>
         <item>Keypad phone</item>
@@ -439,7 +492,7 @@
         <item>[Describe]</item>
     </string-array>
 
-<!--    Hindi Occupation-->
+    <!--    Hindi Occupation-->
     <string-array name="occupation_spinner_hi">
         <item>चुनते हैं</item>
         <item>जवाब देने के लिए मना कर दिया</item>

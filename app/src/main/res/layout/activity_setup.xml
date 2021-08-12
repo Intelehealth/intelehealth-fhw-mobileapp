@@ -82,7 +82,7 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:inputType="textUri"
                                     android:focusable="true"
-                                    android:imeOptions="actionNext"
+                                    android:imeOptions="actionNext|flagNoExtractUi"
                                     android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -275,7 +275,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_email"
-                            android:imeOptions="actionNext"
+                            android:imeOptions="actionNext|flagNoExtractUi"
                             android:inputType="textEmailAddress"
                             android:maxLines="1"
                             android:textSize="14sp"
@@ -293,7 +293,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_password"
-                            android:imeOptions="actionDone"
+                            android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="textPassword"
                             android:maxLines="1"
                             android:singleLine="true"
