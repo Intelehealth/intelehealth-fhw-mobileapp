@@ -29,6 +29,9 @@ public class PatientDTO {
     @SerializedName("phonenumber")
     @Expose
     private String phonenumber;
+    @SerializedName("secondaryphonenumber")
+    @Expose
+    private String secondaryphonenumber;
     @SerializedName("address2")
     @Expose
     private String address2;
@@ -215,8 +218,6 @@ public class PatientDTO {
     public List<PatientAttributesDTO> getPatientAttributesDTOList() {
         return patientAttributesDTOList;
     }
-
-
     public void setPatientAttributesDTOList(List<PatientAttributesDTO> patientAttributesDTOList) {
         this.patientAttributesDTOList = patientAttributesDTOList;
     }
@@ -228,4 +229,14 @@ public class PatientDTO {
     public void setPatientPhoto(String patientPhoto) {
         this.patientPhoto = patientPhoto;
     }
+
+
+    public String getSecondaryphonenumber() {
+        return secondaryphonenumber;
+    }
+
+    public void setSecondaryphonenumber(String secondaryphonenumber) {
+        this.secondaryphonenumber = secondaryphonenumber;
+    }
+
 }
