@@ -424,7 +424,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
-        sessionManager1 = new SessionManager(this);
+        sessionManager1 = new SessionManager(VisitSummaryActivity.this);
 //        String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
 //        if (!language.equalsIgnoreCase("")) {
@@ -2033,7 +2033,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Locale.setDefault(locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf);
+            VisitSummaryActivity.this.createConfigurationContext(conf);
         }
         DisplayMetrics dm = res.getDisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
