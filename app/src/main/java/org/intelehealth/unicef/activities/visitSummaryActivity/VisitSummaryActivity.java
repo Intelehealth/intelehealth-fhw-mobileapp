@@ -80,6 +80,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -116,7 +117,6 @@ import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1033,7 +1033,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
                     Log.d("temp", "temp_F: " + temperature.getValue());
-                    tempView.setText(convertCtoF(temperature.getValue()));
+                    if (sessionManager.getAppLanguage().equals("ru")) {
+                        tempView.setText(convertCtoF(temperature.getValue()).replace(".", ","));
+                    } else {
+                        tempView.setText(convertCtoF(temperature.getValue()));
+                    }
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
             }
@@ -1091,7 +1095,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         patHistory.setValue(medHistory);
 
-        bmiView.setText(mBMI);
+        bmiView.setText(sessionManager.getAppLanguage().equals("ru") ? mBMI.replace(".", ",") : mBMI);
 //        tempView.setText(temperature.getValue());
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());

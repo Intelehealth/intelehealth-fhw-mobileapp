@@ -82,7 +82,8 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
-    String mFileName = "famHist.json";
+    //String mFileName = "famHist.json";
+    String mFileName = "Family History.json";
     int lastExpandedPosition = -1;
 
     Node familyHistoryMap;

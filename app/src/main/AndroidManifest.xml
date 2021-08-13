@@ -17,6 +17,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" /> <!-- added support to lenova tab 2 -->
@@ -196,6 +200,7 @@
             android:name="org.intelehealth.unicef.activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_home"
+            android:showOnLockScreen="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -301,13 +306,44 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name = "org.intelehealth.unicef.services.firebase_services.NotificationService"
-            android:label = "@string/app_name"
-            android:permission = "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            android:name="org.intelehealth.unicef.services.firebase_services.NotificationService"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
-                <action android:name = "android.service.notification.NotificationListenerService" />
+                <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+        <!--Firebase Realdb -->
+        <receiver
+            android:name=".services.firebase_services.CallRTCNotifyReceiver"
+            android:exported="false">
+            <intent-filter android:priority="100">
+                <action
+                    android:name="org.intelehealth.unicef.RTC_MESSAGE_EVENT"
+                    android:enabled="true" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".services.firebase_services.RestartServiceReceiver"
+            android:exported="false">
+            <intent-filter android:priority="99">
+                <action
+                    android:name="org.intelehealth.unicef.RTC_SERVICE_START"
+                    android:enabled="true" />
+            </intent-filter>
+            <intent-filter android:priority="99">
+                <action
+                    android:name="android.intent.action.BOOT_COMPLETED"
+                    android:enabled="true" />
+            </intent-filter>
+        </receiver>
+
+
+        <service
+            android:name=".services.firebase_services.CallListenerBackgroundService"
+            android:enabled="true"
+            android:exported="true" />
+        <!--END-->
     </application>
 
 </manifest>

@@ -406,6 +406,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Preference lang_prefer;
 
         public void setLocale(String lang) {
+            Log.v("Settings", "setLocale - "+lang);
             if (lang.equalsIgnoreCase(""))
                 return;
             final Locale myLocale = new Locale(lang);
@@ -420,25 +421,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
         public void loadLocale() {
-            String langPref = "Language";
-            SharedPreferences prefs = this.getActivity().getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
-            String language = prefs.getString(langPref, "");
+            SessionManager sessionManager = null;
+            sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+           // String langPref = "Language";
+            //SharedPreferences prefs = this.getActivity().getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
+            String language = sessionManager.getAppLanguage();//prefs.getString(langPref, "");
             if (language != null) {
                 setLocale(language);
             }
         }
 
         public void saveLocale(String lang) {
-            String langPref = "Language";
+            /*String langPref = "Language";
             SharedPreferences prefs = this.getActivity().getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString(langPref, lang);
             prefs.getAll();
-            editor.apply();
+            editor.apply();*/
 
             SessionManager sessionManager = null;
             sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
             sessionManager.setCurrentLang(lang);
+            sessionManager.setAppLanguage(lang);
 
         }
 

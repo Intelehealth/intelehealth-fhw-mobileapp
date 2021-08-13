@@ -82,7 +82,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
 
-    String mFileName = "patHist.json";
+    //String mFileName = "patHist.json";
+    String mFileName = "Patient History.json";
     String image_Prefix = "MH";
     String imageDir = "Medical History";
     String imageName;
@@ -280,6 +281,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         } else {
+            Log.v(TAG, "mFileName - "+mFileName);
             patientHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the patient history mind map
         }
 

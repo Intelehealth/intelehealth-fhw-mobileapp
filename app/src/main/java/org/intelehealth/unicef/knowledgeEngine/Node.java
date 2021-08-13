@@ -424,16 +424,17 @@ public class Node implements Serializable {
 
 //        String locale = Locale.getDefault().getLanguage();
         String locale = sessionManager.getCurrentLang();
+        Log.i(TAG, "findDisplay: eng");
 
         switch (locale) {
             case "en": {
                 //Log.i(TAG, "findDisplay: eng");
-                if (display != null && display.isEmpty()) {
+                if (display == null || display.isEmpty()) {
                     //Log.i(TAG, "findDisplay: eng txt");
                     return text;
                 } else {
                     //Log.i(TAG, "findDisplay: eng dis");
-                    return display;
+                    return display.equals("%") ? text : display;
                 }
             }
             case "or": {
@@ -473,7 +474,7 @@ public class Node implements Serializable {
                     Log.i(TAG, "findDisplay: cb ");
                     return display_russian;
                 } else {
-                    if (display == null || display.isEmpty()) {
+                    if (display == null || display.isEmpty() || display.equals("%")) {
                         Log.i(TAG, "findDisplay: ru txt");
                         return text;
                     } else {
@@ -1918,9 +1919,9 @@ public class Node implements Serializable {
         boolean flagPositive = false;
         boolean flagNegative = false;
 //        String mLanguagePositive = associatedSymptomNode.positiveCondition;
-        String mLanguagePositive = "Patient reports -" + next_line;
+        String mLanguagePositive = IntelehealthApplication.getAppContext().getString(R.string.patient_reports)+" -" + next_line;
 //        String mLanguageNegative = associatedSymptomNode.negativeCondition;
-        String mLanguageNegative = "Patient denies -" + next_line;
+        String mLanguageNegative = IntelehealthApplication.getAppContext().getString(R.string.patient_denies)+" -" + next_line;
 
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
@@ -2037,7 +2038,7 @@ public class Node implements Serializable {
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
-                        question = question + next_line + "Patient reports -";
+                        question = question + next_line + IntelehealthApplication.getAppContext().getString(R.string.patient_reports)+" -";
                     }
                 } else {
                     question = bullet + " " + mOptions.get(i).findDisplay();
@@ -2098,7 +2099,7 @@ public class Node implements Serializable {
             if (mOptions.get(i).isNoSelected()) {
                 if (!flag) {
                     flag = true;
-                    stringsListNoSelected.add("Patient denies -" + next_line);
+                    stringsListNoSelected.add(IntelehealthApplication.getAppContext().getString(R.string.patient_denies)+" -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
                 Log.e("List", "" + stringsListNoSelected);

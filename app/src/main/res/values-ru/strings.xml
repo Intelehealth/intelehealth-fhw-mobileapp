@@ -678,4 +678,8 @@
     <string name="internet_connected_txt">Подключен к Интернету!</string>
     <string name="not_connected_txt">Нет подключения к Интернету!</string>
     <string name="config_error">Ошибка конфигурации</string>
+
+    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_message"></string>
+    <string name="ticker_text">Looking for new task</string>
 </resources>
