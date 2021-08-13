@@ -54,6 +54,7 @@
     <string name="identification_screen_prompt_address">முகவரி வரி 1</string>
     <string name="identification_screen_prompt_address2">முகவரி வரி 2</string>
     <string name="identification_screen_prompt_phone_number">தொலைபேசி எண்</string>
+    <string name="identification_screen_prompt_sec_phone_number">கூடுதல் தொலைபேசி எண்</string>
     <string name="admin_password_dialog_heading" translatable="false">நிர்வாகி கடவுச்சொல்லை உள்ளிடவும்</string>
     <string name="identification_screen_prompt_gender" translatable="false">பாலினம்*</string>
     <string name="identification_screen_checkbox_male">ஆண்</string>
@@ -272,6 +273,7 @@
     <string name="temp_error">வெப்பநிலை %1$s முதல் %2$s வரை இருக்க வேண்டும்</string>
     <string name="not_provided" translatable="false">வழங்கப்படவில்லை</string>
     <string name="exit_survey_label" translatable="false">உங்கள் அனுபவம் எப்படி இருந்தது?</string>
+    <string name="exit_survey_select_spinner">இது பின்தொடர்தலின் முடிவா? \nஆம் எனில், கீழே உள்ள தேர்வுகளில் ஒன்றைத் தேர்ந்தெடுக்கவும்</string>
     <string name="exit_survey_prompt" translatable="false">உங்கள் கருத்துகளை இங்கே உள்ளிடவும்</string>
     <string name="exit_survey_skip" translatable="false">ஸ்கிப்</string>
     <string name="exit_survey_submit" translatable="false">சமர்ப்பிக்கவும்</string>
@@ -568,5 +570,11 @@
     <string name="error_calling_patient">நோயாளியை அழைப்பதில் பிழை, தயவுசெய்து சிறிது நேரம் கழித்து முயற்சிக்கவும்</string>
     <string name="and_i_be_assisting_you">"மற்றும் நான் உங்களுக்கு உதவுவேன்."</string>
     <string name="loading_more">மேலும் ஏற்றுகிறது ...</string>
+    <string name="failed_synced">புதுப்பிப்பு தோல்வியடைந்தது, உங்கள் இணைய இணைப்பைச் சரிபார்க்கவும்</string>
+
+    //Additional Details
+    <string name="who_does_number_belongs">Whom does the number you have used for call, belongs to?*</string>
+    <string name="calling_on_behalf">Are you calling on behalf of someone or for self?*</string>
+    <string name="know_about_helpline">How do you know about our helpline?*</string>
 
 </resources>

@@ -368,6 +368,7 @@
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label">ನಿಮ್ಮ ಅನುಭವ ಹೇಗಿತ್ತು?</string>
+    <string name="exit_survey_select_spinner">ಇದು ಅನುಸರಣೆಯ ಅಂತ್ಯವೇ? \nಹೌದು ಎಂದಾದರೆ ದಯವಿಟ್ಟು ಕೆಳಗಿನ ಆಯ್ಕೆಗಳಲ್ಲಿ ಒಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>
     <string name="exit_survey_prompt">ನಿಮ್ಮ ಕಾಮೆಂಟ್‌ಗಳನ್ನು ಇಲ್ಲಿ ನಮೂದಿಸಿ</string>
     <string name="exit_survey_skip">ಬಿಟ್ಟು ಮುಂದೆ  ಹೋಗಿ</string>
     <string name="exit_survey_submit">"ಸಲ್ಲಿಸಿ "</string>
@@ -658,6 +659,7 @@
     <string name="identification_screen_prompt_address">ವಿಳಾಸ ಸಾಲು 1</string>
     <string name="identification_screen_prompt_address2">ವಿಳಾಸ ಸಾಲು 2</string>
     <string name="identification_screen_prompt_phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="identification_screen_prompt_sec_phone_number">ಹೆಚ್ಚುವರಿ ಫೋನ್ ಸಂಖ್ಯೆ</string>
     <string name="admin_password_dialog_heading" translatable="false">ನಿರ್ವಹಣೆ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</string>
     <string name="identification_screen_prompt_gender" translatable="false">ಲಿಂಗ</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"ಹಲೋ, ಇಂಟೆಲ್‌ಹೆಲ್ತ್ ಬಳಸಿದ್ದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು. ನಿಮ್ಮ ಪ್ರಿಸ್‌ಕ್ರಿಪ್‌ಷನ್‌  ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಇಲ್ಲಿ    ಕ್ಲಿಕ್ಕಿಸಿ</string>
@@ -692,5 +694,10 @@
     <string name="and_i_be_assisting_you">"ಮತ್ತು ನಾನು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತೇನೆ. "</string>
     <string name="loading_more">ಹೆಚ್ಚು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ ...</string>
 
+    <string name="failed_synced">ರಿಫ್ರೆಶ್ ವಿಫಲವಾಗಿದೆ, ನಿಮ್ಮ ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ</string>
 
+    //Additional Details
+    <string name="who_does_number_belongs">Whom does the number you have used for call, belongs to?*</string>
+    <string name="calling_on_behalf">Are you calling on behalf of someone or for self?*</string>
+    <string name="know_about_helpline">How do you know about our helpline?*</string>
 </resources>

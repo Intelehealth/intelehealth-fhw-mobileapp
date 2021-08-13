@@ -83,10 +83,12 @@
     <string name="identification_screen_prompt_address">पता पंक्ति 1</string>
     <string name="identification_screen_prompt_address2">पता पंक्ति 2</string>
     <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
+    <string name="identification_screen_prompt_sec_phone_number">अतिरिक्त फोन नंबर</string>
     <string name="admin_password_dialog_heading">व्यवस्थापक पासवर्ड दर्ज करें</string>
     <string name="identification_screen_prompt_gender">लिंग *</string>
     <string name="identification_screen_checkbox_male">पुरुष </string>
     <string name="identification_screen_checkbox_female">महिला</string>
+    <string name="identification_screen_checkbox_other">अन्य</string>
     <string name="identification_screen_prompt_birthday">जन्म की तारीख*</string>
     <string name="identification_screen_prompt_age">उम्र: *</string>
     <string name="identification_screen_prompt_district">ज़िला *</string>
@@ -375,6 +377,7 @@
 
     <!-- Patient Exit Survey -->
     <string name="exit_survey_label">आपका अनुभव कैसा रहा?</string>
+    <string name="exit_survey_select_spinner">क्या यह अनुवर्ती कार्रवाई का अंत है? \nयदि हाँ, तो कृपया नीचे दिए गए विकल्पों में से किसी एक को चुनें</string>
     <string name="exit_survey_prompt">यहाँ अपनी टिप्पणी दर्ज करें</string>
     <string name="exit_survey_skip">छोड़ें</string>
     <string name="exit_survey_submit">जमा</string>
@@ -700,4 +703,15 @@
     <string name="error_calling_patient">रोगी को कॉल करने में त्रुटि, कृपया कुछ टाइमर के बाद प्रयास करें</string>
     <string name="and_i_be_assisting_you">"और मैं तुम्हारी सहायता करूंगा।"</string>
     <string name="loading_more">और लोड हो रहा है…</string>
+
+    //Additional Details
+    <string name="who_does_number_belongs">आपने कॉल के लिए जिस नंबर का इस्तेमाल किया है, वह किसका है?*</string>
+    <string name="calling_on_behalf">क्या आप किसी की ओर से या अपने लिए कॉल कर रहे हैं?*</string>
+    <string name="know_about_helpline">आप हमारी हेल्पलाइन के बारे में कैसे जानते हैं?*</string>
+    <string name="phone_num">फोन नंबर</string>
+    <string name="add_phone_num">अतिरिक्त फोन नंबर</string>
+    <string name="caller_relation">फोन करने वाले का रिश्ता</string>
+    <string name="num_belongs_to">फ़ोन नंबर किसका है</string>
+    <string name="helpline_reference">हेल्पलाईन संदर्भ</string>
+    <string name="select_phone_num">फ़ोन नंबर चुनें</string>
 </resources>

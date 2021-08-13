@@ -80,10 +80,12 @@
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">Address line 2</string>
     <string name="identification_screen_prompt_phone_number">Phone number *</string>
+    <string name="identification_screen_prompt_sec_phone_number">Additional Phone number </string>
     <string name="admin_password_dialog_heading">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
     <string name="identification_screen_checkbox_female">Female</string>
+    <string name="identification_screen_checkbox_other">Other</string>
     <string name="identification_screen_prompt_birthday">Date of birth*</string>
     <string name="identification_screen_prompt_age">Age: *</string>
     <string name="identification_screen_prompt_time">Time:</string>
@@ -704,4 +706,14 @@
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
     <string name="loading_more">Loading more…</string>
 
+    //Additional Details
+    <string name="who_does_number_belongs">Whom does the number you have used for call, belongs to?*</string>
+    <string name="calling_on_behalf">Are you calling on behalf of someone or for self?*</string>
+    <string name="know_about_helpline">How do you know about our helpline?*</string>
+    <string name="phone_num">Phone No.</string>
+    <string name="add_phone_num">Additional Phone No.</string>
+    <string name="caller_relation">Caller\'s Relation</string>
+    <string name="num_belongs_to">Number belongs to</string>
+    <string name="helpline_reference">Helpline Reference</string>
+    <string name="select_phone_num">Select Phone Number</string>
 </resources>
