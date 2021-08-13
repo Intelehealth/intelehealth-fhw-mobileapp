@@ -494,7 +494,7 @@
                                         android:maxLines="1"
 
                                         android:inputType="textAutoComplete"
-                                        android:imeOptions="actionNext|flagNoExtractUi"
+                                        android:imeOptions="actionDone|flagNoExtractUi"
                                         android:maxLength="45" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -600,7 +600,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_postal_code"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi"
                                 android:inputType="number"
                                 android:maxLength="9"
                                 android:maxLines="1"
@@ -701,7 +701,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/card_content_sub_text_size"
-                            android:imeOptions="actionNext|flagNoExtractUi"
+                            android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="text"
                             android:hint="@string/txt_others"
                             android:visibility="gone"/>
@@ -753,7 +753,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_relationship"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
@@ -820,7 +820,7 @@
 
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_caste"
@@ -858,7 +858,7 @@
                                     android:focusableInTouchMode="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_economic_status"
@@ -896,7 +896,7 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
 
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_education"
@@ -1465,7 +1465,7 @@
                                     android:enabled="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:singleLine="true"
@@ -1488,7 +1488,7 @@
                                     android:ems="10"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:singleLine="true"

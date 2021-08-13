@@ -20,11 +20,14 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -498,6 +501,9 @@ public class HomeActivity extends AppCompatActivity {
                                 .setView(promptsView)
                                 .setPositiveButton(getString(R.string.button_ok), null)
                                 .setNegativeButton(getString(R.string.button_cancel), null);
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                        EditText url = promptsView.findViewById(R.id.licenseurl);
+
 
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
@@ -512,11 +518,83 @@ public class HomeActivity extends AppCompatActivity {
                         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
+                        text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                                        // the user is done typing.
+
+                                    url.setError(null);
+                                    text.setError(null);
+
+                                    //If both are not entered...
+                                    if (url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                        url.requestFocus();
+                                        url.setError(getResources().getString(R.string.enter_server_url));
+                                        text.setError(getResources().getString(R.string.enter_license_key));
+                                        return false ;
+                                    }
+
+                                    //If Url is empty...key is not empty...
+                                    if (url.getText().toString().trim().isEmpty() && !text.getText().toString().trim().isEmpty()) {
+                                        url.requestFocus();
+                                        url.setError(getResources().getString(R.string.enter_server_url));
+                                        return false;
+                                    }
+
+                                    //If Url is not empty...key is empty...
+                                    if (!url.getText().toString().trim().isEmpty() && text.getText().toString().trim().isEmpty()) {
+                                        text.requestFocus();
+                                        text.setError(getResources().getString(R.string.enter_license_key));
+                                        return false;
+                                    }
+
+                                    //If Url has : in it...
+                                    if (url.getText().toString().trim().contains(":")) {
+                                        url.requestFocus();
+                                        url.setError(getResources().getString(R.string.invalid_url));
+                                        return false;
+                                    }
+
+                                    //If url entered is Invalid...
+                                    if (!url.getText().toString().trim().isEmpty()) {
+                                        if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                                            String url_field = "https://" + url.getText().toString() + ":3004/";
+                                            if (URLUtil.isValidUrl(url_field)) {
+                                                key = text.getText().toString().trim();
+                                                licenseUrl = url.getText().toString().trim();
+
+                                                sessionManager.setMindMapServerUrl(licenseUrl);
+
+                                                if (keyVerified(key)) {
+                                                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/", key);
+                                                    alertDialog.dismiss();
+                                                }
+                                            } else {
+                                                Toast.makeText(HomeActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        } else {
+                                            //invalid url || invalid url and key.
+                                            Toast.makeText(HomeActivity.this, R.string.invalid_url, Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(HomeActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                                    }
+                                    InputMethodManager imm = (InputMethodManager)promptsView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(promptsView.getWindowToken(), 0);
+
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
+
 
                                 url.setError(null);
                                 text.setError(null);

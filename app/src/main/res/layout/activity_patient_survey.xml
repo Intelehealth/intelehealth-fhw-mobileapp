@@ -141,7 +141,7 @@
                 android:ems="10"
                 android:freezesText="true"
                 android:hint="@string/exit_survey_prompt"
-                android:imeOptions="actionUnspecified"
+                android:imeOptions="actionUnspecified|flagNoExtractUi"
                 android:inputType="textCapSentences"
                 android:singleLine="false"
                 android:tag="@string/tag_optional"

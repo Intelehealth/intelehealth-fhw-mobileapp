@@ -483,6 +483,7 @@
     <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
     <string name="active">Active</string>
     <string name="closed">Closed</string>
+    <string name="seen_on">Seen on</string>
 
     <string name="syncInProgress">Refresh in progress</string>
     <string name="please_wait">Please wait...</string>

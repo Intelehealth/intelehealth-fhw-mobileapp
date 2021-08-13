@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/prompt_password"
                 android:textColorHint="@color/font_black_5"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionDone|flagNoExtractUi"
                 android:inputType="textPassword"
                 android:maxLength="50"
                 android:maxLines="1"

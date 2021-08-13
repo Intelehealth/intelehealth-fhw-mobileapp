@@ -312,7 +312,7 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_admin_password"
                             android:imeActionLabel="@string/action_sign_in_short"
-                            android:imeOptions="actionUnspecified"
+                            android:imeOptions="actionUnspecified|flagNoExtractUi"
                             android:inputType="textPassword"
                             android:visibility="gone"
                             android:maxLines="1"

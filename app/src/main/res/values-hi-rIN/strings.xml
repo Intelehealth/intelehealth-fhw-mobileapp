@@ -130,7 +130,7 @@
     <string name="title_activity_complaint_node">शिकायतों का चयन करें</string>
     <string name="complaint_category_selected">चयनित श्रेणियाँ:</string>
     <string name="complaint_complaint_selected">चयनित शिकायतें:</string>
-    <string name="complaint_dialog_title">आने का कारण</string>
+    <string name="complaint_dialog_title">कॉल करने का कारण</string>
     <string name="complaint_required">शिकायत का चयन करना होगा!</string>
 
     //Question Node Screen
@@ -186,7 +186,7 @@
     <string name="visit_summary_medical_history">चिकित्सक इतिहास</string>
     <string name="visit_summary_family_history">परिवार इतिहास</string>
     <string name="visit_summary_on_examination">निरिक्षण करने पर</string>
-    <string name="visit_summary_complaint">यात्रा का कारण</string>
+    <string name="visit_summary_complaint">कॉल करने का कारण</string>
     <string name="visit_summary_vitals">नब्ज</string>
     <string name="visit_summary_doctor_details">चिकित्सक विवरण</string>
     <string name="visit_summary_rx">निर्धारित दवाईयाँ</string>
@@ -493,7 +493,7 @@
     <string name="upload_before_end_visit_active"> कृपया यात्रा समाप्त करने का प्रयास करने से पहले यात्रा अपलोड करें</string>
     <string name="active">सक्रिय</string>
     <string name="closed">बन्द है</string>
-
+    <string name="seen_on">पर देखा</string>
     <string name="syncInProgress">सिंक प्रगति में</string>
     <string name="please_wait">कृपया रुके...</string>
     <string name="sync_notif_title">सिंक</string>
@@ -562,7 +562,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>
+    <string name="what_is_the_reason_for_your_visit">आपके कॉल का कारण क्या है?</string>
     <string name="swipe_down_to_return">अगले/ पिछले के लिए निचे स्वाइप करें</string>
     <string name="swipe_up">अगले के लिए ऊपर स्वाइप करें</string>
     <string name="swipe_down">पिछले के लिए निचे स्वाइप करें</string>

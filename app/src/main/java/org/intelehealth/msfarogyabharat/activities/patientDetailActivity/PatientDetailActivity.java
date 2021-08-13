@@ -1043,7 +1043,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         final TextView textView = new TextView(this);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+//        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
+        final String visitString = String.format(getString(R.string.seen_on)+" (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
         if (end_datetime == null || end_datetime.isEmpty()) {
             // visit has not yet ended
 

@@ -270,16 +270,16 @@ public class VitalsActivity extends AppCompatActivity {
         });
 
 
-        mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.table_spo2 || id == EditorInfo.IME_NULL) {
-                    validateTable();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+//                if (id == R.id.table_spo2 || id == EditorInfo.IME_NULL) {
+//                    validateTable();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         mSpo2.addTextChangedListener(new TextWatcher() {
             @Override
@@ -477,6 +477,18 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 validateTable();
+            }
+        });
+
+        mTemperature.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    validateTable();
+                return true;
+                }
+                return false;
             }
         });
     }

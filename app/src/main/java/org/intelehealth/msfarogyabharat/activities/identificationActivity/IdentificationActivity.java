@@ -32,8 +32,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -1075,23 +1077,11 @@ public class IdentificationActivity extends AppCompatActivity {
             mGender = "F";
         }
         if (patientID_edit != null) {
-            // setting country according database
+
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
-//            if(helplineKnowledgeAdapter.getPosition(patient1.getCaste())==-1)
-//            {
-//                mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
-//                helplineInfoOther.setText(patient1.getCaste());
-//            }
-//            else
-//                mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
-//            mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
-//            mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
-//            if(helplineKnowledgeAdapter.getPosition(patient1.getCaste())==-1)
+
             if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
                 mHelplineKnowledge.setSelection(0);
-//            else
-//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
@@ -1100,18 +1090,21 @@ public class IdentificationActivity extends AppCompatActivity {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 }
             }
-//            if(phoneTypeAdapter.getPosition(patient1.getEconomic_status())==-1)
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
 
-            if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
-//                if() ritika
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
                     helplineInfoOther.setText(patient1.getCaste());
-                } else {
+                }
+            } else {
+                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                     helplineInfoOther.setText(patient1.getCaste());
                 }
+
             }
+
 
             if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mPhoneType.setSelection(0);
@@ -1397,19 +1390,31 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHelplineOption = parent.getItemAtPosition(position).toString();
-                if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
-                    helplineInfoOther.setVisibility(View.VISIBLE);
-                    helplineInfoOther.setFocusable(true);
-                } else if (selectedHelplineOption.equalsIgnoreCase("Other")) {
-                    helplineInfoOther.setVisibility(View.VISIBLE);
-                    helplineInfoOther.setFocusable(true);
-                } else {
-                    helplineInfoOther.setText("");
-                    helplineInfoOther.setError(null);
+
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                        helplineInfoOther.setVisibility(View.VISIBLE);
+                        helplineInfoOther.setFocusable(true);
+                    } else {
+                        helplineInfoOther.setText("");
+                        helplineInfoOther.setError(null);
 //                    helplineInfoOther.setEnabled(false);
-                    helplineInfoOther.setVisibility(View.GONE);
+                        helplineInfoOther.setVisibility(View.GONE);
+                    }
+                } else {
+                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
+                        helplineInfoOther.setVisibility(View.VISIBLE);
+                        helplineInfoOther.setFocusable(true);
+                    } else {
+                        helplineInfoOther.setText("");
+                        helplineInfoOther.setError(null);
+//                    helplineInfoOther.setEnabled(false);
+                        helplineInfoOther.setVisibility(View.GONE);
+                    }
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -1802,6 +1807,26 @@ public class IdentificationActivity extends AppCompatActivity {
 
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
+        });
+
+        helplineInfoOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(helplineInfoOther.getWindowToken(), 0);
+
+
+                    return true;
+                }
+                    return false;
+            }
         });
 
 /*
@@ -2334,17 +2359,30 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
-
-        if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
-            if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                helplineInfoOther.setError(getString(R.string.error_field_required));
-                focusView = helplineInfoOther;
-                cancel = true;
-                return;
-            } else {
-                helplineInfoOther.setError(null);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
+                }
+            }
+        } else {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
+                }
             }
         }
+
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mPhoneType.getSelectedView();
@@ -3201,25 +3239,27 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
-
-        if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
-            if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                helplineInfoOther.setError(getString(R.string.error_field_required));
-                focusView = helplineInfoOther;
-                cancel = true;
-                return;
-            } else {
-                helplineInfoOther.setError(null);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
+                }
             }
-        }
-        if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
-            if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                helplineInfoOther.setError(getString(R.string.error_field_required));
-                focusView = helplineInfoOther;
-                cancel = true;
-                return;
-            } else {
-                helplineInfoOther.setError(null);
+        } else {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
+                }
             }
         }
 

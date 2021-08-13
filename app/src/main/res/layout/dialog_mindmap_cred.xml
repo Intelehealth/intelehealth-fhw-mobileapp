@@ -39,7 +39,7 @@
             android:textSize="14sp"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:imeOptions="actionNext|flagNoExtractUi"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:singleLine="true" />
 
 
