@@ -73,6 +73,7 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -133,22 +134,105 @@
         <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
+    //Additional Info Spinners
+    //values for "who is caller" spinner
+    <string-array name="caller_type_en">
+        <item>Select</item>
+        <item>Patient themselves</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Spouse</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Sister</item>
+        <item>Brother</item>
+        <item>Other Relative</item>
+    </string-array>
+
+    <string-array name="caller_type_hi">
+        <item>चुनिये</item>
+        <item>रोगी स्वयं</item>
+        <item>मां</item>
+        <item>पिता</item>
+        <item>पति या पत्नी</item>
+        <item>बेटा</item>
+        <item>बेटी</item>
+        <item>बहन</item>
+        <item>भाई</item>
+        <item>अन्य रिश्तेदार</item>
+    </string-array>
+
+    //values for "helpline knowledge" spinner
+    <string-array name="helpline_knowledge_en">
+        <item>Select</item>
+        <item>Community Champion</item>
+        <item>Helpline Agent</item>
+        <item>Referral from friend / family</item>
+        <item>SMS</item>
+        <item>Outgoing Phone Call</item>
+        <item>Community Event</item>
+        <item>Poster / flyer </item>
+        <item>Radio / Multi-Media</item>
+        <item>Print</item>
+        <item>Other</item>
+
+    </string-array>
+
+    <string-array name="helpline_knowledge_hi">
+        <item>चुनिये</item>
+        <item>सामुदायिक चैंपियन</item>
+        <item>हेल्पलाइन एजेंट</item>
+        <item>मित्र / परिवार से रेफ़रल</item>
+        <item>एसएमएस</item>
+        <item>आउटगोइंग फोन कॉल</item>
+        <item>सामुदायिक कार्यक्रम</item>
+        <item>पोस्टर/फ्लायर </item>
+        <item>रेडिओ/ मल्टीमीडिया</item>
+        <item>प्रिंट</item>
+        <item>अन्य</item>
+    </string-array>
+
+    <string-array name="helpline_knowledge_mr">
+        <item>निवडा</item>
+        <item>समुदाय विजेता</item>
+        <item>हेल्पलाइन एजेंट</item>
+        <item>मित्र / कुटुंबाकडून संदर्भ</item>
+        <item>एसएमएस</item>
+        <item>आउटगोइंग फोन कॉल</item>
+        <item>सामुदायिक कार्यक्रम</item>
+        <item>पोस्टर/फ्लायर </item>
+        <item>रेडिओ/ मल्टीमीडिया</item>
+        <item>प्रिंट</item>
+        <item>इतर</item>
+    </string-array>
+
+    //values for "yes-no" spinner
+    <string-array name="yes_no">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
     <string-array name="states_india">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>
         <item>Bihar</item>
+        <item>Chandigarh (UT)</item>
         <item>Chhattisgarh</item>
-        <item>Delhi</item>
+        <item>Dadra and Nagar Haveli (UT)</item>
+        <item>Daman and Diu (UT)</item>
+        <item>Delhi (NCT)</item>
         <item>Goa</item>
         <item>Gujarat</item>
         <item>Haryana</item>
         <item>Himachal Pradesh</item>
-        <item>Jammu &amp; Kashmir</item>
+        <item>Jammu and Kashmir</item>
         <item>Jharkhand</item>
         <item>Karnataka</item>
         <item>Kerala</item>
+        <item>Lakshadweep (UT)</item>
         <item>Madhya Pradesh</item>
         <item>Maharashtra</item>
         <item>Manipur</item>
@@ -156,14 +240,15 @@
         <item>Mizoram</item>
         <item>Nagaland</item>
         <item>Odisha</item>
+        <item>Puducherry (UT)</item>
         <item>Punjab</item>
         <item>Rajasthan</item>
         <item>Sikkim</item>
         <item>Tamil Nadu</item>
         <item>Telangana</item>
         <item>Tripura</item>
-        <item>Uttar Pradesh</item>
         <item>Uttarakhand</item>
+        <item>Uttar Pradesh</item>
         <item>West Bengal</item>
         <item>आंध्र प्रदेश</item>
         <item>अरुणाचल प्रदेश</item>
