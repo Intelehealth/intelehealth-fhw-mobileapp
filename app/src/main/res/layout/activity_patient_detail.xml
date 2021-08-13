@@ -303,7 +303,6 @@
 
                         <TableRow
                             android:layout_width="match_parent"
-                            android:visibility="gone"
                             android:layout_height="match_parent">
 
                             <TextView
@@ -324,6 +323,7 @@
                                 android:layout_weight="2"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
+                                android:layout_marginStart="10dp"
                                 android:paddingTop="@dimen/padding_card_action"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -391,6 +391,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
+                                android:layout_marginStart="10dp"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <androidx.legacy.widget.Space
@@ -402,24 +403,128 @@
 
                         <TableRow
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_weight="2"
+                            android:layout_height="wrap_content">
+
+
+                               <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.3"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:includeFontPadding="false"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:text="@string/phone_num"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                                <TextView
+                                    android:id="@+id/textView_phone"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="2"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginStart="10dp"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                                <androidx.legacy.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:id="@+id/additionalNumberTableRow"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.3"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:includeFontPadding="false"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:text="@string/add_phone_num"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                                <TextView
+                                    android:id="@+id/textView_sec_phone"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="2"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginStart="10dp"
+                                    android:paddingTop="@dimen/padding_card_action"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                                <androidx.legacy.widget.Space
+                                    android:layout_width="10dp"
+                                    android:layout_height="wrap_content" />
+
+                            </TableRow>
+
+                            </TableLayout>
+
+                            <ImageView
+                                    android:id="@+id/whatsapp_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_icons8_whatsapp"
+                                    android:padding="5dp" />
+
+                                <ImageView
+                                    android:id="@+id/calling"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_baseline_call_24"
+                                    android:padding="5dp"
+                                    android:layout_gravity="center"
+                                    android:tint="@android:color/black"
+                                    android:layout_marginStart="5dp"/>
+
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow_callerRelation"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent">
 
                             <TextView
                                 android:layout_width="0dp"
+                                android:layout_weight="1"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1.5"
                                 android:fontFamily="@font/lato_bold"
                                 android:includeFontPadding="false"
                                 android:paddingTop="@dimen/padding_card_action"
-                                android:text="@string/row_phone_number"
+                                android:paddingRight="5dp"
+                                android:text="@string/caller_relation"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
 
                             <TextView
-                                android:id="@+id/textView_phone"
+                                android:id="@+id/textView_callerRelation"
                                 android:layout_width="0dp"
-                                android:layout_weight="2"
                                 android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:layout_gravity="center_vertical"
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
                                 android:layout_marginStart="10dp"
@@ -430,25 +535,78 @@
                                 android:layout_width="10dp"
                                 android:layout_height="wrap_content" />
 
-                            <ImageView
-                                android:id="@+id/whatsapp_no"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_icons8_whatsapp"
-                                android:padding="5dp"
-                                />
-
-                            <ImageView
-                                android:id="@+id/calling"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_baseline_call_24"
-                                android:padding="5dp"
-                                android:tint="@android:color/black"
-                                android:layout_marginStart="5dp"
-                                />
 
                         </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow_numberRelation"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingBottom="5dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:text="@string/num_belongs_to"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                            <TextView
+                                android:id="@+id/textView_numberRelation"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:layout_marginStart="10dp"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content" />
+
+
+                        </TableRow>
+
+                        <TableRow
+                            android:id="@+id/tableRow_helplineInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:includeFontPadding="false"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:text="@string/helpline_reference"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <TextView
+                                android:id="@+id/textView_helplineInfo"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="@font/lato_regular"
+                                android:includeFontPadding="false"
+                                android:layout_marginStart="10dp"
+                                android:paddingTop="@dimen/padding_card_action"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <androidx.legacy.widget.Space
+                                android:layout_width="10dp"
+                                android:layout_height="wrap_content" />
+
+                        </TableRow>
+
 
                         <TableRow
                             android:id="@+id/tableRow_SDW"

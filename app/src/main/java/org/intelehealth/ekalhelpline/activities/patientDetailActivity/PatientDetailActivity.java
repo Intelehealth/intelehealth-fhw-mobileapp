@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -139,15 +140,18 @@ public class PatientDetailActivity extends AppCompatActivity {
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
 
-    TextView phoneView;
+    TextView phoneView, addPhoneView;
     String privacy_value_selected;
-
+    TableRow additionalPhoneNumTR;
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
     float float_ageYear_Month;
     private boolean isMedicalAdvice;
     private boolean MedicalAdvice = false;
+//    final int[] checkedItem = {-1};
+    String selectedNumber = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,6 +179,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
         newAdvice = findViewById(R.id.btn_new_advice);
+        additionalPhoneNumTR = findViewById(R.id.additionalNumberTableRow);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -455,7 +460,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "gender", "sdw",
+                "postal_code", "country", "phone_number", "secondary_phone_number", "gender", "sdw",
                 "patient_photo"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
@@ -473,6 +478,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setPostal_code(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patient_new.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                patient_new.setSecondary_phone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("secondary_phone_number")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
             } while (idCursor.moveToNext());
@@ -492,27 +498,31 @@ public class PatientDetailActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-               /* if (name.equalsIgnoreCase("caste")) {
+                if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
+                }
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                if (name.equalsIgnoreCase("Secondary Phone Number")) {
+                    patient_new.setSecondary_phone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Economic Status")) {
                     patient_new.setEconomic_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("occupation")) {
+               /* if (name.equalsIgnoreCase("occupation")) {
                     patient_new.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }
+                }*/
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient_new.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
-                }*/
-                if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
-                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
                 }
+                /*if (name.equalsIgnoreCase("ProfileImageTimestamp")) {
+                    profileImage1 = idCursor1.getString(idCursor1.getColumnIndexOrThrow("value"));
+                }*/
 
             } while (idCursor1.moveToNext());
         }
@@ -532,7 +542,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
+        TextView callerRelation = findViewById(R.id.textView_callerRelation);
+        TextView helplineInfo = findViewById(R.id.textView_helplineInfo);
+        TextView numberRelation = findViewById(R.id.textView_numberRelation);
         phoneView = findViewById(R.id.textView_phone);
+        addPhoneView = findViewById(R.id.textView_sec_phone);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -665,14 +679,40 @@ public class PatientDetailActivity extends AppCompatActivity {
                     genderView.setText(getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_female));
-                } else {
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_other));
+                }
+                else {
                     genderView.setText(patient_new.getGender());
                 }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 if (patient_new.getGender().equalsIgnoreCase("M")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_other));
+                } else {
+                    genderView.setText(patient_new.getGender());
+                }
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                if (patient_new.getGender().equalsIgnoreCase("M")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_male));
+                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_other));
+                }
+                else {
+                    genderView.setText(patient_new.getGender());
+                }
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                if (patient_new.getGender().equalsIgnoreCase("M")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_male));
+                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else if (patient_new.getGender().equalsIgnoreCase("Other")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_other));
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
@@ -683,7 +723,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getAddress1() == null || patient_new.getAddress1().equals("")) {
             addr1View.setVisibility(View.GONE);
         } else {
-            addr1View.setText(patient_new.getAddress1());
+            addr1View.setText(patient_new.getAddress1()+ ", " + patient_new.getCity_village() + ", " + patient_new.getState_province());
         }
         if (patient_new.getAddress2() == null || patient_new.getAddress2().equals("")) {
             addr2Row.setVisibility(View.GONE);
@@ -717,6 +757,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         phoneView.setText(patient_new.getPhone_number());
+        //TODO: Change secondary number attribute
+        if(patient_new.getSecondary_phone_number().isEmpty())
+            additionalPhoneNumTR.setVisibility(View.GONE);
+        else
+            addPhoneView.setText(patient_new.getSecondary_phone_number());
+        callerRelation.setText(patient_new.getSdw());
+        helplineInfo.setText(patient_new.getCaste());
+        numberRelation.setText(patient_new.getEconomic_status());
 
         //english = en
         //hindi = hi
@@ -840,17 +888,11 @@ public class PatientDetailActivity extends AppCompatActivity {
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String phoneNumberWithCountryCode = "+91" + phoneView.getText().toString();
-//                String message =
-//                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
-//                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
-                String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
-                        + getString(R.string.and_i_be_assisting_you);
+                if(!addPhoneView.getText().toString().isEmpty())
+                    showNumberSelectionDialog(1);
+                else
+                    sendWhatsappText(phoneView.getText().toString());
 
-                startActivity(new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(
-                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                        phoneNumberWithCountryCode, message))));
             }
         });
 
@@ -861,7 +903,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 /*Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
                 intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
                 startActivity(intent);*/
-                callPatientViaIVR();
+                if(!addPhoneView.getText().toString().isEmpty())
+                    showNumberSelectionDialog(2);
+                else
+                    callPatientViaIVR(phoneView.getText().toString());
             }
         });
     }
@@ -1415,13 +1460,47 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
     }
 
-    public void callPatientViaIVR() {
+    public void showNumberSelectionDialog(int dialogType)
+    {
+        String receiverNo1 = phoneView.getText().toString();
+        String receiverNo2 = addPhoneView.getText().toString();
+        final String[] listItems = new String[]{receiverNo1, receiverNo2};
+        new MaterialAlertDialogBuilder(PatientDetailActivity.this,R.style.AlertDialogStyle)
+                .setTitle(getResources().getString(R.string.select_phone_num))
+                .setCancelable(false)
+                .setSingleChoiceItems(listItems, 0, null)
+                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                        int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                        selectedNumber = listItems[selectedPosition];
+                        if(dialogType==1)
+                            sendWhatsappText(selectedNumber);
+                        if(dialogType==2)
+                            callPatientViaIVR(selectedNumber);
+                    }
+                })
+                .show();
+    }
+
+    private void sendWhatsappText(String selectedNumber) {
+        String phoneNumberWithCountryCode = "+91" + selectedNumber;
+        String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
+                + getString(R.string.and_i_be_assisting_you);
+
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse(
+                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                phoneNumberWithCountryCode, message))));
+    }
+
+    public void callPatientViaIVR(String receiver) {
         if (!NetworkConnection.isOnline(this)) {
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String receiver = phoneView.getText().toString();
+//        String receiver = phoneView.getText().toString();
         if (TextUtils.isEmpty(receiver))
             return;
         UrlModifiers urlModifiers = new UrlModifiers();
