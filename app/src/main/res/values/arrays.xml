@@ -162,6 +162,19 @@
         <item>अन्य रिश्तेदार</item>
     </string-array>
 
+    <string-array name="caller_type_mr">
+        <item>निवडा</item>
+        <item>रुग्ण स्वतः</item>
+        <item>आई</item>
+        <item>वडील</item>
+        <item>जोडीदार</item>
+        <item>पुत्र</item>
+        <item>मुलगी</item>
+        <item>बहीण</item>
+        <item>भाऊ</item>
+        <item>इतर नातेवाईक</item>
+    </string-array>
+
     //values for "helpline knowledge" spinner
     <string-array name="helpline_knowledge_en">
         <item>Select</item>

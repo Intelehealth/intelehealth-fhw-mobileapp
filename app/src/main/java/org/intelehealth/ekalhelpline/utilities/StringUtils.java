@@ -125,9 +125,12 @@ public final class StringUtils {
             val = value;
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            val = switch_hi_helplineInfo(val) ;
-            val = switch_hi_callerRelation(val);
-
+            val = switch_hi_helplineInfo_edit(val) ;
+            val = switch_hi_callerRelation_edit(val);
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            val = switch_mr_helplineInfo_edit(val) ;
+            val = switch_mr_callerRelation_edit(val);
         }
             return val;
 
@@ -580,7 +583,6 @@ public final class StringUtils {
         }
         return val;
     }
-
     public static String switch_hi_helplineInfo(String val) {
         switch (val) {
             case "Community champion":
@@ -618,7 +620,6 @@ public final class StringUtils {
         }
         return val;
     }
-
     public static String switch_hi_callerRelation(String val) {
         switch (val) {
             case "Patient themselves":
@@ -680,6 +681,149 @@ public final class StringUtils {
                 val = "Brother";
                 break;
             case "अन्य रिश्तेदार":
+                val = "Other Relative";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_helplineInfo_edit(String val) {
+        switch (val) {
+            case "समुदाय विजेता":
+                val = "Community champion";
+                break;
+            case "हेल्पलाइन एजेंट":
+                val = "Helpline agent";
+                break;
+            case "मित्र / कुटुंबाकडून संदर्भ":
+                val = "Referral from friend / family";
+                break;
+            case "एसएमएस":
+                val = "SMS";
+                break;
+            case "आउटगोइंग फोन कॉल":
+                val = "Outgoing Phone call";
+                break;
+            case "सामुदायिक कार्यक्रम":
+                val = "Community event";
+                break;
+            case "पोस्टर/फ्लायर":
+                val = "Poster/Flyer";
+                break;
+            case "रेडिओ/ मल्टीमीडिया":
+                val = "Radio/Multimedia";
+                break;
+            case "प्रिंट":
+                val = "Print";
+                break;
+            case "इतर":
+                val = "Other";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_helplineInfo(String val) {
+        switch (val) {
+            case "Community champion":
+                val = "समुदाय विजेता";
+                break;
+            case "Helpline agent":
+                val = "हेल्पलाइन एजेंट";
+                break;
+            case "Referral from friend / family":
+                val = "मित्र / कुटुंबाकडून संदर्भ";
+                break;
+            case "SMS":
+                val = "एसएमएस";
+                break;
+            case "Outgoing phone call":
+                val = "आउटगोइंग फोन कॉल";
+                break;
+            case "Community event":
+                val = "सामुदायिक कार्यक्रम";
+                break;
+            case "Poster/Flyer":
+                val = "पोस्टर/फ्लायर";
+                break;
+            case "Radio/ Multimedia":
+                val = "रेडिओ/ मल्टीमीडिया";
+                break;
+            case "Print":
+                val = "प्रिंट";
+                break;
+            case "Other":
+                val = "इतर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_callerRelation(String val) {
+        switch (val) {
+            case "Patient themselves":
+                val = "रुग्ण स्वतः";
+                break;
+            case "Mother":
+                val = "आई";
+                break;
+            case "Father":
+                val = "वडील";
+                break;
+            case "Spouse":
+                val = "जोडीदार";
+                break;
+            case "Son":
+                val = "पुत्र";
+                break;
+            case "Daughter":
+                val = "मुलगी";
+                break;
+            case "Sister":
+                val = "बहीण";
+                break;
+            case "Brother":
+                val = "भाऊ";
+                break;
+            case "Other Relative":
+                val = "इतर नातेवाईक";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_callerRelation_edit(String val) {
+        switch (val) {
+            case "रुग्ण स्वतः":
+                val = "Patient themselves";
+                break;
+            case "आई":
+                val = "Mother";
+                break;
+            case "वडील":
+                val = "Father";
+                break;
+            case "जोडीदार":
+                val = "Spouse";
+                break;
+            case "पुत्र":
+                val = "Son";
+                break;
+            case "मुलगी":
+                val = "Daughter";
+                break;
+            case "बहीण":
+                val = "Sister";
+                break;
+            case "भाऊ":
+                val = "Brother";
+                break;
+            case "इतर नातेवाईक":
                 val = "Other Relative";
                 break;
             default:

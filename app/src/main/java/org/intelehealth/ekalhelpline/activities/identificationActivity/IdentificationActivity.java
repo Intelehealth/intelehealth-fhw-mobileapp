@@ -118,6 +118,10 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_econ
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -1090,8 +1094,18 @@ public class IdentificationActivity extends AppCompatActivity {
                 {
                     helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition(helplineInfo));
                 }
-            }
-            else
+            } else if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+            {
+                String helplineInfo = switch_mr_helplineInfo(patient1.getCaste());
+                if(helplineKnowledgeAdapter.getPosition(helplineInfo)==-1) {
+                    helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition("इतर"));
+                    otherHelplineInfoET.setText(patient1.getCaste());
+                }
+                else
+                {
+                    helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition(helplineInfo));
+                }
+            } else
             {
                 if(helplineKnowledgeAdapter.getPosition(patient1.getCaste())==-1)
                 {
@@ -1106,6 +1120,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 String callerInfo = switch_hi_callerRelation(patient1.getSdw());
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
                 String numberInfo = switch_hi_callerRelation(patient1.getEconomic_status());
+                numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(numberInfo));
+            }
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                String callerInfo = switch_mr_callerRelation(patient1.getSdw());
+                callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
+                String numberInfo = switch_mr_callerRelation(patient1.getEconomic_status());
                 numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(numberInfo));
             }
             else
@@ -1373,7 +1393,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHelplineOption = parent.getItemAtPosition(position).toString();
-                if(selectedHelplineOption.equalsIgnoreCase("Other") || selectedHelplineOption.equalsIgnoreCase("अन्य") )
+                if(selectedHelplineOption.equalsIgnoreCase("Other") || selectedHelplineOption.equalsIgnoreCase("अन्य") || selectedHelplineOption.equalsIgnoreCase("इतर") )
                 {
                     otherHelplineInfoET.setVisibility(View.VISIBLE);
                     otherHelplineInfoET.setFocusable(true);
@@ -2313,7 +2333,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
         {
             if(otherHelplineInfoET.getText().toString().equalsIgnoreCase(""))
             {
@@ -2576,7 +2596,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
                 helplineInfo = otherHelplineInfoET.getText().toString();
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();
@@ -3194,7 +3214,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
         {
             if(otherHelplineInfoET.getText().toString().equalsIgnoreCase(""))
             {
@@ -3443,7 +3463,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
 
-            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
                 helplineInfo = otherHelplineInfoET.getText().toString();
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();

@@ -103,6 +103,10 @@ import okhttp3.ResponseBody;
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -762,9 +766,29 @@ public class PatientDetailActivity extends AppCompatActivity {
             additionalPhoneNumTR.setVisibility(View.GONE);
         else
             addPhoneView.setText(patient_new.getSecondary_phone_number());
-        callerRelation.setText(patient_new.getSdw());
-        helplineInfo.setText(patient_new.getCaste());
-        numberRelation.setText(patient_new.getEconomic_status());
+//        callerRelation.setText(patient_new.getSdw());
+//        helplineInfo.setText(patient_new.getCaste());
+//        numberRelation.setText(patient_new.getEconomic_status());
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String callerRelationS = switch_hi_callerRelation(patient_new.getSdw());
+            callerRelation.setText(callerRelationS);
+            String numberRelationS = switch_hi_callerRelation(patient_new.getEconomic_status());
+            numberRelation.setText(numberRelationS);
+            String helplineInfoS = switch_hi_helplineInfo(patient_new.getCaste());
+            helplineInfo.setText(helplineInfoS);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            String callerRelationS = switch_mr_callerRelation(patient_new.getSdw());
+            callerRelation.setText(callerRelationS);
+            String numberRelationS = switch_mr_callerRelation(patient_new.getEconomic_status());
+            numberRelation.setText(numberRelationS);
+            String helplineInfoS = switch_mr_helplineInfo(patient_new.getCaste());
+            helplineInfo.setText(helplineInfoS);
+        } else {
+            callerRelation.setText(patient_new.getSdw());
+            helplineInfo.setText(patient_new.getCaste());
+            numberRelation.setText(patient_new.getEconomic_status());
+        }
 
         //english = en
         //hindi = hi

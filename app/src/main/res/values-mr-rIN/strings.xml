@@ -89,6 +89,7 @@
         <string name="identification_screen_prompt_gender">लिंग *</string>
         <string name="identification_screen_checkbox_male">नर</string>
         <string name="identification_screen_checkbox_female">स्त्री</string>
+        <string name="identification_screen_checkbox_other">इतर</string>
         <string name="identification_screen_prompt_birthday">जन्म तारीख*</string>
         <string name="identification_screen_prompt_age">वय: *</string>
         <string name="identification_screen_prompt_time">वेळः</string>
@@ -709,4 +710,11 @@
         <string name="who_does_number_belongs">तुम्ही कॉलसाठी वापरलेला नंबर कोणाचा आहे?*</string>
         <string name="calling_on_behalf">तुम्ही कोणाच्या वतीने किंवा स्वतःसाठी फोन करत आहात?*</string>
         <string name="know_about_helpline">तुम्हाला आमच्या हेल्पलाईनबद्दल कसे कळेल?*</string>
+        <string name="phone_num">फोन नंबर</string>
+        <string name="add_phone_num">अतिरिक्त फोन नंबर</string>
+        <string name="caller_relation">कॉलरचा संबंध</string>
+        <string name="num_belongs_to">फोन नंबर संबंधित आहे</string>
+        <string name="helpline_reference">हेल्पलाईन संदर्भ</string>
+        <string name="select_phone_num">फ़ोन नंबर चुनें</string>
+
 </resources>
