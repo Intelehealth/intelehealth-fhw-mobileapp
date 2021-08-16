@@ -23,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -138,7 +140,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                saveImage(mCurrentPhotoPath);
+                String mFilename = data.getStringExtra("FILENAME");
+                saveImage_1(mCurrentPhotoPath, mFilename);
+                Log.v("main", "filename: "+ mFilename);
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (resultCode == RESULT_OK) {
@@ -191,6 +195,27 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         });
     }
 
+    private void saveImage_1(String picturePath, String mFilename) {
+        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
+        File photo = new File(picturePath);
+        if (photo.exists()) {
+            try {
+
+                long length = photo.length();
+                length = length / 1024;
+                Log.e("------->>>>", length + "");
+            } catch (Exception e) {
+                System.out.println("File not found : " + e.getMessage() + e);
+            }
+
+            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+            Log.v("main", "photo_name: "+ photo.getName() + "\n" + photo.getAbsolutePath());
+            // updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+            String image = UUID.randomUUID().toString();
+            updateImageDatabase_1(image, mFilename);
+        }
+    }
+
 
     private void saveImage(String picturePath) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
@@ -206,7 +231,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
 
             recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+            Log.v("main", "photo_name: "+ photo.getName() + "\n" + photo.getAbsolutePath());
+           // updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+            String image = UUID.randomUUID().toString();
+            updateImageDatabase(image);
         }
     }
 
@@ -227,6 +255,16 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }*/
+    private void updateImageDatabase_1(String imageuuid, String mfilename) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            imagesDAO.insertObsImageDatabase_1(imageuuid, mfilename, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -257,6 +295,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 if (item == 0) {
                     Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
                     String imageName = UUID.randomUUID().toString();
+
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                     startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);

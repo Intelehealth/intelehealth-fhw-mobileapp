@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -86,12 +89,20 @@ public class CameraActivity extends AppCompatActivity {
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
 
-    void compressImageAndSave(final String filePath) {
+    void compressImageAndSave(final String filePath, String mfilename) {
         getBackgroundHandler().post(new Runnable() {
             @Override
             public void run() {
                 File file = new File(filePath);
                 BitmapUtils.fileCompressed(filePath);
+
+                Intent intent = new Intent();
+                intent.putExtra("RESULT", file.getAbsolutePath());
+                intent.putExtra("FILENAME", mfilename);
+                setResult(RESULT_OK, intent);
+                Log.i(TAG, file.getAbsolutePath());
+                finish();
+
                 //OutputStream os = null;
 
 
@@ -203,11 +214,7 @@ public class CameraActivity extends AppCompatActivity {
                         scaledBitmap.recycle();
                     }
                 }*/
-                Intent intent = new Intent();
-                intent.putExtra("RESULT", file.getAbsolutePath());
-                setResult(RESULT_OK, intent);
-                Log.i(TAG, file.getAbsolutePath());
-                finish();
+
 
 
             }
@@ -365,12 +372,27 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
+                   /* EditText editText = new EditText(CameraActivity.this);
+                    editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(CameraActivity.this)
+                            .setTitle("Enter filename")
+                            .setView(editText);
+                    AlertDialog alertDialog = builder1.create();
+                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mImageName = editText.getText().toString();
+                        }
+                    });
+                    alertDialog.show();*/
+
+                    //file....
                     if (mImageName == null) {
                         mImageName = "IMG";
                     }
 
-                    final String filePath = (mFilePath == null ? AppConstants.IMAGE_PATH : mFilePath+"/") + mImageName + ".jpg";
-
+                    final String filePath = (mFilePath == null ? AppConstants.IMAGE_PATH : mFilePath) + mImageName + ".jpg";
+                    Log.v("main", "file: "+ filePath);
 
                     File file = new File(filePath);
 
@@ -381,8 +403,45 @@ public class CameraActivity extends AppCompatActivity {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(CameraActivity.this, getResources().getString(R.string.image_saved), Toast.LENGTH_SHORT).show();
-                                    compressImageAndSave(filePath);
+
+                                    File from = new File(IntelehealthApplication.getAppContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                                            + File.separator,mImageName +".jpg");
+
+                                    EditText editText = new EditText(CameraActivity.this);
+                                    editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                    AlertDialog.Builder builder1 = new AlertDialog.Builder(CameraActivity.this)
+                                            .setTitle("Enter filename")
+                                            .setView(editText);
+                                    AlertDialog alertDialog = builder1.create();
+                                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            String img = editText.getText().toString();
+                                            File to = new File(IntelehealthApplication.getAppContext()
+                                                    .getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator,img + ".jpg");
+                                            Log.v("main", "file_new: "+ from + "\n" + to + "\n" + to.getAbsolutePath());
+
+                                            if(from.exists())
+                                                from.renameTo(to);
+
+                                            compressImageAndSave(to.getAbsolutePath(), img);
+
+                                            Toast.makeText(CameraActivity.this, getResources().getString(R.string.image_saved),
+                                                    Toast.LENGTH_SHORT).show();
+
+                                            /*Intent intent = new Intent();
+                                            intent.putExtra("FILENAME", img);
+                                            setResult(RESULT_OK, intent);
+                                            finish();*/
+
+                                        }
+                                    });
+                                    alertDialog.show();
+
+
+
+
+
                                 }
                             });
                         }
@@ -392,6 +451,8 @@ public class CameraActivity extends AppCompatActivity {
                             error.printStackTrace();
                         }
                     });
+
+
 
                 }
             });
