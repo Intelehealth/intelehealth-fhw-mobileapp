@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import androidx.core.content.ContextCompat;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
@@ -433,7 +435,8 @@ public class PatientsDAO {
 
         }
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
-        IntelehealthApplication.getAppContext().startService(intent);
+//        IntelehealthApplication.getAppContext().startService(intent);
+        ContextCompat.startForegroundService(IntelehealthApplication.getAppContext(), intent);
         return isUpdated;
     }
 

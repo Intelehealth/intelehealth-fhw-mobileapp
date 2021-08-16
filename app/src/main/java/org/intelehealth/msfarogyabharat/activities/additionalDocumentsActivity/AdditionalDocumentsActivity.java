@@ -136,7 +136,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CameraActivity.TAKE_IMAGE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK && data != null) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 saveImage(mCurrentPhotoPath);
             }
