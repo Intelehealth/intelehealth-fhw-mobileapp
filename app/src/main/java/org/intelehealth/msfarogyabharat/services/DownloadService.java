@@ -78,13 +78,16 @@ public class DownloadService extends IntentService {
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
             int finalI1 = i;
             List<String> finalImageObsList1 = imageObsList;
-            String final_ObsImage_Value = image_value;
+            String final_ObsImage_Value = image_value; //TODO: either get value of image_value or get data from responseBody...Better is responseBody...
             downloadobs.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ResponseBody>() {
                         @Override
                         public void onNext(ResponseBody responseBody) {
-
+                            //TODO: responseBody should send us the filename so that we can pass it to the Download class
+                            // where uuid and filename will be sent. Instead of uuid we need value i.e. Filename of that image...
+                            // or else if no data in responseBody than either the PULL obs data should return image_value data
+                            // from the obs table...
                             try {
                               //  downloadFile(responseBody, finalImageObsList1.get(finalI1));
                                 downloadFile(responseBody, final_ObsImage_Value);
