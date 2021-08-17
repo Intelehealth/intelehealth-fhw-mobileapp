@@ -238,7 +238,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         obsDTO.setCreator(sessionManager.getCreatorID());
 
         //append all the selected items to the OBS value
-        String insertion = Node.bullet_arrow + "<b>" + "Medical Advice" + "</b>" + ": ";
+        String insertion = Node.bullet_arrow + "<b>" + "Agent/Curiosity Resolution" + "</b>" + ": ";
         if (cbVaccineGuide.isChecked())
             insertion = insertion.concat(Node.next_line + cbVaccineGuide.getText());
         if (cbCovidConcern.isChecked())
