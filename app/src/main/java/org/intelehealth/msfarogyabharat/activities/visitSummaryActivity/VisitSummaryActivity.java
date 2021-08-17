@@ -1297,7 +1297,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String input = dialogEditText.getText().toString();
+                                input = applyBoldTag(input);
+                                complaint.setValue(input.replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -1651,6 +1653,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag.setChecked(false);
             }
         }
+    }
+
+    private String applyBoldTag(String input) {
+        String result = input;
+        if (input == null)
+            return null;
+        try {
+            if (result.contains("►") && result.contains(":")) {
+                result = result.replaceFirst("►", "►<b>");
+                result = result.replaceFirst(":", "</b>:");
+            } else {
+                result = String.format("<b>%s</b>", input);
+            }
+        } catch (Exception e) {
+            result = String.format("<b>%s</b>", input);
+        }
+        return result;
     }
 
     private String sms_prescription() {
