@@ -2356,7 +2356,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (complaints != null) {
             for (String comp : complaints) {
                 if (!comp.trim().isEmpty()) {
-                    mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                    if (comp.indexOf(colon) < comp.length()) {
+                        mComplaint = mComplaint + Node.big_bullet + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                    } else {
+                        mComplaint = mComplaint + Node.big_bullet + comp;
+                    }
 
                 }
             }
