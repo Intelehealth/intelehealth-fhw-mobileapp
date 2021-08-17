@@ -272,7 +272,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         //create & save visit attributes - required for syncing the data
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
-            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
+            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.AGENT_RES);
             // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
         } catch (DAOException e) {
             e.printStackTrace();
