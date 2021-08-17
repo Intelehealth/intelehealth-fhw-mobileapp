@@ -127,6 +127,7 @@ public class ImagesPushDAO {
                         public void onComplete() {
                             Logger.logD(TAG, "success");
                             try {
+                               // imagesDAO.updateUnsyncedObsImages(p.getUuid());
                                 imagesDAO.updateUnsyncedObsImages(p.getUuid());
                             } catch (DAOException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);

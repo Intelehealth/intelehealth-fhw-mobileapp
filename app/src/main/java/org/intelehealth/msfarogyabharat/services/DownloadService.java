@@ -66,14 +66,19 @@ public class DownloadService extends IntentService {
         String url = "";
         List<String> imageObsList = new ArrayList<>();
         imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
+
         if (imageObsList.size() == 0) {
 //            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
         }
         for (int i = 0; i < imageObsList.size(); i++) {
+           // List<String> image_value = new ArrayList<>();
+            String image_value = obsDAO.getImageStrings_value(imageObsList.get(i), ImageType, encounterAdultIntials);
+
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
             int finalI1 = i;
             List<String> finalImageObsList1 = imageObsList;
+            String final_ObsImage_Value = image_value;
             downloadobs.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ResponseBody>() {
@@ -81,7 +86,8 @@ public class DownloadService extends IntentService {
                         public void onNext(ResponseBody responseBody) {
 
                             try {
-                                downloadFile(responseBody, finalImageObsList1.get(finalI1));
+                              //  downloadFile(responseBody, finalImageObsList1.get(finalI1));
+                                downloadFile(responseBody, final_ObsImage_Value);
                             } catch (IOException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
                             }

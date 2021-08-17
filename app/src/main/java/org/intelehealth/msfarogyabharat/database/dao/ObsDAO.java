@@ -189,7 +189,7 @@ public class ObsDAO {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         //take All obs except image obs
-        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? AND (conceptuuid != ? AND conceptuuid != ?) AND voided='0' AND sync='false'", new String[]{encounteruuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
+        Cursor idCursor = db.rawQuery("SELECT * FROM tbl_obs where encounteruuid = ? /*AND (conceptuuid != ? AND conceptuuid != ?) */AND voided='0' AND sync='false'", new String[]{encounteruuid/*, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE*/});
         ObsDTO obsDTO = new ObsDTO();
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
@@ -205,6 +205,24 @@ public class ObsDAO {
 
         return obsDTOList;
     }
+
+    public String getImageStrings_value(String imageuuid, String conceptuuid, String encounterUuidAdultIntials) {
+       // List<String> rawStrings = new ArrayList<>();
+        String rawStrings = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor idCursor = db.rawQuery("SELECT value FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND uuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials, imageuuid});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+               // rawStrings.add(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                rawStrings = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+            }
+        }
+        idCursor.close();
+
+
+        return rawStrings;
+    }
+
 
     public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
         List<String> rawStrings = new ArrayList<>();

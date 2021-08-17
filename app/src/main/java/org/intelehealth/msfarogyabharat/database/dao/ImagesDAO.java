@@ -355,6 +355,29 @@ public class ImagesDAO {
         return isUpdated;
     }
 
+    public ArrayList getImageUuid_1(String encounterUuid, String conceptuuid) throws DAOException {
+        Logger.logD(TAG, "encounter uuid for image " + encounterUuid);
+        ArrayList<String> uuidList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT value FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUuid, conceptuuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return uuidList;
+    }
+
+
 
     public ArrayList getImageUuid(String encounterUuid, String conceptuuid) throws DAOException {
         Logger.logD(TAG, "encounter uuid for image " + encounterUuid);
@@ -397,6 +420,27 @@ public class ImagesDAO {
         } finally {
             localdb.endTransaction();
         }
+        return imagesList;
+    }
+
+    public List<String> isImageListObsExists_1(String encounterUuid, String conceptUuid) throws DAOException {
+        List<String> imagesList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT value FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{encounterUuid, conceptUuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+        }
+
         return imagesList;
     }
 

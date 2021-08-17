@@ -99,7 +99,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             ArrayList<String> fileuuidList = new ArrayList<String>();
             ArrayList<File> fileList = new ArrayList<File>();
             try {
-                fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+                fileuuidList = imagesDAO.getImageUuid_1(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
                 for (String fileuuid : fileuuidList) {
                     String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
                     if (new File(filename).exists()) {
