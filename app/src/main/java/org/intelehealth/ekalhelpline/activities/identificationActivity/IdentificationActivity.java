@@ -1640,6 +1640,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                         mAgeDays + getString(R.string.days);
                 mAge.setText(ageString);
+                mAge.setError(null);
 
 //                mAge.setText(age);
 
@@ -1683,6 +1684,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
             mAge.setText(yrMoDays);
+            mAge.setError(null);
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1754,6 +1756,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                             mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
+                    mAge.setError(null);
 
 
                     Calendar calendar = Calendar.getInstance();
