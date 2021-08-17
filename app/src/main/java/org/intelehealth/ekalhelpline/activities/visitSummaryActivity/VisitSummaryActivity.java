@@ -1877,7 +1877,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+911141236457" + "</span>" /*+*/
+                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918046114321" + "</span>" /*+*/
 
                    /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
                     + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
