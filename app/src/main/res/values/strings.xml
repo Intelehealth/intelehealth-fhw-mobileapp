@@ -716,4 +716,13 @@
     <string name="num_belongs_to">Number belongs to</string>
     <string name="helpline_reference">Helpline Reference</string>
     <string name="select_phone_num">Select Phone Number</string>
+    <string name="reason_for_call">What is the reason for this call?</string>
+    <string name="spinner_callback"> Caller requested for call back</string>
+    <string name="spinner_call_dropped">  Call Dropped</string>
+    <string name="spinner_call_disturbed"> Call Disturbed</string>
+    <string name="spinner_doctor_resolution"> Doctor Resolution</string>
+    <string name="spinner_doctor_followUp"> Doctor Follow up (On advice by the doctor)</string>
+    <string name="spinner_outreach"> Outreach call</string>
+    <string name="spinner_general_followUp"> General Follow up</string>
+
 </resources>

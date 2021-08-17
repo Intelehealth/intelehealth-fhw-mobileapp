@@ -1,6 +1,7 @@
 package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,16 +30,21 @@ import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +57,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ekalhelpline.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
+import org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -156,6 +163,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 //    final int[] checkedItem = {-1};
     String selectedNumber = "";
 
+    ArrayList<String> callNoteList;
+    DisplayMetrics metrics;
+    int width, height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +193,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
         newAdvice = findViewById(R.id.btn_new_advice);
+        callNoteList = getCallNoteList();
+        metrics = getResources().getDisplayMetrics();
+        width = metrics.widthPixels;
+        height = metrics.heightPixels;
         additionalPhoneNumTR = findViewById(R.id.additionalNumberTableRow);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
@@ -391,6 +405,19 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private ArrayList<String> getCallNoteList() {
+        ArrayList<String> notes = new ArrayList<>();
+        notes.add(getString(R.string.spinner_callback));
+        notes.add(getString(R.string.spinner_call_dropped));
+        notes.add(getString(R.string.spinner_call_disturbed));
+        notes.add(getString(R.string.spinner_doctor_resolution));
+        notes.add(getString(R.string.spinner_doctor_followUp));
+        notes.add(getString(R.string.spinner_outreach));
+        notes.add(getString(R.string.spinner_general_followUp));
+        notes.add(getString(R.string.spinner_other));
+        return notes;
     }
 
     private void LoadFamilyMembers() {
@@ -1501,10 +1528,82 @@ public class PatientDetailActivity extends AppCompatActivity {
                         if(dialogType==1)
                             sendWhatsappText(selectedNumber);
                         if(dialogType==2)
-                            callPatientViaIVR(selectedNumber);
+                            showCallNoteSelectionDialog(selectedNumber);
+//                            callPatientViaIVR(selectedNumber);
                     }
                 })
                 .show();
+    }
+
+    private void showCallNoteSelectionDialog(String selectedNumber) {
+        Dialog dialog=new Dialog(PatientDetailActivity.this);
+        dialog.setContentView(R.layout.dialog_call_record);
+        dialog.getWindow().setLayout((6 * width)/7, LinearLayout.LayoutParams.WRAP_CONTENT);
+        Spinner callNote = (Spinner) dialog.findViewById(R.id.callRecordSpinner);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, callNoteList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        callNote.setAdapter(dataAdapter);
+        TextView submitButton = (TextView) dialog.findViewById(R.id.button_survey_submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PatientDetailActivity.this,callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+                callPatientViaIVR(selectedNumber);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+//        MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
+//        LayoutInflater li = LayoutInflater.from(this);
+//        View promptsView = li.inflate(R.layout.dialog_call_record, null);
+//        dialog.setTitle("Select reason for this call")
+//                .setView(promptsView)
+//                .setCancelable(false)
+//                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        Dialog d = (Dialog) dialog;
+//                        Spinner callNote = d.findViewById(R.id.callRecordSpinner);
+//                        callNoteList = new ArrayList<>();
+//                        callNoteList = getCallNoteList();
+//                        callNoteAdapter = new ArrayAdapter<>(PatientDetailActivity.this, android.R.layout.simple_spinner_dropdown_item, callNoteList);
+//                        callNote.setAdapter(callNoteAdapter);
+////                        callNote.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+////                            @Override
+////                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+////                              Toast.makeText(PatientDetailActivity.this,callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+////                              callPatientViaIVR(selectedNumber);
+////                              dialog.dismiss();
+////                            }
+////                            @Override
+////                            public void onNothingSelected(AdapterView<?> parent) {
+////
+////                            }
+////                        });
+//                    }
+//                });
+//        dialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+//        AlertDialog alertDialog = dialog.create();
+//        alertDialog.setView(promptsView, 20, 0, 20, 0);
+//        alertDialog.show();
+//        // Get the alert dialog buttons reference
+//        Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+//        Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+//
+//        // Change the alert dialog buttons text and background color
+//        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        // positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+//        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+//
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
     private void sendWhatsappText(String selectedNumber) {
@@ -1523,7 +1622,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
             return;
         }
-
 //        String receiver = phoneView.getText().toString();
         if (TextUtils.isEmpty(receiver))
             return;
@@ -1539,7 +1637,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull String s) {
                         showAlert(R.string.calling_patient);
                     }
-
                     @Override
                     public void onError(Throwable e) {
                         showAlert(R.string.error_calling_patient);
