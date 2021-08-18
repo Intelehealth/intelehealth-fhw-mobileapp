@@ -1307,13 +1307,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String originalComplaint = dialogEditText.getText().toString();
-                                String tag1 = "<b>";
-                                String tag2 = "</b>";
-                                int originalCompLength = originalComplaint.length();
-                                int indexColon = originalComplaint.indexOf(":");
-                                String formatedComplaint = Node.bullet_arrow + tag1 + originalComplaint.substring(1,indexColon) + tag2 + originalComplaint.substring(indexColon,originalCompLength-1) ;
-                                String finalFormattedComplaint = formatedComplaint.replace("\n","<br>");
-                                complaint.setValue(finalFormattedComplaint);
+                                originalComplaint = applyBoldTag(originalComplaint);
+                                complaint.setValue(originalComplaint.replace("\n", "<br>"));
+//                                String tag1 = "<b>";
+//                                String tag2 = "</b>";
+//                                int originalCompLength = originalComplaint.length();
+//                                int indexColon = originalComplaint.indexOf(":");
+//                                String formatedComplaint = Node.bullet_arrow + tag1 + originalComplaint.substring(1,indexColon) + tag2 + originalComplaint.substring(indexColon,originalCompLength-1) ;
+//                                String finalFormattedComplaint = formatedComplaint.replace("\n","<br>");
+//                                complaint.setValue(finalFormattedComplaint);
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -2032,6 +2034,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
+
+    private String applyBoldTag(String input) {
+        String result = input;
+        if (input == null)
+            return null;
+        try {
+            if (result.contains("►") && result.contains(":")) {
+                result = result.replaceAll("►", "►<b>");
+                result = result.replaceAll(":", "</b>:");
+            } else {
+                result = String.format("<b>%s</b>", input);
+            }
+        } catch (Exception e) {
+            result = String.format("<b>%s</b>", input);
+        }
+        return result;
+    }
 
     public void setLocale(String appLanguage) {
         Resources res = getResources();
