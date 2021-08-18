@@ -724,5 +724,6 @@
     <string name="spinner_doctor_followUp"> Doctor Follow up (On advice by the doctor)</string>
     <string name="spinner_outreach"> Outreach call</string>
     <string name="spinner_general_followUp"> General Follow up</string>
+    <string name="audio_stories_subscription">Audio Stories Subscription</string>
 
 </resources>

@@ -46,6 +46,25 @@
         <item>-1</item>
     </string-array>
 
+    <array name="preferred_time_female">
+        <item>Select Time</item>
+        <item>11am-2pm</item>
+        <item>6pm-9pm</item>
+    </array>
+
+    <array name="preferred_time_male">
+        <item>Select Time</item>
+        <item>1pm-3pm</item>
+        <item>8pm-10pm</item>
+    </array>
+
+    <array name="preferred_bucket">
+        <item>Select Bucket</item>
+        <item>Bucket 1</item>
+        <item>Bucket 2</item>
+        <item>Bucket 3</item>
+    </array>
+
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
