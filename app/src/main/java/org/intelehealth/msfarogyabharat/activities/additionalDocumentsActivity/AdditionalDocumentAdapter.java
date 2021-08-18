@@ -77,8 +77,13 @@ String mEncounterVisitUUID;
     public void onBindViewHolder(final AdditionalDocumentViewHolder holder, final int position) {
 
 //        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
-        holder.getDocumentNameTextView().setText
-                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
+        /*holder.getDocumentNameTextView().setText
+                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));*/
+        String doc = documentList.get(position).getDocumentName().toString();
+        String doc_array[] = doc.split(".jpg");
+
+        Log.v("main", "doc: "+doc);
+        holder.getDocumentNameTextView().setText(doc_array[0]);
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 
