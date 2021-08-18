@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -790,6 +791,7 @@ public class Node implements Serializable {
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
