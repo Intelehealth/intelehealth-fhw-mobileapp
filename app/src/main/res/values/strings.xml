@@ -712,4 +712,7 @@
     <string name="phone_type">Mobile Phone Type</string>
     <string name="case_closed">Case closed</string>
     <string name="welcome_sms">Thank you for calling and registering with MSF ArogyaBharat Helpline. If you are feeling stressed, or anxious, our Counsellors are here to support you. Please call on our toll-free no. 18001203710 - Powered by Intelehealth</string>
+    <string name="title_follow_up">Follow Up Visits</string>
+    <string name="title_follow_reminder">Follow up visit reminder</string>
+    <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
 </resources>
