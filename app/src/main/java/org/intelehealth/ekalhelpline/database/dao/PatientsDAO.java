@@ -13,6 +13,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.UUID;
 
 import org.intelehealth.ekalhelpline.models.FamilyMemberRes;
 import org.intelehealth.ekalhelpline.services.MyIntentService;
@@ -552,4 +553,60 @@ public class PatientsDAO {
     }
 
 
+    /**
+     * @param patientUuid PatientUuid of the Patient that is selected
+     * @param value Reason for initiating the call is added in this argument
+     * @return Boolean value if inserted in db than True else False...
+     */
+    public boolean insertPatient_Attribute(String patientUuid, String value) {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = null;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+
+        try {
+            values.put("uuid", UUID.randomUUID().toString());
+            values.put("person_attribute_type_uuid", getUuidForAttribute("Reason for Call"));
+            values.put("patientuuid", patientUuid);
+            values.put("value", value);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("sync", false);
+            db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            db.setTransactionSuccessful();
+            isInserted = true;
+        }
+        catch (SQLException e) {
+            isInserted = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        finally {
+            db.endTransaction();
+        }
+
+        //patient update...
+        SQLiteDatabase db_1 = null;
+        db_1 = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values_1 = new ContentValues();
+        db_1.beginTransaction();
+
+        try {
+            values_1.put("sync", false);
+            db_1.update("tbl_patient", values_1, "uuid = ?", new String[]{patientUuid});
+
+            db_1.setTransactionSuccessful();
+            isInserted = true;
+        }
+        catch (SQLException e) {
+            isInserted = false;
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        finally {
+            db_1.endTransaction();
+        }
+
+        return isInserted;
+    }
 }

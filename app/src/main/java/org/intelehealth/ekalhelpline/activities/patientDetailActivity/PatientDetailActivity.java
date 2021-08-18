@@ -3,12 +3,14 @@ package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -59,6 +61,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ekalhelpline.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
 import org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
+import org.intelehealth.ekalhelpline.database.dao.ImagesPushDAO;
+import org.intelehealth.ekalhelpline.database.dao.SyncDAO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -230,6 +234,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
+                Log.d("main", patientUuid);
                 startActivity(intent2);
 
             }
@@ -1548,8 +1553,14 @@ public class PatientDetailActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PatientDetailActivity.this,callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
-                callPatientViaIVR(selectedNumber);
+                Toast.makeText(PatientDetailActivity.this, callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+                //function call to provide the selected value so that this value will then be added in the Patient atribute table
+                //against that patientuuid...pass value and patientUuid...
+                boolean isInserted = setReason_for_Call(patientUuid, callNote.getSelectedItem().toString());
+                if(isInserted)
+                    callPatientViaIVR(selectedNumber);
+                else
+                    Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -1604,6 +1615,24 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 //
 //        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    /**
+     * @param patientUuid PatientUuid of the Patient that is selected
+     * @param value Reason for initiating the call is added in this argument
+     * @return Boolean value if inserted in db than @true else @false ...
+     */
+    private boolean setReason_for_Call(String patientUuid, String value) {
+        boolean isInserted;
+        PatientsDAO patientsDAO = new PatientsDAO();
+        isInserted = patientsDAO.insertPatient_Attribute(patientUuid, value);
+
+        SyncDAO syncDAO = new SyncDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+        boolean push = syncDAO.pushDataApi();
+        boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+
+        return isInserted;
     }
 
     private void sendWhatsappText(String selectedNumber) {
