@@ -63,6 +63,7 @@ import org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSur
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.intelehealth.ekalhelpline.database.dao.ImagesPushDAO;
 import org.intelehealth.ekalhelpline.database.dao.SyncDAO;
+import org.intelehealth.ekalhelpline.syncModule.SyncUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1553,7 +1554,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PatientDetailActivity.this, callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(PatientDetailActivity.this, callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
                 //function call to provide the selected value so that this value will then be added in the Patient atribute table
                 //against that patientuuid...pass value and patientUuid...
                 boolean isInserted = false;
@@ -1632,6 +1633,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         boolean isInserted;
         PatientsDAO patientsDAO = new PatientsDAO();
         isInserted = patientsDAO.insertPatient_Attribute(patientUuid, value);
+        new SyncUtils().syncForeground("home");
 
         return isInserted;
     }
