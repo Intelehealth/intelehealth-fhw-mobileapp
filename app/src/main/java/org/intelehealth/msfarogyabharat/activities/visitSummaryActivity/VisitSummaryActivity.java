@@ -1661,8 +1661,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             return null;
         try {
             if (result.contains("►") && result.contains(":")) {
-                result = result.replaceFirst("►", "►<b>");
-                result = result.replaceFirst(":", "</b>:");
+                result = result.replaceAll("►", "►<b>");
+                result = result.replaceAll(":", "</b>:");
             } else {
                 result = String.format("<b>%s</b>", input);
             }
