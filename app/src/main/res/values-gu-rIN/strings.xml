@@ -661,6 +661,7 @@
         <string name="take_photo">ફોટો પાડ</string>
         <string name="choose_from_gallery">ગેલેરીમાંથી પસંદ કરો</string>
         <string name="additional_doc_image_picker_title">વધારાના દસ્તાવેજ ઉમેરો!</string>
+    <string name="stored_successfully">Stored Successfully</string>
 
 
 </resources>

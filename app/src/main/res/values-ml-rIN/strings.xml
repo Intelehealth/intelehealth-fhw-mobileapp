@@ -543,6 +543,7 @@
     <string name="take_photo">ഫോട്ടോ എടുക്കുക</string>
     <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
+    <string name="stored_successfully">Stored Successfully</string>
 
 </resources>
 

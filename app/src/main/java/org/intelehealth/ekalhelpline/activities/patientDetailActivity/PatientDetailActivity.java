@@ -1633,7 +1633,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         boolean isInserted;
         PatientsDAO patientsDAO = new PatientsDAO();
         isInserted = patientsDAO.insertPatient_Attribute(patientUuid, value);
-        new SyncUtils().syncForeground("home");
+        new SyncUtils().syncForeground("reason_for_call");
 
         return isInserted;
     }

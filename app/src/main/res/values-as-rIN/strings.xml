@@ -514,6 +514,7 @@
     <string name="take_photo">ফটো লওক</string>
     <string name="choose_from_gallery">গেলেৰীৰ পৰা বাছক</string>
     <string name="additional_doc_image_picker_title">অতিৰিক্ত দস্তাবেজ যোগ কৰক!</string>
+    <string name="stored_successfully">Stored Successfully</string>
 
 
 </resources>

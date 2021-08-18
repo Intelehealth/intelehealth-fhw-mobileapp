@@ -725,5 +725,6 @@
     <string name="spinner_outreach"> Outreach call</string>
     <string name="spinner_general_followUp"> General Follow up</string>
     <string name="audio_stories_subscription">Audio Stories Subscription</string>
+    <string name="stored_successfully">Stored Successfully</string>
 
 </resources>

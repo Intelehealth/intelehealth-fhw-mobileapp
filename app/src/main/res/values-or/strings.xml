@@ -550,6 +550,7 @@
     <string name="take_photo">ଫଟୋ ନିଅନ୍ତୁ </string>
     <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
     <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
+    <string name="stored_successfully">Stored Successfully</string>
 
 
 </resources>
