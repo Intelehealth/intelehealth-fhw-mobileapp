@@ -1556,9 +1556,15 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Toast.makeText(PatientDetailActivity.this, callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
                 //function call to provide the selected value so that this value will then be added in the Patient atribute table
                 //against that patientuuid...pass value and patientUuid...
-                boolean isInserted = setReason_for_Call(patientUuid, callNote.getSelectedItem().toString());
-                if(isInserted)
+                boolean isInserted = false;
+                try {
+                    isInserted = setReason_for_Call(patientUuid, callNote.getSelectedItem().toString());
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                if(isInserted) {
                     callPatientViaIVR(selectedNumber);
+                }
                 else
                     Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
@@ -1622,15 +1628,10 @@ public class PatientDetailActivity extends AppCompatActivity {
      * @param value Reason for initiating the call is added in this argument
      * @return Boolean value if inserted in db than @true else @false ...
      */
-    private boolean setReason_for_Call(String patientUuid, String value) {
+    private boolean setReason_for_Call(String patientUuid, String value) throws DAOException {
         boolean isInserted;
         PatientsDAO patientsDAO = new PatientsDAO();
         isInserted = patientsDAO.insertPatient_Attribute(patientUuid, value);
-
-        SyncDAO syncDAO = new SyncDAO();
-        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-        boolean push = syncDAO.pushDataApi();
-        boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
         return isInserted;
     }
@@ -1680,6 +1681,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
+               /* SyncDAO syncDAO = new SyncDAO();
+                ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+                boolean push = syncDAO.pushDataApi();
+                boolean pushImage = imagesPushDAO.patientProfileImagesPush();*/
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();

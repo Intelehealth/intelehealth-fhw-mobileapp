@@ -202,6 +202,35 @@ public class PatientsDAO {
         return isInserted;
     }
 
+    public List<Attribute> getPatientAttributes_Reason_for_Call(String patientuuid, String patientAttributeTypeUuid) throws DAOException {
+        List<Attribute> patientAttributesList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid +
+                    "' AND person_attribute_type_uuid = '" + patientAttributeTypeUuid + "'";
+            Cursor cursor = db.rawQuery(query, null, null);
+            Attribute attribute = new Attribute();
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    attribute = new Attribute();
+                    attribute.setValue(cursor.getString(cursor.getColumnIndex("value")));
+                    patientAttributesList.add(attribute);
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage());
+        } finally {
+            db.endTransaction();
+
+        }
+        return patientAttributesList;
+    }
+
+
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -558,9 +587,23 @@ public class PatientsDAO {
      * @param value Reason for initiating the call is added in this argument
      * @return Boolean value if inserted in db than True else False...
      */
-    public boolean insertPatient_Attribute(String patientUuid, String value) {
+    public boolean insertPatient_Attribute(String patientUuid, String value) throws DAOException {
         boolean isInserted = false;
+        String data = "";
+        if(data == "")
+            data = value;
+        else
+            data = "";
 
+        List<Attribute> attributeList = getPatientAttributes_Reason_for_Call(patientUuid, getUuidForAttribute("Reason for Call"));
+        if(attributeList.size() != 0) {
+            for (int i = 0; i < attributeList.size(); i++) {
+                String attribute_data = attributeList.get(i).getValue();
+                data = attribute_data + "," + value;
+            }
+        }
+
+        Log.v("main", "daa: " + data + "\n");
         SQLiteDatabase db = null;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
@@ -570,13 +613,14 @@ public class PatientsDAO {
             values.put("uuid", UUID.randomUUID().toString());
             values.put("person_attribute_type_uuid", getUuidForAttribute("Reason for Call"));
             values.put("patientuuid", patientUuid);
-            values.put("value", value);
+            values.put("value", data);
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", false);
             db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
             isInserted = true;
+            Log.v("main", "pat_attribute tbl updated: " + isInserted + "\n");
         }
         catch (SQLException e) {
             isInserted = false;
@@ -598,6 +642,7 @@ public class PatientsDAO {
 
             db_1.setTransactionSuccessful();
             isInserted = true;
+            Log.v("main", "pat tbl updated: " + isInserted + "\n");
         }
         catch (SQLException e) {
             isInserted = false;
