@@ -167,28 +167,12 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                if(notesSpinner.getSelectedItem().equals("Other")) {
-//                    if(mComments.getText().toString().equalsIgnoreCase(""))
-//                        mComments.setError("This field is required");
-//                    else
-//                    {
-//                        noteText = mComments.getText().toString();
-//                    }
-//                }
-//                else
                 noteText = notesSpinner.getSelectedItem().toString();
                 rating = String.valueOf(ratingBar.getRating());
                 if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
-//                } else {
-//                    if(noteText.equalsIgnoreCase(""))
-//                        mComments.setError("This field is required");
-//                    else
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
-//                }
                 }
             }
         });

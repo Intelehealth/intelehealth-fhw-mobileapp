@@ -21,7 +21,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
+import org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.ekalhelpline.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ObsDAO;
@@ -46,8 +48,9 @@ import java.util.concurrent.TimeUnit;
 
 public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
     private static final String EXTRA_PATIENT_UUID = "EXTRA_PATIENT_UUID";
+    private static final String EXTRA_PATIENT_NAME = "EXTRA_PATIENT_NAME";
     SessionManager sessionManager = null;
-    String patientUuid;
+    String patientUuid, patientName;
     Context context;
 
     Intent i_privacy;
@@ -58,9 +61,10 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional;
 
-    public static void start(Context context, String patientUuid) {
+    public static void start(Context context, String patientUuid, String patientName) {
         Intent starter = new Intent(context, MedicalAdviceExistingPatientsActivity.class);
         starter.putExtra(EXTRA_PATIENT_UUID, patientUuid);
+        starter.putExtra(EXTRA_PATIENT_NAME, patientName);
         context.startActivity(starter);
     }
 
@@ -101,6 +105,8 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(EXTRA_PATIENT_UUID)) {
             this.setTitle(getString(R.string.text_medical_advice));
             patientUuid = intent.getStringExtra(EXTRA_PATIENT_UUID);
+            patientName = intent.getStringExtra(EXTRA_PATIENT_NAME);
+
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -277,8 +283,17 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
+        uploadPatientSurvey(visitUuid);
+//        endVisit(visitUuid, patientUuid, endDate);
+    }
 
-        endVisit(visitUuid, patientUuid, endDate);
+    private void uploadPatientSurvey(String visitUuid) {
+        Intent intent = new Intent(MedicalAdviceExistingPatientsActivity.this, PatientSurveyActivity.class);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("name", patientName);
+        intent.putExtra("tag", "medicalAdvice");
+        startActivity(intent);
     }
 
     private void endVisit(String visitUuid, String patientUuid, String endTime) {
