@@ -239,6 +239,9 @@ public class SyncDAO {
                         else if (fromActivity.equalsIgnoreCase("reason_for_call")) {
                             Toast.makeText(context, context.getResources().getString(R.string.stored_successfully), Toast.LENGTH_LONG).show();
                         }
+                        else if (fromActivity.equalsIgnoreCase("ivr_call_response")) {
+                            Toast.makeText(context,context.getResources().getString(R.string.stored_successfully), Toast.LENGTH_LONG).show();
+                        }
                         else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();

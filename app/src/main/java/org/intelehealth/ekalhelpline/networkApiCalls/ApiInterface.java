@@ -3,6 +3,7 @@ package org.intelehealth.ekalhelpline.networkApiCalls;
 
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
+import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Response;
 import org.intelehealth.ekalhelpline.models.Location;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
@@ -103,4 +104,7 @@ public interface ApiInterface {
 
     @GET
     Single<String> CALL_PATIENT_IVR(@Url String url);
+
+    @GET
+    Observable<Call_Details_Response> IVR_CALL_RESPONSE(@Url String url);
 }
