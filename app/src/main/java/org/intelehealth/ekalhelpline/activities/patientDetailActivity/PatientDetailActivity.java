@@ -287,8 +287,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
-                            startActivity(intent);
+//                            Intent intent = new Intent(PatientDetailActivity.this, HomeActivity.class);
+//                            startActivity(intent);
+                            uploadPatientSurvey(visitUuid);
                         }
                     });
             AlertDialog alertDialog = builder.create();
@@ -414,7 +415,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid);
+                    String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                    MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid,fullName);
                 }
             });
         }
@@ -578,6 +580,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         } else {
             btnSubscribe.setAlpha(1);
         }
+    }
+
+    private void uploadPatientSurvey(String visitUuid) {
+        Intent intent = new Intent(PatientDetailActivity.this, PatientSurveyActivity.class);
+        intent.putExtra("patientUuid", patientUuid);
+        intent.putExtra("visitUuid", visitUuid);
+        intent.putExtra("name", patientName);
+        intent.putExtra("tag", "medicalAdvice");
+        startActivity(intent);
     }
 
     private ArrayList<String> getCallNoteList() {
@@ -962,7 +973,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         phoneView.setText(patient_new.getPhone_number());
         //TODO: Change secondary number attribute
-        if(patient_new.getSecondary_phone_number().isEmpty())
+        if( patient_new.getSecondary_phone_number()!=null && patient_new.getSecondary_phone_number().isEmpty())
+            additionalPhoneNumTR.setVisibility(View.GONE);
+        else if( patient_new.getSecondary_phone_number()==null)
             additionalPhoneNumTR.setVisibility(View.GONE);
         else
             addPhoneView.setText(patient_new.getSecondary_phone_number());

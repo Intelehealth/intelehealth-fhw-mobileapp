@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -18,6 +19,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -42,6 +45,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,6 +94,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = HomeActivity.class.getSimpleName();
     SessionManager sessionManager = null;
+    SessionManager sessionManager1 = null;
     private ProgressDialog mSyncProgressDialog;
     CountDownTimer CDT;
     private boolean hasLicense = false;
@@ -122,18 +127,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
+        sessionManager1 = new SessionManager(HomeActivity.this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
 
-        String language = sessionManager.getAppLanguage();
+        String language = sessionManager1.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
-            Locale locale = new Locale(language);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            setLocale(language);
         }
 
         setTitle(R.string.title_activity_login);
@@ -399,6 +401,24 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager.setLastTimeAgo(finalTime);
 
         return finalTime;
+    }
+
+    public void setLocale(String appLanguage) {
+        Resources res = getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            HomeActivity.this.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
     }
 
     private boolean isNetworkConnected() {
