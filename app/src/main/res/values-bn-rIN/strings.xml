@@ -510,5 +510,8 @@
     <string name="choose_from_gallery">গ্যালারী থেকে চয়ন করুন</string>
     <string name="additional_doc_image_picker_title">অতিরিক্ত নথি যুক্ত করুন!</string>
     <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">Total Calls:</string>
+    <string name="call_to">Call To:</string>
+    <string name="status">Status:</string>
 
 </resources>

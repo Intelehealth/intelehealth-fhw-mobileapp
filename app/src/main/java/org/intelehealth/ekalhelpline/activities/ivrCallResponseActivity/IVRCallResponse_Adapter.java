@@ -43,6 +43,7 @@ public class IVRCallResponse_Adapter extends RecyclerView.Adapter<IVRCallRespons
     public void onBindViewHolder(IVRCallResponse_Adapter.MyViewHolder holder, int position) {
         holder.mobile_no.setText(m_call_details_response.getData().get(position).getCallto());
         holder.status_response.setText(m_call_details_response.getData().get(position).getStatus());
+
         if(holder.status_response.getText().toString().equalsIgnoreCase("ANSWER")) {
             holder.status_response.setTextColor(Color.parseColor("#00A300"));
         }

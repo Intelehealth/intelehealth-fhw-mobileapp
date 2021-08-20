@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +17,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Response;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiClient;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
@@ -47,12 +53,15 @@ public class IVRCallResponseActivity extends AppCompatActivity {
     Call_Details_Response response;
     TextView total_count_textview;
     CustomProgressDialog customProgressDialog;
+    String todayDate_string;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ivrcall_response);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = IVRCallResponseActivity.this;
         sessionManager = new SessionManager(context);
         customProgressDialog = new CustomProgressDialog(context);
@@ -63,11 +72,15 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         total_count_textview = findViewById(R.id.total_count_textview);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
 
-        getIVR_Call_Response(sessionManager.getProviderPhoneno());
+        SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        Calendar today = Calendar.getInstance();
+        Date todayDate = today.getTime();
+        todayDate_string = todaydateFormat.format(todayDate);
+        getIVR_Call_Response(sessionManager.getProviderPhoneno(), todayDate_string);
 
     }
 
-    private void getIVR_Call_Response(String providerNo) {
+    private void getIVR_Call_Response(String providerNo, String fromDate) {
         if (!NetworkConnection.isOnline(this)) {
             customProgressDialog.dismiss();
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_LONG).show();
@@ -79,12 +92,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         ApiClient.changeApiBaseUrl("https://api-voice.kaleyra.com");
         UrlModifiers urlModifiers = new UrlModifiers();
 
-        SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        Calendar today = Calendar.getInstance();
-        Date todayDate = today.getTime();
-        String todayDate_string = todaydateFormat.format(todayDate);
-
-        String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, todayDate_string);
+        String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, fromDate);
         Logger.logD("main", "ivr call response url" + url);
         Observable<Call_Details_Response> patientIvrCall_response =
                 ApiClient.createService(ApiInterface.class).IVR_CALL_RESPONSE(url);
@@ -100,7 +108,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Call_Details_Response call_details_response) {
                         response = call_details_response;
-                        total_count_textview.setText("Total Calls: " + call_details_response.getData().size());
+                        total_count_textview.setText(getResources().getString(R.string.total_calls) + call_details_response.getData().size());
                         adapter = new IVRCallResponse_Adapter(context, response);
                         if(response.getData() != null) {
                             customProgressDialog.dismiss();
@@ -140,11 +148,50 @@ public class IVRCallResponseActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
             case R.id.action_sync:
-                getIVR_Call_Response(sessionManager.getProviderPhoneno());
+                getIVR_Call_Response(sessionManager.getProviderPhoneno(), todayDate_string);
+                return true;
+
+            case R.id.action_calendar:
+                getCalendarPicker();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void getCalendarPicker() {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String date_string = "";
+                SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, dayOfMonth);
+                date_string = todaydateFormat.format(calendar.getTime());
+
+                getIVR_Call_Response(sessionManager.getProviderPhoneno(), date_string);
+            }
+        },year, month, day);
+
+        datePickerDialog.show();
+
+        Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = datePickerDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+    }
+
 }

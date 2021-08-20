@@ -34,7 +34,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Call To: "/>
+                    android:text="@string/call_to"/>
 
                 <TextView
                     android:id="@+id/mobile_no_textview"
@@ -57,7 +57,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="Status: "/>
+                    android:text="@string/status"/>
 
                 <TextView
                     android:id="@+id/status_response_textview"

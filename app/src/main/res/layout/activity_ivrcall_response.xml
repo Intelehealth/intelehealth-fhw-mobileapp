@@ -19,7 +19,7 @@
             android:id="@+id/total_count_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Total Calls: "
+            android:text="@string/total_calls"
             android:textColor="@color/font_black_1"
             android:textSize="24sp"
             android:paddingVertical="15dp"

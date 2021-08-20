@@ -715,4 +715,7 @@
     <string name="helpline_reference">हेल्पलाईन संदर्भ</string>
     <string name="select_phone_num">फ़ोन नंबर चुनें</string>
     <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">Total Calls:</string>
+    <string name="call_to">Call To:</string>
+    <string name="status">Status:</string>
 </resources>

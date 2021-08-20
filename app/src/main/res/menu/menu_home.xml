@@ -16,7 +16,7 @@
         <item
             android:id="@+id/performanceOption"
             android:orderInCategory="100"
-            android:title="Agent Performance" />
+            android:title="Daily Performance Report" />
 
         <!--<item-->
         <!--android:id="@+id/endOfDayOption"-->
