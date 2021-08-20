@@ -36,7 +36,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"></activity>
+
+        <activity android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"
+            android:label="Daily Performance"></activity>
         <activity
             android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
