@@ -1,12 +1,15 @@
 package org.intelehealth.ekalhelpline.networkApiCalls;
 
 
+import org.intelehealth.ekalhelpline.models.BucketResponse;
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
 import org.intelehealth.ekalhelpline.models.Location;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.ekalhelpline.models.Results;
+import org.intelehealth.ekalhelpline.models.SubscriptionData;
+import org.intelehealth.ekalhelpline.models.SubscriptionStatus;
 import org.intelehealth.ekalhelpline.models.dto.ResponseDTO;
 import org.intelehealth.ekalhelpline.models.loginModel.LoginModel;
 import org.intelehealth.ekalhelpline.models.loginProviderModel.LoginProviderModel;
@@ -103,4 +106,17 @@ public interface ApiInterface {
 
     @GET
     Single<String> CALL_PATIENT_IVR(@Url String url);
+
+    @GET
+    Call<BucketResponse> getBucketList(@Url String url,
+                                       @Header("Authorization") String authHeader);
+
+    @GET
+    Call<SubscriptionStatus> getSubscriptionStatus(@Url String url,
+                                                   @Header("Authorization") String authHeader);
+
+    @POST
+    Call<SubscriptionStatus> subscribe(@Url String url,
+                                     @Header("Authorization") String authHeader,
+                                     @Body SubscriptionData data);
 }

@@ -87,4 +87,16 @@ public class UrlModifiers {
         String api_key = "A4f98feaafc067dd6d8d5223762e9ad44";
         return String.format("https://api-voice.kaleyra.com/v1/?api_key=%s&method=dial.click2call&caller=%s&receiver=%s", api_key, caller, receiver);
     }
+
+    public String getBucketListUrl() {
+        return "https://hellosathi.uninhibited.org.in/buckets";
+    }
+
+    public String getSubscriptionStatusUrl(String number) {
+        return String.format("https://hellosathi.uninhibited.org.in/status/%s", number);
+    }
+
+    public String getSubscriptionUrl() {
+        return "https://hellosathi.uninhibited.org.in/subscribe";
+    }
 }

@@ -1180,6 +1180,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/card_content_text_size"
                             android:fontFamily="@fonts/Lato_Regular"
+                            android:visibility="gone"
                             android:text="Subscribe to audio stories" />
 
                         <TextView
@@ -1259,6 +1260,21 @@
                             </LinearLayout>
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btnSubscribe"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginHorizontal="10dp"
+                            android:elevation="5dp"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/lato_bold"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:background="@color/colorPrimary"
+                            android:text="@string/subscribe" />
+
 
                     </LinearLayout>
 
