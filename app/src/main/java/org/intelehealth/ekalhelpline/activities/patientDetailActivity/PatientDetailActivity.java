@@ -970,7 +970,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 /*Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
                 intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
                 startActivity(intent);*/
-                calling.setEnabled(false);
+              //  calling.setEnabled(false);
 
                 if(!addPhoneView.getText().toString().isEmpty())
                     showNumberSelectionDialog(2);
@@ -1690,8 +1690,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             return;
 
         UrlModifiers urlModifiers = new UrlModifiers();
-       // String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
-        String caller = "9769779980";
+        String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
         Log.v("main", "caller: "+caller);
         String url = urlModifiers.getIvrCallUrl(caller, receiver);
         Logger.logD(TAG, "ivr call url" + url);
@@ -1703,18 +1702,18 @@ public class PatientDetailActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull String s) {
                         showAlert(R.string.calling_patient);
                         ivr_isInititated = true;
-                        calling.setEnabled(true); //once api hit and response = enable the button...
-                        new Handler().postDelayed(new Runnable() {
+                      //  calling.setEnabled(true); //once api hit and response = enable the button...
+                      /*  new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 getIVR_Call_Response(receiver); //Here, the ivr response api will be hit after 30 seconds assuming that till then the
                                 //hw would pick the phone...
                             }
-                        }, 30000); //30 seconds...
+                        }, 30000); //30 seconds...*/
                     }
                     @Override
                     public void onError(Throwable e) {
-                        calling.setEnabled(true);
+                       // calling.setEnabled(true);
                         showAlert(R.string.error_calling_patient);
                     }
                 });

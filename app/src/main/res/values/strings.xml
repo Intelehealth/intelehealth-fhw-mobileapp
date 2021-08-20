@@ -683,7 +683,7 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
 
-<!--    New Registration Flow-->
+    <!--    New Registration Flow-->
     <string name="text_medical_advice">New Agent/Curiosity Resolution</string>
     <string name="text_new_visit">New Doctor/TLD Visit</string>
     <string name="text_new_advice">New Agent/Curiosity Resolution</string>

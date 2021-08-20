@@ -36,8 +36,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"></activity>
+        <activity
+            android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"
@@ -268,7 +270,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".services.firebase_services.MyFirebaseInstanceIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

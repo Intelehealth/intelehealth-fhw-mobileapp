@@ -13,6 +13,11 @@
             android:orderInCategory="100"
             android:title="@string/menu_option_settings" />
 
+        <item
+            android:id="@+id/performanceOption"
+            android:orderInCategory="100"
+            android:title="Agent Performance" />
+
         <!--<item-->
         <!--android:id="@+id/endOfDayOption"-->
         <!--android:title="@string/menu_option_end_of_day"-->
