@@ -66,7 +66,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         sessionManager = new SessionManager(context);
         customProgressDialog = new CustomProgressDialog(context);
 
-        Log.v("main", "provider_no: "+ sessionManager.getProviderPhoneno());
+        Log.v("main", "provider_no: " + sessionManager.getProviderPhoneno());
 
         recyclerView = findViewById(R.id.ivr_response_recyclerview);
         total_count_textview = findViewById(R.id.total_count_textview);
@@ -110,23 +110,23 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                         response = call_details_response;
                         total_count_textview.setText(getResources().getString(R.string.total_calls) + call_details_response.getData().size());
                         adapter = new IVRCallResponse_Adapter(context, response);
-                        if(response.getData() != null) {
+
+                        if (response.getData() != null) {
                             customProgressDialog.dismiss();
                             recyclerView.setAdapter(adapter);
-                        }
-                        else {
+                        } else {
                             customProgressDialog.dismiss();
-                            Toast.makeText(context, "Something Went Wrong. Refresh again", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, getResources().getString(R.string.something_wrong_refresh_again), Toast.LENGTH_SHORT).show();
                         }
 
-                        Log.v("main", "call_ivr_response: "+ call_details_response);
+                        Log.v("main", "call_ivr_response: " + call_details_response);
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         customProgressDialog.dismiss();
-                        Log.v("main", "call_ivr_response_error: "+ e.getLocalizedMessage());
+                        Log.v("main", "call_ivr_response_error: " + e.getLocalizedMessage());
                     }
 
                     @Override
@@ -183,7 +183,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
 
                 getIVR_Call_Response(sessionManager.getProviderPhoneno(), date_string);
             }
-        },year, month, day);
+        }, year, month, day);
 
         datePickerDialog.show();
 

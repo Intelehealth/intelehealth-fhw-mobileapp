@@ -44,10 +44,9 @@ public class IVRCallResponse_Adapter extends RecyclerView.Adapter<IVRCallRespons
         holder.mobile_no.setText(m_call_details_response.getData().get(position).getCallto());
         holder.status_response.setText(m_call_details_response.getData().get(position).getStatus());
 
-        if(holder.status_response.getText().toString().equalsIgnoreCase("ANSWER")) {
+        if (holder.status_response.getText().toString().equalsIgnoreCase("ANSWER")) {
             holder.status_response.setTextColor(Color.parseColor("#00A300"));
-        }
-        else {
+        } else {
             holder.status_response.setTextColor(Color.RED);
         }
     }
@@ -59,7 +58,7 @@ public class IVRCallResponse_Adapter extends RecyclerView.Adapter<IVRCallRespons
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        TextView  mobile_no, status_response;
+        TextView mobile_no, status_response;
 
         public MyViewHolder(View itemView) {
             super(itemView);

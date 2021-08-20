@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,19 +10,19 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardElevation="4dp"
+        android:layout_marginBottom="10dp"
         app:cardCornerRadius="3dp"
-        android:layout_marginBottom="10dp">
+        app:cardElevation="4dp">
 
         <TextView
             android:id="@+id/total_count_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/total_calls"
-            android:textColor="@color/font_black_1"
-            android:textSize="24sp"
             android:paddingVertical="15dp"
-            android:textAlignment="center"/>
+            android:text="@string/total_calls"
+            android:textAlignment="center"
+            android:textColor="@color/font_black_1"
+            android:textSize="24sp" />
 
     </androidx.cardview.widget.CardView>
 

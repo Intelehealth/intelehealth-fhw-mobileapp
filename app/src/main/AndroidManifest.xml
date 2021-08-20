@@ -38,7 +38,7 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"
-            android:label="Daily Performance Report"></activity>
+            android:label="@string/Daily_Performance_Activity_Title"></activity>
         <activity
             android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
