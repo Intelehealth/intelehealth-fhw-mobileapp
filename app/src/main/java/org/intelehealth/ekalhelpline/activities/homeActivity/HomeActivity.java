@@ -42,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -424,6 +425,12 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.settingsOption:
                 settings();
                 return true;
+
+            case R.id.performanceOption:
+                Intent intent = new Intent(HomeActivity.this, IVRCallResponseActivity.class);
+                startActivity(intent);
+                return true;
+
             case R.id.updateProtocolsOption: {
 
 

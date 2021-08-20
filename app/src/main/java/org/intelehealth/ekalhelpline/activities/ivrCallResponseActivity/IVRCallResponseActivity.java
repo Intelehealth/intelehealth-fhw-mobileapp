@@ -1,10 +1,14 @@
 package org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.intelehealth.ekalhelpline.R;
@@ -30,6 +34,8 @@ import io.reactivex.schedulers.Schedulers;
 public class IVRCallResponseActivity extends AppCompatActivity {
     Context context;
     SessionManager sessionManager;
+    String provider_no;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +43,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         context = IVRCallResponseActivity.this;
         sessionManager = new SessionManager(context);
 
-        String provider_no = sessionManager.getProviderPhoneno();
+        provider_no = sessionManager.getProviderPhoneno();
         getIVR_Call_Response(provider_no);
 
     }
@@ -85,4 +91,21 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_sync, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sync:
+                getIVR_Call_Response(provider_no);
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
