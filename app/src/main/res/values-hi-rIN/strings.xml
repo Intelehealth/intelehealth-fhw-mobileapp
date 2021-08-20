@@ -172,7 +172,7 @@
     //Visit Summary Screen
     <string name="title_activity_family_history">परिवार इतिहास</string>
     <string name="title_activity_physical_exam">  शारीरिक परीक्षा</string>
-    <string name="title_activity_patient_summary">संछेप यात्रा</string>
+    <string name="title_activity_patient_summary">संछेप मामला</string>
     <string name="visit_summary_temperature">तापमान(सेल्सियस)</string>
     <string name="visit_summary_pulseox">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty">समुदाय स्वास्थ्यकर्मी ड्यूटी पर</string>
@@ -201,7 +201,8 @@
     <string name="name_button_download"> बटन डाउनलोड</string>
     <string name="visit_summary_follow_up_date">तारीख का पालन करे</string>
     <string name="visit_summary_follow_up_reminder">कृप्या मरीज को उसके तारीख याद दिलाये:</string>
-    <string name="visit_summary_upload_reminder">कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>
+<!--    <string name="visit_summary_upload_reminder">कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>-->
+    <string name="visit_summary_upload_reminder">कृपया मामला समाप्त करने का प्रयास करने से पहले पहले अपलोड करें!</string>
 
 
     //Diagnostic Tests Screen
@@ -216,8 +217,10 @@
     <string name="button_history">मरीज का इतिहास</string>
     <string name="title_activity_patient_detail">मरीज का विस्तार</string>
     <string name="header_medical_history">इतिहास</string>
-    <string name="button_new_visit">नया यात्रा शुरु करो</string>
-    <string name="header_previous_visits">पिछली यात्रा</string>
+    <string name="button_new_visit">नया मामला शुरु करो</string>
+<!--    <string name="button_new_visit">नया यात्रा शुरु करो</string>-->
+<!--    <string name="header_previous_visits">पिछली यात्रा</string>-->
+    <string name="header_previous_visits">पिछली मामला</string>
     <string name="header_patient_history">चिकित्सक इतिहास</string>
     <string name="header_family_history">परिवार इतिहास</string>
     <string name="string_no_hist">बीमारी का इतिहास नहीं है</string>
@@ -226,7 +229,8 @@
     <string name="row_age">उम्र</string>
     <string name="row_address">पता</string>
     <string name="row_phone_number">फ़ोन</string>
-    <string name="row_open_visit">यात्रा खोलने के लिए क्लिक करे</string>
+<!--    <string name="row_open_visit">यात्रा खोलने के लिए क्लिक करे</string>-->
+    <string name="row_open_visit">मामला खोलने के लिए क्लिक करे</string>
     <string name="title_activity_settings">सेटिंग</string>
 
     <!-- Strings related to Settings -->
@@ -330,9 +334,11 @@
     <string name="visit_images">छवियों पर जाएँ</string>
     <string name="prescription">पर्चे</string>
 
-    <string name="error_no_data">यात्रा समाप्त करने का प्रयास करने से पहले कृपया पहले डाउनलोड करें।</string>
+    <string name="error_no_data">मामला समाप्त करने का प्रयास करने से पहले कृपया पहले डाउनलोड करें।</string>
+<!--    <string name="error_no_data">यात्रा समाप्त करने का प्रयास करने से पहले कृपया पहले डाउनलोड करें।</string>-->
     <string name="error_phone_number">फ़ोन नंबर खाली नहीं हो सकता</string>
-    <string name="action_end_visit">विजिट समाप्त </string>
+    <string name="action_end_visit">मामला समाप्त </string>
+<!--    <string name="action_end_visit">विजिट समाप्त </string>-->
 
     <string name="error_sms">एसएमएस/सन्देश  विफल, कृपया बाद में पुन: प्रयास करें!</string>
     <string name="sms_success">एसएमएस भेजा गया!</string>
@@ -345,7 +351,8 @@
     <string name="show_text">प्रदर्शन</string>
 
     <string name="text_medical_advice">नई चिकित्सा सलाह</string>
-    <string name="text_new_visit">नए डॉक्टर का दौरा</string>
+<!--    <string name="text_new_visit">नए डॉक्टर का दौरा</string>-->
+    <string name="text_new_visit">नया डॉक्टर केस</string>
     <string name="new_patient">नया पेशेंट</string>
     <string name="find_patient">पेशेंट खोजे</string>
     <string name="video_library">वीडियो लाइब्रेरी</string>
@@ -439,7 +446,8 @@
     <string name="title_activity_home"> घर का क्रियाकलाप</string>
     <string name="title_activity_sync">क्रियाकलाप सिंक</string>
     <string name="title_activity_privacy_notice">गोपनीयता सुचना</string>
-    <string name="title_activity_visit_summary">यात्रा सारांश क्रियाकलाप</string>
+    <string name="title_activity_visit_summary">मामला सारांश क्रियाकलाप</string>
+<!--    <string name="title_activity_visit_summary">यात्रा सारांश क्रियाकलाप</string>-->
     <string name="title_activity_past_medical_history">अतीत चिकित्सक  इतिहास क्रियाकलाप</string>
     <string name="title_activity_patient_survey">मरीज सर्वे क्रियाकलाप</string>
 
@@ -466,7 +474,8 @@
     <string name="economic_status">आर्थिक स्थिति</string>
     <string name="education_level">शिक्षा का स्तर</string>
     <string name="caste">जाति</string>
-    <string name="previous_visits">पिछला विजिट</string>
+<!--    <string name="previous_visits">पिछला विजिट</string>-->
+    <string name="previous_visits">पिछला मामला</string>
     <string name="accept">स्वीकार करना</string>
     <string name="reject">अस्वीकार</string>
     <string name="next">आगे</string>
@@ -484,13 +493,15 @@
     <string name="server_url">सर्वर url</string>
     <string name="sync">सिंक</string>
     <string name="update_protocols">प्रोटोकॉल अद्यतन करें</string>
-    <string name="end_all_visit">एंड ऑल विजिट</string>
+    <string name="end_all_visit">सभी मामले समाप्त करें</string>
+<!--    <string name="end_all_visit">एंड ऑल विजिट</string>-->
     <string name="filter_by_creator">निर्माता द्वारा फ़िल्टर करें</string>
     <string name="planet_name">प्लॅनेट नामे</string>
     <string name="ok">ठीक</string>
     <string name="cancel">रद्द करना</string>
     <string name="unable_to_end">समाप्त करने में असमर्थ</string>
-    <string name="upload_before_end_visit_active"> कृपया यात्रा समाप्त करने का प्रयास करने से पहले यात्रा अपलोड करें</string>
+<!--    <string name="upload_before_end_visit_active"> कृपया यात्रा समाप्त करने का प्रयास करने से पहले यात्रा अपलोड करें</string>-->
+    <string name="upload_before_end_visit_active"> कृपया मामला समाप्त करने का प्रयास करने से पहले मामला अपलोड करें</string>
     <string name="active">सक्रिय</string>
     <string name="closed">बन्द है</string>
     <string name="seen_on">पर देखा</string>
@@ -512,20 +523,25 @@
     <string name="patient_image_download_notifi">मरीज छवी डाउनलोड</string>
     <string name="image_download_complete_notifi">छवी डाउनलोड पूरा हुआ</string>
     <string name="no_prior_visits">कोई पूर्वा भ्रमण नहीं</string>
-    <string name="end_visit_notif">यात्रा समाप्त</string>
-    <string name="visit_ended_notif">यात्रा समाप्त हो चुकी है</string>
+    <string name="end_visit_notif">मामला समाप्त</string>
+<!--    <string name="end_visit_notif">यात्रा समाप्त</string>-->
+    <string name="visit_ended_notif">मामला समाप्त हो चुकी है</string>
+<!--    <string name="visit_ended_notif">यात्रा समाप्त हो चुकी है</string>-->
     <string name="this_question_only_one_answer">इस सवाल का केवल एक ही जवाब है</string>
     <string name="uploading_to_doctor_notif">चिकित्सक को भेज दिया</string>
     <string name="visit_data_upload">डेटा अपलोड पर जाएँ</string>
-    <string name="uploading_visit_data_notif">यात्रा डेटा अपलोड करें</string>
-    <string name="uploaded_visit_data_notif"> विजिट डेटा अपलोड हो गया</string>
+    <string name="uploading_visit_data_notif">मामला डेटा अपलोड करें</string>
+<!--    <string name="uploading_visit_data_notif">यात्रा डेटा अपलोड करें</string>-->
+<!--    <string name="uploaded_visit_data_notif"> विजिट डेटा अपलोड हो गया</string>-->
+    <string name="uploaded_visit_data_notif"> मामला डेटा अपलोड हो गया</string>
     <string name="failed_to_upload">अपलोड करने में असफल</string>
     <string name="upload_completed">अपलोड पूरा हुआ</string>
     <string name="check_your_connectivity">अपने कनेक्टिविटी की जाँच करें</string>
     <string name="download_from_doctor">चिकित्सक से डाउनलोड करें</string>
     <string name="prescription_downloaded">पर्चे डाउनलोड हो गये</string>
     <string name="downloading_prescription">पर्चे डाउनलोड हो रहे है</string>
-    <string name="visit_data_failed">यात्रा डेटा असफल रहा</string>
+    <string name="visit_data_failed">मामला डेटा असफल रहा</string>
+<!--    <string name="visit_data_failed">यात्रा डेटा असफल रहा</string>-->
     <string name="patient_data_failed">मरीज डेटा असफल</string>
     <string name="privacy_notice_title">गोपनीयता सुचना</string>
     <string name="no_data_active_patients">इस स्वस्थ्य कार्यकर्ता के नाम पर कोई रोगी रिकॉर्ड नहीं ह </string>
@@ -537,8 +553,9 @@
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
     <string name="last_synced">आखरी समन्वित- </string>
-    <string name="today_visits">आज की विज़िट्स</string>
-    <string name="active_visits">आक्टिव विज़िट्स</string>
+    <string name="today_visits">आज की मामला</string>
+<!--    <string name="today_visits">आज की विज़िट्स</string>-->
+    <string name="active_visits">आक्टिव मामला</string>
     <string name="day">दिन</string>
     <string name="hour">घंटा</string>
     <string name="minute">मिनट</string>
@@ -550,7 +567,8 @@
     <string name="upload_started">अप्लोअडिंग...</string>
     <string name="visit_uploaded_successfully">विज़िट्स सफलतापूर्वक अपलोड किया गया</string>
     <string name="visit_uploaded_failed">इंटरनेट उपलब्ध होने पर अपलोड किया जाएगा</string>
-    <string name="visitID">यात्रा पहचान </string>
+<!--    <string name="visitID">यात्रा पहचान </string>-->
+    <string name="visitID">मामला पहचान </string>
 
     <string name="end_visit_msg">क्या आप वाकई विज़िट को समाप्त करना चाहते हैं?</string>
     <string name="prescription_not_downloaded_check_internet">प्रिस्क्रिप्शन डाउनलोड नहीं किया गया है, इंटरनेट कनेक्शन की जांच करें</string>
@@ -647,8 +665,8 @@
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">
         आपके घर के सदस्यों के लिए पीने के पानी का मुख्य स्रोत क्या है?*</string>
     <string name="what_do_you_do_to_make_drinking_water_safer">पेयजल को सुरक्षित बनाने के लिए आप क्या करते हैं?*</string>
-    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">
-        वहां जाने, पानी लाने और वापस आने (एक यात्रा)में कितना समय लगता है?*</string>
+    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">वहां जाने, पानी लाने और वापस आने (एक मामला)में कितना समय लगता है?*</string>
+<!--    <string name="how_long_does_it_take_to_go_there_get_water_and_come_back_in_one_trip">वहां जाने, पानी लाने और वापस आने (एक यात्रा)में कितना समय लगता है?*</string>-->
     <string name="declined">जवाब देने के लिए मना कर दिया</string>
     <string name="enter_time">समय दर्ज करें</string>
     <string name="in_the_past_two_weeks_was_the_water_from_this_source_not_available_for_at_least_one_full_day">
@@ -667,7 +685,8 @@
     <string name="Months">महीने</string>
     <string name="Years">वर्ष</string>
     <string name="image_saved">छवि सफलतापूर्वक सहेजी गई!</string>
-    <string name="emergency_confirmation">क्या आप इस यात्रा को आपातकाल के रूप में सेट करना चाहते हैं?</string>
+    <string name="emergency_confirmation">क्या आप इस मामला को आपातकाल के रूप में सेट करना चाहते हैं?</string>
+<!--    <string name="emergency_confirmation">क्या आप इस यात्रा को आपातकाल के रूप में सेट करना चाहते हैं?</string>-->
     <string name="per_Hour">घंटे से</string>
     <string name="per_Day">हर दिन</string>
     <string name="per_Week">प्रति सप्ताह</string>

@@ -113,7 +113,8 @@
     <string name="identification_screen_picker_minute">minute</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient">Active Visits</string>
+    <string name="title_activity_active_patient">Active Cases</string>
+<!--    <string name="title_activity_active_patient">Active Visits</string>-->
 
     //Patient History Screen
     <string name="title_activity_get_patient_history">Patient History</string>
@@ -167,7 +168,8 @@
     //Visit Summary Screen
     <string name="title_activity_family_history">Family History</string>
     <string name="title_activity_physical_exam">Physical Exam</string>
-    <string name="title_activity_patient_summary">Visit Summary</string>
+<!--    <string name="title_activity_patient_summary">Visit Summary</string>-->
+    <string name="title_activity_patient_summary">Case Summary</string>
     <string name="visit_summary_temperature">Temperature(C)</string>
     <string name="visit_summary_pulseox">SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty">CHW On Duty</string>
@@ -196,7 +198,8 @@
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
-    <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>
+<!--    <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>-->
+    <string name="visit_summary_upload_reminder">Please upload first before attempting to end the case.</string>
 
 
     //Diagnostic Tests Screen
@@ -211,8 +214,9 @@
     <string name="button_history">Patient History</string>
     <string name="title_activity_patient_detail">Patient Detail</string>
     <string name="header_medical_history">History</string>
-    <string name="button_new_visit">Start new visit</string>
-    <string name="header_previous_visits">Previous visits</string>
+    <string name="button_new_visit">Start new case</string>
+<!--    <string name="header_previous_visits">Previous visits</string>-->
+    <string name="header_previous_visits">Previous cases</string>
     <string name="header_patient_history">Medical history</string>
     <string name="header_family_history">Family history</string>
     <string name="string_no_hist">No history of illness</string>
@@ -221,7 +225,8 @@
     <string name="row_age">Age</string>
     <string name="row_address">Address</string>
     <string name="row_phone_number">Phone number</string>
-    <string name="row_open_visit">Click to open visit</string>
+    <string name="row_open_visit">Click to open cases</string>
+<!--    <string name="row_open_visit">Click to open visit</string>-->
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings related to Settings -->
@@ -245,10 +250,12 @@
     <string name="toast_crash">Application error encountered; report sent</string>
     <string name="title_activity_setup">Setup</string>
     <string name="title_activity_camera">Camera</string>
-    <string name="title_activity_today_patient">Today\'s Visits</string>
+<!--    <string name="title_activity_today_patient">Today\'s Visits</string>-->
+    <string name="title_activity_today_patient">Today\'s Cases</string>
     <string name="title_activity_additional_documents">Additional Documents</string>
     <string name="title_activity_video_library">Video Library</string>
-    <string name="visit_summary_patient_details">Visit details</string>
+    <string name="visit_summary_patient_details">Case details</string>
+<!--    <string name="visit_summary_patient_details">Visit details</string>-->
 
     <!--Setup Activity-->
     <string name="setup_internet">A strong Internet connection is required for setup.</string>
@@ -307,17 +314,19 @@
     <string name="uploading">Uploading</string>
     <string name="downloading">Downloading...</string>
 
-    <string name="visit">Visit</string>
-    <string name="visit_update">Visit Update</string>
+<!--    <string name="visit">Visit</string>-->
+    <string name="visit">Cases</string>
+    <string name="visit_update">Cases Update</string>
     <string name="patient">Patient</string>
     <string name="patient_update">Patient Update</string>
     <string name="patient_images">Patient Profile Image</string>
-    <string name="visit_images">Visit Images</string>
+    <string name="visit_images">Cases Images</string>
     <string name="prescription">Prescription</string>
 
-    <string name="error_no_data">Please download first before attempting to end the visit.</string>
+    <string name="error_no_data">Please download first before attempting to end the case.</string>
+<!--    <string name="error_no_data">Please download first before attempting to end the visit.</string>-->
     <string name="error_phone_number">Phone number can\'t be empty</string>
-    <string name="action_end_visit">End Visit</string>
+    <string name="action_end_visit">End Cases</string>
 
     <string name="error_sms">SMS failed, please try again later!</string>
     <string name="sms_success">SMS Sent!</string>
@@ -456,7 +465,8 @@
     <string name="economic_status">Economic status</string>
     <string name="education_level">Education level</string>
     <string name="caste">Caste</string>
-    <string name="previous_visits">Previous visits</string>
+<!--    <string name="previous_visits">Previous visits</string>-->
+    <string name="previous_visits">Previous cases</string>
     <string name="accept">Accept</string>
     <string name="reject">Reject</string>
     <string name="next">Next</string>
@@ -474,13 +484,15 @@
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
     <string name="update_protocols">Update Protocols</string>
-    <string name="end_all_visit">End All Visit</string>
+    <string name="end_all_visit">End All Case</string>
+<!--    <string name="end_all_visit">End All Visit</string>-->
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="unable_to_end">Unable to end</string>
-    <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>
+    <string name="upload_before_end_visit_active"> Cases.Please upload case before attempting to end the case.</string>
+<!--    <string name="upload_before_end_visit_active"> visits.Please upload visit before attempting to end the visit.</string>-->
     <string name="active">Active</string>
     <string name="closed">Closed</string>
     <string name="seen_on">Seen on</string>
@@ -502,21 +514,26 @@
     <string name="patient_data_upload">Patient Data Upload</string>
     <string name="patient_image_download_notifi">Patient Image Download</string>
     <string name="image_download_complete_notifi">\'s Image Download complete.</string>
-    <string name="no_prior_visits">No prior visits.</string>
-    <string name="end_visit_notif">End visit</string>
-    <string name="visit_ended_notif">Visit ended</string>
+    <string name="no_prior_visits">No prior cases.</string>
+<!--    <string name="no_prior_visits">No prior visits.</string>-->
+<!--    <string name="end_visit_notif">End visit</string>-->
+    <string name="end_visit_notif">End case</string>
+    <string name="visit_ended_notif">Case ended</string>
+<!--    <string name="visit_ended_notif">Visit ended</string>-->
     <string name="this_question_only_one_answer">This question can have only one answer.</string>
     <string name="uploading_to_doctor_notif">Uploading to doctor.</string>
-    <string name="visit_data_upload">Visit Data Upload</string>
-    <string name="uploading_visit_data_notif">Uploading visit data</string>
-    <string name="uploaded_visit_data_notif">Uploaded visit data</string>
+    <string name="visit_data_upload">Case Data Upload</string>
+<!--    <string name="visit_data_upload">Visit Data Upload</string>-->
+    <string name="uploading_visit_data_notif">Uploading case data</string>
+    <string name="uploaded_visit_data_notif">Uploaded case data</string>
     <string name="failed_to_upload">failed to Uploaded</string>
     <string name="upload_completed">Upload Completed</string>
     <string name="check_your_connectivity">Check your connectivity</string>
     <string name="download_from_doctor">Download from doctor</string>
     <string name="prescription_downloaded">Prescription downloaded</string>
     <string name="downloading_prescription">Downloading prescription</string>
-    <string name="visit_data_failed">Visit Data Failed</string>
+<!--    <string name="visit_data_failed">Visit Data Failed</string>-->
+    <string name="visit_data_failed">Case Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
     <string name="no_data_active_patients">No patient records for this health worker found.</string>
@@ -529,8 +546,9 @@
     <string name="no_protocols_found">No protocols found</string>
     <string name="unable_to_get_proper_response">There was a problem downloading protocols, Please contact system administrator</string>
     <string name="last_synced">Last Refreshed - </string>
-    <string name="today_visits">Today\'s Visits</string>
-    <string name="active_visits">Active Visits</string>
+    <string name="today_visits">Today\'s Cases</string>
+<!--    <string name="today_visits">Today\'s Visits</string>-->
+    <string name="active_visits">Active Cases</string>
     <string name="day">day</string>
     <string name="hour">hour</string>
     <string name="minute">minute</string>
@@ -538,13 +556,17 @@
     <string name="ago">ago</string>
     <string name="successfully_synced">Successfully refreshed</string>
     <string name="failed_synced"><![CDATA[Failed refresh, check your internet connection]]></string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
+    <string name="visit_not_uploaded">Case Not Uploaded</string>
+<!--    <string name="visit_not_uploaded">Visit Not Uploaded</string>-->
     <string name="upload_started">Uploading...</string>
-    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>
+<!--    <string name="visit_uploaded_successfully">Visit Uploaded Successfully</string>-->
+    <string name="visit_uploaded_successfully">Case Uploaded Successfully</string>
     <string name="visit_uploaded_failed">Will be uploaded when internet is available</string>
-    <string name="visitID">Visit ID</string>
+<!--    <string name="visitID">Visit ID</string>-->
+    <string name="visitID">Case ID</string>
 
-    <string name="end_visit_msg">Are you sure you want to end the visit?</string>
+    <string name="end_visit_msg">Are you sure you want to end the case?</string>
+<!--    <string name="end_visit_msg">Are you sure you want to end the visit?</string>-->
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
     <string name="privacy_reject_toast">You cannot register a patient without consent</string>
     <string name="not_answered">Not answered</string>
@@ -606,7 +628,8 @@
     <string name="dr_registration_no">Registration No: </string>
     <string name="dr_phone_number">Phone Number: </string>
     <string name="dr_email">Email: </string>
-    <string name="_visit_summary"> Visit Summary</string>
+    <string name="_visit_summary"> Case Summary</string>
+<!--    <string name="_visit_summary"> Visit Summary</string>-->
     <string name="patient_id_">Patient Id: </string>
     <string name="patient_name_title">Patient Name: </string>
     <string name="patient_DOB">Patient DOB: </string>
@@ -656,7 +679,8 @@
     <string name="Months">Months</string>
     <string name="Years">Years</string>
     <string name="image_saved">Image saved successfully!</string>
-    <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>
+<!--    <string name="emergency_confirmation">Do you want to set this visit as an Emergency?</string>-->
+    <string name="emergency_confirmation">Do you want to set this case as an Emergency?</string>
     <string name="per_Hour">per Hour</string>
     <string name="per_Day">per Day</string>
     <string name="per_Week">Per Week</string>
@@ -685,7 +709,8 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
 
     <string name="text_medical_advice">New Medical Advice</string>
-    <string name="text_new_visit">New Doctor Visit</string>
+<!--    <string name="text_new_visit">New Doctor Visit</string>-->
+    <string name="text_new_visit">New Doctor Case</string>
     <string name="text_new_advice">New Medical Advice</string>
     <string name="vaccination_guidance">Vaccination guidance</string>
     <string name="concern_about_covid_re_infection">Concern about COVID re-infection</string>
