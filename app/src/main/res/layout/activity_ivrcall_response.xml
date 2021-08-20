@@ -8,18 +8,6 @@
     android:orientation="vertical"
     tools:context=".activities.ivrCallResponseActivity.IVRCallResponseActivity">
 
-<!--    <TextView
-        android:id="@+id/total_count_textview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="Total Calls: 20"
-        android:textColor="@color/font_black_1"
-        android:textSize="26sp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/textview_shawdow"
-        android:paddingVertical="10dp"
-        android:textAlignment="center"/>-->
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +19,7 @@
             android:id="@+id/total_count_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Total Calls: 20"
+            android:text="Total Calls: "
             android:textColor="@color/font_black_1"
             android:textSize="24sp"
             android:paddingVertical="15dp"
@@ -39,11 +27,10 @@
 
     </androidx.cardview.widget.CardView>
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ivr_response_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycler_card_ivr_response"/>
+        tools:listitem="@layout/recycler_card_ivr_response" />
 
 </LinearLayout>

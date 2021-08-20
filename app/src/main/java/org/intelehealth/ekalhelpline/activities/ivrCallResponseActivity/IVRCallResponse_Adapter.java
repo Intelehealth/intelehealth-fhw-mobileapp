@@ -13,9 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.models.IVR_Call_Models.CallTo_Status_GetterSetter;
 import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Response;
-import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Datum;
 
 import java.util.List;
 

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.models.IVR_Call_Models.CallTo_Status_GetterSetter;
 import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Response;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiClient;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
@@ -27,12 +26,11 @@ import org.intelehealth.ekalhelpline.utilities.Logger;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.utilities.UrlModifiers;
+import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Observable;
@@ -46,9 +44,9 @@ public class IVRCallResponseActivity extends AppCompatActivity {
     SessionManager sessionManager;
     RecyclerView recyclerView;
     IVRCallResponse_Adapter adapter;
-    List<CallTo_Status_GetterSetter> call_list;
     Call_Details_Response response;
     TextView total_count_textview;
+    CustomProgressDialog customProgressDialog;
 
 
     @Override
@@ -57,7 +55,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ivrcall_response);
         context = IVRCallResponseActivity.this;
         sessionManager = new SessionManager(context);
-        call_list = new ArrayList<>();
+        customProgressDialog = new CustomProgressDialog(context);
 
         Log.v("main", "provider_no: "+ sessionManager.getProviderPhoneno());
 
@@ -66,14 +64,17 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
 
         getIVR_Call_Response(sessionManager.getProviderPhoneno());
+
     }
 
     private void getIVR_Call_Response(String providerNo) {
         if (!NetworkConnection.isOnline(this)) {
-            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            customProgressDialog.dismiss();
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_LONG).show();
             return;
         }
 
+        customProgressDialog.show();
         response = new Call_Details_Response();
         ApiClient.changeApiBaseUrl("https://api-voice.kaleyra.com");
         UrlModifiers urlModifiers = new UrlModifiers();
@@ -83,7 +84,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         Date todayDate = today.getTime();
         String todayDate_string = todaydateFormat.format(todayDate);
 
-        String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, "2021/08/19");
+        String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, todayDate_string);
         Logger.logD("main", "ivr call response url" + url);
         Observable<Call_Details_Response> patientIvrCall_response =
                 ApiClient.createService(ApiInterface.class).IVR_CALL_RESPONSE(url);
@@ -102,9 +103,11 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                         total_count_textview.setText("Total Calls: " + call_details_response.getData().size());
                         adapter = new IVRCallResponse_Adapter(context, response);
                         if(response.getData() != null) {
+                            customProgressDialog.dismiss();
                             recyclerView.setAdapter(adapter);
                         }
                         else {
+                            customProgressDialog.dismiss();
                             Toast.makeText(context, "Something Went Wrong. Refresh again", Toast.LENGTH_SHORT).show();
                         }
 
@@ -114,11 +117,13 @@ public class IVRCallResponseActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        customProgressDialog.dismiss();
                         Log.v("main", "call_ivr_response_error: "+ e.getLocalizedMessage());
                     }
 
                     @Override
                     public void onComplete() {
+                        customProgressDialog.dismiss();
                         Log.v("main", "call_ivr_response_onComplete(): ");
                     }
                 });
