@@ -159,8 +159,8 @@ public class ImagesPushDAO {
                                                        Response<Add_Img_Filename_PushImageResponse> response) {
 
                                     //TODO: now add this value in tbl_additional_doc table...
-                                    insertInto_tbl_additional_doc(UUID.randomUUID().toString(), p.getPerson(),
-                                            p.getUuid(), p.getValue());
+                                    imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), p.getPerson(),
+                                            p.getUuid(), p.getValue(), "TRUE");
 
                                     try {
                                         imagesDAO.updateUnsyncedObsImages(p.getUuid());
@@ -182,26 +182,6 @@ public class ImagesPushDAO {
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
-    }
-
-    private void insertInto_tbl_additional_doc(
-            String uuid, String patientId, String obsId, String imageName) {
-
-        SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        sqLiteDatabase.beginTransaction();
-        ContentValues contentValues = new ContentValues();
-
-            contentValues.put("uuid", uuid);
-            contentValues.put("patientId", patientId);
-            contentValues.put("obsId", obsId);
-            contentValues.put("imageName", imageName);
-            contentValues.put("sync", "TRUE");
-
-            sqLiteDatabase.insertWithOnConflict("tbl_additional_doc",
-                    null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-            sqLiteDatabase.setTransactionSuccessful();
-
-            sqLiteDatabase.endTransaction();
     }
 
     public boolean deleteObsImage() {

@@ -96,12 +96,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
             ImagesDAO imagesDAO = new ImagesDAO();
-            ArrayList<String> fileuuidList = new ArrayList<String>();
+            ArrayList<String> fileNameList = new ArrayList<String>();
             ArrayList<File> fileList = new ArrayList<File>();
             try {
-                fileuuidList = imagesDAO.getImageUuid_1(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
-                for (String fileuuid : fileuuidList) {
-                    String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                fileNameList = imagesDAO.getFilename(patientUuid); //TODO:
+                for (String file_imagename : fileNameList) {
+                    String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                     if (new File(filename).exists()) {
                         fileList.add(new File(filename));
                     }
@@ -256,14 +256,18 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }*/
-    private void updateImageDatabase_1(String imageuuid, String mfilename) {
+    private void updateImageDatabase_1(String obsuuid, String mfilename) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase_1(imageuuid, mfilename, encounterAdultIntials,
+            imagesDAO.insertObsImageDatabase_1(obsuuid, mfilename, encounterAdultIntials,
                     UuidDictionary.COMPLEX_IMAGE_AD);
+
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsuuid, mfilename, "TRUE");
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+
     }
 
 

@@ -2146,7 +2146,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void additionalDocumentImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            List<String> imageList = imagesDAO.isImageListObsExists_1(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+          //  List<String> imageList = imagesDAO.isImageListObsExists_1(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            List<String> imageList = imagesDAO.isImageListExists(patientUuid);
             for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
                     additionalImageDownloadText.setVisibility(View.GONE);
@@ -3687,12 +3688,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         callBroadcastReceiver();
 
         ImagesDAO imagesDAO = new ImagesDAO();
-        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<String> fileNameList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileuuidList = imagesDAO.getImageUuid_1(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            for (String fileuuid : fileuuidList) {
-                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+            fileNameList = imagesDAO.getFilename(patientUuid);
+            for (String file_imagename : fileNameList) {
+                String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                 if (new File(filename).exists()) {
                     fileList.add(new File(filename));
                 }

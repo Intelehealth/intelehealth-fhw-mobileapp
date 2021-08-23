@@ -356,7 +356,30 @@ public class ImagesDAO {
         return isUpdated;
     }
 
-    public ArrayList getImageUuid_1(String encounterUuid, String conceptuuid) throws DAOException {
+    public ArrayList getFilename(String patientUuid) throws DAOException {
+        Logger.logD(TAG, "patient uuid for image " + patientUuid);
+        ArrayList<String> uuidList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND sync = ?",
+                    new String[]{patientUuid, "TRUE"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return uuidList;
+    }
+
+    public ArrayList getImageValue(String encounterUuid, String conceptuuid) throws DAOException {
         Logger.logD(TAG, "encounter uuid for image " + encounterUuid);
         ArrayList<String> uuidList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -477,6 +500,31 @@ public class ImagesDAO {
         }
         return isLocalImageExists;
     }
+
+    public void insertInto_tbl_additional_doc(
+            String uuid, String patientId, String obsId, String imageName, String sync) {
+
+        SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        sqLiteDatabase.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("uuid", uuid);
+        contentValues.put("patientId", patientId);
+        contentValues.put("obsId", obsId);
+        contentValues.put("imageName", imageName);
+        contentValues.put("sync", sync);
+
+        sqLiteDatabase.insertWithOnConflict("tbl_additional_doc",
+                null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        sqLiteDatabase.setTransactionSuccessful();
+
+        sqLiteDatabase.endTransaction();
+    }
+
+    public void get_tbl_additional_doc(String patientUuid) {
+        
+    }
+
 
 
 
