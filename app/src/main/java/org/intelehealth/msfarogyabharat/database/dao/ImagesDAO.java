@@ -24,7 +24,8 @@ import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
 
-    public boolean insertObsImageDatabase_1(String uuid, String mfilename, String encounteruuid, String conceptUuid) throws DAOException {
+    public boolean insertObsImageDatabase_1(String uuid, String mfilename, String encounteruuid,
+                                            String conceptUuid) throws DAOException {
         boolean isInserted = false;
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();

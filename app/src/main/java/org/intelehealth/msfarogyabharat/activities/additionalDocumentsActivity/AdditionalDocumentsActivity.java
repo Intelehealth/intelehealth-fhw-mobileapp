@@ -212,6 +212,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             Log.v("main", "photo_name: "+ photo.getName() + "\n" + photo.getAbsolutePath());
             // updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
             String image = UUID.randomUUID().toString();
+
             updateImageDatabase_1(image, mFilename);
         }
     }
@@ -258,7 +259,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private void updateImageDatabase_1(String imageuuid, String mfilename) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase_1(imageuuid, mfilename, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
+            imagesDAO.insertObsImageDatabase_1(imageuuid, mfilename, encounterAdultIntials,
+                    UuidDictionary.COMPLEX_IMAGE_AD);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

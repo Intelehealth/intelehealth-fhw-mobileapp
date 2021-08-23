@@ -90,4 +90,10 @@ public class UrlModifiers {
     public String getSendSmsUrl() {
         return "https://api.kaleyra.io/v1/HXIN1701481071IN/messages";
     }
+
+    public String additional_image_filename_url() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl()+ "/pushimage";
+        return BASE_URL;
+    }
 }

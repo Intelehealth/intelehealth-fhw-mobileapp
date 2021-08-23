@@ -10,8 +10,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Image_Push_Body;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Img_Filename_PushImageResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.msfarogyabharat.models.patientImageModelRequest.PatientProfile;
@@ -29,6 +32,9 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
@@ -107,7 +113,9 @@ public class ImagesPushDAO {
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-            Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
+            Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.
+                    OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
+
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ObsJsonResponse>() {
@@ -126,12 +134,42 @@ public class ImagesPushDAO {
                         @Override
                         public void onComplete() {
                             Logger.logD(TAG, "success");
-                            try {
-                               // imagesDAO.updateUnsyncedObsImages(p.getUuid());
-                                imagesDAO.updateUnsyncedObsImages(p.getUuid());
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
+
+                            //TODO: Add api for image filenaME push api
+                            Add_Image_Push_Body add_image_push_body = new Add_Image_Push_Body();
+                            add_image_push_body.setPatientId(p.getPerson());
+                            add_image_push_body.setObsId(p.getUuid());
+                            add_image_push_body.setImageName(p.getValue());
+
+                            Log.v("main", "image file model" + gson.toJson(add_image_push_body));
+
+                            UrlModifiers urlModifiers = new UrlModifiers();
+                            ImagesDAO imagesDAO = new ImagesDAO();
+                            String url = urlModifiers.additional_image_filename_url();
+
+                            Call<Add_Img_Filename_PushImageResponse> responseCall = AppConstants.apiInterface
+                                    .ADDITIONAL_DOC_IMAGE_FILENAME(url, "Basic " + encoded, add_image_push_body);
+
+                            responseCall.enqueue(new Callback<Add_Img_Filename_PushImageResponse>() {
+                                @Override
+                                public void onResponse(Call<Add_Img_Filename_PushImageResponse> call,
+                                                       Response<Add_Img_Filename_PushImageResponse> response) {
+                                    //TODO: now add this value in obs table...
+                                    System.out.println(response);
+
+                                    try {
+                                        // imagesDAO.updateUnsyncedObsImages(p.getUuid());
+                                        imagesDAO.updateUnsyncedObsImages(p.getUuid());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Add_Img_Filename_PushImageResponse> call, Throwable t) {
+                                    t.printStackTrace();
+                                }
+                            });
                         }
                     });
         }

@@ -3700,7 +3700,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
-            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter); //TODO: here on VS screen we show the images based on image names.
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {

@@ -372,20 +372,6 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                   /* EditText editText = new EditText(CameraActivity.this);
-                    editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(CameraActivity.this)
-                            .setTitle("Enter filename")
-                            .setView(editText);
-                    AlertDialog alertDialog = builder1.create();
-                    alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mImageName = editText.getText().toString();
-                        }
-                    });
-                    alertDialog.show();*/
-
                     //file....
                     if (mImageName == null) {
                         mImageName = "IMG";
