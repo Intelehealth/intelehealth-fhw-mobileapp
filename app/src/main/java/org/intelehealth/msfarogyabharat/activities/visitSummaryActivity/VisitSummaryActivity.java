@@ -2146,21 +2146,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void additionalDocumentImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-          //  List<String> imageList = imagesDAO.isImageListObsExists_1(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            List<String> imageList = imagesDAO.isImageListExists(patientUuid);
-            for (String images : imageList) {
+           // List<String> imageList = imagesDAO.isImageListObsExists_1(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid);
+            if(imageList.size() == 0) {
+                additionalImageDownloadText.setVisibility(View.VISIBLE);
+            }
+            else {
+                for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
                     additionalImageDownloadText.setVisibility(View.GONE);
                 else
                     additionalImageDownloadText.setVisibility(View.VISIBLE);
             }
+            }
+
         } catch (DAOException e) {
             e.printStackTrace();
         }
         additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
+                startDownload(UuidDictionary.COMPLEX_IMAGE_AD, patientUuid);
                 additionalImageDownloadText.setVisibility(View.GONE);
             }
         });
@@ -2191,13 +2197,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void startDownload(String imageType) {
+    private void startDownload(String imageType, String patientUuid) {
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("encounterUuidVitals", encounterVitals);
         intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
         intent.putExtra("ImageType", imageType);
+        intent.putExtra("patientUuid", patientUuid);
         startService(intent);
     }
 

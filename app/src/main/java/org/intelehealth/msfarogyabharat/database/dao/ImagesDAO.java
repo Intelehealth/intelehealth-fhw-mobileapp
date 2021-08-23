@@ -491,10 +491,11 @@ public class ImagesDAO {
     }
 
 
-    public boolean isLocalImageUuidExists(String imageuuid) throws DAOException {
+    //TODO: here....
+    public boolean isLocalImageUuidExists(String imagename) throws DAOException {
         boolean isLocalImageExists = false;
         File imagesPath = new File(AppConstants.IMAGE_PATH);
-        String imageName = imageuuid + ".jpg";
+        String imageName = imagename + ".jpg";
         if (new File(imagesPath + "/" + imageName).exists()) {
             isLocalImageExists = true;
         }
@@ -521,9 +522,49 @@ public class ImagesDAO {
         sqLiteDatabase.endTransaction();
     }
 
-    public void get_tbl_additional_doc(String patientUuid) {
-        
+    public List<String> get_tbl_additional_doc(String patientUuid) throws DAOException {
+        List<String> imagesList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ?", new String[]{patientUuid});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
+                }
+            }
+            idCursor.close();
+        }
+        catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+        }
+
+        return imagesList;
     }
+
+    public String getImageName_forObsUuid(String obsId) {
+        String imagesList = "";
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+
+
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE obsId = ?", new String[]{obsId});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList = idCursor.getString(idCursor.getColumnIndexOrThrow("imageName"));
+                }
+            }
+            idCursor.close();
+
+
+            localdb.endTransaction();
+
+        return imagesList;
+    }
+
 
 
 

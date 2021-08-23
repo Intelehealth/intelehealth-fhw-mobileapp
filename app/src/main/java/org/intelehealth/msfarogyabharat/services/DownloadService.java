@@ -42,6 +42,7 @@ public class DownloadService extends IntentService {
     private int totalFileSize;
     public String baseDir = "";
     public String ImageType = "";
+    private String patientUuid = "";
 
     public DownloadService() {
         super("Download Service");
@@ -53,28 +54,38 @@ public class DownloadService extends IntentService {
         if (intent != null) {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
             ImageType = intent.getStringExtra("ImageType");
+            patientUuid = intent.getStringExtra("patientUuid");
         }
 //        AppConstants.notificationUtils.showNotificationProgress("Download", "Downloading File", 4, IntelehealthApplication.getAppContext(), 0);
 
         baseDir = AppConstants.IMAGE_PATH;
-        initDownload(ImageType);
+
+        try {
+            initDownload(ImageType);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void initDownload(String ImageType) {
+    private void initDownload(String ImageType) throws DAOException {
 
         String url = "";
         List<String> imageObsList = new ArrayList<>();
+        ImagesDAO imagesDAO = new ImagesDAO();
         imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
 
         if (imageObsList.size() == 0) {
 //            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
         }
+
         for (int i = 0; i < imageObsList.size(); i++) {
            // List<String> image_value = new ArrayList<>();
-            String image_value = obsDAO.getImageStrings_value(imageObsList.get(i), ImageType, encounterAdultIntials);
+           // String image_value = obsDAO.getImageStrings_value(imageObsList.get(i), ImageType, encounterAdultIntials);
+            download_ImageFile(patientUuid, imageObsList.get(i));
 
             url = urlModifiers.obsImageUrl(imageObsList.get(i));
+
             Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
             int finalI1 = i;
             List<String> finalImageObsList1 = imageObsList;
