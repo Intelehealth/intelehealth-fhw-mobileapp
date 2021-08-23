@@ -1198,10 +1198,21 @@ public class PatientDetailActivity extends AppCompatActivity {
                 startActivity(intent);*/
               //  calling.setEnabled(false);
 
-                if(!addPhoneView.getText().toString().isEmpty())
+                /*if(!addPhoneView.getText().toString().isEmpty())
                     showNumberSelectionDialog(2);
                 else
-                    callPatientViaIVR(phoneView.getText().toString());
+                    callPatientViaIVR(phoneView.getText().toString());*/
+
+                if(addPhoneView.getText().toString().isEmpty() && !phoneView.getText().toString().isEmpty()) {
+                    showCallNoteSelectionDialog(phoneView.getText().toString());
+                }
+                else if(!addPhoneView.getText().toString().isEmpty() && phoneView.getText().toString().isEmpty()) {
+                    showCallNoteSelectionDialog(addPhoneView.getText().toString());
+                }
+                else if(!addPhoneView.getText().toString().isEmpty() && !phoneView.getText().toString().isEmpty()) {
+                    showNumberSelectionDialog(2);
+                }
+
             }
         });
     }
@@ -1780,6 +1791,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     private void showCallNoteSelectionDialog(String selectedNumber) {
+        Log.v("main", "selectedno: "+selectedNumber);
         Dialog dialog=new Dialog(PatientDetailActivity.this);
         dialog.setContentView(R.layout.dialog_call_record);
         dialog.getWindow().setLayout((6 * width)/7, LinearLayout.LayoutParams.WRAP_CONTENT);
