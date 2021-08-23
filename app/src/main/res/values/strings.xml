@@ -683,7 +683,7 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
 
-<!--    New Registration Flow-->
+    <!--    New Registration Flow-->
     <string name="text_medical_advice">New Agent/Curiosity Resolution</string>
     <string name="text_new_visit">New Doctor/TLD Visit</string>
     <string name="text_new_advice">New Agent/Curiosity Resolution</string>
@@ -725,6 +725,13 @@
     <string name="spinner_outreach"> Outreach call</string>
     <string name="spinner_general_followUp"> General Follow up</string>
     <string name="audio_stories_subscription">Audio Stories Subscription</string>
+    <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">"Total Calls: "</string>
+    <string name="call_to">"Call To: "</string>
+    <string name="status">"Status: "</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+    <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
+
     <string name="subscribe">Subscribe</string>
     <string name="error_bucket_not_selected">Please select a preferred bucket</string>
     <string name="error_time_not_selected">Please select a preferred time</string>

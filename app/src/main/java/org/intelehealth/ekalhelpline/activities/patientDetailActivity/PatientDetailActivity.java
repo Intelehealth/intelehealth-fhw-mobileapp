@@ -2,12 +2,14 @@ package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -58,6 +61,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.ekalhelpline.activities.medicaladvice.MedicalAdviceExistingPatientsActivity;
 import org.intelehealth.ekalhelpline.activities.patientSurveyActivity.PatientSurveyActivity;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
+import org.intelehealth.ekalhelpline.database.dao.ImagesPushDAO;
+import org.intelehealth.ekalhelpline.database.dao.SyncDAO;
+import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Response;
+import org.intelehealth.ekalhelpline.networkApiCalls.ApiClient;
+import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
+import org.intelehealth.ekalhelpline.syncModule.SyncUtils;
 import org.intelehealth.ekalhelpline.models.BucketResponse;
 import org.intelehealth.ekalhelpline.models.SubscriptionData;
 import org.intelehealth.ekalhelpline.models.SubscriptionStatus;
@@ -68,6 +77,7 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -103,8 +113,10 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -133,6 +145,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     String profileImage1 = "";
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
+   // String receiver_number = "";
+    boolean ivr_isInititated = false;
+    ImageView calling;
 
     EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -242,6 +257,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
+                Log.d("main", patientUuid);
                 startActivity(intent2);
 
             }
@@ -813,7 +829,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
         ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
-        ImageView calling = findViewById(R.id.calling);
+        calling = findViewById(R.id.calling);
 
         if (!sessionManager.getLicenseKey().isEmpty()) {
             hasLicense = true;
@@ -1180,6 +1196,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 /*Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
                 intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
                 startActivity(intent);*/
+              //  calling.setEnabled(false);
+
                 if(!addPhoneView.getText().toString().isEmpty())
                     showNumberSelectionDialog(2);
                 else
@@ -1774,8 +1792,21 @@ public class PatientDetailActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(PatientDetailActivity.this,callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
-                callPatientViaIVR(selectedNumber);
+               // Toast.makeText(PatientDetailActivity.this, callNote.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
+                //function call to provide the selected value so that this value will then be added in the Patient atribute table
+                //against that patientuuid...pass value and patientUuid...
+                boolean isInserted = false;
+                try {
+                    isInserted = setReason_for_Call(patientUuid, callNote.getSelectedItem().toString(),
+                            "Reason for Call", "reason_for_call");
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                if(isInserted) {
+                    callPatientViaIVR(selectedNumber);
+                }
+                else
+                    Toast.makeText(context, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
@@ -1832,6 +1863,31 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
+    /**
+     * @param patientUuid PatientUuid of the Patient that is selected
+     * @param value Reason for initiating the call is added in this argument
+     * @return Boolean value if inserted in db than @true else @false ...
+     */
+    private boolean setReason_for_Call(String patientUuid, String value, String attribute_Type, String sync_activity) throws DAOException {
+        boolean isInserted;
+        PatientsDAO patientsDAO = new PatientsDAO();
+        isInserted = patientsDAO.insertPatient_Attribute_ReasonForCall(patientUuid, value, attribute_Type);
+        new SyncUtils().syncForeground(sync_activity);
+
+        return isInserted;
+    }
+
+/*
+    private boolean setIvr_Call_Response(String patientUuid, String value) throws DAOException {
+        boolean isInserted;
+        PatientsDAO patientsDAO = new PatientsDAO();
+        isInserted = patientsDAO.insertPatient_Attribute_IVR_CALL_RESPONSE(patientUuid, value);
+        new SyncUtils().syncForeground("ivr_call_response");
+
+        return isInserted;
+    }
+*/
+
     private void sendWhatsappText(String selectedNumber) {
         String phoneNumberWithCountryCode = "+91" + selectedNumber;
         String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
@@ -1844,6 +1900,13 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     public void callPatientViaIVR(String receiver) {
+        // receiver_number = receiver;
+        /*TODO: 1. hit response api after 30sec
+        *  2. disable call icon after onclicked until onsucess() or onerror()
+        *  3. from the response fetch datetime and status and store it in a new table... ivr_response_tbl = in that store time and status
+        * Than everytime the response returns new data, compare it the data in this table if same than do not store the value in pat attribute tbl else
+        * if not same than store the value in pat_attr_tbl...*/
+
         if (!NetworkConnection.isOnline(this)) {
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
             return;
@@ -1851,8 +1914,10 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        String receiver = phoneView.getText().toString();
         if (TextUtils.isEmpty(receiver))
             return;
+
         UrlModifiers urlModifiers = new UrlModifiers();
         String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
+        Log.v("main", "caller: "+caller);
         String url = urlModifiers.getIvrCallUrl(caller, receiver);
         Logger.logD(TAG, "ivr call url" + url);
         Single<String> patientIvrCall = AppConstants.ivrApiInterface.CALL_PATIENT_IVR(url);
@@ -1862,12 +1927,95 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull String s) {
                         showAlert(R.string.calling_patient);
+                        ivr_isInititated = true;
+                      //  calling.setEnabled(true); //once api hit and response = enable the button...
+                      /*  new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getIVR_Call_Response(receiver); //Here, the ivr response api will be hit after 30 seconds assuming that till then the
+                                //hw would pick the phone...
+                            }
+                        }, 30000); //30 seconds...*/
                     }
                     @Override
                     public void onError(Throwable e) {
+                       // calling.setEnabled(true);
                         showAlert(R.string.error_calling_patient);
                     }
                 });
+    }
+
+    private void getIVR_Call_Response(String receiver) {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        ApiClient.changeApiBaseUrl("https://api-voice.kaleyra.com");
+        UrlModifiers urlModifiers = new UrlModifiers();
+
+        SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        Calendar today = Calendar.getInstance();
+        Date todayDate = today.getTime();
+        String todayDate_string = todaydateFormat.format(todayDate);
+
+        String url = urlModifiers.getIvrCall_ResponseUrl(receiver, todayDate_string);
+        Logger.logD(TAG, "ivr call response url" + url);
+        Observable<Call_Details_Response> patientIvrCall_response = ApiClient.createService(ApiInterface.class).IVR_CALL_RESPONSE(url);
+        patientIvrCall_response
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Call_Details_Response>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Call_Details_Response call_details_response) {
+                        Log.v("main", "call_ivr_response: "+ call_details_response);
+                        String call_status = call_details_response.getData().get(0).getStatus();
+
+                        try {
+                            setReason_for_Call(patientUuid, call_status,
+                                   "Outgoing Call", "ivr_call_response");
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.v("main", "call_ivr_response_error: "+ e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.v("main", "call_ivr_response_onComplete(): ");
+                    }
+                });
+                /*.subscribe(new DisposableObserver<Call_Details_Response>() {
+                    @Override
+                    public void onNext(Call_Details_Response call_details_response) {
+                        Log.v("main", "call_ivr_response: "+ call_details_response);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.v("main", "call_ivr_response_error: "+ e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.v("main", "call_ivr_response_onComplete(): ");
+                    }
+                });*/
+
+
+
+
     }
 
     void showAlert(int messageRes) {
@@ -1882,5 +2030,15 @@ public class PatientDetailActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+       /* if(ivr_isInititated) {
+            getIVR_Call_Response(receiver_number);
+            ivr_isInititated = false;
+        }*/
     }
 }

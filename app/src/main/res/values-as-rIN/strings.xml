@@ -514,6 +514,12 @@
     <string name="take_photo">ফটো লওক</string>
     <string name="choose_from_gallery">গেলেৰীৰ পৰা বাছক</string>
     <string name="additional_doc_image_picker_title">অতিৰিক্ত দস্তাবেজ যোগ কৰক!</string>
+    <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">Total Calls:</string>
+    <string name="call_to">Call To:</string>
+    <string name="status">Status:</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+    <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
 
 
 </resources>

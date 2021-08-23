@@ -700,4 +700,10 @@
     <string name="who_does_number_belongs">Whom does the number you have used for call, belongs to?*</string>
     <string name="calling_on_behalf">Are you calling on behalf of someone or for self?*</string>
     <string name="know_about_helpline">How do you know about our helpline?*</string>
+    <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">Total Calls:</string>
+    <string name="call_to">Call To:</string>
+    <string name="status">Status:</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+    <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
 </resources>

@@ -36,8 +36,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"
+            android:label="@string/Daily_Performance_Activity_Title"></activity>
+        <activity
+            android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="uiMode"

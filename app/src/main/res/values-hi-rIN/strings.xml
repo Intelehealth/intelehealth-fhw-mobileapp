@@ -714,4 +714,10 @@
     <string name="num_belongs_to">फ़ोन नंबर किसका है</string>
     <string name="helpline_reference">हेल्पलाईन संदर्भ</string>
     <string name="select_phone_num">फ़ोन नंबर चुनें</string>
+    <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">Total Calls:</string>
+    <string name="call_to">Call To:</string>
+    <string name="status">Status:</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+    <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
 </resources>

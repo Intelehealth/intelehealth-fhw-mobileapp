@@ -539,5 +539,11 @@
     <string name="take_photo">ఫోటో తీసుకో</string>
     <string name="choose_from_gallery">గ్యాలరీ నుండి ఎంచుకోండి</string>
     <string name="additional_doc_image_picker_title">అదనపు పత్రాన్ని జోడించండి!</string>
+    <string name="stored_successfully">Stored Successfully</string>
+    <string name="total_calls">Total Calls:</string>
+    <string name="call_to">Call To:</string>
+    <string name="status">Status:</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+    <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
 
 </resources>

@@ -3,30 +3,16 @@
 
     <group android:id="@+id/main_menu_group">
 
-        <!--<item-->
-        <!--android:id="@+id/syncOption"-->
-        <!--android:title="@string/menu_option_sync"-->
-        <!--android:orderInCategory="50" />-->
-
         <item
             android:id="@+id/settingsOption"
             android:orderInCategory="100"
             android:title="@string/menu_option_settings" />
 
-        <!--<item-->
-        <!--android:id="@+id/endOfDayOption"-->
-        <!--android:title="@string/menu_option_end_of_day"-->
-        <!--android:orderInCategory="100" />-->
+        <item
+            android:id="@+id/performanceOption"
+            android:orderInCategory="100"
+            android:title="@string/Daily_Performance_Activity_Title" />
 
-        <!--<item-->
-        <!--android:id="@+id/backupOption"-->
-        <!--android:orderInCategory="125"-->
-        <!--android:title="Backup" />-->
-
-        <!--<item-->
-        <!--android:id="@+id/restoreOption"-->
-        <!--android:orderInCategory="125"-->
-        <!--android:title="Restore" />-->
         <item
             android:id="@+id/updateProtocolsOption"
             android:orderInCategory="150"
