@@ -1,6 +1,8 @@
 package org.intelehealth.msfarogyabharat.database.dao;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -9,6 +11,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
@@ -154,11 +157,12 @@ public class ImagesPushDAO {
                                 @Override
                                 public void onResponse(Call<Add_Img_Filename_PushImageResponse> call,
                                                        Response<Add_Img_Filename_PushImageResponse> response) {
-                                    //TODO: now add this value in obs table...
-                                    System.out.println(response);
+
+                                    //TODO: now add this value in tbl_additional_doc table...
+                                    insertInto_tbl_additional_doc(UUID.randomUUID().toString(), p.getPerson(),
+                                            p.getUuid(), p.getValue());
 
                                     try {
-                                        // imagesDAO.updateUnsyncedObsImages(p.getUuid());
                                         imagesDAO.updateUnsyncedObsImages(p.getUuid());
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
@@ -178,6 +182,26 @@ public class ImagesPushDAO {
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_OBS_IMAGE_PUSH_DONE));
 //        AppConstants.notificationUtils.DownloadDone("Patient Profile", "Completed Uploading Patient Profile", 4, IntelehealthApplication.getAppContext());
         return true;
+    }
+
+    private void insertInto_tbl_additional_doc(
+            String uuid, String patientId, String obsId, String imageName) {
+
+        SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        sqLiteDatabase.beginTransaction();
+        ContentValues contentValues = new ContentValues();
+
+            contentValues.put("uuid", uuid);
+            contentValues.put("patientId", patientId);
+            contentValues.put("obsId", obsId);
+            contentValues.put("imageName", imageName);
+            contentValues.put("sync", "TRUE");
+
+            sqLiteDatabase.insertWithOnConflict("tbl_additional_doc",
+                    null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+            sqLiteDatabase.setTransactionSuccessful();
+
+            sqLiteDatabase.endTransaction();
     }
 
     public boolean deleteObsImage() {
