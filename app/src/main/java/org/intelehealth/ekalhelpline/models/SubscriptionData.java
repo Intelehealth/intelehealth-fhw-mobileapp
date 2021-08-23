@@ -21,4 +21,8 @@ public class SubscriptionData {
     @SerializedName("subscribedby")
     @Expose
     public String subscribedby;
+
+    @SerializedName("language")
+    @Expose
+    public String language;
 }

@@ -21,6 +21,13 @@ public class BucketResponse {
         @Expose
         public String bucketName;
 
+        @SerializedName("bucketforgender")
+        @Expose
+        public String bucketforgender;
+
+        @SerializedName("languagesavailablein")
+        @Expose
+        public String languagesavailablein;
         @Override
         public String toString() {
             return bucketName;

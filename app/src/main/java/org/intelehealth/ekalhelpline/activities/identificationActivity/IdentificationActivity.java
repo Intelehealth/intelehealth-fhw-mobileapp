@@ -1071,6 +1071,10 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGenderF.setChecked(false);
                 Log.v(TAG, "yes");
             }
+
+            mGenderOther.setEnabled(false);
+            mGenderM.setEnabled(false);
+            mGenderF.setEnabled(false);
         }
 
         if (mGenderM.isChecked()) {

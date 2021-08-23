@@ -1,6 +1,5 @@
 package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -41,7 +40,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -174,11 +172,11 @@ public class PatientDetailActivity extends AppCompatActivity {
     ArrayList<String> callNoteList;
     DisplayMetrics metrics;
     int width, height;
-    private Spinner spinner_pref_bucket, spinner_pref_time;
+    private Spinner spinner_pref_bucket, spinner_pref_time, spinner_pref_language;
     private CheckBox chb_subscription;
     private Button btnSubscribe;
     private String subscriptionAuthHeader = "Bearer bnVyc2UxOk51cnNlMTIz";
-    private CharSequence selectedSubscriptionTime;
+    private CharSequence selectedSubscriptionTime, selectedLanguage;
     private BucketResponse.Bucket selectedBucket;
 
     @Override
@@ -427,6 +425,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private void initSubscription() {
         spinner_pref_bucket = findViewById(R.id.spinner_pref_bucket);
         spinner_pref_time = findViewById(R.id.spinner_pref_time);
+        spinner_pref_language = findViewById(R.id.spinner_pref_language);
 //        chb_subscription = findViewById(R.id.chb_subscription);
 //        chb_subscription.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
@@ -442,9 +441,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         ArrayList<BucketResponse.Bucket> buckets = new ArrayList<>();
+        ArrayList<BucketResponse.Bucket> allBuckets = new ArrayList<>();
         BucketResponse.Bucket e = new BucketResponse.Bucket();
-        e.bucketName = "Select";
-        buckets.add(e);
+        e.bucketName = getString(R.string.select_bucket);
+        allBuckets.add(e);
         ArrayAdapter<BucketResponse.Bucket> bucketAdapter = new ArrayAdapter<BucketResponse.Bucket>(this,
                 android.R.layout.simple_spinner_item, buckets);
         bucketAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -484,6 +484,26 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.language_names, android.R.layout.simple_spinner_dropdown_item);
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_pref_language.setAdapter(languageAdapter);
+        selectedLanguage = getResources().getStringArray(R.array.language_names)[0];
+        spinner_pref_language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedLanguage = languageAdapter.getItem(position);
+                buckets.clear();
+                buckets.addAll(filterBuckets(allBuckets, selectedLanguage));
+                spinner_pref_bucket.setSelection(0);
+                bucketAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
         int finalPreferred_time = preferred_time;
@@ -491,7 +511,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BucketResponse> call, Response<BucketResponse> response) {
                 if (response.body() != null) {
-                    buckets.addAll(response.body().data);
+                    allBuckets.addAll(response.body().data);
+                    buckets.clear();
+                    buckets.addAll(filterBuckets(allBuckets, selectedLanguage));
+                    bucketAdapter.notifyDataSetChanged();
 
                     apiInterface.getSubscriptionStatus(urlModifiers.getSubscriptionStatusUrl(patient_new.getPhone_number()), subscriptionAuthHeader).enqueue(new Callback<SubscriptionStatus>() {
                         @Override
@@ -512,6 +535,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                                         break;
                                     }
                                 }
+
+                                updateSubscriptionUI(false);
+                                findViewById(R.id.bucket_language).setVisibility(View.GONE);
                             }
                         }
 
@@ -553,11 +579,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 data.bucketsubscribedto = selectedBucket.bucketId;
                 data.slotselected = selectedSubscriptionTime.toString();
                 data.subscribedby = sessionManager.getProviderID();
+                data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language.getSelectedItemPosition()];
                 apiInterface.subscribe(urlModifiers.getSubscriptionUrl(), subscriptionAuthHeader, data).enqueue(new Callback<SubscriptionStatus>() {
                     @Override
                     public void onResponse(Call<SubscriptionStatus> call, Response<SubscriptionStatus> response) {
                         SubscriptionStatus body = response.body();
                         if (body != null) {
+                            updateSubscriptionUI(false);
                             new AlertDialog.Builder(context).setMessage(body.data).setPositiveButton(R.string.generic_ok, null).show();
                         }
                     }
@@ -571,9 +599,21 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
     }
 
+    private List<BucketResponse.Bucket> filterBuckets(ArrayList<BucketResponse.Bucket> allBuckets, CharSequence selectedLanguage) {
+        List<BucketResponse.Bucket> buckets = new ArrayList<>();
+        for (int i = 0; i < allBuckets.size(); i++) {
+            BucketResponse.Bucket bucket = allBuckets.get(i);
+            if (i == 0 || (bucket.languagesavailablein != null && bucket.languagesavailablein.contains(selectedLanguage) && patient_new.getGender().equalsIgnoreCase(bucket.bucketforgender))) {
+                buckets.add(bucket);
+            }
+        }
+        return buckets;
+    }
+
     private void updateSubscriptionUI(boolean enable) {
         spinner_pref_bucket.setEnabled(enable);
         spinner_pref_time.setEnabled(enable);
+        spinner_pref_language.setEnabled(enable);
         btnSubscribe.setEnabled(enable);
         if (!enable) {
             btnSubscribe.setAlpha(0.8f);
