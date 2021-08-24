@@ -20,7 +20,8 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_marginEnd="20dp"
-            android:src="@mipmap/ic_launcher_msf" />
+            android:padding="15dp"
+            android:src="@mipmap/ic_launcher_ibis" />
 
 <!--        <ImageView-->
 <!--            android:id="@+id/iv_ekal"-->

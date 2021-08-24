@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">इबिस-विकल्प-हेल्पलाइन</string>
+    <string name="app_name" translatable="false">विकल्प-हेल्पलाइन</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">आगे</string>
@@ -40,7 +40,7 @@
 
     //Login Screen
 
-    <string name="title_activity_login">इबिस-विकल्प-हेल्पलाइन</string>
+    <string name="title_activity_login">विकल्प-हेल्पलाइन</string>
     <!--    <string name="title_activity_login">एकल आरोग्य हेल्प लाइन</string>-->
     <string name="prompt_email">उपयोगकर्ता नाम</string>
     <string name="prompt_password">कुंजिका</string>
@@ -612,8 +612,8 @@
     <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है|</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
-    <string name="intelehealth_a_telemedicine_platform">इबिस-विकल्प-हेल्पलाइन एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
-    <string name="intelehealth_name">इबिस-विकल्प-हेल्पलाइन</string>
+    <string name="intelehealth_a_telemedicine_platform">विकल्प-हेल्पलाइन एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_name">विकल्प-हेल्पलाइन</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">सक्रिय</string>
@@ -642,7 +642,7 @@
     <string name="days">दिन</string>
     <string name="contact">संपर्क करें</string>
     <string name="has_a_new_prescription">एक नया पर्ची है</string>
-    <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से पर्चे पीडीएफ का चयन करें - Internal storage/इबिस-विकल्प-हेल्पलाइन_PDF</string>
+    <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से पर्चे पीडीएफ का चयन करें - Internal storage/विकल्प-हेल्पलाइन_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">उस मोबाइल नंबर को दर्ज करें जिसमें आप प्रिस्क्रिप्षन (डॉक्टर की पर्ची) को साझा करना चाहते हैं।</string>
     <string name="share">साझा करें</string>
     <string name="please_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>

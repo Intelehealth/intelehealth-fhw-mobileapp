@@ -21,7 +21,8 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher_msf" />
+            android:padding="30dp"
+            android:src="@mipmap/ic_launcher_ibis" />
 
 <!--        <ImageView-->
 <!--            android:layout_width="160dp"-->

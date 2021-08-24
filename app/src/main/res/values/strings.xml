@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Ibis-Vikalp-Helpline</string>
+    <string name="app_name">Vikalp Helpline</string>
 
     //Generic
     <string name="generic_the_flipping_word_next">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">Ibis-Vikalp-Helpline</string>
+    <string name="title_activity_login">Vikalp Helpline</string>
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_admin_password">Admin Password</string>
@@ -608,8 +608,8 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Ibis-Vikalp-Helpline is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Ibis-Vikalp-Helpline</string>
+    <string name="intelehealth_a_telemedicine_platform">Vikalp Helpline is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Vikalp Helpline</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -639,7 +639,7 @@
     <string name="days">days</string>
     <string name="contact">Contact</string>
     <string name="has_a_new_prescription">has a new prescription</string>
-    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Ibis-Vikalp-Helpline_PDF</string>
+    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Vikalp Helpline_PDF</string>
     <string name="enter_mobile_number_to_share_prescription">Enter the mobile number to which you want to share the prescription.</string>
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
