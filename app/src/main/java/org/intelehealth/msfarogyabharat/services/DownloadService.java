@@ -124,17 +124,13 @@ public class DownloadService extends IntentService {
     private void initDownload(String ImageType) throws DAOException {
         List<String> imageObsList = new ArrayList<>();
         ImagesDAO imagesDAO = new ImagesDAO();
-        imageObsList = obsDAO.getImageStrings_1(ImageType, encounterAdultIntials);
+        imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
 
         if (imageObsList.size() == 0) {
-//            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
+            //do something...
         }
 
         for (int i = 0; i < imageObsList.size(); i++) {
-           // List<String> image_value = new ArrayList<>();
-           // String image_value = obsDAO.getImageStrings_value(imageObsList.get(i), ImageType, encounterAdultIntials);
-           // String image_value = download_ImageFile(patientUuid, imageObsList.get(i));
-
             String downloadurl = "";
             downloadurl = urlModifiers.obsImageFilenameDownlaodUrl(patientUuid, imageObsList.get(i));
 
