@@ -15,6 +15,18 @@ public class Datum {
     @Expose
     private String imageName;
 
+    public String getObsId() {
+        return obsId;
+    }
+
+    public void setObsId(String obsId) {
+        this.obsId = obsId;
+    }
+
+    @SerializedName("obsId")
+    @Expose
+    private String obsId;
+
     public String getImageName() {
         return imageName;
     }

@@ -20,8 +20,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.AddImageDownloadResponse;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Doc_DataModel;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
@@ -49,8 +51,10 @@ public class DownloadService extends IntentService {
     public String baseDir = "";
     public String ImageType = "";
     private String patientUuid = "";
-    List<String> mfilename = new ArrayList<>();
+    List<Add_Doc_DataModel> dataModels = new ArrayList<>();
     String url = "";
+    Observable<AddImageDownloadResponse> responseObservable;
+    Observable<ResponseBody> downloadobs;
 
     public DownloadService() {
         super("Download Service");
@@ -77,49 +81,6 @@ public class DownloadService extends IntentService {
 
     }
 
-/*
-    private void initDownload(String ImageType) {
-
-        String url = "";
-        List<String> imageObsList = new ArrayList<>();
-        imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
-        if (imageObsList.size() == 0) {
-//            AppConstants.notificationUtils.DownloadDone("Download", "No Images to Download", 4, IntelehealthApplication.getAppContext());
-        }
-        for (int i = 0; i < imageObsList.size(); i++) {
-            url = urlModifiers.obsImageUrl(imageObsList.get(i));
-            Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-            int finalI1 = i;
-            List<String> finalImageObsList1 = imageObsList;
-            downloadobs.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<ResponseBody>() {
-                        @Override
-                        public void onNext(ResponseBody responseBody) {
-
-                            try {
-                                downloadFile(responseBody, finalImageObsList1.get(finalI1));
-                            } catch (IOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                            }
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            Logger.logD(TAG, "onerror" + e.getMessage());
-                        }
-
-                        @Override
-                        public void onComplete() {
-                            Logger.logD(TAG, "oncomplete");
-
-                        }
-                    });
-        }
-
-    }
-*/
-
 
     private void initDownload(String ImageType) throws DAOException {
         List<String> imageObsList = new ArrayList<>();
@@ -131,59 +92,77 @@ public class DownloadService extends IntentService {
         }
 
         for (int i = 0; i < imageObsList.size(); i++) {
+            Log.v(TAG, "image_list: "+imageObsList.get(i)); //image list
             String downloadurl = "";
             downloadurl = urlModifiers.obsImageFilenameDownlaodUrl(patientUuid, imageObsList.get(i));
 
-            Observable<AddImageDownloadResponse> responseObservable =
+            responseObservable =
                     AppConstants.apiInterface.OBS_IMAGE_FILENAME_DOWNLOAD(downloadurl,
                             "Basic " + sessionManager.getEncoded());
 
             int finalI = i;
             List<String> finalImageObsList = imageObsList;
+          //  List<String> finalImageObsList1 = imageObsList;
             responseObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AddImageDownloadResponse>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-
                         }
 
                         @Override
                         public void onNext(AddImageDownloadResponse addImageDownloadResponse) {
-                            mfilename.add(addImageDownloadResponse.getData().get(0).getImageName());
-                            Log.v("main", "download_filename: "+ mfilename);
+                            Log.v(TAG, "download_filename: "+ addImageDownloadResponse.getData().get(0).getImageName() +
+                                    addImageDownloadResponse.getData().get(0).getObsId());
 
-                            url = urlModifiers.obsImageUrl(finalImageObsList.get(finalI));
-                            List<String> final_mfilename = mfilename; //TODO: check if this obsuuid and the above one is correct or not...
+                            dataModels.add(new Add_Doc_DataModel
+                                    (addImageDownloadResponse.getData().get(0).getObsId(),
+                                            addImageDownloadResponse.getData().get(0).getImageName()));
 
-                            //Image Pull API.....
-                            Observable<ResponseBody> downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD
-                                    (url, "Basic " + sessionManager.getEncoded());
-                            downloadobs.subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(new DisposableObserver<ResponseBody>() {
-                                        @Override
-                                        public void onNext(ResponseBody responseBody) {
-                                            try {
-                                                //  downloadFile(responseBody, finalImageObsList1.get(finalI1));
-                                                downloadFile(responseBody, final_mfilename.get(finalI), finalImageObsList.get(finalI));
-                                            } catch (IOException e) {
-                                                FirebaseCrashlytics.getInstance().recordException(e);
-                                            }
-                                        }
+                            ////
+                            if(finalImageObsList.size() == dataModels.size()) {
 
-                                        @Override
-                                        public void onError(Throwable e) {
-                                            Logger.logD(TAG, "onerror" + e.getMessage());
-                                        }
+                                for (int j = 0; j < dataModels.size(); j++) {
+                                    url = urlModifiers.obsImageUrl(dataModels.get(j).getObsuuid());
+                                    Log.v(TAG, "url_downlaodimage: "+url);
+                                    //Image Pull API.....
+                                    downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD
+                                            (url, "Basic " + sessionManager.getEncoded());
+                                    int finalJ = j;
+                                    downloadobs.subscribeOn(Schedulers.from(Executors.newFixedThreadPool(1))) //TODO: scehduler.from....
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new DisposableObserver<ResponseBody>() {
+                                                @Override
+                                                public void onNext(ResponseBody responseBody) {
+                                                    try {
+                                                        downloadFile(responseBody, dataModels.get(finalJ).getFilename(), dataModels.get(finalJ).getObsuuid());
+                                                        Log.v(TAG, dataModels.get(finalJ).getFilename() + ":" + dataModels.get(finalJ).getObsuuid());
 
-                                        @Override
-                                        public void onComplete() {
-                                            Logger.logD(TAG, "oncomplete");
+                                                    } catch (IOException e) {
+                                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                                    }
+                                                }
 
-                                        }
-                                    });
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    Logger.logD(TAG, "onerror" + e.getMessage());
+                                                }
+
+                                                @Override
+                                                public void onComplete() {
+                                                    Logger.logD(TAG, "oncomplete");
+
+                                                }
+                                            });
+                                }
+
+                            }
+
+
+                           // url = urlModifiers.obsImageUrl(finalImageObsList.get(finalI));
+                           // List<String> final_mfilename = mfilename; //TODO: check if this obsuuid and the above one is correct or not...
+
 
 
                         }
@@ -258,7 +237,6 @@ public class DownloadService extends IntentService {
     }
 
     private void sendNotification(Download download) {
-
         sendIntent(download);
     }
 
