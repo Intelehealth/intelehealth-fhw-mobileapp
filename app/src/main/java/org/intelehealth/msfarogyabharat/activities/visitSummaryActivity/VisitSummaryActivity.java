@@ -138,7 +138,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "";
+    String speciality_selected = "Doctor not needed";
 
     boolean uploaded = false;
     boolean downloaded = false;

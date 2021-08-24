@@ -118,7 +118,8 @@
     <string name="identification_screen_picker_minute" translatable="false">मिनट</string>
 
     //Active Patients Screen
-    <string name="title_activity_active_patient">आक्टिव विज़िट्स</string>
+<!--    <string name="title_activity_active_patient">आक्टिव विज़िट्स</string>-->
+    <string name="title_activity_active_patient">आक्टिव मामला</string>
 
     //Patient History Screen
     <string name="title_activity_get_patient_history">पेशेंट का इतिहास</string>
@@ -263,7 +264,8 @@
     <string name="title_activity_setup">सेट अप</string>
 
     <string name="title_activity_camera">कैमरा</string>
-    <string name="title_activity_today_patient">आज की विज़िट्स</string>
+    <string name="title_activity_today_patient">आज की मामला</string>
+<!--    <string name="title_activity_today_patient">आज की विज़िट्स</string>-->
     <string name="title_activity_additional_documents">अतिरिक्त दस्तावेज़</string>
     <string name="title_activity_video_library">वीडियो लाइब्रेरी</string>
     <string name="visit_summary_patient_details">विवरण पर जाएँ</string>
@@ -565,12 +567,12 @@
     <string name="failed_synced">समन्वित विफल, कृपया अपने नेट की जांच करे</string>
     <string name="visit_not_uploaded">अपलोड नही किया गया</string>
     <string name="upload_started">अप्लोअडिंग...</string>
-    <string name="visit_uploaded_successfully">विज़िट्स सफलतापूर्वक अपलोड किया गया</string>
+    <string name="visit_uploaded_successfully">मामला सफलतापूर्वक अपलोड किया गया</string>
     <string name="visit_uploaded_failed">इंटरनेट उपलब्ध होने पर अपलोड किया जाएगा</string>
 <!--    <string name="visitID">यात्रा पहचान </string>-->
     <string name="visitID">मामला पहचान </string>
 
-    <string name="end_visit_msg">क्या आप वाकई विज़िट को समाप्त करना चाहते हैं?</string>
+    <string name="end_visit_msg">क्या आप वाकई मामला को समाप्त करना चाहते हैं?</string>
     <string name="prescription_not_downloaded_check_internet">प्रिस्क्रिप्शन डाउनलोड नहीं किया गया है, इंटरनेट कनेक्शन की जांच करें</string>
     <string name="privacy_reject_toast">आप सहमति के बिना एक मरीज को पंजीकृत नहीं कर सकते</string>
     <string name="not_answered">जवाब नहीं दिया</string>
