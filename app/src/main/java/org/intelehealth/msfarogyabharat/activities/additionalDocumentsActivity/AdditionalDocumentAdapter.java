@@ -52,9 +52,10 @@ String mEncounterVisitUUID;
     private Context context;
     private String filePath;
     ImagesDAO imagesDAO = new ImagesDAO();
+    private String patientUuid;
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, String mEncounterUUID,List<DocumentObject> documentList, String filePath) {
+    public AdditionalDocumentAdapter(Context context, String mEncounterUUID, List<DocumentObject> documentList, String filePath, String patientUuid) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -62,6 +63,8 @@ String mEncounterVisitUUID;
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
         this.filePath = filePath;
+        this.patientUuid = patientUuid;
+
         mEncounterVisitUUID = mEncounterUUID;
     }
 
@@ -108,12 +111,18 @@ String mEncounterVisitUUID;
                 documentList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, documentList.size());
-                String imageName = holder.getDocumentNameTextView().getText().toString();
+               // String imageName = holder.getDocumentNameTextView().getText().toString();
 
                 try {
-                    List<String> imageList = imagesDAO.isImageListObsExists(mEncounterVisitUUID, UuidDictionary.COMPLEX_IMAGE_AD);
-                    imagesDAO.deleteImageFromDatabase(imageList.get(position));
+                    //imageList is obsId of additional doc...
+                  //  List<String> imageList = imagesDAO.isImageListObsExists(mEncounterVisitUUID, UuidDictionary.COMPLEX_IMAGE_AD);
+                    //TODO: fetch obsid from tbl_add_doc as it is unique key and then once u get an array
+                    // delete the row from tbl_add_doc where the obsid is matching...
+                    List<String> obsId_List = imagesDAO.get_obsId_tbl_additional_doc(patientUuid);
+                    imagesDAO.deleteImageFromDatabase(obsId_List.get(position)); //voided = 1 -- deleted...
+                    imagesDAO.delete_obsId_row_tbl_additional_doc(obsId_List.get(position));
 //                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
+
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }

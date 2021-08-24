@@ -160,7 +160,7 @@ public class ImagesPushDAO {
 
                                     //TODO: now add this value in tbl_additional_doc table...
                                     imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), p.getPerson(),
-                                            p.getUuid(), p.getValue(), "TRUE");
+                                            p.getUuid(), p.getValue(), "0", "TRUE");
 
                                     try {
                                         imagesDAO.updateUnsyncedObsImages(p.getUuid());

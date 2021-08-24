@@ -229,7 +229,7 @@ public class DownloadService extends IntentService {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             imagesDAO.updateObs(obsUuid);
-            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsUuid, image_filename, "TRUE");
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsUuid, image_filename, "0", "TRUE");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

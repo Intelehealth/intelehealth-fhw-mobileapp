@@ -42,6 +42,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "patientId TEXT," +
                     "obsId TEXT UNIQUE," +
                     "imageName TEXT," +
+                    "voided TEXT," +
                     "sync TEXT" +
                     ")";
 

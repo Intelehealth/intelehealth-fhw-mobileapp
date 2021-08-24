@@ -126,6 +126,7 @@ public class ImagesDAO {
     }
 
     public boolean deleteImageFromDatabase(String obsUuid) throws DAOException {
+        //voided = 1 -- deleted
         boolean isDeleted = false;
         int updateDeltedRows = 0;
         Logger.logD(TAG, "Deleted image uuid" + obsUuid);
@@ -362,8 +363,8 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND sync = ?",
-                    new String[]{patientUuid, "TRUE"});
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
@@ -447,6 +448,7 @@ public class ImagesDAO {
         return imagesList;
     }
 
+/*
     public List<String> isImageListObsExists_1(String encounterUuid, String conceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -467,6 +469,7 @@ public class ImagesDAO {
 
         return imagesList;
     }
+*/
 
 
     public List<String> isImageListObsExists(String encounterUuid, String conceptUuid) throws DAOException {
@@ -503,7 +506,7 @@ public class ImagesDAO {
     }
 
     public void insertInto_tbl_additional_doc(
-            String uuid, String patientId, String obsId, String imageName, String sync) {
+            String uuid, String patientId, String obsId, String imageName, String voided, String sync) {
 
         SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sqLiteDatabase.beginTransaction();
@@ -513,6 +516,7 @@ public class ImagesDAO {
         contentValues.put("patientId", patientId);
         contentValues.put("obsId", obsId);
         contentValues.put("imageName", imageName);
+        contentValues.put("voided", voided);
         contentValues.put("sync", sync);
 
         sqLiteDatabase.insertWithOnConflict("tbl_additional_doc",
@@ -528,7 +532,8 @@ public class ImagesDAO {
         localdb.beginTransaction();
 
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ?", new String[]{patientUuid});
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
@@ -545,6 +550,53 @@ public class ImagesDAO {
         return imagesList;
     }
 
+    public void delete_obsId_row_tbl_additional_doc(String obsUuid) throws DAOException {
+        Logger.logD(TAG, "Deleted image uuid" + obsUuid);
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+
+            ContentValues cv = new ContentValues();
+            cv.put("voided", "1"); //voided=1 means this will be ignored ie. considered as a deleted image...
+            cv.put("sync", "true");
+            localdb.updateWithOnConflict("tbl_additional_doc", cv, "obsId=? ",
+                    new String[]{obsUuid}, SQLiteDatabase.CONFLICT_REPLACE);
+            localdb.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql);
+        } finally {
+            localdb.endTransaction();
+        }
+    }
+
+
+    public List<String> get_obsId_tbl_additional_doc(String patientUuid) throws DAOException {
+        List<String> imagesList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT obsId FROM tbl_additional_doc WHERE patientId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("obsId")));
+                }
+            }
+            idCursor.close();
+        }
+        catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+        }
+
+        return imagesList;
+    }
+
+
+/*
     public String getImageName_forObsUuid(String obsId) {
         String imagesList = "";
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -564,6 +616,7 @@ public class ImagesDAO {
 
         return imagesList;
     }
+*/
 
 
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
@@ -36,6 +37,7 @@ import java.util.UUID;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
 import org.intelehealth.msfarogyabharat.models.DocumentObject;
 import org.intelehealth.msfarogyabharat.utilities.BitmapUtils;
@@ -56,6 +58,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     SessionManager sessionManager = null;
+    String m_finalImageName;
 
 
     @Override
@@ -120,7 +123,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials,rowListItem, AppConstants.IMAGE_PATH);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH, patientUuid);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
@@ -141,7 +144,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
                 String mFilename = data.getStringExtra("FILENAME");
-                saveImage_1(mCurrentPhotoPath, mFilename);
+                saveImage(mCurrentPhotoPath, mFilename);
                 Log.v("main", "filename: "+ mFilename);
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
@@ -157,10 +160,37 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 Log.v("path", picturePath + "");
 
                 // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
+              //  String finalImageName = UUID.randomUUID().toString();
+
+                //
+                EditText editText = new EditText(AdditionalDocumentsActivity.this);
+                editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(AdditionalDocumentsActivity.this)
+                        .setTitle("Enter filename")
+                        .setView(editText);
+                AlertDialog alertDialog = builder1.create();
+
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                         m_finalImageName = editText.getText().toString();
+                       /* File to = new File(IntelehealthApplication.getAppContext()
+                                .getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator,img + ".jpg");
+                        Log.v("main", "file_new: "+ from + "\n" + to + "\n" + to.getAbsolutePath());
+
+                        if(from.exists())
+                            from.renameTo(to);*/
+
+                        final String finalFilePath = AppConstants.IMAGE_PATH + m_finalImageName + ".jpg";
+                        BitmapUtils.copyFile(picturePath, finalFilePath);
+                        compressImageAndSave(finalFilePath, m_finalImageName);
+                    }
+                });
+                alertDialog.show();
+                //end
+
+
+
             }
         }
     }
@@ -176,7 +206,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         return mBackgroundHandler;
     }
 
-    void compressImageAndSave(final String filePath) {
+    void compressImageAndSave(final String filePath, String filename) {
         getBackgroundHandler().post(new Runnable() {
             @Override
             public void run() {
@@ -185,7 +215,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (flag) {
-                            saveImage(filePath);
+                            saveImage(filePath, filename);
                         } else
                             Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
@@ -195,7 +225,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         });
     }
 
-    private void saveImage_1(String picturePath, String mFilename) {
+    private void saveImage(String picturePath, String mfilename_1) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         if (photo.exists()) {
@@ -210,32 +240,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
             recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
             Log.v("main", "photo_name: "+ photo.getName() + "\n" + photo.getAbsolutePath());
-            // updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
             String image = UUID.randomUUID().toString();
+            updateImageDatabase_additional_doc(image, mfilename_1);
 
-            updateImageDatabase_1(image, mFilename);
-        }
-    }
-
-
-    private void saveImage(String picturePath) {
-        Log.v("AdditionalDocuments", "picturePath = " + picturePath);
-        File photo = new File(picturePath);
-        if (photo.exists()) {
-            try {
-
-                long length = photo.length();
-                length = length / 1024;
-                Log.e("------->>>>", length + "");
-            } catch (Exception e) {
-                System.out.println("File not found : " + e.getMessage() + e);
-            }
-
-            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-            Log.v("main", "photo_name: "+ photo.getName() + "\n" + photo.getAbsolutePath());
-           // updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
-            String image = UUID.randomUUID().toString();
-            updateImageDatabase(image);
         }
     }
 
@@ -256,13 +263,13 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }*/
-    private void updateImageDatabase_1(String obsuuid, String mfilename) {
+    private void updateImageDatabase_additional_doc(String obsuuid, String mfilename) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             imagesDAO.insertObsImageDatabase_1(obsuuid, mfilename, encounterAdultIntials,
                     UuidDictionary.COMPLEX_IMAGE_AD);
 
-            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsuuid, mfilename, "TRUE");
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsuuid, mfilename, "0", "TRUE");
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
