@@ -1618,7 +1618,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         onExaminationDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE, patientUuid);
             }
         });
 
@@ -2137,7 +2138,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE, patientUuid);
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
         });

@@ -56,6 +56,14 @@ public class UrlModifiers {
         return BASE_URL + provider;
     }
 
+    public String obsImageFilenameDownlaodUrl(String patientUuid, String obsUuid) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+       // https://testhelpline.intelehealth.org/pullimage/7682cd54-8862-4652-ae6c-404f088c292c/a3fd3573-3bb7-41a8-a904-60e45b187b5c
+
+        String BASE_URL = String.format("https://" + sessionManager.getServerUrl() + "/pullimage/%s/%s", patientUuid, obsUuid);
+        return BASE_URL;
+    }
+
     public String obsImageDeleteUrl(String obsUuid) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String provider = "obs/" + obsUuid;
