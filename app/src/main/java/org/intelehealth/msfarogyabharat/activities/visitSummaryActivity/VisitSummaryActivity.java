@@ -2147,18 +2147,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void additionalDocumentImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-           // List<String> imageList = imagesDAO.isImageListObsExists_1(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid);
-            if(imageList.size() == 0) {
-                additionalImageDownloadText.setVisibility(View.VISIBLE);
+            List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            if(obsUuidList.size() == 0) {
+                additionalImageDownloadText.setVisibility(View.GONE); //This means the visit is a new one...
             }
             else {
+                additionalImageDownloadText.setVisibility(View.VISIBLE); //This means the app is fresh installed...
+            }
+
+            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid);
+
                 for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
                     additionalImageDownloadText.setVisibility(View.GONE);
                 else
                     additionalImageDownloadText.setVisibility(View.VISIBLE);
-            }
             }
 
         } catch (DAOException e) {

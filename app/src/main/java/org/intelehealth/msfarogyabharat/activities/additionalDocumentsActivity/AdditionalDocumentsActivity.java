@@ -156,13 +156,8 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 Log.v("path", picturePath + "");
 
-                // copy & rename the file
-              //  String finalImageName = UUID.randomUUID().toString();
-
-                //
                 EditText editText = new EditText(AdditionalDocumentsActivity.this);
                 editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(AdditionalDocumentsActivity.this)
@@ -174,23 +169,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                          m_finalImageName = editText.getText().toString();
-                       /* File to = new File(IntelehealthApplication.getAppContext()
-                                .getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator,img + ".jpg");
-                        Log.v("main", "file_new: "+ from + "\n" + to + "\n" + to.getAbsolutePath());
-
-                        if(from.exists())
-                            from.renameTo(to);*/
-
                         final String finalFilePath = AppConstants.IMAGE_PATH + m_finalImageName + ".jpg";
                         BitmapUtils.copyFile(picturePath, finalFilePath);
                         compressImageAndSave(finalFilePath, m_finalImageName);
                     }
                 });
                 alertDialog.show();
-                //end
-
-
-
             }
         }
     }
@@ -276,8 +260,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         }
 
     }
-
-
+/*
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -286,7 +269,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -323,15 +306,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         });
         builder.show();
-         /*       Intent cameraIntent = new Intent(this, CameraActivity.class);
-                String imageName = UUID.randomUUID().toString();
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
     }
 
 

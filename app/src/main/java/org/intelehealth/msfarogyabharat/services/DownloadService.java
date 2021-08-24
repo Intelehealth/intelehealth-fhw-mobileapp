@@ -24,6 +24,7 @@ import java.util.concurrent.Executors;
 
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.AddImageDownloadResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Doc_DataModel;
+import org.intelehealth.msfarogyabharat.utilities.Base64Utils;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
@@ -55,6 +56,8 @@ public class DownloadService extends IntentService {
     String url = "";
     Observable<AddImageDownloadResponse> responseObservable;
     Observable<ResponseBody> downloadobs;
+    String encoded = "";
+    Base64Utils base64Utils = new Base64Utils();
 
     public DownloadService() {
         super("Download Service");
@@ -83,6 +86,8 @@ public class DownloadService extends IntentService {
 
 
     private void initDownload(String ImageType) throws DAOException {
+        encoded = base64Utils.encoded("intelehealthUser", "IHUser#1");
+
         List<String> imageObsList = new ArrayList<>();
         ImagesDAO imagesDAO = new ImagesDAO();
         imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
@@ -98,7 +103,7 @@ public class DownloadService extends IntentService {
 
             responseObservable =
                     AppConstants.apiInterface.OBS_IMAGE_FILENAME_DOWNLOAD(downloadurl,
-                            "Basic " + sessionManager.getEncoded());
+                            "Basic " + encoded);
 
             int finalI = i;
             List<String> finalImageObsList = imageObsList;
@@ -120,7 +125,6 @@ public class DownloadService extends IntentService {
                                     (addImageDownloadResponse.getData().get(0).getObsId(),
                                             addImageDownloadResponse.getData().get(0).getImageName()));
 
-                            ////
                             if(finalImageObsList.size() == dataModels.size()) {
 
                                 for (int j = 0; j < dataModels.size(); j++) {
@@ -128,7 +132,7 @@ public class DownloadService extends IntentService {
                                     Log.v(TAG, "url_downlaodimage: "+url);
                                     //Image Pull API.....
                                     downloadobs = AppConstants.apiInterface.OBS_IMAGE_DOWNLOAD
-                                            (url, "Basic " + sessionManager.getEncoded());
+                                            (url, "Basic " + encoded);
                                     int finalJ = j;
                                     downloadobs.subscribeOn(Schedulers.from(Executors.newFixedThreadPool(1))) //TODO: scehduler.from....
                                             .observeOn(AndroidSchedulers.mainThread())

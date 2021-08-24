@@ -448,30 +448,6 @@ public class ImagesDAO {
         return imagesList;
     }
 
-/*
-    public List<String> isImageListObsExists_1(String encounterUuid, String conceptUuid) throws DAOException {
-        List<String> imagesList = new ArrayList<>();
-        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        localdb.beginTransaction();
-        try {
-            Cursor idCursor = localdb.rawQuery("SELECT value FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{encounterUuid, conceptUuid, "0"});
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-                    imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                }
-            }
-            idCursor.close();
-        } catch (SQLiteException e) {
-            throw new DAOException(e);
-        } finally {
-            localdb.endTransaction();
-        }
-
-        return imagesList;
-    }
-*/
-
-
     public List<String> isImageListObsExists(String encounterUuid, String conceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
