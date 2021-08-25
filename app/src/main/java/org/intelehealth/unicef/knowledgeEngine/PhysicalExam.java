@@ -3,6 +3,7 @@ package org.intelehealth.unicef.knowledgeEngine;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -81,14 +82,11 @@ public class PhysicalExam extends Node {
             }
 
 
-
-
             //Find the other exams that need to be conducted and add them in
             if (selection == null || selection.isEmpty()) {
                 //If no exams were required, just do the general ones
                 return newOptionsList;
-            }
-            else {
+            } else {
                 for (String current : selection) {
                     if (!current.trim().isEmpty()) {
                 /*
@@ -252,15 +250,16 @@ public class PhysicalExam extends Node {
             String title = getTitle(i);
             String[] split = title.split(" : ");
             String levelOne = split[0];
+            Log.i(TAG, "levelOne : " + levelOne);
             if ((node.isSelected() | node.anySubSelected())) {
                 boolean checkSet = rootStrings.add(levelOne);
 
                 if (checkSet)
-                    stringsList.add("<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
+                    stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
                 else stringsList.add(bullet + " " + node.getLanguage());
                 if (!node.isTerminal()) {
                     String lang = node.formLanguage();
-                    Log.i(TAG, "generateFindings: "+ lang);
+                    Log.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
                 }
             }
@@ -283,20 +282,23 @@ public class PhysicalExam extends Node {
         }
 
 //        mLanguage = removeCharsFindings(mLanguage);
+
+        mLanguage = mLanguage.replaceAll("\\. -", ".");
+
         mLanguage = mLanguage.replaceAll("\\. -", ".");
         mLanguage = mLanguage.replaceAll("\\.", "\\. ");
         mLanguage = mLanguage.replaceAll("\\: -", "\\: ");
         mLanguage = mLanguage.replaceAll("% - ", "");
-        mLanguage = mLanguage.replace(next_line,"-");
-        mLanguage = mLanguage.replaceAll("-"+ bullet, next_line + bullet);
-        mLanguage = mLanguage.replaceAll("-"+"<b>", next_line +"<b>");
-        mLanguage = mLanguage.replaceAll("</b>"+ bullet,"</b>"+ next_line + bullet);
+        mLanguage = mLanguage.replace(next_line, "-");
+        mLanguage = mLanguage.replaceAll("-" + bullet, next_line + bullet);
+        mLanguage = mLanguage.replaceAll("-" + "<b>", next_line + "<b>");
+        mLanguage = mLanguage.replaceAll("</b>" + bullet, "</b>" + next_line + bullet);
 
-        if(StringUtils.right(mLanguage,2).equals(" -")){
-            mLanguage = mLanguage.substring(0,mLanguage.length()-2);
+        if (StringUtils.right(mLanguage, 2).equals(" -")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 2);
         }
 
-        mLanguage = mLanguage.replaceAll("%-"," ");
+        mLanguage = mLanguage.replaceAll("%-", " ");
         return mLanguage;
     }
 

@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.questionNodeActivity;
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,8 +65,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
-
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
 
 
 public class QuestionNodeActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
@@ -157,7 +157,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         JSONObject currentFile = null;
 
         for (int i = 0; i < complaints.size(); i++) {
-            Log.v(TAG,"complaints-"+complaints.get(i));
+            Log.v(TAG, "complaints-" + complaints.get(i));
             if (hasLicense) {
                 try {
 
@@ -333,7 +333,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
 
-                String complaint = currentNode.getDisplay();
+                String complaint = currentNode.findDisplay();
                 //    complaintDetails.put(complaint, complaintFormatted);
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
@@ -341,9 +341,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             } else {
                 String complaint = currentNode.getDisplay();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
-                    complaint = currentNode.getLanguage().equals("%")? complaint: currentNode.getLanguage();
+                    complaint = currentNode.findDisplay();
 //                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
-                    insertion = insertion.concat(Node.bullet_arrow + "<b>" +complaint + "</b>" + ": " + Node.next_line + " ");
+                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                 }
             }
             ArrayList<String> selectedAssociatedComplaintsList = currentNode.getSelectedAssociations();
@@ -539,8 +539,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             if ((complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                    .equalsIgnoreCase("сопутствующие симптомы"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
@@ -584,15 +583,13 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("id", "ID_294177528");
                 assoSympObj.put("text", "Associated symptoms");
                 assoSympObj.put("display", "Do you have the following symptom(s)?");
-                assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
-                assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
+                assoSympObj.put("display-ru", "У вас есть следующие симптомы?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
-                finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
-                finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-ru", "сопутствующие симптомы");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
 
@@ -783,7 +780,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                                 // remove the visit
                                 VisitsDAO visitsDAO = new VisitsDAO();
                                 int count = visitsDAO.deleteByVisitUUID(visitUuid);
-                                if(count!=0) {
+                                if (count != 0) {
 
                                     ObsDAO obsDAO = new ObsDAO();
                                     obsDAO.deleteByEncounterUud(encounterAdultIntials);

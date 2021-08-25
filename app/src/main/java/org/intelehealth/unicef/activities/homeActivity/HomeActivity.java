@@ -1066,6 +1066,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSyncProgressBar(false);
+    }
+
     private void hideSyncProgressBar(boolean isSuccess) {
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {

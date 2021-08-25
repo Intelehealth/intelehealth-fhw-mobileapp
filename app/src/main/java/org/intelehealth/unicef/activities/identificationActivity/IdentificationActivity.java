@@ -1,5 +1,13 @@
 package org.intelehealth.unicef.activities.identificationActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_education_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_or_caste_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_or_economic_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.switch_or_education_edit;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -79,14 +87,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
 
-import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_hi_education_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_caste_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_economic_edit;
-import static org.intelehealth.unicef.utilities.StringUtils.switch_or_education_edit;
-
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
@@ -110,6 +110,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeDays = 0;
     private String country1, state;
     PatientsDAO patientsDAO = new PatientsDAO();
+    EditText mCitizenIdEditText;
     EditText mFirstNameEditText;
     EditText mMiddleNameEditText;
     EditText mLastNameEditText;
@@ -201,6 +202,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mLastNameEditText = findViewById(R.id.identification_last_name);
         mLastNameEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+
+        mCitizenIdEditText = findViewById(R.id.identification_citizen_id);
+
 
         mDOBEditText = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNumEditText = findViewById(R.id.identification_phone_number);
@@ -402,6 +406,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostalEditText.setText(patient1.getPostal_code());
         mRelationshipEditText.setText(patient1.getSdw());
         mOccupationEditText.setText(patient1.getOccupation());
+        mCitizenIdEditText.setText(patient1.getCitizenID());
 
         if (patient1.getPatient_photo() != null && !patient1.getPatient_photo().trim().isEmpty())
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
@@ -1030,6 +1035,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
+                if (name.equalsIgnoreCase("Citizen Id")) {
+                    patient1.setCitizenID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("caste")) {
                     patient1.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -1204,7 +1212,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstNameEditText.getText().toString().equals("") && !mLastNameEditText.getText().toString().equals("")
+
+        if (!mCitizenIdEditText.getText().toString().equals("") && !mFirstNameEditText.getText().toString().equals("") && !mLastNameEditText.getText().toString().equals("")
                 && !mCityAutoCompleteTextView.getText().toString().equals("") && !mCountryEditText.getText().toString().equals("") &&
                 !mStateEditText.getText().toString().equals("") && !mDOBEditText.getText().toString().equals("") && !mAgeEditText.getText().toString().equals("") && (mGenderFRadioButton.isChecked() || mGenderMRadioButton.isChecked())) {
 
@@ -1256,6 +1265,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (mCitizenIdEditText.getText().toString().equals("")) {
+            mCitizenIdEditText.setError(getString(R.string.error_field_required));
+            return;
+        } else if (mCitizenIdEditText.getText().toString().length() != 14) {
+            mCitizenIdEditText.setError(getString(R.string.citizen_id_validation_message));
+            return;
+        }else{
+            mCountryEditText.setError(null);
+        }
+
         if (mCountrySpinner.getSelectedItemPosition() == 0) {
             mCountryEditText.setError(getString(R.string.error_field_required));
             focusView = mCountryEditText;
@@ -1284,6 +1303,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNumEditText.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
 
+
             String[] dob_array = mDOBEditText.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
             Log.d("dob_array", "0: " + dob_array[1]);
@@ -1311,6 +1331,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(mStateSpinner.getSelectedItem().toString()));
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Citizen Id"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mCitizenIdEditText.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
