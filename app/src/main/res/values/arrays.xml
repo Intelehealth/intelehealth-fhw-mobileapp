@@ -215,6 +215,32 @@
         <item>Other Relative</item>
     </string-array>
 
+    <string-array name="caller_type_ta">
+        <item>Select</item>
+        <item>Patient themselves</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Spouse</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Sister</item>
+        <item>Brother</item>
+        <item>Other Relative</item>
+    </string-array>
+
+    <string-array name="caller_type_kn">
+        <item>Select</item>
+        <item>Patient themselves</item>
+        <item>Mother</item>
+        <item>Father</item>
+        <item>Spouse</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Sister</item>
+        <item>Brother</item>
+        <item>Other Relative</item>
+    </string-array>
+
     <string-array name="caller_type_hi">
         <item>चुनिये</item>
         <item>रोगी स्वयं</item>
@@ -243,6 +269,34 @@
 
     //values for "helpline knowledge" spinner
     <string-array name="helpline_knowledge_en">
+        <item>Select</item>
+        <item>Community Champion</item>
+        <item>Helpline Agent</item>
+        <item>Referral from friend / family</item>
+        <item>SMS</item>
+        <item>Outgoing Phone call</item>
+        <item>Community Event</item>
+        <item>Poster / flyer </item>
+        <item>Radio/ Multimedia</item>
+        <item>Print</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="helpline_knowledge_ta">
+        <item>Select</item>
+        <item>Community Champion</item>
+        <item>Helpline Agent</item>
+        <item>Referral from friend / family</item>
+        <item>SMS</item>
+        <item>Outgoing Phone call</item>
+        <item>Community Event</item>
+        <item>Poster / flyer </item>
+        <item>Radio/ Multimedia</item>
+        <item>Print</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="helpline_knowledge_kn">
         <item>Select</item>
         <item>Community Champion</item>
         <item>Helpline Agent</item>
