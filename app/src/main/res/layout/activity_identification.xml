@@ -1367,9 +1367,6 @@
                                 android:layout_marginBottom="10dp"
                                 android:background="?android:attr/listDivider" />
 
-                            </LinearLayout>
-                        </FrameLayout>
-
                         <!-- start of good mobile no -->
                         <TextView
                             android:id="@+id/textview_dv_mobileno"
@@ -1715,8 +1712,8 @@
 
                         <!-- end of domestic violence -->
                         <!-- end of complaint -->
-
-
+                            </LinearLayout>
+                        </FrameLayout>
                     </LinearLayout>
 
                     <LinearLayout

@@ -127,6 +127,8 @@ public class IdentificationActivity extends AppCompatActivity {
     ArrayAdapter<CharSequence> helplineKnowledgeAdapter;
     ArrayAdapter<CharSequence> phoneTypeAdapter;
     ArrayAdapter<CharSequence> callerRelationAdapter;
+    ArrayAdapter<CharSequence> genderAdapter, marital_statusAdapter, husband_occupationAdapter, childrenAdapter;
+    ArrayAdapter<CharSequence>  no_childrenAdapter, contact_type_adapter, helpline_no_fromAdapter ;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -208,6 +210,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
     private boolean isMedicalAdvice;
     ;
@@ -215,6 +218,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther;
+    Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner, have_children_spinner,
+    no_of_children_spinner, contact_type_spinner, helplineno_from_spinner, husband_occupation_spinner; //caste_spinner
+    EditText emergency_no_edittext, landmark_edittext, income_edittext, husband_income_monthly;
+
 
     List<String> districtList;
 
@@ -303,8 +310,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
-        mGenderM = findViewById(R.id.identification_gender_male);
-        mGenderF = findViewById(R.id.identification_gender_female);
+//        mGenderM = findViewById(R.id.identification_gender_male);
+//        mGenderF = findViewById(R.id.identification_gender_female);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -326,8 +333,19 @@ public class IdentificationActivity extends AppCompatActivity {
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
 
-        //  mImageView = findViewById(R.id.imageview_id_picture);
+        //start - Spinner
+        gender_spinner = findViewById(R.id.spinner_gender);
+        education_spinner = findViewById(R.id.spinner_education_selection);
+        current_marital_spinner = findViewById(R.id.spinner_current_marital_status);
+        occupation_spinner = findViewById(R.id.spinner_occupation_selection);
+        have_children_spinner = findViewById(R.id.spinner_children);
+        no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
+        contact_type_spinner = findViewById(R.id.spinner_contact_type);
+        helplineno_from_spinner = findViewById(R.id.spinner_helpline);
+        husband_occupation_spinner = findViewById(R.id.spinner_husband_occupation);
+        //end - Spinner
 
+        //  mImageView = findViewById(R.id.imageview_id_picture);
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
         occupation_edittext = findViewById(R.id.occupation_edittext);
@@ -445,7 +463,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPostal.setVisibility(View.GONE);
             }
 
-            if (obj.getBoolean("mGenderM")) {
+        /*    if (obj.getBoolean("mGenderM")) {
                 mGenderM.setVisibility(View.VISIBLE);
             } else {
                 mGenderM.setVisibility(View.GONE);
@@ -454,7 +472,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mGenderF.setVisibility(View.VISIBLE);
             } else {
                 mGenderF.setVisibility(View.GONE);
-            }
+            }*/
             if (obj.getBoolean("mRelationship")) {
                 mRelationship.setVisibility(View.VISIBLE);
             } else {
@@ -590,6 +608,22 @@ public class IdentificationActivity extends AppCompatActivity {
 //                R.array.caller_type, R.layout.custom_spinner);
 //        callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCallerRelation.setAdapter(callerRelationAdapter);
+
+        try { // Gender Spinner
+            String genderLanguage = "gender_" + sessionManager.getAppLanguage();
+            int gender = res.getIdentifier(genderLanguage, "array", getApplicationContext().getPackageName());
+            if (gender != 0) {
+                genderAdapter = ArrayAdapter.createFromResource(this,
+                        gender, R.layout.custom_spinner);
+
+            }
+            gender_spinner.setAdapter(genderAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //Gender Spinner End...
+
+
 
 
         try { //mobile_phone_type adapter setting...
@@ -1058,7 +1092,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if (patient1.getGender().equals("M")) {
+        /*    if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
@@ -1068,14 +1102,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
                 Log.v(TAG, "yes");
-            }
+            }*/
 
         }
-        if (mGenderM.isChecked()) {
+      /*  if (mGenderM.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
-        }
+        }*/
         if (patientID_edit != null) {
 
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
@@ -1557,7 +1591,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //        });
 
 
-        mGenderF.setOnClickListener(new View.OnClickListener() {
+    /*    mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
@@ -1569,7 +1603,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onRadioButtonClicked(v);
             }
-        });
+        });*/
 /*
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1907,6 +1941,7 @@ public class IdentificationActivity extends AppCompatActivity {
         return calculatedAge != null ? calculatedAge : " ";
     }
 
+/*
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
@@ -1922,6 +1957,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 break;
         }
     }
+*/
 
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
         @Override
@@ -2249,7 +2285,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                /*&& (mGenderF.isChecked() || mGenderM.isChecked())*/) {
 
             Log.v(TAG, "Result");
 
@@ -2287,6 +2323,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mCity.setError(getString(R.string.error_field_required));
 //            }
 
+/*
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -2306,6 +2343,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
+*/
 
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
@@ -2592,7 +2630,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
+          //  patientdto.setGender(StringUtils.getValue(mGender));
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
@@ -3130,7 +3168,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+               /* && (mGenderF.isChecked() || mGenderM.isChecked())*/) {
 
             Log.v(TAG, "Result");
 
@@ -3167,6 +3205,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mCity.setError(getString(R.string.error_field_required));
 //            }
 
+/*
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -3186,6 +3225,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
+*/
 
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
@@ -3475,7 +3515,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
+          //  patientdto.setGender(StringUtils.getValue(mGender));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
             String[] dob_array = mDOB.getText().toString().split(" ");
