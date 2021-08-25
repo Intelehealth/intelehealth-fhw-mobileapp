@@ -570,7 +570,7 @@ public final class StringUtils {
                 val = "Poster/Flyer";
                 break;
             case "रेडिओ/ मल्टीमीडिया":
-                val = "Radio/Multimedia";
+                val = "Radio/ Multimedia";
                 break;
             case "प्रिंट":
                 val = "Print";
@@ -620,6 +620,65 @@ public final class StringUtils {
         }
         return val;
     }
+
+    public static String switch_hi_endFollowUp_edit(String val) {
+        switch (val) {
+            case "ठीक हो गए":
+                val = "Recovered";
+                break;
+            case "रेफ़र कर दिया गया है":
+                val = "Referred";
+                break;
+            case "मृत्यु हो गई है":
+                val = "Died";
+                break;
+            case "फॉलो अप करना रह गया":
+                val = "Loss to Follow up";
+                break;
+            case "फ़ॉलो अप के लिए मना कर रहे है":
+                val = "Refusing Follow up";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_callNoteValue_edit(String val) {
+        switch (val) {
+            case "कॉलर ने कॉल बैक के लिए अनुरोध किया":
+                val = "Caller requested for call back";
+                break;
+            case "कॉल ड्रॉप हो गई":
+                val = "Call Dropped";
+                break;
+            case "कॉल में डिस्टर्बन्स था":
+                val = "Call Disturbed";
+                break;
+            case "डॉक्टर समाधान":
+                val = "Doctor Resolution";
+                break;
+            case "डॉक्टर फ़ॉलो अप (डॉक्टर द्वारा सुझावित)":
+                val = "Doctor Follow up (On advice by the doctor)";
+                break;
+            case "आउट्रीच कॉल":
+                val = "Outreach call";
+                break;
+            case "जेनरल फ़ॉलो अप":
+                val = "General Follow up";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_caller_language (String val)
     {
         switch (val) {

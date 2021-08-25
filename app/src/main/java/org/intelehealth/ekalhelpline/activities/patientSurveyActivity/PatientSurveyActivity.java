@@ -1,5 +1,7 @@
 package org.intelehealth.ekalhelpline.activities.patientSurveyActivity;
 
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_endFollowUp_edit;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -167,7 +169,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                noteText = notesSpinner.getSelectedItem().toString();
+                if(sessionManager.getAppLanguage().equals("hi"))
+                    noteText = switch_hi_endFollowUp_edit(notesSpinner.getSelectedItem().toString());
+                else
+                    noteText = notesSpinner.getSelectedItem().toString();
                 rating = String.valueOf(ratingBar.getRating());
                 if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
                     Log.d(TAG, "Rating is " + rating);

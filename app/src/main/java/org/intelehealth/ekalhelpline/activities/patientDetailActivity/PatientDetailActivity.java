@@ -128,6 +128,7 @@ import retrofit2.Response;
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callNoteValue_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
@@ -193,6 +194,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String subscriptionAuthHeader = "Bearer bnVyc2UxOk51cnNlMTIz";
     private CharSequence selectedSubscriptionTime, selectedLanguage;
     private BucketResponse.Bucket selectedBucket;
+    String callNoteText = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1814,8 +1817,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                 //function call to provide the selected value so that this value will then be added in the Patient atribute table
                 //against that patientuuid...pass value and patientUuid...
                 boolean isInserted = false;
+                if(sessionManager.getAppLanguage().equals("hi"))
+                    callNoteText = switch_hi_callNoteValue_edit(callNote.getSelectedItem().toString());
+                else
+                    callNoteText = callNote.getSelectedItem().toString();
                 try {
-                    isInserted = setReason_for_Call(patientUuid, callNote.getSelectedItem().toString(),
+                    isInserted = setReason_for_Call(patientUuid, callNoteText,
                             "Reason for Call", "reason_for_call");
                 } catch (DAOException e) {
                     e.printStackTrace();
