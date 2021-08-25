@@ -684,9 +684,9 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
 
     <!--    New Registration Flow-->
-    <string name="text_medical_advice">New Agent/Curiosity Resolution</string>
-    <string name="text_new_visit">New Doctor/TLD Visit</string>
-    <string name="text_new_advice">New Agent/Curiosity Resolution</string>
+    <string name="text_medical_advice">New Curiosity Resolution</string>
+    <string name="text_new_visit">New Doctor/TLD/Agent Resolution Visit</string>
+    <string name="text_new_advice">New Curiosity Resolution</string>
     <string name="vaccination_guidance">Vaccination guidance</string>
     <string name="concern_about_covid_re_infection">Concern about COVID re-infection</string>
     <string name="managing_breathlessness">Managing breathlessness</string>
@@ -696,11 +696,11 @@
     <string name="managing_mental_health">Managing Mental Health</string>
     <string name="exercises">Exercises</string>
     <string name="self_assessment">Self Assessment</string>
-    <string name="error_medical_visit_data">Please select or enter agent/curiosity resolution</string>
-    <string name="txt_additional_info">Additional information</string>
-    <string name="text_patient_and_advice_created">Patient &amp; Agent/Curiosity Resolution is Registered Successfully</string>
-    <string name="text_advice_created"> Agent/Curiosity Resolution is Registered Successfully</string>
-    <string name="medical_advice"> Agent/Curiosity Resolution</string>
+    <string name="error_medical_visit_data">Please enter curiosity resolution query</string>
+    <string name="txt_additional_info">Enter your query</string>
+    <string name="text_patient_and_advice_created">Patient &amp; Curiosity Resolution is Registered Successfully</string>
+    <string name="text_advice_created"> Curiosity Resolution is Registered Successfully</string>
+    <string name="medical_advice"> Curiosity Resolution</string>
     <string name="calling_patient">Calling patient…</string>
     <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
@@ -708,6 +708,7 @@
 
     //Additional Details
     <string name="who_does_number_belongs">Whom does the number you have used for call, belongs to?*</string>
+    <string name="preferred_language_for_communication">What is your preferred language for communication?*</string>
     <string name="calling_on_behalf">Are you calling on behalf of someone or for self?*</string>
     <string name="know_about_helpline">How do you know about our helpline?*</string>
     <string name="phone_num">Phone No.</string>
@@ -717,13 +718,13 @@
     <string name="helpline_reference">Helpline Reference</string>
     <string name="select_phone_num">Select Phone Number</string>
     <string name="reason_for_call">What is the reason for this call?</string>
-    <string name="spinner_callback"> Caller requested for call back</string>
-    <string name="spinner_call_dropped">  Call Dropped</string>
-    <string name="spinner_call_disturbed"> Call Disturbed</string>
-    <string name="spinner_doctor_resolution"> Doctor Resolution</string>
-    <string name="spinner_doctor_followUp"> Doctor Follow up (On advice by the doctor)</string>
-    <string name="spinner_outreach"> Outreach call</string>
-    <string name="spinner_general_followUp"> General Follow up</string>
+    <string name="spinner_callback">Caller requested for call back</string>
+    <string name="spinner_call_dropped">Call Dropped</string>
+    <string name="spinner_call_disturbed">Call Disturbed</string>
+    <string name="spinner_doctor_resolution">Doctor Resolution</string>
+    <string name="spinner_doctor_followUp">Doctor Follow up (On advice by the doctor)</string>
+    <string name="spinner_outreach">Outreach call</string>
+    <string name="spinner_general_followUp">General Follow up</string>
     <string name="audio_stories_subscription">Audio Stories Subscription</string>
     <string name="stored_successfully">Stored Successfully</string>
     <string name="total_calls">"Total Calls: "</string>
@@ -737,8 +738,8 @@
     <string name="error_bucket_not_selected">Please select a preferred bucket</string>
     <string name="error_time_not_selected">Please select a preferred time</string>
     <string name="error_language_not_selected">Please select a language</string>
-    <string name="preferred_time">Preferred Time</string>
     <string name="preferred_bucket">Preferred Bucket</string>
     <string name="preferred_language">Preferred Language</string>
     <string name="select_bucket">Select Bucket</string>
+    <string name="preferred_time">Preferred Time</string>
 </resources>
