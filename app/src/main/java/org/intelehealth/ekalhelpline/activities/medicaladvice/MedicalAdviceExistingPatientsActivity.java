@@ -172,7 +172,12 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
             return;
         }
 
-        if (cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+//        if (cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+//            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+
+        if (TextUtils.isEmpty(et_medical_advice_additional.getText())) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -244,7 +249,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         obsDTO.setCreator(sessionManager.getCreatorID());
 
         //append all the selected items to the OBS value
-        String insertion = Node.bullet_arrow + "<b>" + "Agent/Curiosity Resolution" + "</b>" + ": ";
+        String insertion = Node.bullet_arrow + "<b>" + "Curiosity Resolution" + "</b>" + ": ";
         if (cbVaccineGuide.isChecked())
             insertion = insertion.concat(Node.next_line + cbVaccineGuide.getText());
         if (cbCovidConcern.isChecked())
@@ -278,7 +283,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         //create & save visit attributes - required for syncing the data
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
-            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.AGENT_RES);
+            speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.CURIOSITY_RES);
             // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
         } catch (DAOException e) {
             e.printStackTrace();

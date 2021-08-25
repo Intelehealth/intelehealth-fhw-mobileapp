@@ -102,7 +102,7 @@ public class AppConstants {
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
     public static final String SPECIALIST_DOCTOR_NOT_NEEDED = "Specialist Doctor Not Needed";
     public static final String DOCTOR_NOT_NEEDED = "Doctor not needed";
-    public static final String AGENT_RES = "Agent Resolution";
+    public static final String CURIOSITY_RES = "Curiosity Resolution";
     public static ApiInterface ivrApiInterface = ApiClient.createIVRService(ApiInterface.class);
 
 
