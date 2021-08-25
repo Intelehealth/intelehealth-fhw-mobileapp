@@ -345,6 +345,34 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/identification_emergency_phone_number"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="@string/identification_screen_prompt_emergency_phone_number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                     </LinearLayout>
 
@@ -470,11 +498,11 @@
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_state"
-                                        android:maxLines="1"
-                                        android:inputType="textAutoComplete"
-                                        android:singleLine="true"
                                         android:imeOptions="actionNext|flagNoExtractUi"
-                                        android:maxLength="45" />
+                                        android:inputType="textAutoComplete"
+                                        android:maxLength="45"
+                                        android:maxLines="1"
+                                        android:singleLine="true" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -490,12 +518,12 @@
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_district"
-                                        android:singleLine="true"
-                                        android:maxLines="1"
-
-                                        android:inputType="textAutoComplete"
                                         android:imeOptions="actionDone|flagNoExtractUi"
-                                        android:maxLength="45" />
+                                        android:inputType="textAutoComplete"
+
+                                        android:maxLength="45"
+                                        android:maxLines="1"
+                                        android:singleLine="true" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -700,11 +728,11 @@
                             android:id="@+id/other_helplineInfo_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:hint="@string/txt_others"
                             android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="text"
-                            android:hint="@string/txt_others"
-                            android:visibility="gone"/>
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
 
                         <View
                             android:layout_width="match_parent"
@@ -729,6 +757,39 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/What_is_the_current_marital_status"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_current_marital_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/other_maritalStatus_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
                     </LinearLayout>
 
                     <LinearLayout

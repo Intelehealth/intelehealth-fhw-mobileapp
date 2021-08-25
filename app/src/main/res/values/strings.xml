@@ -80,6 +80,7 @@
     <string name="identification_screen_prompt_address">Address line 1</string>
     <string name="identification_screen_prompt_address2">Address line 2</string>
     <string name="identification_screen_prompt_phone_number">Phone number *</string>
+    <string name="identification_screen_prompt_emergency_phone_number">Emergency phone number</string>
     <string name="admin_password_dialog_heading">Enter Admin Password</string>
     <string name="identification_screen_prompt_gender">Gender *</string>
     <string name="identification_screen_checkbox_male">Male</string>
@@ -740,4 +741,8 @@
     <string name="phone_type">Mobile Phone Type</string>
     <string name="case_closed">Case closed</string>
     <string name="welcome_sms">Thank you for calling and registering with MSF ArogyaBharat Helpline. If you are feeling stressed, or anxious, our Counsellors are here to support you. Please call on our toll-free no. 18001203710 - Powered by Intelehealth</string>
+
+
+    <string name="What_is_the_current_marital_status">What is the current marital status?*</string>
+
 </resources>
