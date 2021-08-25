@@ -32,6 +32,9 @@ public class PatientDTO {
     @SerializedName("secondaryphonenumber")
     @Expose
     private String secondaryphonenumber;
+    @SerializedName("preferredlanguage")
+    @Expose
+    private String preferredlanguage;
     @SerializedName("address2")
     @Expose
     private String address2;
@@ -239,4 +242,11 @@ public class PatientDTO {
         this.secondaryphonenumber = secondaryphonenumber;
     }
 
+    public String getPreferredlanguage() {
+        return preferredlanguage;
+    }
+
+    public void setPreferredlanguage(String preferredlanguage) {
+        this.preferredlanguage = preferredlanguage;
+    }
 }

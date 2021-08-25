@@ -113,6 +113,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caller_language;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
@@ -120,6 +121,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_help
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo_edit;
 
@@ -219,10 +221,10 @@ public class IdentificationActivity extends AppCompatActivity {
     List<String> districtList;
 
     //Additional questions
-    Spinner callerRelationSpinner, helplineInfoSpinner, numberRelationSpinner;
+    Spinner callerRelationSpinner, helplineInfoSpinner, numberRelationSpinner, preferredLangSpinner;
     EditText otherHelplineInfoET;
     String helplineInfo = "";
-    ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter;
+    ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter;
 
 
     public static void start(Context context, boolean medicalAdvice) {
@@ -335,6 +337,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         callerRelationSpinner = findViewById(R.id.relationship_spinner);
         numberRelationSpinner = findViewById(R.id.number_relation_spinner);
+        preferredLangSpinner = findViewById(R.id.preffered_language_spinner);
         helplineInfoSpinner = findViewById(R.id.spinner_helpline_knowledge);
         otherHelplineInfoET = findViewById(R.id.other_helplineInfo_edittext);
 
@@ -594,6 +597,20 @@ public class IdentificationActivity extends AppCompatActivity {
 //                R.array.caste, R.layout.custom_spinner);
 //        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        mCaste.setAdapter(casteAdapter);
+
+        try { //Caller Preferred Language adapter setting...
+            String callerPrefLanguage = "caller_pref_language_" + sessionManager.getAppLanguage();
+            int callerLang = res.getIdentifier(callerPrefLanguage, "array", getApplicationContext().getPackageName());
+            if (callerLang != 0) {
+                prefLangAdapter = ArrayAdapter.createFromResource(this,
+                        callerLang, R.layout.custom_spinner);
+            }
+            prefLangAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            preferredLangSpinner.setAdapter(prefLangAdapter);
+        }
+        catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
 
         try { //Caller and Number Relation adapter setting...
             String callerInfoLanguage = "caller_type_" + sessionManager.getAppLanguage();
@@ -1125,17 +1142,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
                 String numberInfo = switch_hi_callerRelation(patient1.getEconomic_status());
                 numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(numberInfo));
+                String callerLang = switch_hi_caller_language(patient1.getPreferred_language());
+                preferredLangSpinner.setSelection(prefLangAdapter.getPosition(callerLang));
             }
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String callerInfo = switch_mr_callerRelation(patient1.getSdw());
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
                 String numberInfo = switch_mr_callerRelation(patient1.getEconomic_status());
                 numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(numberInfo));
+                String callerLang = switch_mr_caller_language(patient1.getPreferred_language());
+                preferredLangSpinner.setSelection(prefLangAdapter.getPosition(callerLang));
             }
             else
             {
                 numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(patient1.getEconomic_status()));
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
+                preferredLangSpinner.setSelection(prefLangAdapter.getPosition(patient1.getPreferred_language()));
             }
 
            /* if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
@@ -1949,7 +1971,7 @@ public class IdentificationActivity extends AppCompatActivity {
         String[] patientArgs = {str};
         String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "secondary_phone_number", "gender", "sdw", "occupation", "patient_photo",
+                "postal_code", "country", "phone_number", "secondary_phone_number","preferred_language", "gender", "sdw", "occupation", "patient_photo",
                 "economic_status", "education_status", "caste"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
@@ -1967,6 +1989,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient1.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient1.setSecondary_phone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("secondary_phone_number")));
+                patient1.setPreferred_language(idCursor.getString(idCursor.getColumnIndexOrThrow("preferred_language")));
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
@@ -2006,9 +2029,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient1.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-
                 if (name.equalsIgnoreCase("Secondary Phone Number")) {
                     patient1.setSecondary_phone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Preferred Language")) {
+                    patient1.setPreferred_language(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Education Level")) {
                     patient1.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -2330,6 +2355,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (preferredLangSpinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView)preferredLangSpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = preferredLangSpinner;
+            cancel = true;
+            return;
+        }
+
         if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
             errorText.setError("");
@@ -2638,6 +2673,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Secondary Phone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mAddPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Preferred Language"));
+            patientAttributesDTO.setValue(StringUtils.getValue(preferredLangSpinner.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3211,6 +3253,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (preferredLangSpinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView)preferredLangSpinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = preferredLangSpinner;
+            cancel = true;
+            return;
+        }
+
         if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
             errorText.setError("");
@@ -3504,6 +3556,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Secondary Phone Number"));
             patientAttributesDTO.setValue(StringUtils.getValue(mAddPhoneNum.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Preferred Language"));
+            patientAttributesDTO.setValue(StringUtils.getValue(preferredLangSpinner.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();

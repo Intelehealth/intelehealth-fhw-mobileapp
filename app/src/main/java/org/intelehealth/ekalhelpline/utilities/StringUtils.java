@@ -620,6 +620,100 @@ public final class StringUtils {
         }
         return val;
     }
+    public static String switch_hi_caller_language (String val)
+    {
+        switch (val) {
+            case "English":
+                val = "अंग्रेज़ी";
+                break;
+            case "Hindi":
+                val = "हिंदी";
+                break;
+            case "Marathi":
+                val = "मराठी";
+                break;
+            case "Kannada":
+                val = "कन्नड़";
+                break;
+            case "Tamil":
+                val = "तामिल";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_caller_language_edit(String val) {
+        switch (val) {
+            case "अंग्रेज़ी":
+                val = "English";
+                break;
+            case "हिंदी":
+                val = "Hindi";
+                break;
+            case "मराठी":
+                val = "Marathi";
+                break;
+            case "कन्नड़":
+                val = "Kannada";
+                break;
+            case "तामिल":
+                val = "Tamil";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_caller_language (String val)
+    {
+        switch (val) {
+            case "English":
+                val = "इंग्रजी";
+                break;
+            case "Hindi":
+                val = "हिंदी";
+                break;
+            case "Marathi":
+                val = "मराठी";
+                break;
+            case "Kannada":
+                val = "कन्नड";
+                break;
+            case "Tamil":
+                val = "तमिळ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_caller_language_edit(String val) {
+        switch (val) {
+            case "इंग्रजी":
+                val = "English";
+                break;
+            case "हिंदी":
+                val = "Hindi";
+                break;
+            case "मराठी":
+                val = "Marathi";
+                break;
+            case "कन्नड":
+                val = "Kannada";
+                break;
+            case "तमिळ":
+                val = "Tamil";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_callerRelation(String val) {
         switch (val) {
             case "Patient themselves":

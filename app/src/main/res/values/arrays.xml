@@ -154,6 +154,53 @@
     </string-array>
 
     //Additional Info Spinners
+
+    //values for "preferred_language_for_call" spinner
+    <string-array name="caller_pref_language_en">
+        <item>Select</item>
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Marathi</item>
+        <item>Kannada</item>
+        <item>Tamil</item>
+    </string-array>
+
+    <string-array name="caller_pref_language_hi">
+        <item>चुनिये</item>
+        <item>अंग्रेज़ी</item>
+        <item>हिंदी</item>
+        <item>मराठी</item>
+        <item>कन्नड़</item>
+        <item>तामिल</item>
+    </string-array>
+
+    <string-array name="caller_pref_language_mr">
+        <item>निवडा</item>
+        <item>इंग्रजी</item>
+        <item>हिंदी</item>
+        <item>मराठी</item>
+        <item>कन्नड</item>
+        <item>तमिळ</item>
+    </string-array>
+
+    <string-array name="caller_pref_language_kn">
+        <item>Select</item>
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Marathi</item>
+        <item>Kannada</item>
+        <item>Tamil</item>
+    </string-array>
+
+    <string-array name="caller_pref_language_ta">
+        <item>Select</item>
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Marathi</item>
+        <item>Kannada</item>
+        <item>Tamil</item>
+    </string-array>
+
     //values for "who is caller" spinner
     <string-array name="caller_type_en">
         <item>Select</item>

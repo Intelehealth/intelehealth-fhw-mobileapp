@@ -66,6 +66,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "date_of_birth TEXT," +
             "phone_number TEXT," +
             "secondary_phone_number TEXT," +
+            "preferred_language TEXT," +
             "address1 TEXT," +
             "address2 TEXT," +
             "city_village TEXT," +
@@ -211,8 +212,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('78284507-fb71-4354-9b34-046ab205e18f','RATING')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('d2ac5af4-392b-4749-9a53-baca25821452','ATTRIBUTE_SECONDARY_PHONE_NUMBER')");
-
-
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('796db5bc-8001-42fd-a652-cabddf3f39bf','ATTRIBUTE_PREFERRED_LANGUAGE')");
         }
     }
 

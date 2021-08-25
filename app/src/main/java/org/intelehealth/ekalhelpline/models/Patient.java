@@ -9,6 +9,7 @@ public class Patient {
     private String date_of_birth; // ISO 8601
     private String phone_number;
     private String secondary_phone_number;
+    private String preferred_language;
     private String address1;
     private String address2;
     private String city_village;
@@ -306,5 +307,13 @@ public class Patient {
 
     public void setSecondary_phone_number(String secondary_phone_number) {
         this.secondary_phone_number = secondary_phone_number;
+    }
+
+    public String getPreferred_language() {
+        return preferred_language;
+    }
+
+    public void setPreferred_language(String preferred_language) {
+        this.preferred_language = preferred_language;
     }
 }

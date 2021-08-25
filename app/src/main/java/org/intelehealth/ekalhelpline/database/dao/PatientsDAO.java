@@ -67,6 +67,7 @@ public class PatientsDAO {
             values.put("address2", patient.getAddress2());
             values.put("country", patient.getCountry());
             values.put("secondary_phone_number", patient.getSecondaryphonenumber());
+            values.put("preferred_language", patient.getPreferredlanguage());
             values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
             values.put("gender", patient.getGender());
             values.put("postal_code", patient.getPostalcode());
@@ -102,6 +103,7 @@ public class PatientsDAO {
             values.put("last_name", patientDTO.getLastname());
             values.put("phone_number", patientDTO.getPhonenumber());
             values.put("secondary_phone_number", patientDTO.getSecondaryphonenumber());
+            values.put("preferred_language", patientDTO.getPreferredlanguage());
             values.put("address1", patientDTO.getAddress1());
             values.put("address2", patientDTO.getAddress2());
             values.put("country", patientDTO.getCountry());
@@ -149,6 +151,7 @@ public class PatientsDAO {
             values.put("last_name", patientDTO.getLast_name());
             values.put("phone_number", patientDTO.getPhone_number());
             values.put("secondary_phone_number", patientDTO.getSecondary_phone_number());
+            values.put("preferred_language", patientDTO.getPreferred_language());
             values.put("address1", patientDTO.getAddress1());
             values.put("address2", patientDTO.getAddress2());
             values.put("country", patientDTO.getCountry());
@@ -489,6 +492,7 @@ public class PatientsDAO {
                     patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                     patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                     patientDTO.setSecondaryphonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("secondary_phone_number")));
+                    patientDTO.setPreferredlanguage(idCursor.getString(idCursor.getColumnIndexOrThrow("preferred_language")));
                     patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                     patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                     patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));

@@ -731,7 +731,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientArgs = {dataString};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "secondary_phone_number", "gender", "sdw",
+                "postal_code", "country", "phone_number", "secondary_phone_number","preferred_language", "gender", "sdw",
                 "patient_photo"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
@@ -750,6 +750,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
                 patient_new.setPhone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patient_new.setSecondary_phone_number(idCursor.getString(idCursor.getColumnIndexOrThrow("secondary_phone_number")));
+                patient_new.setPreferred_language(idCursor.getString(idCursor.getColumnIndexOrThrow("preferred_language")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
             } while (idCursor.moveToNext());
@@ -779,6 +780,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Secondary Phone Number")) {
                     patient_new.setSecondary_phone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                if (name.equalsIgnoreCase("Preferred Language")) {
+                    patient_new.setPreferred_language(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }*/
