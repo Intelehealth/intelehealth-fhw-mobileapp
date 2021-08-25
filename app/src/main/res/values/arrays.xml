@@ -150,6 +150,75 @@
         <item>ସ୍ନାତକୋତର ଶିକ୍ଷା</item>
     </string-array>
 
+    <string-array name="education_spinner_en">
+        <item>Select Education</item>
+        <item>Not formally educated</item>
+        <item>Some/completed primary school</item>
+        <item>Some/completed secondary school</item>
+        <item>Some/completed higher secondary</item>
+        <item>Completed undergraduate degree/diploma/technical school</item>
+        <item>Completed postgraduate degree</item>
+        <item>Other (please specify</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="marital_spinner_en">
+        <item>Select Marital Status</item>
+        <item>Single</item>
+        <item>Married</item>
+        <item>Unmarried/single</item>
+        <item>In a relationship</item>
+        <item>In a live-in relationship</item>
+        <item>Divorced</item>
+        <item>Widowed</item>
+        <item>Nata</item>
+        <item>Second Marriage</item>
+        <item>Other (please specify)</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="occupation_spinner_selection_en">
+        <item>Select Occupation</item>
+        <item>Student</item>
+        <item>Student but currently out of school</item>
+        <item>Just finished school</item>
+        <item>Housewife (not working outside the home)</item>
+        <item>Employee</item>
+        <item>Self-employed</item>
+        <item>Unemployed and looking for a job</item>
+        <item>Unemployed and not looking for a job</item>
+        <item>Volunteer</item>
+        <item>Other (Enter text)</item>
+    </string-array>
+
+    <string-array name="spinner_children_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="spinner_no_of_children_en">
+        <item>Select</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="husband_occupation_en">
+        <item>Select Husband Occupation</item>
+        <item>Student</item>
+        <item>Student but currently out of school</item>
+        <item>Just finished school</item>
+        <item>Housewife (not working outside the home)</item>
+        <item>Employee</item>
+        <item>Self-employed</item>
+        <item>Unemployed and looking for a job</item>
+        <item>Unemployed and not looking for a job</item>
+        <item>Volunteer</item>
+        <item>Other (Enter text)</item>
+
+    </string-array>
     <string-array name="education_en">
         <item>Select</item>
         <item>Illiterate</item>
@@ -166,7 +235,6 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
-
     <string-array name="education_hi">
         <item> चयन करें</item>
         <item>अशिक्षित</item>
@@ -176,8 +244,78 @@
         <item>स्नातक और उच्चतर</item>
     </string-array>
 
-    <string-array name="caste_en">
+    <string-array name="gender_en">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Non-binary / third gender</item>
+        <item>Prefer not to say</item>
+        <item>Other (enter text)</item>
+    </string-array>
+
+    <string-array name="spinner_dv_speaking_with_en">
         <item>Select</item>
+        <item>Survivor themselves</item>
+        <item>Someone else (Ask who and enter)</item>
+    </string-array>
+
+    <string-array name="spinner_dv_survivor_married">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+        <item>Unsure</item>
+    </string-array>
+
+
+    <string-array name="spinner_dv_referred_en">
+        <item>Select</item>
+        <item>Outreach leaders</item>
+        <item>Community outreach/ volunteers</item>
+        <item>NGO</item>
+        <item>Police station</item>
+        <item>Website/ social media</item>
+        <item>Newspaper</item>
+        <item>Other (please specify)</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="spinner_describe_location_en">
+        <item>Select</item>
+        <item>Urban</item>
+        <item>Rural</item>
+        <item>Peri-urban</item>
+    </string-array>
+
+    <string-array name="spinner_work_en">
+        <item>Select</item>
+        <item>Yes, part time</item>
+        <item>Yes, full time</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="spinner_contact_type_en">
+        <item>Select</item>
+        <item>Office visit</item>
+        <item>Hotline caller</item>
+        <item>Community outreach</item>
+        <item>Vikalp reaching out to survivor/contact</item>
+        <item>Previous caller</item>
+    </string-array>
+
+    <string-array name="spinner_where_did_u_en">
+        <item>Select</item>
+        <item>Referred by family</item>
+        <item>Referred by friend</item>
+        <item>Vikalp staff</item>
+        <item>Social media/website</item>
+        <item>Provider</item>
+        <item>Community organization</item>
+        <item>Other (please specify)</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="caste_en">
+        <item>Select Caste</item>
         <item>General</item>
         <item>OBC</item>
         <item>SC</item>
