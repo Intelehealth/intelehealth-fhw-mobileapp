@@ -597,7 +597,7 @@ public final class StringUtils {
             case "SMS":
                 val = "एसएमएस";
                 break;
-            case "Outgoing phone call":
+            case "Outgoing Phone call":
                 val = "आउटगोइंग फोन कॉल";
                 break;
             case "Community event":
