@@ -1503,59 +1503,69 @@
                                 android:id="@+id/cbVaccineGuide"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/vaccination_guidance" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbCovidConcern"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/concern_about_covid_re_infection" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManagingBreathlessness"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/managing_breathlessness" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageVoiceIssue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/managing_issues_with_voice" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageEating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/managing_eating_drinking" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbDealProblems"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/dealing_problems" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbMentalHealth"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/managing_mental_health" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbExercises"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/exercises" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbOthers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:text="@string/txt_others" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:visibility="gone"
                                 android:hint="@string/txt_others">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -1583,7 +1593,6 @@
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/et_medical_advice_additional"
-
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
