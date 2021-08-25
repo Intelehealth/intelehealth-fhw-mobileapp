@@ -21,6 +21,7 @@ import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Img_Filename_Pu
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.msfarogyabharat.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.msfarogyabharat.utilities.Base64Utils;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
@@ -42,6 +43,8 @@ import retrofit2.Response;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
+    String encoded_filename = "";
+    Base64Utils base64Utils_filename = new Base64Utils();
 
 
 
@@ -93,6 +96,9 @@ public class ImagesPushDAO {
 
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String encoded = sessionManager.getEncoded();
+
+        encoded_filename = base64Utils_filename.encoded("intelehealthUser", "IHUser#1");
+
         Gson gson = new Gson();
         UrlModifiers urlModifiers = new UrlModifiers();
         ImagesDAO imagesDAO = new ImagesDAO();
@@ -151,7 +157,7 @@ public class ImagesPushDAO {
                             String url = urlModifiers.additional_image_filename_url();
 
                             Call<Add_Img_Filename_PushImageResponse> responseCall = AppConstants.apiInterface
-                                    .ADDITIONAL_DOC_IMAGE_FILENAME(url, "Basic " + encoded, add_image_push_body);
+                                    .ADDITIONAL_DOC_IMAGE_FILENAME(url, "Basic " + encoded_filename, add_image_push_body);
 
                             responseCall.enqueue(new Callback<Add_Img_Filename_PushImageResponse>() {
                                 @Override
