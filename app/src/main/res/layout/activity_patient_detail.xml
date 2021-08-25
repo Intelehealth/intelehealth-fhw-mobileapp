@@ -1181,7 +1181,7 @@
                             android:textSize="@dimen/card_content_text_size"
                             android:fontFamily="@fonts/Lato_Regular"
                             android:visibility="gone"
-                            android:text="Subscribe to audio stories" />
+                            android:text="@string/subscribe_audio" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -1191,7 +1191,7 @@
                             android:id="@+id/updateSubscriptionTV"
                             android:layout_marginTop="10dp"
                             android:textSize="@dimen/card_content_text_size"
-                            android:text="Subscription Details:" />
+                            android:text="@string/subscribe_details" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/bucket_language"
