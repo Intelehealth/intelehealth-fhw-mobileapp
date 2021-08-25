@@ -64,6 +64,7 @@ import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
 import org.intelehealth.ekalhelpline.models.Location;
+import org.intelehealth.ekalhelpline.models.Results;
 import org.intelehealth.ekalhelpline.models.loginModel.LoginModel;
 import org.intelehealth.ekalhelpline.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ekalhelpline.models.statewise_location.ChildLocation;
@@ -899,13 +900,16 @@ public class SetupActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
 
         try {
-            Observable<State> stateObservable = apiService.STATE_OBSERVABLE();
+//            Observable<State> stateObservable = apiService.STATE_OBSERVABLE();
+            Observable<Results<Location>> stateObservable = apiService.LOCATION_OBSERVABLE(null);
             stateObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableObserver<State>() {
+                    //.subscribe(new DisposableObserver<State>() {
+                    .subscribe(new DisposableObserver<Results<Location>>() {
                         @Override
-                        public void onNext(@NonNull State state) {
+//                        public void onNext(@NonNull Results<Location> state) {
+                        public void onNext(@NonNull Results<Location> state) {
                             if (state.getResults() != null) {
                                 customProgressDialog.dismiss();
                                 List<String> state_locations = getLocation(state.getResults());
@@ -971,7 +975,8 @@ public class SetupActivity extends AppCompatActivity {
         return list;
     }
 
-    private List<String> getLocation(List<Result> resultList) {
+    //private List<String> getLocation(List<Result> resultList) {
+    private List<String> getLocation(List<Location> resultList) {
         List<String> list = new ArrayList<>();
         list.add("Select Location");
         for (int i = 0; i < resultList.size(); i++) {
