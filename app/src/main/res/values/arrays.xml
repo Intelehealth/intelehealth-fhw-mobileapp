@@ -293,6 +293,38 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="spinner_current_address_en">
+        <item>Select</item>
+        <item>Maternal Address</item>
+        <item>Address of in-laws</item>
+        <item>Other (please specify)</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="spinner_with_whom_living_en">
+    <item>Select</item>
+    <item>Husband</item>
+    <item>Family</item>
+    <item>Friend</item>
+    <item>No one</item>
+    <item>No one</item>
+    <item>Other (please specify)</item>
+    <item>Prefer not to say</item>
+    </string-array>
+
+    <string-array name="spinner_marriage_type_en">
+        <item>Select</item>
+        <item>By parents</item>
+        <item>Own will</item>
+        <item>Single/ live-in</item>
+        <item>Atta-sata</item>
+        <item>In court</item>
+        <item>Special marriage act</item>
+        <item>Child marriage</item>
+        <item>Prefer not to say/unsure</item>
+    </string-array>
+
+
     <string-array name="spinner_contact_type_en">
         <item>Select</item>
         <item>Office visit</item>

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_marginTop="-1500dp"
     tools:context=".activities.identificationActivity.IdentificationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -1297,7 +1296,7 @@
                         <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -1442,27 +1441,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="@string/how_do_you_know_about_helpline"
+                            android:text="What was age at the time of (first) marriage?"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <Spinner
-                            android:id="@+id/spinner_helpline"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
                         <EditText
-                            android:id="@+id/other_helplineInfo_edittext"
+                            android:id="@+id/edittext_dv_age_marriage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/txt_others"
+                            android:hint="Enter age"
                             android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="text"
-                            android:textSize="@dimen/card_content_sub_text_size"
-                            android:visibility="gone" />
+                            android:textSize="@dimen/card_content_sub_text_size" />
 
                         <View
                             android:layout_width="match_parent"
@@ -1473,10 +1466,254 @@
                         <!-- end of spinner -->
                         <!-- end of good mobile no -->
 
+                        <!-- start of marriage type -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What was the type of marriage?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_typeof_marriage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_marriage_type_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of marriage type -->
+
+                        <!-- start of maternal address -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide a maternal home address"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/editText_maternity_address"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/home_icon"
+                                android:drawableLeft="@drawable/home_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Maternal Home Address"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="textCapWords"
+                                android:maxLength="50"
+                                android:maxLines="2"
+                                android:singleLine="false"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of maternal address -->
+
+                        <!-- start of maternal mobile -->
+                        <TextView
+                            android:id="@+id/textview_dv_maternal_mobileno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide a maternal phone number"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edittext_dv_maternal_mobileno"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Maternal Phone number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of maternal mobile -->
+
+                        <!-- start of address in-laws -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide address of in-laws"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/editText_inlaws_address"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/home_icon"
+                                android:drawableLeft="@drawable/home_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="In-laws Address"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="textCapWords"
+                                android:maxLength="50"
+                                android:maxLines="2"
+                                android:singleLine="false"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of address in-laws -->
+
+                        <!-- start of husband mobile -->
+                        <TextView
+                            android:id="@+id/textview_dv_husband_mobileno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide a phone number for husband/partner"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edittext_dv_husband_mobileno"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Husband Phone number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of husband mobile -->
+
+                        <!-- start of current residence -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What address is the survivor currently residing at?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_current_living"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_current_address_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of current residence -->
+
+                        <!--start of with whom living -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="With whom is the survivor living?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_whith_whom_living"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_with_whom_living_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of with whom living -->
 
 
                         <!-- end of domestic violence -->
-
                         <!-- end of complaint -->
 
 
