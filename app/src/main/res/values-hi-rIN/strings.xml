@@ -659,7 +659,7 @@
         आपके परिवार के पास खेती लायक कितनी ज़मीन है?*</string>
     <string name="enter_answer">उत्तर दर्ज करें</string>
     <string name="enter_occupation">व्यवसाय दर्ज करें</string>
-    <string name="select">चुनते हैं</string>
+    <string name="select">चयन करें</string>
     <string name="Hours">घंटे</string>
     <string name="Days">दिन</string>
     <string name="Weeks">हफ्तों</string>
@@ -752,6 +752,8 @@
     <string name="spinner_referred">रेफ़र कर दिया गया है</string>
     <string name="spinner_died">मृत्यु हो गई है</string>
     <string name="spinner_refuse_followUp">फ़ॉलो अप के लिए मना कर रहे है</string>
+    <string name="spinner_not_applicable">अनुपलब्ध</string>
+    <string name="select_reason_toast">विज़िट समाप्त करने के लिए कोई मान्य कारण चुनें</string>
     <string name="spinner_other">अन्य</string>
     <string name="spinner_loss_followUp">फॉलो अप करना रह गया</string>
 </resources>

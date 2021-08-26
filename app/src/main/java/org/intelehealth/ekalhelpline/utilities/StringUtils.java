@@ -623,6 +623,9 @@ public final class StringUtils {
 
     public static String switch_hi_endFollowUp_edit(String val) {
         switch (val) {
+            case "चयन करें":
+                val = "Select";
+                break;
             case "ठीक हो गए":
                 val = "Recovered";
                 break;
@@ -638,8 +641,8 @@ public final class StringUtils {
             case "फ़ॉलो अप के लिए मना कर रहे है":
                 val = "Refusing Follow up";
                 break;
-            case "अन्य":
-                val = "Other";
+            case "अनुपलब्ध":
+                val = "Not Applicable";
                 break;
             default:
                 return val;

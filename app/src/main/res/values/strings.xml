@@ -374,6 +374,8 @@
     <string name="spinner_died">Died</string>
     <string name="spinner_loss_followUp">Loss to Follow up</string>
     <string name="spinner_refuse_followUp">Refusing Follow up</string>
+    <string name="spinner_not_applicable">Not Applicable</string>
+    <string name="select_reason_toast">Select a valid reason to end visit</string>
     <string name="spinner_other">Other</string>
 
 
