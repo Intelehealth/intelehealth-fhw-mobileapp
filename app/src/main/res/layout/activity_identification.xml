@@ -1231,6 +1231,7 @@
 
                         <!-- start of safe abortion -->
                         <FrameLayout
+                            android:id="@+id/framelayout_safe_abortion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone">
@@ -1294,6 +1295,7 @@
 
                         <!-- start of domestic violence -->
                         <FrameLayout
+                            android:id="@+id/framelayout_domestic_violence"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:visibility="gone">
@@ -1425,7 +1427,7 @@
                             android:id="@+id/spinner_survivor_married"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/spinner_dv_survivor_married"/>
+                            android:entries="@array/spinner_dv_survivor_married_en"/>
 
                         <View
                             android:layout_width="match_parent"
@@ -1696,7 +1698,7 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_whith_whom_living"
+                            android:id="@+id/spinner_with_whom_living"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:entries="@array/spinner_with_whom_living_en"/>

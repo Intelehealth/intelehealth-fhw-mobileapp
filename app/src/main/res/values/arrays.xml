@@ -259,7 +259,7 @@
         <item>Someone else (Ask who and enter)</item>
     </string-array>
 
-    <string-array name="spinner_dv_survivor_married">
+    <string-array name="spinner_dv_survivor_married_en">
         <item>Select</item>
         <item>Yes</item>
         <item>No</item>
