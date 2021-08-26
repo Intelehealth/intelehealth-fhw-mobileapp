@@ -60,7 +60,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ivrcall_response);
-
+        setTitle(getResources().getString(R.string.Daily_Performance_Activity_Title));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = IVRCallResponseActivity.this;
         sessionManager = new SessionManager(context);
