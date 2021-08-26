@@ -114,6 +114,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caller_language;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caller_language_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
@@ -122,6 +123,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_help
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo_edit;
 
@@ -224,6 +226,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner callerRelationSpinner, helplineInfoSpinner, numberRelationSpinner, preferredLangSpinner;
     EditText otherHelplineInfoET;
     String helplineInfo = "";
+    String callerPrefLanguage = "";
     ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter;
 
 
@@ -1452,7 +1455,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
         JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
@@ -1494,7 +1496,16 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+        autocompleteDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                autocompleteDistrict.setFocusable(false);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -2647,6 +2658,12 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();
 
+            if(sessionManager.getAppLanguage().equals("hi"))
+                callerPrefLanguage = switch_hi_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
+            else if(sessionManager.getAppLanguage().equals("mr"))
+                callerPrefLanguage = switch_mr_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
+            else
+                callerPrefLanguage = preferredLangSpinner.getSelectedItem().toString();
             // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
 
             patientdto.setAddress1(StringUtils.getValue(autocompleteDistrict.getText().toString())); //mAddress1.getText().toString())
@@ -2683,7 +2700,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Preferred Language"));
-            patientAttributesDTO.setValue(StringUtils.getValue(preferredLangSpinner.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(callerPrefLanguage));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3531,6 +3548,13 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();
 
+            if(sessionManager.getAppLanguage().equals("hi"))
+                callerPrefLanguage = switch_hi_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
+            else if(sessionManager.getAppLanguage().equals("mr"))
+                callerPrefLanguage = switch_mr_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
+            else
+                callerPrefLanguage = preferredLangSpinner.getSelectedItem().toString();
+
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(autocompleteDistrict.getText().toString())); //mAddress1.getText().toString())
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -3566,7 +3590,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Preferred Language"));
-            patientAttributesDTO.setValue(StringUtils.getValue(preferredLangSpinner.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(callerPrefLanguage));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
