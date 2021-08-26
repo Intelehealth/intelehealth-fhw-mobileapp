@@ -866,7 +866,7 @@ public final class StringUtils {
                 val = "Poster/Flyer";
                 break;
             case "रेडिओ/ मल्टीमीडिया":
-                val = "Radio/Multimedia";
+                val = "Radio/ Multimedia";
                 break;
             case "प्रिंट":
                 val = "Print";
