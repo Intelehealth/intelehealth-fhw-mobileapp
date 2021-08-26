@@ -581,6 +581,20 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
         //on Edit....
+
+        //start - edittext - edit
+        emergency_no_edittext.setText(patient1.getEmergency_phoneNo());
+        landmark_edittext.setText(patient1.getLandmark());
+        income_edittext.setText(patient1.getIncome());
+        husband_income_monthly.setText(patient1.getHusband_income());
+        good_mobile_edittext.setText(patient1.getGood_mobileno());
+        age_marriage_edittext.setText(patient1.getAge_marriage());
+        maternal_address_edittext.setText(patient1.getMaternal_address());
+        maternal_mobile_edittext.setText(patient1.getMaternal_mobile());
+        address_inlaws_edittext.setText(patient1.getAddress_inlaws());
+        husband_mobile_edittext.setText(patient1.getHusband_mobile());
+        //end - edittext - edit
+
         mDOB.setText(patient1.getDate_of_birth());
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
@@ -1410,6 +1424,160 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
         if (patientID_edit != null) {
 
+            //start - new fields Spinner
+            //gender edit
+            if (patient1.getGender().equals(getResources().getString(R.string.not_provided)))
+                gender_spinner.setSelection(0);
+            else {
+                String genderstring = patient1.getGender();
+                gender_spinner.setSelection(genderAdapter.getPosition(genderstring));
+                /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                } else {
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+                }*/
+            }
+
+            //education edit
+            if (patient1.getEducation_value().equals(getResources().getString(R.string.not_provided)))
+                education_spinner.setSelection(0);
+            else {
+                String educationstring = patient1.getEducation_value();
+                education_spinner.setSelection(education_spinnerAdapter.getPosition(educationstring));
+            }
+
+            //current marital status edit
+            if (patient1.getCurrent_marital_status().equals(getResources().getString(R.string.not_provided)))
+                current_marital_spinner.setSelection(0);
+            else {
+                String value = patient1.getCurrent_marital_status();
+                current_marital_spinner.setSelection(marital_statusAdapter.getPosition(value));
+            }
+
+            //occupation spinner edit
+            if (patient1.getOccupation_value().equals(getResources().getString(R.string.not_provided)))
+                occupation_spinner_1.setSelection(0);
+            else {
+                String value = patient1.getOccupation_value();
+                occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition(value));
+            }
+
+            //husband occupation edit
+            if (patient1.getHusband_occupation().equals(getResources().getString(R.string.not_provided)))
+                husband_occupation_spinner.setSelection(0);
+            else {
+                String value = patient1.getHusband_occupation();
+                husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition(value));
+            }
+
+            //children edit
+            if (patient1.getChildren().equals(getResources().getString(R.string.not_provided)))
+                have_children_spinner.setSelection(0);
+            else {
+                String value = patient1.getChildren();
+                have_children_spinner.setSelection(childrenAdapter.getPosition(value));
+            }
+
+            //no of children edit
+            if (patient1.getNo_of_children().equals(getResources().getString(R.string.not_provided)))
+                no_of_children_spinner.setSelection(0);
+            else {
+                String value = patient1.getNo_of_children();
+                no_of_children_spinner.setSelection(no_childrenAdapter.getPosition(value));
+            }
+
+            //caste edit
+            if (patient1.getCaste_value().equals(getResources().getString(R.string.not_provided)))
+                caste_spinner.setSelection(0);
+            else {
+                String value = patient1.getCaste_value();
+                caste_spinner.setSelection(caste_spinnerAdapter.getPosition(value));
+            }
+
+            //contact type edit
+            if (patient1.getContact_type().equals(getResources().getString(R.string.not_provided)))
+                contact_type_spinner.setSelection(0);
+            else {
+                String value = patient1.getContact_type();
+                contact_type_spinner.setSelection(contact_type_adapter.getPosition(value));
+            }
+
+            //where helpline no form edit
+            if (patient1.getHelpline_no_from().equals(getResources().getString(R.string.not_provided)))
+                helplineno_from_spinner.setSelection(0);
+            else {
+                String value = patient1.getHelpline_no_from();
+                helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition(value));
+            }
+
+            //job edit
+            if (patient1.getJob().equals(getResources().getString(R.string.not_provided)))
+                job_spinner.setSelection(0);
+            else {
+                String value = patient1.getJob();
+                job_spinner.setSelection(job_spinnerAdapter.getPosition(value));
+            }
+
+            //describe location edit
+            if (patient1.getDescribe_location().equals(getResources().getString(R.string.not_provided)))
+                describe_location_spinner.setSelection(0);
+            else {
+                String value = patient1.getDescribe_location();
+                describe_location_spinner.setSelection(describe_location_spinnerAdapter.getPosition(value));
+            }
+
+            //referred case edit
+            if (patient1.getReferred_case().equals(getResources().getString(R.string.not_provided)))
+                who_refferred_spinner.setSelection(0);
+            else {
+                String value = patient1.getReferred_case();
+                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition(value));
+            }
+
+            // am i speaking edit
+            if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
+                am_i_speaking_spinner.setSelection(0);
+            else {
+                String value = patient1.getAmSpeaking();
+                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition(value));
+            }
+
+            // survivior ever married edit
+            if (patient1.getEver_married().equals(getResources().getString(R.string.not_provided)))
+                ever_married_spinner.setSelection(0);
+            else {
+                String value = patient1.getEver_married();
+                ever_married_spinner.setSelection(ever_married_spinnerAdapter.getPosition(value));
+            }
+
+            // type of marriage edit
+            if (patient1.getType_marriage().equals(getResources().getString(R.string.not_provided)))
+                type_marriage_spinner.setSelection(0);
+            else {
+                String value = patient1.getType_marriage();
+                type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));
+            }
+
+            // current address edit
+            if (patient1.getCurrent_address().equals(getResources().getString(R.string.not_provided)))
+                current_residing_address_spinner.setSelection(0);
+            else {
+                String value = patient1.getCurrent_address();
+                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition(value));
+            }
+
+            // with whom living edit
+            if (patient1.getWhom_living().equals(getResources().getString(R.string.not_provided)))
+                with_whom_living_spinner.setSelection(0);
+            else {
+                String value = patient1.getWhom_living();
+                with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition(value));
+            }
+            //end - new fields - Spinner
+
+
+
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
             if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
@@ -1452,7 +1620,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 //            if (callerRelationAdapter.getPosition(patient1.getSdw()) == -1)
 
-            if (patient1.getSdw() == null || patient1.getSdw().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getSdw() == null || patient1.getSdw().equals(getResources()
+                    .getString(R.string.not_provided)))
                 mCallerRelation.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
@@ -2378,6 +2547,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient1.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Emergency Phone Number")) {
+                    patient1.setEmergency_phoneNo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("Education Level")) {
                     patient1.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2387,6 +2559,85 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                //start - new fields - setting in getter setter
+                if (name.equalsIgnoreCase("Landmark")) {
+                    patient1.setLandmark(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education")) {
+                    patient1.setEducation_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maritual Status")) {
+                    patient1.setCurrent_marital_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Income")) {
+                    patient1.setIncome(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient1.setOccupation_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Husband's Income")) {
+                    patient1.setHusband_income(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Husband Occupation")) {
+                    patient1.setHusband_occupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Children Status")) {
+                    patient1.setChildren(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("No. of Childrens")) {
+                    patient1.setNo_of_children(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Caste")) {
+                    patient1.setCaste_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Got Helpline Number From")) {
+                    patient1.setHelpline_no_from(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Work Status")) {
+                    patient1.setJob(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Describe location")) {
+                    patient1.setDescribe_location(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Case reffered by")) {
+                    patient1.setReferred_case(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Am speaking with survivor")) {
+                    patient1.setAmSpeaking(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone number for survivor")) {
+                    patient1.setGood_mobileno(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor maritual status")) {
+                    patient1.setEver_married(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Marriage age")) {
+                    patient1.setAge_marriage(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor marriage type")) {
+                    patient1.setType_marriage(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maternal home address")) {
+                    patient1.setMaternal_address(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maternal phone number")) {
+                    patient1.setMaternal_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Address of in-laws")) {
+                    patient1.setAddress_inlaws(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone number for husband")) {
+                    patient1.setHusband_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor currently address")) {
+                    patient1.setCurrent_address(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor living with")) {
+                    patient1.setWhom_living(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                //end - new fields - setting in getter setter
+
               /*  if (name.equalsIgnoreCase("occupation")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
