@@ -549,10 +549,10 @@ public final class StringUtils {
     public static String switch_hi_helplineInfo_edit(String val) {
         switch (val) {
             case "सामुदायिक चैंपियन":
-                val = "Community champion";
+                val = "Community Champion";
                 break;
             case "हेल्पलाइन एजेंट":
-                val = "Helpline agent";
+                val = "Helpline Agent";
                 break;
             case "मित्र / परिवार से रेफ़रल":
                 val = "Referral from friend / family";
@@ -564,10 +564,10 @@ public final class StringUtils {
                 val = "Outgoing Phone call";
                 break;
             case "सामुदायिक कार्यक्रम":
-                val = "Community event";
+                val = "Community Event";
                 break;
             case "पोस्टर/फ्लायर":
-                val = "Poster/Flyer";
+                val = "Poster / flyer";
                 break;
             case "रेडिओ/ मल्टीमीडिया":
                 val = "Radio/ Multimedia";
@@ -585,10 +585,10 @@ public final class StringUtils {
     }
     public static String switch_hi_helplineInfo(String val) {
         switch (val) {
-            case "Community champion":
+            case "Community Champion":
                 val = "सामुदायिक चैंपियन";
                 break;
-            case "Helpline agent":
+            case "Helpline Agent":
                 val = "हेल्पलाइन एजेंट";
                 break;
             case "Referral from friend / family":
@@ -600,10 +600,10 @@ public final class StringUtils {
             case "Outgoing Phone call":
                 val = "आउटगोइंग फोन कॉल";
                 break;
-            case "Community event":
+            case "Community Event":
                 val = "सामुदायिक कार्यक्रम";
                 break;
-            case "Poster/Flyer":
+            case "Poster / flyer":
                 val = "पोस्टर/फ्लायर";
                 break;
             case "Radio/ Multimedia":
@@ -845,10 +845,10 @@ public final class StringUtils {
     public static String switch_mr_helplineInfo_edit(String val) {
         switch (val) {
             case "समुदाय विजेता":
-                val = "Community champion";
+                val = "Community Champion";
                 break;
             case "हेल्पलाइन एजेंट":
-                val = "Helpline agent";
+                val = "Helpline Agent";
                 break;
             case "मित्र / कुटुंबाकडून संदर्भ":
                 val = "Referral from friend / family";
@@ -860,10 +860,10 @@ public final class StringUtils {
                 val = "Outgoing Phone call";
                 break;
             case "सामुदायिक कार्यक्रम":
-                val = "Community event";
+                val = "Community Event";
                 break;
             case "पोस्टर/फ्लायर":
-                val = "Poster/Flyer";
+                val = "Poster / flyer";
                 break;
             case "रेडिओ/ मल्टीमीडिया":
                 val = "Radio/ Multimedia";
@@ -881,10 +881,10 @@ public final class StringUtils {
     }
     public static String switch_mr_helplineInfo(String val) {
         switch (val) {
-            case "Community champion":
+            case "Community Champion":
                 val = "समुदाय विजेता";
                 break;
-            case "Helpline agent":
+            case "Helpline Agent":
                 val = "हेल्पलाइन एजेंट";
                 break;
             case "Referral from friend / family":
@@ -893,13 +893,13 @@ public final class StringUtils {
             case "SMS":
                 val = "एसएमएस";
                 break;
-            case "Outgoing phone call":
+            case "Outgoing Phone call":
                 val = "आउटगोइंग फोन कॉल";
                 break;
-            case "Community event":
+            case "Community Event":
                 val = "सामुदायिक कार्यक्रम";
                 break;
-            case "Poster/Flyer":
+            case "Poster / flyer":
                 val = "पोस्टर/फ्लायर";
                 break;
             case "Radio/ Multimedia":
