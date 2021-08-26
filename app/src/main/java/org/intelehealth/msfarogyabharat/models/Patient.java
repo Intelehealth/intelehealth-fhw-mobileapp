@@ -277,7 +277,7 @@ public class Patient {
     private String husband_mobile;
     private String current_address;
     private String whom_living;
-
+    private String complaintSelection;
 
     public String getUuid() {
         return uuid;
@@ -533,6 +533,14 @@ public class Patient {
 
     public void setHectars_land(String hectars_land) {
         this.hectars_land = hectars_land;
+    }
+
+    public String getComplaintSelection() {
+        return complaintSelection;
+    }
+
+    public void setComplaintSelection(String complaintSelection) {
+        this.complaintSelection = complaintSelection;
     }
 
 }

@@ -145,7 +145,6 @@ public class IdentificationActivity extends AppCompatActivity {
     Patient patient1 = new Patient();
     private String patientUuid = "";
     private String mGender;
-    private String mComplaint;
     String patientID_edit;
     private int mDOBYear;
     private int mDOBMonth;
@@ -241,6 +240,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
     FrameLayout framelayout_safe_abortion, framelayout_domestic_violence;
     List<String> districtList;
+    private String mComplaintSelection;
 
 
     public static void start(Context context, boolean medicalAdvice) {
@@ -293,7 +293,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
 
-        emergency_no_edittext = findViewById(R.id.identification_phone_number);
+        emergency_no_edittext = findViewById(R.id.identification_emergency_phone_number);
         landmark_edittext = findViewById(R.id.editText_landmark);
         income_edittext = findViewById(R.id.editText_income_monthly);
         husband_income_monthly = findViewById(R.id.editText_husband_income_monthly);
@@ -379,7 +379,7 @@ public class IdentificationActivity extends AppCompatActivity {
         have_children_spinner = findViewById(R.id.spinner_children);
         no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
         contact_type_spinner = findViewById(R.id.spinner_contact_type);
-        helplineno_from_spinner = findViewById(R.id.spinner_helpline);
+        helplineno_from_spinner = findViewById(R.id.spinner_where_did_u);
         husband_occupation_spinner = findViewById(R.id.spinner_husband_occupation);
         //Complaint Selection Spinners...
         job_spinner = findViewById(R.id.work_spinner);
@@ -473,11 +473,13 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mDOB.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mPhoneNum")) {
                 mPhoneNum.setVisibility(View.VISIBLE);
             } else {
                 mPhoneNum.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mAge")) {
                 mAge.setVisibility(View.VISIBLE);
             } else {
@@ -1404,7 +1406,18 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-        /*    if (patient1.getGender().equals("M")) {
+            if(!patient1.getJob().isEmpty() && !patient1.getJob().equalsIgnoreCase("")) {
+                framelayout_safe_abortion.setVisibility(View.VISIBLE);
+                safe_abortion_radiobtn.setChecked(true);
+            }
+            else if(!patient1.getReferred_case().isEmpty() && !patient1.getReferred_case().equalsIgnoreCase("")) {
+                framelayout_domestic_violence.setVisibility(View.VISIBLE);
+                violence_radiobtn.setChecked(true);
+            }
+
+
+
+            /*    if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
@@ -1422,6 +1435,7 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             mGender = "F";
         }*/
+
         if (patientID_edit != null) {
 
             //start - new fields Spinner
@@ -1518,6 +1532,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String value = patient1.getJob();
                 job_spinner.setSelection(job_spinnerAdapter.getPosition(value));
             }
+
 
             //describe location edit
             if (patient1.getDescribe_location().equals(getResources().getString(R.string.not_provided)))
@@ -2428,12 +2443,14 @@ public class IdentificationActivity extends AppCompatActivity {
             case R.id.identification_complaint_abortion:
                 if (checked)
                    // mGender = "M";
+                    mComplaintSelection = "Abortion";
                     framelayout_safe_abortion.setVisibility(View.VISIBLE);
 
                 break;
             case R.id.identification_violence:
                 if (checked)
                    // mGender = "F";
+                    mComplaintSelection = "Violence";
                     framelayout_domestic_violence.setVisibility(View.VISIBLE);
                 break;
         }
@@ -2588,8 +2605,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("No. of Childrens")) {
                     patient1.setNo_of_children(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
-                if (name.equalsIgnoreCase("Caste")) {
+                if (name.equalsIgnoreCase("Caste Value")) {
                     patient1.setCaste_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Contact type")) {
+                    patient1.setContact_type(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
                 if (name.equalsIgnoreCase("Got Helpline Number From")) {
                     patient1.setHelpline_no_from(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
@@ -3496,6 +3516,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getProvided(gender_spinner));
+
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
@@ -3539,6 +3560,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
+
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
 
@@ -3714,7 +3736,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
             patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
@@ -4571,90 +4593,94 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
          //start - complaint selection
-        //10. do you have work
-        if (job_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) job_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = job_spinner;
-            cancel = true;
-            return;
+        if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
+            //10. do you have work
+            if (job_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) job_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = job_spinner;
+                cancel = true;
+                return;
+            }
+
+            //10. describe location
+            if (describe_location_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) describe_location_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = describe_location_spinner;
+                cancel = true;
+                return;
+            }
         }
 
-        //10. describe location
-        if (describe_location_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) describe_location_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = describe_location_spinner;
-            cancel = true;
-            return;
-        }
+        if(framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
+            //10. who referred case
+            if (who_refferred_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) who_refferred_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = who_refferred_spinner;
+                cancel = true;
+                return;
+            }
 
-        //10. who referred case
-        if (who_refferred_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) who_refferred_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = who_refferred_spinner;
-            cancel = true;
-            return;
+            //10. am i speaking
+            if (am_i_speaking_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) am_i_speaking_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = am_i_speaking_spinner;
+                cancel = true;
+                return;
+            }
+            //10. ever married
+            if (ever_married_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) ever_married_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = ever_married_spinner;
+                cancel = true;
+                return;
+            }
+            //10. type of marriage
+            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = type_marriage_spinner;
+                cancel = true;
+                return;
+            }
+            //10. current residing address of survivor
+            if (current_residing_address_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) current_residing_address_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = current_residing_address_spinner;
+                cancel = true;
+                return;
+            }
+            //10. with whom living
+            if (with_whom_living_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) with_whom_living_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = with_whom_living_spinner;
+                cancel = true;
+                return;
+            }
+            //end - complaint selection
         }
-
-        //10. am i speaking
-        if (am_i_speaking_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) am_i_speaking_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = am_i_speaking_spinner;
-            cancel = true;
-            return;
-        }
-        //10. ever married
-        if (ever_married_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) ever_married_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = ever_married_spinner;
-            cancel = true;
-            return;
-        }
-        //10. type of marriage
-        if (type_marriage_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = type_marriage_spinner;
-            cancel = true;
-            return;
-        }
-        //10. current residing address of survivor
-        if (current_residing_address_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) current_residing_address_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = current_residing_address_spinner;
-            cancel = true;
-            return;
-        }
-        //10. with whom living
-        if (with_whom_living_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) with_whom_living_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = with_whom_living_spinner;
-            cancel = true;
-            return;
-        }
-        //end - complaint selection
 
 
         //end - validation new spinner
@@ -5137,7 +5163,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
             patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
