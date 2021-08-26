@@ -565,8 +565,8 @@
                                     android:layout_height="0dp"
                                     android:layout_weight="1">
 
-                                    <AutoCompleteTextView
-                                        android:id="@+id/autocomplete_landmark"
+                                    <EditText
+                                        android:id="@+id/editText_landmark"
                                         android:layout_width="fill_parent"
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
@@ -815,14 +815,14 @@
                             android:layout_height="0dp"
                             android:layout_weight="1">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/autocomplete_income_monthly"
+                            <EditText
+                                android:id="@+id/editText_income_monthly"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:completionThreshold="1"
                                 android:hint="Income (Monthly)"
                                 android:imeOptions="actionDone|flagNoExtractUi"
-                                android:inputType="textAutoComplete"
+                                android:inputType="number"
                                 android:maxLength="45"
                                 android:maxLines="1"
                                 android:singleLine="true" />
@@ -876,14 +876,14 @@
                             android:layout_height="0dp"
                             android:layout_weight="1">
 
-                            <AutoCompleteTextView
-                                android:id="@+id/autocomplete_husband_income_monthly"
+                            <EditText
+                                android:id="@+id/editText_husband_income_monthly"
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:completionThreshold="1"
                                 android:hint="Husband's Income (Monthly)"
                                 android:imeOptions="actionDone|flagNoExtractUi"
-                                android:inputType="textAutoComplete"
+                                android:inputType="number"
                                 android:maxLength="45"
                                 android:maxLines="1"
                                 android:singleLine="true" />
@@ -1019,7 +1019,7 @@
                                     android:id="@+id/spinner_caste_selection"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:entries="@array/caste_en"/>
+                                    android:entries="@array/caste_selection_en"/>
 
                                 <EditText
                                     android:id="@+id/other_caste_edittext"

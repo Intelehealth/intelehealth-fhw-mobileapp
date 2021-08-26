@@ -364,6 +364,22 @@
         <item>अन्य</item>
     </string-array>
 
+    <string-array name="caste_selection_en">
+        <item>Select</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>MBC</item>
+        <item>OBC</item>
+        <item>SBC</item>
+        <item>General</item>
+        <item>Minority (Muslim)</item>
+        <item>Minority (Christian)</item>
+        <item>Minority (Jain)</item>
+        <item>Minority (other - please specify)</item>
+        <item>Other (please specify)</item>
+        <item>Prefer not to say</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>

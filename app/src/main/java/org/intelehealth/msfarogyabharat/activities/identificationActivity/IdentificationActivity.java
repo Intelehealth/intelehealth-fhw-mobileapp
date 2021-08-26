@@ -128,7 +128,9 @@ public class IdentificationActivity extends AppCompatActivity {
     ArrayAdapter<CharSequence> phoneTypeAdapter;
     ArrayAdapter<CharSequence> callerRelationAdapter;
     ArrayAdapter<CharSequence> genderAdapter, marital_statusAdapter, husband_occupationAdapter, childrenAdapter;
-    ArrayAdapter<CharSequence>  no_childrenAdapter, contact_type_adapter, helpline_no_fromAdapter ;
+    ArrayAdapter<CharSequence>  no_childrenAdapter, contact_type_adapter, helpline_no_fromAdapter;
+    ArrayAdapter<CharSequence>  education_spinnerAdapter, occupation_spinner_1Adapter, caste_spinnerAdapter;
+
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -218,8 +220,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther;
-    Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner, have_children_spinner,
-    no_of_children_spinner, contact_type_spinner, helplineno_from_spinner, husband_occupation_spinner; //caste_spinner
+
+    Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner_1, have_children_spinner,
+    no_of_children_spinner, contact_type_spinner, helplineno_from_spinner, husband_occupation_spinner,
+    caste_spinner; //caste_spinner
     EditText emergency_no_edittext, landmark_edittext, income_edittext, husband_income_monthly;
 
 
@@ -275,6 +279,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
+
+        emergency_no_edittext = findViewById(R.id.identification_phone_number);
+        landmark_edittext = findViewById(R.id.editText_landmark);
+        income_edittext = findViewById(R.id.editText_income_monthly);
+        husband_income_monthly = findViewById(R.id.editText_husband_income_monthly);
+
 
         helplineInfoOther = findViewById(R.id.other_helplineInfo_edittext);
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -336,6 +346,8 @@ public class IdentificationActivity extends AppCompatActivity {
         //start - Spinner
         gender_spinner = findViewById(R.id.spinner_gender);
         education_spinner = findViewById(R.id.spinner_education_selection);
+        occupation_spinner_1 = findViewById(R.id.spinner_occupation_selection);
+        caste_spinner = findViewById(R.id.spinner_caste_selection);
         current_marital_spinner = findViewById(R.id.spinner_current_marital_status);
         occupation_spinner = findViewById(R.id.spinner_occupation_selection);
         have_children_spinner = findViewById(R.id.spinner_children);
@@ -532,6 +544,8 @@ public class IdentificationActivity extends AppCompatActivity {
         else {
             mDOB.setText(patient1.getDate_of_birth());
         }*/
+
+        //on Edit....
         mDOB.setText(patient1.getDate_of_birth());
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
@@ -623,6 +637,145 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         } //Gender Spinner End...
 
+
+        try { // current marital status Spinner
+            String currentmaritalLanguage = "marital_spinner_" + sessionManager.getAppLanguage();
+            int marital_status = res.getIdentifier(currentmaritalLanguage, "array", getApplicationContext().getPackageName());
+            if (marital_status != 0) {
+                marital_statusAdapter = ArrayAdapter.createFromResource(this,
+                        marital_status, R.layout.custom_spinner);
+
+            }
+            current_marital_spinner.setAdapter(marital_statusAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //marital status Spinner End...
+
+        try { // husband occupation Spinner
+            String husband_occupationLanguage = "husband_occupation_" + sessionManager.getAppLanguage();
+            int husband_occupation = res.getIdentifier(husband_occupationLanguage, "array", getApplicationContext().getPackageName());
+            if (husband_occupation != 0) {
+                husband_occupationAdapter = ArrayAdapter.createFromResource(this,
+                        husband_occupation, R.layout.custom_spinner);
+
+            }
+            husband_occupation_spinner.setAdapter(husband_occupationAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //husband occupation Spinner End...
+
+        try { // children Spinner
+            String childrenLanguage = "spinner_children_" + sessionManager.getAppLanguage();
+            int children = res.getIdentifier(childrenLanguage, "array", getApplicationContext().getPackageName());
+            if (children != 0) {
+                childrenAdapter = ArrayAdapter.createFromResource(this,
+                        children, R.layout.custom_spinner);
+
+            }
+            have_children_spinner.setAdapter(childrenAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //children Spinner End...
+
+        try { // no of children Spinner
+            String noofchildrenLanguage = "spinner_no_of_children_" + sessionManager.getAppLanguage();
+            int noofchildren = res.getIdentifier(noofchildrenLanguage, "array", getApplicationContext().getPackageName());
+            if (noofchildren != 0) {
+                no_childrenAdapter = ArrayAdapter.createFromResource(this,
+                        noofchildren, R.layout.custom_spinner);
+
+            }
+            no_of_children_spinner.setAdapter(no_childrenAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // no of children Spinner End...
+
+        try { // contact type Spinner
+            String contact_typeLanguage = "spinner_contact_type_" + sessionManager.getAppLanguage();
+            int contact_type = res.getIdentifier(contact_typeLanguage, "array", getApplicationContext().getPackageName());
+            if (contact_type != 0) {
+                contact_type_adapter = ArrayAdapter.createFromResource(this,
+                        contact_type, R.layout.custom_spinner);
+
+            }
+            contact_type_spinner.setAdapter(contact_type_adapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // no of children Spinner End...
+
+        try { // where did u get this no from Spinner
+            String no_fromLanguage = "spinner_where_did_u_" + sessionManager.getAppLanguage();
+            int no_from = res.getIdentifier(no_fromLanguage, "array", getApplicationContext().getPackageName());
+            if (no_from != 0) {
+                helpline_no_fromAdapter = ArrayAdapter.createFromResource(this,
+                        no_from, R.layout.custom_spinner);
+
+            }
+            helplineno_from_spinner.setAdapter(helpline_no_fromAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // no of children Spinner End...
+
+
+        //start - already present fields....
+        //1. Education
+        try { //Education spinner new....
+            String education_spinnerLanguage = "education_spinner_" + sessionManager.getAppLanguage();
+            int education_spinner_int = res.getIdentifier(education_spinnerLanguage, "array", getApplicationContext().getPackageName());
+            if (education_spinner_int != 0) {
+                education_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        education_spinner_int, R.layout.custom_spinner);
+
+            }
+            education_spinner.setAdapter(education_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //end of education spinner new ...
+
+        //2. Occupation
+        try { // occupation Spinner
+            String occupationSpinnerLanguage = "occupation_spinner_selection_" + sessionManager.getAppLanguage();
+            int occupationSpinner = res.getIdentifier(occupationSpinnerLanguage, "array", getApplicationContext().getPackageName());
+            if (occupationSpinner != 0) {
+                occupation_spinner_1Adapter = ArrayAdapter.createFromResource(this,
+                        occupationSpinner, R.layout.custom_spinner);
+
+            }
+            occupation_spinner_1.setAdapter(occupation_spinner_1Adapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // occupation Spinner End...
+
+        //3. Caste
+        try { // caste Spinner
+            String casteSpinnerLanguage = "caste_selection_" + sessionManager.getAppLanguage();
+            int casteSpinner = res.getIdentifier(casteSpinnerLanguage, "array", getApplicationContext().getPackageName());
+            if (casteSpinner != 0) {
+                caste_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        casteSpinner, R.layout.custom_spinner);
+
+            }
+            caste_spinner.setAdapter(caste_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //husband occupation Spinner End...
+
+
+
+
+
+
+
+        //end - already present fields....
 
 
 
@@ -2224,6 +2377,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+        //emergency phone no field...
+        if (emergency_no_edittext.getText().toString().trim().length() > 0) {
+            if (emergency_no_edittext.getText().toString().trim().length() < 10) {
+                emergency_no_edittext.requestFocus();
+                emergency_no_edittext.setError(getString(R.string.enter_10_digits));
+                return;
+            }
+        }
+
 
         if (isMedicalAdvice
                 && !cbCovidConcern.isChecked()
@@ -2284,7 +2446,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 /*&& (mGenderF.isChecked() || mGenderM.isChecked())*/) {
 
             Log.v(TAG, "Result");
@@ -2310,6 +2473,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
+            //emergency phone no...
+            if (emergency_no_edittext.getText().toString().equals("")) {
+                emergency_no_edittext.setError(getString(R.string.error_field_required));
+            }
+
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
@@ -2317,6 +2485,18 @@ public class IdentificationActivity extends AppCompatActivity {
             if (autocompleteDistrict.getText().toString().equals("")) {
                 autocompleteDistrict.setError(getString(R.string.error_field_required));
             }
+
+            //start
+            if (landmark_edittext.getText().toString().equals("")) {
+                landmark_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (income_edittext.getText().toString().equals("")) {
+                income_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (husband_income_monthly.getText().toString().equals("")) {
+                husband_income_monthly.setError(getString(R.string.error_field_required));
+            }
+            //end
 
 
 //            if (mCity.getText().toString().equals("")) {
@@ -2387,6 +2567,114 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+
+        //start - validation new spinner
+        //1. Gender
+        if (gender_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) gender_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = gender_spinner;
+            cancel = true;
+            return;
+        }
+
+        //2. education
+        if (education_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) education_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = education_spinner;
+            cancel = true;
+            return;
+        }
+
+        //3. curent marital status
+        if (current_marital_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) current_marital_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = current_marital_spinner;
+            cancel = true;
+            return;
+        }
+
+        //4. occupation
+        if (occupation_spinner_1.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = occupation_spinner_1;
+            cancel = true;
+            return;
+        }
+        //5. husband occupation
+        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = husband_occupation_spinner;
+            cancel = true;
+            return;
+        }
+        //6. children
+        if (have_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) have_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = have_children_spinner;
+            cancel = true;
+            return;
+        }
+        //7. no of children
+        if (no_of_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) no_of_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = no_of_children_spinner;
+            cancel = true;
+            return;
+        }
+        //8. caste spinner
+        if (caste_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) caste_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = caste_spinner;
+            cancel = true;
+            return;
+        }
+        //9. contact type
+        if (contact_type_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) contact_type_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = contact_type_spinner;
+            cancel = true;
+            return;
+        }
+        //10. where did u
+        if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = helplineno_from_spinner;
+            cancel = true;
+            return;
+        }
+
+
+        //end - validation new spinner
 
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
@@ -2694,6 +2982,43 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            //start - new fields EditText
+            //start - emergency phone no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Emergency Phone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //end - emergency phone no
+
+            //2. Landmark
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Landmark"));
+            patientAttributesDTO.setValue(StringUtils.getValue(landmark_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //3. Income
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Income"));
+            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. Husband Income
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband's Income"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+
+            //end - new fields EditText
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
@@ -2701,6 +3026,99 @@ public class IdentificationActivity extends AppCompatActivity {
 //            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
             patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mCallerRelation));
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - new fields spinner
+            //1. Gender
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Gender"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(gender_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. education spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(education_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Marital Status
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(current_marital_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Occupation Spinner_1
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(occupation_spinner_1)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. husband occupation
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(husband_occupation_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. no of children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(no_of_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Caste Spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. contact type
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Contact type"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. helpline no from
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(helplineno_from_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+
+
+
+
+
+
+
+
+
+
+            //end - new fields spinner
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3106,6 +3524,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+        //emergency phone no
+        if (emergency_no_edittext.getText().toString().trim().length() > 0) {
+            if (emergency_no_edittext.getText().toString().trim().length() < 10) {
+                emergency_no_edittext.requestFocus();
+                emergency_no_edittext.setError("Enter 10 digits");
+                return;
+            }
+        }
+
 
         if (isMedicalAdvice
                 && !cbCovidConcern.isChecked()
@@ -3193,6 +3620,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
+            //emergency no
+            if (emergency_no_edittext.getText().toString().equals("")) {
+                emergency_no_edittext.setError(getString(R.string.error_field_required));
+            }
+
+
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
@@ -3200,6 +3633,18 @@ public class IdentificationActivity extends AppCompatActivity {
             if (autocompleteDistrict.getText().toString().equals("")) {
                 autocompleteDistrict.setError(getString(R.string.error_field_required));
             }
+
+            //start
+            if (landmark_edittext.getText().toString().equals("")) {
+                landmark_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (income_edittext.getText().toString().equals("")) {
+                income_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (husband_income_monthly.getText().toString().equals("")) {
+                husband_income_monthly.setError(getString(R.string.error_field_required));
+            }
+            //end
 
 //            if (mCity.getText().toString().equals("")) {
 //                mCity.setError(getString(R.string.error_field_required));
@@ -3269,6 +3714,114 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+
+        //start - validation new spinner
+        //1. Gender
+        if (gender_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) gender_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = gender_spinner;
+            cancel = true;
+            return;
+        }
+
+        //2. education
+        if (education_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) education_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = education_spinner;
+            cancel = true;
+            return;
+        }
+
+        //3. curent marital status
+        if (current_marital_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) current_marital_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = current_marital_spinner;
+            cancel = true;
+            return;
+        }
+
+        //4. occupation
+        if (occupation_spinner_1.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = occupation_spinner_1;
+            cancel = true;
+            return;
+        }
+        //5. husband occupation
+        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = husband_occupation_spinner;
+            cancel = true;
+            return;
+        }
+        //6. children
+        if (have_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) have_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = have_children_spinner;
+            cancel = true;
+            return;
+        }
+        //7. no of children
+        if (no_of_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) no_of_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = no_of_children_spinner;
+            cancel = true;
+            return;
+        }
+        //8. caste spinner
+        if (caste_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) caste_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = caste_spinner;
+            cancel = true;
+            return;
+        }
+        //9. contact type
+        if (contact_type_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) contact_type_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = contact_type_spinner;
+            cancel = true;
+            return;
+        }
+        //10. where did u
+        if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = helplineno_from_spinner;
+            cancel = true;
+            return;
+        }
+
+
+        //end - validation new spinner
 
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
@@ -3576,6 +4129,19 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            //start - new fields EditText
+            //start - emergency phone no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Emergency Phone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //end - emergency phone no
+
+
+            //end - new fields EditText
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
@@ -3598,8 +4164,100 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
 //            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
             patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
-
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - new fields spinner
+            //1. Gender
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Gender"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(gender_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. education spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(education_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Marital Status
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(current_marital_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Occupation Spinner_1
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(occupation_spinner_1)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. husband occupation
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(husband_occupation_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. no of children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(no_of_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Caste Spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. contact type
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Contact type"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. helpline no from
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(helplineno_from_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+
+
+
+
+
+
+
+
+
+
+            //end - new fields spinner
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
