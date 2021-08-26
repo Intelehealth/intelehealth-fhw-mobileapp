@@ -98,14 +98,14 @@ public class UrlModifiers {
     }
 
     public String getBucketListUrl() {
-        return "https://hellosathi.uninhibited.org.in/buckets";
+        return "https://hellosaathi.uninhibited.org.in/buckets";
     }
 
     public String getSubscriptionStatusUrl(String number) {
-        return String.format("https://hellosathi.uninhibited.org.in/status/%s", number);
+        return String.format("https://hellosaathi.uninhibited.org.in/status/%s", number);
     }
 
     public String getSubscriptionUrl() {
-        return "https://hellosathi.uninhibited.org.in/subscribe";
+        return "https://hellosaathi.uninhibited.org.in/subscribe";
     }
 }
