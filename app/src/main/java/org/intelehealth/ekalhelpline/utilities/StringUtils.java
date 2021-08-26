@@ -879,6 +879,21 @@ public final class StringUtils {
         }
         return val;
     }
+
+    public static String switch_hi_subs_response(String val) {
+        switch (val) {
+            case "User has been subscribed.":
+                val = "उपयोगकर्ता की सदस्यता ली गई है।";
+                break;
+            case "User has already Subscribed":
+                val = "उपयोगकर्ता पहले ही सदस्यता ले चुका है";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_mr_helplineInfo(String val) {
         switch (val) {
             case "Community Champion":

@@ -131,6 +131,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callNoteValue_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_subs_response;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
 
@@ -603,9 +604,14 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<SubscriptionStatus> call, Response<SubscriptionStatus> response) {
                         SubscriptionStatus body = response.body();
+                        String message = body.data;
                         if (body != null) {
                             updateSubscriptionUI(false);
-                            new AlertDialog.Builder(context).setMessage(body.data).setPositiveButton(R.string.generic_ok, null).show();
+                            if(sessionManager.getAppLanguage().equals("hi"))
+                                message = switch_hi_subs_response(body.data) ;
+                            else
+                                message = body.data;
+                            new AlertDialog.Builder(context).setMessage(message).setPositiveButton(R.string.generic_ok, null).show();
                         }
                     }
 
