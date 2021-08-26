@@ -3244,7 +3244,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-          //  patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setGender(StringUtils.getProvided(gender_spinner));
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
@@ -3404,12 +3404,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start - new fields spinner
             //1. Gender
-            patientAttributesDTO = new PatientAttributesDTO();
+           /* patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("gender"));
             patientAttributesDTO.setValue(StringUtils.getProvided(gender_spinner)); //TODO: add switch case for each spinner adapter values...
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             //1. education spinner
             patientAttributesDTO = new PatientAttributesDTO();
@@ -4653,7 +4653,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
-          //  patientdto.setGender(StringUtils.getValue(mGender));
+           // patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setGender(StringUtils.getProvided(gender_spinner));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -4826,12 +4827,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start - new fields spinner
             //1. Gender
-            patientAttributesDTO = new PatientAttributesDTO();
+           /* patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
-            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Gender"));
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("gender"));
             patientAttributesDTO.setValue(StringUtils.getProvided(gender_spinner)); //TODO: add switch case for each spinner adapter values...
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             //1. education spinner
             patientAttributesDTO = new PatientAttributesDTO();
