@@ -1346,6 +1346,16 @@
                                 android:layout_height="wrap_content"
                                 android:entries="@array/spinner_dv_referred_en"/>
 
+                                <EditText
+                                    android:id="@+id/other_referredcase_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
+
                             <View
                                 android:id="@+id/linear_line_who_referred"
                                 android:layout_width="match_parent"
@@ -1374,7 +1384,7 @@
                                 android:entries="@array/spinner_dv_speaking_with_en"/>
 
                                 <EditText
-                                    android:id="@+id/other_dv_speaking_with_edittext"
+                                    android:id="@+id/other_ami_speaking_with_edittext"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/txt_others"
@@ -1699,6 +1709,16 @@
                             android:layout_height="wrap_content"
                             android:entries="@array/spinner_current_address_en"/>
 
+                                <EditText
+                                    android:id="@+id/other_currentaddress_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
+
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
@@ -1724,6 +1744,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:entries="@array/spinner_with_whom_living_en"/>
+
+                                <EditText
+                                    android:id="@+id/other_withwhomliving_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
 
                         <View
                             android:layout_width="match_parent"

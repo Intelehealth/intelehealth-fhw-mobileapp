@@ -577,6 +577,89 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Emergency Phone Number")) {
+                    patient_new.setEmergency_phoneNo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                //start - new fields - setting in getter setter
+                if (name.equalsIgnoreCase("Landmark")) {
+                    patient_new.setLandmark(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education")) {
+                    patient_new.setEducation_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maritual Status")) {
+                    patient_new.setCurrent_marital_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Income")) {
+                    patient_new.setIncome(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient_new.setOccupation_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Husband's Income")) {
+                    patient_new.setHusband_income(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Husband Occupation")) {
+                    patient_new.setHusband_occupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Children Status")) {
+                    patient_new.setChildren(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("No. of Childrens")) {
+                    patient_new.setNo_of_children(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Caste Value")) {
+                    patient_new.setCaste_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Contact type")) {
+                    patient_new.setContact_type(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Got Helpline Number From")) {
+                    patient_new.setHelpline_no_from(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Work Status")) {
+                    patient_new.setJob(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Describe location")) {
+                    patient_new.setDescribe_location(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Case reffered by")) {
+                    patient_new.setReferred_case(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Am speaking with survivor")) {
+                    patient_new.setAmSpeaking(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone number for survivor")) {
+                    patient_new.setGood_mobileno(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor maritual status")) {
+                    patient_new.setEver_married(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Marriage age")) {
+                    patient_new.setAge_marriage(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor marriage type")) {
+                    patient_new.setType_marriage(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maternal home address")) {
+                    patient_new.setMaternal_address(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maternal phone number")) {
+                    patient_new.setMaternal_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Address of in-laws")) {
+                    patient_new.setAddress_inlaws(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone number for husband")) {
+                    patient_new.setHusband_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor currently address")) {
+                    patient_new.setCurrent_address(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor living with")) {
+                    patient_new.setWhom_living(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                //end - new fields - setting in getter setter
               /*  if (name.equalsIgnoreCase("Education Level")) {
                     patient_new.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }*/

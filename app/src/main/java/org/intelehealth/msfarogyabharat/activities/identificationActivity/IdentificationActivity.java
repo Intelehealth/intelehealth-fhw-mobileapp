@@ -203,7 +203,8 @@ public class IdentificationActivity extends AppCompatActivity {
     String intentTag1 = "";
     String intentTag2 = "";
     String helplineInfo = "", genderInfo = "", educationInfo = "", maritualstatusInfo = "",
-            husbandoccupationInfo = "", casteInfo = "", wherediduInfo = "";
+            husbandoccupationInfo = "", casteInfo = "", wherediduInfo = "", referredbyInfo = "",
+    amiSpeakingInfo = "", currentAddressInfo, withwhomLivingInfo = "";
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
@@ -231,7 +232,8 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther,
-    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, casteOther, wherediduOther;
+    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, casteOther, wherediduOther,
+    referredOther, amIspeakingOther, currentaddressOther, withwhomlivingOther;
 
     //new fields of registration...
     Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner_1, have_children_spinner,
@@ -319,6 +321,10 @@ public class IdentificationActivity extends AppCompatActivity {
         husbandoccupationOther = findViewById(R.id.other_husband_occupation_edittext);
         casteOther = findViewById(R.id.other_caste_edittext);
         wherediduOther = findViewById(R.id.other_where_did_u_edittext);
+        referredOther = findViewById(R.id.other_referredcase_edittext);
+        amIspeakingOther = findViewById(R.id.other_ami_speaking_with_edittext);
+        currentaddressOther = findViewById(R.id.other_currentaddress_edittext);
+        withwhomlivingOther = findViewById(R.id.other_withwhomliving_edittext);
 
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -1632,10 +1638,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //start - other edittext
-                if (genderAdapter.getPosition(patient1.getGender()) == -1) {
-                    gender_spinner.setSelection(genderAdapter.getPosition("Other"));
-                    genderOther.setText(patient1.getGender());
-                }
+            if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                gender_spinner.setSelection(genderAdapter.getPosition("Other"));
+                genderOther.setText(patient1.getGender());
+            }
             if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
                 education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
                 educationOther.setText(patient1.getEducation_value());
@@ -1655,6 +1661,22 @@ public class IdentificationActivity extends AppCompatActivity {
             if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
                 helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
                 wherediduOther.setText(patient1.getHelpline_no_from());
+            }
+            if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
+                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
+                referredOther.setText(patient1.getReferred_case());
+            }
+            if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
+                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
+                amIspeakingOther.setText(patient1.getAmSpeaking());
+            }
+            if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
+                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
+                currentaddressOther.setText(patient1.getCurrent_address());
+            }
+            if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
+                with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
+                withwhomlivingOther.setText(patient1.getWhom_living());
             }
             //end - other edittext
 
@@ -2070,6 +2092,98 @@ public class IdentificationActivity extends AppCompatActivity {
                         wherediduOther.setError(null);
                         wherediduOther.setVisibility(View.GONE);
                     }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // who referred case
+        who_refferred_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedcaseReferredByOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedcaseReferredByOption.equalsIgnoreCase("Other")) {
+                    referredOther.setVisibility(View.VISIBLE);
+                    referredOther.setFocusable(true);
+                } else {
+                    referredOther.setText("");
+                    referredOther.setError(null);
+                    referredOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // am i speaking
+        am_i_speaking_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedamispeakingOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedamispeakingOption.equalsIgnoreCase("Someone else (Ask who and enter)")) {
+                    amIspeakingOther.setVisibility(View.VISIBLE);
+                    amIspeakingOther.setFocusable(true);
+                } else {
+                    amIspeakingOther.setText("");
+                    amIspeakingOther.setError(null);
+                    amIspeakingOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // current address
+        current_residing_address_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedcurrentAddressOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedcurrentAddressOption.equalsIgnoreCase("Other")) {
+                    currentaddressOther.setVisibility(View.VISIBLE);
+                    currentaddressOther.setFocusable(true);
+                } else {
+                    currentaddressOther.setText("");
+                    currentaddressOther.setError(null);
+                    currentaddressOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // with whom living
+        with_whom_living_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedwithwhomOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedwithwhomOption.equalsIgnoreCase("Other")) {
+                    withwhomlivingOther.setVisibility(View.VISIBLE);
+                    withwhomlivingOther.setFocusable(true);
+                } else {
+                    withwhomlivingOther.setText("");
+                    withwhomlivingOther.setError(null);
+                    withwhomlivingOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2671,6 +2785,86 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
+        //who case referred
+        referredOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(referredOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //am i speaking
+        amIspeakingOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(amIspeakingOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //current address
+        currentaddressOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(currentaddressOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //with whom living
+        withwhomlivingOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(withwhomlivingOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
 
         //end - other edittext
@@ -2782,6 +2976,7 @@ public class IdentificationActivity extends AppCompatActivity {
                    // mGender = "M";
                     mComplaintSelection = "Abortion";
                     framelayout_safe_abortion.setVisibility(View.VISIBLE);
+                    framelayout_domestic_violence.setVisibility(View.GONE);
 
                 break;
             case R.id.identification_violence:
@@ -2789,6 +2984,7 @@ public class IdentificationActivity extends AppCompatActivity {
                    // mGender = "F";
                     mComplaintSelection = "Violence";
                     framelayout_domestic_violence.setVisibility(View.VISIBLE);
+                    framelayout_safe_abortion.setVisibility(View.GONE);
                 break;
         }
     }
@@ -3719,6 +3915,55 @@ public class IdentificationActivity extends AppCompatActivity {
                 wherediduOther.setError(null);
             }
         }
+
+        //who referred case
+        if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (referredOther.getText().toString().equalsIgnoreCase("")) {
+                referredOther.setError(getString(R.string.error_field_required));
+                focusView = referredOther;
+                cancel = true;
+                return;
+            } else {
+                referredOther.setError(null);
+            }
+        }
+
+        //am i speaking
+        if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)")) {
+            if (amIspeakingOther.getText().toString().equalsIgnoreCase("")) {
+                amIspeakingOther.setError(getString(R.string.error_field_required));
+                focusView = amIspeakingOther;
+                cancel = true;
+                return;
+            } else {
+                amIspeakingOther.setError(null);
+            }
+        }
+
+        //current address
+        if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (currentaddressOther.getText().toString().equalsIgnoreCase("")) {
+                currentaddressOther.setError(getString(R.string.error_field_required));
+                focusView = currentaddressOther;
+                cancel = true;
+                return;
+            } else {
+                currentaddressOther.setError(null);
+            }
+        }
+
+        //with whom living
+        if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (withwhomlivingOther.getText().toString().equalsIgnoreCase("")) {
+                withwhomlivingOther.setError(getString(R.string.error_field_required));
+                focusView = withwhomlivingOther;
+                cancel = true;
+                return;
+            } else {
+                withwhomlivingOther.setError(null);
+            }
+        }
+
         //end - other edittext
 
 
@@ -3962,6 +4207,30 @@ public class IdentificationActivity extends AppCompatActivity {
                 wherediduInfo = wherediduOther.getText().toString();
             else
                 wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+
+            //case referred by
+            if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                referredbyInfo = referredOther.getText().toString();
+            else
+                referredbyInfo = StringUtils.getProvided(caste_spinner);
+
+            //am i speaking
+            if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
+                amiSpeakingInfo = amIspeakingOther.getText().toString();
+            else
+                amiSpeakingInfo = StringUtils.getProvided(caste_spinner);
+
+            //current address
+            if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                currentAddressInfo = currentaddressOther.getText().toString();
+            else
+                currentAddressInfo = StringUtils.getProvided(caste_spinner);
+
+            //with whom living
+            if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                withwhomLivingInfo = withwhomlivingOther.getText().toString();
+            else
+                withwhomLivingInfo = StringUtils.getProvided(caste_spinner);
 
             //end other edittext
 
@@ -5252,6 +5521,54 @@ public class IdentificationActivity extends AppCompatActivity {
                 wherediduOther.setError(null);
             }
         }
+
+        //who referred case
+        if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (referredOther.getText().toString().equalsIgnoreCase("")) {
+                referredOther.setError(getString(R.string.error_field_required));
+                focusView = referredOther;
+                cancel = true;
+                return;
+            } else {
+                referredOther.setError(null);
+            }
+        }
+
+        //am i speaking
+        if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)")) {
+            if (amIspeakingOther.getText().toString().equalsIgnoreCase("")) {
+                amIspeakingOther.setError(getString(R.string.error_field_required));
+                focusView = amIspeakingOther;
+                cancel = true;
+                return;
+            } else {
+                amIspeakingOther.setError(null);
+            }
+        }
+
+        //current address
+        if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (currentaddressOther.getText().toString().equalsIgnoreCase("")) {
+                currentaddressOther.setError(getString(R.string.error_field_required));
+                focusView = currentaddressOther;
+                cancel = true;
+                return;
+            } else {
+                currentaddressOther.setError(null);
+            }
+        }
+
+        //with whom living
+        if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (withwhomlivingOther.getText().toString().equalsIgnoreCase("")) {
+                withwhomlivingOther.setError(getString(R.string.error_field_required));
+                focusView = withwhomlivingOther;
+                cancel = true;
+                return;
+            } else {
+                withwhomlivingOther.setError(null);
+            }
+        }
         //end - other edittext
 
 
@@ -5463,6 +5780,30 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCurrentPhotoPath = patientdto.getPatient_photo();
 
             //start other editext
+            //who referred case
+            if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                referredbyInfo = referredOther.getText().toString();
+            else
+                referredbyInfo = StringUtils.getProvided(who_refferred_spinner);
+
+            //am i speaking
+            if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
+                amiSpeakingInfo = amIspeakingOther.getText().toString();
+            else
+                amiSpeakingInfo = StringUtils.getProvided(am_i_speaking_spinner);
+
+            //current address
+            if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                currentAddressInfo = currentaddressOther.getText().toString();
+            else
+                currentAddressInfo = StringUtils.getProvided(current_residing_address_spinner);
+
+            //with whom living
+            if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                withwhomLivingInfo = withwhomlivingOther.getText().toString();
+            else
+                withwhomLivingInfo = StringUtils.getProvided(with_whom_living_spinner);
+
             //gender
             if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 genderInfo = genderOther.getText().toString();

@@ -275,8 +275,8 @@
         <item>Police station</item>
         <item>Website/ social media</item>
         <item>Newspaper</item>
-        <item>Other (please specify)</item>
         <item>Prefer not to say</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="spinner_describe_location_en">
@@ -297,8 +297,8 @@
         <item>Select</item>
         <item>Maternal Address</item>
         <item>Address of in-laws</item>
-        <item>Other (please specify)</item>
         <item>Prefer not to say</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="spinner_with_whom_living_en">
@@ -308,8 +308,8 @@
     <item>Friend</item>
     <item>No one</item>
     <item>No one</item>
-    <item>Other (please specify)</item>
     <item>Prefer not to say</item>
+    <item>Other</item>
     </string-array>
 
     <string-array name="spinner_marriage_type_en">
