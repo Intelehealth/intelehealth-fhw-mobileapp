@@ -188,7 +188,7 @@
         <item>Unemployed and looking for a job</item>
         <item>Unemployed and not looking for a job</item>
         <item>Volunteer</item>
-        <item>Other (Enter text)</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="spinner_children_en">

@@ -203,7 +203,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String intentTag1 = "";
     String intentTag2 = "";
     String helplineInfo = "", genderInfo = "", educationInfo = "", maritualstatusInfo = "",
-            husbandoccupationInfo = "", casteInfo = "", wherediduInfo = "", referredbyInfo = "",
+            husbandoccupationInfo = "", occupationInfo = "", casteInfo = "", wherediduInfo = "", referredbyInfo = "",
     amiSpeakingInfo = "", currentAddressInfo, withwhomLivingInfo = "";
     Intent i_privacy;
     String privacy_value;
@@ -232,7 +232,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther,
-    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, casteOther, wherediduOther,
+    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, occupationOther, casteOther, wherediduOther,
     referredOther, amIspeakingOther, currentaddressOther, withwhomlivingOther;
 
     //new fields of registration...
@@ -319,6 +319,7 @@ public class IdentificationActivity extends AppCompatActivity {
         educationOther = findViewById(R.id.other_education_edittext);
         maritualstatusOther = findViewById(R.id.other_maritalStatus_edittext);
         husbandoccupationOther = findViewById(R.id.other_husband_occupation_edittext);
+        occupationOther = findViewById(R.id.other_occupation_edittext);
         casteOther = findViewById(R.id.other_caste_edittext);
         wherediduOther = findViewById(R.id.other_where_did_u_edittext);
         referredOther = findViewById(R.id.other_referredcase_edittext);
@@ -719,6 +720,20 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         } //marital status Spinner End...
+
+        try { // occupation Spinner
+            String occupationLanguage = "occupation_spinner_selection_" + sessionManager.getAppLanguage();
+            int occupation = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
+            if (occupation != 0) {
+                occupation_spinner_1Adapter = ArrayAdapter.createFromResource(this,
+                        occupation, R.layout.custom_spinner);
+
+            }
+            occupation_spinner_1.setAdapter(occupation_spinner_1Adapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // occupation Spinner End...
 
         try { // husband occupation Spinner
             String husband_occupationLanguage = "husband_occupation_" + sessionManager.getAppLanguage();
@@ -1650,6 +1665,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 current_marital_spinner.setSelection(marital_statusAdapter.getPosition("Other"));
                 maritualstatusOther.setText(patient1.getCurrent_marital_status());
             }
+            if (occupation_spinner_1Adapter.getPosition(patient1.getOccupation_value()) == -1) {
+                occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("Other"));
+                occupationOther.setText(patient1.getOccupation_value());
+            }
             if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
                 husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("Other"));
                 husbandoccupationOther.setText(patient1.getHusband_occupation());
@@ -2023,6 +2042,29 @@ public class IdentificationActivity extends AppCompatActivity {
                         maritualstatusOther.setError(null);
                         maritualstatusOther.setVisibility(View.GONE);
                     }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //occupation
+        occupation_spinner_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedOccupationOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedOccupationOption.equalsIgnoreCase("Other")) {
+                    occupationOther.setVisibility(View.VISIBLE);
+                    occupationOther.setFocusable(true);
+                } else {
+                    occupationOther.setText("");
+                    occupationOther.setError(null);
+                    occupationOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2718,6 +2760,26 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(maritualstatusOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // occupation
+        occupationOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(occupationOther.getWindowToken(), 0);
 
                     return true;
                 }
@@ -3880,6 +3942,18 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        // occupation
+        if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (occupationOther.getText().toString().equalsIgnoreCase("")) {
+                occupationOther.setError(getString(R.string.error_field_required));
+                focusView = occupationOther;
+                cancel = true;
+                return;
+            } else {
+                occupationOther.setError(null);
+            }
+        }
+
         //husband occupation
         if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
@@ -4196,6 +4270,12 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
 
+            // occupation
+            if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                occupationInfo = occupationOther.getText().toString();
+            else
+                occupationInfo = StringUtils.getProvided(occupation_spinner_1);
+
             //caste
             if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 casteInfo = casteOther.getText().toString();
@@ -4429,7 +4509,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(occupation_spinner_1)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. husband occupation
@@ -5486,6 +5566,18 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        // occupation
+        if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (occupationOther.getText().toString().equalsIgnoreCase("")) {
+                occupationOther.setError(getString(R.string.error_field_required));
+                focusView = occupationOther;
+                cancel = true;
+                return;
+            } else {
+                occupationOther.setError(null);
+            }
+        }
+
         //husband occupation
         if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
@@ -5828,6 +5920,12 @@ public class IdentificationActivity extends AppCompatActivity {
             else
                 husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
 
+            // occupation
+            if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                occupationInfo = occupationOther.getText().toString();
+            else
+                occupationInfo = StringUtils.getProvided(occupation_spinner_1);
+
             //caste
             if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 casteInfo = casteOther.getText().toString();
@@ -6051,7 +6149,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(occupation_spinner_1)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. husband occupation
