@@ -4502,7 +4502,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Case reffered by"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(who_refferred_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. am i speaking
@@ -4510,7 +4510,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Am speaking with survivor"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(am_i_speaking_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. was ever married
@@ -4534,7 +4534,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor currently address"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(current_marital_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. with whom living
@@ -4542,7 +4542,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor living with"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(with_whom_living_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -6124,7 +6124,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Case reffered by"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(who_refferred_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. am i speaking
@@ -6132,7 +6132,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Am speaking with survivor"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(am_i_speaking_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. was ever married
@@ -6156,7 +6156,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor currently address"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(current_marital_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. with whom living
@@ -6164,7 +6164,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor living with"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(with_whom_living_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
 
