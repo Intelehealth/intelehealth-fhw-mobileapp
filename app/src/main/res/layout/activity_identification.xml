@@ -969,11 +969,33 @@
                             android:layout_width="10dp"
                             android:layout_height="10dp" />
 
-                        <Spinner
-                            android:id="@+id/spinner_no_of_children"
+                        <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/spinner_no_of_children_en"/>
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/editText_no_of_children"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:focusable="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Enter no of children"
+                                android:imeOptions="actionNext|flagNoExtractUi"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <!--
+                                                <Spinner
+                                                    android:id="@+id/spinner_no_of_children"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:entries="@array/spinner_no_of_children_en"/>
+                        -->
 
                         <View
                             android:layout_width="match_parent"

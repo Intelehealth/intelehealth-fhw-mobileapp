@@ -58,6 +58,7 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.msfarogyabharat.utilities.InputFilterMinMax;
 import org.json.JSONArray;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
@@ -162,7 +163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mLastName;
     EditText mDOB;
     EditText mPhoneNum;
-    EditText mAge;
+    EditText mAge, mNo_of_children;
     MaterialAlertDialogBuilder mAgePicker;
     MaterialAlertDialogBuilder mTimePicker;
     EditText mAddress1;
@@ -241,7 +242,6 @@ public class IdentificationActivity extends AppCompatActivity {
     FrameLayout framelayout_safe_abortion, framelayout_domestic_violence;
     List<String> districtList;
     private String mComplaintSelection;
-
 
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
@@ -324,6 +324,7 @@ public class IdentificationActivity extends AppCompatActivity {
         });*/
 
         mAge = findViewById(R.id.identification_age);
+        mNo_of_children = findViewById(R.id.editText_no_of_children);
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
@@ -377,7 +378,7 @@ public class IdentificationActivity extends AppCompatActivity {
         current_marital_spinner = findViewById(R.id.spinner_current_marital_status);
         occupation_spinner = findViewById(R.id.spinner_occupation_selection);
         have_children_spinner = findViewById(R.id.spinner_children);
-        no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
+       // no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
         contact_type_spinner = findViewById(R.id.spinner_contact_type);
         helplineno_from_spinner = findViewById(R.id.spinner_where_did_u);
         husband_occupation_spinner = findViewById(R.id.spinner_husband_occupation);
@@ -588,6 +589,7 @@ public class IdentificationActivity extends AppCompatActivity {
         emergency_no_edittext.setText(patient1.getEmergency_phoneNo());
         landmark_edittext.setText(patient1.getLandmark());
         income_edittext.setText(patient1.getIncome());
+        mNo_of_children.setText(patient1.getNo_of_children());
         husband_income_monthly.setText(patient1.getHusband_income());
         good_mobile_edittext.setText(patient1.getGood_mobileno());
         age_marriage_edittext.setText(patient1.getAge_marriage());
@@ -731,7 +733,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         } //children Spinner End...
 
-        try { // no of children Spinner
+       /* try { // no of children Spinner
             String noofchildrenLanguage = "spinner_no_of_children_" + sessionManager.getAppLanguage();
             int noofchildren = res.getIdentifier(noofchildrenLanguage, "array", getApplicationContext().getPackageName());
             if (noofchildren != 0) {
@@ -743,7 +745,7 @@ public class IdentificationActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
-        } // no of children Spinner End...
+        } // no of children Spinner End...*/
 
         try { // contact type Spinner
             String contact_typeLanguage = "spinner_contact_type_" + sessionManager.getAppLanguage();
@@ -1493,13 +1495,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 have_children_spinner.setSelection(childrenAdapter.getPosition(value));
             }
 
-            //no of children edit
+           /* //no of children edit
             if (patient1.getNo_of_children().equals(getResources().getString(R.string.not_provided)))
                 no_of_children_spinner.setSelection(0);
             else {
                 String value = patient1.getNo_of_children();
                 no_of_children_spinner.setSelection(no_childrenAdapter.getPosition(value));
-            }
+            }*/
 
             //caste edit
             if (patient1.getCaste_value().equals(getResources().getString(R.string.not_provided)))
@@ -2214,6 +2216,39 @@ public class IdentificationActivity extends AppCompatActivity {
             mAgeDays = Integer.valueOf(ymdData[2]);
             mAge.setText(yrMoDays);
         }
+
+        mNo_of_children.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+                    numberDialog.setTitle(R.string.question_number_picker);
+                    final LayoutInflater inflater = getLayoutInflater();
+                    View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+                    numberDialog.setView(convertView);
+                    EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+                    et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "20")});
+                    et_enter_value.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+                    numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String value = et_enter_value.getText().toString();
+                            mNo_of_children.setText(value);
+                            dialog.dismiss();
+                        }
+                    });
+                    numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = numberDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                }
+            }
+        });
+
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2935,6 +2970,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
+            if (mNo_of_children.getText().toString().equals("")) {
+                mNo_of_children.setError(getString(R.string.error_field_required));
+            }
+
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
@@ -3139,7 +3178,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         //7. no of children
-        if (no_of_children_spinner.getSelectedItemPosition() == 0) {
+      /*  if (no_of_children_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) no_of_children_spinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
@@ -3147,7 +3186,7 @@ public class IdentificationActivity extends AppCompatActivity {
             focusView = no_of_children_spinner;
             cancel = true;
             return;
-        }
+        }*/
         //8. caste spinner
         if (caste_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) caste_spinner.getSelectedView();
@@ -3729,7 +3768,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(no_of_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Caste Spinner
@@ -4328,7 +4367,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (safe_abortion_radiobtn.isChecked() || violence_radiobtn.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -4348,6 +4388,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
+            }
+
+            if (mNo_of_children.getText().toString().equals("")) {
+                mNo_of_children.setError(getString(R.string.error_field_required));
             }
 
             if (mPhoneNum.getText().toString().equals("")) {
@@ -4552,6 +4596,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         //7. no of children
+/*
         if (no_of_children_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) no_of_children_spinner.getSelectedView();
             errorText.setError("");
@@ -4561,6 +4606,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
         //8. caste spinner
         if (caste_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) caste_spinner.getSelectedView();
@@ -5156,7 +5202,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(no_of_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Caste Spinner
