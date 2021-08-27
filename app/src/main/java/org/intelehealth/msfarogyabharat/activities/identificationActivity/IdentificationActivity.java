@@ -1423,16 +1423,16 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if(!patient1.getJob().isEmpty() && !patient1.getJob().equalsIgnoreCase("")) {
+            if(!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
                 framelayout_safe_abortion.setVisibility(View.VISIBLE);
+                framelayout_domestic_violence.setVisibility(View.GONE);
                 safe_abortion_radiobtn.setChecked(true);
             }
-            else if(!patient1.getReferred_case().isEmpty() && !patient1.getReferred_case().equalsIgnoreCase("")) {
+            else {
                 framelayout_domestic_violence.setVisibility(View.VISIBLE);
+                framelayout_safe_abortion.setVisibility(View.GONE);
                 violence_radiobtn.setChecked(true);
             }
-
-
 
             /*    if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
