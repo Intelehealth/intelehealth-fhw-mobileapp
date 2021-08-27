@@ -341,6 +341,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mAge = findViewById(R.id.identification_age);
         mNo_of_children = findViewById(R.id.editText_no_of_children);
+        mNo_of_children.setFilters(new InputFilter[]{new InputFilterMinMax("1", "20")}); //min = 1 child and max = 20 childrens
+
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
@@ -2549,6 +2551,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mAge.setText(yrMoDays);
         }
 
+/*
         mNo_of_children.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2580,6 +2583,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
         });
+*/
 
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
