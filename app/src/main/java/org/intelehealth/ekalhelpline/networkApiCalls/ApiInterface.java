@@ -8,6 +8,7 @@ import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Respons
 import org.intelehealth.ekalhelpline.models.Location;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.ekalhelpline.models.PrescriptionSms;
 import org.intelehealth.ekalhelpline.models.Results;
 import org.intelehealth.ekalhelpline.models.SubscriptionData;
 import org.intelehealth.ekalhelpline.models.SubscriptionStatus;
@@ -123,4 +124,7 @@ public interface ApiInterface {
 
     @GET
     Observable<Call_Details_Response> IVR_CALL_RESPONSE(@Url String url);
+
+    @POST
+    Single<ResponseBody> SEND_PRESC_SMS(@Url String url, @Body PrescriptionSms prescriptionSms);
 }

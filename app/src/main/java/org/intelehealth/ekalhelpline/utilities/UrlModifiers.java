@@ -108,4 +108,15 @@ public class UrlModifiers {
     public String getSubscriptionUrl() {
         return "https://hellosaathi.uninhibited.org.in/subscribe";
     }
+
+    public String setSMSPresciptionUrl( String visitUUid, String openMRSID) {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl() +
+                "/preApi/index.jsp?v=%s&pid=%s";
+        return String.format(BASE_URL,visitUUid,openMRSID);
+    }
+
+    public String getSendSmsUrl() {
+        return "https://api.kaleyra.io/v1/HXIN1701481071IN/messages";
+    }
 }

@@ -79,6 +79,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.models.PrescriptionSms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -132,6 +133,12 @@ import org.intelehealth.ekalhelpline.activities.physcialExamActivity.PhysicalExa
 import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -573,19 +580,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                        String phoneNumber = "+91" + editText.getText().toString();
 
-                                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                                Uri.fromParts("sms", phoneNumber, null))
-                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
+                                        //code to send via sms
+//                                        String phoneNumber = "+91" + editText.getText().toString();
+//                                        startActivity(new Intent(Intent.ACTION_VIEW,
+//                                                Uri.fromParts("sms", phoneNumber, null))
+//                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
 
+                                        //code to send via api
+                                        UrlModifiers urlModifiers = new UrlModifiers();
+                                        String phoneNumber = editText.getText().toString();
+                                        String prescriptionUrl = urlModifiers.setSMSPresciptionUrl(visitUUID,patient.getOpenmrs_id().toString());
+                                        String body =  "प्रिय "+ patientName +", हॅलो साथी ला कॉल केल्याबद्दल धन्यवाद.आपली औषधोपचार डाउनलोड करण्यासाठी येथे उपलब्ध आहे " + prescriptionUrl;
+                                        sendPrescriptionSms(phoneNumber,body);
 
                                     } else {
-                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-                                                Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             });
                     AlertDialog dialog = alertDialog.show();
@@ -1669,6 +1680,32 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag.setChecked(false);
             }
         }
+    }
+
+    private void sendPrescriptionSms(String phoneNumber, String body) {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(phoneNumber))
+            return;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getSendSmsUrl();
+        PrescriptionSms prescriptionSms = new PrescriptionSms(String.format("%s%s", "91", phoneNumber),body);
+        Single<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_PRESC_SMS(url, prescriptionSms);
+        patientIvrCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                    @Override
+                    public void onSuccess(@io.reactivex.annotations.NonNull ResponseBody s) {
+                        Logger.logD(TAG, "success" + s);
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                });
     }
 
     private String sms_prescription() {
