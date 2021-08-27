@@ -202,7 +202,8 @@ public class IdentificationActivity extends AppCompatActivity {
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     String intentTag1 = "";
     String intentTag2 = "";
-    String helplineInfo = "";
+    String helplineInfo = "", genderInfo = "", educationInfo = "", maritualstatusInfo = "",
+            husbandoccupationInfo = "", casteInfo = "", wherediduInfo = "";
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
@@ -229,7 +230,8 @@ public class IdentificationActivity extends AppCompatActivity {
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
-    private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther;
+    private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther,
+    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, casteOther, wherediduOther;
 
     //new fields of registration...
     Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner_1, have_children_spinner,
@@ -311,6 +313,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         helplineInfoOther = findViewById(R.id.other_helplineInfo_edittext);
+        genderOther = findViewById(R.id.other_gender_edittext);
+        educationOther = findViewById(R.id.other_education_edittext);
+        maritualstatusOther = findViewById(R.id.other_maritalStatus_edittext);
+        husbandoccupationOther = findViewById(R.id.other_husband_occupation_edittext);
+        casteOther = findViewById(R.id.other_caste_edittext);
+        wherediduOther = findViewById(R.id.other_where_did_u_edittext);
+
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -1622,6 +1631,33 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
+            //start - other edittext
+                if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                    gender_spinner.setSelection(genderAdapter.getPosition("Other"));
+                    genderOther.setText(patient1.getGender());
+                }
+            if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
+                education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
+                educationOther.setText(patient1.getEducation_value());
+            }
+            if (marital_statusAdapter.getPosition(patient1.getCurrent_marital_status()) == -1) {
+                current_marital_spinner.setSelection(marital_statusAdapter.getPosition("Other"));
+                maritualstatusOther.setText(patient1.getCurrent_marital_status());
+            }
+            if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
+                husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("Other"));
+                husbandoccupationOther.setText(patient1.getHusband_occupation());
+            }
+            if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
+                caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
+                casteOther.setText(patient1.getCaste_value());
+            }
+            if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
+                wherediduOther.setText(patient1.getHelpline_no_from());
+            }
+            //end - other edittext
+
 
             if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
                 mPhoneType.setSelection(0);
@@ -1903,6 +1939,146 @@ public class IdentificationActivity extends AppCompatActivity {
             autocompleteDistrict.setText("");
             autocompleteDistrict.setEnabled(false);
         }
+
+        //start - other edittext
+        // gender
+        gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedGenderOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedGenderOption.equalsIgnoreCase("Other")) {
+                        genderOther.setVisibility(View.VISIBLE);
+                        genderOther.setFocusable(true);
+                    } else {
+                        genderOther.setText("");
+                        genderOther.setError(null);
+                        genderOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //education
+         education_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedEducationOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedEducationOption.equalsIgnoreCase("Other")) {
+                        educationOther.setVisibility(View.VISIBLE);
+                        educationOther.setFocusable(true);
+                    } else {
+                        educationOther.setText("");
+                        educationOther.setError(null);
+                        educationOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //maritual status
+         current_marital_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMaritualStatusOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedMaritualStatusOption.equalsIgnoreCase("Other")) {
+                        maritualstatusOther.setVisibility(View.VISIBLE);
+                        maritualstatusOther.setFocusable(true);
+                    } else {
+                        maritualstatusOther.setText("");
+                        maritualstatusOther.setError(null);
+                        maritualstatusOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //husband occupation
+         husband_occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedHusbandOccupationOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedHusbandOccupationOption.equalsIgnoreCase("Other")) {
+                        husbandoccupationOther.setVisibility(View.VISIBLE);
+                        husbandoccupationOther.setFocusable(true);
+                    } else {
+                        husbandoccupationOther.setText("");
+                        husbandoccupationOther.setError(null);
+                        husbandoccupationOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //caste
+         caste_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCasteOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedCasteOption.equalsIgnoreCase("Other")) {
+                        casteOther.setVisibility(View.VISIBLE);
+                        casteOther.setFocusable(true);
+                    } else {
+                        casteOther.setText("");
+                        casteOther.setError(null);
+                        casteOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //where did u get from
+         helplineno_from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedWhere_did_u_Option = parent.getItemAtPosition(position).toString();
+
+                    if (selectedWhere_did_u_Option.equalsIgnoreCase("Other")) {
+                        wherediduOther.setVisibility(View.VISIBLE);
+                        wherediduOther.setFocusable(true);
+                    } else {
+                        wherediduOther.setText("");
+                        wherediduOther.setError(null);
+                        wherediduOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //end - other edittext
 
         mHelplineKnowledge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -2373,6 +2549,132 @@ public class IdentificationActivity extends AppCompatActivity {
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
         });
+
+        //start - other edittext
+        //gender
+        genderOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(genderOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //education
+        educationOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(educationOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //maritual status
+        maritualstatusOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(maritualstatusOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //husband occupation
+        husbandoccupationOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(husbandoccupationOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //caste
+        casteOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(casteOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //where did u
+        wherediduOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(wherediduOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+
+        //end - other edittext
+
 
         helplineInfoOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -3345,6 +3647,80 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        //start - other editext
+        //gender
+        if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (genderOther.getText().toString().equalsIgnoreCase("")) {
+                genderOther.setError(getString(R.string.error_field_required));
+                focusView = genderOther;
+                cancel = true;
+                return;
+            } else {
+                genderOther.setError(null);
+            }
+        }
+
+        //education
+        if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (educationOther.getText().toString().equalsIgnoreCase("")) {
+                educationOther.setError(getString(R.string.error_field_required));
+                focusView = educationOther;
+                cancel = true;
+                return;
+            } else {
+                educationOther.setError(null);
+            }
+        }
+
+        //maritual status
+        if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (maritualstatusOther.getText().toString().equalsIgnoreCase("")) {
+                maritualstatusOther.setError(getString(R.string.error_field_required));
+                focusView = maritualstatusOther;
+                cancel = true;
+                return;
+            } else {
+                maritualstatusOther.setError(null);
+            }
+        }
+
+        //husband occupation
+        if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
+                husbandoccupationOther.setError(getString(R.string.error_field_required));
+                focusView = husbandoccupationOther;
+                cancel = true;
+                return;
+            } else {
+                husbandoccupationOther.setError(null);
+            }
+        }
+
+        //caste
+        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (casteOther.getText().toString().equalsIgnoreCase("")) {
+                casteOther.setError(getString(R.string.error_field_required));
+                focusView = casteOther;
+                cancel = true;
+                return;
+            } else {
+                casteOther.setError(null);
+            }
+        }
+
+        //where did u
+        if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (wherediduOther.getText().toString().equalsIgnoreCase("")) {
+                wherediduOther.setError(getString(R.string.error_field_required));
+                focusView = wherediduOther;
+                cancel = true;
+                return;
+            } else {
+                wherediduOther.setError(null);
+            }
+        }
+        //end - other edittext
+
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mPhoneType.getSelectedView();
@@ -3550,11 +3926,50 @@ public class IdentificationActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
 
+            //start other editext
+            //gender
+            if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                genderInfo = genderOther.getText().toString();
+            else
+                genderInfo = StringUtils.getProvided(gender_spinner);
+
+            //education
+            if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                educationInfo = educationOther.getText().toString();
+            else
+                educationInfo = StringUtils.getProvided(education_spinner);
+
+            //maritual status
+            if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                maritualstatusInfo = maritualstatusOther.getText().toString();
+            else
+                maritualstatusInfo = StringUtils.getProvided(current_marital_spinner);
+
+            //husband occupation
+            if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                husbandoccupationInfo = husbandoccupationOther.getText().toString();
+            else
+                husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
+
+            //caste
+            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                casteInfo = casteOther.getText().toString();
+            else
+                casteInfo = StringUtils.getProvided(caste_spinner);
+
+            //where did u
+            if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                wherediduInfo = wherediduOther.getText().toString();
+            else
+                wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+
+            //end other edittext
+
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getProvided(gender_spinner));
+            patientdto.setGender(StringUtils.getValue(genderInfo));
 
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -3589,6 +4004,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
             }
+
 //                helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
             // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
@@ -3728,7 +4144,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(education_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Marital Status
@@ -3736,7 +4152,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(current_marital_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Occupation Spinner_1
@@ -3752,7 +4168,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(husband_occupation_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Children
@@ -3776,7 +4192,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. contact type
@@ -3792,7 +4208,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(helplineno_from_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - complaint selection
@@ -4764,6 +5180,80 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        //start - other editext
+        //gender
+        if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (genderOther.getText().toString().equalsIgnoreCase("")) {
+                genderOther.setError(getString(R.string.error_field_required));
+                focusView = genderOther;
+                cancel = true;
+                return;
+            } else {
+                genderOther.setError(null);
+            }
+        }
+
+        //education
+        if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (educationOther.getText().toString().equalsIgnoreCase("")) {
+                educationOther.setError(getString(R.string.error_field_required));
+                focusView = educationOther;
+                cancel = true;
+                return;
+            } else {
+                educationOther.setError(null);
+            }
+        }
+
+        //maritual status
+        if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (maritualstatusOther.getText().toString().equalsIgnoreCase("")) {
+                maritualstatusOther.setError(getString(R.string.error_field_required));
+                focusView = maritualstatusOther;
+                cancel = true;
+                return;
+            } else {
+                maritualstatusOther.setError(null);
+            }
+        }
+
+        //husband occupation
+        if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
+                husbandoccupationOther.setError(getString(R.string.error_field_required));
+                focusView = husbandoccupationOther;
+                cancel = true;
+                return;
+            } else {
+                husbandoccupationOther.setError(null);
+            }
+        }
+
+        //caste
+        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (casteOther.getText().toString().equalsIgnoreCase("")) {
+                casteOther.setError(getString(R.string.error_field_required));
+                focusView = casteOther;
+                cancel = true;
+                return;
+            } else {
+                casteOther.setError(null);
+            }
+        }
+
+        //where did u
+        if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (wherediduOther.getText().toString().equalsIgnoreCase("")) {
+                wherediduOther.setError(getString(R.string.error_field_required));
+                focusView = wherediduOther;
+                cancel = true;
+                return;
+            } else {
+                wherediduOther.setError(null);
+            }
+        }
+        //end - other edittext
+
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mPhoneType.getSelectedView();
@@ -4972,12 +5462,51 @@ public class IdentificationActivity extends AppCompatActivity {
             if (mCurrentPhotoPath == null)
                 mCurrentPhotoPath = patientdto.getPatient_photo();
 
+            //start other editext
+            //gender
+            if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                genderInfo = genderOther.getText().toString();
+            else
+                genderInfo = StringUtils.getProvided(gender_spinner);
+
+            //education
+            if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                educationInfo = educationOther.getText().toString();
+            else
+                educationInfo = StringUtils.getProvided(education_spinner);
+
+            //maritual status
+            if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                maritualstatusInfo = maritualstatusOther.getText().toString();
+            else
+                maritualstatusInfo = StringUtils.getProvided(current_marital_spinner);
+
+            //husband occupation
+            if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                husbandoccupationInfo = husbandoccupationOther.getText().toString();
+            else
+                husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
+
+            //caste
+            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                casteInfo = casteOther.getText().toString();
+            else
+                casteInfo = StringUtils.getProvided(caste_spinner);
+
+            //where did u
+            if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                wherediduInfo = wherediduOther.getText().toString();
+            else
+                wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+
+            //end other edittext
+
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
            // patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setGender(StringUtils.getProvided(gender_spinner));
+            patientdto.setGender(StringUtils.getValue(genderInfo));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -5012,6 +5541,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
             }
+
+
+
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
@@ -5162,7 +5694,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(education_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Marital Status
@@ -5170,7 +5702,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(current_marital_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Occupation Spinner_1
@@ -5186,7 +5718,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(husband_occupation_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Children
@@ -5210,7 +5742,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(caste_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. contact type
@@ -5226,7 +5758,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(helplineno_from_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - complaint selection

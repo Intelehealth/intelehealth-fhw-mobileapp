@@ -158,8 +158,8 @@
         <item>Some/completed higher secondary</item>
         <item>Completed undergraduate degree/diploma/technical school</item>
         <item>Completed postgraduate degree</item>
-        <item>Other (please specify</item>
         <item>Prefer not to say</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="marital_spinner_en">
@@ -173,8 +173,8 @@
         <item>Widowed</item>
         <item>Nata</item>
         <item>Second Marriage</item>
-        <item>Other (please specify)</item>
         <item>Prefer not to say</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="occupation_spinner_selection_en">
@@ -216,7 +216,7 @@
         <item>Unemployed and looking for a job</item>
         <item>Unemployed and not looking for a job</item>
         <item>Volunteer</item>
-        <item>Other (Enter text)</item>
+        <item>Other</item>
 
     </string-array>
     <string-array name="education_en">
@@ -250,7 +250,7 @@
         <item>Female</item>
         <item>Non-binary / third gender</item>
         <item>Prefer not to say</item>
-        <item>Other (enter text)</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="spinner_dv_speaking_with_en">
@@ -342,8 +342,8 @@
         <item>Social media/website</item>
         <item>Provider</item>
         <item>Community organization</item>
-        <item>Other (please specify)</item>
         <item>Prefer not to say</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -376,8 +376,8 @@
         <item>Minority (Christian)</item>
         <item>Minority (Jain)</item>
         <item>Minority (other - please specify)</item>
-        <item>Other (please specify)</item>
         <item>Prefer not to say</item>
+        <item>Other</item>
     </string-array>
 
     <string-array name="economic_en">

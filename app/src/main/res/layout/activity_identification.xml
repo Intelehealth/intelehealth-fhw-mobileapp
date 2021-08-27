@@ -1043,19 +1043,19 @@
                                     android:layout_height="wrap_content"
                                     android:entries="@array/caste_selection_en"/>
 
-                                <EditText
-                                    android:id="@+id/other_caste_edittext"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/txt_others"
-                                    android:imeOptions="actionDone|flagNoExtractUi"
-                                    android:inputType="text"
-                                    android:textSize="@dimen/card_content_sub_text_size"
-                                    android:visibility="gone" />
-
                             </LinearLayout>
-
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <EditText
+                            android:id="@+id/other_caste_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+
 
                         <View
                             android:layout_width="match_parent"
