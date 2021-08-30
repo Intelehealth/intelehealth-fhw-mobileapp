@@ -62,10 +62,11 @@
 
     //Home Screen (after login)
     <string name="title_home_screen">Home</string>
-    <string name="button_new_pt">New Patient</string>
-    <string name="button_find_pt">Find Patient</string>
+<!--    <string name="button_new_pt">New Patient</string>-->
+    <string name="button_new_pt">New Case</string>
+    <string name="button_find_pt">Find Cases</string>
     <string name="button_diagnostic_tests">Diagnostic Tests</string>
-    <string name="button_active_pt">Active Patients</string>
+    <string name="button_active_pt">Active Cases</string>
     <string name="menu_option_sync">Refresh Data</string>
     <string name="menu_option_settings">Settings</string>
     <string name="menu_option_end_of_day">End of Day</string>
@@ -73,7 +74,7 @@
 
 
     //Identification Screen
-    <string name="title_activity_identification">Add New Patient</string>
+    <string name="title_activity_identification">Add New Case</string>
     <string name="identification_screen_prompt_first_name">First name *</string>
     <string name="identification_screen_prompt_middle_name">Middle name</string>
     <string name="identification_screen_prompt_last_name">Last name *</string>
@@ -98,7 +99,7 @@
     <string name="identification_screen_prompt_postal_code">Postal code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation">Occupation</string>
-    <string name="identification_screen_snack_patient_created">Patient created! Uploading to server.</string>
+    <string name="identification_screen_snack_patient_created">Case created! Uploading to server.</string>
     <string name="identification_screen_error_data_fields">Error: data fields are not formatted correctly</string>
     <string name="identification_screen_dialog_age">Please enter age in years</string>
     <string name="identification_screen_dialog_error_dob">Date of birth is set for date after today</string>
@@ -118,8 +119,8 @@
 <!--    <string name="title_activity_active_patient">Active Visits</string>-->
 
     //Patient History Screen
-    <string name="title_activity_get_patient_history">Patient History</string>
-    <string name="title_activity_search_patient">Patient Lookup</string>
+    <string name="title_activity_get_patient_history">Case History</string>
+    <string name="title_activity_search_patient">Case Lookup</string>
 
     //Complaint Node Screen
     <string name="title_activity_complaint_select">Select Complaints</string>
@@ -159,7 +160,8 @@
     <string name="table_spo">SpO2 (%)</string>
 
     //Patient Search Screen
-    <string name="search_hint">Type to search patient by name…</string>
+<!--    <string name="search_hint">Type to search patient by name…</string>-->
+    <string name="search_hint">Type to search by name…</string>
     <string name="action_search">Search</string>
     <string name="alert_none_found">Please check username and pasword entered</string>
 
@@ -198,7 +200,7 @@
     <string name="visit_summary_button_upload">Upload</string>
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
-    <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
+    <string name="visit_summary_follow_up_reminder">Please remind the Case of their follow up date: </string>
 <!--    <string name="visit_summary_upload_reminder">Please upload first before attempting to end the visit.</string>-->
     <string name="visit_summary_upload_reminder">Please upload first before attempting to end the case.</string>
 
@@ -211,9 +213,9 @@
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail">Patient information</string>
-    <string name="button_history">Patient History</string>
-    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="header_patient_detail">Case information</string>
+    <string name="button_history">Case History</string>
+    <string name="title_activity_patient_detail">Case Detail</string>
     <string name="header_medical_history">History</string>
     <string name="button_new_visit">Start new case</string>
 <!--    <string name="header_previous_visits">Previous visits</string>-->
@@ -221,7 +223,7 @@
     <string name="header_patient_history">Medical history</string>
     <string name="header_family_history">Family history</string>
     <string name="string_no_hist">No history of illness</string>
-    <string name="row_patient_id">Patient ID</string>
+    <string name="row_patient_id">Case ID</string>
     <string name="row_dob">DOB</string>
     <string name="row_age">Age</string>
     <string name="row_address">Address</string>
@@ -318,9 +320,10 @@
 <!--    <string name="visit">Visit</string>-->
     <string name="visit">Cases</string>
     <string name="visit_update">Cases Update</string>
-    <string name="patient">Patient</string>
-    <string name="patient_update">Patient Update</string>
-    <string name="patient_images">Patient Profile Image</string>
+<!--    <string name="patient">Patient</string>-->
+    <string name="patient">Case</string>
+    <string name="patient_update">Case Update</string>
+    <string name="patient_images">Profile Image</string>
     <string name="visit_images">Cases Images</string>
     <string name="prescription">Prescription</string>
 
@@ -339,8 +342,9 @@
     <string name="hide_text">HIDE</string>
     <string name="show_text">SHOW</string>
 
-    <string name="new_patient">New Patient</string>
-    <string name="find_patient">Find Patients</string>
+<!--    <string name="new_patient">New Patient</string>-->
+    <string name="new_patient">New Case</string>
+    <string name="find_patient">Find Cases</string>
     <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
@@ -352,8 +356,9 @@
     <string name="success_offline_login">Offline Login Successful</string>
     <string name="invalidate_offline_login">Offline Login Invalidated</string>
 
-    <string name="patient_upload_error">Patient has not been uploaded</string>
-    <string name="patient_not_registered">Patient not registered</string>
+<!--    <string name="patient_upload_error">Patient has not been uploaded</string>-->
+    <string name="patient_upload_error">Case has not been uploaded</string>
+    <string name="patient_not_registered">Case not registered</string>
 
     <string name="action_sync_all">Refresh Data</string>
 
@@ -450,8 +455,9 @@
     <string name="lastsync">lastsync</string>
     <string name="enter_password">Enter your password</string>
     <string name="enter_username">Enter your username</string>
-    <string name="patient_denies">Patient denies</string>
-    <string name="patient_reports">Patient reports</string>
+<!--    <string name="patient_denies">Patient denies</string>-->
+    <string name="patient_denies">denies</string>
+    <string name="patient_reports">Case reports</string>
 
     <string name="associated_symptoms">Associated symptoms</string>
     <string name="enter_server_url">Enter Server URL</string>
@@ -460,7 +466,7 @@
     <string name="years">years</string>
     <string name="months">months</string>
     <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
-    <string name="patient_name">Patient name</string>
+    <string name="patient_name">Name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
     <string name="economic_status">Economic status</string>
@@ -509,11 +515,11 @@
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
     <string name="lastsync_normal">Last Refresh</string>
-    <string name="update_patient_identification">Update Patient</string>
+    <string name="update_patient_identification">Update Case</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
     <string name="error">Error</string>
-    <string name="patient_data_upload">Patient Data Upload</string>
-    <string name="patient_image_download_notifi">Patient Image Download</string>
+    <string name="patient_data_upload">Case Data Upload</string>
+    <string name="patient_image_download_notifi">Image Download</string>
     <string name="image_download_complete_notifi">\'s Image Download complete.</string>
     <string name="no_prior_visits">No prior cases.</string>
 <!--    <string name="no_prior_visits">No prior visits.</string>-->
@@ -535,9 +541,11 @@
     <string name="downloading_prescription">Downloading prescription</string>
 <!--    <string name="visit_data_failed">Visit Data Failed</string>-->
     <string name="visit_data_failed">Case Data Failed</string>
-    <string name="patient_data_failed">Patient Data Failed</string>
+<!--    <string name="patient_data_failed">Patient Data Failed</string>-->
+    <string name="patient_data_failed">Case Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
-    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+<!--    <string name="no_data_active_patients">No patient records for this health worker found.</string>-->
+    <string name="no_data_active_patients">No Case records for this health worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
@@ -569,13 +577,15 @@
     <string name="end_visit_msg">Are you sure you want to end the case?</string>
 <!--    <string name="end_visit_msg">Are you sure you want to end the visit?</string>-->
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
-    <string name="privacy_reject_toast">You cannot register a patient without consent</string>
+    <string name="privacy_reject_toast">You cannot register without consent</string>
+<!--    <string name="privacy_reject_toast">You cannot register a patient without consent</string>-->
     <string name="not_answered">Not answered</string>
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="and_enter_your_patient_id">" and enter your Case ID - "</string>
+<!--    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>-->
 
 
     <!--New Ayu Related Changes-->
@@ -625,15 +635,18 @@
     <string name="temperature_C">"Temperature(C): "</string>
     <string name="temperature_F">"Temperature(F): "</string>
     <string name="no_history_family_found">No history of illness in family provided.</string>
-    <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
+    <string name="no_history_patient_illness_found">No history of Case provided.</string>
+<!--    <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>-->
     <string name="dr_registration_no">Registration No: </string>
     <string name="dr_phone_number">Phone Number: </string>
     <string name="dr_email">Email: </string>
     <string name="_visit_summary"> Case Summary</string>
 <!--    <string name="_visit_summary"> Visit Summary</string>-->
-    <string name="patient_id_">Patient Id: </string>
-    <string name="patient_name_title">Patient Name: </string>
-    <string name="patient_DOB">Patient DOB: </string>
+<!--    <string name="patient_id_">Patient Id: </string>-->
+    <string name="patient_id_">Case Id: </string>
+    <string name="patient_name_title">Case Name: </string>
+<!--    <string name="patient_DOB">Patient DOB: </string>-->
+    <string name="patient_DOB">DOB: </string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="download_protocols">Downloading Protocols</string>
     <string name="mindmap_internect_connection">To download mindmaps you need a Internet connectivity, please turn on your Internet</string>
@@ -645,7 +658,7 @@
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Nurse) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Nurse) confirm that I have read out the privacy notice and consent to the Case.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
@@ -711,7 +724,7 @@
 
     <string name="text_medical_advice">New Medical Advice</string>
 <!--    <string name="text_new_visit">New Doctor Visit</string>-->
-    <string name="text_new_visit">New Doctor Case</string>
+    <string name="text_new_visit">New Case</string>
     <string name="text_new_advice">New Medical Advice</string>
     <string name="vaccination_guidance">Vaccination guidance</string>
     <string name="concern_about_covid_re_infection">Concern about COVID re-infection</string>
@@ -724,12 +737,14 @@
     <string name="self_assessment">Self Assessment</string>
     <string name="error_medical_visit_data">Please select or enter medical advice</string>
     <string name="txt_additional_info">Additional information</string>
-    <string name="text_patient_and_advice_created">Patient &amp; Medical Advice is Registered Successfully</string>
+    <string name="text_patient_and_advice_created">Case &amp; Medical Advice is Registered Successfully</string>
     <string name="text_advice_created">Medical Advice is Registered Successfully</string>
     <string name="medical_advice">Medical Advice</string>
 
-    <string name="calling_patient">Calling patient…</string>
-    <string name="error_calling_patient">Error in calling patient, Please try after some time</string>
+<!--    <string name="calling_patient">Calling patient…</string>-->
+    <string name="calling_patient">Calling…</string>
+<!--    <string name="error_calling_patient">Error in calling patient, Please try after some time</string>-->
+    <string name="error_calling_patient">Error in calling, Please try after some time</string>
     <string name="and_i_be_assisting_you">" and I will be assisting you."</string>
     <string name="loading_more">Loading more…</string>
     //Others details

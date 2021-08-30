@@ -3319,11 +3319,11 @@ public class IdentificationActivity extends AppCompatActivity {
         View focusView = null;
 
         //check if privacy notice is checked
-        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
-            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+//            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
+//                    Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
