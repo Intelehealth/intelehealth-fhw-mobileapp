@@ -1685,9 +1685,18 @@ public class IdentificationActivity extends AppCompatActivity {
                 husbandoccupationOther.setText(patient1.getHusband_occupation());
             }
             if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
-                caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
+
+                if(casteOther.getText().toString().contains("Minority: ")) {
+                    caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Minority (other - please specify)"));
+                }
+                else {
+                    caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
+                }
                 casteOther.setText(patient1.getCaste_value());
             }
+
+
+
             if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
                 helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
                 wherediduOther.setText(patient1.getHelpline_no_from());
@@ -2135,7 +2144,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCasteOption = parent.getItemAtPosition(position).toString();
 
-                    if (selectedCasteOption.equalsIgnoreCase("Other")) {
+                    if (selectedCasteOption.equalsIgnoreCase("Other") ||
+                            selectedCasteOption.equalsIgnoreCase("Minority (other - please specify)")) {
                         casteOther.setVisibility(View.VISIBLE);
                         casteOther.setFocusable(true);
                     } else {
@@ -4043,7 +4053,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //caste
-        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+        caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
             if (casteOther.getText().toString().equalsIgnoreCase("")) {
                 casteOther.setError(getString(R.string.error_field_required));
                 focusView = casteOther;
@@ -4360,10 +4371,20 @@ public class IdentificationActivity extends AppCompatActivity {
                 occupationInfo = StringUtils.getProvided(occupation_spinner_1);
 
             //caste
-            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                casteInfo = casteOther.getText().toString();
-            else
+            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+            caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+
+                if(caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                    casteInfo = "Minority: " + casteOther.getText().toString();
+                }
+                else {
+                    casteInfo = casteOther.getText().toString();
+                }
+
+            }
+            else {
                 casteInfo = StringUtils.getProvided(caste_spinner);
+            }
 
             //where did u
             if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
@@ -5674,7 +5695,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //caste
-        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
             if (casteOther.getText().toString().equalsIgnoreCase("")) {
                 casteOther.setError(getString(R.string.error_field_required));
                 focusView = casteOther;
@@ -6010,10 +6032,20 @@ public class IdentificationActivity extends AppCompatActivity {
                 occupationInfo = StringUtils.getProvided(occupation_spinner_1);
 
             //caste
-            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                casteInfo = casteOther.getText().toString();
-            else
+            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                    caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+
+                 if(caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                    casteInfo = "Minority: " + casteOther.getText().toString();
+                }
+                else {
+                    casteInfo = casteOther.getText().toString();
+                }
+
+            }
+            else {
                 casteInfo = StringUtils.getProvided(caste_spinner);
+            }
 
             //where did u
             if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))

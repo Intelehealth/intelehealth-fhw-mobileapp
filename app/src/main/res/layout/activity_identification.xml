@@ -1043,7 +1043,6 @@
                                     android:drawablePadding="10dp"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
-
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
                                     android:imeOptions="actionUnspecified|flagNoExtractUi"
