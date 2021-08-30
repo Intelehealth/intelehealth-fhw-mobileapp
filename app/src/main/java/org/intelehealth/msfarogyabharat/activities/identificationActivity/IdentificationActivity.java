@@ -2685,6 +2685,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                             mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
+                    mAge.setError(null);
 
 
                     Calendar calendar = Calendar.getInstance();
