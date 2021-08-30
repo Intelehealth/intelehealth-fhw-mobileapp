@@ -3414,12 +3414,6 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        //check if privacy notice is checked
-        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
-            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
@@ -3718,6 +3712,12 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(genderOther.getVisibility() == View.VISIBLE && genderOther.getText().toString().equals("")) {
+            genderOther.setError(getString(R.string.error_field_required));
+            focusView = genderOther;
+            cancel = true;
+            return;
+        }
 
         //2. education
         if (education_spinner.getSelectedItemPosition() == 0) {
@@ -3730,6 +3730,10 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if(educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
+            educationOther.setError(getString(R.string.error_field_required));
+        }
+
         //3. curent marital status
         if (current_marital_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) current_marital_spinner.getSelectedView();
@@ -3739,6 +3743,9 @@ public class IdentificationActivity extends AppCompatActivity {
             focusView = current_marital_spinner;
             cancel = true;
             return;
+        }
+        if(currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
+            currentaddressOther.setError(getString(R.string.error_field_required));
         }
 
         //4. occupation
@@ -3751,6 +3758,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
+            occupationOther.setError(getString(R.string.error_field_required));
+        }
+
         //5. husband occupation
         if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
@@ -3761,6 +3772,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
+            husbandoccupationOther.setError(getString(R.string.error_field_required));
+        }
+
         //6. children
         if (have_children_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) have_children_spinner.getSelectedView();
@@ -3791,6 +3806,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
+            casteOther.setError(getString(R.string.error_field_required));
+        }
+
         //9. contact type
         if (contact_type_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) contact_type_spinner.getSelectedView();
@@ -3811,6 +3830,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(helplineInfoOther.getVisibility() == View.VISIBLE && helplineInfoOther.getText().toString().equals("")) {
+            helplineInfoOther.setError(getString(R.string.error_field_required));
+        }
+
 
         //start - complaint selection
         if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
@@ -3848,8 +3871,12 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
+            referredOther.setError(getString(R.string.error_field_required));
+        }
 
-        //10. am i speaking
+
+            //10. am i speaking
         if (am_i_speaking_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) am_i_speaking_spinner.getSelectedView();
             errorText.setError("");
@@ -3859,6 +3886,10 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
+            amIspeakingOther.setError(getString(R.string.error_field_required));
+        }
+
         //10. ever married
         if (ever_married_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) ever_married_spinner.getSelectedView();
@@ -3889,6 +3920,11 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+        if(currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
+            currentaddressOther.setError(getString(R.string.error_field_required));
+        }
+
+
         //10. with whom living
         if (with_whom_living_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) with_whom_living_spinner.getSelectedView();
@@ -3899,7 +3935,12 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
-        //end - complaint selection
+        if(withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
+            withwhomlivingOther.setError(getString(R.string.error_field_required));
+        }
+
+
+            //end - complaint selection
         }
 
 
@@ -4082,6 +4123,13 @@ public class IdentificationActivity extends AppCompatActivity {
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
             focusView = mPhoneType;
             cancel = true;
+            return;
+        }
+
+        //check if privacy notice is checked
+        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
+                    Toast.LENGTH_SHORT).show();
             return;
         }
 
