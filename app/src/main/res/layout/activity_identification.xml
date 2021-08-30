@@ -958,6 +958,17 @@
                         <!-- end of children -->
 
                         <!-- start of no of children -->
+                        <FrameLayout
+                            android:id="@+id/framelayout_no_children"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -989,6 +1000,15 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider" />
+                            </LinearLayout>
+                        </FrameLayout>
+
                         <!--
                                                 <Spinner
                                                     android:id="@+id/spinner_no_of_children"
@@ -997,12 +1017,7 @@
                                                     android:entries="@array/spinner_no_of_children_en"/>
                         -->
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
+
                         <!-- end of children -->
 
                         <!-- start of caste spinner -->

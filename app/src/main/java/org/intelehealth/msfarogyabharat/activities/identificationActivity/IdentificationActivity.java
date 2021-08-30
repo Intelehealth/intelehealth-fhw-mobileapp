@@ -243,7 +243,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText emergency_no_edittext, landmark_edittext, income_edittext, husband_income_monthly, good_mobile_edittext,
     age_marriage_edittext, maternal_address_edittext, maternal_mobile_edittext, address_inlaws_edittext, husband_mobile_edittext;
 
-    FrameLayout framelayout_safe_abortion, framelayout_domestic_violence;
+    FrameLayout framelayout_safe_abortion, framelayout_domestic_violence, framelayout_no_children;
     List<String> districtList;
     private String mComplaintSelection;
 
@@ -312,6 +312,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         framelayout_safe_abortion = findViewById(R.id.framelayout_safe_abortion);
         framelayout_domestic_violence = findViewById(R.id.framelayout_domestic_violence);
+        framelayout_no_children = findViewById(R.id.framelayout_no_children);
 
 
         helplineInfoOther = findViewById(R.id.other_helplineInfo_edittext);
@@ -1525,6 +1526,14 @@ public class IdentificationActivity extends AppCompatActivity {
             else {
                 String value = patient1.getChildren();
                 have_children_spinner.setSelection(childrenAdapter.getPosition(value));
+
+                if(have_children_spinner.getSelectedItemPosition() == 1) {
+                    framelayout_no_children.setVisibility(View.VISIBLE);
+                }
+                else {
+                    framelayout_no_children.setVisibility(View.GONE);
+                    mNo_of_children.setText("");
+                }
             }
 
            /* //no of children edit
@@ -1984,6 +1993,27 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //start - other edittext
+        // no children then hide how many children...
+        have_children_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String childrenOption = parent.getItemAtPosition(position).toString();
+
+                if (childrenOption.equalsIgnoreCase("Yes")) {
+                    framelayout_no_children.setVisibility(View.VISIBLE);
+                } else {
+                    framelayout_no_children.setVisibility(View.GONE);
+                    mNo_of_children.setText("");
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         // gender
         gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
