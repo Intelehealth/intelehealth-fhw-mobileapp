@@ -61,11 +61,13 @@
                         app:srcCompat="@drawable/svg_person_details"></ImageView>
 
                     <TextView
+                        android:id="@+id/personalInfo_Textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="5dp"
                         android:ems="10"
+                        android:focusable="true"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
