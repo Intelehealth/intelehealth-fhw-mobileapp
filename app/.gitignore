@@ -1,2 +1,4 @@
 /build
 salt.env
+/.idea/
+/webrtc/build/.transforms/

@@ -27,6 +27,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -125,6 +127,18 @@ public interface ApiInterface {
     @GET
     Observable<Call_Details_Response> IVR_CALL_RESPONSE(@Url String url);
 
+//    @POST
+//    Single<ResponseBody> SEND_PRESC_SMS(@Url String url, @Body PrescriptionSms prescriptionSms);
+
     @POST
-    Single<ResponseBody> SEND_PRESC_SMS(@Url String url, @Body PrescriptionSms prescriptionSms);
+    @FormUrlEncoded
+    Call<ResponseBody> SEND_WELCOME_SMS(@Url String url,
+                                        @Field("api-key") String apiKey,
+                                        @Field("to") String to,
+                                        @Field("sender") String sender,
+                                        @Field("source") String source,
+                                        @Field("type") String type,
+                                        @Field("template_id") String template_id,
+                                        @Field("body") String body);
 }
+

@@ -139,6 +139,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -591,7 +594,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                         UrlModifiers urlModifiers = new UrlModifiers();
                                         String phoneNumber = editText.getText().toString();
                                         String prescriptionUrl = urlModifiers.setSMSPresciptionUrl(visitUUID,patient.getOpenmrs_id().toString());
-                                        String body =  "प्रिय "+ patientName +", हॅलो साथी ला कॉल केल्याबद्दल धन्यवाद.आपली औषधोपचार डाउनलोड करण्यासाठी येथे उपलब्ध आहे " + prescriptionUrl;
+//                                        String body =  "प्रिय "+ patientName +", हॅलो साथी ला कॉल केल्याबद्दल धन्यवाद.आपली औषधोपचार डाउनलोड करण्यासाठी येथे उपलब्ध आहे " + prescriptionUrl;
+                                        String body =  "Hello Sathi Helpline Project Dear Test N Your prescription is available to download at http://localhost/intelehealth/#/l/hj - Powered by Intelehealth";
                                         sendPrescriptionSms(phoneNumber,body);
 
                                     } else {
@@ -1687,25 +1691,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
             return;
         }
-
         if (TextUtils.isEmpty(phoneNumber))
             return;
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.getSendSmsUrl();
-        PrescriptionSms prescriptionSms = new PrescriptionSms(String.format("%s%s", "91", phoneNumber),body);
-        Single<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_PRESC_SMS(url, prescriptionSms);
-        patientIvrCall.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableSingleObserver<ResponseBody>() {
-                    @Override
-                    public void onSuccess(@io.reactivex.annotations.NonNull ResponseBody s) {
-                        Logger.logD(TAG, "success" + s);
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-                });
+//        PrescriptionSms prescriptionSms = new PrescriptionSms(String.format("%s%s", "91", phoneNumber),body);
+//        Single<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_PRESC_SMS(url, prescriptionSms);
+//        patientIvrCall.subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new DisposableSingleObserver<ResponseBody>() {
+//                    @Override
+//                    public void onSuccess(@io.reactivex.annotations.NonNull ResponseBody s) {
+//                        Logger.logD("SMS Prescription", "success" + s.toString());
+//                        Toast.makeText(VisitSummaryActivity.this,"SMS Sent!",Toast.LENGTH_LONG).show();
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//                });
+        Call<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, AppConstants.SMS_API_KEY, String.format("91%s", phoneNumber), "TIFDOC", "API", "TXN", AppConstants.SMS_TEMPLATE_ID, body);
+        patientIvrCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                System.out.println(response);
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     private String sms_prescription() {
