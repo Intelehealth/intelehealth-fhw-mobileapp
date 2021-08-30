@@ -4396,25 +4396,25 @@ public class IdentificationActivity extends AppCompatActivity {
             if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 referredbyInfo = referredOther.getText().toString();
             else
-                referredbyInfo = StringUtils.getProvided(caste_spinner);
+                referredbyInfo = StringUtils.getProvided(who_refferred_spinner);
 
             //am i speaking
             if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
                 amiSpeakingInfo = amIspeakingOther.getText().toString();
             else
-                amiSpeakingInfo = StringUtils.getProvided(caste_spinner);
+                amiSpeakingInfo = StringUtils.getProvided(am_i_speaking_spinner);
 
             //current address
             if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 currentAddressInfo = currentaddressOther.getText().toString();
             else
-                currentAddressInfo = StringUtils.getProvided(caste_spinner);
+                currentAddressInfo = StringUtils.getProvided(current_residing_address_spinner);
 
             //with whom living
             if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
                 withwhomLivingInfo = withwhomlivingOther.getText().toString();
             else
-                withwhomLivingInfo = StringUtils.getProvided(caste_spinner);
+                withwhomLivingInfo = StringUtils.getProvided(with_whom_living_spinner);
 
             //end other edittext
 
