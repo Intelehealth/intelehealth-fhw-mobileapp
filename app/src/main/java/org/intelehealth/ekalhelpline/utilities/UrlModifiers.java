@@ -112,7 +112,7 @@ public class UrlModifiers {
     public String setSMSPresciptionUrl( String visitUUid, String openMRSID) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String BASE_URL = "https://" + sessionManager.getServerUrl() +
-                "/preApi/index.jsp?v=%s&pid=%s";
+                "/preApi/i.jsp?v=%s&pid=%s";
         return String.format(BASE_URL,visitUUid,openMRSID);
     }
 
