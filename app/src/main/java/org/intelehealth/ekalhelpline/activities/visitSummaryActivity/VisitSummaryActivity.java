@@ -75,6 +75,7 @@ import android.widget.Toast;
 
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -159,6 +160,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private float float_ageYear_Month;
 
     Spinner speciality_spinner;
+    TextInputLayout tilAgentResolution;
+    EditText etAgentResolution;
 
     SQLiteDatabase db;
 
@@ -624,14 +627,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+        tilAgentResolution = findViewById(R.id.tilAgentResolution);
+        etAgentResolution = findViewById(R.id.etAgentResolution);
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-        if (isVisitSpecialityExists)
+        if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
+            tilAgentResolution.setEnabled(false);
+        }
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
@@ -640,7 +647,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
         //Hashmap to List<String> add all value
 
         if(special_value.equalsIgnoreCase("Doctor not needed"))
@@ -669,6 +676,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
+
+            if (AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(special_value)) {
+                tilAgentResolution.setVisibility(View.VISIBLE);
+                String agent_resolution_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN);
+                etAgentResolution.setText(agent_resolution_value);
+            }
         } else {
 
         }
@@ -680,6 +693,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 speciality_selected = adapterView.getItemAtPosition(i).toString();
                 Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
+
+                if (speciality_selected != null && speciality_selected.equalsIgnoreCase(AppConstants.AGENT_RESOLUTION)) {
+                    tilAgentResolution.setVisibility(View.VISIBLE);
+                } else {
+                    tilAgentResolution.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -894,6 +913,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(speciality_selected) && TextUtils.isEmpty(etAgentResolution.getText())) {
+                    tilAgentResolution.setError(getString(R.string.question_text_input));
+                    tilAgentResolution.requestFocus();
+                    return;
+                } else {
+                    tilAgentResolution.setError("");
+                }
 
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
@@ -904,6 +930,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
                                     .insertVisitAttributes(visitUuid, speciality_selected);
+                            speciality_attributes.insertVisitAttribute(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN, etAgentResolution.getText().toString());
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
@@ -911,8 +938,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
 
-                    if (isVisitSpecialityExists)
+                    if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
+                        tilAgentResolution.setEnabled(false);
+                    }
 
                     VisitAttributeListDAO visit_state_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitState = false;
@@ -1007,8 +1036,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                                    if (isVisitSpecialityExists)
+                                    if (isVisitSpecialityExists) {
                                         speciality_spinner.setEnabled(false);
+                                        tilAgentResolution.setEnabled(false);
+                                    }
 
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);

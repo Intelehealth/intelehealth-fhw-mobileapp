@@ -87,32 +87,32 @@ public class VisitAttributeListDAO {
         return isCreated;
     }
 
-    public String getVisitAttributesList_specificVisit(String VISITUUID)
+    public String getVisitAttributesList_specificVisit(String VISITUUID, String attributeUid)
     {
         String isValue = "";
         Log.d("specc", "spec_fun: "+ VISITUUID);
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        try {
+            SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+            db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
-                new String[]{VISITUUID});
+            Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? and visit_attribute_type_uuid = ?",
+                    new String[]{VISITUUID, attributeUid});
 
-        if(cursor.getCount() != 0)
-        {
-            while (cursor.moveToNext())
-            {
-                isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                Log.d("specc", "spec_3: "+ isValue);
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    isValue = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                    Log.d("specc", "spec_3: " + isValue);
+                }
+            } else {
+                isValue = "EMPTY";
             }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else
-        {
-            isValue = "EMPTY";
-        }
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
 
         Log.d("specc", "spec_4: "+ isValue);
         return  isValue;
@@ -196,5 +196,42 @@ public class VisitAttributeListDAO {
         Log.d("isInserted", "isInserted: "+isInserted);
         return isInserted;
 
+    }
+
+    public boolean insertVisitAttribute(String visitUuid, String visit_attribute_type_uuid,  String value) throws
+            DAOException {
+        boolean isInserted = false;
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try
+        {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", value);
+            values.put("visit_attribute_type_uuid", visit_attribute_type_uuid);
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null,
+                    values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            if(count != -1)
+                isInserted = true;
+
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e)
+        {
+            isInserted = false;
+            throw new DAOException(e.getMessage(), e);
+        }
+        finally {
+            db.endTransaction();
+        }
+
+        Log.d("isInserted", "isInserted: "+isInserted);
+        return isInserted;
     }
 }

@@ -103,8 +103,7 @@ public class AppConstants {
     public static final String SPECIALIST_DOCTOR_NOT_NEEDED = "Specialist Doctor Not Needed";
     public static final String DOCTOR_NOT_NEEDED = "Doctor not needed";
     public static final String CURIOSITY_RES = "Curiosity Resolution";
+    public static final String AGENT_RESOLUTION = "Agent Resolution";
     public static ApiInterface ivrApiInterface = ApiClient.createIVRService(ApiInterface.class);
-
-
 }
 
