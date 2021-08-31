@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.models.dto.VisitAttributeDTO;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 /**
@@ -61,7 +62,7 @@ public class VisitAttributeListDAO {
             values.put("voided", visitDTO.getVoided());
             values.put("sync", "1");
 
-            if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"))
+            if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d") || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN))
             {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 

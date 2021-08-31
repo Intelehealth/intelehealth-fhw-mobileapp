@@ -744,4 +744,5 @@
     <string name="preferred_language">Preferred Language</string>
     <string name="select_bucket">Select Bucket</string>
     <string name="preferred_time">Preferred Time</string>
+    <string name="hint_resolution_given">Enter resolution given</string>
 </resources>

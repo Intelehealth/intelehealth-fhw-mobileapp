@@ -1131,7 +1131,7 @@
                     tools:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/visit_summary_advice">
+                    android:hint="@string/hint_resolution_given">
 
                     <EditText
                         android:id="@+id/etAgentResolution"
