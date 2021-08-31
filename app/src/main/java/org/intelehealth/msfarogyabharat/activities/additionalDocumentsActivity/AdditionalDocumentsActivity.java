@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
@@ -23,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
@@ -34,6 +37,7 @@ import java.util.UUID;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
 import org.intelehealth.msfarogyabharat.models.DocumentObject;
 import org.intelehealth.msfarogyabharat.utilities.BitmapUtils;
@@ -54,6 +58,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private List<DocumentObject> rowListItem;
     private AdditionalDocumentAdapter recyclerViewAdapter;
     SessionManager sessionManager = null;
+    String m_finalImageName;
 
 
     @Override
@@ -94,12 +99,12 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
 
             ImagesDAO imagesDAO = new ImagesDAO();
-            ArrayList<String> fileuuidList = new ArrayList<String>();
+            ArrayList<String> fileNameList = new ArrayList<String>();
             ArrayList<File> fileList = new ArrayList<File>();
             try {
-                fileuuidList = imagesDAO.getImageUuid(encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_AD);
-                for (String fileuuid : fileuuidList) {
-                    String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                fileNameList = imagesDAO.getFilename(patientUuid); //TODO:
+                for (String file_imagename : fileNameList) {
+                    String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                     if (new File(filename).exists()) {
                         fileList.add(new File(filename));
                     }
@@ -118,7 +123,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials,rowListItem, AppConstants.IMAGE_PATH);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH, patientUuid);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
@@ -138,7 +143,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         if (requestCode == CameraActivity.TAKE_IMAGE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                saveImage(mCurrentPhotoPath);
+                String mFilename = data.getStringExtra("FILENAME");
+                saveImage(mCurrentPhotoPath, mFilename);
+                Log.v("main", "filename: "+ mFilename);
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (resultCode == RESULT_OK) {
@@ -149,14 +156,25 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 Log.v("path", picturePath + "");
 
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
+                EditText editText = new EditText(AdditionalDocumentsActivity.this);
+                editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(AdditionalDocumentsActivity.this)
+                        .setTitle("Enter filename")
+                        .setView(editText);
+                AlertDialog alertDialog = builder1.create();
+
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                         m_finalImageName = editText.getText().toString();
+                        final String finalFilePath = AppConstants.IMAGE_PATH + m_finalImageName + ".jpg";
+                        BitmapUtils.copyFile(picturePath, finalFilePath);
+                        compressImageAndSave(finalFilePath, m_finalImageName);
+                    }
+                });
+                alertDialog.show();
             }
         }
     }
@@ -172,7 +190,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         return mBackgroundHandler;
     }
 
-    void compressImageAndSave(final String filePath) {
+    void compressImageAndSave(final String filePath, String filename) {
         getBackgroundHandler().post(new Runnable() {
             @Override
             public void run() {
@@ -181,7 +199,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (flag) {
-                            saveImage(filePath);
+                            saveImage(filePath, filename);
                         } else
                             Toast.makeText(AdditionalDocumentsActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
@@ -191,8 +209,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         });
     }
 
-
-    private void saveImage(String picturePath) {
+    private void saveImage(String picturePath, String mfilename_1) {
         Log.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);
         if (photo.exists()) {
@@ -206,7 +223,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
 
             recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+            Log.v("main", "photo_name: "+ photo.getName() + "\n" + photo.getAbsolutePath());
+            String image = UUID.randomUUID().toString();
+            updateImageDatabase_additional_doc(image, mfilename_1);
+
         }
     }
 
@@ -227,6 +247,20 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         }
     }*/
+    private void updateImageDatabase_additional_doc(String obsuuid, String mfilename) {
+        ImagesDAO imagesDAO = new ImagesDAO();
+        try {
+            imagesDAO.insertObsImageDatabase_1(obsuuid, mfilename, encounterAdultIntials,
+                    UuidDictionary.COMPLEX_IMAGE_AD);
+
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsuuid, mfilename, "0", "TRUE");
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+    }
+/*
     private void updateImageDatabase(String imageuuid) {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -235,7 +269,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
-
+*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -257,6 +291,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 if (item == 0) {
                     Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
                     String imageName = UUID.randomUUID().toString();
+
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
                     cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
                     startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
@@ -271,15 +306,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             }
         });
         builder.show();
-         /*       Intent cameraIntent = new Intent(this, CameraActivity.class);
-                String imageName = UUID.randomUUID().toString();
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }*/
     }
 
 

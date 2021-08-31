@@ -21,6 +21,9 @@ public class ObsPushDTO {
     @SerializedName("person")
     @Expose
     private String person;
+    @SerializedName("value")
+    @Expose
+    private String value;
 
     public String getUuid() {
         return uuid;
@@ -62,4 +65,11 @@ public class ObsPushDTO {
         this.person = person;
     }
 
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

@@ -1622,7 +1622,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         onExaminationDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE, patientUuid);
             }
         });
 
@@ -2141,7 +2142,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physcialExaminationDownloadText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_PE);
+                startDownload(UuidDictionary.COMPLEX_IMAGE_PE, patientUuid);
                 physcialExaminationDownloadText.setVisibility(View.GONE);
             }
         });
@@ -2150,20 +2151,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void additionalDocumentImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            List<String> imageList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            for (String images : imageList) {
+            List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            if(obsUuidList.size() == 0) {
+                additionalImageDownloadText.setVisibility(View.GONE); //This means the visit is a new one...
+            }
+            else {
+                additionalImageDownloadText.setVisibility(View.VISIBLE); //This means the app is fresh installed...
+            }
+
+            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid);
+
+                for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
                     additionalImageDownloadText.setVisibility(View.GONE);
                 else
                     additionalImageDownloadText.setVisibility(View.VISIBLE);
             }
+
         } catch (DAOException e) {
             e.printStackTrace();
         }
         additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(UuidDictionary.COMPLEX_IMAGE_AD);
+                startDownload(UuidDictionary.COMPLEX_IMAGE_AD, patientUuid);
                 additionalImageDownloadText.setVisibility(View.GONE);
             }
         });
@@ -2194,13 +2205,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void startDownload(String imageType) {
+    private void startDownload(String imageType, String patientUuid) {
         Intent intent = new Intent(this, DownloadService.class);
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("encounterUuidVitals", encounterVitals);
         intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
         intent.putExtra("ImageType", imageType);
+        intent.putExtra("patientUuid", patientUuid);
         startService(intent);
     }
 
@@ -3691,12 +3703,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         callBroadcastReceiver();
 
         ImagesDAO imagesDAO = new ImagesDAO();
-        ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<String> fileNameList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            for (String fileuuid : fileuuidList) {
-                String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+            fileNameList = imagesDAO.getFilename(patientUuid);
+            for (String file_imagename : fileNameList) {
+                String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                 if (new File(filename).exists()) {
                     fileList.add(new File(filename));
                 }
@@ -3704,7 +3716,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
-            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter);
+            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter); //TODO: here on VS screen we show the images based on image names.
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {

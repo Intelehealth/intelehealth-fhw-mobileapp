@@ -36,6 +36,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT" +
                     ")";
 
+    public static final String CREATE_ADDITIONAL_IMAGE_DOCUMENT =
+            "CREATE TABLE IF NOT EXISTS tbl_additional_doc (" +
+                    "uuid TEXT PRIMARY KEY," +
+                    "patientId TEXT," +
+                    "obsId TEXT UNIQUE," +
+                    "imageName TEXT," +
+                    "voided TEXT," +
+                    "sync TEXT" +
+                    ")";
+
     //visit attributes tables
     public static final String CREATE_VISIT_ATTRIBUTES =
             "CREATE TABLE IF NOT EXISTS tbl_visit_attribute (" +
@@ -229,6 +239,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
+        db.execSQL(CREATE_ADDITIONAL_IMAGE_DOCUMENT);
         uuidInsert(db);
         database = db;
 

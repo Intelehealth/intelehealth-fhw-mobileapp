@@ -4,6 +4,9 @@ package org.intelehealth.msfarogyabharat.networkApiCalls;
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
 import org.intelehealth.msfarogyabharat.models.Location;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.AddImageDownloadResponse;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Image_Push_Body;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Img_Filename_PushImageResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.msfarogyabharat.models.Results;
@@ -86,6 +89,10 @@ public interface ApiInterface {
     Observable<ResponseBody> OBS_IMAGE_DOWNLOAD(@Url String url,
                                                 @Header("Authorization") String authHeader);
 
+    @GET
+    Observable<AddImageDownloadResponse> OBS_IMAGE_FILENAME_DOWNLOAD(@Url String url,
+                                                                     @Header("Authorization") String authHeader);
+
     @Headers({"Accept: application/json"})
     @POST
     @Multipart
@@ -120,4 +127,10 @@ public interface ApiInterface {
                                @Field("type") String type,
                                @Field("template_id") String template_id,
                                @Field("body") String body);
+
+    @POST
+    Call<Add_Img_Filename_PushImageResponse> ADDITIONAL_DOC_IMAGE_FILENAME(@Url String url,
+                                                                           @Header("Authorization") String authHeader,
+                                                                           @Body Add_Image_Push_Body addImagePushBody);
+
 }
