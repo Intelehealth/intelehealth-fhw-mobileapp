@@ -756,4 +756,8 @@
     <string name="select_reason_toast">विज़िट समाप्त करने के लिए कोई मान्य कारण चुनें</string>
     <string name="spinner_other">अन्य</string>
     <string name="spinner_loss_followUp">फॉलो अप करना रह गया</string>
+
+    //sms via api
+    <string name="sms_sent">एसएमएस भेजा गया!</string>
+    <string name="sms_failed">एसएमएस भेजना विफल! बाद में पुन: प्रयास करें।</string>
 </resources>

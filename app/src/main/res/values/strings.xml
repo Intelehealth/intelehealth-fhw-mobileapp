@@ -745,4 +745,8 @@
     <string name="select_bucket">Select Bucket</string>
     <string name="preferred_time">Preferred Time</string>
     <string name="hint_resolution_given">Enter resolution given</string>
+
+    //sms via api
+    <string name="sms_sent">SMS Sent!</string>
+    <string name="sms_failed">Sending SMS Failed! Please try again later.</string>
 </resources>

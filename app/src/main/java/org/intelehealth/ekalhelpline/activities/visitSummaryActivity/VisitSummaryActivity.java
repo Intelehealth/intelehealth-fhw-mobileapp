@@ -80,6 +80,10 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.models.PrescriptionBody;
+import org.intelehealth.ekalhelpline.models.PrescriptionSms;
+import org.intelehealth.ekalhelpline.models.PrescriptionUrl;
+import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -134,12 +138,22 @@ import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class VisitSummaryActivity extends AppCompatActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
     private LinearLayout mLayout;
-
+    PrescriptionBody prescriptionBody;
+    CustomProgressDialog customProgressDialog;
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
     String speciality_selected = "";
 
@@ -428,6 +442,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager1 = new SessionManager(VisitSummaryActivity.this);
+        customProgressDialog = new CustomProgressDialog(VisitSummaryActivity.this);
 //        String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
 //        if (!language.equalsIgnoreCase("")) {
@@ -576,19 +591,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                        String phoneNumber = "+91" + editText.getText().toString();
+                                        //code to send via sms
+//                                        String phoneNumber = "+91" + editText.getText().toString();
+//                                        startActivity(new Intent(Intent.ACTION_VIEW,
+//                                                Uri.fromParts("sms", phoneNumber, null))
+//                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
 
-                                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                                Uri.fromParts("sms", phoneNumber, null))
-                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
-
+                                        //code to send via api
+                                        customProgressDialog.show();
+                                        UrlModifiers urlModifiers = new UrlModifiers();
+                                        String phoneNumber = editText.getText().toString();
+                                        String prescriptionLink = urlModifiers.setSMSPresciptionUrl(visitUUID,patient.getOpenmrs_id().toString());
+                                        generateShortPrescUrl(prescriptionLink, phoneNumber);
+//                                        String body =  "प्रिय "+ patientName +", हॅलो साथी ला कॉल केल्याबद्दल धन्यवाद.आपली औषधोपचार डाउनलोड करण्यासाठी येथे उपलब्ध आहे " + prescriptionUrl;
+//                                        String body =  "Hello Sathi Helpline Project Dear Test N Your prescription is available to download at http://localhost/intelehealth/#/l/hj - Powered by Intelehealth";
+//                                        sendPrescriptionSms(phoneNumber,body);
+//                                        PrescriptionUrl prescriptionUrl1 = new PrescriptionUrl();
+//                                        prescriptionUrl1.getData().get(0).getHash();
 
                                     } else {
-                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
-                                                Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number), Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             });
                     AlertDialog dialog = alertDialog.show();
@@ -926,7 +949,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
-
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
                                     .insertVisitAttributes(visitUuid, speciality_selected);
@@ -959,10 +981,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         try {
                             EncounterDAO encounterDAO = new EncounterDAO();
                             encounterDAO.setEmergency(visitUuid, true);
-
                             //here disable the checkbox...
                             flag.setEnabled(false);
-
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
@@ -990,12 +1010,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         String[] columnsToReturn = {"openmrs_id"};
                         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
-
                         if (idCursor.moveToFirst()) {
                             do {
                                 patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
                             } while (idCursor.moveToNext());
                         }
+
                         idCursor.close();
                     }
 
@@ -1012,16 +1032,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (visitIDCursor != null)
                             visitIDCursor.close();
                     }
-
                     if (!flag.isChecked()) {
-                        //
+
                     }
 
                     if (NetworkConnection.isOnline(getApplication())) {
                         Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
-
                         SyncDAO syncDAO = new SyncDAO();
-
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -1043,10 +1060,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 } else {
                                     AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
-
                                 }
                                 uploaded = true;
-
                             }
                         }, 4000);
                     } else {
@@ -1066,10 +1081,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     dialogInterface.dismiss();
                                 }
                             });
-
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-
                     Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
@@ -1700,6 +1713,67 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag.setChecked(false);
             }
         }
+    }
+
+    private void generateShortPrescUrl(String prescriptionLink, String phoneNumber) {
+
+        prescriptionBody = new PrescriptionBody();
+        prescriptionBody.setLink(prescriptionLink);
+
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getShortPrescriptionUrl();
+
+        Call<PrescriptionUrl> prescriptionUrlCall = AppConstants.apiInterface.getPrescriptionShortUrl(url, prescriptionBody);
+
+        prescriptionUrlCall.enqueue(new Callback<PrescriptionUrl>() {
+            @Override
+            public void onResponse(Call<PrescriptionUrl> call, Response<PrescriptionUrl> response) {
+                String hash = response.body().getData().getHash();
+                Log.v("main", "hash: "+hash);
+                generateLink(hash,phoneNumber);
+            }
+            @Override
+            public void onFailure(Call<PrescriptionUrl> call, Throwable t) {
+                t.printStackTrace();
+                Log.v("main", "failure: " + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void generateLink(String hash,String phoneNumber) {
+        String shortLink = "http://" + sessionManager.getServerUrl() +"/intelehealth/#/l/" + hash;
+        String body =  "Hello Sathi Helpline Project Dear "+ patientName +" Your prescription is available to download at " + shortLink +" - Powered by Intelehealth";
+        sendPrescriptionSms(phoneNumber,body);
+    }
+
+    private void sendPrescriptionSms(String phoneNumber, String body) {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (TextUtils.isEmpty(phoneNumber))
+            return;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getSendSmsUrl();
+        Call<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, AppConstants.SMS_API_KEY, String.format("91%s", phoneNumber), "TIFDOC", "API", "TXN", AppConstants.SMS_TEMPLATE_ID, body);
+        patientIvrCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                customProgressDialog.dismiss();
+                Toast.makeText(VisitSummaryActivity.this,getResources().getString(R.string.sms_sent),Toast.LENGTH_SHORT).show();
+                System.out.println(response);
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                customProgressDialog.dismiss();
+                Toast.makeText(VisitSummaryActivity.this,getResources().getString(R.string.sms_failed),Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     private String sms_prescription() {

@@ -105,5 +105,7 @@ public class AppConstants {
     public static final String CURIOSITY_RES = "Curiosity Resolution";
     public static final String AGENT_RESOLUTION = "Agent Resolution";
     public static ApiInterface ivrApiInterface = ApiClient.createIVRService(ApiInterface.class);
+    public static final String SMS_API_KEY = "A39e1e65900618ef9b6e16da473f8894d";
+    public static final String SMS_TEMPLATE_ID = "1107162427070618591";
 }
 

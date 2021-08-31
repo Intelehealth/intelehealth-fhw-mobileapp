@@ -8,6 +8,9 @@ import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Respons
 import org.intelehealth.ekalhelpline.models.Location;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.ekalhelpline.models.PrescriptionBody;
+import org.intelehealth.ekalhelpline.models.PrescriptionSms;
+import org.intelehealth.ekalhelpline.models.PrescriptionUrl;
 import org.intelehealth.ekalhelpline.models.Results;
 import org.intelehealth.ekalhelpline.models.SubscriptionData;
 import org.intelehealth.ekalhelpline.models.SubscriptionStatus;
@@ -26,6 +29,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -123,4 +128,23 @@ public interface ApiInterface {
 
     @GET
     Observable<Call_Details_Response> IVR_CALL_RESPONSE(@Url String url);
+
+//    @POST
+//    Single<ResponseBody> SEND_PRESC_SMS(@Url String url, @Body PrescriptionSms prescriptionSms);
+
+    @POST
+    @FormUrlEncoded
+    Call<ResponseBody> SEND_WELCOME_SMS(@Url String url,
+                                        @Field("api-key") String apiKey,
+                                        @Field("to") String to,
+                                        @Field("sender") String sender,
+                                        @Field("source") String source,
+                                        @Field("type") String type,
+                                        @Field("template_id") String template_id,
+                                        @Field("body") String body);
+
+    @POST
+    Call<PrescriptionUrl> getPrescriptionShortUrl(@Url String url, @Body PrescriptionBody data);
+
 }
+
