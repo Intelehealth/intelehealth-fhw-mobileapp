@@ -14,11 +14,15 @@ import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,6 +56,7 @@ import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgres
 
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             "username:password", "admin:nimda"
     };
     private final String TAG = LoginActivity.class.getSimpleName();
-//    protected AccountManager manager;
+    //    protected AccountManager manager;
 //    Account Manager is commented....
 //    ProgressDialog progress;
     Context context;
@@ -85,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     String encoded = null;
     // UI references.
     private EditText mUsernameView;
-//    private AutoCompleteTextView mUsernameView;
+    //    private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
     private ImageView icLogo;
 
@@ -152,17 +157,24 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameView = findViewById(R.id.et_email);
         // populateAutoComplete(); TODO: create our own autocomplete code
         mPasswordView = findViewById(R.id.et_password);
-//      mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int id, KeyEvent event) {
-//                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-//                    attemptLogin();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
+
         mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+
+
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+
+                    attemptLogin();
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(mPasswordView.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile("/data/data/" + context.getPackageName() + "/files/logo/ic_logo.png");
             icLogo.setImageBitmap(bitmap);
         } else {
-            Log.e("SetLogo","No Logo Found in Mindmap Folder");
+            Log.e("SetLogo", "No Logo Found in Mindmap Folder");
         }
     }
 
@@ -242,7 +254,7 @@ public class LoginActivity extends AppCompatActivity {
         final SpannableString span_string = new SpannableString(getApplicationContext().getText(R.string.email_link));
         Linkify.addLinks(span_string, Linkify.EMAIL_ADDRESSES);
 
-      MaterialAlertDialogBuilder builder =   new MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setMessage(getResources().getString(R.string.contact_whatsapp))
                 .setNegativeButton(R.string.contact, new DialogInterface.OnClickListener() {
                     @Override
@@ -273,8 +285,8 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .setPositiveButton(R.string.close_button, null);
 
-      AlertDialog alertDialog = builder.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
+        AlertDialog alertDialog = builder.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         //prajwal_changes
     }
@@ -308,12 +320,12 @@ public class LoginActivity extends AppCompatActivity {
                 Logger.logD(TAG, "success" + gson.toJson(loginModel));
                 sessionManager.setChwname(loginModel.getUser().getDisplay());
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
-                Log.d("SESSOO","SESSOO_creator: "+loginModel.getUser().getUuid());
+                Log.d("SESSOO", "SESSOO_creator: " + loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
-                Log.d("SESSOO","SESSOO: "+sessionManager.getSessionID());
+                Log.d("SESSOO", "SESSOO: " + sessionManager.getSessionID());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
-                Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
+                Log.d("SESSOO", "SESSOO_PROVIDER: " + loginModel.getUser().getPerson().getUuid());
+                Log.d("SESSOO", "SESSOO_PROVIDER_session: " + sessionManager.getProviderID());
 
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
@@ -336,8 +348,6 @@ public class LoginActivity extends AppCompatActivity {
                                             manager.addAccountExplicitly(account, mPassword, null);
                                             Log.d("MANAGER", "MANAGER " + account);*/
                                             //offlineLogin.invalidateLoginCredentials();
-
-
 
 
                                         }
@@ -370,7 +380,7 @@ public class LoginActivity extends AppCompatActivity {
                                         values.put("username", mEmail);
                                         values.put("password", hash_password);
                                         values.put("creator_uuid_cred", loginModel.getUser().getUuid());
-                                        values.put("chwname",loginModel.getUser().getDisplay());
+                                        values.put("chwname", loginModel.getUser().getDisplay());
                                         values.put("provider_uuid_cred", sessionManager.getProviderID());
                                         createdRecordsCount = sqLiteDatabase.insertWithOnConflict("tbl_user_credentials", null, values, SQLiteDatabase.CONFLICT_REPLACE);
                                         sqLiteDatabase.setTransactionSuccessful();
@@ -391,7 +401,7 @@ public class LoginActivity extends AppCompatActivity {
 //                startJobDispatcherService(LoginActivity.this);
                                     startActivity(intent);
                                     finish();
-                                  //  showProgress(false);
+                                    //  showProgress(false);
 
                                     sessionManager.setReturningUser(true);
                                     sessionManager.setLogout(false);

@@ -154,8 +154,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             TextView textView = layoutInflater.findViewById(R.id.textview_details);
             Log.v(TAG, new_result);
             textView.setText(Html.fromHtml(new_result));
-
-
 //            alertdialog.setMessage(getString(R.string.question_update_details));
             alertdialog.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                 @Override

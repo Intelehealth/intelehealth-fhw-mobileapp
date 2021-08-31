@@ -61,11 +61,13 @@
                         app:srcCompat="@drawable/svg_person_details"></ImageView>
 
                     <TextView
+                        android:id="@+id/personalInfo_Textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="5dp"
                         android:ems="10"
+                        android:focusable="true"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
@@ -122,7 +124,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_first_name"
-                                        android:imeOptions="actionUnspecified"
+                                        android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
@@ -174,7 +176,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_last_name"
-                                        android:imeOptions="actionUnspecified"
+                                        android:imeOptions="actionUnspecified|flagNoExtractUi"
                                         android:inputType="textCapWords"
                                         android:maxLength="25"
                                         android:maxLines="1"
@@ -200,7 +202,7 @@
                                         android:fontFamily="@font/lato_regular"
                                         android:freezesText="true"
                                         android:hint="@string/identification_screen_prompt_age"
-                                        android:imeOptions="actionUnspecified"
+                                        android:imeOptions="actionNext|flagNoExtractUi"
                                         android:inputType=""
                                         android:maxLines="1"
                                         android:singleLine="true"
@@ -226,6 +228,7 @@
                             android:layout_width="15dp"
                             android:layout_height="10dp" />
 
+<!--
                         <RadioGroup
                             android:id="@+id/radioGrp"
                             android:layout_width="fill_parent"
@@ -259,10 +262,44 @@
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </RadioGroup>
+-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What is your gender?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_gender"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/gender_en"/>
+
+                        <EditText
+                            android:id="@+id/other_gender_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
 
                         <Space
                             android:layout_width="20dp"
                             android:layout_height="5dp" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -281,7 +318,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_birthday"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="flagNoExtractUi|actionNext"
                                 android:inputType=""
                                 android:maxLines="1"
                                 android:singleLine="true"
@@ -335,7 +372,35 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_phone_number"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/identification_emergency_phone_number"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="@string/identification_screen_prompt_emergency_phone_number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="phone"
                                 android:maxLength="10"
                                 android:maxLines="1"
@@ -436,7 +501,7 @@
                                             android:focusableInTouchMode="false"
                                             android:fontFamily="@font/lato_regular"
                                             android:freezesText="true"
-                                            android:imeOptions="actionUnspecified"
+                                            android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                             android:inputType="textCapWords"
                                             android:maxLines="1"
                                             android:text="@string/identification_screen_prompt_country"
@@ -470,14 +535,17 @@
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_state"
-                                        android:maxLength="45" />
+                                        android:imeOptions="actionNext|flagNoExtractUi"
+                                        android:inputType="textAutoComplete"
+                                        android:maxLength="45"
+                                        android:maxLines="1"
+                                        android:singleLine="true" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
-                                    android:layout_marginBottom="10dp"
                                     android:layout_weight="1">
 
                                     <AutoCompleteTextView
@@ -486,7 +554,30 @@
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
                                         android:hint="@string/identification_screen_prompt_district"
-                                        android:maxLength="45" />
+                                        android:imeOptions="actionNext|flagNoExtractUi"
+                                        android:inputType="textAutoComplete"
+                                        android:maxLength="45"
+                                        android:maxLines="1"
+                                        android:singleLine="true" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1">
+
+                                    <EditText
+                                        android:id="@+id/editText_landmark"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:completionThreshold="1"
+                                        android:hint="Landmark*"
+                                        android:imeOptions="actionDone|flagNoExtractUi"
+                                        android:inputType="textAutoComplete"
+                                        android:maxLength="45"
+                                        android:maxLines="1"
+                                        android:singleLine="true" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -516,7 +607,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_city"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|actionNext|flagNoExtractUi"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
@@ -540,7 +631,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_address"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
@@ -566,7 +657,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_address2"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
                                 android:maxLines="2"
@@ -591,7 +682,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_postal_code"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi"
                                 android:inputType="number"
                                 android:maxLength="9"
                                 android:maxLines="1"
@@ -648,6 +739,410 @@
                         android:orientation="vertical"
                         android:padding="10dp">
 
+                        <!-- This is education spinner -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Education"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_education_selection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/education_spinner_en"/>
+
+                        <EditText
+                            android:id="@+id/other_education_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of education spinner -->
+
+                        <!-- Start of Marital spinner -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What is the current marital status?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_current_marital_status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/marital_spinner_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <EditText
+                            android:id="@+id/other_maritalStatus_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+                        <!-- end of marital spinner -->
+
+                        <!-- income edittext -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/editText_income_monthly"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:completionThreshold="1"
+                                android:hint="Income (Monthly)"
+                                android:imeOptions="actionDone|flagNoExtractUi"
+                                android:inputType="number"
+                                android:maxLength="45"
+                                android:maxLines="1"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+                        <!-- end of income edittext -->
+
+                        <!-- Start Occupation spinner -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Occupation"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_occupation_selection"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/occupation_spinner_selection_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <EditText
+                            android:id="@+id/other_occupation_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+                        <!-- end of Occupation spinner -->
+
+                        <!--start of husband income -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                            <EditText
+                                android:id="@+id/editText_husband_income_monthly"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:completionThreshold="1"
+                                android:hint="Husband's Income (Monthly)"
+                                android:imeOptions="actionDone|flagNoExtractUi"
+                                android:inputType="number"
+                                android:maxLength="45"
+                                android:maxLines="1"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+                        <!-- end of husband income -->
+
+                        <!-- start of husband occupation -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Husband Occupation"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_husband_occupation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/husband_occupation_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <EditText
+                            android:id="@+id/other_husband_occupation_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+                        <!-- end of husband occupation -->
+
+                        <!-- start of children -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Do you have any children?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_children"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_children_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of children -->
+
+                        <!-- start of no of children -->
+                        <FrameLayout
+                            android:id="@+id/framelayout_no_children"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="How many children?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/editText_no_of_children"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Enter no of children"
+                                android:imeOptions="actionNext|flagNoExtractUi"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:inputType="number"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:layout_height="1dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginBottom="10dp"
+                                    android:background="?android:attr/listDivider" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <!--
+                                                <Spinner
+                                                    android:id="@+id/spinner_no_of_children"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:entries="@array/spinner_no_of_children_en"/>
+                        -->
+
+
+                        <!-- end of children -->
+
+                        <!-- start of caste spinner -->
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/identification_caste_textview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:weightSum="4">
+
+                                <EditText
+                                    android:id="@+id/identification_caste_edittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:drawableStart="@drawable/person_icon"
+                                    android:drawableLeft="@drawable/person_icon"
+                                    android:drawablePadding="10dp"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:freezesText="true"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
+                                    android:inputType="textCapWords"
+                                    android:maxLines="1"
+                                    android:text="@string/identification_screen_prompt_caste"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_caste_selection"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:entries="@array/caste_selection_en"/>
+
+                            </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <EditText
+                            android:id="@+id/other_caste_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of spinner caste -->
+
+                        <!-- start of contact type -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Contact Type"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_contact_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_contact_type_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of contact type -->
+
+                        <!-- start of where did u -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Where did you get the helpline number from?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_where_did_u"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_where_did_u_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <EditText
+                            android:id="@+id/other_where_did_u_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+                        <!-- end of where did u -->
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -683,7 +1178,7 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_caste"
+                            android:id="@+id/spinner_helpline"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
@@ -691,9 +1186,11 @@
                             android:id="@+id/other_helplineInfo_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/card_content_sub_text_size"
                             android:hint="@string/txt_others"
-                            android:visibility="gone"/>
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
 
                         <View
                             android:layout_width="match_parent"
@@ -714,10 +1211,579 @@
                             android:layout_height="10dp" />
 
                         <Spinner
-                            android:id="@+id/spinner_economic_status"
+                            android:id="@+id/spinner_phone_status"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <!-- start of complaint -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Select Reason of Complaint"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                        <RadioGroup
+                            android:id="@+id/radioGrp_complaint"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp">
+
+                            <RadioButton
+                                android:id="@+id/identification_complaint_abortion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="Safe abortion specific"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <RadioButton
+                                android:id="@+id/identification_violence"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/lato_regular"
+                                android:text="Domestic violence specific"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </RadioGroup>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <!-- start of safe abortion -->
+                        <FrameLayout
+                            android:id="@+id/framelayout_safe_abortion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Do you work or do you have a paid job?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/work_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_work_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="How would you describe your location?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_describe_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_describe_location_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                            </LinearLayout>
+                        </FrameLayout>
+                        <!-- end of safe abortion -->
+
+                        <!-- start of domestic violence -->
+                        <FrameLayout
+                            android:id="@+id/framelayout_domestic_violence"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/textview_who_referred"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:text="Who referred the case?  "
+                                android:layout_marginBottom="10dp"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_referred_case"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/spinner_dv_referred_en"/>
+
+                                <EditText
+                                    android:id="@+id/other_referredcase_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
+
+                            <View
+                                android:id="@+id/linear_line_who_referred"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                            <TextView
+                                android:id="@+id/textview_am_i_speaking"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:text="Am I speaking with the survivor or am I speaking with someone who is calling on behalf of the survivor?"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_am_i_speaking"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/spinner_dv_speaking_with_en"/>
+
+                                <EditText
+                                    android:id="@+id/other_ami_speaking_with_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
+
+
+                                <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider" />
+
+                        <!-- start of good mobile no -->
+                        <TextView
+                            android:id="@+id/textview_dv_mobileno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What is a good phone number to reach the survivor?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edittext_dv_mobileno"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Enter Phone number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <!-- start of spinner -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Was the survivor ever married?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_survivor_married"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_dv_survivor_married_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What was age at the time of (first) marriage?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <EditText
+                            android:id="@+id/edittext_dv_age_marriage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enter age"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of spinner -->
+                        <!-- end of good mobile no -->
+
+                        <!-- start of marriage type -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What was the type of marriage?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_typeof_marriage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_marriage_type_en"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of marriage type -->
+
+                        <!-- start of maternal address -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide a maternal home address"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/editText_maternity_address"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/home_icon"
+                                android:drawableLeft="@drawable/home_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Maternal Home Address"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="textCapWords"
+                                android:maxLength="50"
+                                android:maxLines="2"
+                                android:singleLine="false"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of maternal address -->
+
+                        <!-- start of maternal mobile -->
+                        <TextView
+                            android:id="@+id/textview_dv_maternal_mobileno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide a maternal phone number"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edittext_dv_maternal_mobileno"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Maternal Phone number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of maternal mobile -->
+
+                        <!-- start of address in-laws -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide address of in-laws"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/editText_inlaws_address"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/home_icon"
+                                android:drawableLeft="@drawable/home_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="In-laws Address"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="textCapWords"
+                                android:maxLength="50"
+                                android:maxLines="2"
+                                android:singleLine="false"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of address in-laws -->
+
+                        <!-- start of husband mobile -->
+                        <TextView
+                            android:id="@+id/textview_dv_husband_mobileno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="Please provide a phone number for husband/partner"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/edittext_dv_husband_mobileno"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:digits="0123456789"
+                                android:drawableStart="@drawable/phone_icon"
+                                android:drawableLeft="@drawable/phone_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="Husband Phone number"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of husband mobile -->
+
+                        <!-- start of current residence -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="What address is the survivor currently residing at?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_current_living"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_current_address_en"/>
+
+                                <EditText
+                                    android:id="@+id/other_currentaddress_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of current residence -->
+
+                        <!--start of with whom living -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="With whom is the survivor living?"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_with_whom_living"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/spinner_with_whom_living_en"/>
+
+                                <EditText
+                                    android:id="@+id/other_withwhomliving_edittext"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/txt_others"
+                                    android:imeOptions="actionDone|flagNoExtractUi"
+                                    android:inputType="text"
+                                    android:textSize="@dimen/card_content_sub_text_size"
+                                    android:visibility="gone" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of with whom living -->
+
+
+                        <!-- end of domestic violence -->
+                        <!-- end of complaint -->
+                            </LinearLayout>
+                        </FrameLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -742,7 +1808,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
                                 android:hint="@string/identification_screen_prompt_relationship"
-                                android:imeOptions="actionUnspecified"
+                                android:imeOptions="actionUnspecified|flagNoExtractUi"
                                 android:inputType="textCapWords"
                                 android:maxLength="25"
                                 android:maxLines="1"
@@ -809,7 +1875,7 @@
 
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_caste"
@@ -847,7 +1913,7 @@
                                     android:focusableInTouchMode="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_economic_status"
@@ -885,7 +1951,7 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
 
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="textCapWords"
                                     android:maxLines="1"
                                     android:text="@string/identification_screen_prompt_education"
@@ -1454,7 +2520,7 @@
                                     android:enabled="false"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:singleLine="true"
@@ -1477,7 +2543,7 @@
                                     android:ems="10"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
                                     android:inputType="text"
                                     android:maxLines="1"
                                     android:singleLine="true"

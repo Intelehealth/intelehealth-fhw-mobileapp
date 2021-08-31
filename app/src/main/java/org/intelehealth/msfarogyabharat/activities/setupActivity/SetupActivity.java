@@ -28,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -79,6 +80,7 @@ import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -223,6 +225,17 @@ public class SetupActivity extends AppCompatActivity {
 
             }
         });
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                attemptLogin();
+                InputMethodManager imm = (InputMethodManager)textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+
+                return true;
+            }
+        });
+
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
@@ -536,7 +549,8 @@ public class SetupActivity extends AppCompatActivity {
             spinner_village.setAdapter(adapter_village);
         } else if (value.equalsIgnoreCase("village")) {
             //do nothing
-        }*/ else {
+        }*/
+        else {
 
             List<String> list_state = new ArrayList<>();
             list_state.add("Select Location");
@@ -673,7 +687,7 @@ public class SetupActivity extends AppCompatActivity {
             }*/
 
             //state based login...
-            if(!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) {
+            if (!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) {
                 String urlString = mUrlField.getText().toString();
                 //  TestSetup(urlString, email, password, admin_password, village_name);
                 TestSetup(urlString, email, password, admin_password, village_name);
@@ -1012,6 +1026,83 @@ public class SetupActivity extends AppCompatActivity {
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
 
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                        EditText url = promptsView.findViewById(R.id.licenseurl);
+
+                        text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                                    if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
+                                        text.setFocusable(true);
+                                        text.setError(getResources().getString(R.string.enter_license_key));
+                                    }
+
+                                    if (sessionManager.getLicenseKey() != null && sessionManager.getLicenseKey().equalsIgnoreCase("https://mindmaps.intelehealth.io:4040")) {
+                                        text.setText(sessionManager.getLicenseKey());
+                                        url.setText(sessionManager.getMindMapServerUrl());
+                                    }
+
+
+                                    if (!url.getText().toString().trim().isEmpty()) {
+                                        if (Patterns.WEB_URL.matcher(url.getText().toString().trim()).matches()) {
+                                            String url_field = "https://" + url.getText().toString() + ":3004/";
+                                            if (URLUtil.isValidUrl(url_field)) {
+                                                key = text.getText().toString().trim();
+                                                licenseUrl = url.getText().toString().trim();
+
+                                                if (licenseUrl.isEmpty()) {
+                                                    url.setError(getResources().getString(R.string.enter_server_url));
+                                                    url.requestFocus();
+                                                    return false;
+                                                }
+                                                if (licenseUrl.contains(":")) {
+                                                    url.setError(getResources().getString(R.string.invalid_url));
+                                                    url.requestFocus();
+                                                    return false;
+                                                }
+                                                if (key.isEmpty()) {
+                                                    text.setError(getResources().getString(R.string.enter_license_key));
+                                                    text.requestFocus();
+                                                    return false;
+                                                }
+
+                                                sessionManager.setMindMapServerUrl(licenseUrl);
+                                                //Toast.makeText(SetupActivity.this, "" + key, Toast.LENGTH_SHORT).show();
+                                                if (keyVerified(key)) {
+                                                    // create a shared pref to store the key
+
+                                                    // SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("pref",MODE_PRIVATE);
+
+                                                    //DOWNLOAD MIND MAP FILE LIST
+                                                    //upnew getJSONFile().execute(null, "AllFiles", "TRUE");
+
+                                                    // UpdateProtocolsTask updateProtocolsTask = new UpdateProtocolsTask(SetupActivity.this);
+                                                    // updateProtocolsTask.execute(null, "AllFiles", "TRUE");
+//                                        DownloadProtocolsTask downloadProtocolsTask = new DownloadProtocolsTask(SetupActivity.this);
+//                                        downloadProtocolsTask.execute(key);
+                                                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+
+                                                }
+                                            } else {
+                                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+
+                                            }
+                                        } else {
+                                            //invalid url || invalid url and key.
+                                            Toast.makeText(SetupActivity.this, R.string.enter_valid_license_url, Toast.LENGTH_SHORT).show();
+                                        }
+                                    } else {
+                                        Toast.makeText(SetupActivity.this, R.string.please_enter_url_and_key, Toast.LENGTH_SHORT).show();
+                                    }
+
+
+                                }
+                                return false;
+                            }
+                        });
+
+
 
                         dialog.setTitle(getString(R.string.enter_license_key))
                                 .setView(promptsView)
@@ -1020,9 +1111,6 @@ public class SetupActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         Dialog d = (Dialog) dialog;
-
-                                        EditText text = d.findViewById(R.id.licensekey);
-                                        EditText url = d.findViewById(R.id.licenseurl);
                                         if (text.getText().toString().isEmpty() && text.getText() == null || url.getText().toString().isEmpty() && url.getText() == null) {
                                             text.setFocusable(true);
                                             text.setError(getResources().getString(R.string.enter_license_key));
@@ -1288,8 +1376,8 @@ public class SetupActivity extends AppCompatActivity {
                                             .subscribe(new DisposableObserver<LoginProviderModel>() {
                                                 @Override
                                                 public void onNext(@NonNull LoginProviderModel loginProviderModel) {
-                                                    Log.d("loginmodell", "phonenu: "+ gson1.toJson(loginProviderModel));
-                                                    if(loginProviderModel.getResults().size() != 0) {
+                                                    Log.d("loginmodell", "phonenu: " + gson1.toJson(loginProviderModel));
+                                                    if (loginProviderModel.getResults().size() != 0) {
                                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                                             //Here, we are getting only one results item...
 
@@ -1297,7 +1385,7 @@ public class SetupActivity extends AppCompatActivity {
                                                                     .get(i).getAttributes().size(); j++) {
                                                                 //Here, we are getting two attributes: Phone & Whatsapp...
 
-                                                                if(loginProviderModel.getResults().get(i)
+                                                                if (loginProviderModel.getResults().get(i)
                                                                         .getAttributes().get(j)
                                                                         .getAttributeType().getUuid()
                                                                         .equalsIgnoreCase("e3a7e03a-5fd0-4e6c-b2e3-938adb3bbb37")) {
@@ -1306,7 +1394,7 @@ public class SetupActivity extends AppCompatActivity {
                                                                             loginProviderModel.getResults().get(i).getAttributes()
                                                                                     .get(j).getValue());
 
-                                                                    Log.d("loginmodell", "sess_phoneno: "+
+                                                                    Log.d("loginmodell", "sess_phoneno: " +
                                                                             sessionManager.getProviderPhoneno());
                                                                 }
                                                             }

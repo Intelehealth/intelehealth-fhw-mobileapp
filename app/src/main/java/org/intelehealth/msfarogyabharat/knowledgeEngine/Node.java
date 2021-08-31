@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -58,6 +59,8 @@ import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 
 import org.intelehealth.msfarogyabharat.activities.cameraActivity.CameraActivity;
 import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.CustomArrayAdapter;
+
+import io.reactivex.functions.Action;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -790,6 +793,7 @@ public class Node implements Serializable {
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1055,6 +1059,7 @@ public class Node implements Serializable {
         numberPicker.setMaxValue(1000);*/
         EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
+        et_enter_value.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1629,6 +1634,7 @@ private static String ml_en(String unit) {
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
         dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -1695,6 +1701,7 @@ private static String ml_en(String unit) {
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
         EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+        et_enter_value.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override

@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 
 import android.graphics.Color;
@@ -32,8 +33,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,6 +46,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -54,6 +58,7 @@ import android.widget.Toast;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.msfarogyabharat.utilities.InputFilterMinMax;
 import org.json.JSONArray;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
@@ -110,9 +115,11 @@ import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 
-//import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_CallRelation_edit;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_HelplineKnowledge_edit;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_PhoneType_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -120,6 +127,18 @@ public class IdentificationActivity extends AppCompatActivity {
     private boolean hasLicense = false;
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
+    ArrayAdapter<CharSequence> helplineKnowledgeAdapter;
+    ArrayAdapter<CharSequence> phoneTypeAdapter;
+    ArrayAdapter<CharSequence> callerRelationAdapter;
+    ArrayAdapter<CharSequence> genderAdapter, marital_statusAdapter, husband_occupationAdapter, childrenAdapter;
+    ArrayAdapter<CharSequence>  no_childrenAdapter, contact_type_adapter, helpline_no_fromAdapter;
+    ArrayAdapter<CharSequence>  education_spinnerAdapter, occupation_spinner_1Adapter, caste_spinnerAdapter;
+
+    ArrayAdapter<CharSequence> job_spinnerAdapter, describe_location_spinnerAdapter, who_refferred_spinnerAdapter,
+            am_i_speaking_spinnerAdapter, ever_married_spinnerAdapter, type_marriage_spinnerAdapter,
+            current_residing_address_spinnerAdapter, with_whom_living_spinnerAdapter;
+
+
     private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -144,7 +163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mLastName;
     EditText mDOB;
     EditText mPhoneNum;
-    EditText mAge;
+    EditText mAge, mNo_of_children;
     MaterialAlertDialogBuilder mAgePicker;
     MaterialAlertDialogBuilder mTimePicker;
     EditText mAddress1;
@@ -153,14 +172,16 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton safe_abortion_radiobtn;
+    RadioButton violence_radiobtn;
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -181,7 +202,9 @@ public class IdentificationActivity extends AppCompatActivity {
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
     String intentTag1 = "";
     String intentTag2 = "";
-    String helplineInfo = "";
+    String helplineInfo = "", genderInfo = "", educationInfo = "", maritualstatusInfo = "",
+            husbandoccupationInfo = "", occupationInfo = "", casteInfo = "", wherediduInfo = "", referredbyInfo = "",
+    amiSpeakingInfo = "", currentAddressInfo, withwhomLivingInfo = "";
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
@@ -201,16 +224,29 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
+
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
-    private boolean isMedicalAdvice;;
+    private boolean isMedicalAdvice;
+    ;
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
-    private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther;
+    private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther,
+    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, occupationOther, casteOther, wherediduOther,
+    referredOther, amIspeakingOther, currentaddressOther, withwhomlivingOther;
+    TextView personalInfo_Textview;
 
+    //new fields of registration...
+    Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner_1, have_children_spinner,
+    no_of_children_spinner, contact_type_spinner, helplineno_from_spinner, husband_occupation_spinner,
+    caste_spinner, job_spinner, describe_location_spinner, who_refferred_spinner, am_i_speaking_spinner, ever_married_spinner,
+    type_marriage_spinner, current_residing_address_spinner, with_whom_living_spinner;
+    EditText emergency_no_edittext, landmark_edittext, income_edittext, husband_income_monthly, good_mobile_edittext,
+    age_marriage_edittext, maternal_address_edittext, maternal_mobile_edittext, address_inlaws_edittext, husband_mobile_edittext;
+
+    FrameLayout framelayout_safe_abortion, framelayout_domestic_violence, framelayout_no_children;
     List<String> districtList;
-
-
+    private String mComplaintSelection;
 
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
@@ -250,6 +286,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
         // sessionManager = new SessionManager(this);
+        personalInfo_Textview = findViewById(R.id.personalInfo_Textview);
         mFirstName = findViewById(R.id.identification_first_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
@@ -262,7 +299,37 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
 
+        emergency_no_edittext = findViewById(R.id.identification_emergency_phone_number);
+        landmark_edittext = findViewById(R.id.editText_landmark);
+        income_edittext = findViewById(R.id.editText_income_monthly);
+        husband_income_monthly = findViewById(R.id.editText_husband_income_monthly);
+
+        good_mobile_edittext = findViewById(R.id.edittext_dv_mobileno);
+        age_marriage_edittext = findViewById(R.id.edittext_dv_age_marriage);
+        maternal_address_edittext = findViewById(R.id.editText_maternity_address);
+        maternal_mobile_edittext = findViewById(R.id.edittext_dv_maternal_mobileno);
+        address_inlaws_edittext = findViewById(R.id.editText_inlaws_address);
+        husband_mobile_edittext = findViewById(R.id.edittext_dv_husband_mobileno);
+
+
+        framelayout_safe_abortion = findViewById(R.id.framelayout_safe_abortion);
+        framelayout_domestic_violence = findViewById(R.id.framelayout_domestic_violence);
+        framelayout_no_children = findViewById(R.id.framelayout_no_children);
+
+
         helplineInfoOther = findViewById(R.id.other_helplineInfo_edittext);
+        genderOther = findViewById(R.id.other_gender_edittext);
+        educationOther = findViewById(R.id.other_education_edittext);
+        maritualstatusOther = findViewById(R.id.other_maritalStatus_edittext);
+        husbandoccupationOther = findViewById(R.id.other_husband_occupation_edittext);
+        occupationOther = findViewById(R.id.other_occupation_edittext);
+        casteOther = findViewById(R.id.other_caste_edittext);
+        wherediduOther = findViewById(R.id.other_where_did_u_edittext);
+        referredOther = findViewById(R.id.other_referredcase_edittext);
+        amIspeakingOther = findViewById(R.id.other_ami_speaking_with_edittext);
+        currentaddressOther = findViewById(R.id.other_currentaddress_edittext);
+        withwhomlivingOther = findViewById(R.id.other_withwhomliving_edittext);
+
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -276,6 +343,9 @@ public class IdentificationActivity extends AppCompatActivity {
         });*/
 
         mAge = findViewById(R.id.identification_age);
+        mNo_of_children = findViewById(R.id.editText_no_of_children);
+        mNo_of_children.setFilters(new InputFilter[]{new InputFilterMinMax("1", "20")}); //min = 1 child and max = 20 childrens
+
         mAddress1 = findViewById(R.id.identification_address1);
         mAddress1.setFilters(new InputFilter[]{new InputFilter.LengthFilter(50), inputFilter_Name}); //maxlength 50
 
@@ -285,7 +355,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCity = findViewById(R.id.identification_city);
         mCity.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
-//        stateText = findViewById(R.id.identification_state);
+//      stateText = findViewById(R.id.identification_state);
 
         autocompleteState = findViewById(R.id.autocomplete_state);
         autocompleteDistrict = findViewById(R.id.autocomplete_district);
@@ -296,8 +366,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
-        mGenderM = findViewById(R.id.identification_gender_male);
-        mGenderF = findViewById(R.id.identification_gender_female);
+//        mGenderM = findViewById(R.id.identification_gender_male);
+//        mGenderF = findViewById(R.id.identification_gender_female);
+        safe_abortion_radiobtn = findViewById(R.id.identification_complaint_abortion);
+        violence_radiobtn = findViewById(R.id.identification_violence);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -306,8 +378,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         mCaste = findViewById(R.id.spinner_caste1);
         mCallerRelation = findViewById(R.id.relationship_spinner);
-        mHelplineKnowledge = findViewById(R.id.spinner_caste);
-        mPhoneType = findViewById(R.id.spinner_economic_status);
+        mHelplineKnowledge = findViewById(R.id.spinner_helpline);
+        mPhoneType = findViewById(R.id.spinner_phone_status);
         mEducation = findViewById(R.id.spinner_education);
         mEconomicStatus = findViewById(R.id.spinner_economic_status1);
         casteText = findViewById(R.id.identification_caste);
@@ -319,8 +391,30 @@ public class IdentificationActivity extends AppCompatActivity {
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
 
-        //  mImageView = findViewById(R.id.imageview_id_picture);
+        //start - Spinner
+        gender_spinner = findViewById(R.id.spinner_gender);
+        education_spinner = findViewById(R.id.spinner_education_selection);
+        occupation_spinner_1 = findViewById(R.id.spinner_occupation_selection);
+        caste_spinner = findViewById(R.id.spinner_caste_selection);
+        current_marital_spinner = findViewById(R.id.spinner_current_marital_status);
+        occupation_spinner = findViewById(R.id.spinner_occupation_selection);
+        have_children_spinner = findViewById(R.id.spinner_children);
+       // no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
+        contact_type_spinner = findViewById(R.id.spinner_contact_type);
+        helplineno_from_spinner = findViewById(R.id.spinner_where_did_u);
+        husband_occupation_spinner = findViewById(R.id.spinner_husband_occupation);
+        //Complaint Selection Spinners...
+        job_spinner = findViewById(R.id.work_spinner);
+        describe_location_spinner = findViewById(R.id.spinner_describe_location);
+        who_refferred_spinner = findViewById(R.id.spinner_referred_case);
+        am_i_speaking_spinner = findViewById(R.id.spinner_am_i_speaking);
+        ever_married_spinner = findViewById(R.id.spinner_survivor_married);
+        type_marriage_spinner = findViewById(R.id.spinner_typeof_marriage);
+        current_residing_address_spinner = findViewById(R.id.spinner_current_living);
+        with_whom_living_spinner = findViewById(R.id.spinner_with_whom_living);
+        //end - Spinner
 
+        //  mImageView = findViewById(R.id.imageview_id_picture);
         //Spinner
        /* occupation_spinner = findViewById(R.id.occupation_spinner);
         occupation_edittext = findViewById(R.id.occupation_edittext);
@@ -401,11 +495,13 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mDOB.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mPhoneNum")) {
                 mPhoneNum.setVisibility(View.VISIBLE);
             } else {
                 mPhoneNum.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mAge")) {
                 mAge.setVisibility(View.VISIBLE);
             } else {
@@ -438,7 +534,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mPostal.setVisibility(View.GONE);
             }
 
-            if (obj.getBoolean("mGenderM")) {
+        /*    if (obj.getBoolean("mGenderM")) {
                 mGenderM.setVisibility(View.VISIBLE);
             } else {
                 mGenderM.setVisibility(View.GONE);
@@ -447,7 +543,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mGenderF.setVisibility(View.VISIBLE);
             } else {
                 mGenderF.setVisibility(View.GONE);
-            }
+            }*/
             if (obj.getBoolean("mRelationship")) {
                 mRelationship.setVisibility(View.VISIBLE);
             } else {
@@ -507,6 +603,23 @@ public class IdentificationActivity extends AppCompatActivity {
         else {
             mDOB.setText(patient1.getDate_of_birth());
         }*/
+
+        //on Edit....
+
+        //start - edittext - edit
+        emergency_no_edittext.setText(patient1.getEmergency_phoneNo());
+        landmark_edittext.setText(patient1.getLandmark());
+        income_edittext.setText(patient1.getIncome());
+        mNo_of_children.setText(patient1.getNo_of_children());
+        husband_income_monthly.setText(patient1.getHusband_income());
+        good_mobile_edittext.setText(patient1.getGood_mobileno());
+        age_marriage_edittext.setText(patient1.getAge_marriage());
+        maternal_address_edittext.setText(patient1.getMaternal_address());
+        maternal_mobile_edittext.setText(patient1.getMaternal_mobile());
+        address_inlaws_edittext.setText(patient1.getAddress_inlaws());
+        husband_mobile_edittext.setText(patient1.getHusband_mobile());
+        //end - edittext - edit
+
         mDOB.setText(patient1.getDate_of_birth());
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
@@ -555,7 +668,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PrivacyNotice_Activity.start(IdentificationActivity.this, true);
-              //  startActivity(intent);
+                //  startActivity(intent);
             }
         });
         if (!TextUtils.isEmpty(patientID_edit)) {
@@ -579,20 +692,332 @@ public class IdentificationActivity extends AppCompatActivity {
 //        mCaste.setAdapter(casteAdapter);
 
 
-        ArrayAdapter<CharSequence> callerRelationAdapter = ArrayAdapter.createFromResource(this,
-                R.array.caller_type, R.layout.custom_spinner);
-        callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mCallerRelation.setAdapter(callerRelationAdapter);
+//        ArrayAdapter<CharSequence> callerRelationAdapter = ArrayAdapter.createFromResource(this,
+//                R.array.caller_type, R.layout.custom_spinner);
+//        callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mCallerRelation.setAdapter(callerRelationAdapter);
 
-        ArrayAdapter<CharSequence> helplineKnowledgeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.helpline_knowledge, R.layout.custom_spinner);
-        helplineKnowledgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mHelplineKnowledge.setAdapter(helplineKnowledgeAdapter);
+        try { // Gender Spinner
+            String genderLanguage = "gender_" + sessionManager.getAppLanguage();
+            int gender = res.getIdentifier(genderLanguage, "array", getApplicationContext().getPackageName());
+            if (gender != 0) {
+                genderAdapter = ArrayAdapter.createFromResource(this,
+                        gender, R.layout.custom_spinner);
 
-        ArrayAdapter<CharSequence> phoneTypeAdapter = ArrayAdapter.createFromResource(this,
-                R.array.mobile_phone_type, R.layout.custom_spinner);
-        phoneTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mPhoneType.setAdapter(phoneTypeAdapter);
+            }
+            gender_spinner.setAdapter(genderAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //Gender Spinner End...
+
+
+        try { // current marital status Spinner
+            String currentmaritalLanguage = "marital_spinner_" + sessionManager.getAppLanguage();
+            int marital_status = res.getIdentifier(currentmaritalLanguage, "array", getApplicationContext().getPackageName());
+            if (marital_status != 0) {
+                marital_statusAdapter = ArrayAdapter.createFromResource(this,
+                        marital_status, R.layout.custom_spinner);
+
+            }
+            current_marital_spinner.setAdapter(marital_statusAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //marital status Spinner End...
+
+        try { // occupation Spinner
+            String occupationLanguage = "occupation_spinner_selection_" + sessionManager.getAppLanguage();
+            int occupation = res.getIdentifier(occupationLanguage, "array", getApplicationContext().getPackageName());
+            if (occupation != 0) {
+                occupation_spinner_1Adapter = ArrayAdapter.createFromResource(this,
+                        occupation, R.layout.custom_spinner);
+
+            }
+            occupation_spinner_1.setAdapter(occupation_spinner_1Adapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // occupation Spinner End...
+
+        try { // husband occupation Spinner
+            String husband_occupationLanguage = "husband_occupation_" + sessionManager.getAppLanguage();
+            int husband_occupation = res.getIdentifier(husband_occupationLanguage, "array", getApplicationContext().getPackageName());
+            if (husband_occupation != 0) {
+                husband_occupationAdapter = ArrayAdapter.createFromResource(this,
+                        husband_occupation, R.layout.custom_spinner);
+
+            }
+            husband_occupation_spinner.setAdapter(husband_occupationAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //husband occupation Spinner End...
+
+        try { // children Spinner
+            String childrenLanguage = "spinner_children_" + sessionManager.getAppLanguage();
+            int children = res.getIdentifier(childrenLanguage, "array", getApplicationContext().getPackageName());
+            if (children != 0) {
+                childrenAdapter = ArrayAdapter.createFromResource(this,
+                        children, R.layout.custom_spinner);
+
+            }
+            have_children_spinner.setAdapter(childrenAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //children Spinner End...
+
+       /* try { // no of children Spinner
+            String noofchildrenLanguage = "spinner_no_of_children_" + sessionManager.getAppLanguage();
+            int noofchildren = res.getIdentifier(noofchildrenLanguage, "array", getApplicationContext().getPackageName());
+            if (noofchildren != 0) {
+                no_childrenAdapter = ArrayAdapter.createFromResource(this,
+                        noofchildren, R.layout.custom_spinner);
+
+            }
+            no_of_children_spinner.setAdapter(no_childrenAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // no of children Spinner End...*/
+
+        try { // contact type Spinner
+            String contact_typeLanguage = "spinner_contact_type_" + sessionManager.getAppLanguage();
+            int contact_type = res.getIdentifier(contact_typeLanguage, "array", getApplicationContext().getPackageName());
+            if (contact_type != 0) {
+                contact_type_adapter = ArrayAdapter.createFromResource(this,
+                        contact_type, R.layout.custom_spinner);
+
+            }
+            contact_type_spinner.setAdapter(contact_type_adapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // no of children Spinner End...
+
+        try { // where did u get this no from Spinner
+            String no_fromLanguage = "spinner_where_did_u_" + sessionManager.getAppLanguage();
+            int no_from = res.getIdentifier(no_fromLanguage, "array", getApplicationContext().getPackageName());
+            if (no_from != 0) {
+                helpline_no_fromAdapter = ArrayAdapter.createFromResource(this,
+                        no_from, R.layout.custom_spinner);
+
+            }
+            helplineno_from_spinner.setAdapter(helpline_no_fromAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // no of children Spinner End...
+
+        try { // do you have job
+            String have_jobLanguage = "spinner_work_" + sessionManager.getAppLanguage();
+            int have_job = res.getIdentifier(have_jobLanguage, "array", getApplicationContext().getPackageName());
+            if (have_job != 0) {
+                job_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        have_job, R.layout.custom_spinner);
+
+            }
+            job_spinner.setAdapter(job_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // do you have job Spinner End...
+
+        try { // Describe location spinner
+            String describe_LocationLanguage = "spinner_describe_location_" + sessionManager.getAppLanguage();
+            int describe_Location = res.getIdentifier(describe_LocationLanguage, "array", getApplicationContext().getPackageName());
+            if (describe_Location != 0) {
+                describe_location_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        describe_Location, R.layout.custom_spinner);
+
+            }
+            describe_location_spinner.setAdapter(describe_location_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // Describe location Spinner End...
+
+        //start - domestic violence
+        try { // who refferred case spinner
+            String who_referredLanguage = "spinner_dv_referred_" + sessionManager.getAppLanguage();
+            int who_referred = res.getIdentifier(who_referredLanguage, "array", getApplicationContext().getPackageName());
+            if (who_referred != 0) {
+                who_refferred_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        who_referred, R.layout.custom_spinner);
+            }
+            who_refferred_spinner.setAdapter(who_refferred_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // who refferred Spinner End...
+
+        try { // am i speaking spinner
+            String amSpeakingLanguage = "spinner_dv_speaking_with_" + sessionManager.getAppLanguage();
+            int amSpeaking = res.getIdentifier(amSpeakingLanguage, "array", getApplicationContext().getPackageName());
+            if (amSpeaking != 0) {
+                am_i_speaking_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        amSpeaking, R.layout.custom_spinner);
+            }
+            am_i_speaking_spinner.setAdapter(am_i_speaking_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // am i speaking Spinner End...
+
+        try { // ever married spinner
+            String everMarriedLanguage = "spinner_dv_survivor_married_" + sessionManager.getAppLanguage();
+            int everMarried = res.getIdentifier(everMarriedLanguage, "array", getApplicationContext().getPackageName());
+            if (everMarried != 0) {
+                ever_married_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        everMarried, R.layout.custom_spinner);
+            }
+            ever_married_spinner.setAdapter(ever_married_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // ever married Spinner End...
+
+        try { // marriage type spinner
+            String typeMarriageLanguage = "spinner_marriage_type_" + sessionManager.getAppLanguage();
+            int typeMarriage = res.getIdentifier(typeMarriageLanguage, "array", getApplicationContext().getPackageName());
+            if (typeMarriage != 0) {
+                type_marriage_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        typeMarriage, R.layout.custom_spinner);
+            }
+            type_marriage_spinner.setAdapter(type_marriage_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // marriage type Spinner End...
+
+        try { // current address spinner
+            String currentAddressLanguage = "spinner_current_address_" + sessionManager.getAppLanguage();
+            int currentAddress = res.getIdentifier(currentAddressLanguage, "array", getApplicationContext().getPackageName());
+            if (currentAddress != 0) {
+                current_residing_address_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        currentAddress, R.layout.custom_spinner);
+            }
+            current_residing_address_spinner.setAdapter(current_residing_address_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // curent address Spinner End...
+
+        try { //  with whom living spinner
+            String whomLivingLanguage = "spinner_with_whom_living_" + sessionManager.getAppLanguage();
+            int whomLiving = res.getIdentifier(whomLivingLanguage, "array", getApplicationContext().getPackageName());
+            if (whomLiving != 0) {
+                with_whom_living_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        whomLiving, R.layout.custom_spinner);
+            }
+            with_whom_living_spinner.setAdapter(with_whom_living_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // with whom living Spinner End...
+
+        //end - domestic violence
+
+
+
+        //start - already present fields....
+        //1. Education
+        try { //Education spinner new....
+            String education_spinnerLanguage = "education_spinner_" + sessionManager.getAppLanguage();
+            int education_spinner_int = res.getIdentifier(education_spinnerLanguage, "array", getApplicationContext().getPackageName());
+            if (education_spinner_int != 0) {
+                education_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        education_spinner_int, R.layout.custom_spinner);
+
+            }
+            education_spinner.setAdapter(education_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //end of education spinner new ...
+
+        //2. Occupation
+        try { // occupation Spinner
+            String occupationSpinnerLanguage = "occupation_spinner_selection_" + sessionManager.getAppLanguage();
+            int occupationSpinner = res.getIdentifier(occupationSpinnerLanguage, "array", getApplicationContext().getPackageName());
+            if (occupationSpinner != 0) {
+                occupation_spinner_1Adapter = ArrayAdapter.createFromResource(this,
+                        occupationSpinner, R.layout.custom_spinner);
+
+            }
+            occupation_spinner_1.setAdapter(occupation_spinner_1Adapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } // occupation Spinner End...
+
+        //3. Caste
+        try { // caste Spinner
+            String casteSpinnerLanguage = "caste_selection_" + sessionManager.getAppLanguage();
+            int casteSpinner = res.getIdentifier(casteSpinnerLanguage, "array", getApplicationContext().getPackageName());
+            if (casteSpinner != 0) {
+                caste_spinnerAdapter = ArrayAdapter.createFromResource(this,
+                        casteSpinner, R.layout.custom_spinner);
+
+            }
+            caste_spinner.setAdapter(caste_spinnerAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        } //husband occupation Spinner End...
+
+
+
+
+
+
+
+        //end - already present fields....
+
+
+
+        try { //mobile_phone_type adapter setting...
+            String mCallerTypeLanguage = "caller_type_" + sessionManager.getAppLanguage();
+            int mCallerType = res.getIdentifier(mCallerTypeLanguage, "array", getApplicationContext().getPackageName());
+            if (mCallerType != 0) {
+                callerRelationAdapter = ArrayAdapter.createFromResource(this,
+                        mCallerType, R.layout.custom_spinner);
+
+            }
+            mCallerRelation.setAdapter(callerRelationAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        try { //mobile_phone_type adapter setting...
+            String mPhoneTypeLanguage = "mobile_phone_type_" + sessionManager.getAppLanguage();
+            int mMobilePhoneType = res.getIdentifier(mPhoneTypeLanguage, "array", getApplicationContext().getPackageName());
+            if (mMobilePhoneType != 0) {
+                phoneTypeAdapter = ArrayAdapter.createFromResource(this,
+                        mMobilePhoneType, R.layout.custom_spinner);
+
+            }
+            mPhoneType.setAdapter(phoneTypeAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
+        try { //helplineknowledge adapter setting...
+            String mHelpLineLanguage = "helpline_knowledge_" + sessionManager.getAppLanguage();
+            int helplineknowledge = res.getIdentifier(mHelpLineLanguage, "array", getApplicationContext().getPackageName());
+            if (helplineknowledge != 0) {
+                helplineKnowledgeAdapter = ArrayAdapter.createFromResource(this,
+                        helplineknowledge, R.layout.custom_spinner);
+
+            }
+            mHelplineKnowledge.setAdapter(helplineKnowledgeAdapter);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
 
 
         try { //Caste adapter setting...
@@ -608,6 +1033,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.education_values_missing, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+
         try { //Economic adapter setting...
             String economicLanguage = "economic_" + sessionManager.getAppLanguage();
             int economics = res.getIdentifier(economicLanguage, "array", getApplicationContext().getPackageName());
@@ -1017,7 +1443,18 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if (patient1.getGender().equals("M")) {
+            if(!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
+                framelayout_safe_abortion.setVisibility(View.VISIBLE);
+                framelayout_domestic_violence.setVisibility(View.GONE);
+                safe_abortion_radiobtn.setChecked(true);
+            }
+            else {
+                framelayout_domestic_violence.setVisibility(View.VISIBLE);
+                framelayout_safe_abortion.setVisibility(View.GONE);
+                violence_radiobtn.setChecked(true);
+            }
+
+            /*    if (patient1.getGender().equals("M")) {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
@@ -1027,29 +1464,291 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
                 Log.v(TAG, "yes");
-            }
+            }*/
 
         }
-        if (mGenderM.isChecked()) {
+      /*  if (mGenderM.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
-        }
+        }*/
+
         if (patientID_edit != null) {
-            // setting country according database
-            mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
-            if(helplineKnowledgeAdapter.getPosition(patient1.getCaste())==-1)
-            {
-                mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
-                helplineInfoOther.setText(patient1.getCaste());
+
+            //start - new fields Spinner
+            //gender edit
+            if (patient1.getGender().equals(getResources().getString(R.string.not_provided)))
+                gender_spinner.setSelection(0);
+            else {
+                String genderstring = patient1.getGender();
+                gender_spinner.setSelection(genderAdapter.getPosition(genderstring));
+                /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                } else {
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+                }*/
             }
-            else
-                mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
-            mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
-            mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
+
+            //education edit
+            if (patient1.getEducation_value().equals(getResources().getString(R.string.not_provided)))
+                education_spinner.setSelection(0);
+            else {
+                String educationstring = patient1.getEducation_value();
+                education_spinner.setSelection(education_spinnerAdapter.getPosition(educationstring));
+            }
+
+            //current marital status edit
+            if (patient1.getCurrent_marital_status().equals(getResources().getString(R.string.not_provided)))
+                current_marital_spinner.setSelection(0);
+            else {
+                String value = patient1.getCurrent_marital_status();
+                current_marital_spinner.setSelection(marital_statusAdapter.getPosition(value));
+            }
+
+            //occupation spinner edit
+            if (patient1.getOccupation_value().equals(getResources().getString(R.string.not_provided)))
+                occupation_spinner_1.setSelection(0);
+            else {
+                String value = patient1.getOccupation_value();
+                occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition(value));
+            }
+
+            //husband occupation edit
+            if (patient1.getHusband_occupation().equals(getResources().getString(R.string.not_provided)))
+                husband_occupation_spinner.setSelection(0);
+            else {
+                String value = patient1.getHusband_occupation();
+                husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition(value));
+            }
+
+            //children edit
+            if (patient1.getChildren().equals(getResources().getString(R.string.not_provided)))
+                have_children_spinner.setSelection(0);
+            else {
+                String value = patient1.getChildren();
+                have_children_spinner.setSelection(childrenAdapter.getPosition(value));
+
+                if(have_children_spinner.getSelectedItemPosition() == 1) {
+                    framelayout_no_children.setVisibility(View.VISIBLE);
+                }
+                else {
+                    framelayout_no_children.setVisibility(View.GONE);
+                    mNo_of_children.setText("");
+                }
+            }
+
+           /* //no of children edit
+            if (patient1.getNo_of_children().equals(getResources().getString(R.string.not_provided)))
+                no_of_children_spinner.setSelection(0);
+            else {
+                String value = patient1.getNo_of_children();
+                no_of_children_spinner.setSelection(no_childrenAdapter.getPosition(value));
+            }*/
+
+            //caste edit
+            if (patient1.getCaste_value().equals(getResources().getString(R.string.not_provided)))
+                caste_spinner.setSelection(0);
+            else {
+                String value = patient1.getCaste_value();
+                caste_spinner.setSelection(caste_spinnerAdapter.getPosition(value));
+            }
+
+            //contact type edit
+            if (patient1.getContact_type().equals(getResources().getString(R.string.not_provided)))
+                contact_type_spinner.setSelection(0);
+            else {
+                String value = patient1.getContact_type();
+                contact_type_spinner.setSelection(contact_type_adapter.getPosition(value));
+            }
+
+            //where helpline no form edit
+            if (patient1.getHelpline_no_from().equals(getResources().getString(R.string.not_provided)))
+                helplineno_from_spinner.setSelection(0);
+            else {
+                String value = patient1.getHelpline_no_from();
+                helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition(value));
+            }
+
+            //job edit
+            if (patient1.getJob().equals(getResources().getString(R.string.not_provided)))
+                job_spinner.setSelection(0);
+            else {
+                String value = patient1.getJob();
+                job_spinner.setSelection(job_spinnerAdapter.getPosition(value));
+            }
+
+
+            //describe location edit
+            if (patient1.getDescribe_location().equals(getResources().getString(R.string.not_provided)))
+                describe_location_spinner.setSelection(0);
+            else {
+                String value = patient1.getDescribe_location();
+                describe_location_spinner.setSelection(describe_location_spinnerAdapter.getPosition(value));
+            }
+
+            //referred case edit
+            if (patient1.getReferred_case().equals(getResources().getString(R.string.not_provided)))
+                who_refferred_spinner.setSelection(0);
+            else {
+                String value = patient1.getReferred_case();
+                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition(value));
+            }
+
+            // am i speaking edit
+            if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
+                am_i_speaking_spinner.setSelection(0);
+            else {
+                String value = patient1.getAmSpeaking();
+                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition(value));
+            }
+
+            // survivior ever married edit
+            if (patient1.getEver_married().equals(getResources().getString(R.string.not_provided)))
+                ever_married_spinner.setSelection(0);
+            else {
+                String value = patient1.getEver_married();
+                ever_married_spinner.setSelection(ever_married_spinnerAdapter.getPosition(value));
+            }
+
+            // type of marriage edit
+            if (patient1.getType_marriage().equals(getResources().getString(R.string.not_provided)))
+                type_marriage_spinner.setSelection(0);
+            else {
+                String value = patient1.getType_marriage();
+                type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));
+            }
+
+            // current address edit
+            if (patient1.getCurrent_address().equals(getResources().getString(R.string.not_provided)))
+                current_residing_address_spinner.setSelection(0);
+            else {
+                String value = patient1.getCurrent_address();
+                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition(value));
+            }
+
+            // with whom living edit
+            if (patient1.getWhom_living().equals(getResources().getString(R.string.not_provided)))
+                with_whom_living_spinner.setSelection(0);
+            else {
+                String value = patient1.getWhom_living();
+                with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition(value));
+            }
+            //end - new fields - Spinner
 
 
 
+            mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
+
+            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+                mHelplineKnowledge.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                } else {
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+                }
+            }
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
+                    helplineInfoOther.setText(patient1.getCaste());
+                }
+            } else {
+                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
+                    helplineInfoOther.setText(patient1.getCaste());
+                }
+
+            }
+
+            //start - other edittext
+            if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                gender_spinner.setSelection(genderAdapter.getPosition("Other"));
+                genderOther.setText(patient1.getGender());
+            }
+            if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
+                education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
+                educationOther.setText(patient1.getEducation_value());
+            }
+            if (marital_statusAdapter.getPosition(patient1.getCurrent_marital_status()) == -1) {
+                current_marital_spinner.setSelection(marital_statusAdapter.getPosition("Other"));
+                maritualstatusOther.setText(patient1.getCurrent_marital_status());
+            }
+            if (occupation_spinner_1Adapter.getPosition(patient1.getOccupation_value()) == -1) {
+                occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("Other"));
+                occupationOther.setText(patient1.getOccupation_value());
+            }
+            if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
+                husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("Other"));
+                husbandoccupationOther.setText(patient1.getHusband_occupation());
+            }
+            if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
+
+                if(casteOther.getText().toString().contains("Minority: ")) {
+                    caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Minority (other - please specify)"));
+                }
+                else {
+                    caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
+                }
+                casteOther.setText(patient1.getCaste_value());
+            }
+
+
+
+            if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
+                wherediduOther.setText(patient1.getHelpline_no_from());
+            }
+            if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
+                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
+                referredOther.setText(patient1.getReferred_case());
+            }
+            if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
+                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
+                amIspeakingOther.setText(patient1.getAmSpeaking());
+            }
+            if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
+                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
+                currentaddressOther.setText(patient1.getCurrent_address());
+            }
+            if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
+                with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
+                withwhomlivingOther.setText(patient1.getWhom_living());
+            }
+            //end - other edittext
+
+
+            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+                mPhoneType.setSelection(0);
+//            else
+//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
+                } else {
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
+                }
+            }
+//            if (callerRelationAdapter.getPosition(patient1.getSdw()) == -1)
+
+            if (patient1.getSdw() == null || patient1.getSdw().equals(getResources()
+                    .getString(R.string.not_provided)))
+                mCallerRelation.setSelection(0);
+//            else
+//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
+                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));
+                } else {
+                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
+                }
+            }
            /* if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else {
@@ -1299,29 +1998,317 @@ public class IdentificationActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         autocompleteState.setAdapter(adapter);
 
-        if(autocompleteState.getText().toString().equals(""))
-        {
+        if (autocompleteState.getText().toString().equals("")) {
             autocompleteDistrict.setText("");
             autocompleteDistrict.setEnabled(false);
         }
+
+        //start - other edittext
+        // no children then hide how many children...
+        have_children_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String childrenOption = parent.getItemAtPosition(position).toString();
+
+                if (childrenOption.equalsIgnoreCase("Yes")) {
+                    framelayout_no_children.setVisibility(View.VISIBLE);
+                } else {
+                    framelayout_no_children.setVisibility(View.GONE);
+                    mNo_of_children.setText("");
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // gender
+        gender_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedGenderOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedGenderOption.equalsIgnoreCase("Other")) {
+                        genderOther.setVisibility(View.VISIBLE);
+                        genderOther.setFocusable(true);
+                    } else {
+                        genderOther.setText("");
+                        genderOther.setError(null);
+                        genderOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //education
+         education_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedEducationOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedEducationOption.equalsIgnoreCase("Other")) {
+                        educationOther.setVisibility(View.VISIBLE);
+                        educationOther.setFocusable(true);
+                    } else {
+                        educationOther.setText("");
+                        educationOther.setError(null);
+                        educationOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //maritual status
+         current_marital_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedMaritualStatusOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedMaritualStatusOption.equalsIgnoreCase("Other")) {
+                        maritualstatusOther.setVisibility(View.VISIBLE);
+                        maritualstatusOther.setFocusable(true);
+                    } else {
+                        maritualstatusOther.setText("");
+                        maritualstatusOther.setError(null);
+                        maritualstatusOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //occupation
+        occupation_spinner_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedOccupationOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedOccupationOption.equalsIgnoreCase("Other")) {
+                    occupationOther.setVisibility(View.VISIBLE);
+                    occupationOther.setFocusable(true);
+                } else {
+                    occupationOther.setText("");
+                    occupationOther.setError(null);
+                    occupationOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //husband occupation
+         husband_occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedHusbandOccupationOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedHusbandOccupationOption.equalsIgnoreCase("Other")) {
+                        husbandoccupationOther.setVisibility(View.VISIBLE);
+                        husbandoccupationOther.setFocusable(true);
+                    } else {
+                        husbandoccupationOther.setText("");
+                        husbandoccupationOther.setError(null);
+                        husbandoccupationOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //caste
+         caste_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCasteOption = parent.getItemAtPosition(position).toString();
+
+                    if (selectedCasteOption.equalsIgnoreCase("Other") ||
+                            selectedCasteOption.equalsIgnoreCase("Minority (other - please specify)")) {
+                        casteOther.setVisibility(View.VISIBLE);
+                        casteOther.setFocusable(true);
+                    } else {
+                        casteOther.setText("");
+                        casteOther.setError(null);
+                        casteOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+         //where did u get from
+         helplineno_from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedWhere_did_u_Option = parent.getItemAtPosition(position).toString();
+
+                    if (selectedWhere_did_u_Option.equalsIgnoreCase("Other")) {
+                        wherediduOther.setVisibility(View.VISIBLE);
+                        wherediduOther.setFocusable(true);
+                    } else {
+                        wherediduOther.setText("");
+                        wherediduOther.setError(null);
+                        wherediduOther.setVisibility(View.GONE);
+                    }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // who referred case
+        who_refferred_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedcaseReferredByOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedcaseReferredByOption.equalsIgnoreCase("Other")) {
+                    referredOther.setVisibility(View.VISIBLE);
+                    referredOther.setFocusable(true);
+                } else {
+                    referredOther.setText("");
+                    referredOther.setError(null);
+                    referredOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // am i speaking
+        am_i_speaking_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedamispeakingOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedamispeakingOption.equalsIgnoreCase("Someone else (Ask who and enter)")) {
+                    amIspeakingOther.setVisibility(View.VISIBLE);
+                    amIspeakingOther.setFocusable(true);
+                } else {
+                    amIspeakingOther.setText("");
+                    amIspeakingOther.setError(null);
+                    amIspeakingOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // current address
+        current_residing_address_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedcurrentAddressOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedcurrentAddressOption.equalsIgnoreCase("Other")) {
+                    currentaddressOther.setVisibility(View.VISIBLE);
+                    currentaddressOther.setFocusable(true);
+                } else {
+                    currentaddressOther.setText("");
+                    currentaddressOther.setError(null);
+                    currentaddressOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        // with whom living
+        with_whom_living_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedwithwhomOption = parent.getItemAtPosition(position).toString();
+
+                if (selectedwithwhomOption.equalsIgnoreCase("Other")) {
+                    withwhomlivingOther.setVisibility(View.VISIBLE);
+                    withwhomlivingOther.setFocusable(true);
+                } else {
+                    withwhomlivingOther.setText("");
+                    withwhomlivingOther.setError(null);
+                    withwhomlivingOther.setVisibility(View.GONE);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //end - other edittext
 
         mHelplineKnowledge.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHelplineOption = parent.getItemAtPosition(position).toString();
-                if(selectedHelplineOption.equalsIgnoreCase("Other"))
-                {
-                    helplineInfoOther.setVisibility(View.VISIBLE);
-                    helplineInfoOther.setFocusable(true);
-                }
-                else
-                {
-                    helplineInfoOther.setText("");
-                    helplineInfoOther.setError(null);
+
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                        helplineInfoOther.setVisibility(View.VISIBLE);
+                        helplineInfoOther.setFocusable(true);
+                    } else {
+                        helplineInfoOther.setText("");
+                        helplineInfoOther.setError(null);
 //                    helplineInfoOther.setEnabled(false);
-                    helplineInfoOther.setVisibility(View.GONE);
+                        helplineInfoOther.setVisibility(View.GONE);
+                    }
+                } else {
+                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
+                        helplineInfoOther.setVisibility(View.VISIBLE);
+                        helplineInfoOther.setFocusable(true);
+                    } else {
+                        helplineInfoOther.setText("");
+                        helplineInfoOther.setError(null);
+//                    helplineInfoOther.setEnabled(false);
+                        helplineInfoOther.setVisibility(View.GONE);
+                    }
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -1353,23 +2340,20 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedState = parent.getItemAtPosition(position).toString();
-                if(selectedState.equalsIgnoreCase("")|| autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State"))
-                {
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
-                }
-                else
-                autocompleteDistrict.setEnabled(true);
+                } else
+                    autocompleteDistrict.setEnabled(true);
                 districtList.clear();
                 try {
                     JSONArray stateArray = json.getJSONArray("states");
-                    for(int i = 0; i< stateArray.length(); i++){
+                    for (int i = 0; i < stateArray.length(); i++) {
                         String state = stateArray.getJSONObject(i).getString("state");
-                        if(state.equalsIgnoreCase(selectedState))
-                        {
+                        if (state.equalsIgnoreCase(selectedState)) {
                             JSONObject districtObj = stateArray.getJSONObject(i);
                             JSONArray districtArray = districtObj.getJSONArray("districts");
-                            for(int j = 0; j< districtArray.length(); j++) {
+                            for (int j = 0; j < districtArray.length(); j++) {
                                 String district = districtArray.getJSONObject(j).getString("name");
                                 districtList.add(district);
                             }
@@ -1379,13 +2363,11 @@ public class IdentificationActivity extends AppCompatActivity {
                         }
 
                     }
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
-
 
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -1469,7 +2451,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //        });
 
 
-        mGenderF.setOnClickListener(new View.OnClickListener() {
+    /*    mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onRadioButtonClicked(v);
@@ -1481,7 +2463,21 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 onRadioButtonClicked(v);
             }
+        });*/
+
+        safe_abortion_radiobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
         });
+        violence_radiobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
 /*
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1596,6 +2592,41 @@ public class IdentificationActivity extends AppCompatActivity {
             mAgeDays = Integer.valueOf(ymdData[2]);
             mAge.setText(yrMoDays);
         }
+
+/*
+        mNo_of_children.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                {
+                    final MaterialAlertDialogBuilder numberDialog = new MaterialAlertDialogBuilder(context);
+                    numberDialog.setTitle(R.string.question_number_picker);
+                    final LayoutInflater inflater = getLayoutInflater();
+                    View convertView = inflater.inflate(R.layout.dialog_1_number_picker, null);
+                    numberDialog.setView(convertView);
+                    EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
+                    et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "20")});
+                    et_enter_value.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
+                    numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String value = et_enter_value.getText().toString();
+                            mNo_of_children.setText(value);
+                            dialog.dismiss();
+                        }
+                    });
+                    numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = numberDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                }
+            }
+        });
+*/
+
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1666,6 +2697,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                             mAgeDays + getString(R.string.days);
                     mAge.setText(ageString);
+                    mAge.setError(null);
 
 
                     Calendar calendar = Calendar.getInstance();
@@ -1717,8 +2749,254 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
 
-            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
+        });
+
+        //start - other edittext
+        //gender
+        genderOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(genderOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //education
+        educationOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(educationOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //maritual status
+        maritualstatusOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(maritualstatusOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        // occupation
+        occupationOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(occupationOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //husband occupation
+        husbandoccupationOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(husbandoccupationOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //caste
+        casteOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(casteOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //where did u
+        wherediduOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(wherediduOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //who case referred
+        referredOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(referredOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //am i speaking
+        amIspeakingOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(amIspeakingOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //current address
+        currentaddressOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(currentaddressOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        //with whom living
+        withwhomlivingOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(withwhomlivingOther.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+
+        //end - other edittext
+
+
+        helplineInfoOther.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (patientID_edit != null) {
+                        onPatientUpdateClicked(patient1);
+                    } else {
+                        onPatientCreateClicked();
+                    }
+
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(helplineInfoOther.getWindowToken(), 0);
+
+
+                    return true;
+                }
+                    return false;
+            }
         });
 
 /*
@@ -1802,6 +3080,28 @@ public class IdentificationActivity extends AppCompatActivity {
     public void onRadioButtonClicked(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
+            case R.id.identification_complaint_abortion:
+                if (checked)
+                   // mGender = "M";
+                    mComplaintSelection = "Abortion";
+                    framelayout_safe_abortion.setVisibility(View.VISIBLE);
+                    framelayout_domestic_violence.setVisibility(View.GONE);
+
+                break;
+            case R.id.identification_violence:
+                if (checked)
+                   // mGender = "F";
+                    mComplaintSelection = "Violence";
+                    framelayout_domestic_violence.setVisibility(View.VISIBLE);
+                    framelayout_safe_abortion.setVisibility(View.GONE);
+                break;
+        }
+    }
+
+/*
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch (view.getId()) {
             case R.id.identification_gender_male:
                 if (checked)
                     mGender = "M";
@@ -1814,6 +3114,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 break;
         }
     }
+*/
 
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
         @Override
@@ -1869,7 +3170,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patient1.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient1.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient1.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
-         //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
+                //       patient1.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
 //                patient1.setBank_account(idCursor.getString(idCursor.getColumnIndexOrThrow("Bank Account")));
 //                patient1.setMobile_type(idCursor.getString(idCursor.getColumnIndexOrThrow("Mobile Phone Type")));
 //                patient1.setWhatsapp_mobile(idCursor.getString(idCursor.getColumnIndexOrThrow("Use WhatsApp")));
@@ -1905,6 +3206,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient1.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Emergency Phone Number")) {
+                    patient1.setEmergency_phoneNo(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("Education Level")) {
                     patient1.setEducation_level(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -1914,6 +3218,88 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                //start - new fields - setting in getter setter
+                if (name.equalsIgnoreCase("Landmark")) {
+                    patient1.setLandmark(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Education")) {
+                    patient1.setEducation_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maritual Status")) {
+                    patient1.setCurrent_marital_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Income")) {
+                    patient1.setIncome(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("occupation")) {
+                    patient1.setOccupation_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Husband's Income")) {
+                    patient1.setHusband_income(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Husband Occupation")) {
+                    patient1.setHusband_occupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Children Status")) {
+                    patient1.setChildren(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("No. of Childrens")) {
+                    patient1.setNo_of_children(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Caste Value")) {
+                    patient1.setCaste_value(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Contact type")) {
+                    patient1.setContact_type(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Got Helpline Number From")) {
+                    patient1.setHelpline_no_from(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Work Status")) {
+                    patient1.setJob(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Describe location")) {
+                    patient1.setDescribe_location(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Case reffered by")) {
+                    patient1.setReferred_case(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Am speaking with survivor")) {
+                    patient1.setAmSpeaking(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone number for survivor")) {
+                    patient1.setGood_mobileno(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor maritual status")) {
+                    patient1.setEver_married(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Marriage age")) {
+                    patient1.setAge_marriage(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor marriage type")) {
+                    patient1.setType_marriage(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maternal home address")) {
+                    patient1.setMaternal_address(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Maternal phone number")) {
+                    patient1.setMaternal_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Address of in-laws")) {
+                    patient1.setAddress_inlaws(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Telephone number for husband")) {
+                    patient1.setHusband_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor currently address")) {
+                    patient1.setCurrent_address(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Survivor living with")) {
+                    patient1.setWhom_living(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                //end - new fields - setting in getter setter
+
               /*  if (name.equalsIgnoreCase("occupation")) {
                     patient1.setOccupation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2041,12 +3427,6 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        //check if privacy notice is checked
-        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
-            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
@@ -2080,6 +3460,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+        //emergency phone no field...
+        if (emergency_no_edittext.getText().toString().trim().length() > 0) {
+            if (emergency_no_edittext.getText().toString().trim().length() < 10) {
+                emergency_no_edittext.requestFocus();
+                emergency_no_edittext.setError(getString(R.string.enter_10_digits));
+                return;
+            }
+        }
+
 
         if (isMedicalAdvice
                 && !cbCovidConcern.isChecked()
@@ -2139,19 +3528,22 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && !countryText.getText().toString().equals("") &&
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                && (safe_abortion_radiobtn.isChecked() || violence_radiobtn.isChecked())) {
 
             Log.v(TAG, "Result");
 
         } else {
             if (mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
+                return;
             }
 
             if (mLastName.getText().toString().equals("")) {
                 mLastName.setError(getString(R.string.error_field_required));
+                return;
             }
 
 //            if (mDOB.getText().toString().equals("")) {
@@ -2160,25 +3552,255 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //1. Gender
+            if (gender_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) gender_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = gender_spinner;
+                cancel = true;
+                return;
+            }
+            if(genderOther.getVisibility() == View.VISIBLE && genderOther.getText().toString().equals("")) {
+                genderOther.setError(getString(R.string.error_field_required));
+                focusView = genderOther;
+                cancel = true;
+                return;
             }
 
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
+                return;
             }
+
+            //emergency phone no...
+           /* if (emergency_no_edittext.getText().toString().equals("")) {
+                emergency_no_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }*/
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
+                return;
             }
 
             if (autocompleteDistrict.getText().toString().equals("")) {
                 autocompleteDistrict.setError(getString(R.string.error_field_required));
+                return;
             }
+
+            //start
+            if (landmark_edittext.getText().toString().equals("")) {
+                landmark_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+            //2. education
+            if (education_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) education_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = education_spinner;
+                cancel = true;
+                return;
+            }
+
+            if(educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
+                educationOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+            //3. curent marital status
+            if (current_marital_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) current_marital_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = current_marital_spinner;
+                cancel = true;
+                return;
+            }
+
+            if (income_edittext.getText().toString().equals("")) {
+                income_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //4. occupation
+            if (occupation_spinner_1.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = occupation_spinner_1;
+                cancel = true;
+                return;
+            }
+            if(occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
+                occupationOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            if (husband_income_monthly.getText().toString().equals("")) {
+                husband_income_monthly.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //5. husband occupation
+            if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = husband_occupation_spinner;
+                cancel = true;
+                return;
+            }
+            if(husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
+                husbandoccupationOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //6. children
+            if (have_children_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) have_children_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = have_children_spinner;
+                cancel = true;
+                return;
+            }
+
+            if (mNo_of_children.getText().toString().equals("")) {
+                mNo_of_children.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+
+            //8. caste spinner
+            if (caste_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) caste_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = caste_spinner;
+                cancel = true;
+                return;
+            }
+            if(casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
+                casteOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+            //9. contact type
+            if (contact_type_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) contact_type_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = contact_type_spinner;
+                cancel = true;
+                return;
+            }
+            //10. where did u get helpline no from
+            if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = helplineno_from_spinner;
+                cancel = true;
+                return;
+            }
+
+            if (mCallerRelation.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) mCallerRelation.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = mCallerRelation;
+                cancel = true;
+                return;
+            }
+
+            if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = mHelplineKnowledge;
+                cancel = true;
+                return;
+            }
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                    if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                        helplineInfoOther.setError(getString(R.string.error_field_required));
+                        focusView = helplineInfoOther;
+                        cancel = true;
+                        return;
+                    } else {
+                        helplineInfoOther.setError(null);
+                    }
+                }
+            } else {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                    if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                        helplineInfoOther.setError(getString(R.string.error_field_required));
+                        focusView = helplineInfoOther;
+                        cancel = true;
+                        return;
+                    } else {
+                        helplineInfoOther.setError(null);
+                    }
+                }
+            }
+
+            if (mPhoneType.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) mPhoneType.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = mPhoneType;
+                cancel = true;
+                return;
+            }
+
+            if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage("Complaint is not selected");
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                return;
+            }
+
+            //start - complaint selection
+
+
+            //end
 
 
 //            if (mCity.getText().toString().equals("")) {
 //                mCity.setError(getString(R.string.error_field_required));
 //            }
 
+
+/*
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -2198,10 +3820,153 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
+*/
+
 
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
+        }
+
+        //add here complaints validation...
+        if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
+            //10. do you have work
+            if (job_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) job_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = job_spinner;
+                cancel = true;
+                return;
+            }
+
+            //10. describe location
+            if (describe_location_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) describe_location_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = describe_location_spinner;
+                cancel = true;
+                return;
+            }
+        }
+
+        if(framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
+            //10. who referred case
+            if (who_refferred_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) who_refferred_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = who_refferred_spinner;
+                cancel = true;
+                return;
+            }
+            if(referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
+                referredOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+
+            //10. am i speaking
+            if (am_i_speaking_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) am_i_speaking_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = am_i_speaking_spinner;
+                cancel = true;
+                return;
+            }
+            if(amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
+                amIspeakingOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            if (good_mobile_edittext.getText().toString().equals("")) {
+                good_mobile_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //10. ever married
+            if (ever_married_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) ever_married_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = ever_married_spinner;
+                cancel = true;
+                return;
+            }
+
+            if (age_marriage_edittext.getText().toString().equals("")) {
+                age_marriage_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //10. type of marriage
+            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = type_marriage_spinner;
+                cancel = true;
+                return;
+            }
+
+            if (maternal_address_edittext.getText().toString().equals("")) {
+                maternal_address_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (maternal_mobile_edittext.getText().toString().equals("")) {
+                maternal_mobile_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (address_inlaws_edittext.getText().toString().equals("")) {
+                address_inlaws_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+            if (husband_mobile_edittext.getText().toString().equals("")) {
+                husband_mobile_edittext.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+            //10. current residing address of survivor
+            if (current_residing_address_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) current_residing_address_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = current_residing_address_spinner;
+                cancel = true;
+                return;
+            }
+            if(currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
+                currentaddressOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+
+            //10. with whom living
+            if (with_whom_living_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) with_whom_living_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = with_whom_living_spinner;
+                cancel = true;
+                return;
+            }
+            if(withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
+                withwhomlivingOther.setError(getString(R.string.error_field_required));
+                return;
+            }
+
+
+            //end - complaint selection
         }
 
         if (mCountry.getSelectedItemPosition() == 0) {
@@ -2214,7 +3979,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+      /*  if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
@@ -2230,51 +3995,182 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             autocompleteDistrict.setError(null);
-        }
+        }*/
 
-        if (mCallerRelation.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mCallerRelation.getSelectedView();
+
+
+        //start - validation new spinner
+
+
+
+
+
+
+
+
+
+
+
+        //7. no of children
+      /*  if (no_of_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) no_of_children_spinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = mCallerRelation;
+            focusView = no_of_children_spinner;
             cancel = true;
             return;
-        }
+        }*/
 
-        if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mHelplineKnowledge.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = mHelplineKnowledge;
-            cancel = true;
-            return;
-        }
+        //end - validation new spinner
 
-        if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-        {
-            if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
-            {
-                helplineInfoOther.setError(getString(R.string.error_field_required));
-                focusView = helplineInfoOther;
+
+
+        //start - other editext
+        //gender
+        if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (genderOther.getText().toString().equalsIgnoreCase("")) {
+                genderOther.setError(getString(R.string.error_field_required));
+                focusView = genderOther;
                 cancel = true;
-            return;
-        } else {
-            helplineInfoOther.setError(null);
-        }
-        }
-
-        if (mPhoneType.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mPhoneType.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = mPhoneType;
-            cancel = true;
-            return;
+                return;
+            } else {
+                genderOther.setError(null);
+            }
         }
 
+        //education
+        if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (educationOther.getText().toString().equalsIgnoreCase("")) {
+                educationOther.setError(getString(R.string.error_field_required));
+                focusView = educationOther;
+                cancel = true;
+                return;
+            } else {
+                educationOther.setError(null);
+            }
+        }
+
+        //maritual status
+        if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (maritualstatusOther.getText().toString().equalsIgnoreCase("")) {
+                maritualstatusOther.setError(getString(R.string.error_field_required));
+                focusView = maritualstatusOther;
+                cancel = true;
+                return;
+            } else {
+                maritualstatusOther.setError(null);
+            }
+        }
+
+        // occupation
+        if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (occupationOther.getText().toString().equalsIgnoreCase("")) {
+                occupationOther.setError(getString(R.string.error_field_required));
+                focusView = occupationOther;
+                cancel = true;
+                return;
+            } else {
+                occupationOther.setError(null);
+            }
+        }
+
+        //husband occupation
+        if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
+                husbandoccupationOther.setError(getString(R.string.error_field_required));
+                focusView = husbandoccupationOther;
+                cancel = true;
+                return;
+            } else {
+                husbandoccupationOther.setError(null);
+            }
+        }
+
+        //caste
+        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+        caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+            if (casteOther.getText().toString().equalsIgnoreCase("")) {
+                casteOther.setError(getString(R.string.error_field_required));
+                focusView = casteOther;
+                cancel = true;
+                return;
+            } else {
+                casteOther.setError(null);
+            }
+        }
+
+        //where did u
+        if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (wherediduOther.getText().toString().equalsIgnoreCase("")) {
+                wherediduOther.setError(getString(R.string.error_field_required));
+                focusView = wherediduOther;
+                cancel = true;
+                return;
+            } else {
+                wherediduOther.setError(null);
+            }
+        }
+
+        //who referred case
+        if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (referredOther.getText().toString().equalsIgnoreCase("")) {
+                referredOther.setError(getString(R.string.error_field_required));
+                focusView = referredOther;
+                cancel = true;
+                return;
+            } else {
+                referredOther.setError(null);
+            }
+        }
+
+        //am i speaking
+        if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)")) {
+            if (amIspeakingOther.getText().toString().equalsIgnoreCase("")) {
+                amIspeakingOther.setError(getString(R.string.error_field_required));
+                focusView = amIspeakingOther;
+                cancel = true;
+                return;
+            } else {
+                amIspeakingOther.setError(null);
+            }
+        }
+
+        //current address
+        if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (currentaddressOther.getText().toString().equalsIgnoreCase("")) {
+                currentaddressOther.setError(getString(R.string.error_field_required));
+                focusView = currentaddressOther;
+                cancel = true;
+                return;
+            } else {
+                currentaddressOther.setError(null);
+            }
+        }
+
+        //with whom living
+        if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (withwhomlivingOther.getText().toString().equalsIgnoreCase("")) {
+                withwhomlivingOther.setError(getString(R.string.error_field_required));
+                focusView = withwhomlivingOther;
+                cancel = true;
+                return;
+            } else {
+                withwhomlivingOther.setError(null);
+            }
+        }
+
+        //end - other edittext
+
+
+
+
+        //check if privacy notice is checked
+        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         // TODO: Add validations for all Spinners here...
@@ -2470,11 +4366,91 @@ public class IdentificationActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
 
+            //start other editext
+            //gender
+            if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                genderInfo = genderOther.getText().toString();
+            else
+                genderInfo = StringUtils.getProvided(gender_spinner);
+
+            //education
+            if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                educationInfo = educationOther.getText().toString();
+            else
+                educationInfo = StringUtils.getProvided(education_spinner);
+
+            //maritual status
+            if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                maritualstatusInfo = maritualstatusOther.getText().toString();
+            else
+                maritualstatusInfo = StringUtils.getProvided(current_marital_spinner);
+
+            //husband occupation
+            if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                husbandoccupationInfo = husbandoccupationOther.getText().toString();
+            else
+                husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
+
+            // occupation
+            if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                occupationInfo = occupationOther.getText().toString();
+            else
+                occupationInfo = StringUtils.getProvided(occupation_spinner_1);
+
+            //caste
+            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+            caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+
+                if(caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                    casteInfo = "Minority: " + casteOther.getText().toString();
+                }
+                else {
+                    casteInfo = casteOther.getText().toString();
+                }
+
+            }
+            else {
+                casteInfo = StringUtils.getProvided(caste_spinner);
+            }
+
+            //where did u
+            if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                wherediduInfo = wherediduOther.getText().toString();
+            else
+                wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+
+            //case referred by
+            if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                referredbyInfo = referredOther.getText().toString();
+            else
+                referredbyInfo = StringUtils.getProvided(who_refferred_spinner);
+
+            //am i speaking
+            if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
+                amiSpeakingInfo = amIspeakingOther.getText().toString();
+            else
+                amiSpeakingInfo = StringUtils.getProvided(am_i_speaking_spinner);
+
+            //current address
+            if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                currentAddressInfo = currentaddressOther.getText().toString();
+            else
+                currentAddressInfo = StringUtils.getProvided(current_residing_address_spinner);
+
+            //with whom living
+            if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                withwhomLivingInfo = withwhomlivingOther.getText().toString();
+            else
+                withwhomLivingInfo = StringUtils.getProvided(with_whom_living_spinner);
+
+            //end other edittext
+
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setGender(StringUtils.getValue(genderInfo));
+
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
             Log.d("dob_array", "0: " + dob_array[0]);
@@ -2496,11 +4472,20 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
 
             }
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    helplineInfo = helplineInfoOther.getText().toString();
+                else
+                    helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
 
-            if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                helplineInfo = helplineInfoOther.getText().toString();
-            else
-                helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
+            } else {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    helplineInfo = helplineInfoOther.getText().toString();
+                else
+                    helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
+            }
+
+//                helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
 
             // patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
 
@@ -2510,6 +4495,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
+
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
 
@@ -2518,6 +4504,9 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(helplineInfo);
+//            patientAttributesDTO.setValue(StringUtils.getValue(mHelplineKnowledge.getSelectedItem().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mHelplineKnowledge));
+//            StringUtils.getProvided(mEconomicStatus)
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2527,12 +4516,258 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            //start - new fields EditText
+            //start - emergency phone no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Emergency Phone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //end - emergency phone no
+
+            //2. Landmark
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Landmark"));
+            patientAttributesDTO.setValue(StringUtils.getValue(landmark_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //3. Income
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Income"));
+            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. Husband Income
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband's Income"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - complaint selection
+            //4. Good mobile no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for survivor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(good_mobile_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. age at marriage
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Marriage age"));
+            patientAttributesDTO.setValue(StringUtils.getValue(age_marriage_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. maternal home address
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal home address"));
+            patientAttributesDTO.setValue(StringUtils.getValue(maternal_address_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. maternal mobile
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal phone number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(maternal_mobile_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. address of in-laws
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Address of in-laws"));
+            patientAttributesDTO.setValue(StringUtils.getValue(address_inlaws_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. husband mobile no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for husband"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husband_mobile_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //end - complaint selection
+
+            //end - new fields EditText
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mCallerRelation));
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - new fields spinner
+            //1. Gender
+           /* patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("gender"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(gender_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);*/
+
+            //1. education spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
+            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Marital Status
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
+            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Occupation Spinner_1
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. husband occupation
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. no of children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Caste Spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
+            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. contact type
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Contact type"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. helpline no from
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
+            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - complaint selection
+            //1. do you have job
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Work Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(job_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. describe location
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Describe location"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(describe_location_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. referred case
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Case reffered by"));
+            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. am i speaking
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Am speaking with survivor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. was ever married
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor maritual status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(ever_married_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. type of marriage survivor
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor marriage type"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(type_marriage_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. current address
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor currently address"));
+            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. with whom living
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor living with"));
+            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+
+            //end - complaint selection
+
+
+
+
+
+
+
+
+
+            //end - new fields spinner
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2545,7 +4780,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
+//            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2862,8 +5098,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //if from medical advise option then create medical advice visit first(automatically)
                     createMedicalAdviceVisit();
                     medicalboolean = true;
-                }
-                else {
+                } else {
                     SyncDAO syncDAO = new SyncDAO();
                     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                     boolean push = syncDAO.pushDataApi();
@@ -2938,6 +5173,15 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+        //emergency phone no
+        if (emergency_no_edittext.getText().toString().trim().length() > 0) {
+            if (emergency_no_edittext.getText().toString().trim().length() < 10) {
+                emergency_no_edittext.requestFocus();
+                emergency_no_edittext.setError("Enter 10 digits");
+                return;
+            }
+        }
+
 
         if (isMedicalAdvice
                 && !cbCovidConcern.isChecked()
@@ -2996,11 +5240,32 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 */
+        if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage("Complaint is not selected");
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            return;
+        }
+
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                && !countryText.getText().toString().equals("") &&
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                && (safe_abortion_radiobtn.isChecked() || violence_radiobtn.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -3021,9 +5286,19 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
+            if (mNo_of_children.getText().toString().equals("")) {
+                mNo_of_children.setError(getString(R.string.error_field_required));
+            }
+
             if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
+
+            //emergency no
+            if (emergency_no_edittext.getText().toString().equals("")) {
+                emergency_no_edittext.setError(getString(R.string.error_field_required));
+            }
+
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
@@ -3033,10 +5308,61 @@ public class IdentificationActivity extends AppCompatActivity {
                 autocompleteDistrict.setError(getString(R.string.error_field_required));
             }
 
+            //start
+            if (landmark_edittext.getText().toString().equals("")) {
+                landmark_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (income_edittext.getText().toString().equals("")) {
+                income_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (husband_income_monthly.getText().toString().equals("")) {
+                husband_income_monthly.setError(getString(R.string.error_field_required));
+            }
+            if (good_mobile_edittext.getText().toString().equals("")) {
+                good_mobile_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (age_marriage_edittext.getText().toString().equals("")) {
+                age_marriage_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (maternal_address_edittext.getText().toString().equals("")) {
+                maternal_address_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (maternal_mobile_edittext.getText().toString().equals("")) {
+                maternal_mobile_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (address_inlaws_edittext.getText().toString().equals("")) {
+                address_inlaws_edittext.setError(getString(R.string.error_field_required));
+            }
+            if (husband_mobile_edittext.getText().toString().equals("")) {
+                husband_mobile_edittext.setError(getString(R.string.error_field_required));
+            }
+            //end
+
 //            if (mCity.getText().toString().equals("")) {
 //                mCity.setError(getString(R.string.error_field_required));
 //            }
 
+            if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage("Complaint is not selected");
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                return;
+            }
+
+/*
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
@@ -3056,6 +5382,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
+*/
 
 
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
@@ -3091,7 +5418,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (mCallerRelation.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mCallerRelation.getSelectedView();
+            TextView errorText = (TextView) mCallerRelation.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3100,8 +5427,208 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        //start - validation new spinner
+        //1. Gender
+        if (gender_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) gender_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = gender_spinner;
+            cancel = true;
+            return;
+        }
+
+        //2. education
+        if (education_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) education_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = education_spinner;
+            cancel = true;
+            return;
+        }
+
+        //3. curent marital status
+        if (current_marital_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) current_marital_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = current_marital_spinner;
+            cancel = true;
+            return;
+        }
+
+        //4. occupation
+        if (occupation_spinner_1.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = occupation_spinner_1;
+            cancel = true;
+            return;
+        }
+        //5. husband occupation
+        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = husband_occupation_spinner;
+            cancel = true;
+            return;
+        }
+        //6. children
+        if (have_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) have_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = have_children_spinner;
+            cancel = true;
+            return;
+        }
+        //7. no of children
+/*
+        if (no_of_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) no_of_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = no_of_children_spinner;
+            cancel = true;
+            return;
+        }
+*/
+        //8. caste spinner
+        if (caste_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) caste_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = caste_spinner;
+            cancel = true;
+            return;
+        }
+        //9. contact type
+        if (contact_type_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) contact_type_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = contact_type_spinner;
+            cancel = true;
+            return;
+        }
+        //10. where did u
+        if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = helplineno_from_spinner;
+            cancel = true;
+            return;
+        }
+
+         //start - complaint selection
+        if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
+            //10. do you have work
+            if (job_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) job_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = job_spinner;
+                cancel = true;
+                return;
+            }
+
+            //10. describe location
+            if (describe_location_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) describe_location_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = describe_location_spinner;
+                cancel = true;
+                return;
+            }
+        }
+
+        if(framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
+            //10. who referred case
+            if (who_refferred_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) who_refferred_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = who_refferred_spinner;
+                cancel = true;
+                return;
+            }
+
+            //10. am i speaking
+            if (am_i_speaking_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) am_i_speaking_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = am_i_speaking_spinner;
+                cancel = true;
+                return;
+            }
+            //10. ever married
+            if (ever_married_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) ever_married_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = ever_married_spinner;
+                cancel = true;
+                return;
+            }
+            //10. type of marriage
+            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = type_marriage_spinner;
+                cancel = true;
+                return;
+            }
+            //10. current residing address of survivor
+            if (current_residing_address_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) current_residing_address_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = current_residing_address_spinner;
+                cancel = true;
+                return;
+            }
+            //10. with whom living
+            if (with_whom_living_spinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) with_whom_living_spinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = with_whom_living_spinner;
+                cancel = true;
+                return;
+            }
+            //end - complaint selection
+        }
+
+
+        //end - validation new spinner
+
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mHelplineKnowledge.getSelectedView();
+            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3109,25 +5636,168 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
-
-        if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-        {
-            if(helplineInfoOther.getText().toString().equalsIgnoreCase(""))
-            {
-                helplineInfoOther.setError(getString(R.string.error_field_required));
-                focusView = helplineInfoOther;
-                cancel = true;
-                return;
-            } else {
-                helplineInfoOther.setError(null);
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
+                }
+            }
+        } else {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
+                }
             }
         }
 
+        //start - other editext
+        //gender
+        if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (genderOther.getText().toString().equalsIgnoreCase("")) {
+                genderOther.setError(getString(R.string.error_field_required));
+                focusView = genderOther;
+                cancel = true;
+                return;
+            } else {
+                genderOther.setError(null);
+            }
+        }
 
+        //education
+        if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (educationOther.getText().toString().equalsIgnoreCase("")) {
+                educationOther.setError(getString(R.string.error_field_required));
+                focusView = educationOther;
+                cancel = true;
+                return;
+            } else {
+                educationOther.setError(null);
+            }
+        }
+
+        //maritual status
+        if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (maritualstatusOther.getText().toString().equalsIgnoreCase("")) {
+                maritualstatusOther.setError(getString(R.string.error_field_required));
+                focusView = maritualstatusOther;
+                cancel = true;
+                return;
+            } else {
+                maritualstatusOther.setError(null);
+            }
+        }
+
+        // occupation
+        if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (occupationOther.getText().toString().equalsIgnoreCase("")) {
+                occupationOther.setError(getString(R.string.error_field_required));
+                focusView = occupationOther;
+                cancel = true;
+                return;
+            } else {
+                occupationOther.setError(null);
+            }
+        }
+
+        //husband occupation
+        if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
+                husbandoccupationOther.setError(getString(R.string.error_field_required));
+                focusView = husbandoccupationOther;
+                cancel = true;
+                return;
+            } else {
+                husbandoccupationOther.setError(null);
+            }
+        }
+
+        //caste
+        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+            if (casteOther.getText().toString().equalsIgnoreCase("")) {
+                casteOther.setError(getString(R.string.error_field_required));
+                focusView = casteOther;
+                cancel = true;
+                return;
+            } else {
+                casteOther.setError(null);
+            }
+        }
+
+        //where did u
+        if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (wherediduOther.getText().toString().equalsIgnoreCase("")) {
+                wherediduOther.setError(getString(R.string.error_field_required));
+                focusView = wherediduOther;
+                cancel = true;
+                return;
+            } else {
+                wherediduOther.setError(null);
+            }
+        }
+
+        //who referred case
+        if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (referredOther.getText().toString().equalsIgnoreCase("")) {
+                referredOther.setError(getString(R.string.error_field_required));
+                focusView = referredOther;
+                cancel = true;
+                return;
+            } else {
+                referredOther.setError(null);
+            }
+        }
+
+        //am i speaking
+        if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)")) {
+            if (amIspeakingOther.getText().toString().equalsIgnoreCase("")) {
+                amIspeakingOther.setError(getString(R.string.error_field_required));
+                focusView = amIspeakingOther;
+                cancel = true;
+                return;
+            } else {
+                amIspeakingOther.setError(null);
+            }
+        }
+
+        //current address
+        if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (currentaddressOther.getText().toString().equalsIgnoreCase("")) {
+                currentaddressOther.setError(getString(R.string.error_field_required));
+                focusView = currentaddressOther;
+                cancel = true;
+                return;
+            } else {
+                currentaddressOther.setError(null);
+            }
+        }
+
+        //with whom living
+        if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (withwhomlivingOther.getText().toString().equalsIgnoreCase("")) {
+                withwhomlivingOther.setError(getString(R.string.error_field_required));
+                focusView = withwhomlivingOther;
+                cancel = true;
+                return;
+            } else {
+                withwhomlivingOther.setError(null);
+            }
+        }
+        //end - other edittext
 
 
         if (mPhoneType.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)mPhoneType.getSelectedView();
+            TextView errorText = (TextView) mPhoneType.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3333,11 +6003,91 @@ public class IdentificationActivity extends AppCompatActivity {
             if (mCurrentPhotoPath == null)
                 mCurrentPhotoPath = patientdto.getPatient_photo();
 
+            //start other editext
+            //who referred case
+            if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                referredbyInfo = referredOther.getText().toString();
+            else
+                referredbyInfo = StringUtils.getProvided(who_refferred_spinner);
+
+            //am i speaking
+            if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
+                amiSpeakingInfo = amIspeakingOther.getText().toString();
+            else
+                amiSpeakingInfo = StringUtils.getProvided(am_i_speaking_spinner);
+
+            //current address
+            if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                currentAddressInfo = currentaddressOther.getText().toString();
+            else
+                currentAddressInfo = StringUtils.getProvided(current_residing_address_spinner);
+
+            //with whom living
+            if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                withwhomLivingInfo = withwhomlivingOther.getText().toString();
+            else
+                withwhomLivingInfo = StringUtils.getProvided(with_whom_living_spinner);
+
+            //gender
+            if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                genderInfo = genderOther.getText().toString();
+            else
+                genderInfo = StringUtils.getProvided(gender_spinner);
+
+            //education
+            if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                educationInfo = educationOther.getText().toString();
+            else
+                educationInfo = StringUtils.getProvided(education_spinner);
+
+            //maritual status
+            if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                maritualstatusInfo = maritualstatusOther.getText().toString();
+            else
+                maritualstatusInfo = StringUtils.getProvided(current_marital_spinner);
+
+            //husband occupation
+            if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                husbandoccupationInfo = husbandoccupationOther.getText().toString();
+            else
+                husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
+
+            // occupation
+            if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                occupationInfo = occupationOther.getText().toString();
+            else
+                occupationInfo = StringUtils.getProvided(occupation_spinner_1);
+
+            //caste
+            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                    caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+
+                 if(caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                    casteInfo = "Minority: " + casteOther.getText().toString();
+                }
+                else {
+                    casteInfo = casteOther.getText().toString();
+                }
+
+            }
+            else {
+                casteInfo = StringUtils.getProvided(caste_spinner);
+            }
+
+            //where did u
+            if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                wherediduInfo = wherediduOther.getText().toString();
+            else
+                wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+
+            //end other edittext
+
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(mGender));
+           // patientdto.setGender(StringUtils.getValue(mGender));
+            patientdto.setGender(StringUtils.getValue(genderInfo));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -3360,11 +6110,20 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob_value)));
             }
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    helplineInfo = helplineInfoOther.getText().toString();
+                else
+                    helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
 
-            if(mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                helplineInfo = helplineInfoOther.getText().toString();
-            else
-                helplineInfo = mHelplineKnowledge.getSelectedItem().toString();
+            } else {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    helplineInfo = helplineInfoOther.getText().toString();
+                else
+                    helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
+            }
+
+
 
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
@@ -3381,6 +6140,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(helplineInfo);
+//            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mHelplineKnowledge));
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3390,11 +6151,99 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
+            //start - new fields EditText
+            //start - emergency phone no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Emergency Phone Number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //end - emergency phone no
+
+            //2. Landmark
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Landmark"));
+            patientAttributesDTO.setValue(StringUtils.getValue(landmark_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //3. Income
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Income"));
+            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. Husband Income
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband's Income"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - complaint selection
+            //4. Good mobile no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for survivor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(good_mobile_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. age at marriage
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Marriage age"));
+            patientAttributesDTO.setValue(StringUtils.getValue(age_marriage_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. maternal home address
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal home address"));
+            patientAttributesDTO.setValue(StringUtils.getValue(maternal_address_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. maternal mobile
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal phone number"));
+            patientAttributesDTO.setValue(StringUtils.getValue(maternal_mobile_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. address of in-laws
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Address of in-laws"));
+            patientAttributesDTO.setValue(StringUtils.getValue(address_inlaws_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //4. husband mobile no
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for husband"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husband_mobile_edittext.getText().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
+            //end - complaint selection
+
+            //end - new fields EditText
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mCallerRelation));
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
@@ -3408,8 +6257,168 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
+//            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - new fields spinner
+            //1. Gender
+           /* patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("gender"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(gender_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);*/
+
+            //1. education spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
+            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Marital Status
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
+            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Occupation Spinner_1
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. husband occupation
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
+            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. no of children
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. Caste Spinner
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
+            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. contact type
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Contact type"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. helpline no from
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
+            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //start - complaint selection
+            //1. do you have job
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Work Status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(job_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. describe location
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Describe location"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(describe_location_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. referred case
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Case reffered by"));
+            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. am i speaking
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Am speaking with survivor"));
+            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. was ever married
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor maritual status"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(ever_married_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. type of marriage survivor
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor marriage type"));
+            patientAttributesDTO.setValue(StringUtils.getProvided(type_marriage_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. current address
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor currently address"));
+            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            //1. with whom living
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor living with"));
+            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+
+            //end - complaint selection
+
+
+
+
+
+
+
+
+
+            //end - new fields spinner
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3702,8 +6711,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 i.putExtra("patientUuid", uuid);
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
                 i.putExtra("tag", "newPatient");
-                i.putExtra("intentTag1",intentTag1);
-                i.putExtra("intentTag2",intentTag2);
+                i.putExtra("intentTag1", intentTag1);
+                i.putExtra("intentTag2", intentTag2);
                 i.putExtra("hasPrescription", "false");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 getApplication().startActivity(i);
@@ -3723,11 +6732,8 @@ public class IdentificationActivity extends AppCompatActivity {
         today.set(Calendar.MILLISECOND, 0);
         Date todayDate = today.getTime();
         String endDate = startFormat.format(todayDate);
-        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
-
-
-
 
 
         //create & save visit visitUuid & encounter in the DB
@@ -3758,7 +6764,7 @@ public class IdentificationActivity extends AppCompatActivity {
         visitDTO.setUuid(visitUuid);
         visitDTO.setPatientuuid(this.uuid);
         visitDTO.setStartdate(startDate);
-       // visitDTO.setEnddate(endDate);
+        // visitDTO.setEnddate(endDate);
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
@@ -3815,8 +6821,8 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
             speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.DOCTOR_NOT_NEEDED);
-           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
-           // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+            // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -3828,7 +6834,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-           // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

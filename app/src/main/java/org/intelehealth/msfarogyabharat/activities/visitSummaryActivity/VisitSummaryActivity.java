@@ -138,7 +138,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private LinearLayout mLayout;
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
-    String speciality_selected = "";
+    String speciality_selected = "Doctor not needed";
 
     boolean uploaded = false;
     boolean downloaded = false;
@@ -643,7 +643,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayAdapter<String> stringArrayAdapter;
 
         if (items != null) {
-            items.add(0, "Select Specialization");
+//            items.add(0, "Select Specialization");
+            items.add(0, getResources().getString(R.string.select_specialization));
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -1297,7 +1298,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         textInput.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                String input = dialogEditText.getText().toString();
+                                input = applyBoldTag(input);
+                                complaint.setValue(input.replace("\n", "<br>"));
+//                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
                                     complaintText.setText(Html.fromHtml(complaint.getValue()));
                                     complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -4133,5 +4137,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    private String applyBoldTag(String input) {
+        String result = input;
+        if (input == null)
+            return null;
+        try {
+            if (result.contains("►") && result.contains(":")) {
+                result = result.replaceAll("►", "►<b>");
+                result = result.replaceAll(":", "</b>:");
+            } else {
+                result = String.format("<b>%s</b>", input);
+            }
+        } catch (Exception e) {
+            result = String.format("<b>%s</b>", input);
+        }
+        return result;
+    }
 
 }

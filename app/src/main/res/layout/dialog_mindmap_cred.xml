@@ -19,6 +19,8 @@
             android:maxLines="1"
             android:fontFamily="@font/lato_regular"
             android:textSize="14sp"
+            android:imeOptions="actionNext|flagNoExtractUi"
+
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,6 +39,7 @@
             android:textSize="14sp"
             android:inputType="textEmailAddress"
             android:maxLines="1"
+            android:imeOptions="actionDone|flagNoExtractUi"
             android:singleLine="true" />
 
 

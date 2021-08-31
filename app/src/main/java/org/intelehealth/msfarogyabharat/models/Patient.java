@@ -33,7 +33,251 @@ public class Patient {
     private String toilet_facility;
     private String structure_house;
     private String hectars_land;
-    private String emergency;
+
+    public String getEmergency_phoneNo() {
+        return emergency_phoneNo;
+    }
+
+    public void setEmergency_phoneNo(String emergency_phoneNo) {
+        this.emergency_phoneNo = emergency_phoneNo;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
+    public String getEducation_value() {
+        return education_value;
+    }
+
+    public void setEducation_value(String education_value) {
+        this.education_value = education_value;
+    }
+
+    public String getCurrent_marital_status() {
+        return current_marital_status;
+    }
+
+    public void setCurrent_marital_status(String current_marital_status) {
+        this.current_marital_status = current_marital_status;
+    }
+
+    public String getIncome() {
+        return income;
+    }
+
+    public void setIncome(String income) {
+        this.income = income;
+    }
+
+    public String getOccupation_value() {
+        return occupation_value;
+    }
+
+    public void setOccupation_value(String occupation_value) {
+        this.occupation_value = occupation_value;
+    }
+
+    public String getHusband_income() {
+        return husband_income;
+    }
+
+    public void setHusband_income(String husband_income) {
+        this.husband_income = husband_income;
+    }
+
+    public String getHusband_occupation() {
+        return husband_occupation;
+    }
+
+    public void setHusband_occupation(String husband_occupation) {
+        this.husband_occupation = husband_occupation;
+    }
+
+    public String getChildren() {
+        return children;
+    }
+
+    public void setChildren(String children) {
+        this.children = children;
+    }
+
+    public String getNo_of_children() {
+        return no_of_children;
+    }
+
+    public void setNo_of_children(String no_of_children) {
+        this.no_of_children = no_of_children;
+    }
+
+    public String getCaste_value() {
+        return caste_value;
+    }
+
+    public void setCaste_value(String caste_value) {
+        this.caste_value = caste_value;
+    }
+
+    public String getContact_type() {
+        return contact_type;
+    }
+
+    public void setContact_type(String contact_type) {
+        this.contact_type = contact_type;
+    }
+
+    public String getHelpline_no_from() {
+        return helpline_no_from;
+    }
+
+    public void setHelpline_no_from(String helpline_no_from) {
+        this.helpline_no_from = helpline_no_from;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getDescribe_location() {
+        return describe_location;
+    }
+
+    public void setDescribe_location(String describe_location) {
+        this.describe_location = describe_location;
+    }
+
+    public String getReferred_case() {
+        return referred_case;
+    }
+
+    public void setReferred_case(String referred_case) {
+        this.referred_case = referred_case;
+    }
+
+    public String getAmSpeaking() {
+        return amSpeaking;
+    }
+
+    public void setAmSpeaking(String amSpeaking) {
+        this.amSpeaking = amSpeaking;
+    }
+
+    public String getGood_mobileno() {
+        return good_mobileno;
+    }
+
+    public void setGood_mobileno(String good_mobileno) {
+        this.good_mobileno = good_mobileno;
+    }
+
+    public String getEver_married() {
+        return ever_married;
+    }
+
+    public void setEver_married(String ever_married) {
+        this.ever_married = ever_married;
+    }
+
+    public String getAge_marriage() {
+        return age_marriage;
+    }
+
+    public void setAge_marriage(String age_marriage) {
+        this.age_marriage = age_marriage;
+    }
+
+    public String getType_marriage() {
+        return type_marriage;
+    }
+
+    public void setType_marriage(String type_marriage) {
+        this.type_marriage = type_marriage;
+    }
+
+    public String getMaternal_address() {
+        return maternal_address;
+    }
+
+    public void setMaternal_address(String maternal_address) {
+        this.maternal_address = maternal_address;
+    }
+
+    public String getMaternal_mobile() {
+        return maternal_mobile;
+    }
+
+    public void setMaternal_mobile(String maternal_mobile) {
+        this.maternal_mobile = maternal_mobile;
+    }
+
+    public String getAddress_inlaws() {
+        return address_inlaws;
+    }
+
+    public void setAddress_inlaws(String address_inlaws) {
+        this.address_inlaws = address_inlaws;
+    }
+
+    public String getHusband_mobile() {
+        return husband_mobile;
+    }
+
+    public void setHusband_mobile(String husband_mobile) {
+        this.husband_mobile = husband_mobile;
+    }
+
+    public String getCurrent_address() {
+        return current_address;
+    }
+
+    public void setCurrent_address(String current_address) {
+        this.current_address = current_address;
+    }
+
+    public String getWhom_living() {
+        return whom_living;
+    }
+
+    public void setWhom_living(String whom_living) {
+        this.whom_living = whom_living;
+    }
+
+    private String emergency_phoneNo;
+    private String landmark;
+    private String education_value;
+    private String current_marital_status;
+    private String income;
+    private String occupation_value;
+    private String husband_income;
+    private String husband_occupation;
+    private String children;
+    private String no_of_children;
+    private String caste_value;
+    private String contact_type;
+    private String helpline_no_from;
+    private String job;
+    private String describe_location;
+    private String referred_case;
+    private String amSpeaking;
+    private String good_mobileno;
+    private String ever_married;
+    private String age_marriage;
+    private String type_marriage;
+    private String maternal_address;
+    private String maternal_mobile;
+    private String address_inlaws;
+    private String husband_mobile;
+    private String current_address;
+    private String whom_living;
+    private String complaintSelection;
 
     public String getUuid() {
         return uuid;
@@ -291,11 +535,12 @@ public class Patient {
         this.hectars_land = hectars_land;
     }
 
-    public String getEmergency() {
-        return emergency;
+    public String getComplaintSelection() {
+        return complaintSelection;
     }
 
-    public void setEmergency(String emergency) {
-        this.emergency = emergency;
+    public void setComplaintSelection(String complaintSelection) {
+        this.complaintSelection = complaintSelection;
     }
+
 }
