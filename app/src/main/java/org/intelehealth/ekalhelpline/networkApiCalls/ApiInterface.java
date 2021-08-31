@@ -8,7 +8,9 @@ import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Respons
 import org.intelehealth.ekalhelpline.models.Location;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.ekalhelpline.models.PrescriptionBody;
 import org.intelehealth.ekalhelpline.models.PrescriptionSms;
+import org.intelehealth.ekalhelpline.models.PrescriptionUrl;
 import org.intelehealth.ekalhelpline.models.Results;
 import org.intelehealth.ekalhelpline.models.SubscriptionData;
 import org.intelehealth.ekalhelpline.models.SubscriptionStatus;
@@ -140,5 +142,9 @@ public interface ApiInterface {
                                         @Field("type") String type,
                                         @Field("template_id") String template_id,
                                         @Field("body") String body);
+
+    @POST
+    Call<PrescriptionUrl> getPrescriptionShortUrl(@Url String url, @Body PrescriptionBody data);
+
 }
 

@@ -744,4 +744,8 @@
     <string name="preferred_language">Preferred Language</string>
     <string name="select_bucket">Select Bucket</string>
     <string name="preferred_time">Preferred Time</string>
+
+    //sms via api
+    <string name="sms_sent">SMS Sent!</string>
+    <string name="sms_failed">Sending SMS Failed! Please try again later.</string>
 </resources>
