@@ -1714,7 +1714,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void generateLink(String hash,String phoneNumber) {
-        String shortLink = "http://" + sessionManager.getServerUrl() +"/intelehealth/#/l/" + hash;
+        String shortLink = "https://" + sessionManager.getServerUrl() +"/intelehealth/#/l/" + hash;
         String body =  "Hello Sathi Helpline Project Dear "+ patientName +" Your prescription is available to download at " + shortLink +" - Powered by Intelehealth";
         sendPrescriptionSms(phoneNumber,body);
     }
