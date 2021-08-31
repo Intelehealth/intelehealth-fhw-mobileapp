@@ -952,7 +952,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
                                     .insertVisitAttributes(visitUuid, speciality_selected);
-                            speciality_attributes.insertVisitAttribute(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN, etAgentResolution.getText().toString());
+                            if (AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(speciality_selected)) {
+                                speciality_attributes.insertVisitAttribute(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN, etAgentResolution.getText().toString());
+                            }
                         }
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
