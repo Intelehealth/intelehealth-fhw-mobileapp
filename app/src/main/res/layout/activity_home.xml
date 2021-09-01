@@ -73,6 +73,7 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
                     app:cardCornerRadius="5dp"
+                    android:visibility="gone"
                     app:cardElevation="5dp"
                     app:cardUseCompatPadding="true">
 

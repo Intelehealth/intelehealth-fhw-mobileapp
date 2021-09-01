@@ -236,7 +236,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             if(intentTag2!= null && intentTag2.equalsIgnoreCase("findPatient") && intentTag1!=null && intentTag1.equalsIgnoreCase("editDetails"))
             {
-                newAdvice.setVisibility(View.VISIBLE);
+//                newAdvice.setVisibility(View.VISIBLE);
                 newAdvice.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -245,7 +245,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 });
 
             }
-
         }
 
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -427,7 +426,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //  LoadFamilyMembers();
         if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
-            newAdvice.setVisibility(View.VISIBLE);
+//            newAdvice.setVisibility(View.VISIBLE);
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

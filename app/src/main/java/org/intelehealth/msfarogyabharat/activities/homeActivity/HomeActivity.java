@@ -45,6 +45,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.msfarogyabharat.utilities.ConfigUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -229,9 +231,9 @@ public class HomeActivity extends AppCompatActivity {
         c1_doctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                IdentificationActivity.start(HomeActivity.this, false);
+//                IdentificationActivity.start(HomeActivity.this, false);
 
-              /*  //Loads the config file values and check for the boolean value of privacy key.
+                //Loads the config file values and check for the boolean value of privacy key.
                 ConfigUtils configUtils = new ConfigUtils(HomeActivity.this);
                 if (configUtils.privacy_notice()) {
                     Intent intent = new Intent(HomeActivity.this, PrivacyNotice_Activity.class);
@@ -242,7 +244,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(HomeActivity.this, IdentificationActivity.class);
                     startActivity(intent);
-                }*/
+                }
             }
         });
 

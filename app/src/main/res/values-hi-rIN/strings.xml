@@ -67,10 +67,10 @@
 
     //Home Screen (after login)
     <string name="title_home_screen">घर</string>
-    <string name="button_new_pt">नया पेशेंट</string>
-    <string name="button_find_pt">पेशेंट का पता लगाएं</string>
+    <string name="button_new_pt">नया केस</string>
+    <string name="button_find_pt">केस का पता लगाएं</string>
     <string name="button_diagnostic_tests">नैदानिक परीक्षण</string>
-    <string name="button_active_pt">आक्टिव पेशेंट</string>
+    <string name="button_active_pt">आक्टिव केस</string>
     <string name="menu_option_sync">सिंक डेटा</string>
     <string name="menu_option_settings">सेट्टिंग्स</string>
     <string name="menu_option_end_of_day">दिन के अंत मे</string>
@@ -78,7 +78,7 @@
 
 
     //Identification Screen
-    <string name="title_activity_identification">नया पेशेंट जोड़ें</string>
+    <string name="title_activity_identification">नया केस जोड़ें</string>
     <string name="identification_screen_prompt_first_name">पहला नाम *</string>
     <string name="identification_screen_prompt_middle_name">मध्य नाम</string>
     <string name="identification_screen_prompt_last_name">उपनाम *</string>
@@ -102,7 +102,7 @@
     <string name="identification_screen_prompt_postal_code" translatable="false">डाक कोड</string>
     <string name="identification_screen_prompt_relationship" translatable="false">बेटा / बेटी / की पत्नी</string>
     <string name="identification_screen_prompt_occupation" translatable="false">व्यवसाय</string>
-    <string name="identification_screen_snack_patient_created" translatable="false">पेशेंट बनाया! सर्वर पर अपलोड हो रहा है।</string>
+    <string name="identification_screen_snack_patient_created" translatable="false">केस बनाया! सर्वर पर अपलोड हो रहा है।</string>
     <string name="identification_screen_error_data_fields" translatable="false"> त्रुटि: डाटा मैदान सही ढंग से स्वरूपित नहीं कर रहे है</string>
     <string name="identification_screen_dialog_age" translatable="false">कृपया वर्ष में उम्र दर्ज करें</string>
     <string name="identification_screen_dialog_error_dob" translatable="false">आज के बाद जन्म की तारीख निर्धारित की जाती है</string>
@@ -122,8 +122,8 @@
     <string name="title_activity_active_patient">आक्टिव मामला</string>
 
     //Patient History Screen
-    <string name="title_activity_get_patient_history">पेशेंट का इतिहास</string>
-    <string name="title_activity_search_patient">पेशेंट को देखो</string>
+    <string name="title_activity_get_patient_history">केस का इतिहास</string>
+    <string name="title_activity_search_patient">केस को देखो</string>
 
     //Complaint Node Screen
     <string name="title_activity_complaint_select">शिकायतों का चयन करें</string>
@@ -224,8 +224,9 @@
     <string name="header_previous_visits">पिछली मामला</string>
     <string name="header_patient_history">चिकित्सक इतिहास</string>
     <string name="header_family_history">परिवार इतिहास</string>
-    <string name="string_no_hist">बीमारी का इतिहास नहीं है</string>
-    <string name="row_patient_id">मरीज की पहचान</string>
+<!--    <string name="string_no_hist">बीमारी का इतिहास नहीं है</string>-->
+    <string name="string_no_hist">केस का इतिहास नहीं है</string>
+    <string name="row_patient_id">केस की पहचान</string>
     <string name="row_dob">जन्म तिथि</string>
     <string name="row_age">उम्र</string>
     <string name="row_address">पता</string>
@@ -330,9 +331,9 @@
 
     <string name="visit">पर जाएँ</string>
     <string name="visit_update">अपडेट पर जाएँ</string>
-    <string name="patient">पेशेंट</string>
-    <string name="patient_update">पेशेंट अपडेट </string>
-    <string name="patient_images">पेशेंट प्रोफ़ाइल छवि</string>
+    <string name="patient">केस</string>
+    <string name="patient_update">केस अपडेट </string>
+    <string name="patient_images">प्रोफ़ाइल छवि</string>
     <string name="visit_images">छवियों पर जाएँ</string>
     <string name="prescription">पर्चे</string>
 
@@ -354,9 +355,9 @@
 
     <string name="text_medical_advice">नई चिकित्सा सलाह</string>
 <!--    <string name="text_new_visit">नए डॉक्टर का दौरा</string>-->
-    <string name="text_new_visit">नया डॉक्टर केस</string>
-    <string name="new_patient">नया पेशेंट</string>
-    <string name="find_patient">पेशेंट खोजे</string>
+    <string name="text_new_visit">नया केस</string>
+    <string name="new_patient">नया केस</string>
+    <string name="find_patient">केस खोजे</string>
     <string name="video_library">वीडियो लाइब्रेरी</string>
 
     <string name="error_no_sd">यह सुविधा केवल एसडी कार्ड वाले उपकरणों के लिए उपलब्ध है।</string>
@@ -368,8 +369,8 @@
     <string name="success_offline_login">ऑफलाइन लॉगिन सफल</string>
     <string name="invalidate_offline_login">ऑफ़लाइन लॉगिन अमान्य है|</string>
 
-    <string name="patient_upload_error">पेशेंट को अपलोड नहीं किया गया है</string>
-    <string name="patient_not_registered">पेशेंट पंजीकृत नहीं है</string>
+    <string name="patient_upload_error">केस को अपलोड नहीं किया गया है</string>
+    <string name="patient_not_registered">केस पंजीकृत नहीं है</string>
 
     <string name="action_sync_all">सिंक डेटा</string>
 
@@ -460,8 +461,9 @@
     <string name="lastsync">अंतिम सिंक</string>
     <string name="enter_password">अपना पासवर्ड डालें</string>
     <string name="enter_username">अपने उपयोगकर्ता नाम दर्ज करें</string>
-    <string name="patient_denies">पेशेंट इनकार करता है</string>
-    <string name="patient_reports">पेशेंट की रिपोर्ट</string>
+<!--    <string name="patient_denies">पेशेंट इनकार करता है</string>-->
+    <string name="patient_denies">इनकार करता है</string>
+    <string name="patient_reports">केस की रिपोर्ट</string>
 
     <string name="associated_symptoms">जुड़े लक्षण</string>
     <string name="enter_server_url">सर्वर URL दर्ज करें</string>
@@ -470,7 +472,7 @@
     <string name="years">वर्ष</string>
     <string name="months">महीने</string>
     <string name="please_wait_till_sync_is_completed">कृपया सिंक पूरी होने तक प्रतीक्षा करें</string>
-    <string name="patient_name">पेशेंट का नाम</string>
+    <string name="patient_name">नाम</string>
     <string name="son_daughter_wife_of">बेटा / बेटी / की पत्नी</string>
     <string name="occupation">व्यवसाय</string>
     <string name="economic_status">आर्थिक स्थिति</string>
@@ -530,7 +532,8 @@
     <string name="visit_ended_notif">मामला समाप्त हो चुकी है</string>
 <!--    <string name="visit_ended_notif">यात्रा समाप्त हो चुकी है</string>-->
     <string name="this_question_only_one_answer">इस सवाल का केवल एक ही जवाब है</string>
-    <string name="uploading_to_doctor_notif">चिकित्सक को भेज दिया</string>
+<!--    <string name="uploading_to_doctor_notif">चिकित्सक को भेज दिया</string>-->
+    <string name="uploading_to_doctor_notif">भेज दिया</string>
     <string name="visit_data_upload">डेटा अपलोड पर जाएँ</string>
     <string name="uploading_visit_data_notif">मामला डेटा अपलोड करें</string>
 <!--    <string name="uploading_visit_data_notif">यात्रा डेटा अपलोड करें</string>-->
@@ -627,15 +630,16 @@
     <string name="current_time">वर्तमान समय</string>
     <string name="temperature_C">"तापमान (सी): "</string>
     <string name="temperature_F">"तापमान (एफ): "</string>
-    <string name="no_history_family_found">परिवार में बीमारी का कोई इतिहास नहीं दिया गया है।</string>
-    <string name="no_history_patient_illness_found">पेशेंट की बीमारी का कोई इतिहास प्रदान नहीं किया गया।</string>
+    <string name="no_history_family_found">परिवार में केस का कोई इतिहास नहीं दिया गया है।</string>
+    <string name="no_history_patient_illness_found">केस का कोई इतिहास प्रदान नहीं किया गया।</string>
+<!--    <string name="no_history_patient_illness_found">पेशेंट की बीमारी का कोई इतिहास प्रदान नहीं किया गया।</string>-->
     <string name="dr_registration_no">पंजीकरण क्रमांक: </string>
     <string name="dr_phone_number">फ़ोन नंबर: </string>
     <string name="dr_email">ईमेल:  </string>
     <string name="_visit_summary"> सारांश पर जाएँ</string>
-    <string name="patient_id_">पेशेंट आईडी:</string>
-    <string name="patient_name_title">पेशेंट का नाम: </string>
-    <string name="patient_DOB">पेशेंट जन्मतिथि:</string>
+    <string name="patient_id_">केस आईडी:</string>
+    <string name="patient_name_title">केस का नाम: </string>
+    <string name="patient_DOB">जन्मतिथि:</string>
     <string name="error_non_decimal_no_added">त्रुटि: गैर-दशमलव संख्या दर्ज की गई।</string>
     <string name="download_protocols">प्रोटोकॉल डाउनलोड हो रहा हैं</string>
     <string name="mindmap_internect_connection">माइंडमैप डाउनलोड करने के लिए आपको इंटरनेट कनेक्टिविटी की आवश्यकता है, कृपया अपने इंटरनेट को चालू करें</string>
@@ -647,7 +651,7 @@
     <string name="share">साझा करें</string>
     <string name="please_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
     <string name="download_prescription_first_before_sharing">साझा करने से पहले पहले पर्चे डाउनलोड करें</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*मैं (कार्यकर्ता) इस बात की पुष्टि करती हूं कि मैंने पेशेंट को गोपनीयता नोटिस और सहमति पढ़ दी है।</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*मैं (कार्यकर्ता) इस बात की पुष्टि करती हूं कि मैंने केस को गोपनीयता नोटिस और सहमति पढ़ दी है।</string>
     <string name="enter_10_digits">10 अंक दर्ज करें</string>
     <string name="please_read_out_privacy_consent_first">कृपया पहले गोपनीयता सहमति पढ़ें।</string>
     <string name="view_print">देखें / प्रिंट करें</string>
@@ -722,8 +726,8 @@
     <string name="text_advice_created">चिकित्सा सलाह सफलतापूर्वक पंजीकृत हो गई है</string>
     <string name="medical_advice">चिकित्सा सलाह</string>
 
-    <string name="calling_patient">कॉलिंग पेशेंट...</string>
-    <string name="error_calling_patient">रोगी को कॉल करने में त्रुटि, कृपया कुछ समय बाद प्रयास करें</string>
+    <string name="calling_patient">कॉलिंग...</string>
+    <string name="error_calling_patient">कॉल करने में त्रुटि, कृपया कुछ समय बाद प्रयास करें</string>
     <string name="and_i_be_assisting_you">" और मैं आपकी सहायता करूंगा।"</string>
     <string name="loading_more">और लोड हो रहा है...</string>
 

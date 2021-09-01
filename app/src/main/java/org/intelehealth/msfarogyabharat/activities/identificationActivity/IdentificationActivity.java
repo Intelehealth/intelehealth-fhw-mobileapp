@@ -3578,10 +3578,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //emergency phone no...
-           /* if (emergency_no_edittext.getText().toString().equals("")) {
+            if (emergency_no_edittext.getText().toString().equals("")) {
                 emergency_no_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }*/
+            }
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
