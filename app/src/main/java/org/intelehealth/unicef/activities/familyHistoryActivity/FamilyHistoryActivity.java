@@ -82,8 +82,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     private float float_ageYear_Month;
 
     ArrayList<String> physicalExams;
-    //String mFileName = "famHist.json";
-    String mFileName = "Family History.json";
+    String mFileName = "famHist.json";
     int lastExpandedPosition = -1;
 
     Node familyHistoryMap;
@@ -346,6 +345,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = node.generateLanguage();
+                    //String toInsert = node.getText() + " : " + familyString;
                     String toInsert = node.findDisplay() + " : " + familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");

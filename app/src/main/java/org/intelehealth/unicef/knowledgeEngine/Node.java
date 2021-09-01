@@ -423,19 +423,20 @@ public class Node implements Serializable {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
 //        String locale = Locale.getDefault().getLanguage();
-        String locale = sessionManager.getCurrentLang();
-        Log.i(TAG, "findDisplay: eng");
+        String locale = sessionManager.getAppLanguage();
+        Log.i(TAG, "findDisplay: locale - "+locale);
 
         switch (locale) {
             case "en": {
-                //Log.i(TAG, "findDisplay: eng");
-                if (display == null || display.isEmpty()) {
+                Log.i(TAG, "findDisplay: eng");
+               /* if (display == null || display.isEmpty()) {
                     //Log.i(TAG, "findDisplay: eng txt");
                     return text;
                 } else {
                     //Log.i(TAG, "findDisplay: eng dis");
                     return display.equals("%") ? text : display;
-                }
+                }*/
+                return text;
             }
             case "or": {
                 //Log.i(TAG, "findDisplay: ori");
@@ -474,7 +475,7 @@ public class Node implements Serializable {
                     Log.i(TAG, "findDisplay: cb ");
                     return display_russian;
                 } else {
-                    if (display == null || display.isEmpty() || display.equals("%")) {
+                    if (display == null || display.isEmpty()) {
                         Log.i(TAG, "findDisplay: ru txt");
                         return text;
                     } else {
@@ -682,7 +683,7 @@ public class Node implements Serializable {
 
                             }
                         } else {
-                            raw = raw + (bullet + " " + node_opt.findDisplay() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                         }
 
                     } else {
@@ -692,7 +693,7 @@ public class Node implements Serializable {
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
                                 raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
                             } else {
-                                raw = raw + (bullet + " " + node_opt.findDisplay() + " - " + node_opt.formLanguage()) + next_line;
+                                raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
                             }
                         }
                     }

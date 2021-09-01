@@ -82,8 +82,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
 
-    //String mFileName = "patHist.json";
-    String mFileName = "Patient History.json";
+    String mFileName = "patHist.json";
     String image_Prefix = "MH";
     String imageDir = "Medical History";
     String imageName;
