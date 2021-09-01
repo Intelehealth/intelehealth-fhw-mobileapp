@@ -166,7 +166,6 @@ public class SetupActivity extends AppCompatActivity {
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
-
         mLoginButton = findViewById(R.id.setup_submit_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,6 +232,33 @@ public class SetupActivity extends AppCompatActivity {
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
+        if(!mUrlField.getText().toString().trim().isEmpty() ||
+                !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
+
+            isLocationFetched = false;
+            mEmailView.setError(null);
+
+            LocationArrayAdapter adapter = new LocationArrayAdapter
+                    (SetupActivity.this, new ArrayList<String>());
+            spinner_state.setAdapter(adapter);
+
+            if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                    String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                    base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                    if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+//                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                        getLocationFromServer(BASE_URL,1);
+                    else
+                        Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }
+        else {
+
+        }
+
         mUrlField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -269,7 +295,7 @@ public class SetupActivity extends AppCompatActivity {
                             String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
-                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                                value = getLocationFromServer(BASE_URL,0); //state wise locations...
                             else
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
                         }
@@ -549,9 +575,10 @@ public class SetupActivity extends AppCompatActivity {
             list_state.add("Select Location");
             spinner_state.setEnabled(false);
             spinner_state.setAlpha(0.4F);
+            int position = list_state.indexOf("Telemedicine Clinic");
             LocationArrayAdapter adapter_state = new LocationArrayAdapter(SetupActivity.this, list_state);
             spinner_state.setAdapter(adapter_state);
-
+            spinner_state.setSelection(position);
            /* List<String> list_district = new ArrayList<>();
             list_district.add("Select District");
             spinner_district.setEnabled(false);
@@ -894,7 +921,8 @@ public class SetupActivity extends AppCompatActivity {
      *
      * @param url string of url.
      */
-    private boolean getLocationFromServer(String url) {
+    private boolean getLocationFromServer(String url, int intentValue) {
+        if(intentValue != 1)
         customProgressDialog.show();
         ApiClient.changeApiBaseUrl(url);
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -915,10 +943,11 @@ public class SetupActivity extends AppCompatActivity {
                                 List<String> state_locations = getLocation(state.getResults());
                                 LocationArrayAdapter locationArrayAdapter =
                                         new LocationArrayAdapter(SetupActivity.this, state_locations);
-
+                                int position = state_locations.indexOf("Telemedicine Clinic");
                                 spinner_state.setEnabled(true);
                                 spinner_state.setAlpha(1);
                                 spinner_state.setAdapter(locationArrayAdapter);
+                                spinner_state.setSelection(position);
                                 isLocationFetched = true;
 
                                 hashMap1 = new HashMap<>();

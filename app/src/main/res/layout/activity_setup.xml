@@ -81,6 +81,7 @@
                                     android:textSize="14sp"
                                     android:fontFamily="@font/lato_regular"
                                     android:inputType="textUri"
+                                    android:text="hstraining.uninhibited.org.in"
                                     android:focusable="true"
                                     android:focusableInTouchMode="true"/>
                             </com.google.android.material.textfield.TextInputLayout>
