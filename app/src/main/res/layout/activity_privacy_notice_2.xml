@@ -99,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient"
                 android:layout_marginStart="10dp"
+                android:gravity="top"
                 android:layout_marginBottom="5dp"
                 />
 

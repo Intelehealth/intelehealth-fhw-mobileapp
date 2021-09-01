@@ -163,7 +163,7 @@
     <string name="table_spo">SpO2 (%) ऑक्सीजन </string>
 
     //Patient Search Screen
-    <string name="search_hint">नाम द्वारा मरीज की खोज</string>
+    <string name="search_hint">नाम द्वारा मामले की खोज</string>
     <string name="action_search">खोज</string>
     <string name="alert_none_found">कृपया प्रोयोक्ता नाम और पासवर्ड दर्ज करे</string>
 
@@ -201,7 +201,7 @@
     <string name="visit_summary_button_upload">अपलोड</string>
     <string name="name_button_download"> बटन डाउनलोड</string>
     <string name="visit_summary_follow_up_date">तारीख का पालन करे</string>
-    <string name="visit_summary_follow_up_reminder">कृप्या मरीज को उसके तारीख याद दिलाये:</string>
+    <string name="visit_summary_follow_up_reminder">कृप्या मामले को उसके तारीख याद दिलाये:</string>
 <!--    <string name="visit_summary_upload_reminder">कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>-->
     <string name="visit_summary_upload_reminder">कृपया मामला समाप्त करने का प्रयास करने से पहले पहले अपलोड करें!</string>
 
@@ -214,9 +214,9 @@
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail">मरीज की जानकारी</string>
-    <string name="button_history">मरीज का इतिहास</string>
-    <string name="title_activity_patient_detail">मरीज का विस्तार</string>
+    <string name="header_patient_detail">मामले की जानकारी</string>
+    <string name="button_history">मामले का इतिहास</string>
+    <string name="title_activity_patient_detail">मामले का विस्तार</string>
     <string name="header_medical_history">इतिहास</string>
     <string name="button_new_visit">नया मामला शुरु करो</string>
 <!--    <string name="button_new_visit">नया यात्रा शुरु करो</string>-->
@@ -452,7 +452,7 @@
     <string name="title_activity_visit_summary">मामला सारांश क्रियाकलाप</string>
 <!--    <string name="title_activity_visit_summary">यात्रा सारांश क्रियाकलाप</string>-->
     <string name="title_activity_past_medical_history">अतीत चिकित्सक  इतिहास क्रियाकलाप</string>
-    <string name="title_activity_patient_survey">मरीज सर्वे क्रियाकलाप</string>
+    <string name="title_activity_patient_survey">मामले सर्वे क्रियाकलाप</string>
 
     <!--Privacy Notice Activity-->
     <string name="privacy_toast">कृपया एक विकल्प चुनें</string>
@@ -520,11 +520,11 @@
     <string name="sure_to_exit">क्या आप निसंदेह बाहर निकलना चाहते है?</string>
     <string name="sure_to_logout">क्या आप लॉग आउट करना चाहते हैं?</string>
     <string name="lastsync_normal">आखिरी सिंक</string>
-    <string name="update_patient_identification">मरीज डालना</string>
+    <string name="update_patient_identification">मामला डालना</string>
     <string name="are_you_want_go_back">क्या आप वाकई वापस जाना चाहते हैं?</string>
     <string name="error">भूल</string>
-    <string name="patient_data_upload">मरीज डेटा अपलोड</string>
-    <string name="patient_image_download_notifi">मरीज छवी डाउनलोड</string>
+    <string name="patient_data_upload">मामला डेटा अपलोड</string>
+    <string name="patient_image_download_notifi">मामला छवी डाउनलोड</string>
     <string name="image_download_complete_notifi">छवी डाउनलोड पूरा हुआ</string>
     <string name="no_prior_visits">कोई पूर्वा भ्रमण नहीं</string>
     <string name="end_visit_notif">मामला समाप्त</string>
@@ -543,11 +543,11 @@
     <string name="upload_completed">अपलोड पूरा हुआ</string>
     <string name="check_your_connectivity">अपने कनेक्टिविटी की जाँच करें</string>
     <string name="download_from_doctor">चिकित्सक से डाउनलोड करें</string>
-    <string name="prescription_downloaded">पर्चे डाउनलोड हो गये</string>
-    <string name="downloading_prescription">पर्चे डाउनलोड हो रहे है</string>
-    <string name="visit_data_failed">मामला डेटा असफल रहा</string>
+    <string name="prescription_downloaded">मामले का विवरण डाउनलोड किया गया</string>
+    <string name="downloading_prescription">मामला डाउनलोड हो रहे है</string>
+    <string name="visit_data_failed">मामले का विवरण असफल रहा</string>
 <!--    <string name="visit_data_failed">यात्रा डेटा असफल रहा</string>-->
-    <string name="patient_data_failed">मरीज डेटा असफल</string>
+    <string name="patient_data_failed">मामला डेटा असफल</string>
     <string name="privacy_notice_title">गोपनीयता सुचना</string>
     <string name="no_data_active_patients">इस स्वस्थ्य कार्यकर्ता के नाम पर कोई रोगी रिकॉर्ड नहीं ह </string>
     <string name="syncing_visitDialog">सिंकिंग</string>
@@ -576,12 +576,15 @@
     <string name="visitID">मामला पहचान </string>
 
     <string name="end_visit_msg">क्या आप वाकई मामला को समाप्त करना चाहते हैं?</string>
-    <string name="prescription_not_downloaded_check_internet">प्रिस्क्रिप्शन डाउनलोड नहीं किया गया है, इंटरनेट कनेक्शन की जांच करें</string>
-    <string name="privacy_reject_toast">आप सहमति के बिना एक मरीज को पंजीकृत नहीं कर सकते</string>
+    <string name="prescription_not_downloaded_check_internet">मामले का विवरण डाउनलोड नहीं किया गया है, इंटरनेट कनेक्शन की जांच करें</string>
+    <string name="privacy_reject_toast">आप सहमति के बिना एक मामले को पंजीकृत नहीं कर सकते</string>
     <string name="not_answered">जवाब नहीं दिया</string>
     <string name="new_update_available">नया अपडेट उपस्थित</string>
     <string name="update_app_note">नया संस्करण नयी सविधाओं से उपलब्ध है कृपया एप्लीकेशन अपडेट करें</string>
     <string name="update">अपडेट करें</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"
+नमस्ते, इंटेलहेल्थ का उपयोग करने के लिए धन्यवाद। अपना केस विवरण डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
+    <string name="and_enter_your_patient_id">" and enter your Case ID - "</string>
 
 
     <!--New Ayu Related Changes-->
@@ -615,7 +618,7 @@
     <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है|</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
-    <string name="intelehealth_a_telemedicine_platform">विकल्प-हेल्पलाइन एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_a_telemedicine_platform">हेल्पलाइन एक डेटा कैप्चरिंग एप्लिकेशन है जो परामर्शदाताओं को यौन प्रजनन स्वास्थ्य और घरेलू हिंसा के संबंध में मार्गदर्शन प्राप्त करने वाली महिलाओं का समर्थन करने की अनुमति देती है।</string>
     <string name="intelehealth_name">विकल्प-हेल्पलाइन</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
@@ -645,12 +648,12 @@
     <string name="mindmap_internect_connection">माइंडमैप डाउनलोड करने के लिए आपको इंटरनेट कनेक्टिविटी की आवश्यकता है, कृपया अपने इंटरनेट को चालू करें</string>
     <string name="days">दिन</string>
     <string name="contact">संपर्क करें</string>
-    <string name="has_a_new_prescription">एक नया पर्ची है</string>
-    <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से पर्चे पीडीएफ का चयन करें - Internal storage/विकल्प-हेल्पलाइन_PDF</string>
-    <string name="enter_mobile_number_to_share_prescription">उस मोबाइल नंबर को दर्ज करें जिसमें आप प्रिस्क्रिप्षन (डॉक्टर की पर्ची) को साझा करना चाहते हैं।</string>
+    <string name="has_a_new_prescription">एक नया मामले का विवरण है</string>
+    <string name="whatsapp_presc_toast">फ़ाइल एक्सप्लोरर से मामले का विवरण पीडीएफ का चयन करें - Internal storage/विकल्प-हेल्पलाइन_PDF</string>
+    <string name="enter_mobile_number_to_share_prescription">उस मोबाइल नंबर को दर्ज करें जिसमें आप मामले का विवरण को साझा करना चाहते हैं।</string>
     <string name="share">साझा करें</string>
     <string name="please_enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
-    <string name="download_prescription_first_before_sharing">साझा करने से पहले पहले पर्चे डाउनलोड करें</string>
+    <string name="download_prescription_first_before_sharing">साझा करने से पहले मामले डाउनलोड करें</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*मैं (कार्यकर्ता) इस बात की पुष्टि करती हूं कि मैंने केस को गोपनीयता नोटिस और सहमति पढ़ दी है।</string>
     <string name="enter_10_digits">10 अंक दर्ज करें</string>
     <string name="please_read_out_privacy_consent_first">कृपया पहले गोपनीयता सहमति पढ़ें।</string>
