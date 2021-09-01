@@ -2292,7 +2292,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                  //  if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
                         helplineInfoOther.setVisibility(View.VISIBLE);
                         helplineInfoOther.setFocusable(true);
                     } else {
