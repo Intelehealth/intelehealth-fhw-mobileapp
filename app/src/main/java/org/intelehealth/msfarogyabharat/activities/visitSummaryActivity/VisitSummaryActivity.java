@@ -79,6 +79,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1656,6 +1657,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag.setChecked(false);
             }
         }
+
+        View button_resolution = findViewById(R.id.button_resolution);
+        button_resolution.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
+                intent1.putExtra("patientUuid", patientUuid);
+                intent1.putExtra("visitUuid", visitUuid);
+                intent1.putExtra("encounterUuidVitals", encounterVitals);
+                intent1.putExtra("edit_PatHist", "edit_PatHist");
+                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                intent1.putExtra("name", patientName);
+                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                intent1.putExtra("tag", "edit");
+                startActivity(intent1);
+            }
+        });
     }
 
     private String sms_prescription() {
