@@ -20,11 +20,14 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,8 +44,10 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.msfarogyabharat.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
+import org.intelehealth.msfarogyabharat.models.TodayPatientModel;
 import org.intelehealth.msfarogyabharat.utilities.ConfigUtils;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
@@ -119,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, newPatient_textview1, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge;
 
 
     @Override
@@ -325,6 +330,8 @@ public class HomeActivity extends AppCompatActivity {
 
         showProgressbar();
         tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
+        tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
+        tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
         FollowUpNotificationWorker.schedule();
     }
 
@@ -799,10 +806,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showFollowUpBadge() {
+        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
         long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
         if (followUpCount > 0) {
             tvFollowUpBadge.setVisibility(View.VISIBLE);
             tvFollowUpBadge.setText(String.valueOf(followUpCount));
+        }
+        if (todayPatientCount > 0) {
+            tvTodayVisitsBadge.setVisibility(View.VISIBLE);
+            tvTodayVisitsBadge.setText(String.valueOf(todayPatientCount));
+        }
+        if (activePatientCount > 0) {
+            tvActiveVisitsBadge.setVisibility(View.VISIBLE);
+            tvActiveVisitsBadge.setText(String.valueOf(activePatientCount));
         }
     }
 
