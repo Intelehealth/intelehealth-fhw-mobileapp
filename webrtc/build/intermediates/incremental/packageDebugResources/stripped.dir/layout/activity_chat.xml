@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="org.intelehealth.apprtc.ChatActivity">
+
+    <RelativeLayout
+        android:id="@+id/footer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="8dip">
+
+        <ImageView
+            android:id="@+id/audio_rec_imv"
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:background="@drawable/ic_baseline_lens_24_gray"
+            android:padding="8dip"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_baseline_mic_none_24_blue" />
+
+        <ImageView
+            android:id="@+id/camera_imv"
+            android:layout_width="42dip"
+            android:layout_height="42dip"
+            android:layout_toEndOf="@+id/audio_rec_imv"
+            android:layout_toRightOf="@+id/audio_rec_imv"
+            android:background="@drawable/ic_baseline_lens_24_gray"
+            android:padding="8dip"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24_blue" />
+
+        <ImageView
+            android:id="@+id/send_imv"
+            android:layout_width="36dip"
+            android:layout_height="36dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/round_corner_16_blue_light"
+            android:onClick="sendMessageNow"
+            android:padding="8dip"
+            app:srcCompat="@drawable/ic_baseline_send_24_white" />
+
+        <LinearLayout
+            android:id="@+id/loading_layout"
+            android:layout_width="36dip"
+            android:layout_height="36dip"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/round_corner_16_blue_light"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmallTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_corner_16_blue_light" />
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/text_etv"
+            android:layout_width="match_parent"
+            android:layout_height="36dip"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dip"
+            android:layout_marginEnd="16dip"
+            android:layout_marginRight="16dip"
+            android:layout_toStartOf="@+id/send_imv"
+            android:layout_toLeftOf="@+id/send_imv"
+            android:layout_toEndOf="@+id/camera_imv"
+            android:layout_toRightOf="@+id/camera_imv"
+            android:background="@drawable/round_corner_16_gray_light"
+            android:gravity="center_vertical"
+            android:hint="Type text here ..."
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="4"
+            android:minHeight="36dip"
+            android:padding="8dip"
+            android:textColor="@color/gray_4"
+            android:textSize="13sp" />
+
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chats_rcv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer_layout"
+        android:layout_margin="16dip"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            app:srcCompat="@drawable/message_icon" />
+
+        <TextView
+            android:id="@+id/empty_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/you_have_no_messages_start_sending_messages_now"
+            android:textColor="@color/gray_3"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</RelativeLayout>

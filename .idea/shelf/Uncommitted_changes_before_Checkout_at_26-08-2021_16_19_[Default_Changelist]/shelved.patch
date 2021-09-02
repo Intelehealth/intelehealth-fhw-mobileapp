@@ -1,0 +1,57 @@
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24_[Default_Changelist]/shelved.patch	(revision b6fcd15031a2ef02bf4269717c039e1790864d14)
++++ /dev/null	(revision b6fcd15031a2ef02bf4269717c039e1790864d14)
+@@ -1,38 +0,0 @@
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n<<<<<<< HEAD\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"1.8\" project-jdk-type=\"JavaSDK\">\r\n=======\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_1_8\" default=\"true\" project-jdk-name=\"JDK\" project-jdk-type=\"JavaSDK\">\r\n>>>>>>> age_gender-based_mm_questions\r\n    <output url=\"file://$PROJECT_DIR$/build/classes\" />\r\n  </component>\r\n  <component name=\"ProjectType\">\r\n    <option name=\"id\" value=\"Android\" />\r\n  </component>\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision 77bd36b24687741882422700719612228a4ea697)
+-+++ b/.idea/misc.xml	(date 1629275653260)
+-@@ -1,18 +1,12 @@
+- <?xml version="1.0" encoding="UTF-8"?>
+- <project version="4">
+--  <component name="CMakeSettings">
+--    <configurations>
+--      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+--    </configurations>
+--  </component>
+--<<<<<<< HEAD
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+--=======
+--  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+-->>>>>>> age_gender-based_mm_questions
+--    <output url="file://$PROJECT_DIR$/build/classes" />
+-+  <component name="DesignSurface">
+-+    <option name="filePathToZoomLevelMap">
+-+      <map>
+-+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_identification.xml" value="0.25416666666666665" />
+-+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.2" />
+-+      </map>
+-+    </option>
+-   </component>
+--  <component name="ProjectType">
+--    <option name="id" value="Android" />
+--  </component>
+-+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+- </project>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24__Default_Changelist_.xml	(revision b6fcd15031a2ef02bf4269717c039e1790864d14)
++++ /dev/null	(revision b6fcd15031a2ef02bf4269717c039e1790864d14)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_18-08-2021_14_24_[Default_Changelist]" date="1629276871456" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_18-08-2021_14_24_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 18-08-2021 14:24 [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
