@@ -20,14 +20,11 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,6 +44,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.utilities.ConfigUtils;
+import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -107,8 +105,8 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    // CardView c1, c2, c3, c4, c5, c6;
-    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
+   // CardView c1, c2, c3, c4, c5, c6;
+   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -121,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, newPatient_textview1, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge;
 
 
     @Override
@@ -158,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        // c1 = findViewById(R.id.cardview_newpat);
+       // c1 = findViewById(R.id.cardview_newpat);
         c1_doctor = findViewById(R.id.cardview_newpat);
         c1_medadvice = findViewById(R.id.cardview_newpat_1);
         c2 = findViewById(R.id.cardview_find_patient);
@@ -326,6 +324,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
         showProgressbar();
+        tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
+        FollowUpNotificationWorker.schedule();
     }
 
     //function for handling the video library feature...
@@ -494,7 +494,6 @@ public class HomeActivity extends AppCompatActivity {
 //                    IntelehealthApplication.setAlertDialogCustomTheme(this, builderDialog);
 //
 //                    // }
-
                         MaterialAlertDialogBuilder dialog = new MaterialAlertDialogBuilder(this);
                         LayoutInflater li = LayoutInflater.from(this);
                         View promptsView = li.inflate(R.layout.dialog_mindmap_cred, null);
@@ -796,6 +795,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+        showFollowUpBadge();
+    }
+
+    private void showFollowUpBadge() {
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        if (followUpCount > 0) {
+            tvFollowUpBadge.setVisibility(View.VISIBLE);
+            tvFollowUpBadge.setText(String.valueOf(followUpCount));
+        }
     }
 
     @Override
@@ -890,6 +898,7 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
+                    showFollowUpBadge();
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -957,6 +966,11 @@ public class HomeActivity extends AppCompatActivity {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
         }
+    }
+
+    public void onFollowUpClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
+        startActivity(intent);
     }
 
     private void checkExistingMindMaps() {
