@@ -8,6 +8,18 @@
 <!--        <item>Cebuano</item>-->
     </string-array>
 
+    <string-array name="vaccination_spinner_en">
+        <item>Select</item>
+        <item>First dose</item>
+        <item>Second dose</item>
+    </string-array>
+
+    <string-array name="vaccination_spinner_hi">
+        <item>चयन करें</item>
+        <item>पहला टिका</item>
+        <item>दूसरा टिका</item>
+    </string-array>
+
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
@@ -69,7 +81,7 @@
     </string-array>
 
     <string-array name="education_hi">
-        <item> चयन करें</item>
+        <item>चयन करें</item>
         <item>अशिक्षित</item>
         <item>प्रथम</item>
         <item>माध्यमिक</item>

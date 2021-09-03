@@ -924,6 +924,81 @@
                             <Space
                                 android:layout_width="10dp"
                                 android:layout_height="10dp"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:background="?android:attr/listDivider"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/card_content_sub_text_size"
+                                android:paddingStart="5dp"
+                                android:text="@string/have_you_taken_a_covid_vaccine"/>
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <RadioGroup
+                                android:id="@+id/radioGrp_Vaccination"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp">
+
+                                <RadioButton
+                                    android:id="@+id/identification_yes"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:text="@string/generic_yes"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <RadioButton
+                                    android:id="@+id/identification_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:text="@string/generic_no"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+                            </RadioGroup>
+
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <FrameLayout
+                                android:id="@+id/framelayout_vaccination"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                tools:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <Spinner
+                                        android:id="@+id/spinner_vaccination"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:entries="@array/vaccination_spinner_en"/>
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                </LinearLayout>
+                            </FrameLayout>
+
                         </LinearLayout>
             </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -34,6 +34,7 @@ public class Patient {
     private String structure_house;
     private String hectars_land;
     private String emergency;
+    private String vaccination;
 
     public String getUuid() {
         return uuid;
@@ -297,5 +298,13 @@ public class Patient {
 
     public void setEmergency(String emergency) {
         this.emergency = emergency;
+    }
+
+    public String getVaccination() {
+        return vaccination;
+    }
+
+    public void setVaccination(String vaccination) {
+        this.vaccination = vaccination;
     }
 }

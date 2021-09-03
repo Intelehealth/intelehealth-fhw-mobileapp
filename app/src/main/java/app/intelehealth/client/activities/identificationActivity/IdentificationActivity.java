@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -106,7 +107,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Calendar dob = Calendar.getInstance();
     Patient patient1 = new Patient();
     private String patientUuid = "";
-    private String mGender;
+    private String mGender, mVaccination;
     String patientID_edit;
     private int mDOBYear;
     private int mDOBMonth;
@@ -133,6 +134,8 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton radioYes;
+    RadioButton radioNo;
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
@@ -157,6 +160,8 @@ public class IdentificationActivity extends AppCompatActivity {
     Context context;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
+    FrameLayout framelayout_vaccination;
+    Spinner spinner_vaccination;
 
     Intent i_privacy;
     String privacy_value;
@@ -170,7 +175,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
             occupation_edittext, watersafe_edittext, toiletfacility_edittext;
     CardView cardview_household;
-    ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
+    ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt, vaccination_adapt,
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
@@ -251,6 +256,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        radioYes = findViewById(R.id.identification_yes);
+        radioNo = findViewById(R.id.identification_no);
+        framelayout_vaccination = findViewById(R.id.framelayout_vaccination);
+        spinner_vaccination = findViewById(R.id.spinner_vaccination);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -539,6 +548,9 @@ public class IdentificationActivity extends AppCompatActivity {
 //        occupation_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.occupation_spinner));
 
+        //Vaccination - start
+        //Vaccination - end
+
         occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -612,6 +624,23 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, "Whatsapp values are missing", Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+
+        //Vaccination Spinner Adapter...
+        //Whatsapp App Adapter ...
+        try {
+            String vaccinationLanguage = "vaccination_spinner_" + sessionManager.getAppLanguage();
+            int vaccination = res.getIdentifier(vaccinationLanguage, "array", getApplicationContext().getPackageName());
+            if (vaccination != 0) {
+                vaccination_adapt = ArrayAdapter.createFromResource(this,
+                        vaccination, android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner_vaccination.setAdapter(vaccination_adapt);
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Vaccination values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+
 
 //        sourcewater_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.sourcewater_spinner));
@@ -882,12 +911,32 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "yes");
             }
 
+            //vacciantion...
+            if(!patient1.getVaccination().equalsIgnoreCase("No")) {
+                framelayout_vaccination.setVisibility(View.VISIBLE);
+                int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                spinner_vaccination.setSelection(spinner_position);
+                radioYes.setChecked(true);
+                if (radioNo.isChecked())
+                    radioNo.setChecked(false);
+            }
+            else {
+                framelayout_vaccination.setVisibility(View.GONE);
+                spinner_vaccination.setSelection(0);
+                radioNo.setChecked(true);
+                if (radioYes.isChecked())
+                    radioYes.setChecked(false);
+            }
+            //vacciantion - end
+
         }
         if (mGenderM.isChecked()) {
             mGender = "M";
         } else {
             mGender = "F";
         }
+
+
         if (patientID_edit != null) {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
@@ -1008,6 +1057,41 @@ public class IdentificationActivity extends AppCompatActivity {
                 int spinner_position = whatsapp_adapt.getPosition(whatsapp_Transl);
                 whatsapp_spinner.setSelection(spinner_position);
             }
+
+            //vaccination - start
+            if (patient1.getVaccination() != null &&
+                    !patient1.getVaccination().equalsIgnoreCase("")) {
+                String vaccination_Transl = "";
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        vaccination_Transl = StringUtils.switch_hi_vaccination_edit(patient1.getVaccination());
+                        framelayout_vaccination.setVisibility(View.VISIBLE);
+                        int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                        spinner_vaccination.setSelection(spinner_position);
+                    }
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
+                    if (patient1.getVaccination().equalsIgnoreCase("No")) {
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        spinner_vaccination.setSelection(0);
+                    } else {
+                        vaccination_Transl = patient1.getVaccination();
+                        framelayout_vaccination.setVisibility(View.VISIBLE);
+                        int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                        spinner_vaccination.setSelection(spinner_position);
+                    }
+                }
+            }
+            //vaccinatio - end
+
+
+
+
+
             if (patient1.getSource_of_water() != null && !patient1.getSource_of_water()
                     .equalsIgnoreCase("")) {
 
@@ -1211,6 +1295,21 @@ public class IdentificationActivity extends AppCompatActivity {
                 onRadioButtonClicked(v);
             }
         });
+
+        radioYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
+        radioNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1529,6 +1628,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
+            case R.id.identification_yes:
+                if (checked)
+                    framelayout_vaccination.setVisibility(View.VISIBLE);
+                break;
+            case R.id.identification_no:
+                if (checked)
+                    framelayout_vaccination.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -1643,6 +1750,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("Use WhatsApp")) {
                     patient1.setWhatsapp_mobile(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Covid Vaccination")) {
+                    patient1.setVaccination(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
                 if (name.equalsIgnoreCase("Total Family Members")) {
                     patient1.setNo_of_family_members(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -1945,6 +2056,39 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+
+        //vaccination
+        if (!radioYes.isChecked() && !radioNo.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new
+                    MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage(R.string.select_option_vaccination_dialog);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+            return;
+        }
+
+        if (radioYes.isChecked() && spinner_vaccination.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_vaccination.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_vaccination;
+            cancel = true;
+            return;
+        }
+
+
         if (familyhead_checkbox.isChecked()) {
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
@@ -2244,6 +2388,26 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if(radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
+                //Vaccination ...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                patientAttributesDTO.setValue(StringUtils.getVaccinationSpinnerHi_En(spinner_vaccination));
+                Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+            else {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                patientAttributesDTO.setValue("No");
+                Log.d("HOH", "Vaccination: " + "No");
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             //Check first if Are you Head of Household checkbox is checked or not...
             if (familyhead_checkbox.isChecked()) {
@@ -2681,6 +2845,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        //vaccination
+        if (radioYes.isChecked() && spinner_vaccination.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_vaccination.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_vaccination;
+            cancel = true;
+            return;
+        }
+
         if (familyhead_checkbox.isChecked()) {
 
             if (no_of_member_edittext.getText().toString().equalsIgnoreCase("") &&
@@ -2979,6 +3153,26 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(whatsapp_spinner));
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
+
+            if(radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
+                //Vaccination ...
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                patientAttributesDTO.setValue(StringUtils.getVaccinationSpinnerHi_En(spinner_vaccination));
+                Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
+            else {
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                patientAttributesDTO.setValue("No");
+                Log.d("HOH", "Vaccination: " + "No");
+                patientAttributesDTOList.add(patientAttributesDTO);
+            }
 
             //Check first if Are you Head of Household checkbox is checked or not...
             if (familyhead_checkbox.isChecked()) {

@@ -167,6 +167,19 @@ public final class StringUtils {
         return val;
     }
 
+    public static String getVaccinationSpinnerHi_En(Spinner spinner) {
+        String val = "";
+        val = spinner.getSelectedItem().toString();
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            val = switch_hi_en_vaccination(val);
+        }
+        return val;
+    }
+
+
+
     public static String getSpinnerHi_En(Spinner spinner) {
         String val = "";
         val = spinner.getSelectedItem().toString();
@@ -203,7 +216,6 @@ public final class StringUtils {
         }
         return val;
     }
-
 
     public static String switch_hi_en_housestructure(String val) {
         switch (val) {
@@ -676,6 +688,36 @@ public final class StringUtils {
                 break;
             case "Other[Enter]":
                 val = "अन्य [दर्ज करें]";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    //Vaccination
+    public static String switch_hi_en_vaccination(String val) {
+        switch (val) {
+            case "पहला टिका":
+                val = "First dose";
+                break;
+            case "दूसरा टिका":
+                val = "Second dose";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    //Vaccination Edit
+    public static String switch_hi_vaccination_edit(String val) {
+        switch (val) {
+            case "First dose":
+                val = "पहला टिका";
+                break;
+            case "Second dose":
+                val = "दूसरा टिका";
                 break;
             default:
                 return val;
