@@ -1443,7 +1443,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if(!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
+            if(!patient1.getJob().equalsIgnoreCase("Not provided")) {
                 framelayout_safe_abortion.setVisibility(View.VISIBLE);
                 framelayout_domestic_violence.setVisibility(View.GONE);
                 safe_abortion_radiobtn.setChecked(true);
@@ -1644,16 +1644,19 @@ public class IdentificationActivity extends AppCompatActivity {
                 mHelplineKnowledge.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+//                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                    String helplineKnowledge = patient1.getCaste();
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
                 } else {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 }
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+               // if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
 
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
+                   // mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                     helplineInfoOther.setText(patient1.getCaste());
                 }
             } else {
@@ -1728,7 +1731,8 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+//                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+                    String phoneNumber = patient1.getEconomic_status();
                     mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
                 } else {
                     mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
@@ -1743,7 +1747,8 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
+                   // String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
+                     String callRelation = patient1.getSdw();
                     mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));
                 } else {
                     mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
@@ -2287,7 +2292,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                  //  if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
                         helplineInfoOther.setVisibility(View.VISIBLE);
                         helplineInfoOther.setFocusable(true);
                     } else {
@@ -4166,11 +4172,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //check if privacy notice is checked
+/*
         if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
             Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
                     Toast.LENGTH_SHORT).show();
             return;
         }
+*/
 
 
         // TODO: Add validations for all Spinners here...

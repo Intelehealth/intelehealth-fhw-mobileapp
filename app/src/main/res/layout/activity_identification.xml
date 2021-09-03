@@ -267,7 +267,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What is your gender?"
+                            android:text="@string/what_is_your_gender"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -410,12 +410,9 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-
                     </LinearLayout>
 
-
                 </androidx.cardview.widget.CardView>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -572,7 +569,7 @@
                                         android:layout_width="fill_parent"
                                         android:layout_height="wrap_content"
                                         android:completionThreshold="1"
-                                        android:hint="Landmark*"
+                                        android:hint="@string/landmark"
                                         android:imeOptions="actionDone|flagNoExtractUi"
                                         android:inputType="textAutoComplete"
                                         android:maxLength="45"
@@ -744,7 +741,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Education"
+                            android:text="@string/education"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -780,7 +777,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What is the current marital status?"
+                            android:text="@string/what_is_the_current_marital_status"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -822,7 +819,7 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:completionThreshold="1"
-                                android:hint="Income (Monthly)"
+                                android:hint="@string/income_monthly"
                                 android:imeOptions="actionDone|flagNoExtractUi"
                                 android:inputType="number"
                                 android:maxLength="45"
@@ -841,7 +838,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Occupation"
+                            android:text="@string/occupation_title"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -883,7 +880,7 @@
                                 android:layout_width="fill_parent"
                                 android:layout_height="wrap_content"
                                 android:completionThreshold="1"
-                                android:hint="Husband's Income (Monthly)"
+                                android:hint="@string/husband_s_income_monthly"
                                 android:imeOptions="actionDone|flagNoExtractUi"
                                 android:inputType="number"
                                 android:maxLength="45"
@@ -902,7 +899,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Husband Occupation"
+                            android:text="@string/husband_occupation"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -938,7 +935,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Do you have any children?"
+                            android:text="@string/do_you_have_any_children"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -975,7 +972,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="How many children?"
+                            android:text="@string/how_many_children"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -993,7 +990,7 @@
                                 android:ems="10"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Enter no of children"
+                                android:hint="@string/enter_no_of_children"
                                 android:imeOptions="actionNext|flagNoExtractUi"
                                 android:maxLines="1"
                                 android:singleLine="true"
@@ -1086,7 +1083,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Contact Type"
+                            android:text="@string/contact_type"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1112,7 +1109,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Where did you get the helpline number from?"
+                            android:text="@string/where_did_you_get_the_helpline_number_from"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1228,7 +1225,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Select Reason of Complaint"
+                            android:text="@string/select_reason_of_complaint"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
 
@@ -1246,7 +1243,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_regular"
-                                android:text="Safe abortion specific"
+                                android:text="@string/safe_abortion_specific"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <RadioButton
@@ -1255,7 +1252,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:fontFamily="@font/lato_regular"
-                                android:text="Domestic violence specific"
+                                android:text="@string/domestic_violence_specific"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                         </RadioGroup>
@@ -1283,7 +1280,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Do you work or do you have a paid job?"
+                            android:text="@string/do_you_work_or_do_you_have_a_paid_job"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1307,7 +1304,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="How would you describe your location?"
+                            android:text="@string/how_would_you_describe_your_location"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1348,7 +1345,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
-                                android:text="Who referred the case?  "
+                                android:text="@string/who_referred_the_case"
                                 android:layout_marginBottom="10dp"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
@@ -1386,7 +1383,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
                                 android:layout_marginBottom="10dp"
-                                android:text="Am I speaking with the survivor or am I speaking with someone who is calling on behalf of the survivor?"
+                                android:text="@string/am_i_speaking_with_the_survivor_or_am_i_speaking_with_someone_who_is_calling_on_behalf_of_the_survivor"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <Space
@@ -1423,7 +1420,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What is a good phone number to reach the survivor?"
+                            android:text="@string/what_is_a_good_phone_number_to_reach_the_survivor"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1443,7 +1440,7 @@
                                 android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Enter Phone number"
+                                android:hint="@string/enter_phone_number"
                                 android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="phone"
                                 android:maxLength="10"
@@ -1464,7 +1461,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Was the survivor ever married?"
+                            android:text="@string/was_the_survivor_ever_married"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1488,7 +1485,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What was age at the time of (first) marriage?"
+                            android:text="@string/what_was_age_at_the_time_of_first_marriage"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1499,7 +1496,7 @@
                             android:id="@+id/edittext_dv_age_marriage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter age"
+                            android:hint="@string/enter_age"
                             android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="text"
                             android:textSize="@dimen/card_content_sub_text_size" />
@@ -1518,7 +1515,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What was the type of marriage?"
+                            android:text="@string/what_was_the_type_of_marriage"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1544,7 +1541,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Please provide a maternal home address"
+                            android:text="@string/please_provide_a_maternal_home_address"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1561,7 +1558,7 @@
                                 android:ems="10"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Maternal Home Address"
+                                android:hint="@string/maternal_home_address"
                                 android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
@@ -1586,7 +1583,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Please provide a maternal phone number"
+                            android:text="@string/please_provide_a_maternal_phone_number"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1606,7 +1603,7 @@
                                 android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Maternal Phone number"
+                                android:hint="@string/maternal_phone_number"
                                 android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="phone"
                                 android:maxLength="10"
@@ -1628,7 +1625,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Please provide address of in-laws"
+                            android:text="@string/please_provide_address_of_in_laws"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1645,7 +1642,7 @@
                                 android:ems="10"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="In-laws Address"
+                                android:hint="@string/in_laws_address"
                                 android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="textCapWords"
                                 android:maxLength="50"
@@ -1670,7 +1667,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="Please provide a phone number for husband/partner"
+                            android:text="@string/please_provide_a_phone_number_for_husband_partner"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -1690,7 +1687,7 @@
                                 android:focusableInTouchMode="true"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Husband Phone number"
+                                android:hint="@string/husband_phone_number"
                                 android:imeOptions="actionUnspecified|flagNoExtractUi|actionNext"
                                 android:inputType="phone"
                                 android:maxLength="10"
@@ -1712,7 +1709,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What address is the survivor currently residing at?"
+                            android:text="@string/what_address_is_the_survivor_currently_residing_at"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
@@ -1748,7 +1745,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="With whom is the survivor living?"
+                            android:text="@string/with_whom_is_the_survivor_living"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space

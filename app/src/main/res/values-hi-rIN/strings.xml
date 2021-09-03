@@ -758,4 +758,42 @@
     <string name="What_is_the_current_marital_status">वर्तमान वैवाहिक स्थिति क्या है?*</string>
 
     <string name="identification_screen_prompt_emergency_phone_number">आपातकालीन फोन नंबर</string>
+
+    <!-- new registration fields -->
+    <string name="what_is_your_gender">आपका लिंग क्या है?*</string>
+    <string name="landmark">सीमाचिह्न*</string>
+    <string name="education">शिक्षा*</string>
+    <string name="what_is_the_current_marital_status">वर्तमान वैवाहिक स्थिति क्या है?*</string>
+    <string name="income_monthly">आय (मासिक)*</string>
+    <string name="occupation_title">पेशा*</string>
+    <string name="husband_s_income_monthly">पति की आय (मासिक)*</string>
+    <string name="husband_occupation">पति व्यवसाय*</string>
+    <string name="do_you_have_any_children">आपका कोई बच्चा हैं?*</string>
+    <string name="how_many_children">कितने बच्चों है?*</string>
+    <string name="enter_no_of_children">बच्चों की संख्या दर्ज करें*</string>
+    <string name="contact_type">संपर्क प्रकार*</string>
+    <string name="where_did_you_get_the_helpline_number_from">आपको हेल्पलाइन नंबर कहां से मिला?*</string>
+    <string name="select_reason_of_complaint">शिकायत का कारण चुनें*</string>
+    <string name="safe_abortion_specific">सुरक्षित गर्भपात विशिष्ट*</string>
+    <string name="domestic_violence_specific">घरेलू हिंसा विशिष्ट*</string>
+    <string name="do_you_work_or_do_you_have_a_paid_job">क्या आप काम करते हैं या आपके पास सशुल्क नौकरी है?*</string>
+    <string name="how_would_you_describe_your_location">आप अपने स्थान का वर्णन कैसे करेंगे?*</string>
+    <string name="who_referred_the_case">मामले का जिक्र किसने किया?*</string>
+    <string name="am_i_speaking_with_the_survivor_or_am_i_speaking_with_someone_who_is_calling_on_behalf_of_the_survivor">क्या मैं उत्तरजीवी से बात कर रहा हूँ या मैं किसी ऐसे व्यक्ति से बात कर रहा हूँ जो उत्तरजीवी की ओर से बुला रहा है?*</string>
+    <string name="what_is_a_good_phone_number_to_reach_the_survivor">उत्तरजीवी तक पहुंचने के लिए एक अच्छा फ़ोन नंबर क्या है?*</string>
+    <string name="enter_phone_number">फोन नंबर दर्ज*</string>
+    <string name="was_the_survivor_ever_married">क्या उत्तरजीवी की कभी शादी हुई थी?*</string>
+    <string name="what_was_age_at_the_time_of_first_marriage">(पहली) शादी के समय उम्र क्या थी?*</string>
+    <string name="enter_age">उम्र दर्ज करें*</string>
+    <string name="what_was_the_type_of_marriage">विवाह किस प्रकार का था?*</string>
+    <string name="please_provide_a_maternal_home_address">कृपया मातृ घर का पता प्रदान करें*</string>
+    <string name="maternal_home_address">मातृ घर का पता*</string>
+    <string name="please_provide_a_maternal_phone_number">कृपया मातृ फोन नंबर प्रदान करें*</string>
+    <string name="maternal_phone_number">मातृ फोन नंबर*</string>
+    <string name="please_provide_address_of_in_laws">कृपया ससुराल का पता प्रदान करें*</string>
+    <string name="in_laws_address">ससुराल का पता*</string>
+    <string name="please_provide_a_phone_number_for_husband_partner">कृपया पति/साथी के लिए एक फ़ोन नंबर प्रदान करें*</string>
+    <string name="husband_phone_number">पति फोन नंबर*</string>
+    <string name="what_address_is_the_survivor_currently_residing_at">उत्तरजीवी वर्तमान में किस पते पर रह रहा है?*</string>
+    <string name="with_whom_is_the_survivor_living">उत्तरजीवी किसके साथ रह रहा है?*</string>
 </resources>
