@@ -191,14 +191,14 @@ public class PatientDetailActivity extends AppCompatActivity {
     ArrayList<String> callNoteList;
     DisplayMetrics metrics;
     int width, height;
-    private Spinner spinner_pref_bucket, spinner_pref_time, spinner_pref_language;
+    private Spinner spinner_pref_bucket, spinner_pref_time, spinner_pref_language, spinner_pref_gender;
     private CheckBox chb_subscription;
     private Button btnSubscribe;
     private String subscriptionAuthHeader = "Bearer bnVyc2UxOk51cnNlMTIz";
     private CharSequence selectedSubscriptionTime, selectedLanguage;
     private BucketResponse.Bucket selectedBucket;
     String callNoteText = "";
-
+    String gender = "F";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,12 +231,16 @@ public class PatientDetailActivity extends AppCompatActivity {
         width = metrics.widthPixels;
         height = metrics.heightPixels;
         additionalPhoneNumTR = findViewById(R.id.additionalNumberTableRow);
+        spinner_pref_gender = findViewById(R.id.spinner_pref_gender);
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.pref_gender, android.R.layout.simple_spinner_dropdown_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_pref_gender.setAdapter(genderAdapter);
+
+
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
-
         ivPrescription = findViewById(R.id.iv_prescription);
-
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -398,8 +402,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
-                VisitDTO visitDTO = new VisitDTO();
 
+                VisitDTO visitDTO = new VisitDTO();
                 visitDTO.setUuid(uuid);
                 visitDTO.setPatientuuid(patient_new.getUuid());
                 visitDTO.setStartdate(thisDate);
@@ -441,10 +445,32 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
-        initSubscription();
+        if(String.valueOf(patient_new.getGender()).equalsIgnoreCase("M"))
+            spinner_pref_gender.setSelection(genderAdapter.getPosition("Male"));
+        else
+            spinner_pref_gender.setSelection(genderAdapter.getPosition("Female"));
+
+        spinner_pref_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                gender = parent.getItemAtPosition(position).toString();
+
+                if(gender.equalsIgnoreCase("Male"))
+                    gender = "M";
+                else
+                    gender = "F";
+
+                initSubscription(gender);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
-    private void initSubscription() {
+    private void initSubscription(String gender) {
         spinner_pref_bucket = findViewById(R.id.spinner_pref_bucket);
         spinner_pref_time = findViewById(R.id.spinner_pref_time);
         spinner_pref_language = findViewById(R.id.spinner_pref_language);
@@ -478,7 +504,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                     return;
                 selectedBucket = bucketAdapter.getItem(position);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -486,9 +511,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
 
         int preferred_time = R.array.preferred_time_female;
-        if (patient_new.getGender().equalsIgnoreCase("M")) {
+        if (gender.equalsIgnoreCase("M")) {
             preferred_time = R.array.preferred_time_male;
         }
+        else
+            preferred_time = R.array.preferred_time_female;
+
         ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_pref_time.setAdapter(timeAdapter);
@@ -596,7 +624,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 }
 
                 SubscriptionData data = new SubscriptionData();
-                data.gender = patient_new.getGender();
+                data.gender = gender;
                 data.phonenumber = patient_new.getPhone_number();
                 data.bucketsubscribedto = selectedBucket.bucketId;
                 data.slotselected = selectedSubscriptionTime.toString();
@@ -630,7 +658,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         List<BucketResponse.Bucket> buckets = new ArrayList<>();
         for (int i = 0; i < allBuckets.size(); i++) {
             BucketResponse.Bucket bucket = allBuckets.get(i);
-            if (i == 0 || (bucket.languagesavailablein != null && bucket.languagesavailablein.contains(selectedLanguage) && patient_new.getGender().equalsIgnoreCase(bucket.bucketforgender))) {
+            if (i == 0 || (bucket.languagesavailablein != null && bucket.languagesavailablein.contains(selectedLanguage) && gender.equalsIgnoreCase(bucket.bucketforgender))) {
                 buckets.add(bucket);
             }
         }
