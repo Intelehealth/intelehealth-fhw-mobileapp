@@ -22,7 +22,10 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class FollowUpNotificationWorker extends Worker {
@@ -91,20 +94,19 @@ public class FollowUpNotificationWorker extends Worker {
         return result;*/
 //        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and (o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%'))))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
         int count = 0;
-        final Cursor searchCursor = db.rawQuery("SELECT uuid FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
-        try {
-            if (searchCursor.moveToFirst()) {
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
+        final Cursor cursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 do {
-                    String uuid = searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"));
-                    String severity = getSeverity(uuid, db);
-                    if (severity != null && severity.contains("Asymptomatic"))
-                        continue;
                     count++;
-                } while (searchCursor.moveToNext());
+                } while (cursor.moveToNext());
             }
-            searchCursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        if (cursor != null) {
+            cursor.close();
         }
         return count;
     }
