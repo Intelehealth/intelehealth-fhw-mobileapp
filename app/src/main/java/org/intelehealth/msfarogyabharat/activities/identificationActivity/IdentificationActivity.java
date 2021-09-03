@@ -3742,7 +3742,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                     if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                         helplineInfoOther.setError(getString(R.string.error_field_required));
                         focusView = helplineInfoOther;
@@ -4481,7 +4481,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
@@ -5645,7 +5645,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                 if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                     helplineInfoOther.setError(getString(R.string.error_field_required));
                     focusView = helplineInfoOther;
@@ -6119,7 +6119,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
