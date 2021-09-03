@@ -2284,8 +2284,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                 && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
+        if (!mFirstName.getText().toString().equals("") && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
 
@@ -2296,9 +2295,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
+            //Last Name not mandatory for hello saathi project: BY Nishita
+
+//            if (mLastName.getText().toString().equals("")) {
+//                mLastName.setError(getString(R.string.error_field_required));
+//            }
 
 //            if (mDOB.getText().toString().equals("")) {
 //                mDOB.setError(getString(R.string.error_field_required));
@@ -3171,7 +3172,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+        if (!mFirstName.getText().toString().equals("")
                && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
@@ -3183,9 +3184,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
+            //Last name not mandatory for hello saathi: Ny Nishita
+//            if (mLastName.getText().toString().equals("")) {
+//                mLastName.setError(getString(R.string.error_field_required));
+//            }
 
 //            if (mDOB.getText().toString().equals("")) {
 //                mDOB.setError(getString(R.string.error_field_required));
