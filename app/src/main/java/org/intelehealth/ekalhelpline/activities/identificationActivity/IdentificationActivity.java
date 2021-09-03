@@ -120,12 +120,14 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_econ
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_numberRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_numberRelation;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -227,7 +229,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText otherHelplineInfoET;
     String helplineInfo = "";
     String callerPrefLanguage = "";
-    ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter;
+    ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter , numberRelationAdapter;
 
 
     public static void start(Context context, boolean medicalAdvice) {
@@ -615,7 +617,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
-        try { //Caller and Number Relation adapter setting...
+        try { //Caller Relation adapter setting...
             String callerInfoLanguage = "caller_type_" + sessionManager.getAppLanguage();
             int callerInfos = res.getIdentifier(callerInfoLanguage, "array", getApplicationContext().getPackageName());
             if (callerInfos != 0) {
@@ -625,7 +627,21 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             callerRelationSpinner.setAdapter(callerRelationAdapter);
-            numberRelationSpinner.setAdapter(callerRelationAdapter);
+        }
+        catch (Exception e) {
+            Logger.logE("Identification", "#648", e);
+        }
+
+        try { //NUmber Relation adapter setting...
+            String numberInfoLanguage = "number_relation_" + sessionManager.getAppLanguage();
+            int callerInfos = res.getIdentifier(numberInfoLanguage, "array", getApplicationContext().getPackageName());
+            if (callerInfos != 0) {
+                numberRelationAdapter = ArrayAdapter.createFromResource(this,
+                        callerInfos, R.layout.custom_spinner);
+
+            }
+            callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            numberRelationSpinner.setAdapter(numberRelationAdapter);
         }
         catch (Exception e) {
             Logger.logE("Identification", "#648", e);
@@ -1143,22 +1159,22 @@ public class IdentificationActivity extends AppCompatActivity {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String callerInfo = switch_hi_callerRelation(patient1.getSdw());
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
-                String numberInfo = switch_hi_callerRelation(patient1.getEconomic_status());
-                numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(numberInfo));
+                String numberInfo = switch_hi_numberRelation(patient1.getEconomic_status());
+                numberRelationSpinner.setSelection(numberRelationAdapter.getPosition(numberInfo));
                 String callerLang = switch_hi_caller_language(patient1.getPreferred_language());
                 preferredLangSpinner.setSelection(prefLangAdapter.getPosition(callerLang));
             }
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String callerInfo = switch_mr_callerRelation(patient1.getSdw());
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
-                String numberInfo = switch_mr_callerRelation(patient1.getEconomic_status());
-                numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(numberInfo));
+                String numberInfo = switch_mr_numberRelation(patient1.getEconomic_status());
+                numberRelationSpinner.setSelection(numberRelationAdapter.getPosition(numberInfo));
                 String callerLang = switch_mr_caller_language(patient1.getPreferred_language());
                 preferredLangSpinner.setSelection(prefLangAdapter.getPosition(callerLang));
             }
             else
             {
-                numberRelationSpinner.setSelection(callerRelationAdapter.getPosition(patient1.getEconomic_status()));
+                numberRelationSpinner.setSelection(numberRelationAdapter.getPosition(patient1.getEconomic_status()));
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
                 preferredLangSpinner.setSelection(prefLangAdapter.getPosition(patient1.getPreferred_language()));
             }
@@ -2722,7 +2738,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getValue1(numberRelationSpinner.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(numberRelationSpinner.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3613,7 +3629,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
-            patientAttributesDTO.setValue(StringUtils.getValue1(numberRelationSpinner.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValue(numberRelationSpinner.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
