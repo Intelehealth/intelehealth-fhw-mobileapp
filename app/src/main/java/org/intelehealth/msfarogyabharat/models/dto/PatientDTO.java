@@ -230,4 +230,17 @@ public class PatientDTO {
     }
 
     public String comment;
+
+    public int getSeverity() {
+        int severity = 0;
+        if (comment == null)
+            return severity;
+        else if (comment.contains("Severe"))
+            severity = 3;
+        else if (comment.contains("Moderate"))
+            severity = 2;
+        else if (comment.contains("Mild"))
+            severity = 1;
+        return severity;
+    }
 }
