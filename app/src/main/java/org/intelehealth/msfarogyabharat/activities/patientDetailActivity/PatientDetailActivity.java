@@ -55,6 +55,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -389,7 +390,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+                Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
