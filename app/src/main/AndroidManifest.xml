@@ -258,10 +258,10 @@
         <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-        <provider
-            android:name=".activities.searchPatientActivity.SearchSuggestionProvider"
-            android:authorities="org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:exported="false" />
+<!--        <provider-->
+<!--            android:name=".activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:authorities="org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:exported="false" />-->
 
         <service android:name=".services.DownloadService" />
         <service android:name=".services.MyIntentService" />
