@@ -399,7 +399,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
                 Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
-                String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                String fullName = patient_new.getFirst_name();
+                if(patient_new.getLast_name()== null || patient_new.getLast_name().equalsIgnoreCase(""))
+                    fullName = patient_new.getFirst_name();
+                else
+                    fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
 
@@ -439,7 +443,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+                    String fullName = patient_new.getFirst_name();
+                    if(patient_new.getLast_name()== null || patient_new.getLast_name().equalsIgnoreCase(""))
+                        fullName = patient_new.getFirst_name();
+                    else
+                        fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                     MedicalAdviceExistingPatientsActivity.start(PatientDetailActivity.this, patientUuid,fullName);
                 }
             });
@@ -917,9 +925,15 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 //changing patient to patient_new object
         if (patient_new.getMiddle_name() == null) {
-            patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+            if(patient_new.getLast_name() == null || patient_new.getLast_name().equalsIgnoreCase(""))
+                patientName = patient_new.getFirst_name();
+            else
+                patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         } else {
-            patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+            if(patient_new.getLast_name() == null || patient_new.getLast_name().equalsIgnoreCase(""))
+                patientName = patient_new.getFirst_name();
+            else
+                patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         }
 
 //        setTitle(patientName);
@@ -1721,6 +1735,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (previsitCursor.moveToLast() && previsitCursor != null) {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+
                         if (visitValue != null && !visitValue.isEmpty()) {
 
                             visitValue = visitValue.replace("?<b>", Node.bullet_arrow);

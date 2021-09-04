@@ -50,11 +50,17 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         final TodayPatientModel todayPatientModel = todayPatientModelList.get(position);
         String header;
         if (todayPatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
+            if (todayPatientModel.getLast_name() != null)
+                header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
                     todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
+            else
+                header = String.format("%s, %s", todayPatientModel.getFirst_name(), todayPatientModel.getOpenmrs_id());
         } else {
-            header = String.format("%s %s", todayPatientModel.getFirst_name(),
+            if (todayPatientModel.getLast_name() != null)
+                header = String.format("%s %s", todayPatientModel.getFirst_name(),
                     todayPatientModel.getLast_name());
+            else
+                header = String.format("%s", todayPatientModel.getFirst_name());
         }
 //        int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYearMonth(todayPatientModel.getDate_of_birth(), context);

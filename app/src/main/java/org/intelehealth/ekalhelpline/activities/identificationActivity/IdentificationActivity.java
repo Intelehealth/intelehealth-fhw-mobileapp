@@ -516,8 +516,8 @@ public class IdentificationActivity extends AppCompatActivity {
         //setting the fields when user clicks edit details
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
-        mLastName.setText(patient1.getLast_name());
-
+        if(patient1.getLast_name()!= null)
+            mLastName.setText(patient1.getLast_name());
   /*      if(patient1.getDate_of_birth() != null) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 mDOB.setText(StringUtils.en__hi_dob(patient1.getDate_of_birth()));
@@ -2643,9 +2643,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-            if(mLastName.getText().toString().equalsIgnoreCase(""))
-                patientdto.setLastname(" ");
-            else
+//            if(mLastName.getText().toString().equalsIgnoreCase("") || mLastName.getText().toString().isEmpty())
+//                patientdto.setLastname(null);
+//            else
                 patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondaryphonenumber(StringUtils.getValue(mAddPhoneNum.getText().toString()));
@@ -3069,7 +3069,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientdto.getFirstname() + " " + patientdto.getLastname());
+//                if(patientdto.getLastname()== null || patientdto.getLastname().equalsIgnoreCase("") || patientdto.getLastname().isEmpty())
+//                    i.putExtra("patientName", patientdto.getFirstname());
+//                else
+                i.putExtra("patientName", patientdto.getFirstname() + " " +((!TextUtils.isEmpty(patientdto.getLastname()))
+                            ? patientdto.getLastname() : ""));
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
@@ -3537,9 +3541,9 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
-            if(mLastName.getText().toString().equalsIgnoreCase(""))
-                patientdto.setLast_name(" ");
-            else
+//            if(mLastName.getText().toString().equalsIgnoreCase("") || mLastName.getText().toString().isEmpty())
+//                patientdto.setLast_name(null);
+//            else
                 patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondary_phone_number(StringUtils.getValue(mAddPhoneNum.getText().toString()));
@@ -3927,7 +3931,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 Logger.logD(TAG, "updated");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientdto.getFirst_name() + " " + patientdto.getLast_name());
+//                if(patientdto.getLast_name()== null || patientdto.getLast_name().equalsIgnoreCase("") || patientdto.getLast_name().isEmpty())
+//                    i.putExtra("patientName", patientdto.getFirst_name());
+//                else
+                i.putExtra("patientName", patientdto.getFirst_name() + " " + ((!TextUtils.isEmpty(patientdto.getLast_name()))
+                            ? patientdto.getLast_name() : ""));
                 i.putExtra("tag", "newPatient");
                 i.putExtra("hasPrescription", "false");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
