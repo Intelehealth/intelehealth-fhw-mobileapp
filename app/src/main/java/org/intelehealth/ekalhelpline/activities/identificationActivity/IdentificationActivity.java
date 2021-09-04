@@ -2643,7 +2643,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+            if(mLastName.getText().toString().equalsIgnoreCase(""))
+                patientdto.setLastname(" ");
+            else
+                patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondaryphonenumber(StringUtils.getValue(mAddPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
@@ -3534,7 +3537,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+            if(mLastName.getText().toString().equalsIgnoreCase(""))
+                patientdto.setLast_name(" ");
+            else
+                patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondary_phone_number(StringUtils.getValue(mAddPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
