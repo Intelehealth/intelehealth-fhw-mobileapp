@@ -120,12 +120,14 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_econ
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_education_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_helplineInfo_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_numberRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_callerRelation_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_caller_language_edit;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo;
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_helplineInfo_edit;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_mr_numberRelation;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
