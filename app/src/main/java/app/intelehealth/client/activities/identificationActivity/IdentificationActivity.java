@@ -915,12 +915,22 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //vacciantion...
             if(!patient1.getVaccination().equalsIgnoreCase("No")) {
-                framelayout_vaccination.setVisibility(View.VISIBLE);
-                int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
-                spinner_vaccination.setSelection(spinner_position);
-                radioYes.setChecked(true);
-                if (radioNo.isChecked())
+                if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                    framelayout_vaccine_question.setVisibility(View.GONE);
+                    framelayout_vaccination.setVisibility(View.GONE);
+                    int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                    spinner_vaccination.setSelection(spinner_position);
+                    radioYes.setChecked(false);
                     radioNo.setChecked(false);
+                }
+                else {
+                    framelayout_vaccination.setVisibility(View.VISIBLE);
+                    int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                    spinner_vaccination.setSelection(spinner_position);
+                    radioYes.setChecked(true);
+                    if (radioNo.isChecked())
+                        radioNo.setChecked(false);
+                }
             }
             else {
                 framelayout_vaccination.setVisibility(View.GONE);
@@ -1070,10 +1080,20 @@ public class IdentificationActivity extends AppCompatActivity {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        vaccination_Transl = StringUtils.switch_hi_vaccination_edit(patient1.getVaccination());
-                        framelayout_vaccination.setVisibility(View.VISIBLE);
-                        int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
-                        spinner_vaccination.setSelection(spinner_position);
+                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        }
+                        else {
+                            vaccination_Transl = StringUtils.switch_hi_vaccination_edit(patient1.getVaccination());
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
                     }
                 }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
@@ -1081,10 +1101,20 @@ public class IdentificationActivity extends AppCompatActivity {
                         framelayout_vaccination.setVisibility(View.GONE);
                         spinner_vaccination.setSelection(0);
                     } else {
-                        vaccination_Transl = patient1.getVaccination();
-                        framelayout_vaccination.setVisibility(View.VISIBLE);
-                        int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
-                        spinner_vaccination.setSelection(spinner_position);
+                        if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                            framelayout_vaccine_question.setVisibility(View.GONE);
+                            framelayout_vaccination.setVisibility(View.GONE);
+                            int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                            spinner_vaccination.setSelection(spinner_position);
+                            radioYes.setChecked(false);
+                            radioNo.setChecked(false);
+                        }
+                        else {
+                            vaccination_Transl = patient1.getVaccination();
+                            framelayout_vaccination.setVisibility(View.VISIBLE);
+                            int spinner_position = vaccination_adapt.getPosition(vaccination_Transl);
+                            spinner_vaccination.setSelection(spinner_position);
+                        }
                     }
                 }
             }
@@ -1385,6 +1415,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 //vaccination if above or equal to 18 than show visibility....
                 if(mAgeYears >= 18) {
                     framelayout_vaccine_question.setVisibility(View.VISIBLE);
+                   // framelayout_vaccination.setVisibility(View.GONE);
                 }
                 else {
                     framelayout_vaccine_question.setVisibility(View.GONE);
@@ -1438,6 +1469,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //vaccination if above or equal to 18 than show visibility....
             if(mAgeYears >= 18) {
                 framelayout_vaccine_question.setVisibility(View.VISIBLE);
+               // framelayout_vaccination.setVisibility(View.GONE);
             }
             else {
                 framelayout_vaccine_question.setVisibility(View.GONE);
@@ -1525,6 +1557,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //vaccination if above or equal to 18 than show visibility....
                     if(mAgeYears >= 18) {
                         framelayout_vaccine_question.setVisibility(View.VISIBLE);
+                       // framelayout_vaccination.setVisibility(View.GONE);
                     }
                     else {
                         framelayout_vaccine_question.setVisibility(View.GONE);
