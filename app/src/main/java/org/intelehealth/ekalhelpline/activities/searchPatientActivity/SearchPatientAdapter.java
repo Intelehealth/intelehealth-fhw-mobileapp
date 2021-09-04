@@ -49,11 +49,19 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
-            if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
+            if (patinet.getOpenmrsId() != null) {
+                if(patinet.getLastname()== null || patinet.getLastname().equalsIgnoreCase(" "))
+                    holder.headTextView.setText(patinet.getFirstname() + ", " + patinet.getOpenmrsId());
+                else
+                    holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
                         + ", " + patinet.getOpenmrsId());
-            else
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+            }
+            else {
+                if(patinet.getLastname()== null || patinet.getLastname().equalsIgnoreCase(" "))
+                    holder.headTextView.setText(patinet.getFirstname());
+                else
+                    holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+            }
 
             holder.bodyTextView.setText(body);
         }
@@ -64,7 +72,10 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
                 intent.putExtra("patientUuid", patinet.getUuid());
-                intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
+                if(patinet.getLastname()==null)
+                    intent.putExtra("patientName", patinet.getFirstname());
+                else
+                    intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "search");
                 intent.putExtra("hasPrescription", "false");

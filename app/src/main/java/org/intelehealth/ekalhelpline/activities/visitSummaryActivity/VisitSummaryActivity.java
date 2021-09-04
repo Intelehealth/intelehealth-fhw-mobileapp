@@ -1780,7 +1780,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private String sms_prescription() {
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name()))
-                ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
+                ? patient.getMiddle_name() : "") + " " + ((!TextUtils.isEmpty(patient.getLast_name()))
+                ? patient.getLast_name() : "");
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
         String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
@@ -2406,7 +2407,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
+        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + ((!TextUtils.isEmpty(patient.getLast_name())) ? patient.getLast_name() : "");
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
         String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
@@ -2767,7 +2768,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
+        String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + ((!TextUtils.isEmpty(patient.getLast_name())) ? patient.getLast_name() : "");
         String mPatientOpenMRSID = patient.getOpenmrs_id();
         String mPatientDob = patient.getDate_of_birth();
         String mAddress = ((!TextUtils.isEmpty(patient.getAddress1())) ? patient.getAddress1() + "\n" : "") +
@@ -3981,7 +3982,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
 
                 header = getString(R.string.patient_id_) + patient.getOpenmrs_id() + "\n"
-                        + getString(R.string.patient_name_title) + patient.getFirst_name() + " " + patient.getLast_name() + "\n"
+                        + getString(R.string.patient_name_title) + patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getLast_name())) ? patient.getLast_name() : "") + "\n"
                         + getString(R.string.patient_DOB) + patient.getDate_of_birth() + "\n";
 
 

@@ -53,17 +53,17 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         final ActivePatientModel activePatientModel = activePatientModels.get(position);
         String header;
         if (activePatientModel.getOpenmrs_id() != null) {
-            header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
-                    activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
-
-//            holder.getTv_not_uploaded().setVisibility(View.GONE);
+            if (activePatientModel.getLast_name() != null)
+                header = String.format("%s %s, %s", activePatientModel.getFirst_name(),
+                        activePatientModel.getLast_name(), activePatientModel.getOpenmrs_id());
+            else
+                header = String.format("%s, %s", activePatientModel.getFirst_name(), activePatientModel.getOpenmrs_id());
         } else {
-            header = String.format("%s %s", activePatientModel.getFirst_name(),
-                    activePatientModel.getLast_name());
-
-//            holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
-//            holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
-//            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+            if (activePatientModel.getLast_name() != null)
+                header = String.format("%s %s", activePatientModel.getFirst_name(),
+                        activePatientModel.getLast_name());
+            else
+                header = String.format("%s", activePatientModel.getFirst_name());
         }
 
         if (activePatientModel.getSync().equalsIgnoreCase("0")){
