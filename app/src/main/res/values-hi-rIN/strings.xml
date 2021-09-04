@@ -669,8 +669,8 @@
     <string name="per_Month">प्रति माह</string>
     <string name="per_Year">प्रति वर्ष</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
-    <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?</string>
-    <string name="select_option_vaccination_dialog">Select Option for Vaccination</string>
+    <string name="have_you_taken_a_covid_vaccine">1. क्या आपको कोविड का टिका लगा है?</string>
+    <string name="select_option_vaccination_dialog">टीकाकरण के लिए विकल्प चुनें</string>
 
 
 </resources>

@@ -932,6 +932,18 @@
                                 android:layout_marginBottom="10dp"
                                 android:background="?android:attr/listDivider"/>
 
+                            <FrameLayout
+                                android:id="@+id/framelayout_vaccine_question"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                tools:visibility="visible">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -999,6 +1011,9 @@
                                 </LinearLayout>
                             </FrameLayout>
 
+                                </LinearLayout>
+                            </FrameLayout>
+
                         </LinearLayout>
             </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -1010,15 +1025,15 @@
                     android:id="@+id/familyhead_checkbox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/are_you_head_of_the_family"
                     android:layout_marginStart="10dp"
-                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/are_you_head_of_the_family"
                     android:textSize="@dimen/card_content_text_size">
 
                 </com.google.android.material.checkbox.MaterialCheckBox>
 
-            <androidx.cardview.widget.CardView
+                <androidx.cardview.widget.CardView
                 android:id="@+id/cardview_household"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

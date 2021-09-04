@@ -160,7 +160,7 @@ public class IdentificationActivity extends AppCompatActivity {
     Context context;
     private String BlockCharacterSet_Others = "0123456789\\@$!=><&^*+€¥£`~";
     private String BlockCharacterSet_Name = "\\@$!=><&^*+\"\'€¥£`~";
-    FrameLayout framelayout_vaccination;
+    FrameLayout framelayout_vaccination, framelayout_vaccine_question;
     Spinner spinner_vaccination;
 
     Intent i_privacy;
@@ -259,6 +259,7 @@ public class IdentificationActivity extends AppCompatActivity {
         radioYes = findViewById(R.id.identification_yes);
         radioNo = findViewById(R.id.identification_no);
         framelayout_vaccination = findViewById(R.id.framelayout_vaccination);
+        framelayout_vaccine_question = findViewById(R.id.framelayout_vaccine_question);
         spinner_vaccination = findViewById(R.id.spinner_vaccination);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
@@ -463,6 +464,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mDOB.setText(patient1.getDate_of_birth());
         }*/
         mDOB.setText(patient1.getDate_of_birth());
+        Log.v("main", "dob: "+patient1.getDate_of_birth());
 
 
         mPhoneNum.setText(patient1.getPhone_number());
@@ -1377,9 +1379,23 @@ public class IdentificationActivity extends AppCompatActivity {
                 String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                         mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                         mAgeDays + getString(R.string.days);
+
                 mAge.setText(ageString);
 
-//                mAge.setText(age);
+                //vaccination if above or equal to 18 than show visibility....
+                if(mAgeYears >= 18) {
+                    framelayout_vaccine_question.setVisibility(View.VISIBLE);
+                }
+                else {
+                    framelayout_vaccine_question.setVisibility(View.GONE);
+                    if(radioYes.isChecked()) //so that no previous data be gone to the db
+                        radioYes.setChecked(false);
+                    if(radioNo.isChecked())
+                        radioNo.setChecked(false);
+
+                    spinner_vaccination.setSelection(0);
+                }
+
 
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
@@ -1397,6 +1413,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (patientID_edit != null) {
             //dob to be displayed based on translation...
             String dob = DateAndTimeUtils.getFormatedDateOfBirthAsView(patient1.getDate_of_birth());
+            Log.v("main", "dob: "+patient1.getDate_of_birth() + "\n" + dob);
+
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                 mDOB.setText(dob_text);
@@ -1416,6 +1434,21 @@ public class IdentificationActivity extends AppCompatActivity {
             mAgeMonths = Integer.valueOf(ymdData[1]);
             mAgeDays = Integer.valueOf(ymdData[2]);
             mAge.setText(yrMoDays);
+
+            //vaccination if above or equal to 18 than show visibility....
+            if(mAgeYears >= 18) {
+                framelayout_vaccine_question.setVisibility(View.VISIBLE);
+            }
+            else {
+                framelayout_vaccine_question.setVisibility(View.GONE);
+                if(radioYes.isChecked())
+                    radioYes.setChecked(false);
+                if(radioNo.isChecked())
+                    radioNo.setChecked(false);
+
+                spinner_vaccination.setSelection(0);
+            }
+
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1486,8 +1519,22 @@ public class IdentificationActivity extends AppCompatActivity {
                     String ageString = mAgeYears + getString(R.string.identification_screen_text_years) + " - " +
                             mAgeMonths + getString(R.string.identification_screen_text_months) + " - " +
                             mAgeDays + getString(R.string.days);
+
                     mAge.setText(ageString);
 
+                    //vaccination if above or equal to 18 than show visibility....
+                    if(mAgeYears >= 18) {
+                        framelayout_vaccine_question.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        framelayout_vaccine_question.setVisibility(View.GONE);
+                        if(radioYes.isChecked())
+                            radioYes.setChecked(false);
+                        if(radioNo.isChecked())
+                            radioNo.setChecked(false);
+
+                        spinner_vaccination.setSelection(0);
+                    }
 
                     Calendar calendar = Calendar.getInstance();
                     int curYear = calendar.get(Calendar.YEAR);
@@ -2058,35 +2105,38 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //vaccination
-        if (!radioYes.isChecked() && !radioNo.isChecked()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new
-                    MaterialAlertDialogBuilder(IdentificationActivity.this);
-            alertDialogBuilder.setTitle(R.string.error);
-            alertDialogBuilder.setMessage(R.string.select_option_vaccination_dialog);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+        if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+            if (!radioYes.isChecked() && !radioNo.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new
+                        MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_option_vaccination_dialog);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
 
-            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-            //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-            IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
-            return;
-        }
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                return;
+            }
 
-        if (radioYes.isChecked() && spinner_vaccination.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_vaccination.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_vaccination;
-            cancel = true;
-            return;
+            if (radioYes.isChecked() && spinner_vaccination.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_vaccination.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_vaccination;
+                cancel = true;
+                return;
+            }
         }
+        //vaccination - end
 
 
         if (familyhead_checkbox.isChecked()) {
@@ -2389,23 +2439,33 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
-                //Vaccination ...
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
-                patientAttributesDTO.setValue(StringUtils.getVaccinationSpinnerHi_En(spinner_vaccination));
-                Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+            if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+                if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
+                    //Vaccination ...
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                    patientAttributesDTO.setValue(StringUtils.getVaccinationSpinnerHi_En(spinner_vaccination));
+                    Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                } else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                    patientAttributesDTO.setValue("No");
+                    Log.d("HOH", "Vaccination: " + "No");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
             }
             else {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
-                patientAttributesDTO.setValue("No");
-                Log.d("HOH", "Vaccination: " + "No");
+                patientAttributesDTO.setValue("Age less than 18 years");
+                Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
@@ -2728,7 +2788,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -2846,14 +2907,38 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //vaccination
-        if (radioYes.isChecked() && spinner_vaccination.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_vaccination.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_vaccination;
-            cancel = true;
-            return;
+        if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+            if (!radioYes.isChecked() && !radioNo.isChecked()) {
+                MaterialAlertDialogBuilder alertDialogBuilder = new
+                        MaterialAlertDialogBuilder(IdentificationActivity.this);
+                alertDialogBuilder.setTitle(R.string.error);
+                alertDialogBuilder.setMessage(R.string.select_option_vaccination_dialog);
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
+                return;
+            }
+
+            if (radioYes.isChecked() && spinner_vaccination.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_vaccination.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_vaccination;
+                cancel = true;
+                return;
+            }
         }
+        //vaccination - end...
 
         if (familyhead_checkbox.isChecked()) {
 
@@ -3154,23 +3239,33 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.d("HOH", "Whatsapp use: " + whatsapp_spinner.getSelectedItem().toString());
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            if(radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
-                //Vaccination ...
-                patientAttributesDTO = new PatientAttributesDTO();
-                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-                patientAttributesDTO.setPatientuuid(uuid);
-                patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
-                patientAttributesDTO.setValue(StringUtils.getVaccinationSpinnerHi_En(spinner_vaccination));
-                Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
-                patientAttributesDTOList.add(patientAttributesDTO);
+            if(framelayout_vaccine_question.getVisibility() == View.VISIBLE) {
+                if (radioYes.isChecked() && framelayout_vaccination.getVisibility() == View.VISIBLE) {
+                    //Vaccination ...
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                    patientAttributesDTO.setValue(StringUtils.getVaccinationSpinnerHi_En(spinner_vaccination));
+                    Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                } else {
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
+                    patientAttributesDTO.setValue("No");
+                    Log.d("HOH", "Vaccination: " + "No");
+                    patientAttributesDTOList.add(patientAttributesDTO);
+                }
             }
             else {
                 patientAttributesDTO = new PatientAttributesDTO();
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Covid Vaccination"));
-                patientAttributesDTO.setValue("No");
-                Log.d("HOH", "Vaccination: " + "No");
+                patientAttributesDTO.setValue("Age less than 18 years");
+                Log.d("HOH", "Vaccination: " + spinner_vaccination.getSelectedItem().toString());
                 patientAttributesDTOList.add(patientAttributesDTO);
             }
 
