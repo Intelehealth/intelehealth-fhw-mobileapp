@@ -166,7 +166,6 @@ public class SetupActivity extends AppCompatActivity {
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
         // populateAutoComplete(); TODO: create our own autocomplete code
-
         mLoginButton = findViewById(R.id.setup_submit_button);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override

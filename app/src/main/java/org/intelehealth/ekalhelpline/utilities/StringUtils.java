@@ -115,6 +115,13 @@ public final class StringUtils {
         String val = "";
         if (value != null)
             val = value;
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            val = switch_hi_numberRelation_edit(val);
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            val = switch_mr_numberRelation_edit(val);
+        }
         return val;
 
     }
@@ -127,10 +134,12 @@ public final class StringUtils {
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             val = switch_hi_helplineInfo_edit(val) ;
             val = switch_hi_callerRelation_edit(val);
+            val = switch_hi_numberRelation_edit(val);
         }
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             val = switch_mr_helplineInfo_edit(val) ;
             val = switch_mr_callerRelation_edit(val);
+            val = switch_mr_numberRelation_edit(val);
         }
             return val;
 
@@ -838,6 +847,108 @@ public final class StringUtils {
                 break;
             case "अन्य रिश्तेदार":
                 val = "Other Relative";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_numberRelation(String val) {
+        switch (val) {
+            case "Self":
+                val = "रोगी स्वयं";
+                break;
+            case "Community Champion":
+                val = "सामुदायिक चैंपियन";
+                break;
+            case "Friends":
+                val = "मित्र";
+                break;
+            case "Relatives":
+                val = "रिश्तेदार";
+                break;
+            case "Neighbour":
+                val = "पड़ोसी";
+                break;
+            case "Others":
+                val = "अन्य";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_numberRelation_edit(String val) {
+        switch (val) {
+            case "रोगी स्वयं":
+                val = "Self";
+                break;
+            case "सामुदायिक चैंपियन":
+                val = "Community Champion";
+                break;
+            case "मित्र":
+                val = "Friends";
+                break;
+            case "रिश्तेदार":
+                val = "Relatives";
+                break;
+            case "पड़ोसी":
+                val = "Neighbour";
+                break;
+            case "अन्य":
+                val = "Others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_numberRelation(String val) {
+        switch (val) {
+            case "Self":
+                val = "रुग्ण स्वतः";
+                break;
+            case "Community Champion":
+                val = "समुदाय विजेता";
+                break;
+            case "Friends":
+                val = "मित्रांनो";
+                break;
+            case "Relatives":
+                val = "नातेवाईक";
+                break;
+            case "Neighbour":
+                val = "शेजारी";
+                break;
+            case "Others":
+                val = "इतर";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_mr_numberRelation_edit(String val) {
+        switch (val) {
+            case "रुग्ण स्वतः":
+                val = "Self";
+                break;
+            case "समुदाय विजेता":
+                val = "Community Champion";
+                break;
+            case "मित्रांनो":
+                val = "Friends";
+                break;
+            case "नातेवाईक":
+                val = "Relatives";
+                break;
+            case "शेजारी":
+                val = "Neighbour";
+                break;
+            case "इतर":
+                val = "Others";
                 break;
             default:
                 return val;

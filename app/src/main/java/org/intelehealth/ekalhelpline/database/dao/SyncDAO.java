@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -334,7 +335,8 @@ public class SyncDAO {
                 for (int j = 0; j < activePatientList.size(); j++) {
                     if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
                         Log.e("GET-ID", "" + NotificationID.getID());
-                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + activePatientList.get(j).getLast_name(),
+                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " + activePatientList.get(j).getFirst_name() + " " + ((!TextUtils.isEmpty(activePatientList.get(j).getLast_name()))
+                                        ? activePatientList.get(j).getLast_name() : ""),
                                 IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription), NotificationID.getID(), IntelehealthApplication.getAppContext());
                     }
                 }

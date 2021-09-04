@@ -40,6 +40,11 @@
         <item>Never</item>
     </string-array>
 
+    <string-array name="pref_gender">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
@@ -266,6 +271,58 @@
         <item>भाऊ</item>
         <item>इतर नातेवाईक</item>
     </string-array>
+
+    //values for number relation spinner
+    <string-array name="number_relation_en">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Community Champion</item>
+        <item>Friends</item>
+        <item>Relatives</item>
+        <item>Neighbour</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="number_relation_hi">
+        <item>चुनिये</item>
+        <item>रोगी स्वयं</item>
+        <item>सामुदायिक चैंपियन</item>
+        <item>मित्र</item>
+        <item>रिश्तेदार</item>
+        <item>पड़ोसी</item>
+        <item>अन्य</item>
+    </string-array>
+
+    <string-array name="number_relation_mr">
+        <item>निवडा</item>
+        <item>रुग्ण स्वतः</item>
+        <item>समुदाय विजेता</item>
+        <item>मित्रांनो</item>
+        <item>नातेवाईक</item>
+        <item>शेजारी</item>
+        <item>इतर</item>
+    </string-array>
+
+    <string-array name="number_relation_ta">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Community Champion</item>
+        <item>Friends</item>
+        <item>Relatives</item>
+        <item>Neighbour</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="number_relation_kn">
+        <item>Select</item>
+        <item>Self</item>
+        <item>Community Champion</item>
+        <item>Friends</item>
+        <item>Relatives</item>
+        <item>Neighbour</item>
+        <item>Others</item>
+    </string-array>
+
 
     //values for "helpline knowledge" spinner
     <string-array name="helpline_knowledge_en">
