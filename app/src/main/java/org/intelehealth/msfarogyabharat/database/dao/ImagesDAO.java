@@ -357,14 +357,14 @@ public class ImagesDAO {
         return isUpdated;
     }
 
-    public ArrayList getFilename(String patientUuid) throws DAOException {
+    public ArrayList getFilename(String patientUuid, String encounterAdultIntials) throws DAOException {
         Logger.logD(TAG, "patient uuid for image " + patientUuid);
         ArrayList<String> uuidList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND sync = ? AND voided = ?",
-                    new String[]{patientUuid, "TRUE", "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, encounterAdultIntials, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
@@ -482,7 +482,7 @@ public class ImagesDAO {
     }
 
     public void insertInto_tbl_additional_doc(
-            String uuid, String patientId, String obsId, String imageName, String voided, String sync) {
+            String uuid, String patientId, String encounterAdultIntials, String obsId, String imageName, String voided, String sync) {
 
         SQLiteDatabase sqLiteDatabase = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         sqLiteDatabase.beginTransaction();
@@ -490,11 +490,11 @@ public class ImagesDAO {
 
         contentValues.put("uuid", uuid);
         contentValues.put("patientId", patientId);
+        contentValues.put("encounterId", encounterAdultIntials);
         contentValues.put("obsId", obsId);
         contentValues.put("imageName", imageName);
         contentValues.put("voided", voided);
         contentValues.put("sync", sync);
-
         sqLiteDatabase.insertWithOnConflict("tbl_additional_doc",
                 null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         sqLiteDatabase.setTransactionSuccessful();
@@ -502,14 +502,14 @@ public class ImagesDAO {
         sqLiteDatabase.endTransaction();
     }
 
-    public List<String> get_tbl_additional_doc(String patientUuid) throws DAOException {
+    public List<String> get_tbl_additional_doc(String patientUuid, String encounterAdultInitials) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
 
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ? AND sync = ? AND voided = ?",
-                    new String[]{patientUuid, "TRUE", "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, encounterAdultInitials, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
@@ -547,14 +547,14 @@ public class ImagesDAO {
     }
 
 
-    public List<String> get_obsId_tbl_additional_doc(String patientUuid) throws DAOException {
+    public List<String> get_obsId_tbl_additional_doc(String patientUuid, String encounterUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
 
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT obsId FROM tbl_additional_doc WHERE patientId = ? AND sync = ? AND voided = ?",
-                    new String[]{patientUuid, "TRUE", "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT obsId FROM tbl_additional_doc WHERE patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, encounterUuid, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("obsId")));
