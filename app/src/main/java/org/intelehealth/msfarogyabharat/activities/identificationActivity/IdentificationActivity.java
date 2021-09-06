@@ -1634,14 +1634,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 mHelplineKnowledge.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                    /*String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));*/
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 } else {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 }
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+              //  if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
 
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
                     helplineInfoOther.setText(patient1.getCaste());
@@ -1737,23 +1739,24 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
+                    /*String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));*/
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
                 } else {
                     mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
 //            if (callerRelationAdapter.getPosition(patient1.getSdw()) == -1)
 
-            if (patient1.getSdw() == null || patient1.getSdw().equals(getResources()
-                    .getString(R.string.not_provided)))
+            if (patient1.getSdw() == null || patient1.getSdw().equals(getResources().getString(R.string.not_provided)))
                 mCallerRelation.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
-                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));
+                    /*String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
+                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));*/
+                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
                 } else {
                     mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
                 }
