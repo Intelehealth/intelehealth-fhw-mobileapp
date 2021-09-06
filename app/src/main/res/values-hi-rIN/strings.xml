@@ -618,7 +618,7 @@
     <string name="i_need_assistance">और मुझे सहायता की आवश्यकता है|</string>
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
-    <string name="intelehealth_a_telemedicine_platform">विकल्प-हेल्पलाइन एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_a_telemedicine_platform">विकल्प-हेल्पलाइन एक डेटा कैप्चरिंग एप्लिकेशन है जो परामर्शदाताओं को यौन प्रजनन स्वास्थ्य और घरेलू हिंसा के संबंध में मार्गदर्शन प्राप्त करने वाली महिलाओं का समर्थन करने की अनुमति देती है।</string>
     <string name="intelehealth_name">विकल्प-हेल्पलाइन</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>

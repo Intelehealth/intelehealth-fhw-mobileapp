@@ -1443,7 +1443,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if(!patient1.getJob().equalsIgnoreCase("Not provided")) {
+            if(!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
                 framelayout_safe_abortion.setVisibility(View.VISIBLE);
                 framelayout_domestic_violence.setVisibility(View.GONE);
                 safe_abortion_radiobtn.setChecked(true);
@@ -1644,19 +1644,16 @@ public class IdentificationActivity extends AppCompatActivity {
                 mHelplineKnowledge.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
-                    String helplineKnowledge = patient1.getCaste();
+                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
                 } else {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 }
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-               // if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
-                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+                if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
 
-                   // mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
                     helplineInfoOther.setText(patient1.getCaste());
                 }
             } else {
@@ -1669,6 +1666,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //start - other edittext
+
+
             if (genderAdapter.getPosition(patient1.getGender()) == -1) {
                 gender_spinner.setSelection(genderAdapter.getPosition("Other"));
                 genderOther.setText(patient1.getGender());
@@ -1706,22 +1705,37 @@ public class IdentificationActivity extends AppCompatActivity {
                 helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
                 wherediduOther.setText(patient1.getHelpline_no_from());
             }
+            if (patient1.getReferred_case().equals(getResources().getString(R.string.not_provided)))
+                who_refferred_spinner.setSelection(0);
+            else {
             if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
                 who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
                 referredOther.setText(patient1.getReferred_case());
-            }
+            }}
+
+ if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
+     am_i_speaking_spinner.setSelection(0);
+            else {
             if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
                 am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
                 amIspeakingOther.setText(patient1.getAmSpeaking());
-            }
+            }}
+
+            if (patient1.getCurrent_address().equals(getResources().getString(R.string.not_provided)))
+                current_residing_address_spinner.setSelection(0);
+            else {
             if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
                 current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
                 currentaddressOther.setText(patient1.getCurrent_address());
-            }
+            }}
+
+            if (patient1.getWhom_living().equals(getResources().getString(R.string.not_provided)))
+                with_whom_living_spinner.setSelection(0);
+            else {
             if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
                 with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
                 withwhomlivingOther.setText(patient1.getWhom_living());
-            }
+            }}
             //end - other edittext
 
 
@@ -1731,8 +1745,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
-                    String phoneNumber = patient1.getEconomic_status();
+                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
                     mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
                 } else {
                     mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
@@ -1747,8 +1760,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                   // String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
-                     String callRelation = patient1.getSdw();
+                    String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
                     mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));
                 } else {
                     mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
@@ -2292,8 +2304,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                  //  if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
-                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
                         helplineInfoOther.setVisibility(View.VISIBLE);
                         helplineInfoOther.setFocusable(true);
                     } else {
@@ -3760,7 +3771,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
                     if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                         helplineInfoOther.setError(getString(R.string.error_field_required));
                         focusView = helplineInfoOther;
@@ -4197,13 +4208,11 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
         //check if privacy notice is checked
-/*
-        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
-            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-*/
+//        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+//            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
+//                    Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
 
         // TODO: Add validations for all Spinners here...
@@ -4506,7 +4515,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
@@ -5670,7 +5679,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
                 if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                     helplineInfoOther.setError(getString(R.string.error_field_required));
                     focusView = helplineInfoOther;
@@ -6144,7 +6153,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
