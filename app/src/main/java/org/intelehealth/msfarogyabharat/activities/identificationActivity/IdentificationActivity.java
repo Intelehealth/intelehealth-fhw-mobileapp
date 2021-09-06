@@ -1436,7 +1436,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if (!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
+            if (!patient1.getJob().equalsIgnoreCase("Not provided")) {
                 framelayout_safe_abortion.setVisibility(View.VISIBLE);
                 framelayout_domestic_violence.setVisibility(View.GONE);
                 safe_abortion_radiobtn.setChecked(true);
@@ -1469,7 +1469,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start - new fields Spinner
             //gender edit
-            if (patient1.getGender().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getGender().equalsIgnoreCase("Not provided"))
                 gender_spinner.setSelection(0);
             else {
                 String genderstring = patient1.getGender();
@@ -1483,7 +1483,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //education edit
-            if (patient1.getEducation_value().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEducation_value().equalsIgnoreCase("Not provided"))
                 education_spinner.setSelection(0);
             else {
                 String educationstring = patient1.getEducation_value();
@@ -1491,7 +1491,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //current marital status edit
-            if (patient1.getCurrent_marital_status().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCurrent_marital_status().equalsIgnoreCase("Not provided"))
                 current_marital_spinner.setSelection(0);
             else {
                 String value = patient1.getCurrent_marital_status();
@@ -1499,7 +1499,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //occupation spinner edit
-            if (patient1.getOccupation_value().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getOccupation_value().equalsIgnoreCase("Not provided"))
                 occupation_spinner_1.setSelection(0);
             else {
                 String value = patient1.getOccupation_value();
@@ -1507,7 +1507,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //husband occupation edit
-            if (patient1.getHusband_occupation().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getHusband_occupation().equalsIgnoreCase("Not provided"))
                 husband_occupation_spinner.setSelection(0);
             else {
                 String value = patient1.getHusband_occupation();
@@ -1515,7 +1515,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //children edit
-            if (patient1.getChildren().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getChildren().equalsIgnoreCase("Not provided"))
                 have_children_spinner.setSelection(0);
             else {
                 String value = patient1.getChildren();
@@ -1538,7 +1538,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }*/
 
             //caste edit
-            if (patient1.getCaste_value().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCaste_value().equalsIgnoreCase("Not provided"))
                 caste_spinner.setSelection(0);
             else {
                 String value = patient1.getCaste_value();
@@ -1546,7 +1546,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //contact type edit
-            if (patient1.getContact_type().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getContact_type().equalsIgnoreCase("Not provided"))
                 contact_type_spinner.setSelection(0);
             else {
                 String value = patient1.getContact_type();
@@ -1554,7 +1554,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //where helpline no form edit
-            if (patient1.getHelpline_no_from().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getHelpline_no_from().equalsIgnoreCase("Not provided"))
                 helplineno_from_spinner.setSelection(0);
             else {
                 String value = patient1.getHelpline_no_from();
@@ -1562,7 +1562,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //job edit
-            if (patient1.getJob().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getJob().equalsIgnoreCase("Not provided"))
                 job_spinner.setSelection(0);
             else {
                 String value = patient1.getJob();
@@ -1571,7 +1571,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //describe location edit
-            if (patient1.getDescribe_location().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getDescribe_location().equalsIgnoreCase("Not provided"))
                 describe_location_spinner.setSelection(0);
             else {
                 String value = patient1.getDescribe_location();
@@ -1579,7 +1579,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //referred case edit
-            if (patient1.getReferred_case().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getReferred_case().equalsIgnoreCase("Not provided"))
                 who_refferred_spinner.setSelection(0);
             else {
                 String value = patient1.getReferred_case();
@@ -1587,7 +1587,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // am i speaking edit
-            if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
                 am_i_speaking_spinner.setSelection(0);
             else {
                 String value = patient1.getAmSpeaking();
@@ -1595,7 +1595,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // survivior ever married edit
-            if (patient1.getEver_married().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEver_married().equalsIgnoreCase("Not provided"))
                 ever_married_spinner.setSelection(0);
             else {
                 String value = patient1.getEver_married();
@@ -1603,7 +1603,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // type of marriage edit
-            if (patient1.getType_marriage().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getType_marriage().equalsIgnoreCase("Not provided"))
                 type_marriage_spinner.setSelection(0);
             else {
                 String value = patient1.getType_marriage();
@@ -1611,7 +1611,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // current address edit
-            if (patient1.getCurrent_address().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCurrent_address().equalsIgnoreCase("Not provided"))
                 current_residing_address_spinner.setSelection(0);
             else {
                 String value = patient1.getCurrent_address();
@@ -1619,7 +1619,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // with whom living edit
-            if (patient1.getWhom_living().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getWhom_living().equalsIgnoreCase("Not provided"))
                 with_whom_living_spinner.setSelection(0);
             else {
                 String value = patient1.getWhom_living();
@@ -1630,7 +1630,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCaste().equalsIgnoreCase("Not provided"))
                 mHelplineKnowledge.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1695,7 +1695,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
                 wherediduOther.setText(patient1.getHelpline_no_from());
             }
-            if (patient1.getReferred_case().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getReferred_case().equalsIgnoreCase("Not provided"))
                 who_refferred_spinner.setSelection(0);
             else {
                 if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
@@ -1704,7 +1704,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-            if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
                 am_i_speaking_spinner.setSelection(0);
             else {
                 if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
@@ -1713,7 +1713,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-            if (patient1.getCurrent_address().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getCurrent_address().equalsIgnoreCase("Not provided"))
                 current_residing_address_spinner.setSelection(0);
             else {
                 if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
@@ -1722,7 +1722,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-            if (patient1.getWhom_living().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getWhom_living().equalsIgnoreCase("Not provided"))
                 with_whom_living_spinner.setSelection(0);
             else {
                 if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
@@ -1733,7 +1733,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //end - other edittext
 
 
-            if (patient1.getEconomic_status().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getEconomic_status().equalsIgnoreCase("Not provided"))
                 mPhoneType.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
@@ -1748,7 +1748,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 //            if (callerRelationAdapter.getPosition(patient1.getSdw()) == -1)
 
-            if (patient1.getSdw() == null || patient1.getSdw().equals(getResources().getString(R.string.not_provided)))
+            if (patient1.getSdw() == null || patient1.getSdw().equalsIgnoreCase("Not provided"))
                 mCallerRelation.setSelection(0);
 //            else
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
