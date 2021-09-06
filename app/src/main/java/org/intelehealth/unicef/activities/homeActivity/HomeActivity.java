@@ -59,6 +59,7 @@ import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.unicef.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivity;
 import org.intelehealth.unicef.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.unicef.activities.settingsActivity.SettingsActivity;
@@ -521,8 +522,13 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.settingsOption:
+            /*case R.id.settingsOption:
                 settings();
+                return true;*/
+            case R.id.languageOption:
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                startActivity(intent);
+                finish();
                 return true;
             case R.id.updateProtocolsOption: {
 
