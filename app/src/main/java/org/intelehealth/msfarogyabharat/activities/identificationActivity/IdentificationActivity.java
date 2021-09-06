@@ -1645,7 +1645,7 @@ public class IdentificationActivity extends AppCompatActivity {
               //  if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
                 if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
 
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                     helplineInfoOther.setText(patient1.getCaste());
                 }
             } else {
@@ -1966,7 +1966,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 else {
                     //on edit the spinner value will be selected based on the current app lang...
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("अन्य [दर्ज करें]"));
+                        toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition(" [दर्ज करें]"));
                     } else {
                         toilet_facility_spinner.setSelection(toiletfacility_adapt.getPosition("Other[Enter]"));
                     }
@@ -2299,7 +2299,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
                         helplineInfoOther.setVisibility(View.VISIBLE);
                         helplineInfoOther.setFocusable(true);
                     } else {
@@ -3795,7 +3795,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                 if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                     helplineInfoOther.setError(getString(R.string.error_field_required));
                     focusView = helplineInfoOther;
@@ -4523,7 +4523,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
@@ -5509,7 +5509,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                 if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                     helplineInfoOther.setError(getString(R.string.error_field_required));
                     focusView = helplineInfoOther;
@@ -6240,7 +6240,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
