@@ -50,7 +50,7 @@
     <string name="title_activity_identification" translatable="false">புதிய நோயாளியைச் சேர்க்கவும்</string>
     <string name="identification_screen_prompt_first_name">முதல் பெயர்*</string>
     <string name="identification_screen_prompt_middle_name">நடுத்தரப் பெயர்</string>
-    <string name="identification_screen_prompt_last_name">கடைசி பெயர்</string>
+    <string name="identification_screen_prompt_last_name">கடைசி பெயர்*</string>
     <string name="identification_screen_prompt_address">முகவரி வரி 1</string>
     <string name="identification_screen_prompt_address2">முகவரி வரி 2</string>
     <string name="identification_screen_prompt_phone_number">தொலைபேசி எண்</string>

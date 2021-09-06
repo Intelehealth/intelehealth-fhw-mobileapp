@@ -48,7 +48,7 @@
     <string name="title_activity_identification" translatable="false">নতুন ৰোগী যুক্ত কৰা</string>
     <string name="identification_screen_prompt_first_name">নামৰ প্রথম অংশ *</string>
     <string name="identification_screen_prompt_middle_name">মাজৰ নাম</string>
-    <string name="identification_screen_prompt_last_name">নামৰ শেষাংশ *</string>
+    <string name="identification_screen_prompt_last_name">নামৰ শেষাংশ*</string>
     <string name="identification_screen_prompt_address">ঠিকনা ৰেখা 1</string>
     <string name="identification_screen_prompt_address2">ঠিকানা ৰেখা ২</string>
     <string name="identification_screen_prompt_phone_number">ফোন নম্বৰ *</string>

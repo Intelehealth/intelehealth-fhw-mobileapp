@@ -655,7 +655,7 @@
     <string name="something_went_wrong">ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ಸಹಾಯಕರನ್ನು ಸಂಪರ್ಕಿಸಿ</string>
     <string name="please_select_specialization">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆರಿಸಿ</string>
     <string name="speciality">ವಿಶೇಷತೆ</string>
-    <string name="identification_screen_prompt_last_name">ಕೊನೆಯ ಹೆಸರು</string>
+    <string name="identification_screen_prompt_last_name">ಕೊನೆಯ ಹೆಸರು*</string>
     <string name="identification_screen_prompt_address">ವಿಳಾಸ ಸಾಲು 1</string>
     <string name="identification_screen_prompt_address2">ವಿಳಾಸ ಸಾಲು 2</string>
     <string name="identification_screen_prompt_phone_number">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>

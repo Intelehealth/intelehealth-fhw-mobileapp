@@ -516,8 +516,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //setting the fields when user clicks edit details
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
-        if(patient1.getLast_name()!= null)
-            mLastName.setText(patient1.getLast_name());
+        mLastName.setText(patient1.getLast_name());
   /*      if(patient1.getDate_of_birth() != null) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 mDOB.setText(StringUtils.en__hi_dob(patient1.getDate_of_birth()));
@@ -2300,7 +2299,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
+        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("") && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
 
@@ -2311,11 +2310,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            //Last Name not mandatory for hello saathi project: BY Nishita
-
-//            if (mLastName.getText().toString().equals("")) {
-//                mLastName.setError(getString(R.string.error_field_required));
-//            }
+            if (mLastName.getText().toString().equals("")) {
+                mLastName.setError(getString(R.string.error_field_required));
+            }
 
 //            if (mDOB.getText().toString().equals("")) {
 //                mDOB.setError(getString(R.string.error_field_required));
@@ -2643,10 +2640,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-//            if(mLastName.getText().toString().equalsIgnoreCase("") || mLastName.getText().toString().isEmpty())
-//                patientdto.setLastname(null);
-//            else
-                patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondaryphonenumber(StringUtils.getValue(mAddPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
@@ -3069,9 +3063,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
-//                if(patientdto.getLastname()== null || patientdto.getLastname().equalsIgnoreCase("") || patientdto.getLastname().isEmpty())
-//                    i.putExtra("patientName", patientdto.getFirstname());
-//                else
                 i.putExtra("patientName", patientdto.getFirstname() + " " +((!TextUtils.isEmpty(patientdto.getLastname()))
                             ? patientdto.getLastname() : ""));
                 i.putExtra("tag", "newPatient");
@@ -3196,7 +3187,8 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("")
-               && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
+               && !mLastName.getText().toString().equals("")
+                && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
 
@@ -3207,10 +3199,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            //Last name not mandatory for hello saathi: Ny Nishita
-//            if (mLastName.getText().toString().equals("")) {
-//                mLastName.setError(getString(R.string.error_field_required));
-//            }
+            if (mLastName.getText().toString().equals("")) {
+                mLastName.setError(getString(R.string.error_field_required));
+            }
 
 //            if (mDOB.getText().toString().equals("")) {
 //                mDOB.setError(getString(R.string.error_field_required));
@@ -3541,10 +3532,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
-//            if(mLastName.getText().toString().equalsIgnoreCase("") || mLastName.getText().toString().isEmpty())
-//                patientdto.setLast_name(null);
-//            else
-                patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondary_phone_number(StringUtils.getValue(mAddPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
@@ -3931,9 +3919,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 Logger.logD(TAG, "updated");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
-//                if(patientdto.getLast_name()== null || patientdto.getLast_name().equalsIgnoreCase("") || patientdto.getLast_name().isEmpty())
-//                    i.putExtra("patientName", patientdto.getFirst_name());
-//                else
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + ((!TextUtils.isEmpty(patientdto.getLast_name()))
                             ? patientdto.getLast_name() : ""));
                 i.putExtra("tag", "newPatient");

@@ -80,7 +80,7 @@
         <string name="title_activity_identification">नवीन रुग्ण जोडा</string>
         <string name="identification_screen_prompt_first_name">पहिले नाव *</string>
         <string name="identification_screen_prompt_middle_name">मधले नाव</string>
-        <string name="identification_screen_prompt_last_name">आडनाव</string>
+        <string name="identification_screen_prompt_last_name">आडनाव*</string>
         <string name="identification_screen_prompt_address">पत्ता ओळ 1</string>
         <string name="identification_screen_prompt_address2">पत्ता ओळ 2</string>
         <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
