@@ -3104,6 +3104,24 @@ public class IdentificationActivity extends AppCompatActivity {
                     framelayout_safe_abortion.setVisibility(View.VISIBLE);
                     framelayout_domestic_violence.setVisibility(View.GONE);
 
+                    //clear -start
+                    job_spinner.setSelection(0);
+                    describe_location_spinner.setSelection(0);
+
+                    who_refferred_spinner.setSelection(0);
+                    am_i_speaking_spinner.setSelection(0);
+                    good_mobile_edittext.setText("");
+                    ever_married_spinner.setSelection(0);
+                    age_marriage_edittext.setText("");
+                    type_marriage_spinner.setSelection(0);
+                    maternal_address_edittext.setText("");
+                    maternal_mobile_edittext.setText("");
+                    address_inlaws_edittext.setText("");
+                    husband_mobile_edittext.setText("");
+                    current_residing_address_spinner.setSelection(0);
+                    with_whom_living_spinner.setSelection(0);
+                    //clear - end
+
                 break;
             case R.id.identification_violence:
                 if (checked)
@@ -3111,6 +3129,24 @@ public class IdentificationActivity extends AppCompatActivity {
                     mComplaintSelection = "Violence";
                     framelayout_domestic_violence.setVisibility(View.VISIBLE);
                     framelayout_safe_abortion.setVisibility(View.GONE);
+
+                //clear -start
+                job_spinner.setSelection(0);
+                describe_location_spinner.setSelection(0);
+
+                who_refferred_spinner.setSelection(0);
+                am_i_speaking_spinner.setSelection(0);
+                good_mobile_edittext.setText("");
+                ever_married_spinner.setSelection(0);
+                age_marriage_edittext.setText("");
+                type_marriage_spinner.setSelection(0);
+                maternal_address_edittext.setText("");
+                maternal_mobile_edittext.setText("");
+                address_inlaws_edittext.setText("");
+                husband_mobile_edittext.setText("");
+                current_residing_address_spinner.setSelection(0);
+                with_whom_living_spinner.setSelection(0);
+                //clear - end
                 break;
         }
     }
