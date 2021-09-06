@@ -3533,7 +3533,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
+       /* if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("")
                 && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
@@ -3541,7 +3541,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             Log.v(TAG, "Result");
 
-        } else {
+        }
+        else {*/
             if (mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
                 return;
@@ -3551,10 +3552,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 mLastName.setError(getString(R.string.error_field_required));
                 return;
             }
-
-//            if (mDOB.getText().toString().equals("")) {
-//                mDOB.setError(getString(R.string.error_field_required));
-//            }
 
             if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
@@ -3614,9 +3611,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-
             if(educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
                 educationOther.setError(getString(R.string.error_field_required));
+                focusView = educationOther;
+                cancel = true;
                 return;
             }
             //3. curent marital status
@@ -3628,6 +3626,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 focusView = current_marital_spinner;
                 cancel = true;
                 return;
+            }
+            if(maritualstatusOther.getVisibility() == View.VISIBLE && maritualstatusOther.getText().toString().equals("")) {
+            maritualstatusOther.setError(getString(R.string.error_field_required));
+            focusView = maritualstatusOther;
+            cancel = true;
+            return;
             }
 
             if (income_edittext.getText().toString().equals("")) {
@@ -3647,6 +3651,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
                 occupationOther.setError(getString(R.string.error_field_required));
+                focusView = occupationOther;
+                cancel = true;
                 return;
             }
 
@@ -3667,6 +3673,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
                 husbandoccupationOther.setError(getString(R.string.error_field_required));
+                focusView = husbandoccupationOther;
+                cancel = true;
                 return;
             }
 
@@ -3681,7 +3689,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
-            if (mNo_of_children.getText().toString().equals("")) {
+            if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
                 mNo_of_children.setError(getString(R.string.error_field_required));
                 return;
             }
@@ -3699,6 +3707,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
                 casteOther.setError(getString(R.string.error_field_required));
+                focusView = casteOther;
+                cancel = true;
                 return;
             }
             //9. contact type
@@ -3721,7 +3731,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
+             if(wherediduOther.getVisibility() == View.VISIBLE && wherediduOther.getText().toString().equals("")) {
+                 wherediduOther.setError(getString(R.string.error_field_required));
+                 focusView = wherediduOther;
+                 cancel = true;
+                return;
+            }
 
+            //who is calling
             if (mCallerRelation.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) mCallerRelation.getSelectedView();
                 errorText.setError("");
@@ -3732,6 +3749,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            //How do you know
             if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
                 errorText.setError("");
@@ -3752,7 +3770,8 @@ public class IdentificationActivity extends AppCompatActivity {
                         helplineInfoOther.setError(null);
                     }
                 }
-            } else {
+            }
+            else {
                 if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
                     if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                         helplineInfoOther.setError(getString(R.string.error_field_required));
@@ -3765,6 +3784,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
+            //what kind of mobile phone
             if (mPhoneType.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) mPhoneType.getSelectedView();
                 errorText.setError("");
@@ -3797,7 +3817,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start - complaint selection
 
-
             //end
 
 
@@ -3828,13 +3847,11 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 */
 
+         //   Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+         //   return;
+       // } comment else loop....
 
-
-            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        //add here complaints validation...
+        //add here complaints validation... outside of if loop.....
         if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
             //10. do you have work
             if (job_spinner.getSelectedItemPosition() == 0) {
@@ -3872,6 +3889,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
                 referredOther.setError(getString(R.string.error_field_required));
+                focusView = referredOther;
+                cancel = true;
                 return;
             }
 
@@ -3888,6 +3907,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
                 amIspeakingOther.setError(getString(R.string.error_field_required));
+                focusView = amIspeakingOther;
+                cancel = true;
                 return;
             }
 
@@ -3952,6 +3973,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
                 currentaddressOther.setError(getString(R.string.error_field_required));
+                focusView = currentaddressOther;
+                cancel = true;
                 return;
             }
 
@@ -3968,6 +3991,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if(withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
                 withwhomlivingOther.setError(getString(R.string.error_field_required));
+                focusView = withwhomlivingOther;
+                cancel = true;
                 return;
             }
 
@@ -3975,14 +4000,14 @@ public class IdentificationActivity extends AppCompatActivity {
             //end - complaint selection
         }
 
-        if (mCountry.getSelectedItemPosition() == 0) {
+      /*  if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
             cancel = true;
             return;
         } else {
             countryText.setError(null);
-        }
+        }*/
 
 
       /*  if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
@@ -4034,7 +4059,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //start - other editext
         //gender
-        if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (genderOther.getText().toString().equalsIgnoreCase("")) {
                 genderOther.setError(getString(R.string.error_field_required));
                 focusView = genderOther;
@@ -4043,10 +4068,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 genderOther.setError(null);
             }
-        }
+        }*/
 
         //education
-        if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (educationOther.getText().toString().equalsIgnoreCase("")) {
                 educationOther.setError(getString(R.string.error_field_required));
                 focusView = educationOther;
@@ -4055,10 +4080,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 educationOther.setError(null);
             }
-        }
+        }*/
 
         //maritual status
-        if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+        /*if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (maritualstatusOther.getText().toString().equalsIgnoreCase("")) {
                 maritualstatusOther.setError(getString(R.string.error_field_required));
                 focusView = maritualstatusOther;
@@ -4067,10 +4092,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 maritualstatusOther.setError(null);
             }
-        }
+        }*/
 
         // occupation
-        if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (occupationOther.getText().toString().equalsIgnoreCase("")) {
                 occupationOther.setError(getString(R.string.error_field_required));
                 focusView = occupationOther;
@@ -4079,10 +4104,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 occupationOther.setError(null);
             }
-        }
+        }*/
 
         //husband occupation
-        if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+        /*if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (husbandoccupationOther.getText().toString().equalsIgnoreCase("")) {
                 husbandoccupationOther.setError(getString(R.string.error_field_required));
                 focusView = husbandoccupationOther;
@@ -4091,10 +4116,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 husbandoccupationOther.setError(null);
             }
-        }
+        }*/
 
         //caste
-        if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+        /*if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
         caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
             if (casteOther.getText().toString().equalsIgnoreCase("")) {
                 casteOther.setError(getString(R.string.error_field_required));
@@ -4104,10 +4129,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 casteOther.setError(null);
             }
-        }
+        }*/
 
         //where did u
-        if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (wherediduOther.getText().toString().equalsIgnoreCase("")) {
                 wherediduOther.setError(getString(R.string.error_field_required));
                 focusView = wherediduOther;
@@ -4116,10 +4141,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 wherediduOther.setError(null);
             }
-        }
+        }*/
 
         //who referred case
-        if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (referredOther.getText().toString().equalsIgnoreCase("")) {
                 referredOther.setError(getString(R.string.error_field_required));
                 focusView = referredOther;
@@ -4128,10 +4153,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 referredOther.setError(null);
             }
-        }
+        }*/
 
         //am i speaking
-        if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)")) {
+        /*if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)")) {
             if (amIspeakingOther.getText().toString().equalsIgnoreCase("")) {
                 amIspeakingOther.setError(getString(R.string.error_field_required));
                 focusView = amIspeakingOther;
@@ -4140,10 +4165,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 amIspeakingOther.setError(null);
             }
-        }
+        }*/
 
         //current address
-        if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (currentaddressOther.getText().toString().equalsIgnoreCase("")) {
                 currentaddressOther.setError(getString(R.string.error_field_required));
                 focusView = currentaddressOther;
@@ -4153,9 +4178,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 currentaddressOther.setError(null);
             }
         }
-
+*/
         //with whom living
-        if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+       /* if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other")) {
             if (withwhomlivingOther.getText().toString().equalsIgnoreCase("")) {
                 withwhomlivingOther.setError(getString(R.string.error_field_required));
                 focusView = withwhomlivingOther;
@@ -4164,7 +4189,7 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 withwhomlivingOther.setError(null);
             }
-        }
+        }*/
 
         //end - other edittext
 
