@@ -131,8 +131,8 @@ public class IdentificationActivity extends AppCompatActivity {
     ArrayAdapter<CharSequence> phoneTypeAdapter;
     ArrayAdapter<CharSequence> callerRelationAdapter;
     ArrayAdapter<CharSequence> genderAdapter, marital_statusAdapter, husband_occupationAdapter, childrenAdapter;
-    ArrayAdapter<CharSequence>  no_childrenAdapter, contact_type_adapter, helpline_no_fromAdapter;
-    ArrayAdapter<CharSequence>  education_spinnerAdapter, occupation_spinner_1Adapter, caste_spinnerAdapter;
+    ArrayAdapter<CharSequence> no_childrenAdapter, contact_type_adapter, helpline_no_fromAdapter;
+    ArrayAdapter<CharSequence> education_spinnerAdapter, occupation_spinner_1Adapter, caste_spinnerAdapter;
 
     ArrayAdapter<CharSequence> job_spinnerAdapter, describe_location_spinnerAdapter, who_refferred_spinnerAdapter,
             am_i_speaking_spinnerAdapter, ever_married_spinnerAdapter, type_marriage_spinnerAdapter,
@@ -204,7 +204,7 @@ public class IdentificationActivity extends AppCompatActivity {
     String intentTag2 = "";
     String helplineInfo = "", genderInfo = "", educationInfo = "", maritualstatusInfo = "",
             husbandoccupationInfo = "", occupationInfo = "", casteInfo = "", wherediduInfo = "", referredbyInfo = "",
-    amiSpeakingInfo = "", currentAddressInfo, withwhomLivingInfo = "";
+            amiSpeakingInfo = "", currentAddressInfo, withwhomLivingInfo = "";
     Intent i_privacy;
     String privacy_value;
     private int retainPickerYear;
@@ -232,17 +232,17 @@ public class IdentificationActivity extends AppCompatActivity {
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional, helplineInfoOther,
-    genderOther, educationOther, maritualstatusOther, husbandoccupationOther, occupationOther, casteOther, wherediduOther,
-    referredOther, amIspeakingOther, currentaddressOther, withwhomlivingOther;
+            genderOther, educationOther, maritualstatusOther, husbandoccupationOther, occupationOther, casteOther, wherediduOther,
+            referredOther, amIspeakingOther, currentaddressOther, withwhomlivingOther;
     TextView personalInfo_Textview;
 
     //new fields of registration...
     Spinner gender_spinner, education_spinner, current_marital_spinner, occupation_spinner_1, have_children_spinner,
-    no_of_children_spinner, contact_type_spinner, helplineno_from_spinner, husband_occupation_spinner,
-    caste_spinner, job_spinner, describe_location_spinner, who_refferred_spinner, am_i_speaking_spinner, ever_married_spinner,
-    type_marriage_spinner, current_residing_address_spinner, with_whom_living_spinner;
+            no_of_children_spinner, contact_type_spinner, helplineno_from_spinner, husband_occupation_spinner,
+            caste_spinner, job_spinner, describe_location_spinner, who_refferred_spinner, am_i_speaking_spinner, ever_married_spinner,
+            type_marriage_spinner, current_residing_address_spinner, with_whom_living_spinner;
     EditText emergency_no_edittext, landmark_edittext, income_edittext, husband_income_monthly, good_mobile_edittext,
-    age_marriage_edittext, maternal_address_edittext, maternal_mobile_edittext, address_inlaws_edittext, husband_mobile_edittext;
+            age_marriage_edittext, maternal_address_edittext, maternal_mobile_edittext, address_inlaws_edittext, husband_mobile_edittext;
 
     FrameLayout framelayout_safe_abortion, framelayout_domestic_violence, framelayout_no_children;
     List<String> districtList;
@@ -399,7 +399,7 @@ public class IdentificationActivity extends AppCompatActivity {
         current_marital_spinner = findViewById(R.id.spinner_current_marital_status);
         occupation_spinner = findViewById(R.id.spinner_occupation_selection);
         have_children_spinner = findViewById(R.id.spinner_children);
-       // no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
+        // no_of_children_spinner = findViewById(R.id.spinner_no_of_children);
         contact_type_spinner = findViewById(R.id.spinner_contact_type);
         helplineno_from_spinner = findViewById(R.id.spinner_where_did_u);
         husband_occupation_spinner = findViewById(R.id.spinner_husband_occupation);
@@ -920,7 +920,6 @@ public class IdentificationActivity extends AppCompatActivity {
         //end - domestic violence
 
 
-
         //start - already present fields....
         //1. Education
         try { //Education spinner new....
@@ -968,13 +967,7 @@ public class IdentificationActivity extends AppCompatActivity {
         } //husband occupation Spinner End...
 
 
-
-
-
-
-
         //end - already present fields....
-
 
 
         try { //mobile_phone_type adapter setting...
@@ -1443,12 +1436,11 @@ public class IdentificationActivity extends AppCompatActivity {
         // setting radio button automatically according to the databse when user clicks edit details
         if (patientID_edit != null) {
 
-            if(!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
+            if (!patient1.getJob().equals(getResources().getString(R.string.not_provided))) {
                 framelayout_safe_abortion.setVisibility(View.VISIBLE);
                 framelayout_domestic_violence.setVisibility(View.GONE);
                 safe_abortion_radiobtn.setChecked(true);
-            }
-            else {
+            } else {
                 framelayout_domestic_violence.setVisibility(View.VISIBLE);
                 framelayout_safe_abortion.setVisibility(View.GONE);
                 violence_radiobtn.setChecked(true);
@@ -1529,10 +1521,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 String value = patient1.getChildren();
                 have_children_spinner.setSelection(childrenAdapter.getPosition(value));
 
-                if(have_children_spinner.getSelectedItemPosition() == 1) {
+                if (have_children_spinner.getSelectedItemPosition() == 1) {
                     framelayout_no_children.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     framelayout_no_children.setVisibility(View.GONE);
                     mNo_of_children.setText("");
                 }
@@ -1637,7 +1628,6 @@ public class IdentificationActivity extends AppCompatActivity {
             //end - new fields - Spinner
 
 
-
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
             if (patient1.getCaste().equals(getResources().getString(R.string.not_provided)))
@@ -1690,15 +1680,13 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
 
-                if(casteOther.getText().toString().contains("Minority: ")) {
+                if (casteOther.getText().toString().contains("Minority: ")) {
                     caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Minority (other - please specify)"));
-                }
-                else {
+                } else {
                     caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
                 }
                 casteOther.setText(patient1.getCaste_value());
             }
-
 
 
             if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
@@ -1708,34 +1696,38 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getReferred_case().equals(getResources().getString(R.string.not_provided)))
                 who_refferred_spinner.setSelection(0);
             else {
-            if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
-                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
-                referredOther.setText(patient1.getReferred_case());
-            }}
+                if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
+                    who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
+                    referredOther.setText(patient1.getReferred_case());
+                }
+            }
 
- if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
-     am_i_speaking_spinner.setSelection(0);
+            if (patient1.getAmSpeaking().equals(getResources().getString(R.string.not_provided)))
+                am_i_speaking_spinner.setSelection(0);
             else {
-            if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
-                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
-                amIspeakingOther.setText(patient1.getAmSpeaking());
-            }}
+                if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
+                    am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
+                    amIspeakingOther.setText(patient1.getAmSpeaking());
+                }
+            }
 
             if (patient1.getCurrent_address().equals(getResources().getString(R.string.not_provided)))
                 current_residing_address_spinner.setSelection(0);
             else {
-            if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
-                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
-                currentaddressOther.setText(patient1.getCurrent_address());
-            }}
+                if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
+                    current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
+                    currentaddressOther.setText(patient1.getCurrent_address());
+                }
+            }
 
             if (patient1.getWhom_living().equals(getResources().getString(R.string.not_provided)))
                 with_whom_living_spinner.setSelection(0);
             else {
-            if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
-                with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
-                withwhomlivingOther.setText(patient1.getWhom_living());
-            }}
+                if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
+                    with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
+                    withwhomlivingOther.setText(patient1.getWhom_living());
+                }
+            }
             //end - other edittext
 
 
@@ -2048,14 +2040,14 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedGenderOption = parent.getItemAtPosition(position).toString();
 
-                    if (selectedGenderOption.equalsIgnoreCase("Other")) {
-                        genderOther.setVisibility(View.VISIBLE);
-                        genderOther.setFocusable(true);
-                    } else {
-                        genderOther.setText("");
-                        genderOther.setError(null);
-                        genderOther.setVisibility(View.GONE);
-                    }
+                if (selectedGenderOption.equalsIgnoreCase("Other")) {
+                    genderOther.setVisibility(View.VISIBLE);
+                    genderOther.setFocusable(true);
+                } else {
+                    genderOther.setText("");
+                    genderOther.setError(null);
+                    genderOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2066,19 +2058,19 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         //education
-         education_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        education_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEducationOption = parent.getItemAtPosition(position).toString();
 
-                    if (selectedEducationOption.equalsIgnoreCase("Other")) {
-                        educationOther.setVisibility(View.VISIBLE);
-                        educationOther.setFocusable(true);
-                    } else {
-                        educationOther.setText("");
-                        educationOther.setError(null);
-                        educationOther.setVisibility(View.GONE);
-                    }
+                if (selectedEducationOption.equalsIgnoreCase("Other")) {
+                    educationOther.setVisibility(View.VISIBLE);
+                    educationOther.setFocusable(true);
+                } else {
+                    educationOther.setText("");
+                    educationOther.setError(null);
+                    educationOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2088,20 +2080,20 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-         //maritual status
-         current_marital_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //maritual status
+        current_marital_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedMaritualStatusOption = parent.getItemAtPosition(position).toString();
 
-                    if (selectedMaritualStatusOption.equalsIgnoreCase("Other")) {
-                        maritualstatusOther.setVisibility(View.VISIBLE);
-                        maritualstatusOther.setFocusable(true);
-                    } else {
-                        maritualstatusOther.setText("");
-                        maritualstatusOther.setError(null);
-                        maritualstatusOther.setVisibility(View.GONE);
-                    }
+                if (selectedMaritualStatusOption.equalsIgnoreCase("Other")) {
+                    maritualstatusOther.setVisibility(View.VISIBLE);
+                    maritualstatusOther.setFocusable(true);
+                } else {
+                    maritualstatusOther.setText("");
+                    maritualstatusOther.setError(null);
+                    maritualstatusOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2134,20 +2126,20 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-         //husband occupation
-         husband_occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //husband occupation
+        husband_occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHusbandOccupationOption = parent.getItemAtPosition(position).toString();
 
-                    if (selectedHusbandOccupationOption.equalsIgnoreCase("Other")) {
-                        husbandoccupationOther.setVisibility(View.VISIBLE);
-                        husbandoccupationOther.setFocusable(true);
-                    } else {
-                        husbandoccupationOther.setText("");
-                        husbandoccupationOther.setError(null);
-                        husbandoccupationOther.setVisibility(View.GONE);
-                    }
+                if (selectedHusbandOccupationOption.equalsIgnoreCase("Other")) {
+                    husbandoccupationOther.setVisibility(View.VISIBLE);
+                    husbandoccupationOther.setFocusable(true);
+                } else {
+                    husbandoccupationOther.setText("");
+                    husbandoccupationOther.setError(null);
+                    husbandoccupationOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2157,21 +2149,21 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-         //caste
-         caste_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //caste
+        caste_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCasteOption = parent.getItemAtPosition(position).toString();
 
-                    if (selectedCasteOption.equalsIgnoreCase("Other") ||
-                            selectedCasteOption.equalsIgnoreCase("Minority (other - please specify)")) {
-                        casteOther.setVisibility(View.VISIBLE);
-                        casteOther.setFocusable(true);
-                    } else {
-                        casteOther.setText("");
-                        casteOther.setError(null);
-                        casteOther.setVisibility(View.GONE);
-                    }
+                if (selectedCasteOption.equalsIgnoreCase("Other") ||
+                        selectedCasteOption.equalsIgnoreCase("Minority (other - please specify)")) {
+                    casteOther.setVisibility(View.VISIBLE);
+                    casteOther.setFocusable(true);
+                } else {
+                    casteOther.setText("");
+                    casteOther.setError(null);
+                    casteOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2181,20 +2173,20 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
 
-         //where did u get from
-         helplineno_from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        //where did u get from
+        helplineno_from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedWhere_did_u_Option = parent.getItemAtPosition(position).toString();
 
-                    if (selectedWhere_did_u_Option.equalsIgnoreCase("Other")) {
-                        wherediduOther.setVisibility(View.VISIBLE);
-                        wherediduOther.setFocusable(true);
-                    } else {
-                        wherediduOther.setText("");
-                        wherediduOther.setError(null);
-                        wherediduOther.setVisibility(View.GONE);
-                    }
+                if (selectedWhere_did_u_Option.equalsIgnoreCase("Other")) {
+                    wherediduOther.setVisibility(View.VISIBLE);
+                    wherediduOther.setFocusable(true);
+                } else {
+                    wherediduOther.setText("");
+                    wherediduOther.setError(null);
+                    wherediduOther.setVisibility(View.GONE);
+                }
             }
 
 
@@ -2992,7 +2984,6 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
 
-
         //end - other edittext
 
 
@@ -3012,7 +3003,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     return true;
                 }
-                    return false;
+                return false;
             }
         });
 
@@ -3099,56 +3090,50 @@ public class IdentificationActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.identification_complaint_abortion:
                 if (checked)
-                   // mGender = "M";
+                    // mGender = "M";
                     mComplaintSelection = "Abortion";
-                    framelayout_safe_abortion.setVisibility(View.VISIBLE);
-                    framelayout_domestic_violence.setVisibility(View.GONE);
+                framelayout_safe_abortion.setVisibility(View.VISIBLE);
+                framelayout_domestic_violence.setVisibility(View.GONE);
 
-                    //clear -start
-                    job_spinner.setSelection(0);
-                    describe_location_spinner.setSelection(0);
-
-                    who_refferred_spinner.setSelection(0);
-                    am_i_speaking_spinner.setSelection(0);
-                    good_mobile_edittext.setText("");
-                    ever_married_spinner.setSelection(0);
-                    age_marriage_edittext.setText("");
-                    type_marriage_spinner.setSelection(0);
-                    maternal_address_edittext.setText("");
-                    maternal_mobile_edittext.setText("");
-                    address_inlaws_edittext.setText("");
-                    husband_mobile_edittext.setText("");
-                    current_residing_address_spinner.setSelection(0);
-                    with_whom_living_spinner.setSelection(0);
-                    //clear - end
+                //clear -start
+                radio_selection_clearData();
+                //clear - end
 
                 break;
             case R.id.identification_violence:
                 if (checked)
-                   // mGender = "F";
+                    // mGender = "F";
                     mComplaintSelection = "Violence";
-                    framelayout_domestic_violence.setVisibility(View.VISIBLE);
-                    framelayout_safe_abortion.setVisibility(View.GONE);
+                framelayout_domestic_violence.setVisibility(View.VISIBLE);
+                framelayout_safe_abortion.setVisibility(View.GONE);
 
                 //clear -start
-                job_spinner.setSelection(0);
-                describe_location_spinner.setSelection(0);
-
-                who_refferred_spinner.setSelection(0);
-                am_i_speaking_spinner.setSelection(0);
-                good_mobile_edittext.setText("");
-                ever_married_spinner.setSelection(0);
-                age_marriage_edittext.setText("");
-                type_marriage_spinner.setSelection(0);
-                maternal_address_edittext.setText("");
-                maternal_mobile_edittext.setText("");
-                address_inlaws_edittext.setText("");
-                husband_mobile_edittext.setText("");
-                current_residing_address_spinner.setSelection(0);
-                with_whom_living_spinner.setSelection(0);
+                radio_selection_clearData();
                 //clear - end
                 break;
         }
+    }
+
+    /**
+     * When any one of the radio button is checked than the fields within both the radiobutons will be cleared
+     * ivh-42 ticket.
+     */
+    private void radio_selection_clearData() {
+        job_spinner.setSelection(0);
+        describe_location_spinner.setSelection(0);
+
+        who_refferred_spinner.setSelection(0);
+        am_i_speaking_spinner.setSelection(0);
+        good_mobile_edittext.setText("");
+        ever_married_spinner.setSelection(0);
+        age_marriage_edittext.setText("");
+        type_marriage_spinner.setSelection(0);
+        maternal_address_edittext.setText("");
+        maternal_mobile_edittext.setText("");
+        address_inlaws_edittext.setText("");
+        husband_mobile_edittext.setText("");
+        current_residing_address_spinner.setSelection(0);
+        with_whom_living_spinner.setSelection(0);
     }
 
 /*
@@ -3590,281 +3575,280 @@ public class IdentificationActivity extends AppCompatActivity {
 
         }
         else {*/
-            if (mFirstName.getText().toString().equals("")) {
-                mFirstName.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mFirstName.getText().toString().equals("")) {
+            mFirstName.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mLastName.getText().toString().equals("")) {
+            mLastName.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (mAge.getText().toString().equals("")) {
-                mAge.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mAge.getText().toString().equals("")) {
+            mAge.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //1. Gender
-            if (gender_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) gender_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = gender_spinner;
-                cancel = true;
-                return;
-            }
-            if(genderOther.getVisibility() == View.VISIBLE && genderOther.getText().toString().equals("")) {
-                genderOther.setError(getString(R.string.error_field_required));
-                focusView = genderOther;
-                cancel = true;
-                return;
-            }
+        //1. Gender
+        if (gender_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) gender_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = gender_spinner;
+            cancel = true;
+            return;
+        }
+        if (genderOther.getVisibility() == View.VISIBLE && genderOther.getText().toString().equals("")) {
+            genderOther.setError(getString(R.string.error_field_required));
+            focusView = genderOther;
+            cancel = true;
+            return;
+        }
 
-            if (mPhoneNum.getText().toString().equals("")) {
-                mPhoneNum.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mPhoneNum.getText().toString().equals("")) {
+            mPhoneNum.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //emergency phone no...
-            if (emergency_no_edittext.getText().toString().equals("")) {
-                emergency_no_edittext.setError(getString(R.string.error_field_required));
-                return;
-            }
+        //emergency phone no...
+        if (emergency_no_edittext.getText().toString().equals("")) {
+            emergency_no_edittext.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (autocompleteState.getText().toString().equals("")) {
-                autocompleteState.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteState.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (autocompleteDistrict.getText().toString().equals("")) {
-                autocompleteDistrict.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (autocompleteDistrict.getText().toString().equals("")) {
+            autocompleteDistrict.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //start
-            if (landmark_edittext.getText().toString().equals("")) {
-                landmark_edittext.setError(getString(R.string.error_field_required));
-                return;
-            }
-            //2. education
-            if (education_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) education_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = education_spinner;
-                cancel = true;
-                return;
-            }
-            if(educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
-                educationOther.setError(getString(R.string.error_field_required));
-                focusView = educationOther;
-                cancel = true;
-                return;
-            }
-            //3. curent marital status
-            if (current_marital_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) current_marital_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = current_marital_spinner;
-                cancel = true;
-                return;
-            }
-            if(maritualstatusOther.getVisibility() == View.VISIBLE && maritualstatusOther.getText().toString().equals("")) {
+        //start
+        if (landmark_edittext.getText().toString().equals("")) {
+            landmark_edittext.setError(getString(R.string.error_field_required));
+            return;
+        }
+        //2. education
+        if (education_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) education_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = education_spinner;
+            cancel = true;
+            return;
+        }
+        if (educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
+            educationOther.setError(getString(R.string.error_field_required));
+            focusView = educationOther;
+            cancel = true;
+            return;
+        }
+        //3. curent marital status
+        if (current_marital_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) current_marital_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = current_marital_spinner;
+            cancel = true;
+            return;
+        }
+        if (maritualstatusOther.getVisibility() == View.VISIBLE && maritualstatusOther.getText().toString().equals("")) {
             maritualstatusOther.setError(getString(R.string.error_field_required));
             focusView = maritualstatusOther;
             cancel = true;
             return;
-            }
+        }
 
-            if (income_edittext.getText().toString().equals("")) {
-                income_edittext.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (income_edittext.getText().toString().equals("")) {
+            income_edittext.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //4. occupation
-            if (occupation_spinner_1.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = occupation_spinner_1;
-                cancel = true;
-                return;
-            }
-            if(occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
-                occupationOther.setError(getString(R.string.error_field_required));
-                focusView = occupationOther;
-                cancel = true;
-                return;
-            }
+        //4. occupation
+        if (occupation_spinner_1.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = occupation_spinner_1;
+            cancel = true;
+            return;
+        }
+        if (occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
+            occupationOther.setError(getString(R.string.error_field_required));
+            focusView = occupationOther;
+            cancel = true;
+            return;
+        }
 
-            if (husband_income_monthly.getText().toString().equals("")) {
-                husband_income_monthly.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (husband_income_monthly.getText().toString().equals("")) {
+            husband_income_monthly.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //5. husband occupation
-            if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = husband_occupation_spinner;
-                cancel = true;
-                return;
-            }
-            if(husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
-                husbandoccupationOther.setError(getString(R.string.error_field_required));
-                focusView = husbandoccupationOther;
-                cancel = true;
-                return;
-            }
+        //5. husband occupation
+        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = husband_occupation_spinner;
+            cancel = true;
+            return;
+        }
+        if (husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
+            husbandoccupationOther.setError(getString(R.string.error_field_required));
+            focusView = husbandoccupationOther;
+            cancel = true;
+            return;
+        }
 
-            //6. children
-            if (have_children_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) have_children_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = have_children_spinner;
-                cancel = true;
-                return;
-            }
+        //6. children
+        if (have_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) have_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = have_children_spinner;
+            cancel = true;
+            return;
+        }
 
-            if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
-                mNo_of_children.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
+            mNo_of_children.setError(getString(R.string.error_field_required));
+            return;
+        }
 
 
-            //8. caste spinner
-            if (caste_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) caste_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = caste_spinner;
-                cancel = true;
-                return;
-            }
-            if(casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
-                casteOther.setError(getString(R.string.error_field_required));
-                focusView = casteOther;
-                cancel = true;
-                return;
-            }
-            //9. contact type
-            if (contact_type_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) contact_type_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = contact_type_spinner;
-                cancel = true;
-                return;
-            }
-            //10. where did u get helpline no from
-            if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = helplineno_from_spinner;
-                cancel = true;
-                return;
-            }
-             if(wherediduOther.getVisibility() == View.VISIBLE && wherediduOther.getText().toString().equals("")) {
-                 wherediduOther.setError(getString(R.string.error_field_required));
-                 focusView = wherediduOther;
-                 cancel = true;
-                return;
-            }
+        //8. caste spinner
+        if (caste_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) caste_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = caste_spinner;
+            cancel = true;
+            return;
+        }
+        if (casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
+            casteOther.setError(getString(R.string.error_field_required));
+            focusView = casteOther;
+            cancel = true;
+            return;
+        }
+        //9. contact type
+        if (contact_type_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) contact_type_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = contact_type_spinner;
+            cancel = true;
+            return;
+        }
+        //10. where did u get helpline no from
+        if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = helplineno_from_spinner;
+            cancel = true;
+            return;
+        }
+        if (wherediduOther.getVisibility() == View.VISIBLE && wherediduOther.getText().toString().equals("")) {
+            wherediduOther.setError(getString(R.string.error_field_required));
+            focusView = wherediduOther;
+            cancel = true;
+            return;
+        }
 
-            //who is calling
-            if (mCallerRelation.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) mCallerRelation.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = mCallerRelation;
-                cancel = true;
-                return;
-            }
+        //who is calling
+        if (mCallerRelation.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) mCallerRelation.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mCallerRelation;
+            cancel = true;
+            return;
+        }
 
-            //How do you know
-            if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = mHelplineKnowledge;
-                cancel = true;
-                return;
-            }
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
-                    if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                        helplineInfoOther.setError(getString(R.string.error_field_required));
-                        focusView = helplineInfoOther;
-                        cancel = true;
-                        return;
-                    } else {
-                        helplineInfoOther.setError(null);
-                    }
+        //How do you know
+        if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mHelplineKnowledge;
+            cancel = true;
+            return;
+        }
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
                 }
             }
-            else {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
-                    if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                        helplineInfoOther.setError(getString(R.string.error_field_required));
-                        focusView = helplineInfoOther;
-                        cancel = true;
-                        return;
-                    } else {
-                        helplineInfoOther.setError(null);
-                    }
+        } else {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
                 }
             }
+        }
 
-            //what kind of mobile phone
-            if (mPhoneType.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) mPhoneType.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = mPhoneType;
-                cancel = true;
-                return;
-            }
+        //what kind of mobile phone
+        if (mPhoneType.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) mPhoneType.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mPhoneType;
+            cancel = true;
+            return;
+        }
 
-            if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage("Complaint is not selected");
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+        if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage("Complaint is not selected");
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                return;
-            }
+            return;
+        }
 
-            //start - complaint selection
+        //start - complaint selection
 
-            //end
+        //end
 
 
 //            if (mCity.getText().toString().equals("")) {
@@ -3894,12 +3878,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 */
 
-         //   Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-         //   return;
-       // } comment else loop....
+        //   Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+        //   return;
+        // } comment else loop....
 
         //add here complaints validation... outside of if loop.....
-        if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
+        if (framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
             //10. do you have work
             if (job_spinner.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) job_spinner.getSelectedView();
@@ -3923,7 +3907,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if(framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
+        if (framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
             //10. who referred case
             if (who_refferred_spinner.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) who_refferred_spinner.getSelectedView();
@@ -3934,7 +3918,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
+            if (referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
                 referredOther.setError(getString(R.string.error_field_required));
                 focusView = referredOther;
                 cancel = true;
@@ -3952,7 +3936,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
+            if (amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
                 amIspeakingOther.setError(getString(R.string.error_field_required));
                 focusView = amIspeakingOther;
                 cancel = true;
@@ -4018,7 +4002,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
+            if (currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
                 currentaddressOther.setError(getString(R.string.error_field_required));
                 focusView = currentaddressOther;
                 cancel = true;
@@ -4036,7 +4020,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
+            if (withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
                 withwhomlivingOther.setError(getString(R.string.error_field_required));
                 focusView = withwhomlivingOther;
                 cancel = true;
@@ -4076,17 +4060,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
 
-
         //start - validation new spinner
-
-
-
-
-
-
-
-
-
 
 
         //7. no of children
@@ -4101,7 +4075,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
         //end - validation new spinner
-
 
 
         //start - other editext
@@ -4239,8 +4212,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
         //end - other edittext
-
-
 
 
         //check if privacy notice is checked
@@ -4477,17 +4448,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //caste
             if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
-            caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                    caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
 
-                if(caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
                     casteInfo = "Minority: " + casteOther.getText().toString();
-                }
-                else {
+                } else {
                     casteInfo = casteOther.getText().toString();
                 }
 
-            }
-            else {
+            } else {
                 casteInfo = StringUtils.getProvided(caste_spinner);
             }
 
@@ -4836,13 +4805,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //end - complaint selection
-
-
-
-
-
-
-
 
 
             //end - new fields spinner
@@ -5327,281 +5289,280 @@ public class IdentificationActivity extends AppCompatActivity {
 
         }
         else {*/
-            if (mFirstName.getText().toString().equals("")) {
-                mFirstName.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mFirstName.getText().toString().equals("")) {
+            mFirstName.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mLastName.getText().toString().equals("")) {
+            mLastName.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (mAge.getText().toString().equals("")) {
-                mAge.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mAge.getText().toString().equals("")) {
+            mAge.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //1. Gender
-            if (gender_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) gender_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = gender_spinner;
-                cancel = true;
-                return;
-            }
-            if(genderOther.getVisibility() == View.VISIBLE && genderOther.getText().toString().equals("")) {
-                genderOther.setError(getString(R.string.error_field_required));
-                focusView = genderOther;
-                cancel = true;
-                return;
-            }
+        //1. Gender
+        if (gender_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) gender_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = gender_spinner;
+            cancel = true;
+            return;
+        }
+        if (genderOther.getVisibility() == View.VISIBLE && genderOther.getText().toString().equals("")) {
+            genderOther.setError(getString(R.string.error_field_required));
+            focusView = genderOther;
+            cancel = true;
+            return;
+        }
 
-            if (mPhoneNum.getText().toString().equals("")) {
-                mPhoneNum.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (mPhoneNum.getText().toString().equals("")) {
+            mPhoneNum.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //emergency phone no...
-            if (emergency_no_edittext.getText().toString().equals("")) {
-                emergency_no_edittext.setError(getString(R.string.error_field_required));
-                return;
-            }
+        //emergency phone no...
+        if (emergency_no_edittext.getText().toString().equals("")) {
+            emergency_no_edittext.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (autocompleteState.getText().toString().equals("")) {
-                autocompleteState.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteState.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            if (autocompleteDistrict.getText().toString().equals("")) {
-                autocompleteDistrict.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (autocompleteDistrict.getText().toString().equals("")) {
+            autocompleteDistrict.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //start
-            if (landmark_edittext.getText().toString().equals("")) {
-                landmark_edittext.setError(getString(R.string.error_field_required));
-                return;
-            }
-            //2. education
-            if (education_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) education_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = education_spinner;
-                cancel = true;
-                return;
-            }
-            if(educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
-                educationOther.setError(getString(R.string.error_field_required));
-                focusView = educationOther;
-                cancel = true;
-                return;
-            }
-            //3. curent marital status
-            if (current_marital_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) current_marital_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = current_marital_spinner;
-                cancel = true;
-                return;
-            }
-            if(maritualstatusOther.getVisibility() == View.VISIBLE && maritualstatusOther.getText().toString().equals("")) {
+        //start
+        if (landmark_edittext.getText().toString().equals("")) {
+            landmark_edittext.setError(getString(R.string.error_field_required));
+            return;
+        }
+        //2. education
+        if (education_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) education_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = education_spinner;
+            cancel = true;
+            return;
+        }
+        if (educationOther.getVisibility() == View.VISIBLE && educationOther.getText().toString().equals("")) {
+            educationOther.setError(getString(R.string.error_field_required));
+            focusView = educationOther;
+            cancel = true;
+            return;
+        }
+        //3. curent marital status
+        if (current_marital_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) current_marital_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = current_marital_spinner;
+            cancel = true;
+            return;
+        }
+        if (maritualstatusOther.getVisibility() == View.VISIBLE && maritualstatusOther.getText().toString().equals("")) {
             maritualstatusOther.setError(getString(R.string.error_field_required));
             focusView = maritualstatusOther;
             cancel = true;
             return;
-            }
+        }
 
-            if (income_edittext.getText().toString().equals("")) {
-                income_edittext.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (income_edittext.getText().toString().equals("")) {
+            income_edittext.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //4. occupation
-            if (occupation_spinner_1.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = occupation_spinner_1;
-                cancel = true;
-                return;
-            }
-            if(occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
-                occupationOther.setError(getString(R.string.error_field_required));
-                focusView = occupationOther;
-                cancel = true;
-                return;
-            }
+        //4. occupation
+        if (occupation_spinner_1.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = occupation_spinner_1;
+            cancel = true;
+            return;
+        }
+        if (occupationOther.getVisibility() == View.VISIBLE && occupationOther.getText().toString().equals("")) {
+            occupationOther.setError(getString(R.string.error_field_required));
+            focusView = occupationOther;
+            cancel = true;
+            return;
+        }
 
-            if (husband_income_monthly.getText().toString().equals("")) {
-                husband_income_monthly.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (husband_income_monthly.getText().toString().equals("")) {
+            husband_income_monthly.setError(getString(R.string.error_field_required));
+            return;
+        }
 
-            //5. husband occupation
-            if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = husband_occupation_spinner;
-                cancel = true;
-                return;
-            }
-            if(husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
-                husbandoccupationOther.setError(getString(R.string.error_field_required));
-                focusView = husbandoccupationOther;
-                cancel = true;
-                return;
-            }
+        //5. husband occupation
+        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = husband_occupation_spinner;
+            cancel = true;
+            return;
+        }
+        if (husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
+            husbandoccupationOther.setError(getString(R.string.error_field_required));
+            focusView = husbandoccupationOther;
+            cancel = true;
+            return;
+        }
 
-            //6. children
-            if (have_children_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) have_children_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = have_children_spinner;
-                cancel = true;
-                return;
-            }
+        //6. children
+        if (have_children_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) have_children_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = have_children_spinner;
+            cancel = true;
+            return;
+        }
 
-            if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
-                mNo_of_children.setError(getString(R.string.error_field_required));
-                return;
-            }
+        if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
+            mNo_of_children.setError(getString(R.string.error_field_required));
+            return;
+        }
 
 
-            //8. caste spinner
-            if (caste_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) caste_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = caste_spinner;
-                cancel = true;
-                return;
-            }
-            if(casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
-                casteOther.setError(getString(R.string.error_field_required));
-                focusView = casteOther;
-                cancel = true;
-                return;
-            }
-            //9. contact type
-            if (contact_type_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) contact_type_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = contact_type_spinner;
-                cancel = true;
-                return;
-            }
-            //10. where did u get helpline no from
-            if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = helplineno_from_spinner;
-                cancel = true;
-                return;
-            }
-             if(wherediduOther.getVisibility() == View.VISIBLE && wherediduOther.getText().toString().equals("")) {
-                 wherediduOther.setError(getString(R.string.error_field_required));
-                 focusView = wherediduOther;
-                 cancel = true;
-                return;
-            }
+        //8. caste spinner
+        if (caste_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) caste_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = caste_spinner;
+            cancel = true;
+            return;
+        }
+        if (casteOther.getVisibility() == View.VISIBLE && casteOther.getText().toString().equals("")) {
+            casteOther.setError(getString(R.string.error_field_required));
+            focusView = casteOther;
+            cancel = true;
+            return;
+        }
+        //9. contact type
+        if (contact_type_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) contact_type_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = contact_type_spinner;
+            cancel = true;
+            return;
+        }
+        //10. where did u get helpline no from
+        if (helplineno_from_spinner.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) helplineno_from_spinner.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = helplineno_from_spinner;
+            cancel = true;
+            return;
+        }
+        if (wherediduOther.getVisibility() == View.VISIBLE && wherediduOther.getText().toString().equals("")) {
+            wherediduOther.setError(getString(R.string.error_field_required));
+            focusView = wherediduOther;
+            cancel = true;
+            return;
+        }
 
-            //who is calling
-            if (mCallerRelation.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) mCallerRelation.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = mCallerRelation;
-                cancel = true;
-                return;
-            }
+        //who is calling
+        if (mCallerRelation.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) mCallerRelation.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mCallerRelation;
+            cancel = true;
+            return;
+        }
 
-            //How do you know
-            if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = mHelplineKnowledge;
-                cancel = true;
-                return;
-            }
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
-                    if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                        helplineInfoOther.setError(getString(R.string.error_field_required));
-                        focusView = helplineInfoOther;
-                        cancel = true;
-                        return;
-                    } else {
-                        helplineInfoOther.setError(null);
-                    }
+        //How do you know
+        if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mHelplineKnowledge;
+            cancel = true;
+            return;
+        }
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
                 }
             }
-            else {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
-                    if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                        helplineInfoOther.setError(getString(R.string.error_field_required));
-                        focusView = helplineInfoOther;
-                        cancel = true;
-                        return;
-                    } else {
-                        helplineInfoOther.setError(null);
-                    }
+        } else {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+                    helplineInfoOther.setError(getString(R.string.error_field_required));
+                    focusView = helplineInfoOther;
+                    cancel = true;
+                    return;
+                } else {
+                    helplineInfoOther.setError(null);
                 }
             }
+        }
 
-            //what kind of mobile phone
-            if (mPhoneType.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) mPhoneType.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = mPhoneType;
-                cancel = true;
-                return;
-            }
+        //what kind of mobile phone
+        if (mPhoneType.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) mPhoneType.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            focusView = mPhoneType;
+            cancel = true;
+            return;
+        }
 
-            if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
-                alertDialogBuilder.setTitle(R.string.error);
-                alertDialogBuilder.setMessage("Complaint is not selected");
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+        if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
+            alertDialogBuilder.setTitle(R.string.error);
+            alertDialogBuilder.setMessage("Complaint is not selected");
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
-                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+            positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                return;
-            }
+            return;
+        }
 
-            //start - complaint selection
+        //start - complaint selection
 
-            //end
+        //end
 
 
 //            if (mCity.getText().toString().equals("")) {
@@ -5631,12 +5592,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 */
 
-         //   Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-         //   return;
-       // } comment else loop....
+        //   Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+        //   return;
+        // } comment else loop....
 
         //add here complaints validation... outside of if loop.....
-        if(framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
+        if (framelayout_safe_abortion.getVisibility() == View.VISIBLE) {
             //10. do you have work
             if (job_spinner.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) job_spinner.getSelectedView();
@@ -5660,7 +5621,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if(framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
+        if (framelayout_domestic_violence.getVisibility() == View.VISIBLE) {
             //10. who referred case
             if (who_refferred_spinner.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) who_refferred_spinner.getSelectedView();
@@ -5671,7 +5632,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
+            if (referredOther.getVisibility() == View.VISIBLE && referredOther.getText().toString().equals("")) {
                 referredOther.setError(getString(R.string.error_field_required));
                 focusView = referredOther;
                 cancel = true;
@@ -5689,7 +5650,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
+            if (amIspeakingOther.getVisibility() == View.VISIBLE && amIspeakingOther.getText().toString().equals("")) {
                 amIspeakingOther.setError(getString(R.string.error_field_required));
                 focusView = amIspeakingOther;
                 cancel = true;
@@ -5755,7 +5716,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
+            if (currentaddressOther.getVisibility() == View.VISIBLE && currentaddressOther.getText().toString().equals("")) {
                 currentaddressOther.setError(getString(R.string.error_field_required));
                 focusView = currentaddressOther;
                 cancel = true;
@@ -5773,7 +5734,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 cancel = true;
                 return;
             }
-            if(withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
+            if (withwhomlivingOther.getVisibility() == View.VISIBLE && withwhomlivingOther.getText().toString().equals("")) {
                 withwhomlivingOther.setError(getString(R.string.error_field_required));
                 focusView = withwhomlivingOther;
                 cancel = true;
@@ -5813,17 +5774,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
 
-
         //start - validation new spinner
-
-
-
-
-
-
-
-
-
 
 
         //7. no of children
@@ -5838,7 +5789,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
         //end - validation new spinner
-
 
 
         //start - other editext
@@ -5976,8 +5926,6 @@ public class IdentificationActivity extends AppCompatActivity {
         }*/
 
         //end - other edittext
-
-
 
 
         //check if privacy notice is checked
@@ -6214,17 +6162,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //caste
             if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
-            caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                    caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
 
-                if(caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
                     casteInfo = "Minority: " + casteOther.getText().toString();
-                }
-                else {
+                } else {
                     casteInfo = casteOther.getText().toString();
                 }
 
-            }
-            else {
+            } else {
                 casteInfo = StringUtils.getProvided(caste_spinner);
             }
 
@@ -6266,7 +6212,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
-           // patientdto.setGender(StringUtils.getValue(mGender));
+            // patientdto.setGender(StringUtils.getValue(mGender));
             patientdto.setGender(StringUtils.getValue(genderInfo));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
@@ -6302,7 +6248,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
             }
-
 
 
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
@@ -6589,13 +6534,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //end - complaint selection
-
-
-
-
-
-
-
 
 
             //end - new fields spinner
