@@ -67,7 +67,7 @@
                             android:layout_marginTop="16dp"
                             android:textAlignment="center"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp" />
+                            android:textSize="19sp" />
 
                     </RelativeLayout>
 
@@ -110,8 +110,21 @@
                             android:layout_marginTop="16dp"
                             android:textAlignment="center"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp" />
+                            android:textSize="19sp" />
 
+                        <TextView
+                            android:id="@+id/tvTodayVisitsBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="32dp"
+                            android:layout_alignParentBottom="true"
+android:layout_centerHorizontal="true"
+
+                            android:layout_below="@+id/todaysVisits_textview"
+                            android:gravity="center"
+                            android:minWidth="32dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/red"
+                            tools:text="(0)" />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -161,8 +174,19 @@
                             android:layout_marginTop="16dp"
                             android:textAlignment="center"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp" />
+                            android:textSize="19sp" />
 
+                        <TextView
+                            android:id="@+id/tvActiveVisitsBadge"
+                            tools:text="(0)"
+                            android:gravity="center"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/activeVisits_textview"
+                            android:textColor="@color/red"
+                            android:textAlignment="center"
+                            android:layout_width="wrap_content"
+                            android:minWidth="32dp"
+                            android:layout_height="32dp"/>
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -205,7 +229,7 @@
                             android:layout_marginTop="16dp"
                             android:textAlignment="center"
                             android:layout_centerHorizontal="true"
-                            android:textSize="20sp" />
+                            android:textSize="19sp" />
 
                     </RelativeLayout>
 
@@ -258,7 +282,7 @@
                                 android:layout_marginTop="16dp"
                                 android:textAlignment="center"
                                 android:layout_centerHorizontal="true"
-                                android:textSize="20sp"/>
+                                android:textSize="19sp"/>
 
                             <!-- Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
 

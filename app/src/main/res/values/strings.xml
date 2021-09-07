@@ -527,6 +527,7 @@
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
+    <string name="change_languages">Change Languages</string>
     <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>

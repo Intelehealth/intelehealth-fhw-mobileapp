@@ -125,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview,tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
 
     @Override
@@ -171,6 +171,8 @@ public class HomeActivity extends AppCompatActivity {
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
 
+        tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
+        tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
         //card textview referrenced to fix bug of localization not working in some cases...
         /*newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);*/
@@ -754,6 +756,27 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+        showBadge();
+    }
+
+    private void showBadge() {
+        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+
+        tvTodayVisitsBadge.setVisibility(View.VISIBLE);
+        if (todayPatientCount > 0) {
+            tvTodayVisitsBadge.setText("("+String.valueOf(todayPatientCount)+")");
+        }
+        else{
+            tvTodayVisitsBadge.setText("(0)");
+        }
+        tvActiveVisitsBadge.setVisibility(View.VISIBLE);
+        if (activePatientCount > 0) {
+            tvActiveVisitsBadge.setText("("+String.valueOf(activePatientCount)+")");
+        }
+        else{
+            tvActiveVisitsBadge.setText("(0)");
+        }
     }
 
     @Override

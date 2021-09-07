@@ -228,7 +228,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.menu_option_settings);
+
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new LanguagePreferenceFragment())
+                .commit();
+        setTitle(R.string.languages);
         sessionManager = new SessionManager(this);
         setupActionBar();
 
@@ -272,7 +276,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
+//        loadHeadersFromResource(R.xml.pref_headers, target);
 
         //code for adding version text on the bottom of the screen: By Nishita
 
