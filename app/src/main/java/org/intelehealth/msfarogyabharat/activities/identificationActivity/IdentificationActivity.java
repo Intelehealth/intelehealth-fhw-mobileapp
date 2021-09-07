@@ -1642,10 +1642,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-              //  if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
-                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+              if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+               // if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
 
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
                     helplineInfoOther.setText(patient1.getCaste());
                 }
             } else {
@@ -1654,16 +1654,27 @@ public class IdentificationActivity extends AppCompatActivity {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                     helplineInfoOther.setText(patient1.getCaste());
                 }
-
             }
 
             //start - other edittext
 
-
-            if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+            /*if (genderAdapter.getPosition(patient1.getGender()) == -1) {
                 gender_spinner.setSelection(genderAdapter.getPosition("Other"));
                 genderOther.setText(patient1.getGender());
+            }*/
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                    gender_spinner.setSelection(genderAdapter.getPosition("अन्य"));
+                    genderOther.setText(patient1.getGender());
+                }
+            } else {
+                if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                    gender_spinner.setSelection(genderAdapter.getPosition("Other"));
+                    genderOther.setText(patient1.getGender());
+                }
             }
+
             if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
                 education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
                 educationOther.setText(patient1.getEducation_value());
@@ -2299,7 +2310,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    if (selectedHelplineOption.equalsIgnoreCase("Other")) {
+                    if (selectedHelplineOption.equalsIgnoreCase("अन्य")) {
                         helplineInfoOther.setVisibility(View.VISIBLE);
                         helplineInfoOther.setFocusable(true);
                     } else {
@@ -3795,7 +3806,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
                 if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                     helplineInfoOther.setError(getString(R.string.error_field_required));
                     focusView = helplineInfoOther;
@@ -4523,7 +4534,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
@@ -5509,7 +5520,7 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
                 if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
                     helplineInfoOther.setError(getString(R.string.error_field_required));
                     focusView = helplineInfoOther;
@@ -6240,7 +6251,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
                     helplineInfo = helplineInfoOther.getText().toString();
                 else
                     helplineInfo = StringUtils.getProvidedOthers(mHelplineKnowledge);
