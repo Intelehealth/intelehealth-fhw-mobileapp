@@ -198,7 +198,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private CharSequence selectedSubscriptionTime, selectedLanguage;
     private BucketResponse.Bucket selectedBucket;
     String callNoteText = "";
-    String gender = "F";
+    String gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -453,22 +453,23 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
-        if(String.valueOf(patient_new.getGender()).equalsIgnoreCase("M"))
-            spinner_pref_gender.setSelection(genderAdapter.getPosition("Male"));
-        else
-            spinner_pref_gender.setSelection(genderAdapter.getPosition("Female"));
+//        if(String.valueOf(patient_new.getGender()).equalsIgnoreCase("M"))
+//            spinner_pref_gender.setSelection(genderAdapter.getPosition("Male"));
+//        else
+//            spinner_pref_gender.setSelection(genderAdapter.getPosition("Female"));
 
         spinner_pref_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                gender = parent.getItemAtPosition(position).toString();
 
+                gender = parent.getItemAtPosition(position).toString();
                 if(gender.equalsIgnoreCase("Male"))
                     gender = "M";
                 else
                     gender = "F";
 
                 initSubscription(gender);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -580,16 +581,30 @@ public class PatientDetailActivity extends AppCompatActivity {
                             SubscriptionStatus body = response.body();
                             if (body != null && body.userdata != null && body.userdata.size() > 0) {
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
+
+                                String[] genderArray = getResources().getStringArray(R.array.pref_gender);
+                                String genderSelect = "";
+                                if(userData.genderselected.equalsIgnoreCase("M"))
+                                    genderSelect = "Male";
+                                else
+                                    genderSelect = "Female";
+                                for (int i1 = 0; i1 < genderArray.length; i1++) {
+                                    if (genderArray[i1].equalsIgnoreCase(genderSelect)) {
+                                        spinner_pref_gender.setSelection(i1);
+                                        break;
+                                    }
+                                }
+
                                 for (int i = 0; i < buckets.size(); i++) {
                                     if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
                                         spinner_pref_bucket.setSelection(i);
-                                        String[] stringArray = getResources().getStringArray(finalPreferred_time);
-                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
-                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
-                                                spinner_pref_time.setSelection(i1);
-                                                break;
-                                            }
-                                        }
+                                        int slotSelect=Integer.parseInt(userData.slotselected);
+                                        spinner_pref_time.setSelection(slotSelect);
+//                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
+//                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
+//                                                spinner_pref_time.setSelection(i1);
+//                                                break;
+//
                                         break;
                                     }
                                 }
@@ -674,6 +689,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     private void updateSubscriptionUI(boolean enable) {
+        spinner_pref_gender.setEnabled(enable);
         spinner_pref_bucket.setEnabled(enable);
         spinner_pref_time.setEnabled(enable);
         spinner_pref_language.setEnabled(enable);
