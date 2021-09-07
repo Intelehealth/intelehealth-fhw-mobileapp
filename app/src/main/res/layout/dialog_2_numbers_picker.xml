@@ -11,6 +11,7 @@
         <NumberPicker
             android:id="@+id/dialog_2_numbers_quantity"
             android:layout_width="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:padding="@dimen/padding_card">
@@ -20,6 +21,7 @@
             android:id="@+id/dialog_2_numbers_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:layout_weight="4"
             android:padding="@dimen/padding_card">
 
@@ -28,6 +30,7 @@
             android:id="@+id/dialog_3_numbers_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:visibility="gone"
             android:layout_weight="4"
             android:padding="@dimen/padding_card">
