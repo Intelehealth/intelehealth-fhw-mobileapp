@@ -760,4 +760,5 @@
     //sms via api
     <string name="sms_sent">एसएमएस भेजा गया!</string>
     <string name="sms_failed">एसएमएस भेजना विफल! बाद में पुन: प्रयास करें।</string>
+    <string name="hint_resolution_given">दिया गया संकल्प दर्ज करें</string>
 </resources>
