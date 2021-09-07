@@ -24,5 +24,8 @@ public class SubscriptionStatus {
         @SerializedName("slotselected")
         @Expose
         public String slotselected;
+        @SerializedName("gender")
+        @Expose
+        public String genderselected;
     }
 }
