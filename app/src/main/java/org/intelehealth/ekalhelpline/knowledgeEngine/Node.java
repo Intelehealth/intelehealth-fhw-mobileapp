@@ -1370,7 +1370,7 @@ public class Node implements Serializable {
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
-                if(quantityPicker.getValue() == '0' || durationString.equalsIgnoreCase("") ) {
+                if(quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("") ) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_",durationString));
                     } else {
