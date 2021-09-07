@@ -55,6 +55,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -389,7 +390,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+                Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
@@ -883,7 +884,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         phoneView.setText(patient_new.getPhone_number());
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
+//            String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
+            String callRelation = patient_new.getSdw();
             callerRelation.setText(callRelation);
         }
         else{
@@ -891,7 +893,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
+//            String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
+            String helplineKNowledgeInfo = patient_new.getCaste();
             helplineInfo.setText(helplineKNowledgeInfo);
         }
         else{
@@ -899,7 +902,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
+//            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
+            String phType = patient_new.getEconomic_status();
             phoneType.setText(phType);
         }
         else{

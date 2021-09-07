@@ -2177,7 +2177,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 additionalImageDownloadText.setVisibility(View.VISIBLE); //This means the app is fresh installed...
             }
 
-            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid);
+            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid, encounterUuidAdultIntial);
 
                 for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
@@ -3724,7 +3724,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayList<String> fileNameList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileNameList = imagesDAO.getFilename(patientUuid);
+            fileNameList = imagesDAO.getFilename(patientUuid, encounterUuidAdultIntial);
             for (String file_imagename : fileNameList) {
                 String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                 if (new File(filename).exists()) {

@@ -102,7 +102,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             ArrayList<String> fileNameList = new ArrayList<String>();
             ArrayList<File> fileList = new ArrayList<File>();
             try {
-                fileNameList = imagesDAO.getFilename(patientUuid); //TODO:
+                fileNameList = imagesDAO.getFilename(patientUuid, encounterAdultIntials); //TODO:
                 for (String file_imagename : fileNameList) {
                     String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                     if (new File(filename).exists()) {
@@ -253,7 +253,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             imagesDAO.insertObsImageDatabase_1(obsuuid, mfilename, encounterAdultIntials,
                     UuidDictionary.COMPLEX_IMAGE_AD);
 
-            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, obsuuid, mfilename, "0", "TRUE");
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, encounterAdultIntials, obsuuid, mfilename, "0", "TRUE");
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);

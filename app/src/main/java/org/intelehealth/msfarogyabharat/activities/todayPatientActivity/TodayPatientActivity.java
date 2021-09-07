@@ -51,6 +51,7 @@ import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
+import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 
 public class TodayPatientActivity extends AppCompatActivity {
@@ -234,6 +235,29 @@ public class TodayPatientActivity extends AppCompatActivity {
 //            mTodayPatientList.setAdapter(mTodayPatientAdapter);
 //        }
         return todayPatientList;
+    }
+
+    public static long getTodayVisitsCount(SQLiteDatabase db) {
+        int count =0;
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b  " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%'";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count++;
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return count;
     }
 
     @Override

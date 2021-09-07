@@ -40,6 +40,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS tbl_additional_doc (" +
                     "uuid TEXT PRIMARY KEY," +
                     "patientId TEXT," +
+                    "encounterId TEXT," +
                     "obsId TEXT UNIQUE," +
                     "imageName TEXT," +
                     "voided TEXT," +

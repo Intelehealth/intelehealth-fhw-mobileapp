@@ -118,7 +118,8 @@ String mEncounterVisitUUID;
                   //  List<String> imageList = imagesDAO.isImageListObsExists(mEncounterVisitUUID, UuidDictionary.COMPLEX_IMAGE_AD);
                     //TODO: fetch obsid from tbl_add_doc as it is unique key and then once u get an array
                     // delete the row from tbl_add_doc where the obsid is matching...
-                    List<String> obsId_List = imagesDAO.get_obsId_tbl_additional_doc(patientUuid);
+                    List<String> obsId_List = imagesDAO.get_obsId_tbl_additional_doc(patientUuid, mEncounterVisitUUID);
+
                     imagesDAO.deleteImageFromDatabase(obsId_List.get(position)); //voided = 1 -- deleted...
                     imagesDAO.delete_obsId_row_tbl_additional_doc(obsId_List.get(position));
 //                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));

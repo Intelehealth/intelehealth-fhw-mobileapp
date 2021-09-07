@@ -165,7 +165,7 @@ public class ImagesPushDAO {
                                                        Response<Add_Img_Filename_PushImageResponse> response) {
 
                                     //TODO: now add this value in tbl_additional_doc table...
-                                    imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), p.getPerson(),
+                                    imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), p.getPerson(), p.getEncounter(),
                                             p.getUuid(), p.getValue(), "0", "TRUE");
 
                                     try {
