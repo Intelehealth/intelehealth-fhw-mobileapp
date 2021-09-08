@@ -347,13 +347,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 {
                     MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
                     followUpAlert.setMessage(getString(R.string.pending_follow_up) +  "\n" + getString(R.string.still_continue));
-                    followUpAlert.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                    followUpAlert.setPositiveButton(getResources().getString(R.string.continue_button), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             newVisitStart(sqLiteDatabase,cols);
                         }
                     });
-                    followUpAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    followUpAlert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
