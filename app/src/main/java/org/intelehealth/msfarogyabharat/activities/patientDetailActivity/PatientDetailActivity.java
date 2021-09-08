@@ -157,6 +157,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String phistory = "";
     String fhistory = "";
+    String followUpDate = "";
     LinearLayout previousVisitsList;
     String visitValue;
     private String encounterVitals = "";
@@ -349,11 +350,13 @@ public class PatientDetailActivity extends AppCompatActivity {
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
+
                 String CREATOR_ID = sessionManager.getCreatorID();
                 returning = false;
                 sessionManager.setReturning(returning);
 
                 String[] cols = {"value"};
+                warnFollowUp(sqLiteDatabase,cols);
                 Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
                         new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
@@ -1650,6 +1653,28 @@ public class PatientDetailActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    public void warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
+    {
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterAdultIntials, UuidDictionary.FOLLOW_UP_VISIT},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+                followUpDate = followUpDate + cursor.getString(0);
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+
+        Toast.makeText(PatientDetailActivity.this,followUpDate,Toast.LENGTH_LONG).show();
+
     }
 }
 
