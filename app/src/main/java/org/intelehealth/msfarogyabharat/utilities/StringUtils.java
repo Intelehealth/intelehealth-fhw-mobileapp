@@ -163,9 +163,47 @@ public final class StringUtils {
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            val = switch_hi_HelplineKnowledge(val);
+            val = switch_hi_genderSpinner(val);
+            val = switch_hi_educationSpinner(val);
+            val = switch_hi_current_maritual_statusSpinner(val);
+            val = switch_hi_occupationSelectionSpinner(val);
+            val = switch_hi_husbandoccupationSelectionSpinner(val);
+            val = switch_hi_CasteSelectionSpinner(val);
+            val = switch_hi_ContactTypeSpinner(val);
+            val = switch_hi_WhereDidU_Spinner(val);
             val = switch_hi_CallRelation(val);
+            val = switch_hi_HelplineKnowledge(val);
             val = switch_hi_PhoneType(val);
+
+        }
+
+        return val;
+    }
+
+
+    public static String getProvidedOthers_1(Spinner spinner) {
+        String val = "";
+        if (spinner.getSelectedItemPosition() == 0)
+            val = "Not provided";
+
+        else if (spinner.getSelectedItem() == null) {
+            val = "Not provided";
+        } else {
+            val = spinner.getSelectedItem().toString();
+        }
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+
+            val = switch_hi_jobSpinner(val);
+            val = switch_hi_DescribeLocationSpinner(val);
+            val = switch_hi_Who_Referred_Spinner(val);
+            val = switch_hi_am_i_speaking_Spinner(val);
+            val = switch_hi_survivor_ever_married_Spinner(val);
+            val = switch_hi_type_marriage_Spinner(val);
+            val = switch_hi_survivor_address_Spinner(val);
+            val = switch_hi_with_whom_living_Spinner(val);
+
         }
 
         return val;
@@ -1718,7 +1756,7 @@ public final class StringUtils {
         }
         return val;
     }
-    
+
     //complaint - end...
 
     public static String switch_hi_bankaccount_edit(String val) {

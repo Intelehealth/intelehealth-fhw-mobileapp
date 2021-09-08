@@ -117,9 +117,8 @@ import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_CallRelation_edit;
-import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_HelplineKnowledge_edit;
-import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_PhoneType_edit;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.*;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_CasteSelectionSpinner_edit;
 
 public class IdentificationActivity extends AppCompatActivity {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
@@ -1469,57 +1468,143 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start - new fields Spinner
             //gender edit
-            if (patient1.getGender().equalsIgnoreCase("Not provided"))
+            if (patient1.getGender() == null || patient1.getGender().equalsIgnoreCase("Not provided"))
                 gender_spinner.setSelection(0);
             else {
-                String genderstring = patient1.getGender();
-                gender_spinner.setSelection(genderAdapter.getPosition(genderstring));
-                /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (genderAdapter.getPosition(switch_hi_genderSpinner_edit(patient1.getGender())) == -1) {
+                        gender_spinner.setSelection(genderAdapter.getPosition("अन्य"));
+                        genderOther.setText(patient1.getGender());
+                    }
+                    else {
+                        gender_spinner.setSelection(genderAdapter.getPosition(switch_hi_genderSpinner_edit(patient1.getGender())));
+                    }
                 } else {
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
-                }*/
-            }
+                    if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                        gender_spinner.setSelection(genderAdapter.getPosition("Other"));
+                        genderOther.setText(patient1.getGender());
+                    }
+                    else {
+                        gender_spinner.setSelection(genderAdapter.getPosition(patient1.getGender()));
+                    }
+                }
+              }
 
             //education edit
-            if (patient1.getEducation_value().equalsIgnoreCase("Not provided"))
+            if (patient1.getEducation_value() == null || patient1.getEducation_value().equalsIgnoreCase("Not provided"))
                 education_spinner.setSelection(0);
             else {
-                String educationstring = patient1.getEducation_value();
-                education_spinner.setSelection(education_spinnerAdapter.getPosition(educationstring));
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (education_spinnerAdapter.getPosition(switch_hi_educationSpinner_edit(patient1.getEducation_value())) == -1) {
+                        education_spinner.setSelection(education_spinnerAdapter.getPosition("अन्य"));
+                        educationOther.setText(patient1.getEducation_value());
+                    }
+                    else {
+                        education_spinner.setSelection(education_spinnerAdapter.getPosition(switch_hi_educationSpinner_edit(patient1.getEducation_value())));
+                    }
+                } else {
+                    if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
+                        education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
+                        educationOther.setText(patient1.getEducation_value());
+                    }
+                    else {
+                        education_spinner.setSelection(education_spinnerAdapter.getPosition(patient1.getEducation_value()));
+                    }
+                }
             }
 
             //current marital status edit
-            if (patient1.getCurrent_marital_status().equalsIgnoreCase("Not provided"))
+            if (patient1.getCurrent_marital_status() == null || patient1.getCurrent_marital_status().equalsIgnoreCase("Not provided"))
                 current_marital_spinner.setSelection(0);
             else {
-                String value = patient1.getCurrent_marital_status();
-                current_marital_spinner.setSelection(marital_statusAdapter.getPosition(value));
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (marital_statusAdapter.getPosition(switch_hi_current_maritual_statusSpinner_edit(patient1.getCurrent_marital_status())) == -1) {
+                        current_marital_spinner.setSelection(marital_statusAdapter.getPosition("अन्य"));
+                        maritualstatusOther.setText(patient1.getCurrent_marital_status());
+                    }
+                    else {
+                        current_marital_spinner.setSelection(marital_statusAdapter
+                                .getPosition(switch_hi_current_maritual_statusSpinner_edit(patient1.getCurrent_marital_status())));
+                    }
+                } else {
+                    if (marital_statusAdapter.getPosition(patient1.getCurrent_marital_status()) == -1) {
+                        current_marital_spinner.setSelection(marital_statusAdapter.getPosition("Other"));
+                        maritualstatusOther.setText(patient1.getCurrent_marital_status());
+                    }
+                    else {
+                        current_marital_spinner.setSelection(marital_statusAdapter
+                                .getPosition(patient1.getCurrent_marital_status()));
+                    }
+                }
+
             }
 
             //occupation spinner edit
-            if (patient1.getOccupation_value().equalsIgnoreCase("Not provided"))
+            if (patient1.getOccupation_value() == null || patient1.getOccupation_value().equalsIgnoreCase("Not provided"))
                 occupation_spinner_1.setSelection(0);
             else {
-                String value = patient1.getOccupation_value();
-                occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition(value));
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (occupation_spinner_1Adapter.getPosition(switch_hi_occupationSelectionSpinner_edit(patient1.getOccupation_value())) == -1) {
+                        occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("अन्य"));
+                        occupationOther.setText(patient1.getOccupation_value());
+                    }
+                    else {
+                        occupation_spinner_1.setSelection(occupation_spinner_1Adapter
+                                .getPosition(switch_hi_occupationSelectionSpinner_edit(patient1.getOccupation_value())));
+                    }
+                } else {
+                    if (marital_statusAdapter.getPosition(patient1.getOccupation_value()) == -1) {
+                        occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("Other"));
+                        occupationOther.setText(patient1.getOccupation_value());
+                    }
+                    else {
+                        occupation_spinner_1.setSelection(occupation_spinner_1Adapter
+                                .getPosition(patient1.getOccupation_value()));
+                    }
+                }
+
             }
 
+
             //husband occupation edit
-            if (patient1.getHusband_occupation().equalsIgnoreCase("Not provided"))
+            if (patient1.getHusband_occupation() == null || patient1.getHusband_occupation().equalsIgnoreCase("Not provided"))
                 husband_occupation_spinner.setSelection(0);
             else {
-                String value = patient1.getHusband_occupation();
-                husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition(value));
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (husband_occupationAdapter.getPosition(switch_hi_husbandoccupationSelectionSpinner_edit(patient1.getHusband_occupation())) == -1) {
+                        husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("अन्य"));
+                        husbandoccupationOther.setText(patient1.getHusband_occupation());
+                    }
+                    else {
+                        husband_occupation_spinner.setSelection(husband_occupationAdapter
+                                .getPosition(switch_hi_husbandoccupationSelectionSpinner_edit(patient1.getHusband_occupation())));
+                    }
+                } else {
+                    if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
+                        husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("Other"));
+                        husbandoccupationOther.setText(patient1.getHusband_occupation());
+                    }
+                    else {
+                        husband_occupation_spinner.setSelection(husband_occupationAdapter
+                                .getPosition(patient1.getHusband_occupation()));
+                    }
+                }
             }
 
             //children edit
-            if (patient1.getChildren().equalsIgnoreCase("Not provided"))
+            if (patient1.getChildren() == null || patient1.getChildren().equalsIgnoreCase("Not provided"))
                 have_children_spinner.setSelection(0);
             else {
-                String value = patient1.getChildren();
-                have_children_spinner.setSelection(childrenAdapter.getPosition(value));
+
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    have_children_spinner.setSelection(childrenAdapter.getPosition(switch_hi_childrenSpinner_edit(patient1.getChildren())));
+                }
+                else {
+                    have_children_spinner.setSelection(childrenAdapter.getPosition(patient1.getChildren()));
+                }
 
                 if (have_children_spinner.getSelectedItemPosition() == 1) {
                     framelayout_no_children.setVisibility(View.VISIBLE);
@@ -1529,44 +1614,147 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
             }
 
-           /* //no of children edit
-            if (patient1.getNo_of_children().equals(getResources().getString(R.string.not_provided)))
-                no_of_children_spinner.setSelection(0);
-            else {
-                String value = patient1.getNo_of_children();
-                no_of_children_spinner.setSelection(no_childrenAdapter.getPosition(value));
-            }*/
-
             //caste edit
-            if (patient1.getCaste_value().equalsIgnoreCase("Not provided"))
+            if (patient1.getCaste_value() == null || patient1.getCaste_value().equalsIgnoreCase("Not provided"))
                 caste_spinner.setSelection(0);
             else {
-                String value = patient1.getCaste_value();
-                caste_spinner.setSelection(caste_spinnerAdapter.getPosition(value));
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (caste_spinnerAdapter.getPosition(switch_hi_CasteSelectionSpinner_edit(patient1.getCaste_value())) == -1) {
+
+                        if (casteOther.getText().toString().contains("Minority: ")) {
+                            caste_spinner.setSelection(caste_spinnerAdapter.getPosition("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)"));
+                        } else {
+                            caste_spinner.setSelection(caste_spinnerAdapter.getPosition("अन्य"));
+                        }
+                        casteOther.setText(patient1.getCaste_value());
+                    }
+                    else {
+                        caste_spinner.setSelection(caste_spinnerAdapter.getPosition(switch_hi_CasteSelectionSpinner_edit(patient1.getCaste_value())));
+                    }
+                } else {
+                    if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
+
+                        if (casteOther.getText().toString().contains("Minority: ")) {
+                            caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Minority (other - please specify)"));
+                        } else {
+                            caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
+                        }
+                        casteOther.setText(patient1.getCaste_value());
+                    }
+                     else {
+                        caste_spinner.setSelection(caste_spinnerAdapter.getPosition(patient1.getCaste_value()));
+                    }
+                }
             }
 
             //contact type edit
-            if (patient1.getContact_type().equalsIgnoreCase("Not provided"))
+            if (patient1.getContact_type() == null || patient1.getContact_type().equalsIgnoreCase("Not provided"))
                 contact_type_spinner.setSelection(0);
             else {
-                String value = patient1.getContact_type();
-                contact_type_spinner.setSelection(contact_type_adapter.getPosition(value));
+
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    contact_type_spinner.setSelection(contact_type_adapter.getPosition(switch_hi_ContactTypeSpinner_edit(patient1.getContact_type())));
+                }
+                else {
+                    contact_type_spinner.setSelection(contact_type_adapter.getPosition(patient1.getContact_type()));
+                }
             }
 
             //where helpline no form edit
-            if (patient1.getHelpline_no_from().equalsIgnoreCase("Not provided"))
+            if (patient1.getHelpline_no_from() == null || patient1.getHelpline_no_from().equalsIgnoreCase("Not provided"))
                 helplineno_from_spinner.setSelection(0);
             else {
-                String value = patient1.getHelpline_no_from();
-                helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition(value));
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (helpline_no_fromAdapter.getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())) == -1) {
+                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("अन्य"));
+                    wherediduOther.setText(patient1.getHelpline_no_from());
+                }
+                else {
+                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter
+                            .getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())));
+                }
+            } else {
+                if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
+                    wherediduOther.setText(patient1.getHelpline_no_from());
+                }
+                else {
+                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter
+                            .getPosition(patient1.getHelpline_no_from()));
+                }
             }
+            }
+
+            //who is calling
+            if (patient1.getSdw() == null || patient1.getSdw().equalsIgnoreCase("Not provided"))
+                mCallerRelation.setSelection(0);
+
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
+                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));
+                } else {
+                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
+                }
+            }
+            //who calling - end
+
+            //how do you know
+            if (patient1.getCaste().equalsIgnoreCase("Not provided"))
+                mHelplineKnowledge.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+
+                    if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+                        mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
+                        helplineInfoOther.setText(patient1.getCaste());
+                    } else {
+                        mHelplineKnowledge.setSelection(helplineKnowledgeAdapter
+                                .getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())));
+                    }
+                }
+                else {
+                     if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+                        mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
+                        helplineInfoOther.setText(patient1.getCaste());
+                    } else {
+                        mHelplineKnowledge.setSelection(helplineKnowledgeAdapter
+                                .getPosition(patient1.getCaste()));
+                    }
+                }
+            }
+            //how do you know
+
+
+            //kind of phone
+            if (patient1.getEconomic_status().equalsIgnoreCase("Not provided"))
+                mPhoneType.setSelection(0);
+
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
+                } else {
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
+                }
+            }
+            //kind of phone
+
 
             //job edit
             if (patient1.getJob().equalsIgnoreCase("Not provided"))
                 job_spinner.setSelection(0);
             else {
-                String value = patient1.getJob();
-                job_spinner.setSelection(job_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getJob();
+                job_spinner.setSelection(job_spinnerAdapter.getPosition(value));*/
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String value = switch_hi_jobSpinner_edit(patient1.getJob());
+                    job_spinner.setSelection(job_spinnerAdapter.getPosition(value));
+                } else {
+                    job_spinner.setSelection(job_spinnerAdapter.getPosition(patient1.getJob()));
+                }
             }
 
 
@@ -1574,76 +1762,178 @@ public class IdentificationActivity extends AppCompatActivity {
             if (patient1.getDescribe_location().equalsIgnoreCase("Not provided"))
                 describe_location_spinner.setSelection(0);
             else {
-                String value = patient1.getDescribe_location();
-                describe_location_spinner.setSelection(describe_location_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getDescribe_location();
+                describe_location_spinner.setSelection(describe_location_spinnerAdapter.getPosition(value));*/
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String value = switch_hi_DescribeLocationSpinner_edit(patient1.getDescribe_location());
+                    describe_location_spinner.setSelection(describe_location_spinnerAdapter.getPosition(value));
+                } else {
+                    describe_location_spinner.setSelection(describe_location_spinnerAdapter.getPosition(patient1.getDescribe_location()));
+                }
             }
 
             //referred case edit
             if (patient1.getReferred_case().equalsIgnoreCase("Not provided"))
                 who_refferred_spinner.setSelection(0);
             else {
-                String value = patient1.getReferred_case();
-                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getReferred_case();
+                who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition(value));*/
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (who_refferred_spinnerAdapter.getPosition(switch_hi_Who_Referred_Spinner_edit(patient1.getReferred_case())) == -1) {
+                        who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("अन्य"));
+                        referredOther.setText(patient1.getReferred_case());
+                    }
+                    else {
+                        who_refferred_spinner.setSelection(who_refferred_spinnerAdapter
+                                .getPosition(switch_hi_Who_Referred_Spinner_edit(patient1.getReferred_case())));
+                    }
+                } else {
+                    if (who_refferred_spinnerAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                        who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
+                        referredOther.setText(patient1.getReferred_case());
+                    }
+                    else {
+                        who_refferred_spinner.setSelection(who_refferred_spinnerAdapter
+                                .getPosition(patient1.getReferred_case()));
+                    }
+                }
+
             }
 
             // am i speaking edit
             if (patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
                 am_i_speaking_spinner.setSelection(0);
             else {
-                String value = patient1.getAmSpeaking();
-                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getAmSpeaking();
+                am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition(value));*/
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (am_i_speaking_spinnerAdapter.getPosition(switch_hi_am_i_speaking_Spinner_edit(patient1.getAmSpeaking())) == -1) {
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("कोई और (किससे पूछें और दर्ज करें)"));
+                        amIspeakingOther.setText(patient1.getAmSpeaking());
+                    }
+                    else {
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter
+                                .getPosition(switch_hi_am_i_speaking_Spinner_edit(patient1.getAmSpeaking())));
+                    }
+                } else {
+                    if (am_i_speaking_spinnerAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
+                        amIspeakingOther.setText(patient1.getAmSpeaking());
+                    }
+                    else {
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter
+                                .getPosition(patient1.getAmSpeaking()));
+                    }
+                }
             }
 
             // survivior ever married edit
             if (patient1.getEver_married().equalsIgnoreCase("Not provided"))
                 ever_married_spinner.setSelection(0);
             else {
-                String value = patient1.getEver_married();
-                ever_married_spinner.setSelection(ever_married_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getEver_married();
+                ever_married_spinner.setSelection(ever_married_spinnerAdapter.getPosition(value));*/
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String value = switch_hi_survivor_ever_married_Spinner_edit(patient1.getEver_married());
+                    ever_married_spinner.setSelection(ever_married_spinnerAdapter.getPosition(value));
+                } else {
+                    ever_married_spinner.setSelection(ever_married_spinnerAdapter.getPosition(patient1.getEver_married()));
+                }
+
             }
 
             // type of marriage edit
             if (patient1.getType_marriage().equalsIgnoreCase("Not provided"))
                 type_marriage_spinner.setSelection(0);
             else {
-                String value = patient1.getType_marriage();
-                type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getType_marriage();
+                type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));*/
+
+                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String value = switch_hi_type_marriage_Spinner_edit(patient1.getType_marriage());
+                     type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));
+                } else {
+                     type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(patient1.getType_marriage()));
+                }
             }
 
             // current address edit
             if (patient1.getCurrent_address().equalsIgnoreCase("Not provided"))
                 current_residing_address_spinner.setSelection(0);
             else {
-                String value = patient1.getCurrent_address();
-                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition(value));
+                /*String value = patient1.getCurrent_address();
+                current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition(value));*/
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (current_residing_address_spinnerAdapter
+                            .getPosition(switch_hi_survivor_address_Spinner_edit(patient1.getCurrent_address())) == -1) {
+                        current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("अन्य"));
+                        currentaddressOther.setText(patient1.getCurrent_address());
+                    }
+                    else {
+                        current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter
+                                .getPosition(switch_hi_survivor_address_Spinner_edit(patient1.getCurrent_address())));
+                    }
+                } else {
+                    if (current_residing_address_spinnerAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                        current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
+                        currentaddressOther.setText(patient1.getCurrent_address());
+                    }
+                    else {
+                        current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter
+                                .getPosition(patient1.getCurrent_address()));
+                    }
+                }
             }
 
             // with whom living edit
             if (patient1.getWhom_living().equalsIgnoreCase("Not provided"))
                 with_whom_living_spinner.setSelection(0);
             else {
-                String value = patient1.getWhom_living();
-                with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition(value));
+
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (with_whom_living_spinnerAdapter
+                            .getPosition(switch_hi_with_whom_living_Spinner_edit(patient1.getWhom_living())) == -1) {
+                        with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("अन्य"));
+                        withwhomlivingOther.setText(patient1.getWhom_living());
+                    }
+                    else {
+                        with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter
+                                .getPosition(switch_hi_with_whom_living_Spinner_edit(patient1.getWhom_living())));
+                    }
+                } else {
+                    if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
+                        with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
+                        withwhomlivingOther.setText(patient1.getWhom_living());
+                    }
+                    else {
+                        with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter
+                                .getPosition(patient1.getWhom_living()));
+                    }
+                }
             }
             //end - new fields - Spinner
 
 
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if (patient1.getCaste().equalsIgnoreCase("Not provided"))
-                mHelplineKnowledge.setSelection(0);
-            else {
+            /*if (patient1.getCaste().equalsIgnoreCase("Not provided"))
+                mHelplineKnowledge.setSelection(0);*/
+         //   else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    /*String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));*/
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                   // mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 } else {
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 }
-            }
+         //   }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-              if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
-               // if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+                if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
+                    // if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
 
                     mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
                     helplineInfoOther.setText(patient1.getCaste());
@@ -1663,35 +1953,81 @@ public class IdentificationActivity extends AppCompatActivity {
                 genderOther.setText(patient1.getGender());
             }*/
 
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (genderAdapter.getPosition(patient1.getGender()) == -1) {
-                    gender_spinner.setSelection(genderAdapter.getPosition("अन्य"));
-                    genderOther.setText(patient1.getGender());
+           /* if (patient1.getGender() == null || patient1.getGender().equalsIgnoreCase("Not provided"))
+                gender_spinner.setSelection(0);
+            else {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (genderAdapter.getPosition(switch_hi_genderSpinner_edit(patient1.getGender())) == -1) {
+                        gender_spinner.setSelection(genderAdapter.getPosition("अन्य"));
+                        genderOther.setText(patient1.getGender());
+                    }
+                } else {
+                    if (genderAdapter.getPosition(patient1.getGender()) == -1) {
+                        gender_spinner.setSelection(genderAdapter.getPosition("Other"));
+                        genderOther.setText(patient1.getGender());
+                    }
                 }
-            } else {
-                if (genderAdapter.getPosition(patient1.getGender()) == -1) {
-                    gender_spinner.setSelection(genderAdapter.getPosition("Other"));
-                    genderOther.setText(patient1.getGender());
-                }
-            }
+            }*/
 
-            if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
+         /*   if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
                 education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
                 educationOther.setText(patient1.getEducation_value());
+            }*/
+           /* if (patient1.getEducation_value() == null || patient1.getEducation_value().equalsIgnoreCase("Not provided"))
+                education_spinner.setSelection(0);
+            else {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (education_spinnerAdapter.getPosition(switch_hi_educationSpinner_edit(patient1.getEducation_value())) == -1) {
+                    education_spinner.setSelection(education_spinnerAdapter.getPosition("अन्य"));
+                    educationOther.setText(patient1.getEducation_value());
+                }
+            } else {
+                if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
+                    education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
+                    educationOther.setText(patient1.getEducation_value());
+                }
             }
-            if (marital_statusAdapter.getPosition(patient1.getCurrent_marital_status()) == -1) {
+        }
+*/
+            /*if (marital_statusAdapter.getPosition(patient1.getCurrent_marital_status()) == -1) {
                 current_marital_spinner.setSelection(marital_statusAdapter.getPosition("Other"));
                 maritualstatusOther.setText(patient1.getCurrent_marital_status());
-            }
-            if (occupation_spinner_1Adapter.getPosition(patient1.getOccupation_value()) == -1) {
+            }*/
+
+
+            /*if (occupation_spinner_1Adapter.getPosition(patient1.getOccupation_value()) == -1) {
                 occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("Other"));
                 occupationOther.setText(patient1.getOccupation_value());
+            }*/
+            /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (occupation_spinner_1Adapter.getPosition(switch_hi_occupationSelectionSpinner_edit(patient1.getOccupation_value())) == -1) {
+                    occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("अन्य"));
+                    occupationOther.setText(patient1.getOccupation_value());
+                }
+            } else {
+                if (marital_statusAdapter.getPosition(patient1.getOccupation_value()) == -1) {
+                    occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("Other"));
+                    occupationOther.setText(patient1.getOccupation_value());
+                }
             }
-            if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
+*/
+            /*if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
                 husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("Other"));
                 husbandoccupationOther.setText(patient1.getHusband_occupation());
-            }
-            if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
+            }*/
+          /*  if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (husband_occupationAdapter.getPosition(switch_hi_husbandoccupationSelectionSpinner_edit(patient1.getHusband_occupation())) == -1) {
+                    occupation_spinner_1.setSelection(husband_occupationAdapter.getPosition("अन्य"));
+                    husbandoccupationOther.setText(patient1.getHusband_occupation());
+                }
+            } else {
+                if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
+                    occupation_spinner_1.setSelection(husband_occupationAdapter.getPosition("Other"));
+                    husbandoccupationOther.setText(patient1.getHusband_occupation());
+                }
+            }*/
+
+           /* if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
 
                 if (casteOther.getText().toString().contains("Minority: ")) {
                     caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Minority (other - please specify)"));
@@ -1699,46 +2035,122 @@ public class IdentificationActivity extends AppCompatActivity {
                     caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
                 }
                 casteOther.setText(patient1.getCaste_value());
-            }
+            }*/
+           /* if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (caste_spinnerAdapter.getPosition(switch_hi_CasteSelectionSpinner_edit(patient1.getCaste_value())) == -1) {
+
+                    if (casteOther.getText().toString().contains("Minority: ")) {
+                        caste_spinner.setSelection(caste_spinnerAdapter.getPosition("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)"));
+                    } else {
+                        caste_spinner.setSelection(caste_spinnerAdapter.getPosition("अन्य"));
+                    }
+                    casteOther.setText(patient1.getCaste_value());
+                }
+            } else {
+                if (caste_spinnerAdapter.getPosition(patient1.getCaste_value()) == -1) {
+
+                    if (casteOther.getText().toString().contains("Minority: ")) {
+                        caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Minority (other - please specify)"));
+                    } else {
+                        caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
+                    }
+                    casteOther.setText(patient1.getCaste_value());
+                }
+            }*/
 
 
-            if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+            /*if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
                 helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
                 wherediduOther.setText(patient1.getHelpline_no_from());
-            }
+            }*/
+         /*   if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (helpline_no_fromAdapter.getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())) == -1) {
+                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("अन्य"));
+                    wherediduOther.setText(patient1.getHelpline_no_from());
+                }
+            } else {
+                if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
+                    wherediduOther.setText(patient1.getHelpline_no_from());
+                }
+            }*/
+
+
+
+
             if (patient1.getReferred_case().equalsIgnoreCase("Not provided"))
                 who_refferred_spinner.setSelection(0);
             else {
-                if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
+                /*if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
                     who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
                     referredOther.setText(patient1.getReferred_case());
+                }*/
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (who_refferred_spinnerAdapter.getPosition(switch_hi_Who_Referred_Spinner_edit(patient1.getReferred_case())) == -1) {
+                        who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("अन्य"));
+                        referredOther.setText(patient1.getReferred_case());
+                    }
+                } else {
+                    if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
+                        who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
+                        referredOther.setText(patient1.getReferred_case());
+                    }
                 }
             }
 
-            if (patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
+            /*if (patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
                 am_i_speaking_spinner.setSelection(0);
-            else {
-                if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
+            else {*/
+                /*if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
                     am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
                     amIspeakingOther.setText(patient1.getAmSpeaking());
+                }*/
+                /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (am_i_speaking_spinnerAdapter.getPosition(switch_hi_am_i_speaking_Spinner_edit(patient1.getAmSpeaking())) == -1) {
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("कोई और (किससे पूछें और दर्ज करें)"));
+                        amIspeakingOther.setText(patient1.getAmSpeaking());
+                    }
+                } else {
+                    if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
+                        amIspeakingOther.setText(patient1.getAmSpeaking());
+                    }
                 }
-            }
+            }*/
 
             if (patient1.getCurrent_address().equalsIgnoreCase("Not provided"))
                 current_residing_address_spinner.setSelection(0);
             else {
-                if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
+                /*if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
                     current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
                     currentaddressOther.setText(patient1.getCurrent_address());
+                }*/
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (current_residing_address_spinnerAdapter.getPosition(switch_hi_survivor_address_Spinner_edit(patient1.getCurrent_address())) == -1) {
+                        current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("अन्य"));
+                        currentaddressOther.setText(patient1.getCurrent_address());
+                    }
+                } else {
+                    if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
+                        current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
+                        currentaddressOther.setText(patient1.getCurrent_address());
+                    }
                 }
             }
 
             if (patient1.getWhom_living().equalsIgnoreCase("Not provided"))
                 with_whom_living_spinner.setSelection(0);
             else {
-                if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
-                    with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
-                    withwhomlivingOther.setText(patient1.getWhom_living());
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (with_whom_living_spinnerAdapter.getPosition(switch_hi_with_whom_living_Spinner_edit(patient1.getWhom_living())) == -1) {
+                        with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("अन्य"));
+                        withwhomlivingOther.setText(patient1.getWhom_living());
+                    }
+                } else {
+                    if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
+                        with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
+                        withwhomlivingOther.setText(patient1.getWhom_living());
+                    }
                 }
             }
             //end - other edittext
@@ -1750,28 +2162,16 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    /*String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));*/
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
+                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
+                   // mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
                 } else {
                     mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
 //            if (callerRelationAdapter.getPosition(patient1.getSdw()) == -1)
 
-            if (patient1.getSdw() == null || patient1.getSdw().equalsIgnoreCase("Not provided"))
-                mCallerRelation.setSelection(0);
-//            else
-//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    /*String callRelation = switch_hi_CallRelation_edit(patient1.getSdw());
-                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(callRelation));*/
-                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
-                } else {
-                    mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
-                }
-            }
+
            /* if (patient1.getEducation_level().equals(getResources().getString(R.string.not_provided)))
                 mEducation.setSelection(0);
             else {
@@ -2033,7 +2433,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String childrenOption = parent.getItemAtPosition(position).toString();
 
-                if (childrenOption.equalsIgnoreCase("Yes")) {
+                if (childrenOption.equalsIgnoreCase("Yes") || childrenOption.equalsIgnoreCase("हां")) {
                     framelayout_no_children.setVisibility(View.VISIBLE);
                 } else {
                     framelayout_no_children.setVisibility(View.GONE);
@@ -2054,7 +2454,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedGenderOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedGenderOption.equalsIgnoreCase("Other")) {
+                if (selectedGenderOption.equalsIgnoreCase("Other") || selectedGenderOption.equalsIgnoreCase("अन्य")) {
                     genderOther.setVisibility(View.VISIBLE);
                     genderOther.setFocusable(true);
                 } else {
@@ -2077,7 +2477,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedEducationOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedEducationOption.equalsIgnoreCase("Other")) {
+                if (selectedEducationOption.equalsIgnoreCase("Other") || selectedEducationOption.equalsIgnoreCase("अन्य")) {
                     educationOther.setVisibility(View.VISIBLE);
                     educationOther.setFocusable(true);
                 } else {
@@ -2100,7 +2500,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedMaritualStatusOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedMaritualStatusOption.equalsIgnoreCase("Other")) {
+                if (selectedMaritualStatusOption.equalsIgnoreCase("Other") || selectedMaritualStatusOption.equalsIgnoreCase("अन्य")) {
                     maritualstatusOther.setVisibility(View.VISIBLE);
                     maritualstatusOther.setFocusable(true);
                 } else {
@@ -2123,7 +2523,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOccupationOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedOccupationOption.equalsIgnoreCase("Other")) {
+                if (selectedOccupationOption.equalsIgnoreCase("Other") || selectedOccupationOption.equalsIgnoreCase("अन्य")) {
                     occupationOther.setVisibility(View.VISIBLE);
                     occupationOther.setFocusable(true);
                 } else {
@@ -2146,7 +2546,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHusbandOccupationOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedHusbandOccupationOption.equalsIgnoreCase("Other")) {
+                if (selectedHusbandOccupationOption.equalsIgnoreCase("Other") ||
+                        selectedHusbandOccupationOption.equalsIgnoreCase("अन्य")) {
                     husbandoccupationOther.setVisibility(View.VISIBLE);
                     husbandoccupationOther.setFocusable(true);
                 } else {
@@ -2169,8 +2570,9 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCasteOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedCasteOption.equalsIgnoreCase("Other") ||
-                        selectedCasteOption.equalsIgnoreCase("Minority (other - please specify)")) {
+                if (selectedCasteOption.equalsIgnoreCase("Other") || selectedCasteOption.equalsIgnoreCase("अन्य") ||
+                        selectedCasteOption.equalsIgnoreCase("Minority (other - please specify)") ||
+                        selectedCasteOption.equalsIgnoreCase("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)")) {
                     casteOther.setVisibility(View.VISIBLE);
                     casteOther.setFocusable(true);
                 } else {
@@ -2193,7 +2595,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedWhere_did_u_Option = parent.getItemAtPosition(position).toString();
 
-                if (selectedWhere_did_u_Option.equalsIgnoreCase("Other")) {
+                if (selectedWhere_did_u_Option.equalsIgnoreCase("Other") || selectedWhere_did_u_Option.equalsIgnoreCase("अन्य")) {
                     wherediduOther.setVisibility(View.VISIBLE);
                     wherediduOther.setFocusable(true);
                 } else {
@@ -2216,7 +2618,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedcaseReferredByOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedcaseReferredByOption.equalsIgnoreCase("Other")) {
+                if (selectedcaseReferredByOption.equalsIgnoreCase("Other") || selectedcaseReferredByOption.equalsIgnoreCase("अन्य")) {
                     referredOther.setVisibility(View.VISIBLE);
                     referredOther.setFocusable(true);
                 } else {
@@ -2239,7 +2641,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedamispeakingOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedamispeakingOption.equalsIgnoreCase("Someone else (Ask who and enter)")) {
+                if (selectedamispeakingOption.equalsIgnoreCase("Someone else (Ask who and enter)") ||
+                        selectedamispeakingOption.equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)")) {
                     amIspeakingOther.setVisibility(View.VISIBLE);
                     amIspeakingOther.setFocusable(true);
                 } else {
@@ -2262,7 +2665,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedcurrentAddressOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedcurrentAddressOption.equalsIgnoreCase("Other")) {
+                if (selectedcurrentAddressOption.equalsIgnoreCase("Other") || selectedcurrentAddressOption.equalsIgnoreCase("अन्य")) {
                     currentaddressOther.setVisibility(View.VISIBLE);
                     currentaddressOther.setFocusable(true);
                 } else {
@@ -2285,7 +2688,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedwithwhomOption = parent.getItemAtPosition(position).toString();
 
-                if (selectedwithwhomOption.equalsIgnoreCase("Other")) {
+                if (selectedwithwhomOption.equalsIgnoreCase("Other") || selectedwithwhomOption.equalsIgnoreCase("अन्य")) {
                     withwhomlivingOther.setVisibility(View.VISIBLE);
                     withwhomlivingOther.setFocusable(true);
                 } else {
@@ -4431,37 +4834,72 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start other editext
             //gender
-            if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                genderInfo = genderOther.getText().toString();
-            else
-                genderInfo = StringUtils.getProvided(gender_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    genderInfo = genderOther.getText().toString();
+                else
+                    genderInfo = StringUtils.getProvidedOthers(gender_spinner);
+            } else {
+                if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    genderInfo = genderOther.getText().toString();
+                else
+                    genderInfo = StringUtils.getProvidedOthers(gender_spinner);
+            }
 
             //education
-            if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                educationInfo = educationOther.getText().toString();
-            else
-                educationInfo = StringUtils.getProvided(education_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    educationInfo = educationOther.getText().toString();
+                else
+                    educationInfo = StringUtils.getProvidedOthers(education_spinner);
+            } else {
+                if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    educationInfo = educationOther.getText().toString();
+                else
+                    educationInfo = StringUtils.getProvidedOthers(education_spinner);
+            }
 
             //maritual status
-            if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                maritualstatusInfo = maritualstatusOther.getText().toString();
-            else
-                maritualstatusInfo = StringUtils.getProvided(current_marital_spinner);
-
-            //husband occupation
-            if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                husbandoccupationInfo = husbandoccupationOther.getText().toString();
-            else
-                husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    maritualstatusInfo = maritualstatusOther.getText().toString();
+                else
+                    maritualstatusInfo = StringUtils.getProvidedOthers(current_marital_spinner);
+            } else {
+                if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    maritualstatusInfo = maritualstatusOther.getText().toString();
+                else
+                    maritualstatusInfo = StringUtils.getProvidedOthers(current_marital_spinner);
+            }
 
             // occupation
-            if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                occupationInfo = occupationOther.getText().toString();
-            else
-                occupationInfo = StringUtils.getProvided(occupation_spinner_1);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    occupationInfo = occupationOther.getText().toString();
+                else
+                    occupationInfo = StringUtils.getProvidedOthers(occupation_spinner_1);
+            } else {
+                if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    occupationInfo = occupationOther.getText().toString();
+                else
+                    occupationInfo = StringUtils.getProvidedOthers(occupation_spinner_1);
+            }
+
+            //husband occupation
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    husbandoccupationInfo = husbandoccupationOther.getText().toString();
+                else
+                    husbandoccupationInfo = StringUtils.getProvidedOthers(husband_occupation_spinner);
+            } else {
+                if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    husbandoccupationInfo = husbandoccupationOther.getText().toString();
+                else
+                    husbandoccupationInfo = StringUtils.getProvidedOthers(husband_occupation_spinner);
+            }
 
             //caste
-            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+           /* if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
                     caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
 
                 if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
@@ -4472,37 +4910,101 @@ public class IdentificationActivity extends AppCompatActivity {
 
             } else {
                 casteInfo = StringUtils.getProvided(caste_spinner);
+            }*/
+
+            //
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                        caste_spinner.getSelectedItem().toString().equalsIgnoreCase("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)")) {
+
+                    if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)")) {
+                        casteInfo = "Minority: " + casteOther.getText().toString();
+                    } else {
+                        casteInfo = casteOther.getText().toString();
+                    }
+                }
+                else {
+                    casteInfo = StringUtils.getProvidedOthers(caste_spinner);
+                }
+            } else {
+                if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                        caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+
+                    if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                        casteInfo = "Minority: " + casteOther.getText().toString();
+                    } else {
+                        casteInfo = casteOther.getText().toString();
+                    }
+                }
+                else {
+                    casteInfo = StringUtils.getProvidedOthers(caste_spinner);
+                }
             }
 
             //where did u
-            if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                wherediduInfo = wherediduOther.getText().toString();
-            else
-                wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    wherediduInfo = wherediduOther.getText().toString();
+                else
+                    wherediduInfo = StringUtils.getProvidedOthers(helplineno_from_spinner);
+            } else {
+                if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    wherediduInfo = wherediduOther.getText().toString();
+                else
+                    wherediduInfo = StringUtils.getProvidedOthers(helplineno_from_spinner);
+            }
 
             //case referred by
-            if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                referredbyInfo = referredOther.getText().toString();
-            else
-                referredbyInfo = StringUtils.getProvided(who_refferred_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    referredbyInfo = referredOther.getText().toString();
+                else
+                    referredbyInfo = StringUtils.getProvidedOthers_1(who_refferred_spinner);
+            } else {
+                if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    referredbyInfo = referredOther.getText().toString();
+                else
+                    referredbyInfo = StringUtils.getProvidedOthers_1(who_refferred_spinner);
+            }
 
             //am i speaking
-            if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
-                amiSpeakingInfo = amIspeakingOther.getText().toString();
-            else
-                amiSpeakingInfo = StringUtils.getProvided(am_i_speaking_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)"))
+                    amiSpeakingInfo = referredOther.getText().toString();
+                else
+                    amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
+            } else {
+                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
+                    amiSpeakingInfo = referredOther.getText().toString();
+                else
+                    amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
+            }
 
             //current address
-            if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                currentAddressInfo = currentaddressOther.getText().toString();
-            else
-                currentAddressInfo = StringUtils.getProvided(current_residing_address_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    currentAddressInfo = currentaddressOther.getText().toString();
+                else
+                    currentAddressInfo = StringUtils.getProvidedOthers_1(current_residing_address_spinner);
+            } else {
+                if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    currentAddressInfo = currentaddressOther.getText().toString();
+                else
+                    currentAddressInfo = StringUtils.getProvidedOthers_1(current_residing_address_spinner);
+            }
 
             //with whom living
-            if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                withwhomLivingInfo = withwhomlivingOther.getText().toString();
-            else
-                withwhomLivingInfo = StringUtils.getProvided(with_whom_living_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    withwhomLivingInfo = withwhomlivingOther.getText().toString();
+                else
+                    withwhomLivingInfo = StringUtils.getProvidedOthers_1(with_whom_living_spinner);
+            } else {
+                if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    withwhomLivingInfo = withwhomlivingOther.getText().toString();
+                else
+                    withwhomLivingInfo = StringUtils.getProvidedOthers_1(with_whom_living_spinner);
+            }
 
             //end other edittext
 
@@ -4717,7 +5219,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. no of children
@@ -4741,7 +5243,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Contact type"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. helpline no from
@@ -4758,7 +5260,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Work Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(job_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(job_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. describe location
@@ -4766,7 +5268,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Describe location"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(describe_location_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(describe_location_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. referred case
@@ -4790,7 +5292,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor maritual status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(ever_married_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(ever_married_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. type of marriage survivor
@@ -4798,7 +5300,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor marriage type"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(type_marriage_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(type_marriage_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. current address
@@ -6145,37 +6647,72 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //start other editext
             //gender
-            if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                genderInfo = genderOther.getText().toString();
-            else
-                genderInfo = StringUtils.getProvided(gender_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    genderInfo = genderOther.getText().toString();
+                else
+                    genderInfo = StringUtils.getProvidedOthers(gender_spinner);
+            } else {
+                if (gender_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    genderInfo = genderOther.getText().toString();
+                else
+                    genderInfo = StringUtils.getProvidedOthers(gender_spinner);
+            }
 
             //education
-            if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                educationInfo = educationOther.getText().toString();
-            else
-                educationInfo = StringUtils.getProvided(education_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    educationInfo = educationOther.getText().toString();
+                else
+                    educationInfo = StringUtils.getProvidedOthers(education_spinner);
+            } else {
+                if (education_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    educationInfo = educationOther.getText().toString();
+                else
+                    educationInfo = StringUtils.getProvidedOthers(education_spinner);
+            }
 
             //maritual status
-            if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                maritualstatusInfo = maritualstatusOther.getText().toString();
-            else
-                maritualstatusInfo = StringUtils.getProvided(current_marital_spinner);
-
-            //husband occupation
-            if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                husbandoccupationInfo = husbandoccupationOther.getText().toString();
-            else
-                husbandoccupationInfo = StringUtils.getProvided(husband_occupation_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    maritualstatusInfo = maritualstatusOther.getText().toString();
+                else
+                    maritualstatusInfo = StringUtils.getProvidedOthers(current_marital_spinner);
+            } else {
+                if (current_marital_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    maritualstatusInfo = maritualstatusOther.getText().toString();
+                else
+                    maritualstatusInfo = StringUtils.getProvidedOthers(current_marital_spinner);
+            }
 
             // occupation
-            if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                occupationInfo = occupationOther.getText().toString();
-            else
-                occupationInfo = StringUtils.getProvided(occupation_spinner_1);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    occupationInfo = occupationOther.getText().toString();
+                else
+                    occupationInfo = StringUtils.getProvidedOthers(occupation_spinner_1);
+            } else {
+                if (occupation_spinner_1.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    occupationInfo = occupationOther.getText().toString();
+                else
+                    occupationInfo = StringUtils.getProvidedOthers(occupation_spinner_1);
+            }
+
+            //husband occupation
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    husbandoccupationInfo = husbandoccupationOther.getText().toString();
+                else
+                    husbandoccupationInfo = StringUtils.getProvidedOthers(husband_occupation_spinner);
+            } else {
+                if (husband_occupation_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    husbandoccupationInfo = husbandoccupationOther.getText().toString();
+                else
+                    husbandoccupationInfo = StringUtils.getProvidedOthers(husband_occupation_spinner);
+            }
 
             //caste
-            if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+           /* if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
                     caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
 
                 if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
@@ -6186,37 +6723,101 @@ public class IdentificationActivity extends AppCompatActivity {
 
             } else {
                 casteInfo = StringUtils.getProvided(caste_spinner);
+            }*/
+
+            //
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                        caste_spinner.getSelectedItem().toString().equalsIgnoreCase("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)")) {
+
+                    if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)")) {
+                        casteInfo = "Minority: " + casteOther.getText().toString();
+                    } else {
+                        casteInfo = casteOther.getText().toString();
+                    }
+                }
+                else {
+                    casteInfo = StringUtils.getProvidedOthers(caste_spinner);
+                }
+            } else {
+                if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                        caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+
+                    if (caste_spinner.getSelectedItem().toString().equalsIgnoreCase("Minority (other - please specify)")) {
+                        casteInfo = "Minority: " + casteOther.getText().toString();
+                    } else {
+                        casteInfo = casteOther.getText().toString();
+                    }
+                }
+                else {
+                    casteInfo = StringUtils.getProvidedOthers(caste_spinner);
+                }
             }
 
             //where did u
-            if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                wherediduInfo = wherediduOther.getText().toString();
-            else
-                wherediduInfo = StringUtils.getProvided(helplineno_from_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    wherediduInfo = wherediduOther.getText().toString();
+                else
+                    wherediduInfo = StringUtils.getProvidedOthers(helplineno_from_spinner);
+            } else {
+                if (helplineno_from_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    wherediduInfo = wherediduOther.getText().toString();
+                else
+                    wherediduInfo = StringUtils.getProvidedOthers(helplineno_from_spinner);
+            }
 
             //case referred by
-            if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                referredbyInfo = referredOther.getText().toString();
-            else
-                referredbyInfo = StringUtils.getProvided(who_refferred_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    referredbyInfo = referredOther.getText().toString();
+                else
+                    referredbyInfo = StringUtils.getProvidedOthers_1(who_refferred_spinner);
+            } else {
+                if (who_refferred_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    referredbyInfo = referredOther.getText().toString();
+                else
+                    referredbyInfo = StringUtils.getProvidedOthers_1(who_refferred_spinner);
+            }
 
             //am i speaking
-            if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
-                amiSpeakingInfo = amIspeakingOther.getText().toString();
-            else
-                amiSpeakingInfo = StringUtils.getProvided(am_i_speaking_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)"))
+                    amiSpeakingInfo = referredOther.getText().toString();
+                else
+                    amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
+            } else {
+                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
+                    amiSpeakingInfo = referredOther.getText().toString();
+                else
+                    amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
+            }
 
             //current address
-            if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                currentAddressInfo = currentaddressOther.getText().toString();
-            else
-                currentAddressInfo = StringUtils.getProvided(current_residing_address_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    currentAddressInfo = currentaddressOther.getText().toString();
+                else
+                    currentAddressInfo = StringUtils.getProvidedOthers_1(current_residing_address_spinner);
+            } else {
+                if (current_residing_address_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    currentAddressInfo = currentaddressOther.getText().toString();
+                else
+                    currentAddressInfo = StringUtils.getProvidedOthers_1(current_residing_address_spinner);
+            }
 
             //with whom living
-            if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
-                withwhomLivingInfo = withwhomlivingOther.getText().toString();
-            else
-                withwhomLivingInfo = StringUtils.getProvided(with_whom_living_spinner);
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    withwhomLivingInfo = withwhomlivingOther.getText().toString();
+                else
+                    withwhomLivingInfo = StringUtils.getProvidedOthers_1(with_whom_living_spinner);
+            } else {
+                if (with_whom_living_spinner.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    withwhomLivingInfo = withwhomlivingOther.getText().toString();
+                else
+                    withwhomLivingInfo = StringUtils.getProvidedOthers_1(with_whom_living_spinner);
+            }
 
             //end other edittext
 
@@ -6446,7 +7047,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. no of children
@@ -6470,7 +7071,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Contact type"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(contact_type_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. helpline no from
@@ -6487,7 +7088,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Work Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(job_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(job_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. describe location
@@ -6495,7 +7096,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Describe location"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(describe_location_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(describe_location_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. referred case
@@ -6519,7 +7120,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor maritual status"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(ever_married_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(ever_married_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. type of marriage survivor
@@ -6527,7 +7128,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor marriage type"));
-            patientAttributesDTO.setValue(StringUtils.getProvided(type_marriage_spinner)); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getProvidedOthers_1(type_marriage_spinner)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. current address
@@ -6546,10 +7147,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
-
             //end - complaint selection
-
-
             //end - new fields spinner
 
             patientAttributesDTO = new PatientAttributesDTO();
