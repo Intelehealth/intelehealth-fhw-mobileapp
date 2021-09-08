@@ -157,7 +157,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     String phistory = "";
     String fhistory = "";
-    String followUpDate = "";
     LinearLayout previousVisitsList;
     String visitValue;
     private String encounterVitals = "";
@@ -336,7 +335,9 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 String[] cols = {"value"};
                 String visitFollowUpDate = warnFollowUp(sqLiteDatabase,cols);
-                try {
+                if(!visitFollowUpDate.equalsIgnoreCase("") || !visitFollowUpDate.isEmpty())
+                {
+                    try {
                     followUpDate = followUpFormat.parse(visitFollowUpDate);
                     currentDateFU = followUpFormat.parse(today);
                 } catch (ParseException e) {
@@ -345,7 +346,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if(followUpDate.compareTo(currentDateFU)>0 || followUpDate.compareTo(currentDateFU)==0)
                 {
                     MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
-                    followUpAlert.setMessage(getString(R.string.pending_follow_up) + visitFollowUpDate + "\n" + getString(R.string.still_continue));
+                    followUpAlert.setMessage(getString(R.string.pending_follow_up) +  "\n" + getString(R.string.still_continue));
                     followUpAlert.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -363,7 +364,12 @@ public class PatientDetailActivity extends AppCompatActivity {
                     IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
 //                    Toast.makeText(PatientDetailActivity.this,"Follow Up Date greater.",Toast.LENGTH_LONG).show();
                 }
+                }
+                else
+                {
+                    newVisitStart(sqLiteDatabase,cols);
 
+                }
 
     }
 
@@ -1699,6 +1705,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     public String warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
     {
+        String followUpDate = "";
+
         Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
                 new String[]{encounterVisitNote, UuidDictionary.FOLLOW_UP_VISIT},
                 null, null, null);
