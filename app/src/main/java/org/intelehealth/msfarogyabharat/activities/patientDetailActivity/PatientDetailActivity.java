@@ -132,6 +132,7 @@ import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_CallRelation_edit;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_HelplineKnowledge_edit;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_PhoneType_edit;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.*;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
@@ -884,8 +885,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         phoneView.setText(patient_new.getPhone_number());
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
-            String callRelation = patient_new.getSdw();
+            String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
+          //  String callRelation = patient_new.getSdw();
             callerRelation.setText(callRelation);
         }
         else{
@@ -893,8 +894,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
-            String helplineKNowledgeInfo = patient_new.getCaste();
+            String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
+           // String helplineKNowledgeInfo = patient_new.getCaste();
             helplineInfo.setText(helplineKNowledgeInfo);
         }
         else{
@@ -902,8 +903,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
-            String phType = patient_new.getEconomic_status();
+            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
+           // String phType = patient_new.getEconomic_status();
             phoneType.setText(phType);
         }
         else{
