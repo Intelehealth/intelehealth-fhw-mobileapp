@@ -168,6 +168,7 @@ public final class StringUtils {
             val = switch_hi_current_maritual_statusSpinner(val);
             val = switch_hi_occupationSelectionSpinner(val);
             val = switch_hi_husbandoccupationSelectionSpinner(val);
+            val = switch_hi_childrenSpinner(val);
             val = switch_hi_CasteSelectionSpinner(val);
             val = switch_hi_ContactTypeSpinner(val);
             val = switch_hi_WhereDidU_Spinner(val);
