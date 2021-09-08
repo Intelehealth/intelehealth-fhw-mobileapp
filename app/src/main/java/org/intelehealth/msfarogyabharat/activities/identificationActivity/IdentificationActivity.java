@@ -4970,12 +4970,12 @@ public class IdentificationActivity extends AppCompatActivity {
             //am i speaking
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)"))
-                    amiSpeakingInfo = referredOther.getText().toString();
+                    amiSpeakingInfo = amIspeakingOther.getText().toString();
                 else
                     amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
             } else {
                 if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("Someone else (Ask who and enter)"))
-                    amiSpeakingInfo = referredOther.getText().toString();
+                    amiSpeakingInfo = amIspeakingOther.getText().toString();
                 else
                     amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
             }
