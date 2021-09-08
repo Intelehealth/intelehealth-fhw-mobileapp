@@ -796,4 +796,9 @@
     <string name="husband_phone_number">पति फोन नंबर*</string>
     <string name="what_address_is_the_survivor_currently_residing_at">उत्तरजीवी वर्तमान में किस पते पर रह रहा है?*</string>
     <string name="with_whom_is_the_survivor_living">उत्तरजीवी किसके साथ रह रहा है?*</string>
+
+    <string name="title_follow_up">फॉलो अप विज़िट</string>
+    <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
+    <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
+
 </resources>
