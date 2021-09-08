@@ -14,6 +14,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -125,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview,tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
 
     @Override
@@ -748,6 +750,8 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
+
+
         super.onResume();
     }
 
@@ -765,16 +769,14 @@ public class HomeActivity extends AppCompatActivity {
 
         tvTodayVisitsBadge.setVisibility(View.VISIBLE);
         if (todayPatientCount > 0) {
-            tvTodayVisitsBadge.setText("("+String.valueOf(todayPatientCount)+")");
-        }
-        else{
+            tvTodayVisitsBadge.setText("(" + String.valueOf(todayPatientCount) + ")");
+        } else {
             tvTodayVisitsBadge.setText("(0)");
         }
         tvActiveVisitsBadge.setVisibility(View.VISIBLE);
         if (activePatientCount > 0) {
-            tvActiveVisitsBadge.setText("("+String.valueOf(activePatientCount)+")");
-        }
-        else{
+            tvActiveVisitsBadge.setText("(" + String.valueOf(activePatientCount) + ")");
+        } else {
             tvActiveVisitsBadge.setText("(0)");
         }
     }
@@ -1023,6 +1025,7 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
+                    showBadge();
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());

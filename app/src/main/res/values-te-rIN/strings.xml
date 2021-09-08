@@ -567,5 +567,5 @@
     <string name="str_check_India">భారతదేశం</string>
     <string name="str_check_UnitedStates">సంయుక్త రాష్ట్రాలు</string>
     <string name="str_check_Philippines">ఫిలిప్పీన్స్</string>
-
+    <string name = "change_languages">భాషలను మార్చండి</string>
 </resources>

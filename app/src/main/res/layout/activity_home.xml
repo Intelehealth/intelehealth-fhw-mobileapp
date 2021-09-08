@@ -124,7 +124,7 @@ android:layout_centerHorizontal="true"
                             android:minWidth="32dp"
                             android:textAlignment="center"
                             android:textColor="@color/red"
-                            tools:text="(0)" />
+                            />
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
@@ -178,7 +178,6 @@ android:layout_centerHorizontal="true"
 
                         <TextView
                             android:id="@+id/tvActiveVisitsBadge"
-                            tools:text="(0)"
                             android:gravity="center"
                             android:layout_centerHorizontal="true"
                             android:layout_below="@+id/activeVisits_textview"

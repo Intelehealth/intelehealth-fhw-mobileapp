@@ -667,5 +667,5 @@
     <string name="take_photo">ಭಾವಚಿತ್ರವನ್ನು ತೆಗಿರಿ</string>
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
-
+    <string name = "change_languages">ಭಾಷೆಗಳನ್ನು ಬದಲಿಸಿ</string>
 </resources>
