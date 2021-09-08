@@ -598,8 +598,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 for (int i = 0; i < buckets.size(); i++) {
                                     if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
                                         spinner_pref_bucket.setSelection(i);
-                                        int slotSelect=Integer.parseInt(userData.slotselected);
-                                        spinner_pref_time.setSelection(slotSelect);
+
+                                        if (!TextUtils.isEmpty(userData.slotselected) && TextUtils.isDigitsOnly(userData.slotselected)) {
+                                                int slotSelect = Integer.parseInt(userData.slotselected);
+                                                spinner_pref_time.setSelection(slotSelect);
+                                        }
 //                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
 //                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
 //                                                spinner_pref_time.setSelection(i1);
