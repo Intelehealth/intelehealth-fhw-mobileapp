@@ -162,6 +162,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String visitValue;
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
+    private String encounterVisitNote = "";
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
@@ -216,6 +217,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
+
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
@@ -1025,6 +1027,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                             encounterAdultIntials = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterVisitNote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
                     } while (encounterCursor.moveToNext());
                 }
                 encounterCursor.close();
@@ -1658,7 +1663,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     public void warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
     {
         Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
-                new String[]{encounterAdultIntials, UuidDictionary.FOLLOW_UP_VISIT},
+                new String[]{encounterVisitNote, UuidDictionary.FOLLOW_UP_VISIT},
                 null, null, null);
 
         if (cursor.moveToFirst()) {
@@ -1672,7 +1677,13 @@ public class PatientDetailActivity extends AppCompatActivity {
             sessionManager.setReturning(returning);
         }
         cursor.close();
-
+        if(followUpDate!=null || !followUpDate.equalsIgnoreCase(""))
+        {
+            if(followUpDate.contains(",")) {
+                int commaIndex = followUpDate.indexOf(",");
+                followUpDate = followUpDate.substring(0, commaIndex);
+            }
+        }
         Toast.makeText(PatientDetailActivity.this,followUpDate,Toast.LENGTH_LONG).show();
 
     }
