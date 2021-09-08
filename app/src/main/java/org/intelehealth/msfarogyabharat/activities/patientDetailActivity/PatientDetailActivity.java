@@ -325,41 +325,78 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                SimpleDateFormat followUpFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                 Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
-
-
-                String uuid = UUID.randomUUID().toString();
-                EncounterDAO encounterDAO = new EncounterDAO();
-                encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(UUID.randomUUID().toString());
-                encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-                encounterDTO.setEncounterTime(thisDate);
-                encounterDTO.setVisituuid(uuid);
-                encounterDTO.setSyncd(false);
-                encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
-                encounterDTO.setVoided(0);
-                encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
-
-                try {
-                    encounterDAO.createEncountersToDB(encounterDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
+                String today = followUpFormat.format(todayDate);
+                Date followUpDate = new Date();
+                Date currentDateFU = new Date();
 
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
-
-                String CREATOR_ID = sessionManager.getCreatorID();
-                returning = false;
-                sessionManager.setReturning(returning);
-
                 String[] cols = {"value"};
-                warnFollowUp(sqLiteDatabase,cols);
-                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                String visitFollowUpDate = warnFollowUp(sqLiteDatabase,cols);
+                try {
+                    followUpDate = followUpFormat.parse(visitFollowUpDate);
+                    currentDateFU = followUpFormat.parse(today);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(followUpDate.compareTo(currentDateFU)>0 || followUpDate.compareTo(currentDateFU)==0)
+                {
+                    MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+                    followUpAlert.setMessage(getString(R.string.pending_follow_up) + visitFollowUpDate + "\n" + getString(R.string.still_continue));
+                    followUpAlert.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            newVisitStart(sqLiteDatabase,cols);
+                        }
+                    });
+                    followUpAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = followUpAlert.create();
+                    alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
+//                    Toast.makeText(PatientDetailActivity.this,"Follow Up Date greater.",Toast.LENGTH_LONG).show();
+                }
+
+
+    }
+
+    private void newVisitStart(SQLiteDatabase sqLiteDatabase, String[] cols) {
+
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
                         new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
 
@@ -1660,7 +1697,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    public void warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
+    public String warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
     {
         Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
                 new String[]{encounterVisitNote, UuidDictionary.FOLLOW_UP_VISIT},
@@ -1684,8 +1721,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 followUpDate = followUpDate.substring(0, commaIndex);
             }
         }
-        Toast.makeText(PatientDetailActivity.this,followUpDate,Toast.LENGTH_LONG).show();
-
+//        Toast.makeText(PatientDetailActivity.this,followUpDate,Toast.LENGTH_LONG).show();
+        return followUpDate;
     }
 }
 
