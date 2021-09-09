@@ -47,8 +47,12 @@
         <item>Select Country</item>
         <item>Kyrgyzstan</item>
         <item>India</item>
-        <!-- <item>United States</item>
-         <item>Philippines</item>-->
+    </string-array>
+
+    <string-array name="countries_ru">
+        <item>выберите страну</item>
+        <item>Kyrgyzstan</item>
+        <item>India</item>
     </string-array>
 
     <string-array name="education_or">
@@ -62,20 +66,20 @@
 
     <string-array name="education_en">
         <item>Select</item>
-        <item>Illiterate</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-        <item>Higher Secondary</item>
-        <item>Graduation &amp; Higher</item>
+        <item>Primary School</item>
+        <item>Middle School</item>
+        <item>High School</item>
+        <item>Bachelor Degree</item>
+        <item>Master Degree or Above</item>
     </string-array>
 
     <string-array name="education_ru">
-        <item>Выберите образование</item>
-        <item>неграмотный</item>
-        <item>Начальный</item>
-        <item>вторичный</item>
-        <item>Высшее среднее</item>
-        <item>Выпускной и высшее</item>
+        <item>Выбирать</item>
+        <item>Начальное образование</item>
+        <item>Среднее неоконченное образование</item>
+        <item>Среднее оконченное образование</item>
+        <item>Бакалавриат</item>
+        <item>Магистратура и выше</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -103,9 +107,9 @@
     </string-array>
 
     <string-array name="economic_ru">
-        <item>Select</item>
-        <item>APL</item>
-        <item>BPL</item>
+        <item>Выбирать</item>
+        <item>выше черты бедности</item>
+        <item>За чертой бедностии</item>
     </string-array>
     <string-array name="states_india">
         <item>Select State</item>
@@ -141,7 +145,7 @@
     </string-array>
 
     <string-array name="states_kyrgyzstan_ru">
-        <item>Select State</item>
+        <item>Выбирать</item>
         <item>г. Бишкек</item>
         <item>г. Токмок</item>
         <item>г. Кара-Балта</item>

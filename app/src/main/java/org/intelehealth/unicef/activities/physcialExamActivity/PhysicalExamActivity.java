@@ -305,7 +305,11 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         if (complaintConfirmed) {
 
             physicalString = physicalExamMap.generateFindings();
-
+            if(sessionManager.getAppLanguage().equals("ru")){
+                physicalString =  physicalString.replace("General exams", "Общие экзамены");
+                physicalString =  physicalString.replace("Neonate", "Новорожденный");
+                physicalString =  physicalString.replace("Child", "Ребенок");
+            }
             List<String> imagePathList = physicalExamMap.getImagePathList();
 
             if (imagePathList != null) {
@@ -335,6 +339,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                 }
                 // intent.putStringArrayListExtra("exams", selectedExamsList);
                 startActivity(intent);
+                finish();
             } else {
                 boolean obsId = insertDb(physicalString);
                 Intent intent1 = new Intent(PhysicalExamActivity.this, VisitSummaryActivity.class); // earlier visitsummary

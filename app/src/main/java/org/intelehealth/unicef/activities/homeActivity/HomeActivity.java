@@ -23,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
@@ -31,6 +32,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
 import android.widget.Button;
@@ -43,14 +46,20 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
+import org.intelehealth.apprtc.data.Manager;
+import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.unicef.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.unicef.activities.loginActivity.LoginActivity;
 import org.intelehealth.unicef.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.unicef.activities.settingsActivity.SettingsActivity;
@@ -61,6 +70,7 @@ import org.intelehealth.unicef.models.CheckAppUpdateRes;
 import org.intelehealth.unicef.models.DownloadMindMapRes;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
+import org.intelehealth.unicef.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.DownloadMindMaps;
 import org.intelehealth.unicef.utilities.FileUtils;
@@ -69,10 +79,6 @@ import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.OfflineLogin;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.widget.materialprogressbar.CustomProgressDialog;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
-import org.intelehealth.apprtc.data.Manager;
-import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -139,6 +145,14 @@ public class HomeActivity extends AppCompatActivity {
         // save fcm reg. token for chat (Video)
         FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.v(TAG, "onNewIntent");
+        catchFCMMessageData();
+    }
+
     private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
@@ -205,7 +219,6 @@ public class HomeActivity extends AppCompatActivity {
                             }
                         }
                     }
-
 
 
                     in.putExtra("roomId", roomId);
@@ -402,6 +415,8 @@ public class HomeActivity extends AppCompatActivity {
         }*/
 
         showProgressbar();
+
+        requestPermission();
     }
 
     //function for handling the video library feature...
@@ -507,8 +522,13 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
-            case R.id.settingsOption:
+            /*case R.id.settingsOption:
                 settings();
+                return true;*/
+            case R.id.languageOption:
+                Intent intent = new Intent(this, ChooseLanguageActivity.class);
+                startActivity(intent);
+                finish();
                 return true;
             case R.id.updateProtocolsOption: {
 
@@ -1052,6 +1072,12 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        hideSyncProgressBar(false);
+    }
+
     private void hideSyncProgressBar(boolean isSuccess) {
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
@@ -1104,4 +1130,44 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+            } else {
+                //Permission Granted-System will work
+            }
+        }
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        Window window = getWindow();
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+        );
+
+        super.onAttachedToWindow();
+    }
 }

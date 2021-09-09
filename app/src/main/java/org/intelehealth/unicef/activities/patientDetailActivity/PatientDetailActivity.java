@@ -441,6 +441,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
+                if (name.equalsIgnoreCase("Citizen Id")) {
+                    patient_new.setCitizenID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
                 if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -482,6 +486,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
         TextView phoneView = findViewById(R.id.textView_phone);
+        TextView citizenIDView = findViewById(R.id.textView_citizen_id);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -666,6 +671,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
         phoneView.setText(patient_new.getPhone_number());
+        citizenIDView.setText(patient_new.getCitizenID());
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());

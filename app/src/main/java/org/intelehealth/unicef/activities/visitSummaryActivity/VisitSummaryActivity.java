@@ -80,6 +80,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.apprtc.ChatActivity;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
 import org.intelehealth.unicef.activities.complaintNodeActivity.ComplaintNodeActivity;
@@ -116,7 +117,6 @@ import org.intelehealth.unicef.utilities.UrlModifiers;
 import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
-import org.intelehealth.apprtc.ChatActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -290,7 +290,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
-
+    private List<String> specialityListRussian = new ArrayList<String>();
+    private List<String> specialityList = new ArrayList<String>();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -673,18 +674,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
-        List<String> items = providerAttributeLIstDAO.getAllValues();
+        specialityList = providerAttributeLIstDAO.getAllValues();
+
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
-        if (items != null) {
-            items.add(0, getString(R.string.select_specialization_text));
+        if (specialityList != null) {
+            for (int i = 0; i < specialityList.size(); i++) {
+                if (specialityList.get(i).equals("Pediatrician")) {
+                    specialityListRussian.add("педиатр");
+                } else if (specialityList.get(i).equals("Neonatologist")) {
+                    specialityListRussian.add("неонатолог");
+                } else if (specialityList.get(i).equals("Neuropathologist")) {
+                    specialityListRussian.add("невропатолог");
+                } else if (specialityList.get(i).equals("Family doctor")) {
+                    specialityListRussian.add("семейный врач");
+                } else if (specialityList.get(i).equals("Infectious disease specialist")) {
+                    specialityListRussian.add("инфекционист");
+                }
+            }
+            specialityList.add(0, getString(R.string.select_specialization_text));
+            specialityListRussian.add(0,getString(R.string.select_specialization_text));
+
             stringArrayAdapter =
                     new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item, items);
+                            (this, android.R.layout.simple_spinner_dropdown_item, sessionManager.getAppLanguage().equals("ru") ? specialityListRussian : specialityList);
             speciality_spinner.setAdapter(stringArrayAdapter);
         } else {
             stringArrayAdapter =
@@ -695,7 +712,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         if (special_value != null) {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            int spinner_position = specialityList.indexOf(special_value);
             speciality_spinner.setSelection(spinner_position);
         } else {
 
@@ -706,7 +723,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
 
-                speciality_selected = adapterView.getItemAtPosition(i).toString();
+                speciality_selected = specialityList.get(i);
                 Log.d("SPINNER", "SPINNER_Selected_final: " + speciality_selected);
 
 
@@ -1033,7 +1050,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 tempcel.setVisibility(View.GONE);
                 if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
                     Log.d("temp", "temp_F: " + temperature.getValue());
-                    tempView.setText(convertCtoF(temperature.getValue()));
+                    if (sessionManager.getAppLanguage().equals("ru")) {
+                        tempView.setText(convertCtoF(temperature.getValue()).replace(".", ","));
+                    } else {
+                        tempView.setText(convertCtoF(temperature.getValue()));
+                    }
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
             }
@@ -1091,7 +1112,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         patHistory.setValue(medHistory);
 
-        bmiView.setText(mBMI);
+        bmiView.setText(sessionManager.getAppLanguage().equals("ru") ? mBMI.replace(".", ",") : mBMI);
 //        tempView.setText(temperature.getValue());
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());

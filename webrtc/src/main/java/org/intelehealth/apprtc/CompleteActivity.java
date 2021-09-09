@@ -1,5 +1,10 @@
 package org.intelehealth.apprtc;
 
+import static org.webrtc.SessionDescription.Type.ANSWER;
+import static org.webrtc.SessionDescription.Type.OFFER;
+import static io.socket.client.Socket.EVENT_CONNECT;
+import static io.socket.client.Socket.EVENT_DISCONNECT;
+
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +21,8 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -57,11 +64,6 @@ import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
-
-import static io.socket.client.Socket.EVENT_CONNECT;
-import static io.socket.client.Socket.EVENT_DISCONNECT;
-import static org.webrtc.SessionDescription.Type.ANSWER;
-import static org.webrtc.SessionDescription.Type.OFFER;
 
 public class CompleteActivity extends AppCompatActivity {
     private static final String TAG = "CompleteActivity";
@@ -123,8 +125,26 @@ public class CompleteActivity extends AppCompatActivity {
     boolean mMicrophonePluggedIn = false;
 
     @Override
+    public void onAttachedToWindow() {
+        Window window = getWindow();
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                );
+
+        super.onAttachedToWindow();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);*/
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sample_peer_connection);
         mRoomId = getIntent().getStringExtra("roomId");
         mIsInComingRequest = getIntent().getBooleanExtra("isInComingRequest", false);
@@ -333,6 +353,10 @@ public class CompleteActivity extends AppCompatActivity {
      * Release all resources & close the scoket
      */
     private void disconnectAll() {
+        if (videoCapturer != null) {
+            videoCapturer.dispose();
+
+        }
         if (socket != null) {
             socket.disconnect();
             socket = null;
@@ -342,6 +366,7 @@ public class CompleteActivity extends AppCompatActivity {
             peerConnection.dispose();
             peerConnection = null;
         }
+
         if (videoSource != null) {
             videoSource.dispose();
             videoSource = null;
@@ -354,6 +379,9 @@ public class CompleteActivity extends AppCompatActivity {
             surfaceTextureHelper.dispose();
             surfaceTextureHelper = null;
         }
+
+
+        //isCameraUsebyApp();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -369,7 +397,17 @@ public class CompleteActivity extends AppCompatActivity {
         finish();
 
     }
-
+    /*private boolean isCameraUsebyApp() {
+        Camera camera = null;
+        try {
+            camera = Camera.open();
+        } catch (RuntimeException e) {
+            return true;
+        } finally {
+            if (camera != null) camera.release();
+        }
+        return false;
+    }*/
 
     private void start() {
         if (checkAndRequestPermissions()) {

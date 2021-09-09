@@ -280,6 +280,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         } else {
+            Log.v(TAG, "mFileName - "+mFileName);
             patientHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the patient history mind map
         }
 
