@@ -175,7 +175,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 //                else
                 noteText = notesSpinner.getSelectedItem().toString();
                 rating = String.valueOf(ratingBar.getRating());
-                if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
+                if (rating != null && !TextUtils.isEmpty(rating) && (!noteText.equalsIgnoreCase("") || !noteText.equalsIgnoreCase("Select"))) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
@@ -200,11 +200,13 @@ public class PatientSurveyActivity extends AppCompatActivity {
     private ArrayList<String> getPatientNoteList()
     {
         ArrayList<String> notes = new ArrayList<>();
+        notes.add(getString(R.string.select));
         notes.add(getString(R.string.spinner_recovered));
         notes.add(getString(R.string.spinner_referred));
         notes.add(getString(R.string.spinner_died));
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));
+        notes.add(getString(R.string.spinner_not_applicable));
         return notes;
     }
     private void resetScale() {

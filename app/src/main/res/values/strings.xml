@@ -373,6 +373,7 @@
     <string name="spinner_loss_followUp">Loss to Follow up</string>
     <string name="spinner_refuse_followUp">Refusing Follow up</string>
     <string name="spinner_other">Other</string>
+    <string name="spinner_not_applicable">Not Applicable</string>
 
 
     <!--DB Backup-->
