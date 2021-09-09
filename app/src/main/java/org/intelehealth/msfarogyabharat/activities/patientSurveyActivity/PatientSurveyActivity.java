@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -163,28 +164,15 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                if(notesSpinner.getSelectedItem().equals("Other")) {
-//                    if(mComments.getText().toString().equalsIgnoreCase(""))
-//                        mComments.setError("This field is required");
-//                    else
-//                    {
-//                        noteText = mComments.getText().toString();
-//                    }
-//                }
-//                else
-                noteText = notesSpinner.getSelectedItem().toString();
                 rating = String.valueOf(ratingBar.getRating());
-                if (rating != null && !TextUtils.isEmpty(rating) && (!noteText.equalsIgnoreCase("") || !noteText.equalsIgnoreCase("Select"))) {
+                if (rating != null && !TextUtils.isEmpty(rating) && !notesSpinner.getSelectedItem().toString().equalsIgnoreCase("Select")) {
                     Log.d(TAG, "Rating is " + rating);
+                    noteText = notesSpinner.getSelectedItem().toString();
                     uploadSurvey();
                     endVisit();
-//                } else {
-//                    if(noteText.equalsIgnoreCase(""))
-//                        mComments.setError("This field is required");
-//                    else
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
-//                }
+                } else {
+
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
                 }
             }
         });

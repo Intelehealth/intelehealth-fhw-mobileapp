@@ -366,7 +366,7 @@
     <string name="exit_survey_prompt">Enter your comments here</string>
     <string name="exit_survey_skip">SKIP</string>
     <string name="exit_survey_submit">Submit</string>
-    <string name="exit_survey_toast">Please select a smiley before submitting</string>
+    <string name="exit_survey_toast">Please select a valid reason and rating before submitting</string>
     <string name="spinner_recovered">Recovered</string>
     <string name="spinner_referred">Referred</string>
     <string name="spinner_died">Died</string>
@@ -374,6 +374,7 @@
     <string name="spinner_refuse_followUp">Refusing Follow up</string>
     <string name="spinner_other">Other</string>
     <string name="spinner_not_applicable">Not Applicable</string>
+    <string name="spinner_covid_negative">Testing Negative for Covid-19</string>
 
 
     <!--DB Backup-->
