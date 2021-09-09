@@ -287,7 +287,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
-
+    View button_resolution;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -508,6 +508,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         context = getApplicationContext();
         context1 = VisitSummaryActivity.this;
 //we can remove by data binding
+        button_resolution = findViewById(R.id.button_resolution);
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
@@ -754,6 +755,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
+            button_resolution.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -1658,20 +1660,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
 
-        View button_resolution = findViewById(R.id.button_resolution);
         button_resolution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
-                intent1.putExtra("patientUuid", patientUuid);
-                intent1.putExtra("visitUuid", visitUuid);
-                intent1.putExtra("encounterUuidVitals", encounterVitals);
-                intent1.putExtra("edit_PatHist", "edit_PatHist");
-                intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-                intent1.putExtra("name", patientName);
-                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-                intent1.putExtra("tag", "edit");
-                startActivity(intent1);
+                if (visitUUID == null || visitUUID.isEmpty()) {
+                    String visitIDorderBy = "startdate";
+                    String visitIDSelection = "uuid = ?";
+                    String[] visitIDArgs = {visitUuid};
+                    final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+                    if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
+                        visitIDCursor.moveToFirst();
+                        visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                    }
+                    if (visitIDCursor != null) visitIDCursor.close();
+                }
+                if (visitUUID != null && !visitUUID.isEmpty()) {
+                    Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
+                    intent1.putExtra("patientUuid", patientUuid);
+                    intent1.putExtra("visitUuid", visitUuid);
+                    intent1.putExtra("encounterUuidVitals", encounterVitals);
+                    intent1.putExtra("edit_PatHist", "edit_PatHist");
+                    intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                    intent1.putExtra("name", patientName);
+                    intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent1.putExtra("tag", "edit");
+                    startActivity(intent1);
+                } else {
+                    Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -4095,6 +4111,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadButton.setEnabled(true);
             downloadButton.setVisibility(View.VISIBLE);
         }
+        button_resolution.setVisibility(View.VISIBLE);
     }
 
     private void isNetworkAvailable(Context context) {

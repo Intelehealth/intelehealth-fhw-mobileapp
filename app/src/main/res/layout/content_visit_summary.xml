@@ -1335,6 +1335,8 @@
 
             <RelativeLayout
                 android:id="@+id/button_resolution"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary">
