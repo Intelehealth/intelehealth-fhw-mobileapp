@@ -161,11 +161,11 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 EditText editText = new EditText(AdditionalDocumentsActivity.this);
                 editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(AdditionalDocumentsActivity.this)
-                        .setTitle("Enter filename")
+                        .setTitle(R.string.dialog_title_enter_file_name)
                         .setView(editText);
                 AlertDialog alertDialog = builder1.create();
 
-                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "save", new DialogInterface.OnClickListener() {
+                alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.button_save), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                          m_finalImageName = editText.getText().toString();

@@ -77,6 +77,7 @@
     </string-array>
 
     //values for "who is caller" spinner
+<!--
     <string-array name="caller_type_hi">
         <item>Select</item>
         <item>Patient themselves</item>
@@ -89,7 +90,8 @@
         <item>Brother</item>
         <item>Other Relative</item>
     </string-array>
-   <!-- <string-array name="caller_type_hi">
+-->
+    <string-array name="caller_type_hi">
         <item>चुनते हैं</item>
         <item>रोगी स्वयं</item>
         <item>मां</item>
@@ -100,16 +102,17 @@
         <item>बहन</item>
         <item>भाई</item>
         <item>अन्य रिश्तेदार</item>
-    </string-array>-->
+    </string-array>
 
     //values for "helpline knowledge" spinner
-    <!--<string-array name="helpline_knowledge_hi">
+    <string-array name="helpline_knowledge_hi">
     <item>चुनते हैं</item>
     <item>सामाजिक मीडिया</item>
     <item>दीवार के पोस्टर या पेंटिंग</item>
     <item>मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)</item>
     <item>अन्य</item>
-    </string-array>-->
+    </string-array>
+<!--
     <string-array name="helpline_knowledge_hi">
         <item>Select</item>
         <item>Social Media</item>
@@ -117,6 +120,7 @@
         <item>Word of Mouth (through relatives or friends)</item>
         <item>Other</item>
     </string-array>
+-->
 
 
     //values for "helpline knowledge" spinner
@@ -143,16 +147,18 @@
     </string-array>
 
 //values for "type of mobile device" spinner
-    <!--<string-array name="mobile_phone_type_hi">
+    <string-array name="mobile_phone_type_hi">
         <item>चुनते हैं</item>
         <item>स्मार्टफोन</item>
         <item>कीपैड फोन</item>
-    </string-array>-->
+    </string-array>
+<!--
     <string-array name="mobile_phone_type_hi">
         <item>Select</item>
         <item>Smartphone</item>
         <item>Keypad phone</item>
     </string-array>
+-->
 
 
     //values for "type of mobile device" spinner
@@ -190,15 +196,15 @@
         <item>Other</item>
     </string-array>
     <string-array name="education_spinner_hi">
-        <item>Select Education</item>
-        <item>Not formally educated</item>
-        <item>Some/completed primary school</item>
-        <item>Some/completed secondary school</item>
-        <item>Some/completed higher secondary</item>
-        <item>Completed undergraduate degree/diploma/technical school</item>
-        <item>Completed postgraduate degree</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>शिक्षा का चयन करें</item>
+        <item>औपचारिक रूप से शिक्षित नहीं</item>
+        <item>कुछ/पूर्ण प्राथमिक विद्यालय</item>
+        <item>कुछ / पूर्ण माध्यमिक विद्यालय</item>
+        <item>कुछ/पूर्ण उच्चतर माध्यमिक</item>
+        <item>स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल पूरा किया हो</item>
+        <item>पूर्ण स्नातकोत्तर डिग्री</item>
+        <item>चुप रहना पसंद करूंगा</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="marital_spinner_en">
@@ -216,18 +222,18 @@
         <item>Other</item>
     </string-array>
     <string-array name="marital_spinner_hi">
-        <item>Select Marital Status</item>
-        <item>Single</item>
-        <item>Married</item>
-        <item>Unmarried/single</item>
-        <item>In a relationship</item>
-        <item>In a live-in relationship</item>
-        <item>Divorced</item>
-        <item>Widowed</item>
-        <item>Nata</item>
-        <item>Second Marriage</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>वैवाहिक स्थिति चुनें</item>
+        <item>एकल</item>
+        <item>विवाहित</item>
+        <item>अविवाहित/अकेला</item>
+        <item>एक रिश्ते में</item>
+        <item>लिव-इन रिलेशनशिप में</item>
+        <item>तलाकशुदा</item>
+        <item>विधवा</item>
+        <item>नाटा</item>
+        <item>दूसरी शादी</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="occupation_spinner_selection_en">
@@ -244,17 +250,17 @@
         <item>Other</item>
     </string-array>
     <string-array name="occupation_spinner_selection_hi">
-        <item>Select Occupation</item>
-        <item>Student</item>
-        <item>Student but currently out of school</item>
-        <item>Just finished school</item>
-        <item>Housewife (not working outside the home)</item>
-        <item>Employee</item>
-        <item>Self-employed</item>
-        <item>Unemployed and looking for a job</item>
-        <item>Unemployed and not looking for a job</item>
-        <item>Volunteer</item>
-        <item>Other</item>
+        <item>व्यवसाय चुनें</item>
+        <item>विद्यार्थी</item>
+        <item>विद्यार्थी लेकिन वर्तमान में स्कूल से बाहर है</item>
+        <item>अभी-अभी स्कूल समाप्त हुआ</item>
+        <item>गृहिणी (घर के बाहर काम नहीं कर रही)</item>
+        <item>कर्मचारी</item>
+        <item>स्वरोजगार</item>
+        <item>बेरोजगार और नौकरी की तलाश में</item>
+        <item>बेरोजगार और नौकरी की तलाश नहीं कर रहे हैं</item>
+        <item>स्वयंसेवक</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="spinner_children_en">
@@ -264,10 +270,10 @@
         <item>Prefer not to say</item>
     </string-array>
     <string-array name="spinner_children_hi">
-        <item>Select</item>
-        <item>Yes</item>
-        <item>No</item>
-        <item>Prefer not to say</item>
+        <item>चुनें</item>
+        <item>हां</item>
+        <item>नहीं</item>
+        <item>नहीं कहना पसंद करें</item>
     </string-array>
 
     <string-array name="spinner_no_of_children_en">
@@ -291,19 +297,18 @@
         <item>Other</item>
     </string-array>
     <string-array name="husband_occupation_hi">
-        <item>Select Husband Occupation</item>
-        <item>Student</item>
-        <item>Student but currently out of school</item>
-        <item>Just finished school</item>
-        <item>Housewife (not working outside the home)</item>
-        <item>Employee</item>
-        <item>Self-employed</item>
-        <item>Unemployed and looking for a job</item>
-        <item>Unemployed and not looking for a job</item>
-        <item>Volunteer</item>
-        <item>Other</item>
+        <item>पति का व्यवसाय चुनें</item>
+        <item>विद्यार्थी</item>
+        <item>विद्यार्थी लेकिन वर्तमान में स्कूल से बाहर है</item>
+        <item>अभी-अभी स्कूल समाप्त हुआ</item>
+        <item>गृहिणी (घर के बाहर काम नहीं कर रही)</item>
+        <item>कर्मचारी</item>
+        <item>स्वरोजगार</item>
+        <item>बेरोजगार और नौकरी की तलाश में</item>
+        <item>बेरोजगार और नौकरी की तलाश नहीं कर रहे हैं</item>
+        <item>स्वयंसेवक</item>
+        <item>अन्य</item>
     </string-array>
-
 
     <string-array name="education_en">
         <item>Select</item>
@@ -340,14 +345,13 @@
         <item>Other</item>
     </string-array>
     <string-array name="gender_hi">
-        <item>Select Gender</item>
-        <item>Male</item>
-        <item>Female</item>
-        <item>Non-binary / third gender</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>लिंग चुनें</item>
+        <item>पुरुष</item>
+        <item>महिला</item>
+        <item>गैर-बाइनरी / तृतीय लिंग</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
-
 
     <string-array name="spinner_dv_speaking_with_en">
         <item>Select</item>
@@ -355,9 +359,9 @@
         <item>Someone else (Ask who and enter)</item>
     </string-array>
     <string-array name="spinner_dv_speaking_with_hi">
-        <item>Select</item>
-        <item>Survivor themselves</item>
-        <item>Someone else (Ask who and enter)</item>
+        <item>चुनें</item>
+        <item>स्वयं जीवित रहें</item>
+        <item>कोई और (किससे पूछें और दर्ज करें)</item>
     </string-array>
 
     <string-array name="spinner_dv_survivor_married_en">
@@ -367,10 +371,10 @@
         <item>Unsure</item>
     </string-array>
     <string-array name="spinner_dv_survivor_married_hi">
-        <item>Select</item>
-        <item>Yes</item>
-        <item>No</item>
-        <item>Unsure</item>
+        <item>चुनें</item>
+        <item>हां</item>
+        <item>नहीं</item>
+        <item>अनिश्चित</item>
     </string-array>
 
     <string-array name="spinner_dv_referred_en">
@@ -385,15 +389,15 @@
         <item>Other</item>
     </string-array>
     <string-array name="spinner_dv_referred_hi">
-        <item>Select</item>
-        <item>Outreach leaders</item>
-        <item>Community outreach/ volunteers</item>
-        <item>NGO</item>
-        <item>Police station</item>
-        <item>Website/ social media</item>
-        <item>Newspaper</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>चुनें</item>
+        <item>आउटरीच नेता</item>
+        <item>समुदाय तक पहुंच/स्वयंसेवक</item>
+        <item>एनजीओ</item>
+        <item>पुलिस स्टेशन</item>
+        <item>वेबसाइट/सोशल मीडिया</item>
+        <item>अखबार</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="spinner_describe_location_en">
@@ -403,10 +407,10 @@
         <item>Peri-urban</item>
     </string-array>
     <string-array name="spinner_describe_location_hi">
-        <item>Select</item>
-        <item>Urban</item>
-        <item>Rural</item>
-        <item>Peri-urban</item>
+        <item>चुनें</item>
+        <item>शहरी</item>
+        <item>ग्रामीण</item>
+        <item>पेरी-अर्बन</item>
     </string-array>
 
     <string-array name="spinner_work_en">
@@ -416,10 +420,10 @@
         <item>No</item>
     </string-array>
     <string-array name="spinner_work_hi">
-        <item>Select</item>
-        <item>Yes, part time</item>
-        <item>Yes, full time</item>
-        <item>No</item>
+        <item>चुनें</item>
+        <item>हां, अंशकालिक</item>
+        <item>हां, पूर्णकालिक</item>
+        <item>नहीं</item>
     </string-array>
 
     <string-array name="spinner_current_address_en">
@@ -430,11 +434,11 @@
         <item>Other</item>
     </string-array>
     <string-array name="spinner_current_address_hi">
-        <item>Select</item>
-        <item>Maternal Address</item>
-        <item>Address of in-laws</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>चुनें</item>
+        <item>मातृ पता</item>
+        <item>ससुराल वालों का पता</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="spinner_with_whom_living_en">
@@ -446,14 +450,15 @@
     <item>Prefer not to say</item>
     <item>Other</item>
     </string-array>
+
     <string-array name="spinner_with_whom_living_hi">
-        <item>Select</item>
-        <item>Husband</item>
-        <item>Family</item>
-        <item>Friend</item>
-        <item>No one</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>चुनें</item>
+        <item>पति</item>
+        <item>परिवार</item>
+        <item>मित्र</item>
+        <item>कोई नहीं</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="spinner_marriage_type_en">
@@ -468,15 +473,15 @@
         <item>Prefer not to say/unsure</item>
     </string-array>
     <string-array name="spinner_marriage_type_hi">
-        <item>Select</item>
-        <item>By parents</item>
-        <item>Own will</item>
-        <item>Single/ live-in</item>
-        <item>Atta-sata</item>
-        <item>In court</item>
-        <item>Special marriage act</item>
-        <item>Child marriage</item>
-        <item>Prefer not to say/unsure</item>
+        <item>चुनें</item>
+        <item>माता-पिता द्वारा</item>
+        <item>स्वामित्व</item>
+        <item>एकल/लाइव-इन</item>
+        <item>अट्टा-सटा</item>
+        <item>अदालत में</item>
+        <item>विशेष विवाह अधिनियम</item>
+        <item>बाल विवाह</item>
+        <item>कहना नहीं/अनिश्चित करना पसंद करते हैं</item>
     </string-array>
 
     <string-array name="spinner_contact_type_en">
@@ -488,14 +493,13 @@
         <item>Previous caller</item>
     </string-array>
     <string-array name="spinner_contact_type_hi">
-        <item>Select</item>
-        <item>Office visit</item>
-        <item>Hotline caller</item>
-        <item>Community outreach</item>
-        <item>Vikalp reaching out to survivor/contact</item>
-        <item>Previous caller</item>
+        <item>चुनें</item>
+        <item>कार्यालय का दौरा</item>
+        <item>हॉटलाइन कॉलर</item>
+        <item>समुदाय तक पहुंच</item>
+        <item>विकल्प उत्तरजीवी/संपर्ककर्ता तक पहुंच रहा है</item>
+        <item>पिछला कॉलर</item>
     </string-array>
-
 
     <string-array name="spinner_where_did_u_en">
         <item>Select</item>
@@ -509,15 +513,15 @@
         <item>Other</item>
     </string-array>
     <string-array name="spinner_where_did_u_hi">
-        <item>Select</item>
-        <item>Referred by family</item>
-        <item>Referred by friend</item>
-        <item>Vikalp staff</item>
-        <item>Social media/website</item>
-        <item>Provider</item>
-        <item>Community organization</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>चुनें</item>
+        <item>परिवार द्वारा संदर्भित</item>
+        <item>मित्र द्वारा संदर्भित</item>
+        <item>विकल्प कर्मचारी</item>
+        <item>सोशल मीडिया/वेबसाइट</item>
+        <item>प्रदाता</item>
+        <item>सामुदायिक संगठन</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="caste_en">
@@ -554,19 +558,19 @@
         <item>Other</item>
     </string-array>
     <string-array name="caste_selection_hi">
-        <item>Select</item>
-        <item>SC</item>
-        <item>ST</item>
-        <item>MBC</item>
-        <item>OBC</item>
-        <item>SBC</item>
-        <item>General</item>
-        <item>Minority (Muslim)</item>
-        <item>Minority (Christian)</item>
-        <item>Minority (Jain)</item>
-        <item>Minority (other - please specify)</item>
-        <item>Prefer not to say</item>
-        <item>Other</item>
+        <item>चुनें</item>
+        <item>एससी</item>
+        <item>एसटी</item>
+        <item>एमबीसी</item>
+        <item>ओबीसी</item>
+        <item>एसबीसी</item>
+        <item>सामान्य</item>
+        <item>अल्पसंख्यक (मुस्लिम)</item>
+        <item>अल्पसंख्यक (ईसाई)</item>
+        <item>अल्पसंख्यक (जैन)</item>
+        <item>अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)</item>
+        <item>नहीं कहना पसंद करें</item>
+        <item>अन्य</item>
     </string-array>
 
     <string-array name="economic_en">

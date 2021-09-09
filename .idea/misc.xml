@@ -3,15 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/drawable/circle_badge.xml" value="0.2564814814814815" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_home.xml" value="0.23641304347826086" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_login.xml" value="0.2" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_setup.xml" value="0.2015625" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_splash_activity.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/content_visit_summary.xml" value="0.12360688956433637" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/dialog_subquestion.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/list_item_subquestion.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/list_item_today_patient.xml" value="0.12360688956433637" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/dialog_1_number_picker.xml" value="0.24003623188405798" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/dialog_2_numbers_picker.xml" value="0.24003623188405798" />
       </map>
     </option>
   </component>

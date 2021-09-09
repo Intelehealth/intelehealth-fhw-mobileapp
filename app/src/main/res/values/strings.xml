@@ -801,5 +801,9 @@
     <string name="title_follow_up">Follow Up Visits</string>
     <string name="title_follow_reminder">Follow up visit reminder</string>
     <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
+    <string name="pending_follow_up">Patient already has a follow up scheduled for previous visit. </string>
+    <string name="still_continue">Do you still want to continue?</string>
+    <string name="continue_button">Continue</string>
+    <string name="dialog_title_enter_file_name">Enter filename</string>
     <string name="resolution_upload_reminder">Please upload first before attempting to give a resolution.</string>
 </resources>

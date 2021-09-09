@@ -132,6 +132,7 @@ import static org.intelehealth.msfarogyabharat.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_CallRelation_edit;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_HelplineKnowledge_edit;
 import static org.intelehealth.msfarogyabharat.utilities.StringUtils.switch_hi_PhoneType_edit;
+import static org.intelehealth.msfarogyabharat.utilities.StringUtils.*;
 
 //import static org.intelehealth.ekalhelpline.utilities.StringUtils.en__as_dob;
 
@@ -162,6 +163,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String visitValue;
     private String encounterVitals = "";
     private String encounterAdultIntials = "";
+    private String encounterVisitNote = "";
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
@@ -216,6 +218,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         ivPrescription = findViewById(R.id.iv_prescription);
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
+
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             patientName = intent.getStringExtra("patientName");
@@ -323,39 +326,85 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+                SimpleDateFormat followUpFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                 Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
-
-
-                String uuid = UUID.randomUUID().toString();
-                EncounterDAO encounterDAO = new EncounterDAO();
-                encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(UUID.randomUUID().toString());
-                encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-                encounterDTO.setEncounterTime(thisDate);
-                encounterDTO.setVisituuid(uuid);
-                encounterDTO.setSyncd(false);
-                encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
-                encounterDTO.setVoided(0);
-                encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
-
-                try {
-                    encounterDAO.createEncountersToDB(encounterDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
+                String today = followUpFormat.format(todayDate);
+                Date followUpDate = new Date();
+                Date currentDateFU = new Date();
 
                 InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
                 SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
-                String CREATOR_ID = sessionManager.getCreatorID();
-                returning = false;
-                sessionManager.setReturning(returning);
-
                 String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                String visitFollowUpDate = warnFollowUp(sqLiteDatabase,cols);
+                if(!visitFollowUpDate.equalsIgnoreCase("") || !visitFollowUpDate.isEmpty())
+                {
+                    try {
+                    followUpDate = followUpFormat.parse(visitFollowUpDate);
+                    currentDateFU = followUpFormat.parse(today);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                if(followUpDate.compareTo(currentDateFU)>0 || followUpDate.compareTo(currentDateFU)==0)
+                {
+                    MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+                    followUpAlert.setMessage(getString(R.string.pending_follow_up) +  "\n" + getString(R.string.still_continue));
+                    followUpAlert.setPositiveButton(getResources().getString(R.string.continue_button), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            newVisitStart(sqLiteDatabase,cols);
+                        }
+                    });
+                    followUpAlert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = followUpAlert.create();
+                    alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
+//                    Toast.makeText(PatientDetailActivity.this,"Follow Up Date greater.",Toast.LENGTH_LONG).show();
+                }
+                }
+                else
+                {
+                    newVisitStart(sqLiteDatabase,cols);
+
+                }
+
+    }
+
+    private void newVisitStart(SQLiteDatabase sqLiteDatabase, String[] cols) {
+
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
                         new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
                         null, null, null);
 
@@ -825,7 +874,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if (patient_new.getGender() != null) {
+
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                genderView.setText(switch_hi_genderSpinner_edit(patient_new.getGender()));
+               /* if (patient_new.getGender().equalsIgnoreCase("Male")) {
+                   // genderView.setText(getString(R.string.identification_screen_checkbox_male));
+                    genderView.setText(switch_hi_genderSpinner_edit(patient_new.getGender()));
+                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else {
+                    genderView.setText(patient_new.getGender());
+                }*/
+            }
+          /*  else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 if (patient_new.getGender().equalsIgnoreCase("M")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
@@ -833,15 +894,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else {
+            }*/
+            else {
                 genderView.setText(patient_new.getGender());
             }
         }
@@ -884,8 +938,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         phoneView.setText(patient_new.getPhone_number());
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
-            String callRelation = patient_new.getSdw();
+            String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
+          //  String callRelation = patient_new.getSdw();
             callerRelation.setText(callRelation);
         }
         else{
@@ -893,8 +947,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
-            String helplineKNowledgeInfo = patient_new.getCaste();
+            String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
+           // String helplineKNowledgeInfo = patient_new.getCaste();
             helplineInfo.setText(helplineKNowledgeInfo);
         }
         else{
@@ -902,8 +956,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-//            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
-            String phType = patient_new.getEconomic_status();
+            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
+           // String phType = patient_new.getEconomic_status();
             phoneType.setText(phType);
         }
         else{
@@ -1025,6 +1079,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         }
                         if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                             encounterAdultIntials = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterVisitNote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
                     } while (encounterCursor.moveToNext());
                 }
@@ -1654,6 +1711,36 @@ public class PatientDetailActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    public String warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
+    {
+        String followUpDate = "";
+
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterVisitNote, UuidDictionary.FOLLOW_UP_VISIT},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+                followUpDate = followUpDate + cursor.getString(0);
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+        if(followUpDate!=null || !followUpDate.equalsIgnoreCase(""))
+        {
+            if(followUpDate.contains(",")) {
+                int commaIndex = followUpDate.indexOf(",");
+                followUpDate = followUpDate.substring(0, commaIndex);
+            }
+        }
+//        Toast.makeText(PatientDetailActivity.this,followUpDate,Toast.LENGTH_LONG).show();
+        return followUpDate;
     }
 }
 
