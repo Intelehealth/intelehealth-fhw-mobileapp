@@ -103,7 +103,7 @@ public class FollowUpNotificationWorker extends Worker {
                 do {
                     String uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
                     String severity = getSeverity(uuid, db);
-                    if (severity != null && severity.contains("Asymptomatic"))
+                    if (severity == null)
                         continue;
                     count++;
                 } while (cursor.moveToNext());

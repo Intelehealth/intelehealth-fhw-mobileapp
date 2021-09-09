@@ -236,10 +236,12 @@ public class PatientDTO {
         if (comment == null)
             return severity;
         else if (comment.contains("Severe"))
-            severity = 3;
+            severity = 4;
         else if (comment.contains("Moderate"))
-            severity = 2;
+            severity = 3;
         else if (comment.contains("Mild"))
+            severity = 2;
+        else if (comment.contains("Asymptomatic"))
             severity = 1;
         return severity;
     }
