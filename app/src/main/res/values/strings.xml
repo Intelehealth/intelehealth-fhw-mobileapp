@@ -803,4 +803,5 @@
     <string name="pending_follow_up">Patient already has a follow up scheduled for previous visit. </string>
     <string name="still_continue">Do you still want to continue?</string>
     <string name="continue_button">Continue</string>
+    <string name="dialog_title_enter_file_name">Enter filename</string>
 </resources>
