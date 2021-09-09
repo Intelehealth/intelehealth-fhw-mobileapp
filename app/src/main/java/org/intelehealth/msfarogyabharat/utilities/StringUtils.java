@@ -647,7 +647,7 @@ public final class StringUtils {
             case "महिला":
                 val = "Female";
                 break;
-            case "मगैर-बाइनरी / तृतीय लिंग":
+            case "गैर-बाइनरी / तृतीय लिंग":
                 val = "Non-binary / third gender";
                 break;
             case "नहीं कहना पसंद करें":
@@ -673,7 +673,7 @@ public final class StringUtils {
                 val = "महिला";
                 break;
             case "Non-binary / third gender":
-                val = "मगैर-बाइनरी / तृतीय लिंग";
+                val = "गैर-बाइनरी / तृतीय लिंग";
                 break;
             case "Prefer not to say":
                 val = "नहीं कहना पसंद करें";
@@ -1715,7 +1715,7 @@ public final class StringUtils {
             case "मित्र":
                 val = "Friend";
                 break;
-            case "कोई नही":
+            case "कोई नहीं":
                 val = "No one";
                 break;
             case "नहीं कहना पसंद करें":
@@ -1743,7 +1743,7 @@ public final class StringUtils {
                 val = "मित्र";
                 break;
             case "No one":
-                val = "कोई नही";
+                val = "कोई नहीं";
                 break;
             case "Prefer not to say":
                 val = "नहीं कहना पसंद करें";
