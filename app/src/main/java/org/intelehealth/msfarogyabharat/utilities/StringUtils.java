@@ -163,9 +163,48 @@ public final class StringUtils {
 
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            val = switch_hi_HelplineKnowledge(val);
+            val = switch_hi_genderSpinner(val);
+            val = switch_hi_educationSpinner(val);
+            val = switch_hi_current_maritual_statusSpinner(val);
+            val = switch_hi_occupationSelectionSpinner(val);
+            val = switch_hi_husbandoccupationSelectionSpinner(val);
+            val = switch_hi_childrenSpinner(val);
+            val = switch_hi_CasteSelectionSpinner(val);
+            val = switch_hi_ContactTypeSpinner(val);
+            val = switch_hi_WhereDidU_Spinner(val);
             val = switch_hi_CallRelation(val);
+            val = switch_hi_HelplineKnowledge(val);
             val = switch_hi_PhoneType(val);
+
+        }
+
+        return val;
+    }
+
+
+    public static String getProvidedOthers_1(Spinner spinner) {
+        String val = "";
+        if (spinner.getSelectedItemPosition() == 0)
+            val = "Not provided";
+
+        else if (spinner.getSelectedItem() == null) {
+            val = "Not provided";
+        } else {
+            val = spinner.getSelectedItem().toString();
+        }
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+
+            val = switch_hi_jobSpinner(val);
+            val = switch_hi_DescribeLocationSpinner(val);
+            val = switch_hi_Who_Referred_Spinner(val);
+            val = switch_hi_am_i_speaking_Spinner(val);
+            val = switch_hi_survivor_ever_married_Spinner(val);
+            val = switch_hi_type_marriage_Spinner(val);
+            val = switch_hi_survivor_address_Spinner(val);
+            val = switch_hi_with_whom_living_Spinner(val);
+
         }
 
         return val;
@@ -599,17 +638,20 @@ public final class StringUtils {
         return val;
     }
 
-    public static String switch_hi_HelplineKnowledge(String val) {
+    public static String switch_hi_genderSpinner(String val) {
         switch (val) {
 
-            case "सामाजिक मीडिया":
-                val = "Social Media";
+            case "पुरुष":
+                val = "Male";
                 break;
-            case "दीवार के पोस्टर या पेंटिंग":
-                val = "Wall Posters or Painting";
+            case "महिला":
+                val = "Female";
                 break;
-            case "मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)":
-                val = "Word of Mouth (through relatives or friends)";
+            case "गैर-बाइनरी / तृतीय लिंग":
+                val = "Non-binary / third gender";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
                 break;
             case "अन्य":
                 val = "Other";
@@ -620,17 +662,574 @@ public final class StringUtils {
         }
         return val;
     }
-    public static String switch_hi_HelplineKnowledge_edit(String val) {
+
+    public static String switch_hi_genderSpinner_edit(String val) {
         switch (val) {
 
-            case "Social Media":
-                val = "सामाजिक मीडिया";
+            case "Male":
+                val = "पुरुष";
                 break;
-            case "Wall Posters or Painting":
-                val = "दीवार के पोस्टर या पेंटिंग";
+            case "Female":
+                val = "महिला";
                 break;
-            case "Word of Mouth (through relatives or friends)":
-                val = "मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)";
+            case "Non-binary / third gender":
+                val = "गैर-बाइनरी / तृतीय लिंग";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_educationSpinner(String val) {
+        switch (val) {
+
+            case "औपचारिक रूप से शिक्षित नहीं":
+                val = "Not formally educated";
+                break;
+            case "कुछ/पूर्ण प्राथमिक विद्यालय":
+                val = "Some/completed primary school";
+                break;
+            case "कुछ / पूर्ण माध्यमिक विद्यालय":
+                val = "Some/completed secondary school";
+                break;
+            case "कुछ/पूर्ण उच्चतर माध्यमिक":
+                val = "Some/completed higher secondary";
+                break;
+            case "स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल पूरा किया हो":
+                val = "Completed undergraduate degree/diploma/technical school";
+                break;
+            case "पूर्ण स्नातकोत्तर डिग्री":
+                val = "Completed postgraduate degree";
+                break;
+            case "चुप रहना पसंद करूंगा":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_educationSpinner_edit(String val) {
+        switch (val) {
+            case "Not formally educated":
+                val = "औपचारिक रूप से शिक्षित नहीं";
+                break;
+            case "Some/completed primary school":
+                val = "कुछ/पूर्ण प्राथमिक विद्यालय";
+                break;
+            case "Some/completed secondary school":
+                val = "कुछ / पूर्ण माध्यमिक विद्यालय";
+                break;
+            case "Some/completed higher secondary":
+                val = "कुछ/पूर्ण उच्चतर माध्यमिक";
+                break;
+            case "Completed undergraduate degree/diploma/technical school":
+                val = "स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल पूरा किया हो";
+                break;
+            case "Completed postgraduate degree":
+                val = "पूर्ण स्नातकोत्तर डिग्री";
+                break;
+            case "Prefer not to say":
+                val = "चुप रहना पसंद करूंगा";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_current_maritual_statusSpinner(String val) {
+        switch (val) {
+
+            case "एकल":
+                val = "Single";
+                break;
+            case "विवाहित":
+                val = "Married";
+                break;
+            case "अविवाहित/अकेला":
+                val = "Unmarried/single";
+                break;
+            case "एक रिश्ते में":
+                val = "In a relationship";
+                break;
+            case "लिव-इन रिलेशनशिप में":
+                val = "In a live-in relationship";
+                break;
+            case "तलाकशुदा":
+                val = "Divorced";
+                break;
+            case "विधवा":
+                val = "Widowed";
+                break;
+            case "नाटा":
+                val = "Nata";
+                break;
+            case "दूसरी शादी":
+                val = "Second Marriage";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_current_maritual_statusSpinner_edit(String val) {
+        switch (val) {
+            case "Single":
+                val = "एकल";
+                break;
+            case "Married":
+                val = "विवाहित";
+                break;
+            case "Unmarried/single":
+                val = "अविवाहित/अकेला";
+                break;
+            case "In a relationship":
+                val = "एक रिश्ते में";
+                break;
+            case "In a live-in relationship":
+                val = "लिव-इन रिलेशनशिप में";
+                break;
+            case "Divorced":
+                val = "तलाकशुदा";
+                break;
+            case "Widowed":
+                val = "विधवा";
+                break;
+            case "Nata":
+                val = "नाटा";
+                break;
+            case "Second Marriage":
+                val = "दूसरी शादी";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_occupationSelectionSpinner(String val) {
+        switch (val) {
+
+            case "विद्यार्थी":
+                val = "Student";
+                break;
+            case "विद्यार्थी लेकिन वर्तमान में स्कूल से बाहर है":
+                val = "Student but currently out of school";
+                break;
+            case "अभी-अभी स्कूल समाप्त हुआ":
+                val = "Just finished school";
+                break;
+            case "गृहिणी (घर के बाहर काम नहीं कर रही)":
+                val = "Housewife (not working outside the home)";
+                break;
+            case "कर्मचारी":
+                val = "Employee";
+                break;
+            case "स्वरोजगार":
+                val = "Self-employed";
+                break;
+            case "बेरोजगार और नौकरी की तलाश में":
+                val = "Unemployed and looking for a job";
+                break;
+            case "बेरोजगार और नौकरी की तलाश नहीं कर रहे हैं":
+                val = "Unemployed and not looking for a job";
+                break;
+            case "स्वयंसेवक":
+                val = "Volunteer";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_occupationSelectionSpinner_edit(String val) {
+        switch (val) {
+            case "Student":
+                val = "विद्यार्थी";
+                break;
+            case "Student but currently out of school":
+                val = "विद्यार्थी लेकिन वर्तमान में स्कूल से बाहर है";
+                break;
+            case "Just finished school":
+                val = "अभी-अभी स्कूल समाप्त हुआ";
+                break;
+            case "Housewife (not working outside the home)":
+                val = "गृहिणी (घर के बाहर काम नहीं कर रही)";
+                break;
+            case "Employee":
+                val = "कर्मचारी";
+                break;
+            case "Self-employed":
+                val = "स्वरोजगार";
+                break;
+            case "Unemployed and looking for a job":
+                val = "बेरोजगार और नौकरी की तलाश में";
+                break;
+            case "Unemployed and not looking for a job":
+                val = "बेरोजगार और नौकरी की तलाश नहीं कर रहे हैं";
+                break;
+            case "Volunteer":
+                val = "स्वयंसेवक";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_husbandoccupationSelectionSpinner(String val) {
+        switch (val) {
+
+            case "विद्यार्थी":
+                val = "Student";
+                break;
+            case "विद्यार्थी लेकिन वर्तमान में स्कूल से बाहर है":
+                val = "Student but currently out of school";
+                break;
+            case "अभी-अभी स्कूल समाप्त हुआ":
+                val = "Just finished school";
+                break;
+            case "गृहिणी (घर के बाहर काम नहीं कर रही)":
+                val = "Housewife (not working outside the home)";
+                break;
+            case "कर्मचारी":
+                val = "Employee";
+                break;
+            case "स्वरोजगार":
+                val = "Self-employed";
+                break;
+            case "बेरोजगार और नौकरी की तलाश में":
+                val = "Unemployed and looking for a job";
+                break;
+            case "बेरोजगार और नौकरी की तलाश नहीं कर रहे हैं":
+                val = "Unemployed and not looking for a job";
+                break;
+            case "स्वयंसेवक":
+                val = "Volunteer";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_husbandoccupationSelectionSpinner_edit(String val) {
+        switch (val) {
+            case "Student":
+                val = "विद्यार्थी";
+                break;
+            case "Student but currently out of school":
+                val = "विद्यार्थी लेकिन वर्तमान में स्कूल से बाहर है";
+                break;
+            case "Just finished school":
+                val = "अभी-अभी स्कूल समाप्त हुआ";
+                break;
+            case "Housewife (not working outside the home)":
+                val = "गृहिणी (घर के बाहर काम नहीं कर रही)";
+                break;
+            case "Employee":
+                val = "कर्मचारी";
+                break;
+            case "Self-employed":
+                val = "स्वरोजगार";
+                break;
+            case "Unemployed and looking for a job":
+                val = "बेरोजगार और नौकरी की तलाश में";
+                break;
+            case "Unemployed and not looking for a job":
+                val = "बेरोजगार और नौकरी की तलाश नहीं कर रहे हैं";
+                break;
+            case "Volunteer":
+                val = "स्वयंसेवक";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_childrenSpinner(String val) {
+        switch (val) {
+
+            case "हां":
+                val = "Yes";
+                break;
+            case "नहीं":
+                val = "No";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_childrenSpinner_edit(String val) {
+        switch (val) {
+
+            case "Yes":
+                val = "हां";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_CasteSelectionSpinner(String val) {
+        switch (val) {
+
+            case "एससी":
+                val = "SC";
+                break;
+            case "एसटी":
+                val = "ST";
+                break;
+            case "एमबीसी":
+                val = "MBC";
+                break;
+            case "ओबीसी":
+                val = "OBC";
+                break;
+            case "एसबीसी":
+                val = "SBC";
+                break;
+            case "सामान्य":
+                val = "General";
+                break;
+            case "अल्पसंख्यक (मुस्लिम)":
+                val = "Minority (Muslim)";
+                break;
+            case "अल्पसंख्यक (ईसाई)":
+                val = "Minority (Christian)";
+                break;
+            case "अल्पसंख्यक (जैन)":
+                val = "Minority (Jain)";
+                break;
+            case "अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)":
+                val = "Minority (other - please specify)";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_CasteSelectionSpinner_edit(String val) {
+        switch (val) {
+
+            case "SC":
+                val = "एससी";
+                break;
+            case "ST":
+                val = "एसटी";
+                break;
+            case "MBC":
+                val ="एमबीसी" ;
+                break;
+            case "OBC":
+                val = "ओबीसी";
+                break;
+            case "SBC":
+                val = "एसबीसी";
+                break;
+            case "General":
+                val = "सामान्य";
+                break;
+            case "Minority (Muslim)":
+                val = "अल्पसंख्यक (मुस्लिम)";
+                break;
+            case "Minority (Christian)":
+                val = "अल्पसंख्यक (ईसाई)";
+                break;
+            case "Minority (Jain)":
+                val = "अल्पसंख्यक (जैन)";
+                break;
+            case "Minority (other - please specify)":
+                val = "अल्पसंख्यक (अन्य - कृपया निर्दिष्ट करें)";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_ContactTypeSpinner(String val) {
+        switch (val) {
+
+            case "कार्यालय का दौरा":
+                val = "Office visit";
+                break;
+            case "हॉटलाइन कॉलर":
+                val = "Hotline caller";
+                break;
+            case "समुदाय तक पहुंच":
+                val = "Community outreach";
+                break;
+            case "विकल्प उत्तरजीवी/संपर्ककर्ता तक पहुंच रहा है":
+                val = "Vikalp reaching out to survivor/contact";
+                break;
+            case "पिछला कॉलर":
+                val = "Previous caller";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_ContactTypeSpinner_edit(String val) {
+        switch (val) {
+
+            case "Office visit":
+                val = "कार्यालय का दौरा";
+                break;
+            case "Hotline caller":
+                val = "हॉटलाइन कॉलर";
+                break;
+            case "Community outreach":
+                val = "समुदाय तक पहुंच";
+                break;
+            case "Vikalp reaching out to survivor/contact":
+                val = "विकल्प उत्तरजीवी/संपर्ककर्ता तक पहुंच रहा है";
+                break;
+            case "Previous caller":
+                val = "पिछला कॉलर";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_WhereDidU_Spinner(String val) {
+        switch (val) {
+
+            case "परिवार द्वारा संदर्भित":
+                val = "Referred by family";
+                break;
+            case "मित्र द्वारा संदर्भित":
+                val = "Referred by friend";
+                break;
+            case "विकल्प कर्मचारी":
+                val = "Vikalp staff";
+                break;
+            case "सोशल मीडिया/वेबसाइट":
+                val = "Social media/website";
+                break;
+            case "प्रदाता":
+                val = "Provider";
+                break;
+            case "सामुदायिक संगठन":
+                val = "Community organization";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_WhereDidU_Spinner_edit(String val) {
+        switch (val) {
+
+            case "Referred by family":
+                val = "परिवार द्वारा संदर्भित";
+                break;
+            case "Referred by friend":
+                val = "मित्र द्वारा संदर्भित";
+                break;
+            case "Vikalp staff":
+                val = "विकल्प कर्मचारी";
+                break;
+            case "Social media/website":
+                val = "सोशल मीडिया/वेबसाइट";
+                break;
+            case "Provider":
+                val = "प्रदाता";
+                break;
+            case "Community organization":
+                val = "सामुदायिक संगठन";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
                 break;
             case "Other":
                 val = "अन्य";
@@ -713,6 +1312,52 @@ public final class StringUtils {
         return val;
     }
 
+
+
+    public static String switch_hi_HelplineKnowledge(String val) {
+        switch (val) {
+
+            case "सामाजिक मीडिया":
+                val = "Social Media";
+                break;
+            case "दीवार के पोस्टर या पेंटिंग":
+                val = "Wall Posters or Painting";
+                break;
+            case "मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)":
+                val = "Word of Mouth (through relatives or friends)";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_HelplineKnowledge_edit(String val) {
+        switch (val) {
+
+            case "Social Media":
+                val = "सामाजिक मीडिया";
+                break;
+            case "Wall Posters or Painting":
+                val = "दीवार के पोस्टर या पेंटिंग";
+                break;
+            case "Word of Mouth (through relatives or friends)":
+                val = "मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
     public static String switch_hi_PhoneType(String val) {
         switch (val) {
             case "स्मार्टफोन":
@@ -739,6 +1384,381 @@ public final class StringUtils {
         }
         return val;
     }
+
+    public static String switch_hi_jobSpinner(String val) {
+        switch (val) {
+
+            case "हां, अंशकालिक":
+                val = "Yes, part time";
+                break;
+            case "हां, पूर्णकालिक":
+                val = "Yes, full time";
+                break;
+            case "नहीं":
+                val = "No";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_jobSpinner_edit(String val) {
+        switch (val) {
+
+            case "Yes, part time":
+                val = "हां, अंशकालिक";
+                break;
+            case "Yes, full time":
+                val = "हां, पूर्णकालिक";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_DescribeLocationSpinner(String val) {
+        switch (val) {
+
+            case "शहरी":
+                val = "Urban";
+                break;
+            case "ग्रामीण":
+                val = "Rural";
+                break;
+            case "पेरी-अर्बन":
+                val = "Peri-urban";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_DescribeLocationSpinner_edit(String val) {
+        switch (val) {
+
+            case "Urban":
+                val = "शहरी";
+                break;
+            case "Rural":
+                val = "ग्रामीण";
+                break;
+            case "Peri-urban":
+                val = "पेरी-अर्बन";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_Who_Referred_Spinner(String val) {
+        switch (val) {
+
+            case "आउटरीच नेता":
+                val = "Outreach leaders";
+                break;
+            case "समुदाय तक पहुंच/स्वयंसेवक":
+                val = "Community outreach/ volunteers";
+                break;
+            case "एनजीओ":
+                val = "NGO";
+                break;
+            case "पुलिस स्टेशन":
+                val = "Police station";
+                break;
+            case "वेबसाइट/सोशल मीडिया":
+                val = "Website/ social media";
+                break;
+            case "अखबार":
+                val = "Newspaper";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_Who_Referred_Spinner_edit(String val) {
+        switch (val) {
+            case "Outreach leaders":
+                val = "आउटरीच नेता";
+                break;
+            case "Community outreach/ volunteers":
+                val = "समुदाय तक पहुंच/स्वयंसेवक";
+                break;
+            case "NGO":
+                val = "एनजीओ";
+                break;
+            case "Police station":
+                val = "पुलिस स्टेशन";
+                break;
+            case "Website/ social media":
+                val = "वेबसाइट/सोशल मीडिया";
+                break;
+            case "Newspaper":
+                val = "अखबार";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_am_i_speaking_Spinner(String val) {
+        switch (val) {
+
+            case "स्वयं जीवित रहें":
+                val = "Survivor themselves";
+                break;
+            case "कोई और (किससे पूछें और दर्ज करें)":
+                val = "Someone else (Ask who and enter)";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_am_i_speaking_Spinner_edit(String val) {
+        switch (val) {
+
+            case "Survivor themselves":
+                val = "स्वयं जीवित रहें";
+                break;
+            case "Someone else (Ask who and enter)":
+                val = "कोई और (किससे पूछें और दर्ज करें)";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_survivor_ever_married_Spinner(String val) {
+        switch (val) {
+
+            case "हां":
+                val = "Yes";
+                break;
+            case "नहीं":
+                val = "No";
+                break;
+            case "अनिश्चित":
+                val = "Unsure";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_survivor_ever_married_Spinner_edit(String val) {
+        switch (val) {
+
+            case "Yes":
+                val = "हां";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            case "Unsure":
+                val = "अनिश्चित";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_type_marriage_Spinner(String val) {
+        switch (val) {
+
+            case "माता-पिता द्वारा":
+                val = "By parents";
+                break;
+            case "स्वामित्व":
+                val = "Own will";
+                break;
+            case "एकल/लाइव-इन":
+                val = "Single/ live-in";
+                break;
+            case "अट्टा-सटा":
+                val = "Atta-sata";
+                break;
+            case "अदालत में":
+                val = "In court";
+                break;
+            case "विशेष विवाह अधिनियम":
+                val = "Special marriage act";
+                break;
+            case "बाल विवाह":
+                val = "Child marriage";
+                break;
+            case "कहना नहीं/अनिश्चित करना पसंद करते हैं":
+                val = "Prefer not to say/unsure";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_type_marriage_Spinner_edit(String val) {
+        switch (val) {
+
+            case "By parents":
+                val = "माता-पिता द्वारा";
+                break;
+            case "Own will":
+                val = "स्वामित्व";
+                break;
+            case "Single/ live-in":
+                val = "एकल/लाइव-इन";
+                break;
+            case "Atta-sata":
+                val = "अट्टा-सटा";
+                break;
+            case "In court":
+                val = "अदालत में";
+                break;
+            case "Special marriage act":
+                val = "विशेष विवाह अधिनियम";
+                break;
+            case "Child marriage":
+                val = "बाल विवाह";
+                break;
+            case "Prefer not to say/unsure":
+                val = "कहना नहीं/अनिश्चित करना पसंद करते हैं";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_survivor_address_Spinner(String val) {
+        switch (val) {
+
+            case "मातृ पता":
+                val = "Maternal Address";
+                break;
+            case "ससुराल वालों का पता":
+                val = "Address of in-laws";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_survivor_address_Spinner_edit(String val) {
+        switch (val) {
+
+            case "Maternal Address":
+                val = "मातृ पता";
+                break;
+            case "Address of in-laws":
+                val = "ससुराल वालों का पता";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_with_whom_living_Spinner(String val) {
+        switch (val) {
+
+            case "पति":
+                val = "Husband";
+                break;
+            case "परिवार":
+                val = "Family";
+                break;
+            case "मित्र":
+                val = "Friend";
+                break;
+            case "कोई नहीं":
+                val = "No one";
+                break;
+            case "नहीं कहना पसंद करें":
+                val = "Prefer not to say";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+    public static String switch_hi_with_whom_living_Spinner_edit(String val) {
+        switch (val) {
+
+            case "Husband":
+                val = "पति";
+                break;
+            case "Family":
+                val = "परिवार";
+                break;
+            case "Friend":
+                val = "मित्र";
+                break;
+            case "No one":
+                val = "कोई नहीं";
+                break;
+            case "Prefer not to say":
+                val = "नहीं कहना पसंद करें";
+                break;
+            case "Other":
+                val = "अन्य";
+                break;
+
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    //complaint - end...
 
     public static String switch_hi_bankaccount_edit(String val) {
         switch (val) {
