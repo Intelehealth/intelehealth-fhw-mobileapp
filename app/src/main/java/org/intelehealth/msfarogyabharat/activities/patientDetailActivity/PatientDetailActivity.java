@@ -826,7 +826,19 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if (patient_new.getGender() != null) {
+
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                genderView.setText(switch_hi_genderSpinner_edit(patient_new.getGender()));
+               /* if (patient_new.getGender().equalsIgnoreCase("Male")) {
+                   // genderView.setText(getString(R.string.identification_screen_checkbox_male));
+                    genderView.setText(switch_hi_genderSpinner_edit(patient_new.getGender()));
+                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
+                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
+                } else {
+                    genderView.setText(patient_new.getGender());
+                }*/
+            }
+          /*  else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 if (patient_new.getGender().equalsIgnoreCase("M")) {
                     genderView.setText(getString(R.string.identification_screen_checkbox_male));
                 } else if (patient_new.getGender().equalsIgnoreCase("F")) {
@@ -834,15 +846,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 } else {
                     genderView.setText(patient_new.getGender());
                 }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else {
+            }*/
+            else {
                 genderView.setText(patient_new.getGender());
             }
         }
