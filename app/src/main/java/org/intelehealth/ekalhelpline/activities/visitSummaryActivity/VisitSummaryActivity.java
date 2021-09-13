@@ -212,13 +212,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView nameView;
     TextView idView;
     TextView visitView;
-    TextView heightView;
-    TextView weightView;
-    TextView pulseView;
-    TextView bpView;
-    TextView tempView;
-    TextView spO2View;
-    TextView bmiView;
+    //TextView heightView;
+    //TextView weightView;
+    //TextView pulseView;
+    //TextView bpView;
+    //TextView tempView;
+    //TextView spO2View;
+    //TextView bmiView;
     TextView complaintView;
     TextView famHistView;
     TextView patHistView;
@@ -227,7 +227,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView mDoctorName;
     TextView mCHWname;
     //    //    Respiratory added by mahiti dev team
-    TextView respiratory;
+    //TextView respiratory;
     TextView respiratoryText;
     TextView tempfaren;
     TextView tempcel;
@@ -760,7 +760,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        //editVitals = findViewById(R.id.imagebutton_edit_vitals);
         editComplaint = findViewById(R.id.imagebutton_edit_complaint);
         editPhysical = findViewById(R.id.imagebutton_edit_physexam);
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
@@ -796,7 +796,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
-            editVitals.setVisibility(View.GONE);
+            //editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
             editFamHist.setVisibility(View.GONE);
@@ -1112,11 +1112,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         nameView.setText(patientName);
 
-        heightView = findViewById(R.id.textView_height_value);
-        weightView = findViewById(R.id.textView_weight_value);
-        pulseView = findViewById(R.id.textView_pulse_value);
-        bpView = findViewById(R.id.textView_bp_value);
-        tempView = findViewById(R.id.textView_temp_value);
+        //heightView = findViewById(R.id.textView_height_value);
+        //weightView = findViewById(R.id.textView_weight_value);
+        //pulseView = findViewById(R.id.textView_pulse_value);
+        //bpView = findViewById(R.id.textView_bp_value);
+        //tempView = findViewById(R.id.textView_temp_value);
 
         tempfaren = findViewById(R.id.textView_temp_faren);
         tempcel = findViewById(R.id.textView_temp);
@@ -1129,7 +1129,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity.this, mFileName)));
             }
-            if (obj.getBoolean("mCelsius")) {
+            /*if (obj.getBoolean("mCelsius")) {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
                 tempView.setText(temperature.getValue());
@@ -1141,39 +1141,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     tempView.setText(convertCtoF(temperature.getValue()));
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
-            }
+            }*/
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        spO2View = findViewById(R.id.textView_pulseox_value);
-        respiratory = findViewById(R.id.textView_respiratory_value);
-        respiratoryText = findViewById(R.id.textView_respiratory);
-        bmiView = findViewById(R.id.textView_bmi_value);
+        //spO2View = findViewById(R.id.textView_pulseox_value);
+        //respiratory = findViewById(R.id.textView_respiratory_value);
+        //respiratoryText = findViewById(R.id.textView_respiratory);
+        //bmiView = findViewById(R.id.textView_bmi_value);
         complaintView = findViewById(R.id.textView_content_complaint);
         famHistView = findViewById(R.id.textView_content_famhist);
         patHistView = findViewById(R.id.textView_content_pathist);
         physFindingsView = findViewById(R.id.textView_content_physexam);
 
-        if (isRespiratory) {
+        /*if (isRespiratory) {
             respiratoryText.setVisibility(View.VISIBLE);
             respiratory.setVisibility(View.VISIBLE);
         } else {
             respiratoryText.setVisibility(View.GONE);
             respiratory.setVisibility(View.GONE);
-        }
+        }*/
 
-        if (height.getValue() != null) {
+        /*if (height.getValue() != null) {
             if (height.getValue().trim().equals("0")) {
                 heightView.setText("-");
             } else {
                 heightView.setText(height.getValue());
             }
-        }
+        }*/
 
-        weightView.setText(weight.getValue());
-        pulseView.setText(pulse.getValue());
+        //weightView.setText(weight.getValue());
+        //pulseView.setText(pulse.getValue());
 
-        String bpText = bpSys.getValue() + "/" + bpDias.getValue();
+        /*String bpText = bpSys.getValue() + "/" + bpDias.getValue();
         if (bpText.equals("/")) {  //when new patient is being registered we get / for BP
             bpView.setText("");
         } else if (bpText.equalsIgnoreCase("null/null")) {
@@ -1193,14 +1193,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mBMI = String.format(Locale.ENGLISH, "%.2f", bmi_value);
         } else {
             mBMI = "";
-        }
+        }*/
         patHistory.setValue(medHistory);
 
-        bmiView.setText(mBMI);
+        //bmiView.setText(mBMI);
 //        tempView.setText(temperature.getValue());
         //    Respiratory added by mahiti dev team
-        respiratory.setText(resp.getValue());
-        spO2View.setText(spO2.getValue());
+        //respiratory.setText(resp.getValue());
+        //spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
         if (famHistory.getValue() != null)
@@ -1211,7 +1211,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
 
-        editVitals.setOnClickListener(new View.OnClickListener() {
+        /*editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent1 = new Intent(VisitSummaryActivity.this, VitalsActivity.class);
@@ -1223,7 +1223,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent1.putExtra("tag", "edit");
                 startActivity(intent1);
             }
-        });
+        });*/
 
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
