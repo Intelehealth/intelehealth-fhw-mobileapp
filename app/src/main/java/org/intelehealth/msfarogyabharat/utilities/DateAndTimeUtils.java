@@ -13,6 +13,7 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -69,6 +70,16 @@ public class DateAndTimeUtils {
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
 // you can get seconds by adding  "...:ss" to it
         Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
+    public String currentDateTimePlus6Minutes() {
+        Locale.setDefault(Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 6);
+        Date todayDate = calendar.getTime();
         return date.format(todayDate);
     }
 

@@ -437,15 +437,15 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         //create encounter
         SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         Calendar today = Calendar.getInstance();
-        today.add(Calendar.MINUTE, -1);
-        today.set(Calendar.MILLISECOND, 0);
-        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
+//        today.add(Calendar.MINUTE, -1);
+//        today.set(Calendar.MILLISECOND, 0);
+//        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
 
         EncounterDAO encounterDAO = new EncounterDAO();
         EncounterDTO encounterDTO = new EncounterDTO();
         encounterDTO.setUuid(UUID.randomUUID().toString());
-        encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
+        encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_VISIT_NOTE);
         encounterDTO.setEncounterTime(startDate);
         encounterDTO.setVisituuid(visitUuid);
         encounterDTO.setSyncd(false);
@@ -460,7 +460,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
+        obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_VISIT_NOTE);
         obsDTO.setEncounteruuid(encounterDTO.getUuid());
 //        obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
@@ -473,7 +473,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         }
 
 
-//        endVisit();
+        endVisit();
         return isInserted;
     }
 
@@ -481,7 +481,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     private void endVisit() {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTimePlus6Minutes());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

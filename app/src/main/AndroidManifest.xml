@@ -254,10 +254,10 @@
         <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-        <provider
-            android:name="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:authorities="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:exported="false" />
+<!--        <provider-->
+<!--            android:name="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:authorities="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:exported="false" />-->
 
         <service android:name="org.intelehealth.msfarogyabharat.services.DownloadService" />
         <service android:name="org.intelehealth.msfarogyabharat.services.MyIntentService" />
