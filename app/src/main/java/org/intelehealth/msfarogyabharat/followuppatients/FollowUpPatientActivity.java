@@ -111,16 +111,15 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     public List<PatientDTO> getAllPatientsFromDB(int offset) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
         String table = "tbl_patient";
-//        final Cursor searchCursor = db.rawQuery("SELECT * FROM " + table + " ORDER BY first_name ASC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
-//        final Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
         Date cDate = new Date();
+        PatientDTO model = new PatientDTO();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT * FROM " + table +" as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
-        final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        String newQuery = "SELECT v.enddate FROM tbl_patient a, tbl_visit b where a.uuid = b.patientuuid";
+        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate like '%Sep 12, 2021%' or v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
         try {
             if (searchCursor.moveToFirst()) {
                 do {
-                    PatientDTO model = new PatientDTO();
                     model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setFirstname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")));
                     model.setLastname(searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")));
