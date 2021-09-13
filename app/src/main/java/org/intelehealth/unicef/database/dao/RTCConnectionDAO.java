@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.models.dto.RTCConnectionDTO;
@@ -11,17 +12,19 @@ import org.intelehealth.unicef.utilities.exception.DAOException;
 
 public class RTCConnectionDAO {
 
-    private String tag = RTCConnectionDAO.class.getSimpleName();
+    private static final String TAG = RTCConnectionDAO.class.getSimpleName();
     private long createdRecordsCount = 0;
 
     public boolean insert(RTCConnectionDTO connectionDTO) throws DAOException {
-        if (getByVisitUUID(connectionDTO.getVisitUUID()) != null) return false;
+        Log.v(TAG, "insert - " + connectionDTO.getConnectionInfo());
+        //if (getByVisitUUID(connectionDTO.getVisitUUID()) != null) return false;
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
+            RTCConnectionDTO rtcConnectionDTO = getByVisitUUID(connectionDTO.getVisitUUID());
             ContentValues values = new ContentValues();
-            values.put("uuid", connectionDTO.getUuid());
+            values.put("uuid", rtcConnectionDTO != null ? rtcConnectionDTO.getUuid() : connectionDTO.getUuid());
             values.put("visit_uuid", connectionDTO.getVisitUUID());
             values.put("connection_info", connectionDTO.getConnectionInfo());
 
