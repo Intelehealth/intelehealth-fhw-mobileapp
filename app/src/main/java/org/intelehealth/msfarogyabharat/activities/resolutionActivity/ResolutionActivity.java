@@ -45,8 +45,11 @@ import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
 import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
 import org.intelehealth.msfarogyabharat.database.dao.ObsDAO;
 import org.intelehealth.msfarogyabharat.database.dao.PatientsDAO;
+import org.intelehealth.msfarogyabharat.database.dao.VisitsDAO;
 import org.intelehealth.msfarogyabharat.knowledgeEngine.Node;
+import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
 import org.intelehealth.msfarogyabharat.models.dto.ObsDTO;
+import org.intelehealth.msfarogyabharat.syncModule.SyncUtils;
 import org.intelehealth.msfarogyabharat.utilities.FileUtils;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
@@ -57,10 +60,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class ResolutionActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -138,7 +144,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
-            intentTag = intent.getStringExtra("tag");
+//            intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
             if(edit_PatHist == null)
@@ -428,10 +434,35 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
      * @return long
      */
     public boolean insertDb(String value) {
+        //create encounter
+        SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Calendar today = Calendar.getInstance();
+        today.add(Calendar.MINUTE, -1);
+        today.set(Calendar.MILLISECOND, 0);
+        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
+        String startDate = startFormat.format(today.getTime());
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        EncounterDTO encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
+        encounterDTO.setEncounterTime(startDate);
+        encounterDTO.setVisituuid(visitUuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(getString(R.string.accept));//privacy value added.
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
-        obsDTO.setEncounteruuid(encounterAdultIntials);
+        obsDTO.setEncounteruuid(encounterDTO.getUuid());
+//        obsDTO.setEncounteruuid(encounterAdultIntials);
         obsDTO.setCreator(sessionManager.getCreatorID());
         obsDTO.setValue(StringUtils.getValue(value));
         boolean isInserted = false;
@@ -441,9 +472,33 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+
+//        endVisit();
         return isInserted;
     }
 
+
+    private void endVisit() {
+        VisitsDAO visitsDAO = new VisitsDAO();
+        try {
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        //SyncDAO syncDAO = new SyncDAO();
+        //syncDAO.pushDataApi();
+        new SyncUtils().syncForeground("survey"); //Sync function will work in foreground of app and
+        // the Time will be changed for last sync.
+
+//        AppConstants.notificationUtils.DownloadDone(getString(R.string.end_visit_notif), getString(R.string.visit_ended_notif), 3, PatientSurveyActivity.this);
+
+        sessionManager.removeVisitSummary(patientUuid, visitUuid);
+
+        Intent i = new Intent(this, HomeActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(i);
+    }
 
     private void updateImageDatabase(String imagePath) {
 
