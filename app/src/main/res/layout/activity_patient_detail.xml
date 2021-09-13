@@ -822,6 +822,11 @@
                         </androidx.cardview.widget.CardView>
             -->
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_history"
                 android:layout_width="match_parent"
@@ -956,6 +961,7 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
             <Button
                 android:id="@+id/button_new_visit"

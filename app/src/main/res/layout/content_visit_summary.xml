@@ -524,7 +524,13 @@
         </androidx.cardview.widget.CardView>
 
         <!--Patient History Card contains text-->
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_pathist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -575,7 +581,8 @@
         </androidx.cardview.widget.CardView>
 
         <!--Family History Card contains text-->
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/cardView_famhist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -624,6 +631,7 @@
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
+        </FrameLayout>
 
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/additional_document_images"
