@@ -80,6 +80,13 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
         <activity
+            android:name="org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
+            android:label="@string/title_activity_past_medical_history"
+            android:parentActivityName="org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionNodeActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
             android:name="org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionNodeActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:label="@string/title_activity_question_node"
@@ -247,10 +254,10 @@
         <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
         <!-- </intent-filter> -->
         <!-- </receiver> -->
-        <provider
-            android:name="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:authorities="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:exported="false" />
+<!--        <provider-->
+<!--            android:name="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:authorities="org.intelehealth.msfarogyabharat.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:exported="false" />-->
 
         <service android:name="org.intelehealth.msfarogyabharat.services.DownloadService" />
         <service android:name="org.intelehealth.msfarogyabharat.services.MyIntentService" />

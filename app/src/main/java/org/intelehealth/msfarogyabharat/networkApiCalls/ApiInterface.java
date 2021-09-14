@@ -1,6 +1,7 @@
 package org.intelehealth.msfarogyabharat.networkApiCalls;
 
 
+import org.intelehealth.msfarogyabharat.activities.resolutionActivity.Resolution;
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
 import org.intelehealth.msfarogyabharat.models.Location;
@@ -19,6 +20,8 @@ import org.intelehealth.msfarogyabharat.models.pushRequestApiCall.PushRequestApi
 import org.intelehealth.msfarogyabharat.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.msfarogyabharat.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.msfarogyabharat.models.statewise_location.State;
+import org.json.JSONObject;
+
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
@@ -133,4 +136,10 @@ public interface ApiInterface {
                                                                            @Header("Authorization") String authHeader,
                                                                            @Body Add_Image_Push_Body addImagePushBody);
 
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Call<ResponseBody> GIVE_RESOLUTION_API_CALL_OBSERVABLE(@Url String url,
+                                                           @Header("Authorization") String authHeader,
+                                                           @Body Resolution body);
 }
