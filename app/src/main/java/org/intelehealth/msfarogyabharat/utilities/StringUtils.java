@@ -703,13 +703,13 @@ public final class StringUtils {
             case "कुछ/पूर्ण उच्चतर माध्यमिक":
                 val = "Some/completed higher secondary";
                 break;
-            case "स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल पूरा किया हो":
+            case "पूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल":
                 val = "Completed undergraduate degree/diploma/technical school";
                 break;
             case "पूर्ण स्नातकोत्तर डिग्री":
                 val = "Completed postgraduate degree";
                 break;
-            case "चुप रहना पसंद करूंगा":
+            case "नहीं कहना पसंद करते हैं":
                 val = "Prefer not to say";
                 break;
             case "अन्य":
@@ -737,13 +737,13 @@ public final class StringUtils {
                 val = "कुछ/पूर्ण उच्चतर माध्यमिक";
                 break;
             case "Completed undergraduate degree/diploma/technical school":
-                val = "स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल पूरा किया हो";
+                val = "सपूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल";
                 break;
             case "Completed postgraduate degree":
                 val = "पूर्ण स्नातकोत्तर डिग्री";
                 break;
             case "Prefer not to say":
-                val = "चुप रहना पसंद करूंगा";
+                val = "नहीं कहना पसंद करते हैं";
                 break;
             case "Other":
                 val = "अन्य";
@@ -757,16 +757,13 @@ public final class StringUtils {
     public static String switch_hi_current_maritual_statusSpinner(String val) {
         switch (val) {
 
-            case "एकल":
-                val = "Single";
-                break;
             case "विवाहित":
                 val = "Married";
                 break;
-            case "अविवाहित/अकेला":
+            case "अविवाहित/अकेली":
                 val = "Unmarried/single";
                 break;
-            case "एक रिश्ते में":
+            case "ओ एक रिश्ते में":
                 val = "In a relationship";
                 break;
             case "लिव-इन रिलेशनशिप में":
@@ -778,13 +775,13 @@ public final class StringUtils {
             case "विधवा":
                 val = "Widowed";
                 break;
-            case "नाटा":
+            case "नता":
                 val = "Nata";
                 break;
             case "दूसरी शादी":
                 val = "Second Marriage";
                 break;
-            case "नहीं कहना पसंद करें":
+            case "नहीं कहना पसंद करते हैं":
                 val = "Prefer not to say";
                 break;
             case "अन्य":
@@ -799,14 +796,11 @@ public final class StringUtils {
 
     public static String switch_hi_current_maritual_statusSpinner_edit(String val) {
         switch (val) {
-            case "Single":
-                val = "एकल";
-                break;
             case "Married":
                 val = "विवाहित";
                 break;
             case "Unmarried/single":
-                val = "अविवाहित/अकेला";
+                val = "अविवाहित/अकेली";
                 break;
             case "In a relationship":
                 val = "एक रिश्ते में";
@@ -821,13 +815,13 @@ public final class StringUtils {
                 val = "विधवा";
                 break;
             case "Nata":
-                val = "नाटा";
+                val = "नता";
                 break;
             case "Second Marriage":
                 val = "दूसरी शादी";
                 break;
             case "Prefer not to say":
-                val = "नहीं कहना पसंद करें";
+                val = "नहीं कहना पसंद करते हैं";
                 break;
             case "Other":
                 val = "अन्य";

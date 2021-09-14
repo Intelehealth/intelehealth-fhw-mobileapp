@@ -201,15 +201,14 @@
         <item>कुछ/पूर्ण प्राथमिक विद्यालय</item>
         <item>कुछ / पूर्ण माध्यमिक विद्यालय</item>
         <item>कुछ/पूर्ण उच्चतर माध्यमिक</item>
-        <item>स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल पूरा किया हो</item>
+        <item>पूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल</item>
         <item>पूर्ण स्नातकोत्तर डिग्री</item>
-        <item>चुप रहना पसंद करूंगा</item>
+        <item>नहीं कहना पसंद करते हैं</item>
         <item>अन्य</item>
     </string-array>
 
     <string-array name="marital_spinner_en">
         <item>Select Marital Status</item>
-        <item>Single</item>
         <item>Married</item>
         <item>Unmarried/single</item>
         <item>In a relationship</item>
@@ -223,16 +222,15 @@
     </string-array>
     <string-array name="marital_spinner_hi">
         <item>वैवाहिक स्थिति चुनें</item>
-        <item>एकल</item>
         <item>विवाहित</item>
-        <item>अविवाहित/अकेला</item>
+        <item>अविवाहित/अकेली</item>
         <item>एक रिश्ते में</item>
         <item>लिव-इन रिलेशनशिप में</item>
         <item>तलाकशुदा</item>
         <item>विधवा</item>
-        <item>नाटा</item>
+        <item>नता</item>
         <item>दूसरी शादी</item>
-        <item>नहीं कहना पसंद करें</item>
+        <item>नहीं कहना पसंद करते हैं</item>
         <item>अन्य</item>
     </string-array>
 
