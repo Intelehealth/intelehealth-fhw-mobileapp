@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.familyHistoryActivity.FamilyHistoryActivity;
@@ -48,15 +49,16 @@ import org.intelehealth.msfarogyabharat.database.dao.ObsDAO;
 import org.intelehealth.msfarogyabharat.database.dao.PatientsDAO;
 import org.intelehealth.msfarogyabharat.database.dao.VisitsDAO;
 import org.intelehealth.msfarogyabharat.knowledgeEngine.Node;
-import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
 import org.intelehealth.msfarogyabharat.models.dto.ObsDTO;
 import org.intelehealth.msfarogyabharat.syncModule.SyncUtils;
+import org.intelehealth.msfarogyabharat.utilities.Base64Utils;
 import org.intelehealth.msfarogyabharat.utilities.FileUtils;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
-import org.intelehealth.msfarogyabharat.utilities.StringUtils;
+import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 import org.intelehealth.msfarogyabharat.utilities.pageindicator.ScrollingPagerIndicator;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,7 +69,11 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ResolutionActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -82,7 +88,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
 
-    static final String RESOLUTION_DOMESTIC_VIOLANCE = "resolution/Domestic Violence -Resolution and Feedback.json";
+    static final String RESOLUTION_DOMESTIC_VIOLANCE = "resolution/Domestic Violence-Resolution and Feedback.json";
     static final String RESOLUTION_SAFE_ABORTION = "resolution/Safe abortion- Resolution & feedback.json";
     String image_Prefix = "MH";
     String imageDir = "Medical History";
@@ -95,14 +101,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     boolean hasLicense = false;
     String edit_PatHist = "";
 
-//  String mFileName = "DemoHistory.json";
-
     private static final String TAG = ResolutionActivity.class.getSimpleName();
-
     Node patientHistoryMap;
-    // CustomExpandableListAdapter adapter;
-    //ExpandableListView historyListView;
-
     String patientHistory;
     String phistory = "";
 
@@ -148,7 +148,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 //            intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_PatHist == null)
+            if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
         }
 
@@ -233,10 +233,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-            
+
         }
-
-
 
 
         setTitle(getString(R.string.give_resolution));
@@ -250,9 +248,9 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -297,10 +295,9 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
 
@@ -435,11 +432,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                     //       intent.putStringArrayListExtra("exams", physicalExams);
                     startActivity(intent);*/
                 }
-
-                Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_SHORT).show();
-                Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
-                i_back.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i_back);
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
@@ -463,46 +455,84 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 //        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
 
-        EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = new EncounterDTO();
-        encounterDTO.setUuid(UUID.randomUUID().toString());
-        encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_VISIT_NOTE);
-        encounterDTO.setEncounterTime(startDate);
-        encounterDTO.setVisituuid(visitUuid);
-        encounterDTO.setSyncd(false);
-        encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        encounterDTO.setVoided(0);
-        encounterDTO.setPrivacynotice_value(getString(R.string.accept));//privacy value added.
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getGiveResolutionUrl();
+        String encoded = new Base64Utils().encoded("admin", "IHUser#1");
+        JSONObject body = new JSONObject();
         try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+            body.put("patient", patientUuid);
+            body.put("encounterType", UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
+            JSONArray providers = new JSONArray();
+            JSONObject provider = new JSONObject();
+            provider.put("provider", sessionManager.getProviderID());
+            provider.put("encounterRole", "73bbb069-9781-4afc-a9d1-54b6b2270e03");
+            providers.put(provider);
+            body.put("encounterProviders", providers);
+            body.put("visit", visitUuid);
+            body.put("encounterDatetime", startDate);
+
+
+            JSONArray obsArr = new JSONArray();
+            JSONObject obs = new JSONObject();
+            obs.put("concept", "76aaef14-b022-4cf2-8409-e13424e9dd38");
+            obs.put("value", value);
+            obsArr.put(obs);
+            body.put("obs", obsArr);
+
+            Resolution resolution = new Gson().fromJson(body.toString(), Resolution.class);
+            AppConstants.apiInterface.GIVE_RESOLUTION_API_CALL_OBSERVABLE(url, "Basic " + encoded, resolution).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    System.out.println(response);
+//                    EncounterDAO encounterDAO = new EncounterDAO();
+//                    EncounterDTO encounterDTO = new EncounterDTO();
+//                    encounterDTO.setUuid(UUID.randomUUID().toString());
+//                    encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_VISIT_NOTE);
+//                    encounterDTO.setEncounterTime(startDate);
+//                    encounterDTO.setVisituuid(visitUuid);
+//                    encounterDTO.setSyncd(false);
+//                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
+//                    encounterDTO.setVoided(0);
+//                    encounterDTO.setPrivacynotice_value(getString(R.string.accept));//privacy value added.
+//                    try {
+//                        encounterDAO.createEncountersToDB(encounterDTO);
+//                    } catch (DAOException e) {
+//                        FirebaseCrashlytics.getInstance().recordException(e);
+//                    }
+//
+//                    ObsDAO obsDAO = new ObsDAO();
+//                    ObsDTO obsDTO = new ObsDTO();
+//                    obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
+//                    obsDTO.setEncounteruuid(encounterDTO.getUuid());
+//            //        obsDTO.setEncounteruuid(encounterAdultIntials);
+//                    obsDTO.setCreator(sessionManager.getCreatorID());
+//                    obsDTO.setValue(StringUtils.getValue(value));
+//                    boolean isInserted = false;
+//                    try {
+//                        isInserted = obsDAO.insertObs(obsDTO);
+//                    } catch (DAOException e) {
+//                        FirebaseCrashlytics.getInstance().recordException(e);
+//                    }
+                    Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_SHORT).show();
+                    endVisit();
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        ObsDAO obsDAO = new ObsDAO();
-        ObsDTO obsDTO = new ObsDTO();
-        obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_VISIT_NOTE);
-        obsDTO.setEncounteruuid(encounterDTO.getUuid());
-//        obsDTO.setEncounteruuid(encounterAdultIntials);
-        obsDTO.setCreator(sessionManager.getCreatorID());
-        obsDTO.setValue(StringUtils.getValue(value));
-        boolean isInserted = false;
-        try {
-            isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
-
-        endVisit();
-        return isInserted;
+        return true;
     }
 
 
     private void endVisit() {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
-            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTimePlus6Minutes());
+            visitsDAO.updateVisitEnddate(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -597,8 +627,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     }
 
 
-
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here
@@ -637,7 +665,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
@@ -649,7 +678,9 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             result = ""; // if medical history does not exist
-        }    db.close();    return result;
+        }
+        db.close();
+        return result;
     }
 }
 

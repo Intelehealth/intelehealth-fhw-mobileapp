@@ -104,4 +104,10 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl()+ "/pushimage";
         return BASE_URL;
     }
+
+    public String getGiveResolutionUrl() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        String BASE_URL = "https://" + sessionManager.getServerUrl()+ "/openmrs/ws/rest/v1/encounter";
+        return BASE_URL;
+    }
 }

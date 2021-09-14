@@ -1663,6 +1663,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         button_resolution.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!NetworkConnection.isOnline(context)) {
+                    Toast.makeText(VisitSummaryActivity.this, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (visitUUID == null || visitUUID.isEmpty()) {
                     String visitIDorderBy = "startdate";
                     String visitIDSelection = "uuid = ?";
