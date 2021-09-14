@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -271,16 +272,22 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
 
+        String resolution = null;
+        if (intent.getBooleanExtra("resolutionViolence", false))
+            resolution = RESOLUTION_DOMESTIC_VIOLANCE;
+        else
+            resolution = RESOLUTION_SAFE_ABORTION;
+
         if (hasLicense) {
             try {
                 JSONObject currentFile = null;
-                currentFile = new JSONObject(FileUtils.readFileRoot(RESOLUTION_DOMESTIC_VIOLANCE, this));
+                currentFile = new JSONObject(FileUtils.readFileRoot(resolution, this));
                 patientHistoryMap = new Node(currentFile); //Load the patient history mind map
             } catch (JSONException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         } else {
-            patientHistoryMap = new Node(FileUtils.encodeJSON(this, RESOLUTION_DOMESTIC_VIOLANCE)); //Load the patient history mind map
+            patientHistoryMap = new Node(FileUtils.encodeJSON(this, resolution)); //Load the patient history mind map
         }
 
        /* historyListView = findViewById(R.id.patient_history_expandable_list_view);
@@ -362,68 +369,82 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     private void fabClick() {
         //If nothing is selected, there is nothing to put into the database.
 
-        List<String> imagePathList = patientHistoryMap.getImagePathList();
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+        alertDialogBuilder.setMessage(Html.fromHtml(phistory + patientHistoryMap.generateLanguage()));
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
 
-        if (imagePathList != null) {
-            for (String imagePath : imagePathList) {
-                updateImageDatabase(imagePath);
+                List<String> imagePathList = patientHistoryMap.getImagePathList();
+
+                if (imagePathList != null) {
+                    for (String imagePath : imagePathList) {
+                        updateImageDatabase(imagePath);
+                    }
+                }
+
+
+                if (intentTag != null && intentTag.equals("edit")) {
+                    if (patientHistoryMap.anySubSelected()) {
+                        patientHistory = patientHistoryMap.generateLanguage();
+                        updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+                    }
+
+                    // displaying all values in another activity
+                    /*Intent intent = new Intent(ResolutionActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("tag", intentTag);
+                    intent.putExtra("hasPrescription", "false");
+                    startActivity(intent);*/
+                } else {
+
+                    //  if(patientHistoryMap.anySubSelected()){
+                    patientHistory = patientHistoryMap.generateLanguage();
+
+                    if (flag == true) { // only if OK clicked, collect this new info (old patient)
+                        phistory = phistory + patientHistory; // only PMH updated
+                        sessionManager.setReturning(true);
+
+
+                        insertDb(phistory);
+
+                        // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                    } else  // new patient, directly insert into database
+                    {
+                        insertDb(patientHistory);
+                    }
+
+                    /*Intent intent = new Intent(ResolutionActivity.this, FamilyHistoryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent.putExtra("tag", intentTag);
+                    //       intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);*/
+                }
+
+                Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_SHORT).show();
+                Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
+                i_back.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i_back);
             }
-        }
-
-
-        if (intentTag != null && intentTag.equals("edit")) {
-            if (patientHistoryMap.anySubSelected()) {
-                patientHistory = patientHistoryMap.generateLanguage();
-                updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
-            }
-
-            // displaying all values in another activity
-            /*Intent intent = new Intent(ResolutionActivity.this, VisitSummaryActivity.class);
-            intent.putExtra("patientUuid", patientUuid);
-            intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("tag", intentTag);
-            intent.putExtra("hasPrescription", "false");
-            startActivity(intent);*/
-        } else {
-
-            //  if(patientHistoryMap.anySubSelected()){
-            patientHistory = patientHistoryMap.generateLanguage();
-
-            if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                phistory = phistory + patientHistory; // only PMH updated
-                sessionManager.setReturning(true);
-
-
-                insertDb(phistory);
-
-                // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
-            } else  // new patient, directly insert into database
-            {
-                insertDb(patientHistory);
-            }
-
-            /*Intent intent = new Intent(ResolutionActivity.this, FamilyHistoryActivity.class);
-            intent.putExtra("patientUuid", patientUuid);
-            intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-            intent.putExtra("tag", intentTag);
-            //       intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);*/
-        }
-
-        Intent i_back = new Intent(getApplicationContext(), HomeActivity.class);
-        i_back.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(i_back);
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
 

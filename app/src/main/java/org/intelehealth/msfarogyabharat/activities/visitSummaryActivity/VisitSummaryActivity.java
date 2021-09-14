@@ -1684,6 +1684,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     intent1.putExtra("name", patientName);
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent1.putExtra("tag", "edit");
+                    intent1.putExtra("resolutionViolence", complaintView.getText().toString().toLowerCase().contains("violence"));
                     startActivity(intent1);
                 } else {
                     Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder, Toast.LENGTH_SHORT).show();

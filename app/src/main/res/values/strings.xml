@@ -806,4 +806,5 @@
     <string name="continue_button">Continue</string>
     <string name="dialog_title_enter_file_name">Enter filename</string>
     <string name="resolution_upload_reminder">Please upload first before attempting to give a resolution.</string>
+    <string name="give_resolution_success">Resolution given successfully.</string>
 </resources>
