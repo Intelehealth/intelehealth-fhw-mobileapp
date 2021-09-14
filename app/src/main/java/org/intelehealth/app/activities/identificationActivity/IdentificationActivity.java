@@ -87,11 +87,17 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
+
+import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ta_economic_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ta_caste_edit;
+
 import static org.intelehealth.app.utilities.StringUtils.switch_or_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edit;
 
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
 
 public class IdentificationActivity extends AppCompatActivity {
@@ -101,6 +107,8 @@ public class IdentificationActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
+    //---------kuldeep-------------------------
+    //private ArrayAdapter<CharSequence> countryAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
     Calendar dob = Calendar.getInstance();
@@ -414,9 +422,15 @@ public class IdentificationActivity extends AppCompatActivity {
             mImageView.setImageBitmap(BitmapFactory.decodeFile(patient1.getPatient_photo()));
 
         Resources res = getResources();
+
+        //----------------kuldeep--------------
+
+        String countryStr="countries_"+ sessionManager.getAppLanguage();
+        //int countryVal=R.array.countries_en;
+        int countryVal=res.getIdentifier(countryStr, "array", getApplicationContext().getPackageName());
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
-                R.array.countries, R.layout.custom_spinner);
-        //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                countryVal, R.layout.custom_spinner);
+        countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
 
 //        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
@@ -464,10 +478,8 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
-
         if (null == patientID_edit || patientID_edit.isEmpty()) {
             generateUuid();
-
         }
 
         // setting radio button automatically according to the databse when user clicks edit details
@@ -504,6 +516,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String education = switch_hi_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                } //-----------------kuldeep-----------------------------
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    String education = switch_ta_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String education = switch_or_education_edit(patient1.getEducation_level());
@@ -528,6 +544,10 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String economic = switch_hi_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }//------------------------kuldeep---------------------------
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    String economic = switch_ta_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String economic = switch_or_economic_edit(patient1.getEconomic_status());
@@ -546,6 +566,10 @@ public class IdentificationActivity extends AppCompatActivity {
             else {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String caste = switch_hi_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }//---------------------kuldeep--------------------
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    String caste = switch_ta_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
@@ -573,8 +597,13 @@ public class IdentificationActivity extends AppCompatActivity {
                     String country = adapterView.getItemAtPosition(i).toString();
 
                     if (country.matches("India")) {
+
+                        //----------------------kuldeep---------------------
+                        String stateStr="states_india_"+ sessionManager.getAppLanguage();
+                        int stateVal=res.getIdentifier(stateStr, "array", getApplicationContext().getPackageName());
+                        //R.array.states_india
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                R.array.states_india, R.layout.custom_spinner);
+                                stateVal, R.layout.custom_spinner);
                         // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
@@ -591,7 +620,6 @@ public class IdentificationActivity extends AppCompatActivity {
                         mState.setAdapter(stateAdapter);
 
                         if (patientID_edit != null) {
-
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
                     } else if (country.matches("Philippines")) {
@@ -706,7 +734,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                     mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                } //------------kuldeep----------
+                else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
+                    mDOB.setText(dob_text);
+                }
+                else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
                     mDOB.setText(dob_text);
                 } else {
@@ -752,7 +785,12 @@ public class IdentificationActivity extends AppCompatActivity {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                 mDOB.setText(dob_text);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            }//---------kuldeep-------------
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
+                mDOB.setText(dob_text);
+            }
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 String dob_text = en__or_dob(dob); //to show text of English into Odiya...
                 mDOB.setText(dob_text);
             } else {
@@ -871,7 +909,12 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                         mDOB.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    }//-----------kuldeep-------------
+                    else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                        String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
+                        mDOB.setText(dob_text);
+                    }
+                    else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
                         mDOB.setText(dob_text);
                     } else {
@@ -1156,7 +1199,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
         boolean cancel = false;
         View focusView = null;
-
 
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
@@ -1467,7 +1509,6 @@ public class IdentificationActivity extends AppCompatActivity {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
     }
 
     public void onPatientUpdateClicked(Patient patientdto) {

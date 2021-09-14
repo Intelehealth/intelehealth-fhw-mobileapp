@@ -111,7 +111,6 @@ public class IntroActivity extends AppCompatActivity {
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 launchHomeScreen();
             }
         });
@@ -172,7 +171,6 @@ public class IntroActivity extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
             addBottomDots(position);
-
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
@@ -204,7 +202,6 @@ public class IntroActivity extends AppCompatActivity {
         private TextView tvIntroTwo;
         private Button button_demo_visit;
         private Button button_custom_visit;
-
 
         public MyViewPagerAdapter() {
         }

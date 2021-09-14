@@ -686,7 +686,7 @@ public class SetupActivity extends AppCompatActivity {
 
         if (mDropdownLocation.getSelectedItemPosition() <= 0) {
             cancel = true;
-            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG);
+            Toast.makeText(SetupActivity.this, getString(R.string.error_location_not_selected), Toast.LENGTH_LONG).show();
         } else {
             location = mLocations.get(mDropdownLocation.getSelectedItemPosition() - 1);
         }

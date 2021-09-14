@@ -228,7 +228,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(R.string.menu_option_settings);
+        //setTitle(R.string.menu_option_settings);
+       //---------------------kuldeep2--------------
+        setTitle(R.string.languages);
         sessionManager = new SessionManager(this);
         setupActionBar();
 
@@ -272,8 +274,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
-        loadHeadersFromResource(R.xml.pref_headers, target);
 
+        //-------------------kuldeep1----------------------------
+        String langPref = "Language";
+        SharedPreferences prefs = this.getSharedPreferences("Intelehealth", Activity.MODE_PRIVATE);
+        String language = prefs.getString(langPref, "");
+        if (language != null) {
+            final Locale myLocale = new Locale(language);
+            Locale.setDefault(myLocale);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration conf = res.getConfiguration();
+            conf.locale = myLocale;
+            res.updateConfiguration(conf, dm);
+        }
+
+        loadHeadersFromResource(R.xml.pref_headers, target);
         //code for adding version text on the bottom of the screen: By Nishita
 
         RelativeLayout lContainerLayout = new RelativeLayout(this);
@@ -445,9 +461,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
             addPreferencesFromResource(R.xml.pref_languages);
             setHasOptionsMenu(true);
-
 
             bindPreferenceSummaryToValue(findPreference("hindiLang"));
             // bindPreferenceSummaryToValue(findPreference("bengaliLang"));

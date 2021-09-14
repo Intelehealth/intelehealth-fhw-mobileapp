@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.homeActivity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -11,9 +12,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -21,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -30,6 +34,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,6 +78,7 @@ import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.ParsePosition;
@@ -138,7 +145,6 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
 
-
         catchFCMMessageData();
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -189,6 +195,9 @@ public class HomeActivity extends AppCompatActivity {
 
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
+
+        //String myString = null;
+        //myString.length();
 
         // manualSyncButton.setText(R.string.sync_now);
 //        manualSyncButton.setText(R.string.refresh);
@@ -367,10 +376,12 @@ public class HomeActivity extends AppCompatActivity {
 
     //function for handling the video library feature...
     private void videoLibrary() {
+
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
         //Check for license key and load the correct config file
         try {
+
             JSONObject obj = null;
             if (hasLicense) {
                 obj = new JSONObject(Objects.requireNonNullElse
@@ -468,9 +479,12 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
+            /*case R.id.changLanguageOption:
+                 showChooseLanguage();*/
             case R.id.settingsOption:
                 settings();
                 return true;
+
             case R.id.updateProtocolsOption: {
 
 
@@ -1033,4 +1047,5 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
+
 }

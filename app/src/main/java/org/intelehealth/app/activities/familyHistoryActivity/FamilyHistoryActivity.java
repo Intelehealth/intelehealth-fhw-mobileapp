@@ -490,8 +490,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         onListClick(null, groupPos, childPos);
     }
 
-
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here

@@ -33,8 +33,6 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface ApiInterface {
-
-
     //State-wise location
     @GET("location?tag=State&v=custom:(uuid,display)")
     Observable<State> STATE_OBSERVABLE();

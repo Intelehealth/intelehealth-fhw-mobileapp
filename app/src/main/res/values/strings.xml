@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+    <string name="app_name" translatable="false">Hand In Hand</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">Intelehealth</string>
+    <string name="title_activity_login" translatable="false">Hand In Hand</string>
     <string name="prompt_email" translatable="false">Username</string>
     <string name="prompt_password" translatable="false">Password</string>
     <string name="prompt_admin_password" translatable="false">Admin Password</string>
@@ -74,6 +74,7 @@
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
 
+    <!--<string name="menu_option_language" translatable="false">Language</string>-->
 
     //Identification Screen
     <string name="title_activity_identification" translatable="false">Add New Patient</string>
@@ -196,7 +197,6 @@
     <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
-
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
@@ -555,7 +555,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Hand In Hand. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
@@ -590,8 +590,9 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    //----------------change here app name----------------------
+    <string name="intelehealth_a_telemedicine_platform">Hand In Hand is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Hand In Hand</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>

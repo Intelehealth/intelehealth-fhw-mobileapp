@@ -80,9 +80,6 @@ public class PhysicalExam extends Node {
                 }
             }
 
-
-
-
             //Find the other exams that need to be conducted and add them in
             if (selection == null || selection.isEmpty()) {
                 //If no exams were required, just do the general ones
@@ -113,8 +110,6 @@ public class PhysicalExam extends Node {
                                         examNodeRef = locationNodeRef.getOptionByName(exam);
                                     }
                                     if (examNodeRef != null) {
-
-
                                         //The foundLocation list is to ensure that the same exam isn't display twice
                                         if (foundLocations.contains(location)) {
                                             int locationIndex = foundLocations.indexOf(location);

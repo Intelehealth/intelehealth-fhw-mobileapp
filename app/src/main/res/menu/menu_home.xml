@@ -8,10 +8,23 @@
         <!--android:title="@string/menu_option_sync"-->
         <!--android:orderInCategory="50" />-->
 
+        //----------------------done by kuldeep singh-------
+
+        <!--<item
+            android:id="@+id/changLanguageOption"
+            android:orderInCategory="100"
+            android:title="@string/menu_option_language" />-->
+
+        <!--<item
+            android:id="@+id/settingsOption"
+            android:orderInCategory="100"
+            android:title="@string/menu_option_settings" />-->
+
         <item
             android:id="@+id/settingsOption"
             android:orderInCategory="100"
-            android:title="@string/menu_option_settings" />
+            android:title="@string/languages" />
+        //-----------------------------------------------------
 
         <!--<item-->
         <!--android:id="@+id/endOfDayOption"-->

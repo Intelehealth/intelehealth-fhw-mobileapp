@@ -158,7 +158,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
-
     public static final String CREATE_UUID_DICTIONARY = "CREATE TABLE IF NOT EXISTS tbl_uuid_dictionary (" +
             "uuid TEXT  PRIMARY KEY," +
             "name TEXT" +

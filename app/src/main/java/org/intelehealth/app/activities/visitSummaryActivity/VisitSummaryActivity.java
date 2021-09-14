@@ -646,14 +646,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-
                 }
-
-
-
             }
         });
-
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
@@ -718,19 +713,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                     speciality_selected = adapterView.getItemAtPosition(i).toString();
                     Log.d("SPINNER", "SPINNER_Selected_final: "+ speciality_selected);
-
-
             }
-
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
         //end - spinner - speciality...
-
-
      //   VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 //        if (hasPrescription.equalsIgnoreCase("true")) {
 //            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
@@ -848,7 +837,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                 }
-
 
                     if(isVisitSpecialityExists)
                         speciality_spinner.setEnabled(false);

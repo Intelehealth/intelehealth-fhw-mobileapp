@@ -71,6 +71,9 @@ public class Node implements Serializable {
     private String display_oriya;
     private String display_cebuno;
     private String display_hindi;
+    //---------kuldeep-------------------
+    //private String display_tamil;
+
     private String language;
     private String choiceType;
     private String inputType;
@@ -82,6 +85,9 @@ public class Node implements Serializable {
     private String pop_up;
     private String pop_up_hi;
     private String pop_up_or;
+    //--------------kuldeep---------------------
+    //private String pop_up_ta;
+
     private String gender;
     private String min_age;
     private String max_age;
@@ -196,11 +202,19 @@ public class Node implements Serializable {
                 this.display_hindi = this.display;
             }
 
+            //--------------kuldeep---------------------------------
+           /* this.display_tamil = jsonNode.optString("display-ta");
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = jsonNode.optString("display-ta");
+            }
+            if (this.display_tamil.isEmpty()) {
+                this.display_tamil = this.display;
+            }*/
+
             this.language = jsonNode.optString("language");
             if (this.language.isEmpty()) {
                 this.language = this.text;
             }
-
 
             //Only for physical exams
             if (!this.language.isEmpty()) {
@@ -225,7 +239,6 @@ public class Node implements Serializable {
             this.associatedComplaint = jsonNode.optString("associated-complaint");
             this.hasAssociations = !associatedComplaint.isEmpty();
 
-
             this.selected = false;
             this.isNoSelected = false;
 
@@ -248,12 +261,15 @@ public class Node implements Serializable {
                 this.pop_up_or = this.pop_up;
             }
 
+            //----------------kuldeep----------------------------------------
+           /* this.pop_up_ta = jsonNode.optString("pop-up-ta"); //pop-up for Odiya...
+            if (this.pop_up_ta.isEmpty()) {
+                this.pop_up_ta = this.pop_up;
+            }*/
             // this.hasPopUp = !pop_up.isEmpty();
-            if (!pop_up.isEmpty() || !pop_up_hi.isEmpty() || !pop_up_or.isEmpty()) {
+            if (!pop_up.isEmpty() || !pop_up_hi.isEmpty() || !pop_up_or.isEmpty() /*|| !pop_up_ta.isEmpty()*/) {
                 this.hasPopUp = true;
             }
-
-
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -269,6 +285,9 @@ public class Node implements Serializable {
         this.text = source.text;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
+        //----------kuldeep----------------
+        //this.display_tamil = source.display_tamil;
+
         this.display_cebuno = source.display_cebuno;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
@@ -282,6 +301,9 @@ public class Node implements Serializable {
         this.pop_up = source.pop_up;
         this.pop_up_hi = source.pop_up_hi;
         this.pop_up_or = source.pop_up_or;
+       //-----------------kuldeep---------------------
+       // this.pop_up_or = source.pop_up_ta;
+
         this.jobAidFile = source.jobAidFile;
         this.jobAidType = source.jobAidType;
         this.aidAvailable = source.aidAvailable;
@@ -317,7 +339,6 @@ public class Node implements Serializable {
                 imageView.setVisibility(View.GONE);
             }
         }
-
 
         subQuestion.setTitle(node.findDisplay());
         ListView listView = convertView.findViewById(R.id.dialog_subquestion_list_view);
@@ -454,6 +475,23 @@ public class Node implements Serializable {
                     }
                 }
             }
+
+            /*case "ta": {
+                //Log.i(TAG, "findDisplay: tamil");
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: tamil dis");
+                    return display_tamil;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }*/
+
             default: {
                 {
                     if (display != null && display.isEmpty()) {
@@ -745,7 +783,6 @@ public class Node implements Serializable {
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
 
-
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
@@ -777,7 +814,13 @@ public class Node implements Serializable {
                         messages.add(node_opt.pop_up_hi);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         messages.add(node_opt.pop_up_or);
-                    } else {
+                    }
+                    //----------------kuldeep-------------------------
+                    /*else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                        messages.add(node_opt.pop_up_ta);
+                    }*/
+                    //-------------------------------------------------
+                    else {
                         messages.add(node_opt.pop_up);
                     }
 
@@ -924,7 +967,6 @@ public class Node implements Serializable {
                 lengthPicker.setValue(lengthPicker.getValue());
                 String durationString = widthPicker.getValue() + " X " + lengthPicker.getValue();
 
-
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", durationString));
                 } else {
@@ -946,7 +988,6 @@ public class Node implements Serializable {
         });
         AlertDialog dialog = areaDialog.show();
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-
     }
 
     public static void askRange(final Node node, Activity context, final QuestionsAdapter adapter) {
@@ -1003,8 +1044,6 @@ public class Node implements Serializable {
         locationDialog.setTitle(R.string.question_location_picker);
 
         //TODO: Issue #51 on GitHub
-
-
     }
 
     public static void askFrequency(final Node node, Activity context, final QuestionsAdapter adapter) {
@@ -1186,8 +1225,37 @@ public class Node implements Serializable {
         return unit;
     }
 
+    //------------------------kuldeep-----------------------------------
+    private static String ta_en(String unit) {
 
+        switch (unit) {
+            case "மணி":
+                unit = "Hours";
+                break;
 
+            case "நாட்கள்":
+                unit = "Days";
+                break;
+
+            case "வாரங்கள்":
+                unit = "Weeks";
+                break;
+
+            case "மாதங்கள்":
+                unit = "Months";
+                break;
+
+            case "ஆண்டுகள்":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+    //--------------------------------------------------------------
 
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
@@ -1897,10 +1965,7 @@ public class Node implements Serializable {
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguagePositive);
         Log.i(TAG, "generateAssociatedSymptomsOrHistory: " + mLanguageNegative);
 
-
         for (int i = 0; i < mOptions.size(); i++) {
-
-
             if (mOptions.get(i).isSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
                     if (mOptions.get(i).getLanguage().equals("%")) {
@@ -1934,7 +1999,6 @@ public class Node implements Serializable {
                 }
             }
 
-
 //            else {
 //                if (mOptions.get(i).getLanguage().equals("%")) {
 //                } else if (mOptions.get(i).getLanguage().substring(0, 1).equals("%")) {
@@ -1959,7 +2023,6 @@ public class Node implements Serializable {
                 }
             }
         }
-
 
         if (negativeAssociations != null && !negativeAssociations.isEmpty()) {
             finalTexts.add(bullet_hollow);
@@ -2111,6 +2174,9 @@ public class Node implements Serializable {
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                //-------------------kuldeep---------------------
+                //", display_hindi='" + display_tamil + '\'' +
+
                 ", language='" + language + '\'' +
                 ", choiceType='" + choiceType + '\'' +
                 ", inputType='" + inputType + '\'' +
@@ -2122,6 +2188,9 @@ public class Node implements Serializable {
                 ", pop_up='" + pop_up + '\'' +
                 ", pop_up_hi='" + pop_up_hi + '\'' +
                 ", pop_up_or='" + pop_up_or + '\'' +
+                //-------------------kuldeep-----------------------
+               // ", pop_up_or='" + pop_up_ta + '\'' +
+
                 ", positiveCondition='" + positiveCondition + '\'' +
                 ", negativeCondition='" + negativeCondition + '\'' +
                 ", rootNode=" + rootNode +

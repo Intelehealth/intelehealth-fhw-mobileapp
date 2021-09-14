@@ -205,7 +205,6 @@ public class SplashActivity extends AppCompatActivity {
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
         if (setup) {
-
             if (sessionManager.isLogout()) {
                 Logger.logD(LOG_TAG, "Starting login");
                 Intent intent = new Intent(this, LoginActivity.class);

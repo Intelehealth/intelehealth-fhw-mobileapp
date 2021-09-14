@@ -196,7 +196,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
                 intent2.putExtra("patientUuid", patientUuid);
                 startActivity(intent2);
-
             }
         });
 //        ib_addFamilyMember.setOnClickListener(new View.OnClickListener() {
@@ -1241,8 +1240,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
+                                        if(comp.contains(colon)) {
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                        }else{
+                                            visitValue = visitValue + Node.bullet_arrow + comp+ "<br/>";
+                                        }
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {

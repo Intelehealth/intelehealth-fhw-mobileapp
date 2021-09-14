@@ -4,14 +4,18 @@
     <string-array name="language_names">
         <item>हिंदी</item>
         <item>English</item>
-        <item>ଓଡିଆ</item>
+        <item>தமிழ்</item>
+        <!--<item>தெலுங்கு</item>-->
+        <!--<item>ଓଡିଆ</item>-->
 <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
-        <item>or</item>
+        <item>ta</item>
+        <!--<item>te</item>-->
+        <!--<item>or</item>-->
 <!--        <item>cb</item>-->
     </string-array>
 
@@ -29,6 +33,16 @@
         <item>बच्चों का चिकित्सक</item>
     </string-array>
 
+<!--    kuldeep
+    <string-array name="speciality_value_tamil">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>-->
+
     <string-array name="pref_example_list_titles">
         <item>Always</item>
         <item>When possible</item>
@@ -43,12 +57,29 @@
     <string-array name="state_error">
         <item>Please select country first</item>
     </string-array>
-    <string-array name="countries">
+
+    <string-array name="countries_en">
         <item>Select Country</item>
         <item>India</item>
         <item>United States</item>
         <item>Philippines</item>
     </string-array>
+
+    //-------kuldeep---------------
+    <string-array name="countries_ta">
+        <item>Select Country</item>
+        <item>India</item>
+        <item>United States</item>
+        <item>Philippines</item>
+    </string-array>
+
+    <string-array name="countries_hi">
+        <item>Select Country</item>
+        <item>India</item>
+        <item>United States</item>
+        <item>Philippines</item>
+    </string-array>
+//-------------------------------------------
 
     <string-array name="education_or">
         <item>ଶିକ୍ଷା ଚୟନ</item>
@@ -67,6 +98,7 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -84,6 +116,26 @@
         <item>उच्च माध्यमिक</item>
         <item>स्नातक और उच्चतर</item>
     </string-array>
+
+    <!-- kuldeep -->
+    <!--<string-array name="education_ta">
+        <item>தேர்ந்தெடு</item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>-->
+
+    <string-array name="education_ta">
+        <item>Select</item>
+        <item>Illiterate</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+        <item>Higher Secondary</item>
+        <item>Graduation &amp; Higher</item>
+    </string-array>
+
 
     <string-array name="caste_en">
         <item>Select</item>
@@ -111,6 +163,25 @@
         <item>अनुसूचित जनजाति</item>
         <item>अन्य</item>
     </string-array>
+<!--      kuldeep      -->
+    <!--<string-array name="caste_ta">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>-->
+
+    <string-array name="caste_ta">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+    //--------------------------------------------
 
     <string-array name="economic_en">
         <item>Select</item>
@@ -136,7 +207,14 @@
         <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
-    <string-array name="states_india">
+    <!-- kuldeep -->
+    <string-array name="economic_ta">
+        <item>Select</item>
+        <item>APL</item>
+        <item>BPL</item>
+    </string-array>
+
+    <string-array name="states_india_en">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
@@ -168,6 +246,75 @@
         <item>Uttarakhand</item>
         <item>West Bengal</item>
     </string-array>
+
+    <!--     kuldeep     -->
+    <string-array name="states_india_ta">
+        <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
+    <string-array name="states_india_hi">
+        <item>Select State</item>
+        <item>Andhra Pradesh</item>
+        <item>Arunachal Pradesh</item>
+        <item>Assam</item>
+        <item>Bihar</item>
+        <item>Chhattisgarh</item>
+        <item>Goa</item>
+        <item>Gujarat</item>
+        <item>Haryana</item>
+        <item>Himachal Pradesh</item>
+        <item>Jammu &amp; Kashmir</item>
+        <item>Jharkhand</item>
+        <item>Karnataka</item>
+        <item>Kerala</item>
+        <item>Madhya Pradesh</item>
+        <item>Maharashtra</item>
+        <item>Manipur</item>
+        <item>Meghalaya</item>
+        <item>Mizoram</item>
+        <item>Nagaland</item>
+        <item>Odisha</item>
+        <item>Punjab</item>
+        <item>Rajasthan</item>
+        <item>Sikkim</item>
+        <item>Tamil Nadu</item>
+        <item>Telangana</item>
+        <item>Tripura</item>
+        <item>Uttar Pradesh</item>
+        <item>Uttarakhand</item>
+        <item>West Bengal</item>
+    </string-array>
+
+    <!---->
 
     <string-array name="states_philippines">
         <item>Select State</item>

@@ -197,14 +197,14 @@
                             android:id="@+id/videoLibrary_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
                             android:layout_below="@+id/iv_video_library"
-                            android:text="@string/video_library"
-                            android:includeFontPadding="false"
-                            android:fontFamily="@font/lato_medium"
-                            android:layout_marginTop="16dp"
-                            android:textAlignment="center"
                             android:layout_centerHorizontal="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="16dp"
+                            android:fontFamily="@font/lato_medium"
+                            android:includeFontPadding="false"
+                            android:text="@string/video_library"
+                            android:textAlignment="center"
                             android:textSize="20sp" />
 
                     </RelativeLayout>
