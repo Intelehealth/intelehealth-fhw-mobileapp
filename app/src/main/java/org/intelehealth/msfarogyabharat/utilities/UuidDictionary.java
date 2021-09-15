@@ -66,5 +66,5 @@ public class UuidDictionary {
     //Survey Types
     public static final String RATING = "78284507-fb71-4354-9b34-046ab205e18f";
     public static final String COMMENTS = "36d207d6-bee7-4b3e-9196-7d053c6eddce";
-
+    public static final String CONCEPT_RESOLUTION = "dd24755d-4e7f-4175-b0d6-49f193c853c3";
 }

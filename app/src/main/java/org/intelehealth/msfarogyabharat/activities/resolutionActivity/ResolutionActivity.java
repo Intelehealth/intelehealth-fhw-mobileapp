@@ -156,15 +156,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         if (past && edit_PatHist == null) {
             MaterialAlertDialogBuilder alertdialog = new MaterialAlertDialogBuilder(this);
             alertdialog.setTitle(getString(R.string.question_update_details));
-//            TextView textViewTitle = new TextView(this);
-//            textViewTitle.setText(getString(R.string.question_update_details));
-//            textViewTitle.setTextColor(getResources().getColor((R.color.colorPrimary)));
-//            textViewTitle.setPadding(30,50,30,0);
-//            textViewTitle.setTextSize(16F);
-//            textViewTitle.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-//            alertdialog.setCustomTitle(textViewTitle);
-            //AlertDialog.Builder alertdialog = new AlertDialog.Builder(PastMedicalHistoryActivity.this,R.style.AlertDialogStyle);
-
             View layoutInflater = LayoutInflater.from(ResolutionActivity.this)
                     .inflate(R.layout.past_fam_hist_previous_details, null);
             alertdialog.setView(layoutInflater);
@@ -388,19 +379,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                         patientHistory = patientHistoryMap.generateLanguage();
                         updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
                     }
-
-                    // displaying all values in another activity
-                    /*Intent intent = new Intent(ResolutionActivity.this, VisitSummaryActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("tag", intentTag);
-                    intent.putExtra("hasPrescription", "false");
-                    startActivity(intent);*/
                 } else {
 
                     //  if(patientHistoryMap.anySubSelected()){
@@ -418,19 +396,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                     {
                         insertDb(patientHistory);
                     }
-
-                    /*Intent intent = new Intent(ResolutionActivity.this, FamilyHistoryActivity.class);
-                    intent.putExtra("patientUuid", patientUuid);
-                    intent.putExtra("visitUuid", visitUuid);
-                    intent.putExtra("encounterUuidVitals", encounterVitals);
-                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-                    intent.putExtra("state", state);
-                    intent.putExtra("name", patientName);
-                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    intent.putExtra("tag", intentTag);
-                    //       intent.putStringArrayListExtra("exams", physicalExams);
-                    startActivity(intent);*/
                 }
             }
         });
@@ -450,9 +415,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         //create encounter
         SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         Calendar today = Calendar.getInstance();
-//        today.add(Calendar.MINUTE, -1);
-//        today.set(Calendar.MILLISECOND, 0);
-//        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
 
         UrlModifiers urlModifiers = new UrlModifiers();
@@ -474,7 +436,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
             JSONArray obsArr = new JSONArray();
             JSONObject obs = new JSONObject();
-            obs.put("concept", "76aaef14-b022-4cf2-8409-e13424e9dd38");
+//            obs.put("concept", "76aaef14-b022-4cf2-8409-e13424e9dd38");
+            obs.put("concept", UuidDictionary.CONCEPT_RESOLUTION);
             obs.put("value", value);
             obsArr.put(obs);
             body.put("obs", obsArr);
@@ -483,36 +446,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             AppConstants.apiInterface.GIVE_RESOLUTION_API_CALL_OBSERVABLE(url, "Basic " + encoded, resolution).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    System.out.println(response);
-//                    EncounterDAO encounterDAO = new EncounterDAO();
-//                    EncounterDTO encounterDTO = new EncounterDTO();
-//                    encounterDTO.setUuid(UUID.randomUUID().toString());
-//                    encounterDTO.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_VISIT_NOTE);
-//                    encounterDTO.setEncounterTime(startDate);
-//                    encounterDTO.setVisituuid(visitUuid);
-//                    encounterDTO.setSyncd(false);
-//                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
-//                    encounterDTO.setVoided(0);
-//                    encounterDTO.setPrivacynotice_value(getString(R.string.accept));//privacy value added.
-//                    try {
-//                        encounterDAO.createEncountersToDB(encounterDTO);
-//                    } catch (DAOException e) {
-//                        FirebaseCrashlytics.getInstance().recordException(e);
-//                    }
-//
-//                    ObsDAO obsDAO = new ObsDAO();
-//                    ObsDTO obsDTO = new ObsDTO();
-//                    obsDTO.setConceptuuid(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
-//                    obsDTO.setEncounteruuid(encounterDTO.getUuid());
-//            //        obsDTO.setEncounteruuid(encounterAdultIntials);
-//                    obsDTO.setCreator(sessionManager.getCreatorID());
-//                    obsDTO.setValue(StringUtils.getValue(value));
-//                    boolean isInserted = false;
-//                    try {
-//                        isInserted = obsDAO.insertObs(obsDTO);
-//                    } catch (DAOException e) {
-//                        FirebaseCrashlytics.getInstance().recordException(e);
-//                    }
                     Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_SHORT).show();
                     endVisit();
                 }

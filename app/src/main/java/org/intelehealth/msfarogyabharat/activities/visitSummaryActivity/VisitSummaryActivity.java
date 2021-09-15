@@ -1010,7 +1010,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 }
                                 uploaded = true;
-
+                                if (isFollowUpOrClosed()) {
+                                    endVisit();
+                                }
                             }
                         }, 4000);
                     } else {
@@ -1679,7 +1681,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                     if (visitIDCursor != null) visitIDCursor.close();
                 }
-                if (visitUUID != null && !visitUUID.isEmpty()) {
+                if (visitUUID != null && !visitUUID.isEmpty() && uploaded) {
                     Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
                     intent1.putExtra("patientUuid", patientUuid);
                     intent1.putExtra("visitUuid", visitUuid);
@@ -1696,6 +1698,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if (isFollowUpOrClosed()) {
+            button_resolution.setVisibility(View.GONE);
+        }
     }
 
     private String sms_prescription() {
@@ -4118,6 +4124,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadButton.setVisibility(View.VISIBLE);
         }
         button_resolution.setVisibility(View.VISIBLE);
+
+        if (isFollowUpOrClosed()) {
+            button_resolution.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isFollowUpOrClosed() {
+        if (complaintView != null) {
+            return complaintView.getText().toString().toLowerCase().contains("closed")
+                    || complaintView.getText().toString().toLowerCase().contains("follow");
+        }
+        return false;
     }
 
     private void isNetworkAvailable(Context context) {
