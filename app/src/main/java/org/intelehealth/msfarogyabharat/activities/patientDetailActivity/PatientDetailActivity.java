@@ -225,10 +225,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             hasPrescription = intent.getStringExtra("hasPrescription");
             MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
-            String phoneNumber = intent.getStringExtra("phoneNumber");
-            if (!TextUtils.isEmpty(phoneNumber)) {
-                sendWelcomeSms(phoneNumber);
-            }
+//            String phoneNumber = intent.getStringExtra("phoneNumber");
+//            if (!TextUtils.isEmpty(phoneNumber)) {
+//                sendWelcomeSms(phoneNumber);
+//            }
 
             intentTag = intent.getStringExtra("tag");
             intentTag1 = intent.getStringExtra("intentTag1");
@@ -487,29 +487,29 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     }
 
-    private void sendWelcomeSms(String phoneNumber) {
-        if (!NetworkConnection.isOnline(this)) {
-            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(phoneNumber))
-            return;
-        UrlModifiers urlModifiers = new UrlModifiers();
-        String url = urlModifiers.getSendSmsUrl();
-        Call<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, AppConstants.SMS_API_KEY, String.format("91%s", phoneNumber), "TIFDOC", "API", "TXN", AppConstants.SMS_TEMPLATE_ID, getString(R.string.welcome_sms));
-        patientIvrCall.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println(response);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
+//    private void sendWelcomeSms(String phoneNumber) {
+//        if (!NetworkConnection.isOnline(this)) {
+//            Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(phoneNumber))
+//            return;
+//        UrlModifiers urlModifiers = new UrlModifiers();
+//        String url = urlModifiers.getSendSmsUrl();
+//        Call<ResponseBody> patientIvrCall = AppConstants.apiInterface.SEND_WELCOME_SMS(url, AppConstants.SMS_API_KEY, String.format("91%s", phoneNumber), "TIFDOC", "API", "TXN", AppConstants.SMS_TEMPLATE_ID, getString(R.string.welcome_sms));
+//        patientIvrCall.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                System.out.println(response);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                t.printStackTrace();
+//            }
+//        });
+//    }
 
     private void LoadFamilyMembers() {
 
