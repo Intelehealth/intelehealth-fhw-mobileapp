@@ -1691,7 +1691,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     intent1.putExtra("name", patientName);
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent1.putExtra("tag", "edit");
-                    intent1.putExtra("resolutionViolence", complaintView.getText().toString().toLowerCase().contains("violence"));
+                    intent1.putExtra("resolutionViolence", complaintView.getText().toString().toLowerCase().contains("violence") || complaintView.getText().toString().toLowerCase().contains("हिंसा"));
                     startActivity(intent1);
                 } else {
                     Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder, Toast.LENGTH_SHORT).show();
@@ -4156,7 +4156,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isFollowUpOrClosed() {
         if (complaintView != null) {
             return complaintView.getText().toString().toLowerCase().contains("closed")
-                    || complaintView.getText().toString().toLowerCase().contains("follow");
+                    || complaintView.getText().toString().toLowerCase().contains("follow")
+                    || complaintView.getText().toString().toLowerCase().contains("बंद")
+                    || complaintView.getText().toString().toLowerCase().contains("फ़ॉलो");
         }
         return false;
     }
