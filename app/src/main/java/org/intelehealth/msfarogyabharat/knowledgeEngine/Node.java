@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
@@ -792,7 +793,7 @@ public class Node implements Serializable {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
-        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
         dialogEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1633,7 +1634,7 @@ private static String ml_en(String unit) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
         final EditText dialogEditText = new EditText(context);
-        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        dialogEditText.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE | InputType.TYPE_CLASS_TEXT);
         dialogEditText.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
