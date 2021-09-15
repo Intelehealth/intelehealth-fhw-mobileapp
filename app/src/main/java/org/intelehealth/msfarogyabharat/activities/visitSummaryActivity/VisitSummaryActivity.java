@@ -1681,7 +1681,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                     if (visitIDCursor != null) visitIDCursor.close();
                 }
-                if (visitUUID != null && !visitUUID.isEmpty() && uploaded) {
+                boolean synced = false;
+                Cursor idCursor = db.rawQuery("select v.sync from tbl_visit as v where v.uuid = ?",
+                        new String[] { visitUuid });
+
+                if(idCursor.getCount() != 0)
+                {
+                    while(idCursor.moveToNext())
+                    {
+                        String value = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
+                        if ("1".equalsIgnoreCase(value) || Boolean.parseBoolean(value)) {
+                            synced = true;
+                        }
+                    }
+                }
+                idCursor.close();
+
+                if (visitUUID != null && !visitUUID.isEmpty() && synced) {
                     Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
                     intent1.putExtra("patientUuid", patientUuid);
                     intent1.putExtra("visitUuid", visitUuid);
