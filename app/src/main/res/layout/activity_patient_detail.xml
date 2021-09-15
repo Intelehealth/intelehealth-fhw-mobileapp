@@ -54,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+
             android:paddingLeft="@dimen/padding_visit_summary_screen"
             android:paddingRight="@dimen/padding_visit_summary_screen">
 
@@ -870,7 +871,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">
@@ -883,6 +883,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:background="@color/titleBar_cardview">
 
@@ -925,6 +926,7 @@
 
                     <TableLayout
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/padding_card">
 

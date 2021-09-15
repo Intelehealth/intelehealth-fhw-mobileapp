@@ -389,7 +389,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     Log.i(TAG, "fabClick: " + insertion);
                     insertDb(insertion);
                     Intent intent = new Intent
-                            (QuestionNodeActivity.this, PastMedicalHistoryActivity.class);
+                            (QuestionNodeActivity.this, PhysicalExamActivity.class);
                     intent.putExtra("patientUuid", patientUuid);
                     intent.putExtra("visitUuid", visitUuid);
                     intent.putExtra("encounterUuidVitals", encounterVitals);
@@ -401,7 +401,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
-
                     startActivity(intent);
                 }
             }
