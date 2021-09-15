@@ -94,6 +94,7 @@
         <string name="identification_screen_prompt_state">રાજ્ય તાલુકો*</string>
         <string name="identification_screen_prompt_district">District *</string>
         <string name="identification_screen_prompt_caste">જાતી</string>
+        <string name="give_resolution">Give Resolution</string>
         <string name="identification_screen_prompt_economic_status">આર્થીક સ્થિતિ</string>
         <string name="identification_screen_prompt_education">અભ્યાસ</string>
         <string name="identification_screen_prompt_country">દેશ*</string>

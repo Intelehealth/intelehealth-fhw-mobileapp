@@ -15,6 +15,7 @@
     <string name="action_sms" translatable="false">எஸ்.எம்.எஸ்</string>
     <string name="action_home" translatable="false">முகப்பு</string>
     <string name="action_settings" translatable="false">அமைப்புகள்</string>
+    <string name="give_resolution">Give Resolution</string>
     <string name="generic_warning" translatable="false">எச்சரிக்கை!</string>
     <string name="generic_update" translatable="false">புதுப்பிப்பு</string>
     <string name="generic_deleted" translatable="false">நீக்கப்பட்டது</string>

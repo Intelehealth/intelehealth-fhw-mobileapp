@@ -1146,6 +1146,7 @@
             android:layout_marginTop="@dimen/padding_card"
             app:cardCornerRadius="5dp"
             app:cardElevation="2dp"
+            android:visibility="gone"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/padding_card">
 

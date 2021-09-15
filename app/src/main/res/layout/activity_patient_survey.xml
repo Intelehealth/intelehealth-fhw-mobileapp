@@ -94,6 +94,7 @@
             android:gravity="center"
             android:layout_margin="5dp"
             android:includeFontPadding="false"
+            android:visibility="gone"
             android:paddingTop="@dimen/padding_card_title_text"
             android:text="@string/exit_survey_select_spinner"
             android:textSize="22sp" />
@@ -102,6 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             app:cardElevation="8dp"
+            android:visibility="gone"
             android:layout_marginHorizontal="15dp"
             android:layout_marginTop="30dp"
             app:cardCornerRadius="5dp">

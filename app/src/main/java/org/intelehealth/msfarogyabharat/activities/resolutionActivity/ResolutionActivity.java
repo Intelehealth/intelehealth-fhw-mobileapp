@@ -446,7 +446,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             AppConstants.apiInterface.GIVE_RESOLUTION_API_CALL_OBSERVABLE(url, "Basic " + encoded, resolution).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_LONG).show();
                     endVisit();
                 }
 

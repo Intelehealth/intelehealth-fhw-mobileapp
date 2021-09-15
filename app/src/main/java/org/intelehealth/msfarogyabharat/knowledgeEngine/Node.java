@@ -1098,7 +1098,7 @@ public class Node implements Serializable {
         numberPicker.setMinValue(0);
         numberPicker.setMaxValue(1000);*/
         EditText et_enter_value = convertView.findViewById(R.id.et_enter_value);
-        et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("1", "1000")});
+        et_enter_value.setFilters(new InputFilter[]{new InputFilterMinMax("0", "1000")});
         et_enter_value.setImeOptions(EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         numberDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override

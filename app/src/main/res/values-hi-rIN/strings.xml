@@ -796,6 +796,8 @@
     <string name="husband_phone_number">पति फोन नंबर*</string>
     <string name="what_address_is_the_survivor_currently_residing_at">उत्तरजीवी वर्तमान में किस पते पर रह रहा है?*</string>
     <string name="with_whom_is_the_survivor_living">उत्तरजीवी किसके साथ रह रहा है?*</string>
+    <string name="give_resolution">समाधान देना और प्रतिक्रिया</string>
+    <string name="give_resolution_first">पहले समाधान देना और प्रतिक्रिया</string>
 
     //FollowUpVisits
     <string name="title_follow_up">फॉलो अप विज़िट</string>

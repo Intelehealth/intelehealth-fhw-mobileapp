@@ -13,6 +13,7 @@
     <string name="action_print" translatable="false">ছপা</string>
     <string name="action_sms" translatable="false">খবৰবার্তা</string>
     <string name="action_home" translatable="false">ঘৰত</string>
+    <string name="give_resolution">Give Resolution</string>
     <string name="action_settings" translatable="false">চেটিংচ(মিলোৱা)</string>
     <string name="generic_warning" translatable="false">সতর্কতা!</string>
     <string name="generic_update" translatable="false">আপলোড কৰা</string>

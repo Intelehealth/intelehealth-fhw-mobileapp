@@ -542,7 +542,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (hasPrescription.equalsIgnoreCase("true")) {
+                if (button_resolution.getVisibility() == View.GONE) {
 
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
@@ -595,7 +595,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
+                    alertDialog.setMessage(getResources().getString(R.string.give_resolution_first));
                     alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -1683,12 +1683,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 boolean synced = false;
                 Cursor idCursor = db.rawQuery("select v.sync from tbl_visit as v where v.uuid = ?",
-                        new String[] { visitUuid });
+                        new String[]{visitUuid});
 
-                if(idCursor.getCount() != 0)
-                {
-                    while(idCursor.moveToNext())
-                    {
+                if (idCursor.getCount() != 0) {
+                    while (idCursor.moveToNext()) {
                         String value = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
                         if ("1".equalsIgnoreCase(value) || Boolean.parseBoolean(value)) {
                             synced = true;
@@ -1979,7 +1977,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 "<b hidden id=\"resolution_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Resolution <br>" +
                                 "%s </b><br>" +
-                                "<b hidden id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
+                                /*"<b hidden id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis <br>" +
                                 "%s </b><br>" +
                                 "<b hidden id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan <br>" +
                                 "%s </b><br>" +
@@ -1988,7 +1986,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 "<b hidden id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
                                 "%s" + "</b><br>" +
                                 "<b hidden id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
-                                "%s" + "</b><br>" +
+                                "%s" + "</b><br>" +*/
                                 /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
 
                                 /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
@@ -2009,13 +2007,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                            (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
 
                         /*pat_hist, fam_hist,*/ /*mComplaint,*/
-                        resolution,
-                        !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
-                        !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
-                        !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
-                        !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
-                        !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
-                        !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));
+                        resolution
+//                        !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
+//                        !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
+//                        !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
+//                        !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
+//                        !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
+//                        !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided")
+                );
 
         Log.d("html", "html:ppp " + Html.fromHtml(htmlDocument));
         //   webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
@@ -2218,16 +2217,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-            if(obsUuidList.size() == 0) {
+            if (obsUuidList.size() == 0) {
                 additionalImageDownloadText.setVisibility(View.GONE); //This means the visit is a new one...
-            }
-            else {
+            } else {
                 additionalImageDownloadText.setVisibility(View.VISIBLE); //This means the app is fresh installed...
             }
 
             List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid, encounterUuidAdultIntial);
 
-                for (String images : imageList) {
+            for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
                     additionalImageDownloadText.setVisibility(View.GONE);
                 else
@@ -2657,10 +2655,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Cursor idCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and o.encounteruuid in (select uuid from tbl_encounter as e where e.visituuid = ?)",
                 new String[]{UuidDictionary.CONCEPT_RESOLUTION, visitUuid});
 
-        if(idCursor.getCount() != 0)
-        {
-            while(idCursor.moveToNext())
-            {
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
                 resolution = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
             }
         }
@@ -4171,10 +4167,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean isFollowUpOrClosed() {
         if (complaintView != null) {
-            return complaintView.getText().toString().toLowerCase().contains("closed")
-                    || complaintView.getText().toString().toLowerCase().contains("follow")
-                    || complaintView.getText().toString().toLowerCase().contains("बंद")
-                    || complaintView.getText().toString().toLowerCase().contains("फ़ॉलो");
+            return !complaintView.getText().toString().contains("Domestic Violence:");
         }
         return false;
     }

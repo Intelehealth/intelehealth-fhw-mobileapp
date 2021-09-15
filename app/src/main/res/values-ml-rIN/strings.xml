@@ -15,6 +15,7 @@
     <string name="action_sms" translatable="false">" എസ്എംഎസ്"</string>
     <string name="action_home" translatable="false">" വീട്"</string>
     <string name="action_settings" translatable="false">" സജ്ജീകരണങ്ങള്‍"</string>
+    <string name="give_resolution">Give Resolution</string>
     <string name="generic_warning" translatable="false">മുന്നറിയപ്പ്</string>
     <string name="generic_update" translatable="false">അപ്ഡേറ്റ്</string>
     <string name="generic_deleted" translatable="false">" ഇല്ലാതാക്കി"</string>

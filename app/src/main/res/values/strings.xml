@@ -796,6 +796,7 @@
     <string name="what_address_is_the_survivor_currently_residing_at">What address is the survivor currently residing at?</string>
     <string name="with_whom_is_the_survivor_living">With whom is the survivor living?</string>
     <string name="give_resolution">Give Resolution</string>
+    <string name="give_resolution_first">Give Resolution First</string>
 
     //FollowUpVisits
     <string name="title_follow_up">Follow Up Visits</string>

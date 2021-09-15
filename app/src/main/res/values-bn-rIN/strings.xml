@@ -9,6 +9,7 @@
     <string name="generic_yes">হ্যাঁ</string>
     <string name="generic_no">না</string>
     <string name="generic_back" translatable="false">পেছনে</string>
+    <string name="give_resolution">Give Resolution</string>
     <string name="generic_coming_soon" translatable="false">শীগ্রই আসছে</string>
     <string name="action_print" translatable="false">ছাপানো</string>
     <string name="action_sms" translatable="false">এস এম এস</string>

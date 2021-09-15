@@ -16,6 +16,7 @@
     <string name="admin_password_dialog_heading">ନୁଶାସିତ ପ୍ରବେଶ ସଙ୍କେତକୁ ଏ୍ଣ୍ଟଣର କରିବା</string>
     <string name="alert_none_found">ନାମଅନୁସାରେ କେହି ରୋଗୀ ନ ମିଳିଲେ ଅାପଣଙ୍କ ନାମ ଠିକ୍ରେ ଲେଖି ଅଛନ୍ତି କି?</string>
     <string name="button_active_pt">କ୍ରିୟାଶୀଳ ରୋଗୀ</string>
+    <string name="give_resolution">Give Resolution</string>
     <string name="button_allow">ନୁଗତି ଦେବା</string>
     <string name="button_cancel">ବନ୍ଦ କରିବା</string>
     <string name="button_delete">ଉଡ଼େଇନେବା</string>
