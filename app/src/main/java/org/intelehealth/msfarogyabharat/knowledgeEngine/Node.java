@@ -91,6 +91,7 @@ public class Node implements Serializable {
     private String jobAidFile;
     private String jobAidType;
     private String pop_up;
+    private String pop_up_hindi;
     private String gender;
     private String min_age;
     private String max_age;
@@ -319,7 +320,19 @@ public class Node implements Serializable {
             this.negativeCondition = jsonNode.optString("neg-condition");
 
             this.pop_up = jsonNode.optString("pop-up");
-            this.hasPopUp = !pop_up.isEmpty();
+
+            this.pop_up_hindi = jsonNode.optString("pop-up-hi");
+            if (this.pop_up_hindi.isEmpty()) {
+                this.pop_up_hindi = jsonNode.optString("pop-up-hi");
+            }
+            if (this.pop_up_hindi.isEmpty()) {
+                this.pop_up_hindi = this.pop_up;
+            }
+
+            if(pop_up.isEmpty() && pop_up_hindi.isEmpty())
+                this.hasPopUp = false;
+            else
+                this.hasPopUp = true;
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -354,6 +367,7 @@ public class Node implements Serializable {
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
         this.pop_up = source.pop_up;
+        this.pop_up_hindi = source.pop_up_hindi;
         this.jobAidFile = source.jobAidFile;
         this.jobAidType = source.jobAidType;
         this.aidAvailable = source.aidAvailable;
@@ -416,12 +430,15 @@ public class Node implements Serializable {
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                SessionManager sessionManager = null;
+                sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+                String locale = sessionManager.getCurrentLang();
 
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
                 if (node.anySubSelected() && node.anySubPopUp()) {
-                    node.generatePopUp(context);
+                    node.generatePopUp(context, locale);
                 }
             }
         });
@@ -484,17 +501,30 @@ public class Node implements Serializable {
 //        String locale = Locale.getDefault().getLanguage();
         String locale = sessionManager.getCurrentLang();
 
+  /*      switch(locale) {
+            case "en":
+                if (pop_up != null && !pop_up.isEmpty()) {
+                    return pop_up;
+                }
+
+            case "hi":
+                if(pop_up_hindi != null && !pop_up_hindi.isEmpty()) {
+                    return pop_up_hindi;
+                }
+
+        }*/
+
         switch (locale) {
             case "en": {
-                //Log.i(TAG, "findDisplay: eng");
+
                 if (display != null && display.isEmpty()) {
-                    //Log.i(TAG, "findDisplay: eng txt");
                     return text;
                 } else {
-                    //Log.i(TAG, "findDisplay: eng dis");
                     return display;
                 }
+
             }
+
             case "mr": {
                 if (display_marathi != null && !display_marathi.isEmpty()) {
                     //Log.i(TAG, "findDisplay: mr ");
@@ -580,6 +610,8 @@ public class Node implements Serializable {
                         return display;
                     }
                 }
+
+
             }
 
             //Assamese language support...
@@ -966,14 +998,21 @@ public class Node implements Serializable {
         datePickerDialog.show();
     }
 
-    public void generatePopUp(final Activity context) {
+    public void generatePopUp(final Activity context, String locale) {
 
         HashSet<String> messages = new HashSet<String>();
         List<Node> mOptions = optionsList;
         if (optionsList != null && !optionsList.isEmpty()) {
             for (Node node_opt : mOptions) {
                 if (node_opt.isSelected() && node_opt.hasPopUp) {
-                    messages.add(node_opt.pop_up);
+
+                    if(locale.equalsIgnoreCase("en"))
+                        messages.add(node_opt.pop_up);
+                    else if(locale.equalsIgnoreCase("hi"))
+                        messages.add(node_opt.pop_up_hindi);
+                    else
+                        messages.add(node_opt.pop_up);
+
                 }
             }
         }
@@ -2378,6 +2417,14 @@ private static String ml_en(String unit) {
         return imagePathList;
     }
 
+    public String getPop_up_hindi() {
+        return pop_up_hindi;
+    }
+
+    public void setPop_up_hindi(String pop_up_hindi) {
+        this.pop_up_hindi = pop_up_hindi;
+    }
+
     public void setImagePathList(List<String> imagePathList) {
         this.imagePathList = imagePathList;
     }
@@ -2628,6 +2675,7 @@ private static String ml_en(String unit) {
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
+                ", pop-up-hindi='" + pop_up_hindi + '\'' +
                 ", display_kannada='" + display_kannada + '\'' +
                 ", display_assamese='" + display_assamese + '\'' +
                 ", display_tamil='" + display_tamil + '\'' +
