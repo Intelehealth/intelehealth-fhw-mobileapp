@@ -327,7 +327,9 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
     private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
-        clickedNode.toggleSelected();
+
+       // clickedNode.toggleSelected();
+        clickedNode.setSelected(true);
 
         //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
         if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
@@ -360,7 +362,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         alertDialogBuilder.setMessage(Html.fromHtml(phistory + patientHistoryMap.generateLanguage()));
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -397,6 +399,12 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                         insertDb(patientHistory);
                     }
                 }
+            }
+        });
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
