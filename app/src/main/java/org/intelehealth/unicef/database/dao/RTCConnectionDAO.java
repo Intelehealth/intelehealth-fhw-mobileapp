@@ -16,13 +16,13 @@ public class RTCConnectionDAO {
     private long createdRecordsCount = 0;
 
     public boolean insert(RTCConnectionDTO connectionDTO) throws DAOException {
-        Log.v(TAG, "insert - " + connectionDTO.getConnectionInfo());
-        //if (getByVisitUUID(connectionDTO.getVisitUUID()) != null) return false;
+
+        RTCConnectionDTO rtcConnectionDTO = getByVisitUUID(connectionDTO.getVisitUUID());
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
-            RTCConnectionDTO rtcConnectionDTO = getByVisitUUID(connectionDTO.getVisitUUID());
+
             ContentValues values = new ContentValues();
             values.put("uuid", rtcConnectionDTO != null ? rtcConnectionDTO.getUuid() : connectionDTO.getUuid());
             values.put("visit_uuid", connectionDTO.getVisitUUID());
@@ -43,6 +43,7 @@ public class RTCConnectionDAO {
 
 
     public RTCConnectionDTO getByVisitUUID(String visitUUID) {
+        Log.v(TAG, "getByVisitUUID - visitUUID - " + visitUUID);
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
@@ -55,6 +56,7 @@ public class RTCConnectionDAO {
                 connectionDTO.setVisitUUID(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
                 connectionDTO.setConnectionInfo(idCursor.getString(idCursor.getColumnIndexOrThrow("connection_info")));
             }
+
         }
         idCursor.close();
         db.setTransactionSuccessful();

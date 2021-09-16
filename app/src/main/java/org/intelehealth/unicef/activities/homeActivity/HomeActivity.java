@@ -242,7 +242,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
-        saveToken();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -1104,6 +1103,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         updateUIForCounts();
+        saveToken();
     }
 
     private void updateUIForCounts() {

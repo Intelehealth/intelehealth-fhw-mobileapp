@@ -671,7 +671,13 @@ public class PatientDetailActivity extends AppCompatActivity {
 
 
         phoneView.setText(patient_new.getPhone_number());
-        citizenIDView.setText(patient_new.getCitizenID());
+        citizenIDView.setText(String.format("%1$s-%2$s-%3$s-%4$s-%5$s",
+                patient_new.getCitizenID().substring(0,1),
+                patient_new.getCitizenID().substring(1,3),
+                patient_new.getCitizenID().substring(3,6),
+                patient_new.getCitizenID().substring(6,10),
+                patient_new.getCitizenID().substring(10,14)
+        ));
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
