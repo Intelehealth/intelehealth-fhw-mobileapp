@@ -199,7 +199,7 @@
         <item>शिक्षा का चयन करें</item>
         <item>औपचारिक रूप से शिक्षित नहीं</item>
         <item>कुछ/पूर्ण प्राथमिक विद्यालय</item>
-        <item>कुछ / पूर्ण माध्यमिक विद्यालय</item>
+        <item>कुछ/पूर्ण माध्यमिक विद्यालय</item>
         <item>कुछ/पूर्ण उच्चतर माध्यमिक</item>
         <item>पूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल</item>
         <item>पूर्ण स्नातकोत्तर डिग्री</item>
@@ -224,11 +224,11 @@
         <item>वैवाहिक स्थिति चुनें</item>
         <item>विवाहित</item>
         <item>अविवाहित/अकेली</item>
-        <item>एक रिश्ते में</item>
+        <item>ओ एक रिश्ते में</item>
         <item>लिव-इन रिलेशनशिप में</item>
-        <item>तलाकशुदा</item>
-        <item>विधवा</item>
-        <item>नता</item>
+        <item>ओ तलाकशुदा</item>
+        <item>ओ विधवा</item>
+        <item>ओ नता</item>
         <item>दूसरी शादी</item>
         <item>नहीं कहना पसंद करते हैं</item>
         <item>अन्य</item>
@@ -358,8 +358,8 @@
     </string-array>
     <string-array name="spinner_dv_speaking_with_hi">
         <item>चुनें</item>
-        <item>स्वयं जीवित रहें</item>
-        <item>कोई और (किससे पूछें और दर्ज करें)</item>
+        <item>खुद हिंसा का सामना करने वाली महिला से</item>
+        <item>कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)</item>
     </string-array>
 
     <string-array name="spinner_dv_survivor_married_en">
@@ -408,7 +408,7 @@
         <item>चुनें</item>
         <item>शहरी</item>
         <item>ग्रामीण</item>
-        <item>पेरी-अर्बन</item>
+        <item>नगर</item>
     </string-array>
 
     <string-array name="spinner_work_en">
@@ -419,9 +419,9 @@
     </string-array>
     <string-array name="spinner_work_hi">
         <item>चुनें</item>
-        <item>हां, अंशकालिक</item>
-        <item>हां, पूर्णकालिक</item>
-        <item>नहीं</item>
+        <item>है,पार्ट टाईम</item>
+        <item>है,फुल टाइम</item>
+        <item>नहीं है</item>
     </string-array>
 
     <string-array name="spinner_current_address_en">
@@ -433,9 +433,9 @@
     </string-array>
     <string-array name="spinner_current_address_hi">
         <item>चुनें</item>
-        <item>मातृ पता</item>
+        <item>मायके का पता</item>
         <item>ससुराल वालों का पता</item>
-        <item>नहीं कहना पसंद करें</item>
+        <item>कुछ बताना नहीं चाहते हैं</item>
         <item>अन्य</item>
     </string-array>
 
@@ -453,9 +453,9 @@
         <item>चुनें</item>
         <item>पति</item>
         <item>परिवार</item>
-        <item>मित्र</item>
-        <item>कोई नहीं</item>
-        <item>नहीं कहना पसंद करें</item>
+        <item>दोस्त</item>
+        <item>अकेले</item>
+        <item>कुछ कहना नहीं चाहते हैं</item>
         <item>अन्य</item>
     </string-array>
 
@@ -472,14 +472,14 @@
     </string-array>
     <string-array name="spinner_marriage_type_hi">
         <item>चुनें</item>
-        <item>माता-पिता द्वारा</item>
-        <item>स्वामित्व</item>
-        <item>एकल/लाइव-इन</item>
-        <item>अट्टा-सटा</item>
-        <item>अदालत में</item>
+        <item>माता-पिता की मर्जी से</item>
+        <item>अपनी मर्जी से</item>
+        <item>लिव-इन</item>
+        <item>अट्टा-साता</item>
+        <item>कोर्ट में</item>
         <item>विशेष विवाह अधिनियम</item>
         <item>बाल विवाह</item>
-        <item>कहना नहीं/अनिश्चित करना पसंद करते हैं</item>
+        <item>बताना नहीं चाहते/अनिश्चित हैं</item>
     </string-array>
 
     <string-array name="spinner_contact_type_en">
