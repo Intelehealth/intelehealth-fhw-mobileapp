@@ -697,7 +697,7 @@ public final class StringUtils {
             case "कुछ/पूर्ण प्राथमिक विद्यालय":
                 val = "Some/completed primary school";
                 break;
-            case "कुछ / पूर्ण माध्यमिक विद्यालय":
+            case "कुछ/पूर्ण माध्यमिक विद्यालय":
                 val = "Some/completed secondary school";
                 break;
             case "कुछ/पूर्ण उच्चतर माध्यमिक":
@@ -731,7 +731,7 @@ public final class StringUtils {
                 val = "कुछ/पूर्ण प्राथमिक विद्यालय";
                 break;
             case "Some/completed secondary school":
-                val = "कुछ / पूर्ण माध्यमिक विद्यालय";
+                val = "कुछ/पूर्ण माध्यमिक विद्यालय";
                 break;
             case "Some/completed higher secondary":
                 val = "कुछ/पूर्ण उच्चतर माध्यमिक";
@@ -769,13 +769,13 @@ public final class StringUtils {
             case "लिव-इन रिलेशनशिप में":
                 val = "In a live-in relationship";
                 break;
-            case "तलाकशुदा":
+            case "ओ तलाकशुदा":
                 val = "Divorced";
                 break;
-            case "विधवा":
+            case "ओ विधवा":
                 val = "Widowed";
                 break;
-            case "नता":
+            case "ओ नता":
                 val = "Nata";
                 break;
             case "दूसरी शादी":
@@ -803,19 +803,19 @@ public final class StringUtils {
                 val = "अविवाहित/अकेली";
                 break;
             case "In a relationship":
-                val = "एक रिश्ते में";
+                val = "ओ एक रिश्ते में";
                 break;
             case "In a live-in relationship":
                 val = "लिव-इन रिलेशनशिप में";
                 break;
             case "Divorced":
-                val = "तलाकशुदा";
+                val = "ओ तलाकशुदा";
                 break;
             case "Widowed":
-                val = "विधवा";
+                val = "ओ विधवा";
                 break;
             case "Nata":
-                val = "नता";
+                val = "ओ नता";
                 break;
             case "Second Marriage":
                 val = "दूसरी शादी";
@@ -1382,13 +1382,13 @@ public final class StringUtils {
     public static String switch_hi_jobSpinner(String val) {
         switch (val) {
 
-            case "हां, अंशकालिक":
+            case "है,पार्ट टाईम":
                 val = "Yes, part time";
                 break;
-            case "हां, पूर्णकालिक":
+            case "है,फुल टाइम":
                 val = "Yes, full time";
                 break;
-            case "नहीं":
+            case "नहीं है":
                 val = "No";
                 break;
 
@@ -1401,13 +1401,13 @@ public final class StringUtils {
         switch (val) {
 
             case "Yes, part time":
-                val = "हां, अंशकालिक";
+                val = "है,पार्ट टाईम";
                 break;
             case "Yes, full time":
-                val = "हां, पूर्णकालिक";
+                val = "है,फुल टाइम";
                 break;
             case "No":
-                val = "नहीं";
+                val = "नहीं है";
                 break;
 
             default:
@@ -1425,7 +1425,7 @@ public final class StringUtils {
             case "ग्रामीण":
                 val = "Rural";
                 break;
-            case "पेरी-अर्बन":
+            case "नगर":
                 val = "Peri-urban";
                 break;
 
@@ -1444,7 +1444,7 @@ public final class StringUtils {
                 val = "ग्रामीण";
                 break;
             case "Peri-urban":
-                val = "पेरी-अर्बन";
+                val = "नगर";
                 break;
 
             default:
@@ -1525,7 +1525,7 @@ public final class StringUtils {
             case "स्वयं जीवित रहें":
                 val = "Survivor themselves";
                 break;
-            case "कोई और (किससे पूछें और दर्ज करें)":
+            case "कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)":
                 val = "Someone else (Ask who and enter)";
                 break;
 
@@ -1541,7 +1541,7 @@ public final class StringUtils {
                 val = "स्वयं जीवित रहें";
                 break;
             case "Someone else (Ask who and enter)":
-                val = "कोई और (किससे पूछें और दर्ज करें)";
+                val = "कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)";
                 break;
 
             default:
@@ -1590,28 +1590,28 @@ public final class StringUtils {
     public static String switch_hi_type_marriage_Spinner(String val) {
         switch (val) {
 
-            case "माता-पिता द्वारा":
+            case "माता-पिता की मर्जी से":
                 val = "By parents";
                 break;
-            case "स्वामित्व":
+            case "अपनी मर्जी से":
                 val = "Own will";
                 break;
-            case "एकल/लाइव-इन":
+            case "लिव-इन":
                 val = "Single/ live-in";
                 break;
-            case "अट्टा-सटा":
+            case "अट्टा-साता":
                 val = "Atta-sata";
                 break;
-            case "अदालत में":
+            case "कोर्ट में":
                 val = "In court";
                 break;
-            case "विशेष विवाह अधिनियम":
+            case "वविशेष विवाह अधिनियम":
                 val = "Special marriage act";
                 break;
             case "बाल विवाह":
                 val = "Child marriage";
                 break;
-            case "कहना नहीं/अनिश्चित करना पसंद करते हैं":
+            case "बताना नहीं चाहते/अनिश्चित हैं":
                 val = "Prefer not to say/unsure";
                 break;
 
@@ -1624,19 +1624,19 @@ public final class StringUtils {
         switch (val) {
 
             case "By parents":
-                val = "माता-पिता द्वारा";
+                val = "माता-पिता की मर्जी से";
                 break;
             case "Own will":
-                val = "स्वामित्व";
+                val = "अपनी मर्जी से";
                 break;
             case "Single/ live-in":
-                val = "एकल/लाइव-इन";
+                val = "लिव-इन";
                 break;
             case "Atta-sata":
-                val = "अट्टा-सटा";
+                val = "अट्टा-साता";
                 break;
             case "In court":
-                val = "अदालत में";
+                val = "कोर्ट में";
                 break;
             case "Special marriage act":
                 val = "विशेष विवाह अधिनियम";
@@ -1645,7 +1645,7 @@ public final class StringUtils {
                 val = "बाल विवाह";
                 break;
             case "Prefer not to say/unsure":
-                val = "कहना नहीं/अनिश्चित करना पसंद करते हैं";
+                val = "बताना नहीं चाहते/अनिश्चित हैं";
                 break;
 
             default:
@@ -1657,13 +1657,13 @@ public final class StringUtils {
     public static String switch_hi_survivor_address_Spinner(String val) {
         switch (val) {
 
-            case "मातृ पता":
+            case "मायके का पता":
                 val = "Maternal Address";
                 break;
             case "ससुराल वालों का पता":
                 val = "Address of in-laws";
                 break;
-            case "नहीं कहना पसंद करें":
+            case "कुछ बताना नहीं चाहते हैं":
                 val = "Prefer not to say";
                 break;
             case "अन्य":
@@ -1679,13 +1679,13 @@ public final class StringUtils {
         switch (val) {
 
             case "Maternal Address":
-                val = "मातृ पता";
+                val = "मायके का पता";
                 break;
             case "Address of in-laws":
                 val = "ससुराल वालों का पता";
                 break;
             case "Prefer not to say":
-                val = "नहीं कहना पसंद करें";
+                val = "कुछ बताना नहीं चाहते हैं";
                 break;
             case "Other":
                 val = "अन्य";
@@ -1706,13 +1706,13 @@ public final class StringUtils {
             case "परिवार":
                 val = "Family";
                 break;
-            case "मित्र":
+            case "दोस्त":
                 val = "Friend";
                 break;
-            case "कोई नहीं":
+            case "अकेले":
                 val = "No one";
                 break;
-            case "नहीं कहना पसंद करें":
+            case "कुछ कहना नहीं चाहते हैं":
                 val = "Prefer not to say";
                 break;
             case "अन्य":
@@ -1734,13 +1734,13 @@ public final class StringUtils {
                 val = "परिवार";
                 break;
             case "Friend":
-                val = "मित्र";
+                val = "दोस्त";
                 break;
             case "No one":
-                val = "कोई नहीं";
+                val = "अकेले";
                 break;
             case "Prefer not to say":
-                val = "नहीं कहना पसंद करें";
+                val = "कुछ कहना नहीं चाहते हैं";
                 break;
             case "Other":
                 val = "अन्य";

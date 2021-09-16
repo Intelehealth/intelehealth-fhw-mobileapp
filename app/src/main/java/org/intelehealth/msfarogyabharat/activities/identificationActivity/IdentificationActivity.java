@@ -1810,7 +1810,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     if (am_i_speaking_spinnerAdapter.getPosition(switch_hi_am_i_speaking_Spinner_edit(patient1.getAmSpeaking())) == -1) {
-                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("कोई और (किससे पूछें और दर्ज करें)"));
+                        am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)"));
                         amIspeakingOther.setText(patient1.getAmSpeaking());
                     }
                     else {
@@ -2642,7 +2642,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 String selectedamispeakingOption = parent.getItemAtPosition(position).toString();
 
                 if (selectedamispeakingOption.equalsIgnoreCase("Someone else (Ask who and enter)") ||
-                        selectedamispeakingOption.equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)")) {
+                        selectedamispeakingOption.equalsIgnoreCase("कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)")) {
                     amIspeakingOther.setVisibility(View.VISIBLE);
                     amIspeakingOther.setFocusable(true);
                 } else {
@@ -4969,7 +4969,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //am i speaking
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)"))
+                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)"))
                     amiSpeakingInfo = amIspeakingOther.getText().toString();
                 else
                     amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
@@ -6782,7 +6782,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //am i speaking
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और (किससे पूछें और दर्ज करें)"))
+                if (am_i_speaking_spinner.getSelectedItem().toString().equalsIgnoreCase("कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)"))
                     amiSpeakingInfo = amIspeakingOther.getText().toString();
                 else
                     amiSpeakingInfo = StringUtils.getProvidedOthers_1(am_i_speaking_spinner);
