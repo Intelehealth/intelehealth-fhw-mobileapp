@@ -328,8 +328,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
 
-       // clickedNode.toggleSelected();
-        clickedNode.setSelected(true);
+        clickedNode.toggleSelected();
+       // clickedNode.setSelected(true);
 
         //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
         if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
