@@ -107,7 +107,7 @@
     //values for "helpline knowledge" spinner
     <string-array name="helpline_knowledge_hi">
     <item>चुनते हैं</item>
-    <item>सामाजिक मीडिया</item>
+    <item>सोशल मीडिया</item>
     <item>दीवार के पोस्टर या पेंटिंग</item>
     <item>मुंह की बात (रिश्तेदारों या दोस्तों के माध्यम से)</item>
     <item>अन्य</item>

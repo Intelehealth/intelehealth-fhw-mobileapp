@@ -1311,7 +1311,7 @@ public final class StringUtils {
     public static String switch_hi_HelplineKnowledge(String val) {
         switch (val) {
 
-            case "सामाजिक मीडिया":
+            case "सोशल मीडिया":
                 val = "Social Media";
                 break;
             case "दीवार के पोस्टर या पेंटिंग":
@@ -1333,7 +1333,7 @@ public final class StringUtils {
         switch (val) {
 
             case "Social Media":
-                val = "सामाजिक मीडिया";
+                val = "सोशल मीडिया";
                 break;
             case "Wall Posters or Painting":
                 val = "दीवार के पोस्टर या पेंटिंग";
