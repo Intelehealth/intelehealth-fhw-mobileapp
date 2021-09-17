@@ -96,8 +96,9 @@ public class FollowUpNotificationWorker extends Worker {
         int count = 0;
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
-        final Cursor cursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        String currentDate_new = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH).format(cDate);
+        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate_new +"%')))";
+        final Cursor cursor = db.rawQuery(query,  new String[]{UuidDictionary.CONCEPT_RESOLUTION});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
