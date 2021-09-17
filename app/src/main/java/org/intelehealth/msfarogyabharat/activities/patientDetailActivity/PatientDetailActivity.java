@@ -740,7 +740,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow addr2Row = findViewById(R.id.tableRow_addr2);
         TextView addr2View = findViewById(R.id.textView_address2);
         TextView addrFinalView = findViewById(R.id.textView_address_final);
-        TextView callerRelation = findViewById(R.id.textView_callerRelation);
+      //  TextView callerRelation = findViewById(R.id.textView_callerRelation);
         TextView helplineInfo = findViewById(R.id.textView_helplineInfo);
         TextView phoneType = findViewById(R.id.textView_phoneType);
         TextView casteView = findViewById(R.id.textView_caste);
@@ -937,14 +937,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         phoneView.setText(patient_new.getPhone_number());
 
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+      /*  if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String callRelation = switch_hi_CallRelation_edit(patient_new.getSdw());
           //  String callRelation = patient_new.getSdw();
             callerRelation.setText(callRelation);
         }
         else{
         callerRelation.setText(patient_new.getSdw());
-        }
+        }*/
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String helplineKNowledgeInfo = switch_hi_HelplineKnowledge_edit(patient_new.getCaste());
