@@ -376,7 +376,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste1);
-        mCallerRelation = findViewById(R.id.relationship_spinner);
+      //  mCallerRelation = findViewById(R.id.relationship_spinner);
         mHelplineKnowledge = findViewById(R.id.spinner_helpline);
         mPhoneType = findViewById(R.id.spinner_phone_status);
         mEducation = findViewById(R.id.spinner_education);
@@ -969,6 +969,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //end - already present fields....
 
 
+/*
         try { //mobile_phone_type adapter setting...
             String mCallerTypeLanguage = "caller_type_" + sessionManager.getAppLanguage();
             int mCallerType = res.getIdentifier(mCallerTypeLanguage, "array", getApplicationContext().getPackageName());
@@ -982,6 +983,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
             Logger.logE("Identification", "#648", e);
         }
+*/
 
         try { //mobile_phone_type adapter setting...
             String mPhoneTypeLanguage = "mobile_phone_type_" + sessionManager.getAppLanguage();
@@ -1687,7 +1689,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //who is calling
-            if (patient1.getSdw() == null || patient1.getSdw().equalsIgnoreCase("Not provided"))
+          /*  if (patient1.getSdw() == null || patient1.getSdw().equalsIgnoreCase("Not provided"))
                 mCallerRelation.setSelection(0);
 
             else {
@@ -1697,7 +1699,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else {
                     mCallerRelation.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
                 }
-            }
+            }*/
             //who calling - end
 
             //how do you know
@@ -3916,13 +3918,13 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
         //emergency phone no field...
-        if (emergency_no_edittext.getText().toString().trim().length() > 0) {
+       /* if (emergency_no_edittext.getText().toString().trim().length() > 0) {
             if (emergency_no_edittext.getText().toString().trim().length() < 10) {
                 emergency_no_edittext.requestFocus();
                 emergency_no_edittext.setError(getString(R.string.enter_10_digits));
                 return;
             }
-        }
+        }*/
 
 
         if (isMedicalAdvice
@@ -4030,10 +4032,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //emergency phone no...
+/*
         if (emergency_no_edittext.getText().toString().equals("")) {
             emergency_no_edittext.setError(getString(R.string.error_field_required));
             return;
         }
+*/
 
         if (autocompleteState.getText().toString().equals("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
@@ -4188,6 +4192,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //who is calling
+/*
         if (mCallerRelation.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mCallerRelation.getSelectedView();
             errorText.setError("");
@@ -4197,6 +4202,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
         //How do you know
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
@@ -5165,13 +5171,13 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //end - new fields EditText
 
-            patientAttributesDTO = new PatientAttributesDTO();
+           /* patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
 //            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
             patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mCallerRelation));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             //start - new fields spinner
             //1. Gender
@@ -5730,6 +5736,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
         //emergency phone no
+/*
         if (emergency_no_edittext.getText().toString().trim().length() > 0) {
             if (emergency_no_edittext.getText().toString().trim().length() < 10) {
                 emergency_no_edittext.requestFocus();
@@ -5737,6 +5744,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
         }
+*/
 
 
         if (isMedicalAdvice
@@ -5843,10 +5851,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //emergency phone no...
+/*
         if (emergency_no_edittext.getText().toString().equals("")) {
             emergency_no_edittext.setError(getString(R.string.error_field_required));
             return;
         }
+*/
 
         if (autocompleteState.getText().toString().equals("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
@@ -6001,6 +6011,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //who is calling
+/*
         if (mCallerRelation.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) mCallerRelation.getSelectedView();
             errorText.setError("");
@@ -6010,6 +6021,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+*/
 
         //How do you know
         if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
@@ -6977,14 +6989,14 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //end - new fields EditText
 
-            patientAttributesDTO = new PatientAttributesDTO();
+          /*  patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
             patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mCallerRelation));
 
 //            patientAttributesDTO.setValue(StringUtils.getValue(mCallerRelation.getSelectedItem().toString()));
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
 //            patientAttributesDTO = new PatientAttributesDTO();
 //            patientAttributesDTO.setUuid(UUID.randomUUID().toString());

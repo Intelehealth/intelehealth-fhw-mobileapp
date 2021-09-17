@@ -787,8 +787,8 @@
     <string name="enter_age">उम्र दर्ज करें*</string>
     <string name="what_was_the_type_of_marriage">विवाह किस तरह हुआ था?*</string>
     <string name="please_provide_a_maternal_home_address">कृपया मायके के घर का पता प्रदान दें*</string>
-    <string name="maternal_home_address">मातृ घर का पता*</string>
-    <string name="please_provide_a_maternal_phone_number">कृपया मातृ फोन नंबर प्रदान करें*</string>
+    <string name="maternal_home_address">मायके के घर का पता*</string>
+    <string name="please_provide_a_maternal_phone_number">कृपया मायके का फ़ोन नंबर दें*</string>
     <string name="maternal_phone_number">कृपया मायके का फ़ोन नंबर दें*</string>
     <string name="please_provide_address_of_in_laws">कृपया ससुराल का पता दें*</string>
     <string name="in_laws_address">ससुराल का पता*</string>

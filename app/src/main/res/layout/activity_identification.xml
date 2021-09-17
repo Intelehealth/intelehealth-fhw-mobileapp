@@ -1140,7 +1140,7 @@
                             android:visibility="gone" />
                         <!-- end of where did u -->
 
-                        <TextView
+                       <!-- <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
@@ -1161,7 +1161,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
+                            android:background="?android:attr/listDivider" /> -->
 
                         <TextView
                             android:layout_width="match_parent"

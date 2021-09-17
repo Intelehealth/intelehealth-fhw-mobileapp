@@ -401,6 +401,7 @@
 
                         </TableRow>
 
+<!--
                         <TableRow
                             android:id="@+id/tableRow_CallerType"
                             android:layout_width="match_parent"
@@ -435,6 +436,7 @@
 
 
                         </TableRow>
+-->
 
                         <TableRow
                             android:id="@+id/tableRow_helplineInfo"
