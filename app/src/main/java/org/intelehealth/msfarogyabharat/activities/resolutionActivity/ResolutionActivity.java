@@ -89,7 +89,9 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     int lastExpandedPosition = -1;
 
     static final String RESOLUTION_DOMESTIC_VIOLANCE = "resolution/Domestic Violence-Resolution and Feedback.json";
-    static final String RESOLUTION_SAFE_ABORTION = "resolution/Safe abortion- Resolution & feedback.json";
+    static final String RESOLUTION_DOMESTIC_VIOLANCE_PATH = "Domestic Violence-Resolution and Feedback.json";
+    static final String RESOLUTION_SAFE_ABORTION = "resolution/Safe abortion- Resolution and feedback.json";
+    static final String RESOLUTION_SAFE_ABORTION_PATH = "Safe abortion- Resolution and feedback.json";
     String image_Prefix = "MH";
     String imageDir = "Medical History";
     String imageName;
@@ -269,8 +271,14 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
         if (hasLicense) {
             try {
+                String resolutionData = null;
+                if (intent.getBooleanExtra("resolutionViolence", false))
+                    resolutionData = RESOLUTION_DOMESTIC_VIOLANCE_PATH;
+                else
+                    resolutionData = RESOLUTION_SAFE_ABORTION_PATH;
+
                 JSONObject currentFile = null;
-                currentFile = new JSONObject(FileUtils.readFileRoot(resolution, this));
+                currentFile = new JSONObject(FileUtils.readFile(resolutionData, this));
                 patientHistoryMap = new Node(currentFile); //Load the patient history mind map
             } catch (JSONException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);

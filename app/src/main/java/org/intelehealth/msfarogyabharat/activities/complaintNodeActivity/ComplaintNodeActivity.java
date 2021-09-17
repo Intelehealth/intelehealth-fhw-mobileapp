@@ -175,18 +175,27 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
             File[] files = base_dir.listFiles();
-            for (File file : files) {
-                try {
-                    currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
-                } catch (JSONException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                if (currentFile != null) {
-                    Log.i(TAG, currentFile.toString());
-                    Node currentNode = new Node(currentFile);
 
-                    complaints.add(currentNode);
+            for (File file : files) {
+                if(file.getName().toLowerCase().contains("resolution and feedback")) {
+                    //do nothing
+                    String c = file.getName();
+                    Log.v("main", "filename: "+file.getName());
                 }
+                else {
+                    try {
+                        currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
+                    } catch (JSONException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+                    if (currentFile != null) {
+                        Log.i(TAG, currentFile.toString());
+                        Node currentNode = new Node(currentFile);
+
+                        complaints.add(currentNode);
+                    }
+                }
+
             }
             //remove items from complaints array here...
             mgender = PatientsDAO.fetch_gender(patientUuid);
