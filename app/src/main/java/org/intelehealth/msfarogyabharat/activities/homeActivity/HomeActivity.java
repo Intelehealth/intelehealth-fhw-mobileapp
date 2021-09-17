@@ -155,7 +155,6 @@ public class HomeActivity extends AppCompatActivity {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         checkAppVer();  //auto-update feature.
-
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
         lastSyncAgo = findViewById(R.id.lastsyncago);
@@ -915,9 +914,9 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
-                    showFollowUpBadge();
                 }
             }
+            showFollowUpBadge();
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         }
     };

@@ -120,10 +120,12 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String table = "tbl_patient";
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT * FROM " + table +" as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
-        final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        String currentDate_new = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH).format(cDate);
+        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where (o.conceptuuid = ? and o.value like '%"+ currentDate_new +"%') or (o.conceptuuid = ? and o.value like '%"+ currentDate +"%'))))";
+        final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.CONCEPT_RESOLUTION, UuidDictionary.FOLLOW_UP_VISIT});
         try {
             if (searchCursor.moveToFirst()) {
+
                 do {
                     PatientDTO model = new PatientDTO();
                     model.setOpenmrsId(searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")));
@@ -136,7 +138,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     model.comment = getSeverity(model.getUuid());
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
-            }
+            }   // 3b25aeb7-0b92-42cc-b1bd-a9fa1ceb3b3f ace9b14f-9265-4ff1-b11b-2ddd78aff72b
+            //(99edab6c-03b7-48eb-8f8b-8e1537d8ffa2, 0254c43a-1731-48af-9d57-d64eb5f04c77, 1745ae93-2f81-484c-9a74-36f365e17e09)  (6e7d7922-8be5-4e85-be65-9c5a89944d93, 7d2391f9-6d13-48b3-bd11-ea62ba977239, 04aa6827-9dde-4a02-950a-7eb6d065a44d)
             searchCursor.close();
             Collections.sort(modelList, new Comparator<PatientDTO>() {
                 @Override
