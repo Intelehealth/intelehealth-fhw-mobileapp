@@ -140,7 +140,7 @@
     <string name="question_answer_all">क्या आप सुनिश्चित हैं कि आपने सभी प्रश्नों का उत्तर दिया है।</string>
     <string name="question_answer_all_phy_exam">कृपया सभी सामान्य परीक्षा के प्रश्नों के उत्तर दें।</string>
     <string name="question_duration_picker">कृपया अवधि दर्ज करें</string>
-    <string name="question_text_input">कृपया अवधि दर्ज करें</string>
+    <string name="question_text_input">कृपया दर्ज करें</string>
     <string name="question_date_picker">कृपया तारीख का चयन करें</string>
     <string name="question_location_picker">कृपया स्थानों का चयन करें</string>
     <string name="question_number_picker">कृपया नंबर दर्ज करें</string>
