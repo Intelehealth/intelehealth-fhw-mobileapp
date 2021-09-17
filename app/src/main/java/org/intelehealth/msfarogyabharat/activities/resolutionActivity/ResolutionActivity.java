@@ -328,8 +328,15 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     private void onListClick(View v, int groupPosition, int childPosition) {
         Node clickedNode = patientHistoryMap.getOption(groupPosition).getOption(childPosition);
 
-        clickedNode.toggleSelected();
-       // clickedNode.setSelected(true);
+        //  clickedNode.toggleSelected();
+        // clickedNode.setSelected(true);
+        if (clickedNode.isSelected()) {
+            clickedNode.setSelected(false);
+            adapter.notifyDataSetChanged();
+        } else {
+            clickedNode.setSelected(true);
+            adapter.notifyDataSetChanged();
+        }
 
         //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
         if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
@@ -339,12 +346,13 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         }
         adapter.notifyDataSetChanged();
 
-        if (clickedNode.getInputType() != null) {
-            if (!clickedNode.getInputType().equals("camera")) {
-                imageName = UUID.randomUUID().toString();
-                Node.handleQuestion(clickedNode, ResolutionActivity.this, adapter, null, null);
+        if (clickedNode.isSelected()) {
+            if (clickedNode.getInputType() != null) {
+                if (!clickedNode.getInputType().equals("camera")) {
+                    imageName = UUID.randomUUID().toString();
+                    Node.handleQuestion(clickedNode, ResolutionActivity.this, adapter, null, null);
+                }
             }
-        }
 
         Log.i(TAG, String.valueOf(clickedNode.isTerminal()));
         if (!clickedNode.isTerminal() && clickedNode.isSelected()) {
@@ -352,6 +360,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
             Node.subLevelQuestion(clickedNode, ResolutionActivity.this, adapter, filePath.toString(), imageName);
         }
+    }
 
     }
 
