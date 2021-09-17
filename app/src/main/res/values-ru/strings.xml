@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Telemed KG - APP</string>
+    <string name="app_name" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Далее</string>
@@ -39,7 +39,8 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">Intelehealth</string>
+<!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
+    <string name="title_activity_login" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="prompt_email" translatable="false">Имя пользователя</string>
     <string name="prompt_password" translatable="false">Пароль</string>
     <string name="prompt_admin_password" translatable="false">Пароль администратора</string>
@@ -555,7 +556,7 @@
     <string name="new_update_available">Доступно новое обновление</string>
     <string name="update_app_note">Доступна новая версия с новыми функциями, пожалуйста, обновите приложение.</string>
     <string name="update">Обновить</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Intelehealth. Чтобы загрузить рецепт, нажмите здесь "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Телемед КГ - ПРИЛОЖЕНИЕ. Чтобы загрузить рецепт, нажмите здесь "</string>
     <string name="and_enter_your_patient_id">" и введите свой идентификатор пациента - "</string>
 
 
@@ -590,8 +591,9 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Экономические показатели отсутствуют</string>
     <string name="education_values_missing">Отсутствуют показатели образования</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth - это приложение телемедицины, которое соединяет медицинских работников в сельских и отдаленных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    <string name="intelehealth_a_telemedicine_platform">Телемед КГ - ПРИЛОЖЕНИЕ - это приложение телемедицины, которое соединяет медицинских работников в сельских и отдаленных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
+<!--    <string name="intelehealth_name">Intelehealth</string>-->
+    <string name="intelehealth_name">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="Ayu_name">Аю</string>
     <string name="close_button">Закрыть</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -679,9 +681,12 @@
     <string name="not_connected_txt">Нет подключения к Интернету!</string>
     <string name="config_error">Ошибка конфигурации</string>
 
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_title">Синхронизация в реальном времени включена!</string>
     <string name="notification_message"></string>
-    <string name="ticker_text">Looking for new task</string>
+    <string name="ticker_text">Ищу новую задачу</string>
     <string name="identification_screen_prompt_citizen_id">ПИН (*)</string>
     <string name="citizen_id_validation_message">Пожалуйста введите 14 цифр вашего ПИН</string>
+
+    <string name="country_matching_String_forIndia">Индия</string>
+    <string name="country_matching_String_forPhilippines">Филиппины</string>
 </resources>

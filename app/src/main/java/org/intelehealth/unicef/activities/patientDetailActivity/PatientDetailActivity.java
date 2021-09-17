@@ -83,6 +83,8 @@ import okhttp3.ResponseBody;
 
 import static org.intelehealth.unicef.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.mSwitch_Country_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.mSwitch_State_edit;
 import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
@@ -654,18 +656,25 @@ public class PatientDetailActivity extends AppCompatActivity {
             String addrFinalLine;
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
                 addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getPostal_code(), patient_new.getCountry());
+//                        city_village, patient_new.getState_province(),
+                        city_village, mSwitch_State_edit(patient_new.getState_province(),sessionManager.getAppLanguage()),
+                        patient_new.getPostal_code(),mSwitch_Country_edit(patient_new.getCountry(),sessionManager.getAppLanguage()));
+//                        patient_new.getPostal_code(), patient_new.getCountry());
             } else {
                 addrFinalLine = String.format("%s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getCountry());
+//                        city_village, patient_new.getState_province(),
+                        city_village, mSwitch_State_edit(patient_new.getState_province(),sessionManager.getAppLanguage()),
+                        mSwitch_Country_edit(patient_new.getCountry(),sessionManager.getAppLanguage()));
+//                        patient_new.getCountry());
             }
             addrFinalView.setText(addrFinalLine);
         } else {
             String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
+                    city_village,
+                    mSwitch_State_edit(patient_new.getState_province(),sessionManager.getAppLanguage()),
+                    mSwitch_Country_edit(patient_new.getCountry(),sessionManager.getAppLanguage()));
+//                    patient_new.getState_province(),
+//                    patient_new.getCountry());
             addrFinalView.setText(addrFinalLine);
         }
 

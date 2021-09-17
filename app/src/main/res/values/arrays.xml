@@ -40,8 +40,11 @@
         <item>-1</item>
     </string-array>
 
-    <string-array name="state_error">
+    <string-array name="state_error_en">
         <item>Please select country first</item>
+    </string-array>
+    <string-array name="state_error_ru">
+        <item>Пожалуйста, сначала выберите страну</item>
     </string-array>
     <string-array name="countries">
         <item>Select Country</item>
@@ -49,10 +52,16 @@
         <item>India</item>
     </string-array>
 
-    <string-array name="countries_ru">
-        <item>выберите страну</item>
+    <string-array name="countries_en">
+        <item>Select Country</item>
         <item>Kyrgyzstan</item>
         <item>India</item>
+    </string-array>
+
+    <string-array name="countries_ru">
+        <item>выберите страну</item>
+        <item>Кыргызстан</item>
+        <item>Индия</item>
     </string-array>
 
     <string-array name="education_or">
@@ -111,7 +120,7 @@
         <item>выше черты бедности</item>
         <item>За чертой бедностии</item>
     </string-array>
-    <string-array name="states_india">
+    <string-array name="states_india_en">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
@@ -143,6 +152,38 @@
         <item>Uttarakhand</item>
         <item>West Bengal</item>
     </string-array>
+  <string-array name="states_india_ru">
+        <item>Выберите штат</item>
+        <item>Андхра-Прадеш</item>
+        <item>Аруначал-Прадеш</item>
+        <item>Ассам</item>
+        <item>Бихар</item>
+        <item>Чхаттисгарх</item>
+        <item>Гоа</item>
+        <item>Гуджарат</item>
+        <item>Харьяна</item>
+        <item>Химачал-Прадеш</item>
+        <item>Джамму &amp; Кашмир</item>
+        <item>Джаркханд</item>
+        <item>Карнатака</item>
+        <item>Керала</item>
+        <item>Мадхья-Прадеш</item>
+        <item>Махараштра</item>
+        <item>Манипур</item>
+        <item>Мегхалая</item>
+        <item>Мизорам</item>
+        <item>Нагаленд</item>
+        <item>Одиша</item>
+        <item>Пенджаб</item>
+        <item>Раджастхан</item>
+        <item>Сикким</item>
+        <item>Тамил Наду</item>
+        <item>Telangana</item>
+        <item>Трипура</item>
+        <item>Уттар-Прадеш</item>
+        <item>Уттаракханд</item>
+        <item>Западная Бенгалия</item>
+    </string-array>
 
     <string-array name="states_kyrgyzstan_ru">
         <item>Выбирать</item>
@@ -167,6 +208,29 @@
     </string-array>
 
     <string-array name="states_kyrgyzstan">
+        <item>Select State</item>
+        <item>Bishkek</item>
+        <item>Tokmok</item>
+        <item>Kara–Balta</item>
+        <item>Chuy Oblast\'</item>
+        <item>Balykchi</item>
+        <item>Cholpon-Ata</item>
+        <item>Karakol</item>
+        <item>Issyk-Kul\' Oblast\'</item>
+        <item>Talas</item>
+        <item>Talas Oblast\'</item>
+        <item>Dzhalalаbad</item>
+        <item>Dzhalаlabad Oblast\'</item>
+        <item>Osh</item>
+        <item>Osh Oblast\'</item>
+        <item>Naryn</item>
+        <item>Naryn Oblast\'</item>
+        <item>Batken</item>
+        <item>Batken Oblast\'</item>
+
+    </string-array>
+
+ <string-array name="states_kyrgyzstan_en">
         <item>Select State</item>
         <item>Bishkek</item>
         <item>Tokmok</item>

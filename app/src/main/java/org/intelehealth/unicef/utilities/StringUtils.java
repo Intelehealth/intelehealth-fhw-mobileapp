@@ -614,4 +614,417 @@ public final class StringUtils {
                 return gender;
         }
     }
+
+    /**
+     * Ritika======
+     * get only selective Language from Db and Show accorfingly
+     *
+     * @param val    db Values in en locals only
+     * @param locale selective app language locale.
+     * @return return String value according the Locals to show on CountrySpinner.
+     */
+    public static String mSwitch_Country_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("ru")) {
+
+            switch (val) {
+                case "India":
+                    val = "Индия";
+                    break;
+                case "Kyrgyzstan":
+                    val = "Кыргызстан";
+                    break;
+                default:
+                    return val;
+            }
+
+        } else {
+            return val;
+        }
+        return val;
+    }
+    /**
+     * Ritika======
+     * put only english Language into Db
+     *
+     * @param val    db Values in en locals only
+     * @param locale selective app language locale.
+     * @return return String value only english .
+     */
+    public static String mSwitch_Country(String val, String locale) {
+
+        if (locale.equalsIgnoreCase("ru")) {
+
+            switch (val) {
+                case "Индия":
+                    val = "India";
+                    break;
+                case "Кыргызстан":
+                    val = "Kyrgyzstan";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }
+
+
+
+    /**
+     * Ritika======
+     * get only selective Language from Db and Show accordingly
+     *
+     * @param val    db Values in en locals only
+     * @param locale selective app language locale.
+     * @return return String value according the Locals to show on CountrySpinner.
+     */
+
+    public static String mSwitch_State_edit(String val, String locale) {
+        if (locale.equalsIgnoreCase("ru")) {
+            switch (val) {
+                case "Andhra Pradesh":
+                    val= "Андхра-Прадеш";
+                    break;
+                case "Arunachal Pradesh":
+                    val ="Аруначал-Прадеш";
+                    break;
+                case "Assam":
+                    val ="Ассам";
+                    break;
+                case "Bihar":
+                    val ="Бихар";
+                    break;
+                case "Chhattisgarh":
+                    val ="Чхаттисгарх";
+                    break;
+                case "Goa":
+                    val ="Гоа";
+                    break;
+                case "Gujarat":
+                    val ="Гуджарат";
+                    break;
+                case "Haryana":
+                    val ="Харьяна";
+                    break;
+                case "Himachal Pradesh":
+                    val= "Химачал-Прадеш";
+                    break;
+                case "Jammu & Kashmir":
+                    val ="Джамму & Кашмир";
+                    break;
+                case "Jharkhand":
+                    val ="Джаркханд";
+                    break;
+                case "Karnataka":
+                    val ="Карнатака";
+                    break;
+                case "Kerala":
+                    val ="Керала";
+                    break;
+                case "Madhya Pradesh":
+                    val ="Мадхья-Прадеш";
+                    break;
+                case "Maharashtra":
+                    val ="Махараштра";
+                    break;
+                case "Manipur":
+                    val ="Манипур";
+                    break;
+                case "Meghalaya":
+                    val ="Мегхалая";
+                    break;
+                case "Mizoram":
+                    val ="Мизорам";
+                    break;
+                case "Nagaland":
+                    val ="Нагаленд";
+                    break;
+                case "Odisha":
+                    val ="Одиша";
+                    break;
+                case "Punjab":
+                    val ="Пенджаб";
+                    break;
+                case "Rajasthan":
+                    val ="Раджастхан";
+                    break;
+                case "Sikkim":
+                    val ="Сикким";
+                    break;
+                case "Tamil Nadu":
+                    val ="Тамил Наду";
+                    break;
+                case "Telangana":
+                    val ="Telangana";
+                    break;
+                case "Tripura":
+                    val ="Трипура";
+                    break;
+                case "Uttar Pradesh":
+                    val ="Уттар-Прадеш";
+                    break;
+                case "Uttarakhand":
+                    val ="Уттаракханд";
+                    break;
+                case "West Bengal":
+                    val ="Западная Бенгалия";
+                    break;
+
+
+
+
+                    //state of kirgistan
+                case "Bishkek":
+                    val="Выбирать";
+                    break;
+                case "Tokmok":
+                    val="г. Бишкек";
+                    break;
+                case "Kara–Balta":
+                    val="г. Токмок";
+                    break;
+                case "Chuy Oblast'":
+                    val="г. Кара-Балта";
+                    break;
+                case "Balykchi":
+                    val="Чуйская область";
+                    break;
+                case "Cholpon-Ata":
+                    val="г. Балыкчи";
+                    break;
+                case "Karakol":
+                    val="г. Чолпон-Ата";
+                    break;
+                case "Issyk-Kul' Oblast'":
+                    val="г. Каракол";
+                    break;
+                case "Talas":
+                    val="Иссык-Кульская область";
+                    break;
+                case "Talas Oblast'":
+                    val="г. Талас";
+                    break;
+                case "Dzhalalаbad":
+                    val="Таласская область";
+                    break;
+                case "Dzhalаlabad Oblast'":
+                    val="г. Жалалабад";
+                    break;
+                case "Osh":
+                    val="Жалалабадская область";
+                    break;
+                case "Osh Oblast'":
+                    val="г. Ош";
+                    break;
+                case "Naryn":
+                    val="Ошская область";
+                    break;
+                case "Naryn Oblast'":
+                    val="г. Нарын";
+                    break;
+                case "Batken":
+                    val="Нарынская область";
+                    break;
+                case "Batken Oblast'":
+                    val="г. Баткен";
+                    break;
+
+                              }
+
+        }
+
+        return val;
+    }
+
+    /**
+     * Ritika======
+     * get only selective english Language from user input and insert into  Db
+     *
+     * @param val    db Values in en locals only
+     * @param locale selective app language locale.
+     * @return return String value according the Locals to show on CountrySpinner.
+     */
+
+    public static String mSwitch_State(String val, String locale) {
+
+        switch (val) {
+          //india
+
+            case "Андхра-Прадеш":
+                val ="Andhra Pradesh";
+                break;
+
+            case "Аруначал-Прадеш":
+                val ="Arunachal Pradesh";
+                break;
+
+            case "Ассам":
+                val ="Assam";
+                break;
+
+            case "Бихар":
+                val ="Bihar";
+                break;
+
+            case "Чхаттисгарх":
+                val ="Chhattisgarh";
+                break;
+
+            case "Гоа":
+                val ="Goa";
+                break;
+
+            case "Гуджарат":
+                val ="Gujarat";
+                break;
+
+            case "Харьяна":
+                val ="Haryana";
+                break;
+
+            case "Химачал-Прадеш":
+                val ="Himachal Pradesh";
+                break;
+
+            case "Джамму &amp; Кашмир":
+                val ="Jammu &amp; Kashmir";
+                break;
+
+            case "Джаркханд":
+                val ="Jharkhand";
+                break;
+
+            case "Карнатака":
+                val ="Karnataka";
+                break;
+
+            case "Керала":
+                val ="Kerala";
+                break;
+
+            case "Мадхья-Прадеш":
+                val ="Madhya Pradesh";
+                break;
+
+            case "Махараштра":
+                val ="Maharashtra";
+                break;
+
+            case "Манипур":
+                val ="Manipur";
+                break;
+
+            case "Мегхалая":
+                val ="Meghalaya";
+                break;
+
+            case "Мизорам":
+                val ="Mizoram";
+                break;
+
+            case "Нагаленд":
+                val ="Nagaland";
+                break;
+
+            case "Одиша":
+                val ="Odisha";
+                break;
+
+            case "Пенджаб":
+                val ="Punjab";
+                break;
+
+            case "Раджастхан":
+                val ="Rajasthan";
+                break;
+
+            case "Сикким":
+                val ="Sikkim";
+                break;
+
+            case "Тамил Наду":
+                val ="Tamil Nadu";
+                break;
+
+            case "Telangana":
+                val ="Telangana";
+                break;
+
+            case "Трипура":
+                val ="Tripura";
+                break;
+
+            case "Уттар-Прадеш":
+                val ="Uttar Pradesh";
+                break;
+
+            case "Уттаракханд":
+                val ="Uttarakhand";
+                break;
+
+            case "Западная Бенгалия":
+                val ="West Bengal";
+                break;
+
+
+            case "г. Бишкек":
+                val ="Bishkek";
+                break;
+            case "г. Токмок":
+                val ="Tokmok";
+                break;
+            case "г. Кара-Балта":
+                val ="Kara–Balta";
+                break;
+            case "Чуйская область":
+                val ="Chuy Oblast'";
+                break;
+            case "г. Балыкчи":
+                val ="Balykchi";
+                break;
+            case "г. Чолпон-Ата":
+                val ="Cholpon-Ata";
+                break;
+            case "г. Каракол":
+                val ="Karakol";
+                break;
+            case "Иссык-Кульская область":
+                val ="Issyk-Kul' Oblast'";
+                break;
+            case "г. Талас":
+                val ="Talas";
+                break;
+            case "Таласская область":
+                val ="Talas Oblast'";
+                break;
+            case "г. Жалалабад":
+                val ="Dzhalalаbad";
+                break;
+            case "Жалалабадская область":
+                val ="Dzhalаlabad Oblast'";
+                break;
+            case "г. Ош":
+                val ="Osh";
+                break;
+            case "Ошская область":
+                val ="Osh Oblast'";
+                break;
+            case "г. Нарын":
+                val ="Naryn";
+                break;
+            case "Нарынская область":
+                val ="Naryn Oblast'";
+                break;
+            case "г. Баткен":
+                val ="Batken";
+                break;
+            case "Баткенская область":
+                val ="Batken Oblast'";
+                break;
+        }
+        return val;
+    }
+
+
 }
