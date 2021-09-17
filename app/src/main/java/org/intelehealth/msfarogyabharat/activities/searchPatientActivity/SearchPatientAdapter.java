@@ -57,12 +57,12 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
                 holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
 
             holder.bodyTextView.setText(body);
-            if (TextUtils.isEmpty(patinet.comment)) {
-                holder.commentTextView.setVisibility(View.GONE);
-            } else {
-                holder.commentTextView.setText(patinet.comment);
-                holder.commentTextView.setVisibility(View.VISIBLE);
-            }
+//            if (TextUtils.isEmpty(patinet.comment)) {
+//                holder.commentTextView.setVisibility(View.GONE);
+//            } else {
+//                holder.commentTextView.setText(patinet.comment);
+//                holder.commentTextView.setVisibility(View.VISIBLE);
+//            }
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,13 +92,13 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
-        private TextView commentTextView;
+//        private TextView commentTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
-            commentTextView = itemView.findViewById(R.id.list_item_comment);
+//            commentTextView = itemView.findViewById(R.id.list_item_comment);
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }
