@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            HomeActivity.this.getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
         setTitle(R.string.title_activity_login);
