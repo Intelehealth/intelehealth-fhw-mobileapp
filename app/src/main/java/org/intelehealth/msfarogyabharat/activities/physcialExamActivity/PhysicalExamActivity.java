@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
@@ -164,8 +165,10 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
-            if (selectedExams != null)
+            if (selectedExams != null) {
                 selectedExamsList.addAll(selectedExams);
+                Collections.reverse(selectedExamsList);
+            }
             filePath = new File(AppConstants.IMAGE_PATH);
         }
 
