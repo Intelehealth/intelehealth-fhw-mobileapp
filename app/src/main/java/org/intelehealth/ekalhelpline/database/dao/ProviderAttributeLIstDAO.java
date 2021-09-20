@@ -29,7 +29,7 @@ public class ProviderAttributeLIstDAO {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         try {
             for (ProviderAttributeListDTO providerAttributeListDTO : providerAttributeListDTOS) {
                 createProvidersAttributeList(providerAttributeListDTO, db);
@@ -91,7 +91,7 @@ public class ProviderAttributeLIstDAO {
     public List<String> getAllValues() {
         List<String> listDTOArrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
                 "attributetypeuuid = ? AND voided = ?", selectionArgs); //checking....
@@ -115,7 +115,7 @@ public class ProviderAttributeLIstDAO {
     public List<Uuid_Value> getSpeciality_Uuid_Value() {
         List<Uuid_Value> listDTOArrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         String selectionArgs[] = {"ed1715f5-93e2-404e-b3c9-2a2d9600f062", "0"};
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_dr_speciality WHERE " +
                 "attributetypeuuid = ? AND voided = ?", selectionArgs);

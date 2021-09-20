@@ -680,24 +680,35 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
+
+        try{
+            IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+            HomeActivity.this.registerReceiver(syncBroadcastReceiver, filter);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         super.onResume();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        registerReceiver(syncBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        try {
+            HomeActivity.this.unregisterReceiver(syncBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        try {
-            unregisterReceiver(syncBroadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
     }
 
     private boolean keyVerified(String key) {

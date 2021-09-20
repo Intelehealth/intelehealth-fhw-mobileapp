@@ -1,6 +1,4 @@
 <resources>
-
-
     <string-array name="language_names">
         <item>Hindi</item>
         <item>English</item>
@@ -73,6 +71,7 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -461,7 +460,6 @@
         <item>हाँ</item>
         <item>नहीं</item>
     </string-array>
-
 
     <string-array name="sourcewater_spinner_en">
         <item>Select</item>

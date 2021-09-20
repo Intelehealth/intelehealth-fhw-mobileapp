@@ -19,7 +19,7 @@ public class LocationDAO {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         try {
             for (LocationDTO location : locationDTOS) {
                 createLocation(location, db);

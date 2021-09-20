@@ -421,16 +421,20 @@ public class SmoothUpgrade {
 
 
     public void opendatabase() throws SQLException {
-        //Open the database
-        String mypath = AppConstants.dbfilepath;
-        if (myDataBase != null && myDataBase.isOpen())
-            return;
-        if (new File(AppConstants.dbfilepath).exists())
-            myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
-        else {
-            mypath = Environment.getExternalStoragePublicDirectory("InteleHealth_DB") + "Intelehealth.db";
-            if (new File(mypath).exists())
+        try{
+            //Open the database
+            String mypath = AppConstants.dbfilepath;
+            if (myDataBase != null && myDataBase.isOpen())
+                return;
+            if (new File(AppConstants.dbfilepath).exists())
                 myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
+            else {
+                mypath = Environment.getExternalStoragePublicDirectory("InteleHealth_DB") + "Intelehealth.db";
+                if (new File(mypath).exists())
+                    myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
+            }
+        }catch (SQLiteException e){
+            e.printStackTrace();
         }
     }
 }

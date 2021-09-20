@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
@@ -185,12 +186,11 @@ public class IdentificationActivity extends AppCompatActivity {
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
     private boolean isMedicalAdvice;
-    ;
+
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional;
-
 
     public static void start(Context context, boolean medicalAdvice) {
         Intent starter = new Intent(context, IdentificationActivity.class);
@@ -332,6 +332,7 @@ public class IdentificationActivity extends AppCompatActivity {
             isMedicalAdvice = intent.getBooleanExtra(EXTRA_MEDICAL_ADVICE, false); //fetches the boolean value to know if its a doctor or medical advice...
 
         }
+
 //        if (sessionManager.valueContains("licensekey"))
         if (!sessionManager.getLicenseKey().isEmpty())
             hasLicense = true;
@@ -445,6 +446,7 @@ public class IdentificationActivity extends AppCompatActivity {
             country1 = obj.getString("mCountry");
             state = obj.getString("mState");
 
+            //-------------here----------------------
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
             } else if (country1.equalsIgnoreCase("Philippines")) {
@@ -1366,8 +1368,12 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
-                mDOB.setError(null);
-                mAge.setError(null);
+                if (mDOB != null)
+                    mDOB.setError(null);
+
+                if (mAge != null)
+                    mAge.setError(null);
+
                 //Set Maximum date to current date because even after bday is less than current date
                 // it goes to check date is set after today...
                 mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
@@ -1639,8 +1645,11 @@ public class IdentificationActivity extends AppCompatActivity {
             //displaying error if calculated age is negative
             if (resday < 0 || resmonth < 0 || resyear < 0) {
                 Toast.makeText(this, "Current Date must be greater than Date of Birth", Toast.LENGTH_LONG).show();
-                mDOB.setError(getString(R.string.identification_screen_error_dob));
-                mAge.setError(getString(R.string.identification_screen_error_age));
+                if (mDOB != null)
+                    mDOB.setError(getString(R.string.identification_screen_error_dob));
+
+                if (mAge != null)
+                    mAge.setError(getString(R.string.identification_screen_error_age));
             } else {
                 // t1.setText("Age: " + resyear + " years /" + resmonth + " months/" + resday + " days");
 
@@ -1928,13 +1937,15 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if (mPhoneNum.getText().toString().trim().length() > 0) {
+
+        if (mPhoneNum != null && mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_10_digits));
                 return;
             }
         }
+
 
         if (isMedicalAdvice
                 && !cbCovidConcern.isChecked()
@@ -1993,19 +2004,22 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !countryText.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
-                && (mGenderF.isChecked() || mGenderM.isChecked())) {
+        if (mFirstName!=null && !mFirstName.getText().toString().equals("")
+                && mLastName!=null && !mLastName.getText().toString().equals("") &&
+                countryText!=null && !countryText.getText().toString().equals("") &&
+                autocompleteState!=null && !autocompleteState.getText().toString().equals("") &&
+                mAge!=null && !mAge.getText().toString().equals("") &&
+                mPhoneNum!=null && !mPhoneNum.getText().toString().equals("") &&
+                (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
         } else {
-            if (mFirstName.getText().toString().equals("")) {
+            if (mFirstName != null && mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName.getText().toString().equals("")) {
+            if (mLastName != null && mLastName.getText().toString().equals("")) {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
@@ -2013,15 +2027,15 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mDOB.setError(getString(R.string.error_field_required));
 //            }
 
-            if (mAge.getText().toString().equals("")) {
+            if (mAge != null && mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mPhoneNum.getText().toString().equals("")) {
+            if (mPhoneNum != null && mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
-            if (autocompleteState.getText().toString().equals("")) {
+            if (autocompleteState != null && autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
 
@@ -2050,28 +2064,29 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
 
-        if (mCountry.getSelectedItemPosition() == 0) {
+        if (mCountry != null && mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
             cancel = true;
             return;
         } else {
-            countryText.setError(null);
+            if (mCountry != null)
+                countryText.setError(null);
         }
 
 
-        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+        if (autocompleteState != null && autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
             return;
         } else {
-            autocompleteState.setError(null);
+            if (autocompleteState != null)
+                autocompleteState.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2655,8 +2670,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //if from medical advise option then create medical advice visit first(automatically)
                     createMedicalAdviceVisit();
                     medicalboolean = true;
-                }
-                else {
+                } else {
                     SyncDAO syncDAO = new SyncDAO();
                     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                     boolean push = syncDAO.pushDataApi();
@@ -2722,7 +2736,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if (mPhoneNum.getText().toString().trim().length() > 0) {
+        if (mPhoneNum != null && mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError("Enter 10 digits");
@@ -2794,11 +2808,11 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.v(TAG, "Result");
 
         } else {
-            if (mFirstName.getText().toString().equals("")) {
+            if (mFirstName != null && mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName.getText().toString().equals("")) {
+            if (mLastName != null && mLastName.getText().toString().equals("")) {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
@@ -2806,15 +2820,15 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mDOB.setError(getString(R.string.error_field_required));
 //            }
 
-            if (mAge.getText().toString().equals("")) {
+            if (mAge != null && mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mPhoneNum.getText().toString().equals("")) {
+            if (mPhoneNum != null && mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
-            if (autocompleteState.getText().toString().equals("")) {
+            if (autocompleteState != null && autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
 
@@ -2847,23 +2861,25 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (mCountry.getSelectedItemPosition() == 0) {
+        if (mCountry != null && mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
             cancel = true;
             return;
         } else {
-            countryText.setError(null);
+            if (mCountry != null)
+                countryText.setError(null);
         }
 
 
-        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
+        if (autocompleteState != null && autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
             return;
         } else {
-            autocompleteState.setError(null);
+            if (autocompleteState != null)
+                autocompleteState.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -3556,7 +3572,6 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     /**
-     *
      * @param stringId
      * @return
      */

@@ -69,8 +69,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         if (list.get(position).exists()) {
-
-            Glide.with(context)
+            Glide.with(holder.imageView.getContext())
                     .load(list.get(position))
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -78,13 +77,11 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     .into(holder.imageView);
             //Works only if width & height is set in dp
 
-
             //holder.imageView.setImageBitmap(myBitmap);
             holder.imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     displayImage(list.get(position));
-
                 }
             });
         }
@@ -107,7 +104,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
             public void onShow(DialogInterface d) {
                 final ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
-                Glide.with(context)
+                Glide.with(imageView.getContext())
                         .load(file)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)

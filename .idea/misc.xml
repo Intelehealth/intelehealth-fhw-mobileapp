@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakeSettings">
-    <configurations>
-      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
-    </configurations>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/background_splash.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/bg_end_visit.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/bg_visit_closed.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/bg_visit_details.xml" value="0.13333333333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/button_bg_rounded_corners.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/button_bg_rounded_stroke.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/button_click_selector.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/country_flag_icon.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/download.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/ic_cloud_done.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/drawable/ic_done_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_active_patient.xml" value="0.1171875" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_identification.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_intro.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_medical_advice_existing_patients.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_privacy_notice_2.xml" value="0.13385416666666666" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_settings.xml" value="0.11911231884057971" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_setup.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_today_patient.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/activity_visit_summary.xml" value="0.1171875" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/content_visit_summary.xml" value="0.1171875" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/dialog_2_numbers_picker.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/dialog_mindmap_cred.xml" value="0.161231884057971" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/hand_wash.xml" value="0.12454710144927536" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/list_item_active_patient.xml" value="0.17617753623188406" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/list_item_family_member.xml" value="0.14719202898550723" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/list_item_previous_visit.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/list_item_today_patient.xml" value="0.11911231884057971" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/welcome_slide1.xml" value="0.13385416666666666" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/layout/welcome_slide2.xml" value="0.13385416666666666" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/menu/menu_detail.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/menu/menu_home.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/menu/menu_search.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/xml/account_preferences.xml" value="0.12454710144927536" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/xml/pref_languages.xml" value="0.1" />
+        <entry key="..\:/Users/knima/AndroidStudioProjects/Android-Mobile-Client/app/src/main/res/xml/pref_notification.xml" value="0.129981884057971" />
+      </map>
+    </option>
   </component>
-<<<<<<< HEAD
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
-=======
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
->>>>>>> age_gender-based_mm_questions
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

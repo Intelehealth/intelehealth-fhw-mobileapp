@@ -84,7 +84,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 
-        Glide.with(context)
+        Glide.with(holder.getDocumentPhotoImageView().getContext())
                 .load(image)
                 .skipMemoryCache(true)
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -147,7 +147,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
                 if (imageView != null) {
-                    Glide.with(context)
+                    Glide.with(imageView.getContext())
                             .load(file)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)

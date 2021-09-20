@@ -72,10 +72,14 @@ public class BitmapUtils {
             bmp = BitmapFactory.decodeFile(filePath, options);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
-
         }
         try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+            //------------kuldeep------------
+            if(actualHeight<=0 || actualWidth<=0){
+                return false;
+            }else {
+                scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+            }
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
@@ -90,8 +94,12 @@ public class BitmapUtils {
 
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
-                Paint.FILTER_BITMAP_FLAG));
+        if(bmp!=null) {
+            canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
+                    Paint.FILTER_BITMAP_FLAG));
+        }else{
+            return false;
+        }
 
         ExifInterface exif;
         try {

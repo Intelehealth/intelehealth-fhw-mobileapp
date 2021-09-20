@@ -200,39 +200,50 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirth(String oldformatteddate) {
-
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
-        try {
-            date = originalFormat.parse(oldformatteddate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String formattedDate="";
+        if(oldformatteddate!=null && !oldformatteddate.isEmpty() && oldformatteddate.length()>0 && !oldformatteddate.equalsIgnoreCase("null")) {
 
-        if (date == null) {
-            originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             try {
                 date = originalFormat.parse(oldformatteddate);
+                formattedDate = targetFormat.format(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+
+            if (date == null) {
+                originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                try {
+                    date = originalFormat.parse(oldformatteddate);
+                    if (oldformatteddate.equals(originalFormat.format(date))) {
+                        formattedDate = targetFormat.format(date);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-
-        return targetFormat.format(date);
+        return formattedDate;
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         Date date = null;
-        try {
-            date = originalFormat.parse(oldformatteddate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        String formattedDate="";
+        if(oldformatteddate!=null && !oldformatteddate.isEmpty() && oldformatteddate.length()>0 && !oldformatteddate.equalsIgnoreCase("null")) {
+            try {
+                date = originalFormat.parse(oldformatteddate);
+                if (oldformatteddate.equals(originalFormat.format(date))) {
+                    formattedDate = targetFormat.format(date);// 20120821
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
         return formattedDate;
 

@@ -23,7 +23,7 @@ public class ProviderDAO {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         try {
             for (ProviderDTO provider : providerDTOS) {
                 createProviders(provider, db);
@@ -65,7 +65,7 @@ public class ProviderDAO {
     public List<String> getProvidersList() throws DAOException {
         List<String> providersList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
             Cursor cursor = db.rawQuery(query, new String[]{});
@@ -91,7 +91,7 @@ public class ProviderDAO {
     public List<String> getProvidersUuidList() throws DAOException {
         List<String> providersList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        db.beginTransactionNonExclusive();
         try {
             String query = "select distinct a.uuid,a.given_name,a.family_name from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid=b.provider_uuid and b.visituuid=c.uuid";
             Cursor cursor = db.rawQuery(query, new String[]{});
