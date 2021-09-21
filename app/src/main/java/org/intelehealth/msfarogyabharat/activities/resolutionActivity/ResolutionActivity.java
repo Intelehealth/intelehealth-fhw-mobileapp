@@ -378,7 +378,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(Html.fromHtml(phistory + patientHistoryMap.generateLanguage()));
+        String s = patientHistoryMap.generateLanguageResolution();
+        alertDialogBuilder.setMessage(Html.fromHtml(phistory + s));
         alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
