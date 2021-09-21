@@ -4169,14 +4169,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
         if(complaintView != null) {
-            if(complaintView.getText().toString().toLowerCase().contains("Case closed- Domestic Violence:") ||
-                    complaintView.getText().toString().toLowerCase().contains("Case Closed-Safe abortion:") ||
-                    complaintView.getText().toString().toLowerCase().contains("Follow-up-domestic violence:") ||
-                    complaintView.getText().toString().toLowerCase().contains("Follow-up-Safe abortion:")) {
-                flag = false;
+            String i = complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "");
+            Log.v("main", "v: "+i);
+            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:")) {
+                flag = true;
             }
             else {
-                flag = true;
+                flag = false;
             }
         }
         return flag;
