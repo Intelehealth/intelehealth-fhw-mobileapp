@@ -2300,7 +2300,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("")  && !mLastName.getText().toString().equals("") &&  !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -2324,9 +2324,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mPhoneNum.getText().toString().equals("")) {
-                mPhoneNum.setError(getString(R.string.error_field_required));
-            }
+//            if (mPhoneNum.getText().toString().equals("")) {
+//                mPhoneNum.setError(getString(R.string.error_field_required));
+//            }
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
@@ -3191,7 +3191,7 @@ public class IdentificationActivity extends AppCompatActivity {
         if (!mFirstName.getText().toString().equals("")
                 && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
-                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
+                !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
 
             Log.v(TAG, "Result");
@@ -3214,9 +3214,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mPhoneNum.getText().toString().equals("")) {
-                mPhoneNum.setError(getString(R.string.error_field_required));
-            }
+//            if (mPhoneNum.getText().toString().equals("")) {
+//                mPhoneNum.setError(getString(R.string.error_field_required));
+//            }
 
             if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));

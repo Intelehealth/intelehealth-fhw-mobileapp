@@ -494,7 +494,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        });
 //        updateSubscriptionUI(chb_subscription.isChecked());
         btnSubscribe = findViewById(R.id.btnSubscribe);
-        if (!NetworkConnection.isOnline(this)) {
+        if (!NetworkConnection.isOnline(this) || TextUtils.isEmpty(patient_new.getPhone_number())) {
             updateSubscriptionUI(false);
             return;
         }

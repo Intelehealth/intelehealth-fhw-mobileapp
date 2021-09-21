@@ -52,7 +52,7 @@
     <string name="identification_screen_prompt_last_name">শেষ নাম *</string>
     <string name="identification_screen_prompt_address">ঠিকানা ১</string>
     <string name="identification_screen_prompt_address2">ঠিকানা ২</string>
-    <string name="identification_screen_prompt_phone_number">ফোন নাম্বার *</string>
+    <string name="identification_screen_prompt_phone_number">ফোন নাম্বার</string>
     <string name="admin_password_dialog_heading" translatable="false">প্রশাসনের পাসওয়ার্ড দিন</string>
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুরুষ</string>

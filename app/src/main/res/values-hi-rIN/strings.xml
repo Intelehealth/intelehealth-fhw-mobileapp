@@ -82,7 +82,7 @@
     <string name="identification_screen_prompt_last_name">उपनाम*</string>
     <string name="identification_screen_prompt_address">पता पंक्ति 1</string>
     <string name="identification_screen_prompt_address2">पता पंक्ति 2</string>
-    <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
+    <string name="identification_screen_prompt_phone_number">फ़ोन नंबर</string>
     <string name="identification_screen_prompt_sec_phone_number">अतिरिक्त फोन नंबर</string>
     <string name="admin_password_dialog_heading">व्यवस्थापक पासवर्ड दर्ज करें</string>
     <string name="identification_screen_prompt_gender">लिंग *</string>

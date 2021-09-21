@@ -82,7 +82,7 @@
         <string name="identification_screen_prompt_last_name">અટક*</string>
         <string name="identification_screen_prompt_address">સરનામું 1</string>
         <string name="identification_screen_prompt_address2">સરનામું 2</string>
-        <string name="identification_screen_prompt_phone_number">ફોન નંબર*</string>
+        <string name="identification_screen_prompt_phone_number">ફોન નંબર</string>
         <string name="admin_password_dialog_heading">એડમીન પાસવર્ડ એંટર કરો</string>
         <string name="identification_screen_prompt_gender">લિંગ*</string>
         <string name="identification_screen_checkbox_male">પુરૂષ</string>
