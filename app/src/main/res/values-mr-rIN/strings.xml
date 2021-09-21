@@ -83,7 +83,7 @@
         <string name="identification_screen_prompt_last_name">आडनाव*</string>
         <string name="identification_screen_prompt_address">पत्ता ओळ 1</string>
         <string name="identification_screen_prompt_address2">पत्ता ओळ 2</string>
-        <string name="identification_screen_prompt_phone_number">फ़ोन नंबर *</string>
+        <string name="identification_screen_prompt_phone_number">फ़ोन नंबर</string>
         <string name="identification_screen_prompt_sec_phone_number">अतिरिक्त फोन नंबर</string>
         <string name="admin_password_dialog_heading">प्रशासन संकेतशब्द प्रविष्ट करा</string>
         <string name="identification_screen_prompt_gender">लिंग *</string>

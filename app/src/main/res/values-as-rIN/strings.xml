@@ -51,7 +51,7 @@
     <string name="identification_screen_prompt_last_name">নামৰ শেষাংশ*</string>
     <string name="identification_screen_prompt_address">ঠিকনা ৰেখা 1</string>
     <string name="identification_screen_prompt_address2">ঠিকানা ৰেখা ২</string>
-    <string name="identification_screen_prompt_phone_number">ফোন নম্বৰ *</string>
+    <string name="identification_screen_prompt_phone_number">ফোন নম্বৰ</string>
     <string name="admin_password_dialog_heading" translatable="false">ব্যৱস্থাপক পাচওয়ার্ড প্রবেশ কৰা</string>
     <string name="identification_screen_prompt_gender" translatable="false">লিঙ্গ *</string>
     <string name="identification_screen_checkbox_male">পুৰুষ</string>
