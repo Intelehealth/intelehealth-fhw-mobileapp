@@ -583,6 +583,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                             SubscriptionStatus body = response.body();
                             if (body != null && body.userdata != null && body.userdata.size() > 0) {
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
+                                if (userData.bucketsubscribedto == 0)
+                                    return;
 
                                 String[] genderArray = getResources().getStringArray(R.array.pref_gender);
                                 String genderSelect = "";

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
 
+import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
@@ -99,7 +100,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 //                .build();
 //        Fabric.with(this, new Crashlytics.Builder().core(crashlyticsCore).build());
 
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true);
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
 
     }
 
