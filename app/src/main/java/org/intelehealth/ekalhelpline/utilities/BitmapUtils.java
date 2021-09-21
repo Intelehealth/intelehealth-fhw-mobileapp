@@ -1,4 +1,5 @@
 package org.intelehealth.ekalhelpline.utilities;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -74,12 +75,9 @@ public class BitmapUtils {
             exception.printStackTrace();
         }
         try {
-            //------------kuldeep------------
-            if(actualHeight<=0 || actualWidth<=0){
-                return false;
-            }else {
-                scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
-            }
+
+            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
@@ -94,12 +92,9 @@ public class BitmapUtils {
 
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
-        if(bmp!=null) {
-            canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
-                    Paint.FILTER_BITMAP_FLAG));
-        }else{
-            return false;
-        }
+
+        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
+                Paint.FILTER_BITMAP_FLAG));
 
         ExifInterface exif;
         try {

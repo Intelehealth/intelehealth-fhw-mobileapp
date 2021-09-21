@@ -69,7 +69,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         if (list.get(position).exists()) {
-            Glide.with(holder.imageView.getContext())
+            Glide.with(context)
                     .load(list.get(position))
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
@@ -104,7 +104,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
             public void onShow(DialogInterface d) {
                 final ImageView imageView = dialog.findViewById(R.id.confirmationImageView);
                 final ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
-                Glide.with(imageView.getContext())
+                Glide.with(context)
                         .load(file)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)

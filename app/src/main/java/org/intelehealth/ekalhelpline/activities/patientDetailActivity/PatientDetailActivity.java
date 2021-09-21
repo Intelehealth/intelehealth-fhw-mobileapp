@@ -1325,15 +1325,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
                                         Log.d("colon", "colon: " + comp);
-                                        if (comp.contains(":")) {
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                        } else {
-                                            visitValue = visitValue + Node.bullet_arrow + comp + "<br/>";
-                                        }
+                                        visitValue = visitValue + Node.bullet_arrow + comp + "<br/>";
                                         Log.d("colon", "colon_visitvalue: " + visitValue);
                                     }
                                 }
-                                if (!visitValue.isEmpty() && visitValue.length()>2) {
+                                if (!visitValue.isEmpty()) {
                                     visitValue = visitValue.substring(0, visitValue.length() - 2);
                                     visitValue = visitValue.replaceAll("<b>", "");
                                     visitValue = visitValue.replaceAll("</b>", "");

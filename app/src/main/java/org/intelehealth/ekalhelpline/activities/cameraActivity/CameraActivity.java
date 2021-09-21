@@ -307,7 +307,6 @@ public class CameraActivity extends AppCompatActivity {
         if (mDialogMessage != null) {
             MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                     .setMessage(mDialogMessage)
-                    //.setCancelable(false)
                     .setNeutralButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -339,7 +338,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
-        try {
+
             Log.d(TAG, "bindPreview ");
             Preview preview = new Preview.Builder()
                     .build();
@@ -348,8 +347,8 @@ public class CameraActivity extends AppCompatActivity {
                     .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                     .build();
 
-            //ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-            //        .build();
+            ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                    .build();
 
             ImageCapture.Builder builder = new ImageCapture.Builder();
             //Vendor-Extensions (The CameraX extensions dependency in build.gradle)
@@ -368,7 +367,7 @@ public class CameraActivity extends AppCompatActivity {
 
             preview.setSurfaceProvider(mPreviewView.createSurfaceProvider());
             cameraProvider.unbindAll();
-            mCamera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, /*imageAnalysis,*/ imageCapture);
+            mCamera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis, imageCapture);
 
             if (mFab != null) {
                 mFab.setOnClickListener(new View.OnClickListener() {
@@ -405,16 +404,12 @@ public class CameraActivity extends AppCompatActivity {
                     }
                 });
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(final PermissionRequest request) {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setMessage(getString(R.string.permission_camera_rationale))
-                .setCancelable(false)
                 .setPositiveButton(getString(R.string.button_allow), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

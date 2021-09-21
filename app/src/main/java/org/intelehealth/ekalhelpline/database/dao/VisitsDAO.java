@@ -428,7 +428,7 @@ public class VisitsDAO {
         String isDownloaded = null;
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
 
         try {
             Cursor cursor = db.rawQuery("SELECT isdownloaded FROM tbl_visit where uuid = ? ", new String[]{visituuid});

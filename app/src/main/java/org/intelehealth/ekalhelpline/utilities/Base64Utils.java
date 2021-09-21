@@ -28,12 +28,11 @@ public class Base64Utils {
         String encodeString = "";
         try {
             bmp = BitmapFactory.decodeFile(path);
-            if(bmp!=null) {
-                baos = new ByteArrayOutputStream();
-                bmp.compress(Bitmap.CompressFormat.JPEG, AppConstants.IMAGE_JPG_QUALITY, baos);
-                baat = baos.toByteArray();
-                encodeString = Base64.encodeToString(baat, Base64.DEFAULT);
-            }
+            baos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.JPEG, AppConstants.IMAGE_JPG_QUALITY, baos);
+            baat = baos.toByteArray();
+            encodeString = Base64.encodeToString(baat, Base64.DEFAULT);
+
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

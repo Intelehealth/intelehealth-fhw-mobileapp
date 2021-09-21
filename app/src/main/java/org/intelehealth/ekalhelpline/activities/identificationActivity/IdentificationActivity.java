@@ -446,7 +446,6 @@ public class IdentificationActivity extends AppCompatActivity {
             country1 = obj.getString("mCountry");
             state = obj.getString("mState");
 
-            //-------------here----------------------
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
             } else if (country1.equalsIgnoreCase("Philippines")) {
@@ -1368,11 +1367,8 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //Set the DOB calendar to the date selected by the user
                 dob.set(year, monthOfYear, dayOfMonth);
-                if (mDOB != null)
-                    mDOB.setError(null);
-
-                if (mAge != null)
-                    mAge.setError(null);
+                mDOB.setError(null);
+                mAge.setError(null);
 
                 //Set Maximum date to current date because even after bday is less than current date
                 // it goes to check date is set after today...
@@ -1645,10 +1641,7 @@ public class IdentificationActivity extends AppCompatActivity {
             //displaying error if calculated age is negative
             if (resday < 0 || resmonth < 0 || resyear < 0) {
                 Toast.makeText(this, "Current Date must be greater than Date of Birth", Toast.LENGTH_LONG).show();
-                if (mDOB != null)
                     mDOB.setError(getString(R.string.identification_screen_error_dob));
-
-                if (mAge != null)
                     mAge.setError(getString(R.string.identification_screen_error_age));
             } else {
                 // t1.setText("Age: " + resyear + " years /" + resmonth + " months/" + resday + " days");
@@ -1938,7 +1931,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (mPhoneNum != null && mPhoneNum.getText().toString().trim().length() > 0) {
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError(getString(R.string.enter_10_digits));
@@ -2004,22 +1997,22 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (mFirstName!=null && !mFirstName.getText().toString().equals("")
-                && mLastName!=null && !mLastName.getText().toString().equals("") &&
-                countryText!=null && !countryText.getText().toString().equals("") &&
-                autocompleteState!=null && !autocompleteState.getText().toString().equals("") &&
-                mAge!=null && !mAge.getText().toString().equals("") &&
-                mPhoneNum!=null && !mPhoneNum.getText().toString().equals("") &&
+        if (!mFirstName.getText().toString().equals("") &&
+                !mLastName.getText().toString().equals("") &&
+                !countryText.getText().toString().equals("") &&
+                !autocompleteState.getText().toString().equals("") &&
+                !mAge.getText().toString().equals("") &&
+                !mPhoneNum.getText().toString().equals("") &&
                 (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
         } else {
-            if (mFirstName != null && mFirstName.getText().toString().equals("")) {
+            if (mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName != null && mLastName.getText().toString().equals("")) {
+            if (mLastName.getText().toString().equals("")) {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
@@ -2027,15 +2020,15 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mDOB.setError(getString(R.string.error_field_required));
 //            }
 
-            if (mAge != null && mAge.getText().toString().equals("")) {
+            if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mPhoneNum != null && mPhoneNum.getText().toString().equals("")) {
+            if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
-            if (autocompleteState != null && autocompleteState.getText().toString().equals("")) {
+            if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
 
@@ -2068,24 +2061,22 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (mCountry != null && mCountry.getSelectedItemPosition() == 0) {
+        if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
             cancel = true;
             return;
         } else {
-            if (mCountry != null)
                 countryText.setError(null);
         }
 
 
-        if (autocompleteState != null && autocompleteState.getText().toString().equalsIgnoreCase("")) {
+        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
             return;
         } else {
-            if (autocompleteState != null)
                 autocompleteState.setError(null);
         }
 
@@ -2736,7 +2727,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if (mPhoneNum != null && mPhoneNum.getText().toString().trim().length() > 0) {
+        if (mPhoneNum.getText().toString().trim().length() > 0) {
             if (mPhoneNum.getText().toString().trim().length() < 10) {
                 mPhoneNum.requestFocus();
                 mPhoneNum.setError("Enter 10 digits");
@@ -2808,11 +2799,11 @@ public class IdentificationActivity extends AppCompatActivity {
             Log.v(TAG, "Result");
 
         } else {
-            if (mFirstName != null && mFirstName.getText().toString().equals("")) {
+            if (mFirstName.getText().toString().equals("")) {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName != null && mLastName.getText().toString().equals("")) {
+            if (mLastName.getText().toString().equals("")) {
                 mLastName.setError(getString(R.string.error_field_required));
             }
 
@@ -2820,15 +2811,15 @@ public class IdentificationActivity extends AppCompatActivity {
 //                mDOB.setError(getString(R.string.error_field_required));
 //            }
 
-            if (mAge != null && mAge.getText().toString().equals("")) {
+            if (mAge.getText().toString().equals("")) {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mPhoneNum != null && mPhoneNum.getText().toString().equals("")) {
+            if (mPhoneNum.getText().toString().equals("")) {
                 mPhoneNum.setError(getString(R.string.error_field_required));
             }
 
-            if (autocompleteState != null && autocompleteState.getText().toString().equals("")) {
+            if (autocompleteState.getText().toString().equals("")) {
                 autocompleteState.setError(getString(R.string.error_field_required));
             }
 
@@ -2861,24 +2852,22 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (mCountry != null && mCountry.getSelectedItemPosition() == 0) {
+        if (mCountry.getSelectedItemPosition() == 0) {
             countryText.setError(getString(R.string.error_field_required));
             focusView = countryText;
             cancel = true;
             return;
         } else {
-            if (mCountry != null)
                 countryText.setError(null);
         }
 
 
-        if (autocompleteState != null && autocompleteState.getText().toString().equalsIgnoreCase("")) {
+        if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
             autocompleteState.setError(getString(R.string.error_field_required));
             focusView = autocompleteState;
             cancel = true;
             return;
         } else {
-            if (autocompleteState != null)
                 autocompleteState.setError(null);
         }
 

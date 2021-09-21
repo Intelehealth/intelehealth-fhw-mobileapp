@@ -33,7 +33,7 @@ public class ObsDAO {
         boolean isInserted = true;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         try {
-            db.beginTransactionNonExclusive();
+            db.beginTransaction();
             Logger.logD("insert", " insert obs");
             for (ObsDTO obs : obsDTOS) {
                 if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1)
@@ -83,7 +83,7 @@ public class ObsDAO {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {
@@ -114,7 +114,7 @@ public class ObsDAO {
 
     public boolean updateObs(ObsDTO obsDTO) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         int updatedCount = 0;
         ContentValues values = new ContentValues();
         String selection = "uuid = ?";
@@ -155,7 +155,7 @@ public class ObsDAO {
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
 
         try {

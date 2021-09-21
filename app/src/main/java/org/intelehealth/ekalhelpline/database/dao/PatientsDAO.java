@@ -37,7 +37,7 @@ public class PatientsDAO {
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             for (PatientDTO patient : patientDTO) {
                 createPatients(patient, db);
@@ -88,7 +88,7 @@ public class PatientsDAO {
         SQLiteDatabase db = null;
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
         try {
 
@@ -134,7 +134,7 @@ public class PatientsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         ContentValues values = new ContentValues();
         String whereclause = "Uuid=?";
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
         try {
 
@@ -176,7 +176,7 @@ public class PatientsDAO {
     public boolean patientAttributes(List<PatientAttributesDTO> patientAttributesDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
@@ -201,7 +201,7 @@ public class PatientsDAO {
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             String query = "SELECT * from tbl_patient_attribute WHERE patientuuid= '" + patientuuid + "'";
             Cursor cursor = db.rawQuery(query, null, null);
@@ -230,7 +230,7 @@ public class PatientsDAO {
     public String getHouseHoldValue(String patientuuid) throws DAOException {
         String houseHoldID = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
 
@@ -255,7 +255,7 @@ public class PatientsDAO {
         List<String> patientUUIDs = new ArrayList<>();
         LinkedHashSet<String> patientUUIDs_hashset = new LinkedHashSet<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND (sync='0' OR sync='TRUE') COLLATE NOCASE", new String[]{houseHoldValue});
 
@@ -281,7 +281,7 @@ public class PatientsDAO {
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
@@ -306,7 +306,7 @@ public class PatientsDAO {
 
     public String getAttributesName(String attributeuuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         String name = "";
         try {
             String query = "SELECT name from tbl_patient_attribute_master WHERE uuid= '" + attributeuuid + "'";
@@ -336,7 +336,7 @@ public class PatientsDAO {
     public boolean insertPatientAttributes(List<PatientAttributesDTO> patientAttributesDTOS, SQLiteDatabase db) throws DAOException {
         boolean isInserted = true;
         ContentValues values = new ContentValues();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             for (int i = 0; i < patientAttributesDTOS.size(); i++) {
                 values.put("uuid", patientAttributesDTOS.get(i).getUuid());
@@ -365,7 +365,7 @@ public class PatientsDAO {
     public boolean patinetAttributeMaster(List<PatientAttributeTypeMasterDTO> patientAttributeTypeMasterDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
             for (int i = 0; i < patientAttributeTypeMasterDTOS.size(); i++) {
@@ -412,7 +412,7 @@ public class PatientsDAO {
         boolean isUpdated = true;
         Logger.logD("patinetdao", "updateopenmrs " + uuid + openmrsId + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
@@ -432,19 +432,14 @@ public class PatientsDAO {
         }
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
         IntelehealthApplication.getAppContext().startService(intent);
-        //-----------kuldeep--------------------
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            IntelehealthApplication.getAppContext().startForegroundService(intent);
-        } else {
-            IntelehealthApplication.getAppContext().startService(intent);
-        }*/
+
         return isUpdated;
     }
 
     public List<PatientDTO> unsyncedPatients() throws DAOException {
         List<PatientDTO> patientDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
             PatientDTO patientDTO = new PatientDTO();
@@ -486,7 +481,7 @@ public class PatientsDAO {
         boolean isUpdated = true;
         Logger.logD("patinetdao", "patientphoto " + patientuuid + profilePhotoPath);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
         String[] whereargs = {patientuuid};
@@ -512,7 +507,7 @@ public class PatientsDAO {
     public String getOpenmrsId(String patientuuid) throws DAOException {
         String id = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {

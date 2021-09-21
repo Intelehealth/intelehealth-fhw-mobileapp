@@ -74,6 +74,7 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.OfflineLogin;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -681,33 +682,23 @@ public class HomeActivity extends AppCompatActivity {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
 
-        try{
-            IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-            HomeActivity.this.registerReceiver(syncBroadcastReceiver, filter);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         super.onResume();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    protected void onPause() {
-        try {
-            HomeActivity.this.unregisterReceiver(syncBroadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-        super.onPause();
+        IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+        registerReceiver(syncBroadcastReceiver, filter);
     }
 
     @Override
     protected void onStop() {
+        try {
+            unregisterReceiver(syncBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         super.onStop();
     }
 

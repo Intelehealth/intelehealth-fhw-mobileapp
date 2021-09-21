@@ -421,7 +421,7 @@ public class SmoothUpgrade {
 
 
     public void opendatabase() throws SQLException {
-        try{
+
             //Open the database
             String mypath = AppConstants.dbfilepath;
             if (myDataBase != null && myDataBase.isOpen())
@@ -433,8 +433,6 @@ public class SmoothUpgrade {
                 if (new File(mypath).exists())
                     myDataBase = SQLiteDatabase.openDatabase(mypath, null, SQLiteDatabase.OPEN_READWRITE);
             }
-        }catch (SQLiteException e){
-            e.printStackTrace();
-        }
+
     }
 }

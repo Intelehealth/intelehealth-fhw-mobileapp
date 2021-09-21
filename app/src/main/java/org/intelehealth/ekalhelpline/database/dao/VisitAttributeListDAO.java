@@ -28,7 +28,7 @@ public class VisitAttributeListDAO {
 
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
                 createVisitAttributeList(visitDTO, db);
@@ -92,7 +92,7 @@ public class VisitAttributeListDAO {
         String isValue = "";
         Log.d("specc", "spec_fun: "+ VISITUUID);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ?",
                 new String[]{VISITUUID});
@@ -126,7 +126,7 @@ public class VisitAttributeListDAO {
         Log.d("SPINNER", "SPINNER_Selected_value_logs: "+ speciality_selected);
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         try
         {
@@ -165,7 +165,7 @@ public class VisitAttributeListDAO {
         boolean isInserted = false;
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         try
         {

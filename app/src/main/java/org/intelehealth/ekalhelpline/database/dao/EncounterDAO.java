@@ -34,7 +34,7 @@ public class EncounterDAO {
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             for (EncounterDTO encounter : encounterDTOS) {
                 createEncounters(encounter, db);
@@ -76,7 +76,7 @@ public class EncounterDAO {
     public boolean createEncountersToDB(EncounterDTO encounter) throws DAOException {
         boolean isCreated = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         try {
 
@@ -106,7 +106,7 @@ public class EncounterDAO {
     public String getEncounterTypeUuid(String attr) {
         String encounterTypeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_uuid_dictionary where name = ? COLLATE NOCASE", new String[]{attr});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -114,7 +114,6 @@ public class EncounterDAO {
             }
         }
         cursor.close();
-        //----------kuldeep-------
         db.setTransactionSuccessful();
         db.endTransaction();
 
@@ -124,7 +123,7 @@ public class EncounterDAO {
     public List<EncounterDTO> unsyncedEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         //Distinct keyword is used to remove all duplicate records.
         Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -156,7 +155,7 @@ public class EncounterDAO {
     public List<EncounterDTO> getAllEncounters() {
         List<EncounterDTO> encounterDTOList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter", null);
         EncounterDTO encounterDTO = new EncounterDTO();
         if (idCursor.getCount() != 0) {
@@ -185,7 +184,7 @@ public class EncounterDAO {
 
         Logger.logD("encounterdao", "updatesynv encounter " + uuid + "" + synced);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
@@ -263,7 +262,7 @@ public class EncounterDAO {
     public String getEmergencyEncounters(String visitUuid, String encounterType) throws DAOException {
         String uuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         try {
             Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{visitUuid, encounterType});
 
@@ -316,7 +315,7 @@ public class EncounterDAO {
         boolean isUpdated = true;
         Logger.logD("encounterdao", "update encounter date and time" + encounterUuid + "" + AppConstants.dateAndTimeUtils.currentDateTime());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransactionNonExclusive();
+        db.beginTransaction();
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
         String[] whereargs = {encounterUuid};
