@@ -3083,7 +3083,17 @@ private static String ml_en(String unit) {
                         } else if (test.substring(0, 1).equals("%")) {
                             stringsList.add(test.substring(1));
                         } else {
-                            stringsList.add(test);
+                           // stringsList.add(test);
+                            if(mOptions.get(i).getText().equalsIgnoreCase(mOptions.get(i).getLanguage())) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) { //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                            }
+                            else
+                                stringsList.add(mOptions.get(i).getLanguage());
                         }
                     }
 
