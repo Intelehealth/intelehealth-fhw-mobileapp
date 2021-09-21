@@ -1297,6 +1297,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        if (patient_new != null && TextUtils.isEmpty(patient_new.getPhone_number())) {
+            whatsapp_no.setVisibility(View.GONE);
+            calling.setVisibility(View.GONE);
+        }
     }
 
     public void profilePicDownloaded() {
