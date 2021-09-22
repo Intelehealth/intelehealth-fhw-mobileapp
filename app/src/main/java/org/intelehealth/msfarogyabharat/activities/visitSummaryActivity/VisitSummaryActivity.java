@@ -2652,7 +2652,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private String getResolution(String visitUuid) {
-        String resolution = null;
+        String resolution = "N/A";
         Cursor idCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and o.encounteruuid in (select uuid from tbl_encounter as e where e.visituuid = ?)",
                 new String[]{UuidDictionary.CONCEPT_RESOLUTION, visitUuid});
 
