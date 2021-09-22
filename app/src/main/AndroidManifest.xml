@@ -104,7 +104,6 @@
             android:name="org.intelehealth.msfarogyabharat.activities.followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"
             android:label="@string/title_follow_up"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
