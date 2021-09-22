@@ -3134,6 +3134,9 @@ private static String ml_en(String unit) {
                 }
             }
         }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+        mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         return mLanguage;
     }
 }
