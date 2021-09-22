@@ -1010,7 +1010,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 }
                                 uploaded = true;
-                                if (isFollowUpOrClosed()) {
+                                if (isFollowUpOrClosed() && isSynced) { //only when the sync is successful then only end the visit
+                                    //this fixes the bug of visit not ending even when ended if the flow was done quickly my the user
                                     endVisit();
                                 }
                             }
@@ -4166,10 +4167,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private boolean isFollowUpOrClosed() {
-        if (complaintView != null) {
+        boolean flag = false;
+        if(complaintView != null) {
+            String i = complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "");
+            Log.v("main", "v: "+i);
+            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:")) {
+                flag = true;
+            }
+            else {
+                flag = false;
+            }
+        }
+        return flag;
+
+       /* if (complaintView != null) {
             return !complaintView.getText().toString().contains("Domestic Violence:");
         }
-        return false;
+        return false;*/
     }
 
     private void isNetworkAvailable(Context context) {
