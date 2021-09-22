@@ -628,6 +628,7 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
     <string name="refresh">Refresh</string>
@@ -684,4 +685,5 @@
     <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
     <string name="country_matching_String_forIndia">India</string>
     <string name="country_matching_String_forPhilippines">Philippines</string>
+    <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
 </resources>

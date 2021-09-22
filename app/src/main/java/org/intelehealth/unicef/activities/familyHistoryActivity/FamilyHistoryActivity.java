@@ -393,6 +393,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
             startActivity(intent);
+            finish();
         } else {
 
             if (flag == true) {

@@ -286,11 +286,12 @@ public class SetupActivity extends AppCompatActivity {
 
                 @Override
                 public void run() {
+                    String urlText = mUrlField.getText().toString().trim();
                     // user didn't typed for 1.5 seconds, do whatever you want
-                    if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
-                        if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                            String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
-                            base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                    if (!urlText.isEmpty() /*&& urlText.length() >= 12*/) {
+                        if (Patterns.WEB_URL.matcher(urlText).matches()) {
+                            String BASE_URL = "https://" + urlText + "/openmrs/ws/rest/v1/";
+                            base_url = "https://" + urlText + "/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
 //                                value = getLocationFromServer(BASE_URL); //state wise locations...
                                 getLocationFromServer(BASE_URL);

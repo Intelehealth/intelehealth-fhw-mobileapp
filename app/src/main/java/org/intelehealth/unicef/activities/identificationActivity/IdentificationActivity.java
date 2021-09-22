@@ -383,10 +383,12 @@ public class IdentificationActivity extends AppCompatActivity {
             country1 = obj.getString("mCountry");
             state = obj.getString("mState");
 
-            if (country1.equalsIgnoreCase(getString(R.string.country_matching_String_forIndia))) {
-                EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText);
-            } else if (country1.equalsIgnoreCase(getString(R.string.country_matching_String_forPhilippines))) {
-                EditTextUtils.setEditTextMaxLength(11, mPhoneNumEditText);
+            if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("Индия")) {
+                EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
+                ((TextView)findViewById(R.id.country_code_tv)).setText("+91");
+            } else if (country1.equalsIgnoreCase("Kyrgyzstan") || country1.equalsIgnoreCase("Кыргызстан")) {
+                EditTextUtils.setEditTextMaxLength(9, mPhoneNumEditText); //+996 (XXX XXXXXX)
+                ((TextView)findViewById(R.id.country_code_tv)).setText("+996");
             }
 
         } catch (JSONException e) {
@@ -601,6 +603,16 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int index, long l) {
                 if (index != 0) {
+                    String country = StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
+                            sessionManager.getAppLanguage()));
+                    mPhoneNumEditText.setText("");
+                    if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
+                        EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
+                        ((TextView)findViewById(R.id.country_code_tv)).setText("+91");
+                    } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
+                        EditTextUtils.setEditTextMaxLength(9, mPhoneNumEditText); //+996 (XXX XXXXXX)
+                        ((TextView)findViewById(R.id.country_code_tv)).setText("+996");
+                    }
                     //String country = adapterView.getItemAtPosition(index).toString();
                     ArrayAdapter<CharSequence> stateAdapter = null;
 
@@ -1268,13 +1280,13 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
-            if (mPhoneNumEditText.getText().toString().trim().length() < 10) {
+        /*if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
+            if (mPhoneNumEditText.getText().toString().trim().length() < 12) {
                 mPhoneNumEditText.requestFocus();
-                mPhoneNumEditText.setError(getString(R.string.enter_10_digits));
+                mPhoneNumEditText.setError(getString(R.string.enter_12_digits));
                 return;
             }
-        }
+        }*/
 
    /*     ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -1381,6 +1393,26 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             mCountryEditText.setError(null);
+        }
+        String country = StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
+                sessionManager.getAppLanguage()));
+
+        if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
+            if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
+                if (mPhoneNumEditText.getText().toString().trim().length() < 10) {
+                    mPhoneNumEditText.requestFocus();
+                    mPhoneNumEditText.setError(getString(R.string.enter_10_digits));
+                    return;
+                }
+            }
+        } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
+            if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
+                if (mPhoneNumEditText.getText().toString().trim().length() < 9) {
+                    mPhoneNumEditText.requestFocus();
+                    mPhoneNumEditText.setError(getString(R.string.enter_9_digits));
+                    return;
+                }
+            }
         }
 
 
@@ -1619,13 +1651,13 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
-        if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
-            if (mPhoneNumEditText.getText().toString().trim().length() < 10) {
+        /*if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
+            if (mPhoneNumEditText.getText().toString().trim().length() < 12) {
                 mPhoneNumEditText.requestFocus();
-                mPhoneNumEditText.setError("Enter 10 digits");
+                mPhoneNumEditText.setError(getString(R.string.enter_12_digits));
                 return;
             }
-        }
+        }*/
 
        /* ArrayList<EditText> values = new ArrayList<>();
         values.add(mFirstName);
@@ -1731,6 +1763,27 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             mStateEditText.setError(null);
+        }
+
+        String country = StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
+                sessionManager.getAppLanguage()));
+
+        if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
+            if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
+                if (mPhoneNumEditText.getText().toString().trim().length() < 10) {
+                    mPhoneNumEditText.requestFocus();
+                    mPhoneNumEditText.setError(getString(R.string.enter_10_digits));
+                    return;
+                }
+            }
+        } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
+            if (mPhoneNumEditText.getText().toString().trim().length() > 0) {
+                if (mPhoneNumEditText.getText().toString().trim().length() < 9) {
+                    mPhoneNumEditText.requestFocus();
+                    mPhoneNumEditText.setError(getString(R.string.enter_9_digits));
+                    return;
+                }
+            }
         }
         if (cancel) {
             focusView.requestFocus();

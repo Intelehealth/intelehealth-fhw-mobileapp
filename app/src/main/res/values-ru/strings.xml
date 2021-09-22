@@ -629,6 +629,7 @@
     <string name="download_prescription_first_before_sharing">Сначала скачайте рецепт, прежде чем делиться им</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* Я (медицинский работник) подтверждаю, что я прочитал уведомление о конфиденциальности и даю согласие пациенту.</string>
     <string name="enter_10_digits">Введите 10 цифр</string>
+    <string name="enter_9_digits">Введите 9 цифр</string>
     <string name="please_read_out_privacy_consent_first">Пожалуйста, сначала прочитайте Согласие на конфиденциальность.</string>
     <string name="view_print">Просмотр/печать</string>
     <string name="refresh">Обновить</string>
@@ -689,4 +690,5 @@
 
     <string name="country_matching_String_forIndia">Индия</string>
     <string name="country_matching_String_forPhilippines">Филиппины</string>
+    <string name="country_matching_String_forKyrgyzstan">Кыргызстан</string>
 </resources>
