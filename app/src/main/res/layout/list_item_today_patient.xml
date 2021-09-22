@@ -22,8 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
+            android:padding="10dp">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -61,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginBottom="5dp"
+                android:visibility="gone"
                 android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -98,6 +98,7 @@
             <ImageView
                 android:id="@+id/iv_prescription"
                 android:layout_width="30dp"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_prescription_gray"

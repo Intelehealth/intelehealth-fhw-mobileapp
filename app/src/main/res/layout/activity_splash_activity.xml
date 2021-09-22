@@ -35,6 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
             android:fontFamily="@font/lato_bold"
             android:text="@string/app_name"
             android:textColor="@color/white"

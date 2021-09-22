@@ -119,11 +119,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void nextActivity() {
-        if(true)
-        throw new RuntimeException("crash testing");
 
         boolean setup = sessionManager.isSetupComplete();
-
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
         if (setup) {

@@ -56,9 +56,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_new_patient"
-                            android:text="@string/text_new_visit"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
+                            android:includeFontPadding="false"
+                            android:text="New Patient"
                             android:textSize="26sp" />
 
                     </RelativeLayout>
@@ -74,6 +74,7 @@
                     android:padding="16dp"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp"
+                    android:visibility="gone"
                     app:cardUseCompatPadding="true">
 
                     <RelativeLayout
@@ -176,7 +177,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_today_patients"
-                            android:text="@string/today_visits"
+                            android:text="Today'\s Patients"
                             android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
                             android:textSize="26sp" />
@@ -193,6 +194,7 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp"
+                    android:visibility="gone"
                     app:cardUseCompatPadding="true">
 
                     <RelativeLayout

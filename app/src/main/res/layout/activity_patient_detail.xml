@@ -486,6 +486,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
+                                    android:visibility="gone"
                                     android:src="@drawable/ic_icons8_whatsapp"
                                     android:padding="5dp" />
 
@@ -495,6 +496,7 @@
                                     android:layout_height="wrap_content"
                                     android:src="@drawable/ic_baseline_call_24"
                                     android:padding="5dp"
+                                    android:visibility="gone"
                                     android:layout_gravity="center"
                                     android:tint="@android:color/black"
                                     android:layout_marginStart="5dp"/>
@@ -873,6 +875,7 @@
                 android:layout_marginTop="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
+                android:visibility="gone"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -1007,6 +1010,7 @@
                 android:layout_marginHorizontal="10dp"
                 android:elevation="5dp"
                 android:layout_marginTop="16dp"
+                android:visibility="gone"
                 android:fontFamily="@font/lato_bold"
                 android:foreground="?android:attr/selectableItemBackground"
                 tools:background="@color/colorPrimary"
@@ -1034,6 +1038,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
+                android:visibility="gone"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">
 
@@ -1114,6 +1119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/padding_card"
+                android:layout_marginBottom="@dimen/padding_card"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">

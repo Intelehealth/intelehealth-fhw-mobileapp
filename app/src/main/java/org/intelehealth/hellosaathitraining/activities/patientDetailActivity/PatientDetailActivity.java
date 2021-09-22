@@ -431,7 +431,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         //  LoadFamilyMembers();
         if (intent != null && intent.getBooleanExtra(EXTRA_SHOW_MEDICAL_ADVICE, false)) {
-            newAdvice.setVisibility(View.VISIBLE);
+//            newAdvice.setVisibility(View.VISIBLE);
             newAdvice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
