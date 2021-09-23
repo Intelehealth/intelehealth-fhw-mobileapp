@@ -3019,7 +3019,13 @@ private static String ml_en(String unit) {
                     } else {
                         if (!node_opt.getLanguage().isEmpty()) {
                             if (node_opt.getLanguage().equals("%")) {
-                                raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
+                                SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+                                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                                    raw = raw + bullet + " " + node_opt.formLanguageHindi() + next_line;
+                                }
+                                else {
+                                    raw = raw + bullet + " " + node_opt.formLanguage() + next_line;
+                                }
                             } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
                                 raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
                             } else {
@@ -3085,15 +3091,25 @@ private static String ml_en(String unit) {
                         } else {
                            // stringsList.add(test);
                             if(mOptions.get(i).getText().equalsIgnoreCase(mOptions.get(i).getLanguage())) {
-                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) { //This means chip is selected as answer...
-                                    stringsList.add(mOptions.get(i).findDisplay());
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
                                 }
                                 else {
                                     stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
                                 }
                             }
-                            else
-                                stringsList.add(mOptions.get(i).getLanguage());
+                            else {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).findDisplay());
+                                }
+
+                            }
+
                         }
                     }
 
