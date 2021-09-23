@@ -8,12 +8,15 @@ import android.content.Intent;
 import androidx.appcompat.app.AlertDialog;
 
 import android.os.Build;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -1348,6 +1351,33 @@ public class Node implements Serializable {
         quantityPicker.setMaxValue(100);
         unitPicker.setMinValue(0);
         unitPicker.setMaxValue(4);
+
+        EditText input = findInput(quantityPicker);
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if(editable.toString().length()!=0)
+                {
+                    Integer value = Integer.parseInt(editable.toString());
+                    if(value>= quantityPicker.getMinValue())
+                        quantityPicker.setValue(value);
+                }
+            }
+        };
+
+        input.addTextChangedListener(textWatcher);
+
         durationDialog.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1410,6 +1440,24 @@ public class Node implements Serializable {
         AlertDialog dialog = durationDialog.show();
         dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+    }
+
+    private static EditText findInput(ViewGroup np)
+    {
+        int count = np.getChildCount();
+        for(int i=0;i<count;i++)
+        {
+            final View child = np.getChildAt(i);
+            if(child instanceof ViewGroup)
+            {
+                findInput((ViewGroup) child);
+            }
+            else if (child instanceof EditText)
+            {
+                return (EditText) child;
+            }
+        }
+        return null;
     }
 
     /*
