@@ -394,7 +394,41 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 //meera
-                if (downloaded) {
+                if((speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Agent Resolution") || speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Curiosity Resolution")) && (!isVisitSpecialityExists))
+                {
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.visit_summary_upload_reminder));
+                    alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+                }
+                else if ((speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("TLD Query") || speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Ayurvedic Physician") || speciality_spinner.getSelectedItem().toString().contains("Gynecologist")) && !hasPrescription.equalsIgnoreCase("true"))
+                {
+                    String message = "";
+                    if((!isVisitSpecialityExists))
+                        message = getString(R.string.visit_summary_upload_reminder);
+                    else
+                        message = getString(R.string.error_no_data);
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+                    alertDialogBuilder.setMessage(message);
+                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.show();
+                    //alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                }
+                else {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
@@ -416,19 +450,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     //alertDialog.show();
                     IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-                } else {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(R.string.error_no_data);
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.show();
-                    //alertDialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
                 }
                 return true;
             }
@@ -619,7 +640,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
-                } else {
+                }
+                else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
                     alertDialog.setPositiveButton(getResources().getString(R.string.ok),
@@ -2255,7 +2277,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 visitView.setText(getResources().getString(R.string.visit_not_uploaded));
             }
-        } else {
+        }
+        else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
                 String hideVisitUUID = visitUuid;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
@@ -3454,8 +3477,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent.putExtra("tag", intentTag);
                 startActivity(intent);
             }
-        } else {
-
+        }
+        else {
             Log.d(TAG, "endVisit: null");
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
             alertDialogBuilder.setMessage(getResources().getString(R.string.visit_summary_upload_reminder));
