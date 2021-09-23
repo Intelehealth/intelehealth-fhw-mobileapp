@@ -1706,7 +1706,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     intent1.putExtra("name", patientName);
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent1.putExtra("tag", "edit");
-                    intent1.putExtra("resolutionViolence", complaintView.getText().toString().toLowerCase().contains("violence") || complaintView.getText().toString().toLowerCase().contains("हिंसा"));
+                    if (complaintView.getText().toString().contains(":")) {
+                        String substring = complaintView.getText().toString().substring(0, complaintView.getText().toString().indexOf(":"));
+                        boolean value = substring.toLowerCase().contains("violence") || complaintView.getText().toString().toLowerCase().contains("हिंसा");
+                        intent1.putExtra("resolutionViolence", value);
+                    } else {
+                        boolean value = complaintView.getText().toString().toLowerCase().contains("violence") || complaintView.getText().toString().toLowerCase().contains("हिंसा");
+                        intent1.putExtra("resolutionViolence", value);
+                    }
                     startActivity(intent1);
                 } else {
                     Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder, Toast.LENGTH_SHORT).show();
