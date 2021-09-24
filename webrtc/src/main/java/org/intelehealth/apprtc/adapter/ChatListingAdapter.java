@@ -1,7 +1,6 @@
 package org.intelehealth.apprtc.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +8,18 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import org.intelehealth.apprtc.R;
 import org.intelehealth.apprtc.data.Constants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -74,7 +74,7 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 String rawTime = leftViewHolder.jsonObject.getString("createdAt"); // 2021-04-16T06:36:35.000Z
                 String displayDateTime = parseDate(rawTime);
                 leftViewHolder.timeTextView.setText(displayDateTime);
-            } catch (JSONException | ParseException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
@@ -88,27 +88,33 @@ public class ChatListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                 String displayDateTime = parseDate(rawTime);
                 rightViewHolder.timeTextView.setText(displayDateTime);
-            } catch (JSONException | ParseException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private String parseDate(String rawTime) throws ParseException {
-        //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        //Fri, 16 Apr 2021 06:37:30 GM
-        SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
-        //rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = rawSimpleDateFormat.parse(rawTime);
-        //Log.v("date", date.toString());
+    private String parseDate(String rawTime) {
+        try {
+            DateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.ENGLISH);
+            //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            //Fri, 16 Apr 2021 06:37:30 GM
+            //SimpleDateFormat rawSimpleDateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+            //rawSimpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date date = format.parse(rawTime);
+            //Log.v("date", date.toString());
 
-        SimpleDateFormat displayFormat = new SimpleDateFormat("h:mm a, MMM d");
-        //displayFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
-        displayFormat.setTimeZone(TimeZone.getDefault());
-        Date todayDate = new Date();
-        String temp1 = displayFormat.format(date);
-        String temp2 = displayFormat.format(todayDate);
-        return temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
+            SimpleDateFormat displayFormat = new SimpleDateFormat("h:mm a, MMM d", Locale.ENGLISH);
+            //displayFormat.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+            displayFormat.setTimeZone(TimeZone.getDefault());
+            Date todayDate = new Date();
+            String temp1 = displayFormat.format(date);
+            String temp2 = displayFormat.format(todayDate);
+            return temp1.split(",")[1].equals(temp2.split(",")[1]) ? temp1.split(",")[0] : temp1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     @Override

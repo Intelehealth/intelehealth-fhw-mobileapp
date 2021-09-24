@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -23,8 +24,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -242,7 +245,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
-        saveToken();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -1104,6 +1106,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         updateUIForCounts();
+        saveToken();
     }
 
     private void updateUIForCounts() {
@@ -1169,5 +1172,34 @@ public class HomeActivity extends AppCompatActivity {
         );
 
         super.onAttachedToWindow();
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+    public Context setLocale(Context context) {
+        SessionManager sessionManager = new SessionManager(context);
+        String appLanguage = sessionManager.getAppLanguage();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            context.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

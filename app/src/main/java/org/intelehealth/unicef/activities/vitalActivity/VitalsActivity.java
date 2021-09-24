@@ -44,7 +44,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 public class VitalsActivity extends AppCompatActivity {
@@ -918,6 +920,7 @@ public class VitalsActivity extends AppCompatActivity {
                 intent.putExtra("tag", intentTag);
                 intent.putExtra("hasPrescription", "false");
                 startActivity(intent);
+                finish();
             } catch (DAOException dao) {
                 FirebaseCrashlytics.getInstance().recordException(dao);
             }
@@ -1048,7 +1051,8 @@ public class VitalsActivity extends AppCompatActivity {
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
             Log.i(TAG, "uploadTemperatureInC: " + cTemp);
-            DecimalFormat dtime = new DecimalFormat("#.##");
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+            DecimalFormat dtime = new DecimalFormat("#.##", symbols);
             cTemp = Double.parseDouble(dtime.format(cTemp));
             result = String.valueOf(cTemp);
             return result;

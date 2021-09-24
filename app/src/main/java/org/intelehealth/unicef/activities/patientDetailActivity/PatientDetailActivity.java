@@ -1,10 +1,17 @@
 package org.intelehealth.unicef.activities.patientDetailActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.unicef.utilities.StringUtils.mSwitch_Country_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.mSwitch_State_edit;
+import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -12,10 +19,12 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -80,10 +89,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-
-import static org.intelehealth.unicef.utilities.StringUtils.en__hi_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.en__or_dob;
-import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -654,24 +659,42 @@ public class PatientDetailActivity extends AppCompatActivity {
             String addrFinalLine;
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
                 addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getPostal_code(), patient_new.getCountry());
+//                        city_village, patient_new.getState_province(),
+                        city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()),
+                        patient_new.getPostal_code(), mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
+//                        patient_new.getPostal_code(), patient_new.getCountry());
             } else {
                 addrFinalLine = String.format("%s, %s, %s",
-                        city_village, patient_new.getState_province(),
-                        patient_new.getCountry());
+//                        city_village, patient_new.getState_province(),
+                        city_village, mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()),
+                        mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
+//                        patient_new.getCountry());
             }
             addrFinalView.setText(addrFinalLine);
         } else {
             String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
-                    patient_new.getCountry());
+                    city_village,
+                    mSwitch_State_edit(patient_new.getState_province(), sessionManager.getAppLanguage()),
+                    mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage()));
+//                    patient_new.getState_province(),
+//                    patient_new.getCountry());
             addrFinalView.setText(addrFinalLine);
+        }
+        String country = mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage());
+        if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
+           phoneView.setText(String.format("+91 - %s", patient_new.getPhone_number()));
+        } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
+           phoneView.setText(String.format("+996 - %s", patient_new.getPhone_number()));
         }
 
 
-        phoneView.setText(patient_new.getPhone_number());
-        citizenIDView.setText(patient_new.getCitizenID());
+        citizenIDView.setText(String.format("%1$s-%2$s-%3$s-%4$s-%5$s",
+                patient_new.getCitizenID().substring(0, 1),
+                patient_new.getCitizenID().substring(1, 3),
+                patient_new.getCitizenID().substring(3, 6),
+                patient_new.getCitizenID().substring(6, 10),
+                patient_new.getCitizenID().substring(10, 14)
+        ));
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
@@ -1282,5 +1305,34 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (requestCode == INTENT_FOR_VITALS) {
             recreate();
         }
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+    public Context setLocale(Context context) {
+        SessionManager sessionManager = new SessionManager(context);
+        String appLanguage = sessionManager.getAppLanguage();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            context.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

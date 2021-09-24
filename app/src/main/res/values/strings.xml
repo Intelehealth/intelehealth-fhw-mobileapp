@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+    <string name="app_name" translatable="false">Telemed KG - APP</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Next</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">Intelehealth</string>
+    <string name="title_activity_login" translatable="false">Telemed KG - APP</string>
     <string name="prompt_email" translatable="false">Username</string>
     <string name="prompt_password" translatable="false">Password</string>
     <string name="prompt_admin_password" translatable="false">Admin Password</string>
@@ -555,12 +555,12 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Intelehealth. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Telemed KG - APP. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -590,8 +590,9 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    <string name="intelehealth_a_telemedicine_platform">Telemed KG - APP is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Telemed KG - APP</string>
+
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -627,6 +628,7 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
     <string name="refresh">Refresh</string>
@@ -681,4 +683,28 @@
     <string name="ticker_text">Looking for new task</string>
     <string name="identification_screen_prompt_citizen_id">Citizen ID(*)</string>
     <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
+    <string name="country_matching_String_forIndia">India</string>
+    <string name="country_matching_String_forPhilippines">Philippines</string>
+    <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
+    <!--Prescription-->
+    <string name="prescription_age">Age</string>
+    <string name="prescription_gender">Gender</string>
+    <string name="prescription_address_contact">Address and Contact</string>
+    <string name="prescription_patient_id">Patient Id</string>
+    <string name="prescription_date_of_visit">Date of visit</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_rr">Respiratory Rate</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">Blood Pressure</string>
+    <string name="prescription_bmi">BMI</string>
+    <string name="prescription_wt">Weight(kg)</string>
+    <string name="prescription_ht">Height(cm)</string>
+    <string name="prescription_pre_comp">Presenting complaint(s)</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_med_plan">Medication(s) plan</string>
+    <string name="prescription_rec_investigation">Recommended Investigation(s)</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up_date">Follow Up Date</string>
+    <string name="prescription_temp_c">Temperature (C) : </string>
+    <string name="prescription_temp_f">Temperature (F) : </string>
 </resources>

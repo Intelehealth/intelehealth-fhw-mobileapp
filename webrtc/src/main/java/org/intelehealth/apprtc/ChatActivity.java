@@ -1,10 +1,8 @@
 package org.intelehealth.apprtc;
 
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -42,6 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
+import java.util.Locale;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -58,8 +57,8 @@ import io.socket.client.Socket;
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = ChatActivity.class.getName();
     private static final String PACKAGE_NAME = "org.intelehealth.unicef";
-    private static final String ACTION_NAME = PACKAGE_NAME+".RTC_MESSAGING_EVENT";
-    private static final String RECEIVER_CLASS_NAME = PACKAGE_NAME+".utilities.RTCMessageReceiver";
+    private static final String ACTION_NAME = PACKAGE_NAME + ".RTC_MESSAGING_EVENT";
+    private static final String RECEIVER_CLASS_NAME = PACKAGE_NAME + ".utilities.RTCMessageReceiver";
     private List<JSONObject> mChatList = new ArrayList<JSONObject>();
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -218,12 +217,14 @@ public class ChatActivity extends AppCompatActivity {
         Collections.sort(mChatList, new Comparator<JSONObject>() {
             public int compare(JSONObject o1, JSONObject o2) {
                 try {
-                    Date a = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o1.getString("createdAt"));
-                    Date b = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z").parse(o2.getString("createdAt"));
+                    DateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.ENGLISH);
+
+                    Date a = format.parse(o1.getString("createdAt"));
+                    Date b = format.parse(o2.getString("createdAt"));
+
+                    assert b != null;
                     return b.compareTo(a);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (ParseException e) {
+                } catch (JSONException | ParseException e) {
                     e.printStackTrace();
                 }
                 return 0;

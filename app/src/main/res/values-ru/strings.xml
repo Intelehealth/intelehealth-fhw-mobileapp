@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+    <string name="app_name" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Далее</string>
@@ -39,7 +39,8 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login" translatable="false">Intelehealth</string>
+<!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
+    <string name="title_activity_login" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="prompt_email" translatable="false">Имя пользователя</string>
     <string name="prompt_password" translatable="false">Пароль</string>
     <string name="prompt_admin_password" translatable="false">Пароль администратора</string>
@@ -555,7 +556,7 @@
     <string name="new_update_available">Доступно новое обновление</string>
     <string name="update_app_note">Доступна новая версия с новыми функциями, пожалуйста, обновите приложение.</string>
     <string name="update">Обновить</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Intelehealth. Чтобы загрузить рецепт, нажмите здесь "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Телемед КГ - ПРИЛОЖЕНИЕ. Чтобы загрузить рецепт, нажмите здесь "</string>
     <string name="and_enter_your_patient_id">" и введите свой идентификатор пациента - "</string>
 
 
@@ -590,8 +591,9 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Экономические показатели отсутствуют</string>
     <string name="education_values_missing">Отсутствуют показатели образования</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth - это приложение телемедицины, которое соединяет медицинских работников в сельских и отдаленных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
-    <string name="intelehealth_name">Intelehealth</string>
+    <string name="intelehealth_a_telemedicine_platform">Телемед КГ - ПРИЛОЖЕНИЕ - это приложение телемедицины, которое соединяет медицинских работников в сельских и отдаленных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
+<!--    <string name="intelehealth_name">Intelehealth</string>-->
+    <string name="intelehealth_name">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="Ayu_name">Аю</string>
     <string name="close_button">Закрыть</string>
     <string name="active_tag_patientDetail">" Active"</string>
@@ -627,6 +629,7 @@
     <string name="download_prescription_first_before_sharing">Сначала скачайте рецепт, прежде чем делиться им</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* Я (медицинский работник) подтверждаю, что я прочитал уведомление о конфиденциальности и даю согласие пациенту.</string>
     <string name="enter_10_digits">Введите 10 цифр</string>
+    <string name="enter_9_digits">Введите 9 цифр</string>
     <string name="please_read_out_privacy_consent_first">Пожалуйста, сначала прочитайте Согласие на конфиденциальность.</string>
     <string name="view_print">Просмотр/печать</string>
     <string name="refresh">Обновить</string>
@@ -679,9 +682,35 @@
     <string name="not_connected_txt">Нет подключения к Интернету!</string>
     <string name="config_error">Ошибка конфигурации</string>
 
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_title">Синхронизация в реальном времени включена!</string>
     <string name="notification_message"></string>
-    <string name="ticker_text">Looking for new task</string>
+    <string name="ticker_text">Ищу новую задачу</string>
     <string name="identification_screen_prompt_citizen_id">ПИН (*)</string>
     <string name="citizen_id_validation_message">Пожалуйста введите 14 цифр вашего ПИН</string>
+
+    <string name="country_matching_String_forIndia">Индия</string>
+    <string name="country_matching_String_forPhilippines">Филиппины</string>
+    <string name="country_matching_String_forKyrgyzstan">Кыргызстан</string>
+
+    <!--Prescription-->
+    <string name="prescription_age">Возраст</string>
+    <string name="prescription_gender">Пол</string>
+    <string name="prescription_address_contact">Адрес и контакт</string>
+    <string name="prescription_patient_id">Идентификатор пациента</string>
+    <string name="prescription_date_of_visit">Дата посещения</string>
+    <string name="prescription_vitals">жизненно важные признаки</string>
+    <string name="prescription_rr">Частота дыхания</string>
+    <string name="prescription_pulse">Пульс (уд / мин)</string>
+    <string name="prescription_bp">Кровяное давление</string>
+    <string name="prescription_bmi">ИМТ</string>
+    <string name="prescription_wt">Вес (кг)</string>
+    <string name="prescription_ht">Высота (см)</string>
+    <string name="prescription_pre_comp">Подача жалобы (-ов)</string>
+    <string name="prescription_diagnosis">Диагностика</string>
+    <string name="prescription_med_plan">План приема лекарств</string>
+    <string name="prescription_rec_investigation">Рекомендуемое (ые) исследование (я)</string>
+    <string name="prescription_general_advice">Общий совет</string>
+    <string name="prescription_follow_up_date">Дата последующего наблюдения</string>
+    <string name="prescription_temp_c">Температура (C) : </string>
+    <string name="prescription_temp_f">Температура (F) : </string>
 </resources>
