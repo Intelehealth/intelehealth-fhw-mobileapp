@@ -3090,7 +3090,8 @@ private static String ml_en(String unit) {
                             stringsList.add(test.substring(1));
                         } else {
                            // stringsList.add(test);
-                            if(mOptions.get(i).getText().equalsIgnoreCase(mOptions.get(i).getLanguage())) {
+                            if(mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
                                 if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
                                     stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
