@@ -20,9 +20,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -385,10 +388,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
             if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("Индия")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
-                ((TextView)findViewById(R.id.country_code_tv)).setText("+91");
+                ((TextView) findViewById(R.id.country_code_tv)).setText("+91");
             } else if (country1.equalsIgnoreCase("Kyrgyzstan") || country1.equalsIgnoreCase("Кыргызстан")) {
                 EditTextUtils.setEditTextMaxLength(9, mPhoneNumEditText); //+996 (XXX XXXXXX)
-                ((TextView)findViewById(R.id.country_code_tv)).setText("+996");
+                ((TextView) findViewById(R.id.country_code_tv)).setText("+996");
             }
 
         } catch (JSONException e) {
@@ -605,13 +608,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (index != 0) {
                     String country = StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
                             sessionManager.getAppLanguage()));
-                    mPhoneNumEditText.setText("");
+                    if (patient1 ==null || patient1.getCountry()==null || !patient1.getCountry().equalsIgnoreCase(country))
+                        mPhoneNumEditText.setText("");
                     if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
                         EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
-                        ((TextView)findViewById(R.id.country_code_tv)).setText("+91");
+                        ((TextView) findViewById(R.id.country_code_tv)).setText("+91");
                     } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
                         EditTextUtils.setEditTextMaxLength(9, mPhoneNumEditText); //+996 (XXX XXXXXX)
-                        ((TextView)findViewById(R.id.country_code_tv)).setText("+996");
+                        ((TextView) findViewById(R.id.country_code_tv)).setText("+996");
                     }
                     //String country = adapterView.getItemAtPosition(index).toString();
                     ArrayAdapter<CharSequence> stateAdapter = null;
@@ -1955,6 +1959,34 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
     }
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            context.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
 
 }

@@ -560,7 +560,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -686,4 +686,25 @@
     <string name="country_matching_String_forIndia">India</string>
     <string name="country_matching_String_forPhilippines">Philippines</string>
     <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
+    <!--Prescription-->
+    <string name="prescription_age">Age</string>
+    <string name="prescription_gender">Gender</string>
+    <string name="prescription_address_contact">Address and Contact</string>
+    <string name="prescription_patient_id">Patient Id</string>
+    <string name="prescription_date_of_visit">Date of visit</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_rr">Respiratory Rate</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">Blood Pressure</string>
+    <string name="prescription_bmi">BMI</string>
+    <string name="prescription_wt">Weight(kg)</string>
+    <string name="prescription_ht">Height(cm)</string>
+    <string name="prescription_pre_comp">Presenting complaint(s)</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_med_plan">Medication(s) plan</string>
+    <string name="prescription_rec_investigation">Recommended Investigation(s)</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up_date">Follow Up Date</string>
+    <string name="prescription_temp_c">Temperature (C) : </string>
+    <string name="prescription_temp_f">Temperature (F) : </string>
 </resources>

@@ -691,4 +691,26 @@
     <string name="country_matching_String_forIndia">Индия</string>
     <string name="country_matching_String_forPhilippines">Филиппины</string>
     <string name="country_matching_String_forKyrgyzstan">Кыргызстан</string>
+
+    <!--Prescription-->
+    <string name="prescription_age">Возраст</string>
+    <string name="prescription_gender">Пол</string>
+    <string name="prescription_address_contact">Адрес и контакт</string>
+    <string name="prescription_patient_id">Идентификатор пациента</string>
+    <string name="prescription_date_of_visit">Дата посещения</string>
+    <string name="prescription_vitals">жизненно важные признаки</string>
+    <string name="prescription_rr">Частота дыхания</string>
+    <string name="prescription_pulse">Пульс (уд / мин)</string>
+    <string name="prescription_bp">Кровяное давление</string>
+    <string name="prescription_bmi">ИМТ</string>
+    <string name="prescription_wt">Вес (кг)</string>
+    <string name="prescription_ht">Высота (см)</string>
+    <string name="prescription_pre_comp">Подача жалобы (-ов)</string>
+    <string name="prescription_diagnosis">Диагностика</string>
+    <string name="prescription_med_plan">План приема лекарств</string>
+    <string name="prescription_rec_investigation">Рекомендуемое (ые) исследование (я)</string>
+    <string name="prescription_general_advice">Общий совет</string>
+    <string name="prescription_follow_up_date">Дата последующего наблюдения</string>
+    <string name="prescription_temp_c">Температура (C) : </string>
+    <string name="prescription_temp_f">Температура (F) : </string>
 </resources>
