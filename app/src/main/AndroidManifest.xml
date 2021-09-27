@@ -36,9 +36,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"
-            android:label="@string/Daily_Performance_Activity_Title"></activity>
+        <activity
+            android:name=".activities.followuppatients.FollowUpPatientActivity"
+            android:exported="true"
+            android:configChanges="uiMode"
+            android:label="@string/title_follow_up"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"
+            android:label="@string/Daily_Performance_Activity_Title" />
         <activity
             android:name=".activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -48,6 +54,7 @@
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:configChanges="uiMode"

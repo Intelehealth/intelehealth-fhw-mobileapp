@@ -44,9 +44,11 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
+import org.intelehealth.ekalhelpline.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -320,6 +322,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
         showProgressbar();
+        tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
+        FollowUpNotificationWorker.schedule();
+
     }
 
     //function for handling the video library feature...
@@ -739,6 +744,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+        showFollowUpBadge();
+    }
+
+    private void showFollowUpBadge() {
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        if (followUpCount > 0) {
+            tvFollowUpBadge.setVisibility(View.VISIBLE);
+            tvFollowUpBadge.setText(String.valueOf(followUpCount));
+        }
     }
 
     @Override
@@ -833,6 +847,7 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
+                    showFollowUpBadge();
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -900,6 +915,11 @@ public class HomeActivity extends AppCompatActivity {
             Log.e(TAG, "changeApiBaseUrl: " + e.getMessage());
             Log.e(TAG, "changeApiBaseUrl: " + e.getStackTrace());
         }
+    }
+
+    public void onFollowUpClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
+        startActivity(intent);
     }
 
     private void checkExistingMindMaps() {
