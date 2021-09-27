@@ -30,7 +30,7 @@
             app:fontFamily="@fonts/Lato-Regular"
             tools:text="Intelehealth is a telemedicine application that connects health workers in rural and remote areas connect with remote doctors so they can provide high quality health services for their patients."
             android:textColor="@color/font_black_welcome"
-            android:textSize="17sp"
+            android:textSize="14sp"
             android:lineSpacingExtra="2sp"
             android:gravity="center_horizontal|top"
             android:letterSpacing="0.01" />
