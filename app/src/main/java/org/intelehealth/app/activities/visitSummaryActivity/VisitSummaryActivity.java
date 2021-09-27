@@ -578,6 +578,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     EditText editText = new EditText(VisitSummaryActivity.this);
                     editText.setInputType(InputType.TYPE_CLASS_PHONE);
+
+                    appLanguage = sessionManager1.getAppLanguage();
+                    if(!appLanguage.equalsIgnoreCase(""))
+                    {
+                        setLocale(appLanguage);
+                    }
+
                     InputFilter inputFilter = new InputFilter() {
                         @Override
                         public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
@@ -634,6 +641,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 else
                 {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+
+                    appLanguage = sessionManager1.getAppLanguage();
+                    if(!appLanguage.equalsIgnoreCase(""))
+                    {
+                        setLocale(appLanguage);
+                    }
+
                     alertDialog.setMessage(getResources().getString(R.string.download_prescription_first_before_sharing));
                     alertDialog.setPositiveButton(getResources().getString(R.string.ok),
                             new DialogInterface.OnClickListener() {

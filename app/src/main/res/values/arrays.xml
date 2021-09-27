@@ -74,7 +74,7 @@
     </string-array>
 
     <string-array name="countries_hi">
-        <item>Select Country</item>
+        <item>देश चुनें</item>
         <item>India</item>
         <item>United States</item>
         <item>Philippines</item>
@@ -282,7 +282,7 @@
     </string-array>
 
     <string-array name="states_india_hi">
-        <item>Select State</item>
+        <item>राज्य चुनें</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>
