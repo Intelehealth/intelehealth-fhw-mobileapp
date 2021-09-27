@@ -848,4 +848,25 @@
         <item>Select Village</item>
     </string-array>
 
+    <string-array name="curosityResolution_array">
+        <item>Select</item>
+        <item>Different Language</item>
+        <item>Different Gender</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="curosityResolution_array_en">
+        <item>Select</item>
+        <item>Different Language</item>
+        <item>Different Gender</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="curosityResolution_array_hi">
+        <item>चुनते हैं</item>
+        <item>अलग भाषा</item>
+        <item>भिन्न लिंग</item>
+        <item>अन्य</item>
+    </string-array>
+
 </resources>

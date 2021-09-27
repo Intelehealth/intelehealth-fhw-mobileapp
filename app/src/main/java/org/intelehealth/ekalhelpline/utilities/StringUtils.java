@@ -161,8 +161,26 @@ public final class StringUtils {
             val = switch_hi_caste(val);
             val = switch_hi_economic(val);
             val = switch_hi_education(val);
+            val = switch_hi_curosityResolution(val);
         }
 
+        return val;
+    }
+
+    private static String switch_hi_curosityResolution(String val) {
+        switch (val) {
+            case "अलग भाषा":
+                val = "Different Language";
+                break;
+            case "भिन्न लिंग":
+                val = "Different Gender";
+                break;
+            case "अन्य":
+                val = "Other";
+                break;
+            default:
+                return val;
+        }
         return val;
     }
 

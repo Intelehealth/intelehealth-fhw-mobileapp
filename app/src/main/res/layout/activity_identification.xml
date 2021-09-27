@@ -1586,9 +1586,28 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputLayout
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_curosityResolution"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:entries="@array/curosityResolution_array"/>
+
+<!--
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+-->
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/curosity_textinputlayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:hint="@string/txt_additional_info">
 
                                 <com.google.android.material.textfield.TextInputEditText
@@ -1600,8 +1619,7 @@
                                     android:ems="10"
                                     android:fontFamily="@font/lato_regular"
                                     android:freezesText="true"
-                                    android:imeOptions="actionUnspecified"
-                                    android:inputType="text"
+                                    android:imeOptions="actionDone|flagNoExtractUi"                                    android:inputType="text"
                                     android:maxLines="1"
                                     android:singleLine="true"
                                     android:textSize="@dimen/card_content_sub_text_size" />
