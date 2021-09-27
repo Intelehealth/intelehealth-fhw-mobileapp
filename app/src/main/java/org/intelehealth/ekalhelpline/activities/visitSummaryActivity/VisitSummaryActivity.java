@@ -235,6 +235,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String baseDir;
     String filePathPhyExam;
     File obsImgdir;
+    String special_value = "";
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -674,6 +675,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         tilAgentResolution = findViewById(R.id.tilAgentResolution);
         etAgentResolution = findViewById(R.id.etAgentResolution);
+        uploadButton = findViewById(R.id.button_upload);
+        downloadButton = findViewById(R.id.button_download);
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -692,7 +695,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+        special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
         //Hashmap to List<String> add all value
 
         if(special_value.equalsIgnoreCase("Doctor not needed"))
@@ -723,6 +726,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             speciality_spinner.setSelection(spinner_position);
 
             if (AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(special_value)) {
+                downloadButton.setVisibility(View.GONE);
+                card_print.setVisibility(View.GONE);
+                card_share.setVisibility(View.GONE);
+
                 tilAgentResolution.setVisibility(View.VISIBLE);
                 String agent_resolution_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN);
                 etAgentResolution.setText(agent_resolution_value);
@@ -788,8 +795,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         editFamHist = findViewById(R.id.imagebutton_edit_famhist);
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-        uploadButton = findViewById(R.id.button_upload);
-        downloadButton = findViewById(R.id.button_download);
 
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
@@ -966,6 +971,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     tilAgentResolution.setError("");
                 }
 
+                //HSH-93 start
+                if(AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(speciality_selected)) {
+                    downloadButton.setVisibility(View.GONE);
+                    card_print.setVisibility(View.GONE);
+                    card_share.setVisibility(View.GONE);
+                }
+                else {
+                    downloadButton.setVisibility(View.VISIBLE);
+                    card_print.setVisibility(View.VISIBLE);
+                    card_share.setVisibility(View.VISIBLE);
+                }
+
+                //HSH-93 end
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
@@ -4304,7 +4322,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void addDownloadButton() {
-        if (!downloadButton.isEnabled()) {
+        if (!downloadButton.isEnabled() && !AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(special_value)) {
             downloadButton.setEnabled(true);
             downloadButton.setVisibility(View.VISIBLE);
         }
