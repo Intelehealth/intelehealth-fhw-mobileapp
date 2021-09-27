@@ -707,4 +707,11 @@
     <string name="prescription_follow_up_date">Follow Up Date</string>
     <string name="prescription_temp_c">Temperature (C) : </string>
     <string name="prescription_temp_f">Temperature (F) : </string>
+
+    <string name="intro_text_1">
+        Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare ’. It helps in saving patients from traveling miles for healthcare.
+        \n\n
+        Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
+    </string>
+
 </resources>
