@@ -408,7 +408,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.show();
                     IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
                 }
-                else if ((speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("TLD Query") || speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Ayurvedic Physician") || speciality_spinner.getSelectedItem().toString().contains("Gynecologist")) && !hasPrescription.equalsIgnoreCase("true"))
+                else if ((speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("TLD Query") ||
+                        speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Ayurvedic Physician") ||
+                        speciality_spinner.getSelectedItem().toString().contains("Gynecologist")) &&
+                        !hasPrescription.equalsIgnoreCase("true"))
                 {
                     String message = "";
                     if((!isVisitSpecialityExists))
@@ -665,6 +668,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
+        complaintView = findViewById(R.id.textView_content_complaint);
+        famHistView = findViewById(R.id.textView_content_famhist);
+        patHistView = findViewById(R.id.textView_content_pathist);
+        physFindingsView = findViewById(R.id.textView_content_physexam);
+
         speciality_spinner = findViewById(R.id.speciality_spinner);
         diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
         prescriptionTextView = findViewById(R.id.textView_content_rx);
@@ -701,35 +709,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             card_share.setVisibility(View.GONE);
         }
 
-        ArrayAdapter<String> stringArrayAdapter;
-
-        if (items != null) {
-            items.add(0, "Select Specialization");
-            stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item, items);
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        } else {
-            stringArrayAdapter =
-                    new ArrayAdapter<String>
-                            (this, android.R.layout.simple_spinner_dropdown_item,
-                                    getResources().getStringArray(R.array.speciality_values));
-            speciality_spinner.setAdapter(stringArrayAdapter);
-        }
-
-
-        if (special_value != null) {
-            int spinner_position = stringArrayAdapter.getPosition(special_value);
-            speciality_spinner.setSelection(spinner_position);
-
-            if (AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(special_value)) {
-                tilAgentResolution.setVisibility(View.VISIBLE);
-                String agent_resolution_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN);
-                etAgentResolution.setText(agent_resolution_value);
-            }
-        } else {
-
-        }
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1171,10 +1150,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //respiratory = findViewById(R.id.textView_respiratory_value);
         //respiratoryText = findViewById(R.id.textView_respiratory);
         //bmiView = findViewById(R.id.textView_bmi_value);
-        complaintView = findViewById(R.id.textView_content_complaint);
-        famHistView = findViewById(R.id.textView_content_famhist);
-        patHistView = findViewById(R.id.textView_content_pathist);
-        physFindingsView = findViewById(R.id.textView_content_physexam);
+
 
         /*if (isRespiratory) {
             respiratoryText.setVisibility(View.VISIBLE);
@@ -1232,6 +1208,39 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
+        ArrayAdapter<String> stringArrayAdapter;
+        if (items != null) {
+            items.add(0, "Select Specialization");
+            stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item, items);
+            speciality_spinner.setAdapter(stringArrayAdapter);
+
+        } else {
+            stringArrayAdapter =
+                    new ArrayAdapter<String>
+                            (this, android.R.layout.simple_spinner_dropdown_item,
+                                    getResources().getStringArray(R.array.speciality_values));
+            speciality_spinner.setAdapter(stringArrayAdapter);
+        }
+
+        //If TLD Query as Reason for Call (Chief Complaint) then set TLD Query as autoselected value for Spinner...
+        if(complaintView.getText().toString().contains("TLD Query")) {
+            speciality_spinner.setSelection(stringArrayAdapter.getPosition("TLD Query"));
+        }
+
+        if (special_value != null && !special_value.equalsIgnoreCase("EMPTY")) {
+            int spinner_position = stringArrayAdapter.getPosition(special_value);
+            speciality_spinner.setSelection(spinner_position);
+
+            if (AppConstants.AGENT_RESOLUTION.equalsIgnoreCase(special_value)) {
+                tilAgentResolution.setVisibility(View.VISIBLE);
+                String agent_resolution_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN);
+                etAgentResolution.setText(agent_resolution_value);
+            }
+        } else {
+
+        }
 
         /*editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
