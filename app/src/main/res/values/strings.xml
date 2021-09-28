@@ -749,4 +749,5 @@
     //sms via api
     <string name="sms_sent">SMS Sent!</string>
     <string name="sms_failed">Sending SMS Failed! Please try again later.</string>
+    <string name="Other">Other</string>
 </resources>

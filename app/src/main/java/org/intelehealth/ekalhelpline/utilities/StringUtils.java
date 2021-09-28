@@ -653,6 +653,9 @@ public final class StringUtils {
             case "अनुपलब्ध":
                 val = "Not Applicable";
                 break;
+            case "अन्य":
+                val = "Other";
+                break;
             default:
                 return val;
         }
