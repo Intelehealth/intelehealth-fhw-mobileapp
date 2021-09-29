@@ -67,7 +67,7 @@
 
     //Home Screen (after login)
     <string name="title_home_screen">घर</string>
-    <string name="button_new_pt">नया केस</string>
+    <string name="button_new_pt">नया मामला</string>
     <string name="button_find_pt">केस का पता लगाएं</string>
     <string name="button_diagnostic_tests">नैदानिक परीक्षण</string>
     <string name="button_active_pt">आक्टिव केस</string>
@@ -78,7 +78,7 @@
 
 
     //Identification Screen
-    <string name="title_activity_identification">नया केस जोड़ें</string>
+    <string name="title_activity_identification">नया मामला जोड़ें</string>
     <string name="identification_screen_prompt_first_name">पहला नाम *</string>
     <string name="identification_screen_prompt_middle_name">मध्य नाम</string>
     <string name="identification_screen_prompt_last_name">उपनाम *</string>
@@ -355,8 +355,8 @@
 
     <string name="text_medical_advice">नई चिकित्सा सलाह</string>
 <!--    <string name="text_new_visit">नए डॉक्टर का दौरा</string>-->
-    <string name="text_new_visit">नया केस</string>
-    <string name="new_patient">नया केस</string>
+    <string name="text_new_visit">नया मामला</string>
+    <string name="new_patient">नया मामला</string>
     <string name="find_patient">केस खोजे</string>
     <string name="video_library">वीडियो लाइब्रेरी</string>
 
