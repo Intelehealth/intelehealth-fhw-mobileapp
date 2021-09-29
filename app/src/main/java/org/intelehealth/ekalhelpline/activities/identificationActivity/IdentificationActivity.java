@@ -2517,7 +2517,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
                     spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("इतर")) {
                 if (et_medical_advice_additional.getText().toString().equalsIgnoreCase("")) {
-                    et_medical_advice_additional.setError(getString(R.string.error_field_required));
+                    et_medical_advice_additional.setError(getString(R.string.error_medical_visit_data));
                     focusView = et_medical_advice_additional;
                     cancel = true;
                     return;
