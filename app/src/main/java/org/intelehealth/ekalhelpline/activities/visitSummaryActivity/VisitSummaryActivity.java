@@ -235,6 +235,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String baseDir;
     String filePathPhyExam;
     File obsImgdir;
+    String special_value = "";
 
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
@@ -394,7 +395,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 //meera
-                if((speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Agent Resolution") || speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Curiosity Resolution")) && (!isVisitSpecialityExists))
+                if(speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Agent Resolution")  && (!isVisitSpecialityExists))
                 {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                     alertDialogBuilder.setMessage(getResources().getString(R.string.visit_summary_upload_reminder));
@@ -692,10 +693,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
+        special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
         //Hashmap to List<String> add all value
 
-        if(special_value.equalsIgnoreCase("Doctor not needed"))
+        if(special_value.equalsIgnoreCase("Curiosity Resolution"))
         {
             card_print.setVisibility(View.GONE);
             card_share.setVisibility(View.GONE);
