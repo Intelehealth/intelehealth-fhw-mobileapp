@@ -705,9 +705,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (items != null) {
             items.add(0, "Select Specialization");
+
+            //HSH-113 - Remove Curosity Resolution if visit is not uploaded...
+            if(!isVisitSpecialityExists) {
+                items.remove("Curiosity Resolution");
+            }
+
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
+
             speciality_spinner.setAdapter(stringArrayAdapter);
         } else {
             stringArrayAdapter =
