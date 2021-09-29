@@ -34,7 +34,7 @@
     <string name="title_activity_identification" translatable="false">" కొత్త రోగిని జోడించండి"</string>
     <string name="identification_screen_prompt_first_name">" మొదటి పేరు *"</string>
     <string name="identification_screen_prompt_middle_name">" మధ్య పేరు"</string>
-    <string name="identification_screen_prompt_last_name">" చివరి పేరు *"</string>
+    <string name="identification_screen_prompt_last_name">చివరి పేరు</string>
     <string name="identification_screen_prompt_address">" చిరునామా పంక్తి 1"</string>
     <string name="identification_screen_prompt_address2">" చిరునామా పంక్తి 2"</string>
     <string name="identification_screen_prompt_phone_number">" ఫోను నంబరు"</string>

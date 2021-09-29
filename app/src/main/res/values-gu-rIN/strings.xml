@@ -79,7 +79,7 @@
         <string name="title_activity_identification">નવા દર્દીને ઉમેરો</string>
         <string name="identification_screen_prompt_first_name">નામ*</string>
         <string name="identification_screen_prompt_middle_name">પિતા/માતા/પતિનું નામ</string>
-        <string name="identification_screen_prompt_last_name">અટક*</string>
+        <string name="identification_screen_prompt_last_name">અટક</string>
         <string name="identification_screen_prompt_address">સરનામું 1</string>
         <string name="identification_screen_prompt_address2">સરનામું 2</string>
         <string name="identification_screen_prompt_phone_number">ફોન નંબર</string>

@@ -49,7 +49,7 @@
     <string name="title_activity_identification" translatable="false">" নতুন রোগী জুড়ুন"</string>
     <string name="identification_screen_prompt_first_name">প্রথম নাম *</string>
     <string name="identification_screen_prompt_middle_name">মধ্য নাম</string>
-    <string name="identification_screen_prompt_last_name">শেষ নাম *</string>
+    <string name="identification_screen_prompt_last_name">শেষ নাম </string>
     <string name="identification_screen_prompt_address">ঠিকানা ১</string>
     <string name="identification_screen_prompt_address2">ঠিকানা ২</string>
     <string name="identification_screen_prompt_phone_number">ফোন নাম্বার</string>

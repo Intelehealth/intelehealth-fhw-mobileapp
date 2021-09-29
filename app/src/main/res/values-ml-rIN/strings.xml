@@ -50,7 +50,7 @@
     <string name="title_activity_identification" translatable="false">പുതിയ രോഗിയെ ഉൾപ്പെടുത്തുക</string>
     <string name="identification_screen_prompt_first_name">ആദ്യ പേര്*</string>
     <string name="identification_screen_prompt_middle_name">നടുവിലത്തെ പേര്</string>
-    <string name="identification_screen_prompt_last_name">അവസാന പേര്*</string>
+    <string name="identification_screen_prompt_last_name">അവസാന പേര്</string>
     <string name="identification_screen_prompt_address">വിലാസം ലൈന്‍1</string>
     <string name="identification_screen_prompt_address2">വിലാസം ലൈന്‍2</string>
     <string name="identification_screen_prompt_phone_number">" ഫോൺ നമ്പർ"</string>

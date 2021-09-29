@@ -79,7 +79,7 @@
     <string name="title_activity_identification">नया पेशेंट जोड़ें</string>
     <string name="identification_screen_prompt_first_name">पहला नाम *</string>
     <string name="identification_screen_prompt_middle_name">मध्य नाम</string>
-    <string name="identification_screen_prompt_last_name">उपनाम*</string>
+    <string name="identification_screen_prompt_last_name">उपनाम</string>
     <string name="identification_screen_prompt_address">पता पंक्ति 1</string>
     <string name="identification_screen_prompt_address2">पता पंक्ति 2</string>
     <string name="identification_screen_prompt_phone_number">फ़ोन नंबर</string>

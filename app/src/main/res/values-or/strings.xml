@@ -80,7 +80,7 @@
     <string name="identification_screen_prompt_education">ଶିକ୍ଷା ଚୟନ</string>
     <string name="identification_screen_prompt_gender">ଲିଙ୍ଗ *</string>
     <string name="identification_screen_prompt_first_name">ପ୍ରଥମ ନାମ *</string>
-    <string name="identification_screen_prompt_last_name">ଶେଷ ନାମ *</string>
+    <string name="identification_screen_prompt_last_name">ଶେଷ ନାମ</string>
     <string name="identification_screen_prompt_middle_name">ମଧ୍ୟମ ନାମ</string>
     <string name="identification_screen_prompt_phone_number">"ଫୋନ୍ ନମ୍ବର"</string>
     <string name="identification_screen_prompt_occupation">ବୃତ୍ତି</string>
