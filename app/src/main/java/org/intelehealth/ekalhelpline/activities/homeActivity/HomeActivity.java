@@ -33,6 +33,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.IntentSender;
+import androidx.annotation.Nullable;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +53,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
@@ -124,6 +134,10 @@ public class HomeActivity extends AppCompatActivity {
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
 
+    //for auto update app
+    private int REQUEST_CODE = 11;
+    String BASE_URL = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +162,13 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        checkAppVer();  //auto-update feature.
+        //auto-update feature.
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            //above 5.0
+            initAutoUpdateApp();
+        else
+            //below 5.0
+            checkAppVer();
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
@@ -953,6 +973,14 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        if(BuildConfig.DEBUG) {
+            BASE_URL = "https://"; // enter hellosathi url here...
+        }
+        else {
+            BASE_URL = "https://"; // enter hellosathi url here...
+        }
+
+        ApiClient.changeApiBaseUrl(BASE_URL);
         disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -962,6 +990,7 @@ public class HomeActivity extends AppCompatActivity {
                         int latestVersionCode = 0;
                         if (!res.getLatestVersionCode().isEmpty()) {
                             latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+                            Log.v("main", "latest app version: " + Integer.toString(latestVersionCode));
                         }
 
                         if (latestVersionCode > versionCode) {
@@ -1009,6 +1038,54 @@ public class HomeActivity extends AppCompatActivity {
         );
 
     }
+
+    //check update available and update the app
+    private void initAutoUpdateApp() {
+
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(HomeActivity.this);
+        //get update is available or not
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(new OnSuccessListener<AppUpdateInfo>() {
+            @Override
+            public void onSuccess(AppUpdateInfo result) {
+
+                //check in result update is available
+                //if then proceed to update app
+                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                        && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
+                {
+                    Log.e(TAG,"App update available");
+                    try {
+                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,HomeActivity.this,REQUEST_CODE);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    Log.e(TAG,"App update not available");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE)
+        {
+            //Toast.makeText(HomeActivity.this,"Start download update",Toast.LENGTH_LONG).show();
+            if(resultCode != RESULT_OK)
+            {
+                Log.e(TAG,"App update process fail");
+            }
+        }
+        else
+            Log.e(TAG,"App update REQUEST_CODE not matched");
+    }
+
 
 
 }
