@@ -188,6 +188,11 @@ public class HomeActivity extends AppCompatActivity {
         // manualSyncButton.setText(R.string.sync_now);
         manualSyncButton.setText(R.string.refresh);
 
+        tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
+        tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
+        tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
+        FollowUpNotificationWorker.schedule();
+
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -304,6 +309,15 @@ public class HomeActivity extends AppCompatActivity {
 //                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 //                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 //                }
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Do something after 100ms
+                        showFollowUpBadge();
+                    }
+                }, 8000);
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
@@ -322,10 +336,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         showProgressbar();
-        tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
-        tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
-        tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
-        FollowUpNotificationWorker.schedule();
+
 
     }
 
