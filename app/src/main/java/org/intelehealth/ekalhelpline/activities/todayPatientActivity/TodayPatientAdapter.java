@@ -26,7 +26,7 @@ import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
 public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapter.TodayPatientViewHolder> {
 
-    List<TodayPatientModel> todayPatientModelList, todayPatient_exitsurvey_commentsList;
+    List<TodayPatientModel> todayPatientModelList, todayPatient_exitsurvey_commentsList, todayPatient_Speciality;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -43,6 +43,17 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
+    }
+
+    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
+                               ArrayList<String> _listPatientUUID,
+                               List<TodayPatientModel> todayPatient_exitsurvey_commentsList,
+                               List<TodayPatientModel> todayPatient_Speciality) {
+        this.todayPatientModelList = todayPatientModelList;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+        this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
+        this.todayPatient_Speciality = todayPatient_Speciality;
     }
 
     @Override
@@ -122,49 +133,64 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         //TLD Query - start
         //to check only if visit is uploaded then show the tag...
-        if(todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
-                todayPatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+        for (int i = 0; i < todayPatient_Speciality.size(); i++) {
+            if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_Speciality.get(i).getPatientuuid())) {
+                /* Checking the entire data with our speciality added visits here, if no speciality means visit not uploaded
+                * so, our entire data patientuuid will not match with specality visti patientuuid as the record itself will not be present... */
 
-            if (todayPatientModel.getVisit_speciality() != null &&
-                    todayPatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+                //start
+                if(todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
+                        todayPatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
 
-                if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+                    if (todayPatientModel.getVisit_speciality() != null &&
+                            todayPatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
-                     if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                    holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
-                          }
-                     else {
-                    holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
-                          }
-            }
-             else {
-                    //check the spinner value for this from the exit survey selection and then
-                    // based on that checking add the text.
-                    for (int i = 0; i < todayPatient_exitsurvey_commentsList.size(); i++) {
-                        if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid())) {
-                            //check for TLD Closed and TLD Resolved
-                            if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Closed")) { //TLD Closed
-                                holder.tld_query_tag.setText("TLD CLOSED");
-                            }
-                            else if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
-                                holder.tld_query_tag.setText("TLD RESOLVED");
+                        if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+
+                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                                holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
                             }
                             else {
-                                holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
+                                holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                            }
+                        }
+                        else {
+                            //check the spinner value for this from the exit survey selection and then
+                            // based on that checking add the text.
+                            for (int j = 0; j < todayPatient_exitsurvey_commentsList.size(); j++) {
+                                if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(j).getPatientuuid())) {
+                                    //check for TLD Closed and TLD Resolved
+                                    if(todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                            .equalsIgnoreCase("TLD Closed")) { //TLD Closed
+                                        holder.tld_query_tag.setText("TLD CLOSED");
+                                    }
+                                    else if(todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                            .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
+                                        holder.tld_query_tag.setText("TLD RESOLVED");
+                                    }
+                                    else {
+                                        holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
+                                    }
+                                }
                             }
                         }
                     }
+                    else {
+                        holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                    }
                 }
+                else {
+                    holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+                }
+                //end
+
             }
             else {
-                holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                holder.tld_query_tag.setVisibility(View.GONE);
             }
         }
-        else {
-            holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
-        }
+
+
         //TLD Query - end
 
 

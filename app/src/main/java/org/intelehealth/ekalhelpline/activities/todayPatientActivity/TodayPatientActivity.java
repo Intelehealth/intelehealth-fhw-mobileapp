@@ -127,9 +127,13 @@ public class TodayPatientActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             List<TodayPatientModel> todayPatientModels = doQuery(offset);
+
+            List<TodayPatientModel> todayVisit_Speciality = todayVisit_speciality(offset); //get the speciality.
             List<TodayPatientModel> todayModel_ExitSurveyComments = getExitSurvey_Comments(); //fetch the value of the COMMENTS of ExitSurvey screen
-            //to check for TLD Closed or TLD Resolved... This will only come in Todays Visits and not in Active Visits...
-            mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this, listPatientUUID, todayModel_ExitSurveyComments);
+            //to check for TLD Closed or TLD Resolved... This will only come in Todays Visits and not in Active Visits.
+
+            mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this,
+                    listPatientUUID, todayModel_ExitSurveyComments, todayVisit_Speciality);
             mTodayPatientList.setAdapter(mActivePatientAdapter);
         }
 
@@ -185,8 +189,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
     }
 
-
-    private List<TodayPatientModel> doQuery(int offset) {
+    private List<TodayPatientModel> todayVisit_speciality(int offset) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
@@ -216,6 +219,54 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("value")))
+                        );
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        for (TodayPatientModel todayPatientModel : todayPatientList) {
+            Log.v("main", "todaysPatient: " + todayPatientModel.getFirst_name() + " " +
+                    todayPatientModel.getLast_name() + " " + todayPatientModel.getVisit_speciality() + "\n");
+        }
+        return todayPatientList;
+    }
+
+
+    private List<TodayPatientModel> doQuery(int offset) {
+        List<TodayPatientModel> todayPatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
+        Logger.logD(TAG, query);
+
+        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        todayPatientList.add(new TodayPatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
