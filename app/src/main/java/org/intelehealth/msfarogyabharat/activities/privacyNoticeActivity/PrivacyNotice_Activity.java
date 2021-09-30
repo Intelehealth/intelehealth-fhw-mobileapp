@@ -1,11 +1,13 @@
 package org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -241,13 +243,41 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 
         if (checkBox_cho.isChecked() && v.getId() == R.id.button_accept) {
 
-            //Clear HouseHold UUID from Session for new registration
-            sessionManager.setHouseholdUuid("");
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
+                    .setMessage(R.string.safe_abortion_consent);
+            AlertDialog alertDialog = builder1.create();
 
-            Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
-            intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
-            Log.d("Privacy", "selected radio: " + accept.getText().toString());
-            startActivity(intent);
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Clear HouseHold UUID from Session for new registration
+                    sessionManager.setHouseholdUuid("");
+
+                    Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
+                    intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
+                    Log.d("Privacy", "selected radio: " + accept.getText().toString());
+                    startActivity(intent);
+                }
+            });
+            alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, getResources().getString(R.string.not_applicable), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Clear HouseHold UUID from Session for new registration
+                    sessionManager.setHouseholdUuid("");
+
+                    Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
+                    intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
+                    Log.d("Privacy", "selected radio: " + accept.getText().toString());
+                    startActivity(intent);
+                }
+            });
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            alertDialog.show();
         } else if (checkBox_cho.isChecked() && v.getId() == R.id.button_reject) {
             Toast.makeText(PrivacyNotice_Activity.this,
                     getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();

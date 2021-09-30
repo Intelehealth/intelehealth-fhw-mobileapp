@@ -808,4 +808,6 @@
     <string name="dialog_title_enter_file_name">Enter filename</string>
     <string name="resolution_upload_reminder">Please upload first before attempting to give a resolution.</string>
     <string name="give_resolution_success">Resolution given successfully.</string>
+    <string name="not_applicable">Not applicable</string>
+    <string name="safe_abortion_consent">If the caller\'s query is regarding safe abortion, Ask if the pregnant person can come to the phone if available. If the pregnant person cannot come to the phone, ask for them to call back later. Make sure the person on the call is the pregnant person before proceeding further. Have you confirmed?</string>
 </resources>
