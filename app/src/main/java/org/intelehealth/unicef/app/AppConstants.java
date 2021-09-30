@@ -2,25 +2,26 @@ package org.intelehealth.unicef.app;
 
 
 import android.os.Environment;
+import android.util.Log;
 
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import org.intelehealth.unicef.database.InteleHealthDatabaseHelper;
+import org.intelehealth.unicef.networkApiCalls.ApiClient;
+import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.syncModule.LastSyncWork;
+import org.intelehealth.unicef.syncModule.SyncWorkManager;
 import org.intelehealth.unicef.syncModule.VisitSummaryWork;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.NotificationUtils;
+import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.UuidGenerator;
-import org.intelehealth.unicef.networkApiCalls.ApiClient;
-import org.intelehealth.unicef.networkApiCalls.ApiInterface;
-import org.intelehealth.unicef.syncModule.SyncWorkManager;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -81,7 +82,6 @@ public class AppConstants {
                     .build();
 
 
-
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
             new OneTimeWorkRequest.Builder(VisitSummaryWork.class)
@@ -101,5 +101,21 @@ public class AppConstants {
     public static final int SYNC_PUSH_DATA_DONE = 2;
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
+
+    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-unicef-default-rtdb.asia-southeast1.firebasedatabase.app/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
+
+
+    public static String getFirebaseRTDBUrl() {
+        return FIREBASE_REAL_TIME_DB_BASE_URL;
+
+    }
+
+    public static String getFirebaseRTDBRootRef() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF;
+
+    }
+
+
 }
 

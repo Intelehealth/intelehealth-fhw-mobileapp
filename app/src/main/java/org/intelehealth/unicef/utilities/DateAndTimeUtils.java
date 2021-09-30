@@ -313,6 +313,19 @@ public class DateAndTimeUtils {
         return formattedDate;
     }
 
+    public static String prescriptionDateFormat(String dateString) {
+        String formattedDate = null;
+        try {
+            DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            DateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            Date date = originalFormat.parse(dateString);
+            formattedDate = targetFormat.format(date);
+        } catch (Exception ex) {
+            FirebaseCrashlytics.getInstance().recordException(ex);
+        }
+        return formattedDate;
+    }
+
     public static int getMonth(String s1) {
         if (s1 == null) return 0;
 

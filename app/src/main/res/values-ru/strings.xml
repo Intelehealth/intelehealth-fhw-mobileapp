@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
+    <string name="app_name" translatable="false">Телемед КГ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Далее</string>
