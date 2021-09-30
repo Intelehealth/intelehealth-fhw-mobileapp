@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
+import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -1877,8 +1879,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
-        String mDate = DateAndTimeUtils.prescriptionDateFormat(startDateTime);
-
+        String mDate = sessionManager.getAppLanguage().equalsIgnoreCase("ru") ? ru__or_dob(DateAndTimeUtils.SimpleDatetoLongDate(startDateTime)):DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+        mDate = mDate.replaceAll("-"," ");
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
             mPatHist = "";
