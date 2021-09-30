@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Telemed KG - APP</string>
+    <string name="app_name" translatable="false">Telemed KG</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Next</string>
@@ -474,7 +474,7 @@
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor Details</string>
-    <string name="health_worker">Health worker</string>
+    <string name="health_worker">Family Doctor</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
@@ -523,7 +523,7 @@
     <string name="visit_data_failed">Visit Data Failed</string>
     <string name="patient_data_failed">Patient Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
-    <string name="no_data_active_patients">No patient records for this health worker found.</string>
+    <string name="no_data_active_patients">No patient records for this family doctor found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
@@ -555,7 +555,7 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Telemed KG - APP. To Download your prescription please click here "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Telemed KG. To Download your prescription please click here "</string>
     <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
 
 
@@ -584,14 +584,14 @@
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
     <string name="active_defaultTag">Active</string>
     <string name="since_when_have_you_had_this_symptom">Since when have you had this symptom?</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Hello\n\n I’m Ayu, a digital Family Doctor. Let’s get started!</string>
     <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Hello\n\n I’m Ayu, a digital health assistant. Let’s get started!</string>
     <string name="hello_my_name_is">"Hello, my name is "</string>
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Telemed KG - APP is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
-    <string name="intelehealth_name">Telemed KG - APP</string>
+    <string name="intelehealth_a_telemedicine_platform">Telemed KG is a telemedicine application that connects Family Doctors in rural and remote areas with Specialist doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_name">Telemed KG</string>
 
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
@@ -626,7 +626,7 @@
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Family Doctor) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>

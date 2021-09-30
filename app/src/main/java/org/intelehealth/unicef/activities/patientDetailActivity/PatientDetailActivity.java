@@ -616,25 +616,12 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (patient_new.getGender() == null || patient_new.getGender().equals("")) {
             genderView.setVisibility(View.GONE);
         } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                if (patient_new.getGender().equalsIgnoreCase("M")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                } else if (patient_new.getGender().equalsIgnoreCase("F")) {
-                    genderView.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                } else {
-                    genderView.setText(patient_new.getGender());
-                }
-            } else {
-                genderView.setText(patient_new.getGender());
+            if (mGender.equalsIgnoreCase("M")) {
+                mGender = getResources().getString(R.string.gender_male);
+            } else if (mGender.equalsIgnoreCase("F")) {
+                mGender = getResources().getString(R.string.gender_female);
             }
+            genderView.setText(mGender);
 
 
         }
@@ -682,9 +669,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
         String country = mSwitch_Country_edit(patient_new.getCountry(), sessionManager.getAppLanguage());
         if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
-           phoneView.setText(String.format("+91 - %s", patient_new.getPhone_number()));
+            phoneView.setText(String.format("+91 - %s", patient_new.getPhone_number()));
         } else if (country.equalsIgnoreCase("Kyrgyzstan") || country.equalsIgnoreCase("Кыргызстан")) {
-           phoneView.setText(String.format("+996 - %s", patient_new.getPhone_number()));
+            phoneView.setText(String.format("+996 - %s", patient_new.getPhone_number()));
         }
 
 
@@ -1306,10 +1293,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             recreate();
         }
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
+
     public Context setLocale(Context context) {
         SessionManager sessionManager = new SessionManager(context);
         String appLanguage = sessionManager.getAppLanguage();
