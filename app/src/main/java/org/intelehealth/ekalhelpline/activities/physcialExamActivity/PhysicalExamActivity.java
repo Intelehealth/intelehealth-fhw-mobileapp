@@ -11,6 +11,7 @@ import android.os.Environment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -365,7 +366,29 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         } else {
             physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).setUnselected();
         }
+
+        //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+        Node rootNode = physicalExamMap.getExamNode(physExamPos).getOption(groupPosition);
+        if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                    physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+
+                }
+            }
+        }
+        Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
+        if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+            for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                Node childNode = rootNode.getOptionsList().get(i);
+                if (!childNode.getId().equals(question.getId())) {
+                    physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                }
+            }
+        }
         adapter.notifyDataSetChanged();
+
 
 
         if (question.getInputType() != null && question.isSelected()) {

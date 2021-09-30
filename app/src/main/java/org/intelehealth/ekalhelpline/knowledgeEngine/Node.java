@@ -68,6 +68,8 @@ import org.intelehealth.ekalhelpline.activities.complaintNodeActivity.CustomArra
  */
 public class Node implements Serializable {
 
+    private boolean isMultiChoice = false;
+    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
     private String id;
     private String text;
     private String display;
@@ -156,7 +158,12 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
-            //this.id = jsonNode.getString("id");
+            this.id = jsonNode.getString("id");
+
+            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+
+            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
+
 
             this.text = jsonNode.getString("text");
 
@@ -332,8 +339,9 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
-        //this.id = source.id;
+        this.id = source.id;
         this.text = source.text;
+        this.isMultiChoice = source.isMultiChoice;
         this.display = source.display;
         this.display_gujarati = source.display_gujarati;
         this.display_marathi = source.display_marathi;
@@ -2750,6 +2758,21 @@ private static String ml_en(String unit) {
         return mLanguage;
     }
 
+    public boolean isMultiChoice() {
+        return isMultiChoice;
+    }
+
+    public void setMultiChoice(boolean multiChoice) {
+        isMultiChoice = multiChoice;
+    }
+
+    public boolean isExcludedFromMultiChoice() {
+        return isExcludedFromMultiChoice;
+    }
+
+    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
+        isExcludedFromMultiChoice = excludedFromMultiChoice;
+    }
 
     @Override
     public String toString() {
