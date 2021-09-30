@@ -486,7 +486,7 @@
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor Details</string>
-    <string name="health_worker">Health worker</string>
+    <string name="health_worker">Counsellor/Out reach worker</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
@@ -545,7 +545,7 @@
     <string name="patient_data_failed">Case Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
 <!--    <string name="no_data_active_patients">No patient records for this health worker found.</string>-->
-    <string name="no_data_active_patients">No Case records for this health worker found.</string>
+    <string name="no_data_active_patients">No Case records for this Counsellor/Out reach worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>

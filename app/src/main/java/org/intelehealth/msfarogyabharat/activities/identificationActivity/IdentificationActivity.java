@@ -985,19 +985,19 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        try { //mobile_phone_type adapter setting...
-            String mPhoneTypeLanguage = "mobile_phone_type_" + sessionManager.getAppLanguage();
-            int mMobilePhoneType = res.getIdentifier(mPhoneTypeLanguage, "array", getApplicationContext().getPackageName());
-            if (mMobilePhoneType != 0) {
-                phoneTypeAdapter = ArrayAdapter.createFromResource(this,
-                        mMobilePhoneType, R.layout.custom_spinner);
-
-            }
-            mPhoneType.setAdapter(phoneTypeAdapter);
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
-            Logger.logE("Identification", "#648", e);
-        }
+//        try { //mobile_phone_type adapter setting...
+//            String mPhoneTypeLanguage = "mobile_phone_type_" + sessionManager.getAppLanguage();
+//            int mMobilePhoneType = res.getIdentifier(mPhoneTypeLanguage, "array", getApplicationContext().getPackageName());
+//            if (mMobilePhoneType != 0) {
+//                phoneTypeAdapter = ArrayAdapter.createFromResource(this,
+//                        mMobilePhoneType, R.layout.custom_spinner);
+//
+//            }
+//            mPhoneType.setAdapter(phoneTypeAdapter);
+//        } catch (Exception e) {
+//            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+//            Logger.logE("Identification", "#648", e);
+//        }
 
         try { //helplineknowledge adapter setting...
             String mHelpLineLanguage = "helpline_knowledge_" + sessionManager.getAppLanguage();
@@ -1730,17 +1730,17 @@ public class IdentificationActivity extends AppCompatActivity {
 
 
             //kind of phone
-            if (patient1.getEconomic_status().equalsIgnoreCase("Not provided"))
-                mPhoneType.setSelection(0);
-
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
-                } else {
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
-                }
-            }
+//            if (patient1.getEconomic_status().equalsIgnoreCase("Not provided"))
+//                mPhoneType.setSelection(0);
+//
+//            else {
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+//                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
+//                } else {
+//                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
+//                }
+//            }
             //kind of phone
 
 
@@ -2158,19 +2158,19 @@ public class IdentificationActivity extends AppCompatActivity {
             //end - other edittext
 
 
-            if (patient1.getEconomic_status().equalsIgnoreCase("Not provided"))
-                mPhoneType.setSelection(0);
-//            else
-//                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
-            else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
-                   // mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
-                } else {
-                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
-                }
-            }
+//            if (patient1.getEconomic_status().equalsIgnoreCase("Not provided"))
+//                mPhoneType.setSelection(0);
+////            else
+////                mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
+//            else {
+//                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//                    String phoneNumber = switch_hi_PhoneType_edit(patient1.getEconomic_status());
+//                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(phoneNumber));
+//                   // mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
+//                } else {
+//                    mPhoneType.setSelection(phoneTypeAdapter.getPosition(patient1.getEconomic_status()));
+//                }
+//            }
 //            if (callerRelationAdapter.getPosition(patient1.getSdw()) == -1)
 
 
@@ -4239,15 +4239,15 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //what kind of mobile phone
-        if (mPhoneType.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) mPhoneType.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = mPhoneType;
-            cancel = true;
-            return;
-        }
+//        if (mPhoneType.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView) mPhoneType.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = mPhoneType;
+//            cancel = true;
+//            return;
+//        }
 
         if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -4366,10 +4366,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            /*
+            todo not mandatory
             if (good_mobile_edittext.getText().toString().equals("")) {
                 good_mobile_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
+            }*/
 
             //10. ever married
             if (ever_married_spinner.getSelectedItemPosition() == 0) {
@@ -4382,11 +4384,13 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+           /*
+            todo not mandatory
             if (age_marriage_edittext.getText().toString().equals("")) {
                 age_marriage_edittext.setError(getString(R.string.error_field_required));
                 return;
             }
-
+*/
             //10. type of marriage
             if (type_marriage_spinner.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
@@ -4398,23 +4402,31 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+           /*
+            todo not mandatory
             if (maternal_address_edittext.getText().toString().equals("")) {
                 maternal_address_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
-            if (maternal_mobile_edittext.getText().toString().equals("")) {
+            }*/
+           /*
+           todo not mandatory
+           if (maternal_mobile_edittext.getText().toString().equals("")) {
                 maternal_mobile_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
-            if (address_inlaws_edittext.getText().toString().equals("")) {
+            }*/
+           /*
+           todo not mandatory
+           if (address_inlaws_edittext.getText().toString().equals("")) {
                 address_inlaws_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
-            if (husband_mobile_edittext.getText().toString().equals("")) {
+            }*/
+       /*
+          todo not mandatory
+         if (husband_mobile_edittext.getText().toString().equals("")) {
                 husband_mobile_edittext.setError(getString(R.string.error_field_required));
                 return;
             }
-
+*/
             //10. current residing address of survivor
             if (current_residing_address_spinner.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) current_residing_address_spinner.getSelectedView();
@@ -5343,7 +5355,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
 //            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
+//            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -6058,15 +6070,15 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //what kind of mobile phone
-        if (mPhoneType.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) mPhoneType.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = mPhoneType;
-            cancel = true;
-            return;
-        }
+//        if (mPhoneType.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView) mPhoneType.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = mPhoneType;
+//            cancel = true;
+//            return;
+//        }
 
         if (!safe_abortion_radiobtn.isChecked() && !violence_radiobtn.isChecked()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -6185,10 +6197,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+            /*
+            todo not mandatory
             if (good_mobile_edittext.getText().toString().equals("")) {
                 good_mobile_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
+            }*/
 
             //10. ever married
             if (ever_married_spinner.getSelectedItemPosition() == 0) {
@@ -6201,10 +6215,12 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
-            if (age_marriage_edittext.getText().toString().equals("")) {
+          /*
+           todo not mandatory
+           if (age_marriage_edittext.getText().toString().equals("")) {
                 age_marriage_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
+            }*/
 
             //10. type of marriage
             if (type_marriage_spinner.getSelectedItemPosition() == 0) {
@@ -6217,22 +6233,30 @@ public class IdentificationActivity extends AppCompatActivity {
                 return;
             }
 
+          /*
+            todo not mandatory
             if (maternal_address_edittext.getText().toString().equals("")) {
                 maternal_address_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
-            if (maternal_mobile_edittext.getText().toString().equals("")) {
+            }*/
+           /*
+            todo not mandatory
+           if (maternal_mobile_edittext.getText().toString().equals("")) {
                 maternal_mobile_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
+            }*/
+           /*
+            todo not mandatory
             if (address_inlaws_edittext.getText().toString().equals("")) {
                 address_inlaws_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
+            }*/
+           /*
+            todo not mandatory
             if (husband_mobile_edittext.getText().toString().equals("")) {
                 husband_mobile_edittext.setError(getString(R.string.error_field_required));
                 return;
-            }
+            }*/
 
             //10. current residing address of survivor
             if (current_residing_address_spinner.getSelectedItemPosition() == 0) {
@@ -7010,7 +7034,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
 //            patientAttributesDTO.setValue(mPhoneType.getSelectedItem().toString());
-            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
+//            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mPhoneType));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - new fields spinner

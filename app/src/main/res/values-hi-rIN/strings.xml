@@ -176,7 +176,8 @@
     <string name="title_activity_patient_summary">संछेप मामला</string>
     <string name="visit_summary_temperature">तापमान(सेल्सियस)</string>
     <string name="visit_summary_pulseox">SpO2 (%)</string>
-    <string name="visit_summary_hw_on_duty">समुदाय स्वास्थ्यकर्मी ड्यूटी पर</string>
+<!--    <string name="visit_summary_hw_on_duty">समुदाय स्वास्थ्यकर्मी ड्यूटी पर</string>-->
+    <string name="visit_summary_hw_on_duty">समुदाय काउंसलर/आउटरीच वर्कर ड्यूटी पर</string>
     <string name="visit_summary_vitals_heading"> नब्ज</string>
     <string name="visit_summary_height_heading">कद(सेंटीमीटर)</string>
     <string name="visit_summary_weight">वजन(किलोग्राम)</string>
@@ -492,7 +493,8 @@
     <string name="respiratory_rate">श्वसन दर</string>
     <string name="click_to_download_the_images">चित्र डाउनलोड करने के लिए क्लिक करें</string>
     <string name="doctor">डॉक्टर का विवरण</string>
-    <string name="health_worker">स्वास्थ्यकर्मी</string>
+<!--    <string name="health_worker">स्वास्थ्यकर्मी</string>-->
+    <string name="health_worker">काउंसलर/आउटरीच वर्कर</string>
     <string name="priority">प्राथमिकता</string>
     <string name="server_url">सर्वर url</string>
     <string name="sync">सिंक</string>
@@ -549,7 +551,7 @@
 <!--    <string name="visit_data_failed">यात्रा डेटा असफल रहा</string>-->
     <string name="patient_data_failed">मामला डेटा असफल</string>
     <string name="privacy_notice_title">गोपनीयता सुचना</string>
-    <string name="no_data_active_patients">इस स्वस्थ्य कार्यकर्ता के नाम पर कोई रोगी रिकॉर्ड नहीं ह </string>
+    <string name="no_data_active_patients">इस काउंसलर/आउटरीच वर्कर के नाम पर कोई रोगी रिकॉर्ड नहीं ह </string>
     <string name="syncing_visitDialog">सिंकिंग</string>
     <string name="successfully_synced_notif">सफलतापूर्वक सिंक किया गया</string>
     <string name="languages">भाषए</string>
