@@ -153,33 +153,6 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                             }
                         }
                     }
-
-
-                   /* for (int i = 0; i < todayPatient_exitsurvey_commentsList.size(); i++) {
-                        for (int j = 0; j < todayPatientModelList.size(); j++) {
-                            if(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid()
-                                    .equalsIgnoreCase(todayPatientModelList.get(j).getPatientuuid())) {
-
-                            }
-                        }
-
-                    }*/
-
-
-                  /*  for (int i = 0; i < listPatientUUID.size(); i++) {
-                        if (todayPatient_exitsurvey_commentsList.get(i).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
-                            //check for TLD Closed and TLD Resolved
-                            if(todayPatient_exitsurvey_commentsList.get(position).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Closed")) {
-                                holder.tld_query_tag.setText("TLD ClOSED");
-                            }
-                            else if(todayPatient_exitsurvey_commentsList.get(position).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Resolved")) {
-                                holder.tld_query_tag.setText("TLD RESOLVED");
-                            }
-                        }
-                    }*/
-
                 }
             }
             else {

@@ -109,7 +109,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                 if (mActivePatientAdapter.todayPatientModelList != null && mActivePatientAdapter.todayPatientModelList.size() < limit) {
                     return;
                 }
-                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
+                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
                     Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
@@ -127,7 +128,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (sessionManager.isPullSyncFinished()) {
             List<TodayPatientModel> todayPatientModels = doQuery(offset);
             List<TodayPatientModel> todayModel_ExitSurveyComments = getExitSurvey_Comments(); //fetch the value of the COMMENTS of ExitSurvey screen
-            //to check for TLD Closed or TLD Resolved...
+            //to check for TLD Closed or TLD Resolved... This will only come in Todays Visits and not in Active Visits...
             mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this, listPatientUUID, todayModel_ExitSurveyComments);
             mTodayPatientList.setAdapter(mActivePatientAdapter);
         }

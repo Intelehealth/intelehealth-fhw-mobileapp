@@ -14,8 +14,13 @@ public class ActivePatientModel {
     String date_of_birth;
     String phone_number;
     String sync;
+    String visit_speciality;
+    String exitsurvey_comments;
 
-    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
+    //This constructor is for default operation of sync....
+    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id,
+                              String first_name, String middle_name, String last_name, String date_of_birth,
+                              String phone_number, String sync) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -28,6 +33,45 @@ public class ActivePatientModel {
         this.phone_number = phone_number;
         this.sync = sync;
     }
+
+    //This constructor is for Getting the comments of the visit whose Exit Survey is added....
+    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id,
+                              String first_name, String middle_name, String last_name, String date_of_birth,
+                              String phone_number, String sync, String visit_speciality,
+                              String exitsurvey_comments) {
+        this.uuid = uuid;
+        this.patientuuid = patientuuid;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.openmrs_id = openmrs_id;
+        this.first_name = first_name;
+        this.middle_name = middle_name;
+        this.last_name = last_name;
+        this.date_of_birth = date_of_birth;
+        this.phone_number = phone_number;
+        this.sync = sync;
+        this.visit_speciality = visit_speciality;
+        this.exitsurvey_comments = exitsurvey_comments;
+    }
+
+    //This constructor is for getting the visit speciality values...
+    public ActivePatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id,
+                              String first_name, String middle_name, String last_name, String date_of_birth,
+                              String phone_number, String sync, String visit_speciality) {
+        this.uuid = uuid;
+        this.patientuuid = patientuuid;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.openmrs_id = openmrs_id;
+        this.first_name = first_name;
+        this.middle_name = middle_name;
+        this.last_name = last_name;
+        this.date_of_birth = date_of_birth;
+        this.phone_number = phone_number;
+        this.sync = sync;
+        this.visit_speciality = visit_speciality;
+    }
+
 
     public String getUuid() {
         return uuid;
@@ -115,5 +159,21 @@ public class ActivePatientModel {
 
     public void setSync(String sync) {
         this.sync = sync;
+    }
+
+    public String getVisit_speciality() {
+        return visit_speciality;
+    }
+
+    public void setVisit_speciality(String visit_speciality) {
+        this.visit_speciality = visit_speciality;
+    }
+
+    public String getExitsurvey_comments() {
+        return exitsurvey_comments;
+    }
+
+    public void setExitsurvey_comments(String exitsurvey_comments) {
+        this.exitsurvey_comments = exitsurvey_comments;
     }
 }

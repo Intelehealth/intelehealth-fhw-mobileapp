@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
+import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
@@ -26,7 +27,7 @@ import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDet
 
 public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
 
-    List<ActivePatientModel> activePatientModels;
+    List<ActivePatientModel> activePatientModels, activePatient_exitsurvey_commentsList;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -35,6 +36,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+    }
+
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID,
+                                List<ActivePatientModel> activePatient_exitsurvey_commentsList) {
+        this.activePatientModels = activePatientModels;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+        this.activePatient_exitsurvey_commentsList = activePatient_exitsurvey_commentsList;
     }
 
     @Override
@@ -116,6 +125,50 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 holder.ivPriscription.setTag("1");
             }
         }
+
+        //TLD Query - start
+        //to check only if visit is uploaded then show the tag...
+        if(activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
+                activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+
+            if (activePatientModel.getVisit_speciality() != null &&
+                    activePatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+
+                if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+
+                    if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                        holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
+                    }
+                    else {
+                        holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                    }
+                }
+               /* else {
+                    //check the spinner value for this from the exit survey selection and then
+                    // based on that checking add the text.
+                    for (int i = 0; i < todayPatient_exitsurvey_commentsList.size(); i++) {
+                        if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid())) {
+                            //check for TLD Closed and TLD Resolved
+                            if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
+                                    .equalsIgnoreCase("TLD Closed")) {
+                                holder.tld_query_tag.setText("TLD CLOSED");
+                            }
+                            else if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
+                                    .equalsIgnoreCase("TLD Resolved")) {
+                                holder.tld_query_tag.setText("TLD RESOLVED");
+                            }
+                        }
+                    }
+                }*/
+            }
+            else {
+                holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+            }
+        }
+        else {
+            holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+        }
+        //TLD Query - end
     }
 
     @Override
@@ -135,6 +188,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
+        private TextView tld_query_tag;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
@@ -143,6 +197,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
+            tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
             rootView = itemView;
         }
 
