@@ -34,6 +34,23 @@ public class TodayPatientModel {
         this.exitsurvey_comments = exitsurvey_comments;
     }
 
+    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate,
+                             String openmrs_id, String first_name, String middle_name, String last_name,
+                             String date_of_birth, String phone_number, String sync, String visit_speciality) {
+        this.uuid = uuid;
+        this.patientuuid = patientuuid;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.openmrs_id = openmrs_id;
+        this.first_name = first_name;
+        this.middle_name = middle_name;
+        this.last_name = last_name;
+        this.date_of_birth = date_of_birth;
+        this.phone_number = phone_number;
+        this.sync = sync;
+        this.visit_speciality = visit_speciality;
+    }
+
     public String getUuid() {
         return uuid;
     }

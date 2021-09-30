@@ -26,7 +26,7 @@ import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
 public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapter.TodayPatientViewHolder> {
 
-    List<TodayPatientModel> todayPatientModelList;
+    List<TodayPatientModel> todayPatientModelList, todayPatient_exitsurvey_commentsList;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -35,6 +35,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+    }
+
+    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
+                               ArrayList<String> _listPatientUUID, List<TodayPatientModel> todayPatient_exitsurvey_commentsList) {
+        this.todayPatientModelList = todayPatientModelList;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+        this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
     }
 
     @Override
@@ -132,6 +140,45 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
              else {
                     //check the spinner value for this from the exit survey selection and then
                     // based on that checking add the text.
+                    for (int i = 0; i < todayPatient_exitsurvey_commentsList.size(); i++) {
+                        if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid())) {
+                            //check for TLD Closed and TLD Resolved
+                            if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
+                                    .equalsIgnoreCase("TLD Closed")) {
+                                holder.tld_query_tag.setText("TLD CLOSED");
+                            }
+                            else if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
+                                    .equalsIgnoreCase("TLD Resolved")) {
+                                holder.tld_query_tag.setText("TLD RESOLVED");
+                            }
+                        }
+                    }
+
+
+                   /* for (int i = 0; i < todayPatient_exitsurvey_commentsList.size(); i++) {
+                        for (int j = 0; j < todayPatientModelList.size(); j++) {
+                            if(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid()
+                                    .equalsIgnoreCase(todayPatientModelList.get(j).getPatientuuid())) {
+
+                            }
+                        }
+
+                    }*/
+
+
+                  /*  for (int i = 0; i < listPatientUUID.size(); i++) {
+                        if (todayPatient_exitsurvey_commentsList.get(i).getPatientuuid().equalsIgnoreCase(listPatientUUID.get(i))) {
+                            //check for TLD Closed and TLD Resolved
+                            if(todayPatient_exitsurvey_commentsList.get(position).getExitsurvey_comments()
+                                    .equalsIgnoreCase("TLD Closed")) {
+                                holder.tld_query_tag.setText("TLD ClOSED");
+                            }
+                            else if(todayPatient_exitsurvey_commentsList.get(position).getExitsurvey_comments()
+                                    .equalsIgnoreCase("TLD Resolved")) {
+                                holder.tld_query_tag.setText("TLD RESOLVED");
+                            }
+                        }
+                    }*/
 
                 }
             }
