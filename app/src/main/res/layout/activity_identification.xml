@@ -1020,63 +1020,6 @@
                         <!-- end of children -->
 
                         <!-- start of caste spinner -->
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/identification_caste_textview"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="horizontal"
-                                android:weightSum="4">
-
-                                <EditText
-                                    android:id="@+id/identification_caste_edittext"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:clickable="false"
-                                    android:cursorVisible="false"
-                                    android:drawableStart="@drawable/person_icon"
-                                    android:drawableLeft="@drawable/person_icon"
-                                    android:drawablePadding="10dp"
-                                    android:focusable="false"
-                                    android:focusableInTouchMode="false"
-                                    android:fontFamily="@font/lato_regular"
-                                    android:freezesText="true"
-                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
-                                    android:inputType="textCapWords"
-                                    android:maxLines="1"
-                                    android:text="@string/identification_screen_prompt_caste"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                                <Spinner
-                                    android:id="@+id/spinner_caste_selection"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:entries="@array/caste_selection_en"/>
-
-                            </LinearLayout>
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <EditText
-                            android:id="@+id/other_caste_edittext"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/txt_others"
-                            android:imeOptions="actionDone|flagNoExtractUi"
-                            android:inputType="text"
-                            android:textSize="@dimen/card_content_sub_text_size"
-                            android:visibility="gone" />
-
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginBottom="10dp"
-                            android:background="?android:attr/listDivider" />
-                        <!-- end of spinner caste -->
 
                         <!-- start of contact type -->
                         <TextView
@@ -1200,17 +1143,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
+                            android:visibility="gone"
                             android:text="@string/what_kind_of_phone_do_you_personally_own"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="10dp" />
+                            android:layout_height="10dp"
+                            android:visibility="gone"/>
 
                         <Spinner
                             android:id="@+id/spinner_phone_status"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
 
 
                         <View
@@ -1781,6 +1727,65 @@
                         <!-- end of complaint -->
                             </LinearLayout>
                         </FrameLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/identification_caste_textview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:weightSum="4">
+
+                                <EditText
+                                    android:id="@+id/identification_caste_edittext"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:clickable="false"
+                                    android:cursorVisible="false"
+                                    android:drawableStart="@drawable/person_icon"
+                                    android:drawableLeft="@drawable/person_icon"
+                                    android:drawablePadding="10dp"
+                                    android:focusable="false"
+                                    android:focusableInTouchMode="false"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:freezesText="true"
+                                    android:imeOptions="actionUnspecified|flagNoExtractUi"
+                                    android:inputType="textCapWords"
+                                    android:maxLines="1"
+                                    android:text="@string/identification_screen_prompt_caste"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_caste_selection"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:entries="@array/caste_selection_en"/>
+
+                            </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <EditText
+                            android:id="@+id/other_caste_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/txt_others"
+                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:inputType="text"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:visibility="gone" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider" />
+                        <!-- end of spinner caste -->
+
                     </LinearLayout>
 
                     <LinearLayout
