@@ -37,13 +37,13 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.listPatientUUID = _listPatientUUID;
     }
 
-    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
+  /*  public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
                                ArrayList<String> _listPatientUUID, List<TodayPatientModel> todayPatient_exitsurvey_commentsList) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
-    }
+    }*/
 
     public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
                                ArrayList<String> _listPatientUUID,
@@ -142,16 +142,20 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 if(todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
                         todayPatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
 
-                    if (todayPatientModel.getVisit_speciality() != null &&
-                            todayPatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+                    if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
+                            todayPatient_Speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
                         if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                                 holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
                             else {
                                 holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
                         }
                         else {
@@ -163,10 +167,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                                     if(todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
                                             .equalsIgnoreCase("TLD Closed")) { //TLD Closed
                                         holder.tld_query_tag.setText("TLD CLOSED");
+                                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                                     }
                                     else if(todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
                                             .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
                                         holder.tld_query_tag.setText("TLD RESOLVED");
+                                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                                     }
                                     else {
                                         holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
@@ -176,23 +184,25 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         }
                     }
                     else {
-                        holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                       // holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
                     }
                 }
                 else {
-                    holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+                    //holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
                 }
                 //end
 
             }
             else {
-                holder.tld_query_tag.setVisibility(View.GONE);
+              //  holder.tld_query_tag.setVisibility(View.GONE);
             }
         }
 
 
         //TLD Query - end
-
+        if(holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_query_tag.setVisibility(View.GONE);
+        }
 
     }
 
