@@ -13,10 +13,12 @@ public class TodayPatientModel {
     String phone_number;
     String sync;
     String visit_speciality;
+    String exitsurvey_comments;
 
     public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate,
                              String openmrs_id, String first_name, String middle_name, String last_name,
-                             String date_of_birth, String phone_number, String sync, String visit_speciality) {
+                             String date_of_birth, String phone_number, String sync, String visit_speciality,
+                             String exitsurvey_comments) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -29,6 +31,7 @@ public class TodayPatientModel {
         this.phone_number = phone_number;
         this.sync = sync;
         this.visit_speciality = visit_speciality;
+        this.exitsurvey_comments = exitsurvey_comments;
     }
 
     public String getUuid() {
@@ -125,5 +128,13 @@ public class TodayPatientModel {
 
     public void setVisit_speciality(String visit_speciality) {
         this.visit_speciality = visit_speciality;
+    }
+
+    public String getExitsurvey_comments() {
+        return exitsurvey_comments;
+    }
+
+    public void setExitsurvey_comments(String exitsurvey_comments) {
+        this.exitsurvey_comments = exitsurvey_comments;
     }
 }
