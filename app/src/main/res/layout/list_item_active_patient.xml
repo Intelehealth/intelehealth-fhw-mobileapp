@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
 
@@ -38,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:includeFontPadding="false"
+                    tools:text="@string/test_2_vibha_onplus_6t_10fke_7"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -45,7 +47,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    tools:text="Age: 11 years, 5 months"
                     android:fontFamily="@font/lato_regular" />
+
+                <TextView
+                    android:id="@+id/tld_query_tag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/lato_regular"
+                    tools:text="TLD Query Asked" />
 
                 <View
                     android:layout_width="fill_parent"
@@ -70,6 +81,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="3dp"
                     android:paddingEnd="5dp"
+                    tools:text="Active"
                     android:paddingBottom="3dp" />
 
                 <TextView

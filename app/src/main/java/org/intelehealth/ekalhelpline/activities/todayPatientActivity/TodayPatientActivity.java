@@ -187,12 +187,13 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b  " +
-                "WHERE a.patientuuid = b.uuid " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
         Logger.logD(TAG, query);
+
         final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
@@ -210,7 +211,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value")))
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -234,6 +236,11 @@ public class TodayPatientActivity extends AppCompatActivity {
 //                    DividerItemDecoration.VERTICAL));*/
 //            mTodayPatientList.setAdapter(mTodayPatientAdapter);
 //        }
+
+        for (TodayPatientModel todayPatientModel : todayPatientList) {
+            Log.v("main", "todaysPatient: " + todayPatientModel.getFirst_name() + " " +
+                    todayPatientModel.getLast_name() + " " + todayPatientModel.getVisit_speciality() + "\n");
+        }
         return todayPatientList;
     }
 
@@ -329,9 +336,9 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
-                "WHERE a.patientuuid = b.uuid " +
+        String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                 "AND a.startdate LIKE '" + currentDate + "T%'" +
                 "ORDER BY a.patientuuid ASC ";
@@ -353,7 +360,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")))
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value")))
                         );
                     } catch (DAOException e) {
                         e.printStackTrace();
@@ -367,7 +375,8 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         if (!todayPatientList.isEmpty()) {
             for (TodayPatientModel todayPatientModel : todayPatientList)
-                Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name());
+                Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name() + " " +
+                        todayPatientModel.getVisit_speciality());
 
             TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);

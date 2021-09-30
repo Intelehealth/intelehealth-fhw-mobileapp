@@ -77,6 +77,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
+
         if (todayPatientModel.getEnddate() == null) {
             holder.getIndicatorTextView().setText(R.string.active);
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
@@ -84,6 +85,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
+
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +112,34 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             }
         }
 
+        //TLD Query - start
+        //to check only if visit is uploaded then show the tag...
+        if(todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
+                todayPatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+
+            if (todayPatientModel.getVisit_speciality() != null &&
+                    todayPatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+
+                if (todayPatientModel.getEnddate() != null) { // visit is NOT Ended
+                if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                    holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
+                } else {
+                    holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                }
+            }
+                else {
+                    //check the spinner value for this from the exit survey selection and then based on that checking add the text.
+                }
+            }
+            else {
+                holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+            }
+        }
+        else {
+            holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+        }
+        //TLD Query - end
+
 
     }
 
@@ -131,6 +161,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
+        private TextView tld_query_tag;
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
@@ -139,6 +170,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
+            tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
             rootView = itemView;
         }
 
@@ -177,5 +209,6 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         public void setTv_not_uploaded(TextView tv_not_uploaded) {
             this.tv_not_uploaded = tv_not_uploaded;
         }
+
     }
 }
