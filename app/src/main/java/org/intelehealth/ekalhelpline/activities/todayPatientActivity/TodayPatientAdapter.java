@@ -135,7 +135,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                           }
                      else {
                     holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
-                }
+                          }
             }
              else {
                     //check the spinner value for this from the exit survey selection and then
@@ -144,12 +144,15 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid())) {
                             //check for TLD Closed and TLD Resolved
                             if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Closed")) {
+                                    .equalsIgnoreCase("TLD Closed")) { //TLD Closed
                                 holder.tld_query_tag.setText("TLD CLOSED");
                             }
                             else if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Resolved")) {
+                                    .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
                                 holder.tld_query_tag.setText("TLD RESOLVED");
+                            }
+                            else {
+                                holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
                             }
                         }
                     }
