@@ -376,7 +376,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // mOccupation.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
         mCaste = findViewById(R.id.spinner_caste1);
-      //  mCallerRelation = findViewById(R.id.relationship_spinner);
+        //  mCallerRelation = findViewById(R.id.relationship_spinner);
         mHelplineKnowledge = findViewById(R.id.spinner_helpline);
         mPhoneType = findViewById(R.id.spinner_phone_status);
         mEducation = findViewById(R.id.spinner_education);
@@ -1477,20 +1477,18 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (genderAdapter.getPosition(switch_hi_genderSpinner_edit(patient1.getGender())) == -1) {
                         gender_spinner.setSelection(genderAdapter.getPosition("अन्य"));
                         genderOther.setText(patient1.getGender());
-                    }
-                    else {
+                    } else {
                         gender_spinner.setSelection(genderAdapter.getPosition(switch_hi_genderSpinner_edit(patient1.getGender())));
                     }
                 } else {
                     if (genderAdapter.getPosition(patient1.getGender()) == -1) {
                         gender_spinner.setSelection(genderAdapter.getPosition("Other"));
                         genderOther.setText(patient1.getGender());
-                    }
-                    else {
+                    } else {
                         gender_spinner.setSelection(genderAdapter.getPosition(patient1.getGender()));
                     }
                 }
-              }
+            }
 
             //education edit
             if (patient1.getEducation_value() == null || patient1.getEducation_value().equalsIgnoreCase("Not provided"))
@@ -1500,16 +1498,14 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (education_spinnerAdapter.getPosition(switch_hi_educationSpinner_edit(patient1.getEducation_value())) == -1) {
                         education_spinner.setSelection(education_spinnerAdapter.getPosition("अन्य"));
                         educationOther.setText(patient1.getEducation_value());
-                    }
-                    else {
+                    } else {
                         education_spinner.setSelection(education_spinnerAdapter.getPosition(switch_hi_educationSpinner_edit(patient1.getEducation_value())));
                     }
                 } else {
                     if (education_spinnerAdapter.getPosition(patient1.getEducation_value()) == -1) {
                         education_spinner.setSelection(education_spinnerAdapter.getPosition("Other"));
                         educationOther.setText(patient1.getEducation_value());
-                    }
-                    else {
+                    } else {
                         education_spinner.setSelection(education_spinnerAdapter.getPosition(patient1.getEducation_value()));
                     }
                 }
@@ -1524,8 +1520,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (marital_statusAdapter.getPosition(switch_hi_current_maritual_statusSpinner_edit(patient1.getCurrent_marital_status())) == -1) {
                         current_marital_spinner.setSelection(marital_statusAdapter.getPosition("अन्य"));
                         maritualstatusOther.setText(patient1.getCurrent_marital_status());
-                    }
-                    else {
+                    } else {
                         current_marital_spinner.setSelection(marital_statusAdapter
                                 .getPosition(switch_hi_current_maritual_statusSpinner_edit(patient1.getCurrent_marital_status())));
                     }
@@ -1533,8 +1528,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (marital_statusAdapter.getPosition(patient1.getCurrent_marital_status()) == -1) {
                         current_marital_spinner.setSelection(marital_statusAdapter.getPosition("Other"));
                         maritualstatusOther.setText(patient1.getCurrent_marital_status());
-                    }
-                    else {
+                    } else {
                         current_marital_spinner.setSelection(marital_statusAdapter
                                 .getPosition(patient1.getCurrent_marital_status()));
                     }
@@ -1551,8 +1545,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (occupation_spinner_1Adapter.getPosition(switch_hi_occupationSelectionSpinner_edit(patient1.getOccupation_value())) == -1) {
                         occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("अन्य"));
                         occupationOther.setText(patient1.getOccupation_value());
-                    }
-                    else {
+                    } else {
                         occupation_spinner_1.setSelection(occupation_spinner_1Adapter
                                 .getPosition(switch_hi_occupationSelectionSpinner_edit(patient1.getOccupation_value())));
                     }
@@ -1560,8 +1553,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (occupation_spinner_1Adapter.getPosition(patient1.getOccupation_value()) == -1) {
                         occupation_spinner_1.setSelection(occupation_spinner_1Adapter.getPosition("Other"));
                         occupationOther.setText(patient1.getOccupation_value());
-                    }
-                    else {
+                    } else {
                         occupation_spinner_1.setSelection(occupation_spinner_1Adapter
                                 .getPosition(patient1.getOccupation_value()));
                     }
@@ -1579,8 +1571,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (husband_occupationAdapter.getPosition(switch_hi_husbandoccupationSelectionSpinner_edit(patient1.getHusband_occupation())) == -1) {
                         husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("अन्य"));
                         husbandoccupationOther.setText(patient1.getHusband_occupation());
-                    }
-                    else {
+                    } else {
                         husband_occupation_spinner.setSelection(husband_occupationAdapter
                                 .getPosition(switch_hi_husbandoccupationSelectionSpinner_edit(patient1.getHusband_occupation())));
                     }
@@ -1588,8 +1579,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (husband_occupationAdapter.getPosition(patient1.getHusband_occupation()) == -1) {
                         husband_occupation_spinner.setSelection(husband_occupationAdapter.getPosition("Other"));
                         husbandoccupationOther.setText(patient1.getHusband_occupation());
-                    }
-                    else {
+                    } else {
                         husband_occupation_spinner.setSelection(husband_occupationAdapter
                                 .getPosition(patient1.getHusband_occupation()));
                     }
@@ -1601,10 +1591,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 have_children_spinner.setSelection(0);
             else {
 
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     have_children_spinner.setSelection(childrenAdapter.getPosition(switch_hi_childrenSpinner_edit(patient1.getChildren())));
-                }
-                else {
+                } else {
                     have_children_spinner.setSelection(childrenAdapter.getPosition(patient1.getChildren()));
                 }
 
@@ -1630,8 +1619,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             caste_spinner.setSelection(caste_spinnerAdapter.getPosition("अन्य"));
                         }
                         casteOther.setText(patient1.getCaste_value());
-                    }
-                    else {
+                    } else {
                         caste_spinner.setSelection(caste_spinnerAdapter.getPosition(switch_hi_CasteSelectionSpinner_edit(patient1.getCaste_value())));
                     }
                 } else {
@@ -1643,8 +1631,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             caste_spinner.setSelection(caste_spinnerAdapter.getPosition("Other"));
                         }
                         casteOther.setText(patient1.getCaste_value());
-                    }
-                     else {
+                    } else {
                         caste_spinner.setSelection(caste_spinnerAdapter.getPosition(patient1.getCaste_value()));
                     }
                 }
@@ -1655,10 +1642,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 contact_type_spinner.setSelection(0);
             else {
 
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     contact_type_spinner.setSelection(contact_type_adapter.getPosition(switch_hi_ContactTypeSpinner_edit(patient1.getContact_type())));
-                }
-                else {
+                } else {
                     contact_type_spinner.setSelection(contact_type_adapter.getPosition(patient1.getContact_type()));
                 }
             }
@@ -1668,24 +1654,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 helplineno_from_spinner.setSelection(0);
             else {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                if (helpline_no_fromAdapter.getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())) == -1) {
-                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("अन्य"));
-                    wherediduOther.setText(patient1.getHelpline_no_from());
+                    if (helpline_no_fromAdapter.getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())) == -1) {
+                        helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("अन्य"));
+                        wherediduOther.setText(patient1.getHelpline_no_from());
+                    } else {
+                        helplineno_from_spinner.setSelection(helpline_no_fromAdapter
+                                .getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())));
+                    }
+                } else {
+                    if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
+                        helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
+                        wherediduOther.setText(patient1.getHelpline_no_from());
+                    } else {
+                        helplineno_from_spinner.setSelection(helpline_no_fromAdapter
+                                .getPosition(patient1.getHelpline_no_from()));
+                    }
                 }
-                else {
-                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter
-                            .getPosition(switch_hi_WhereDidU_Spinner_edit(patient1.getHelpline_no_from())));
-                }
-            } else {
-                if (helpline_no_fromAdapter.getPosition(patient1.getHelpline_no_from()) == -1) {
-                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter.getPosition("Other"));
-                    wherediduOther.setText(patient1.getHelpline_no_from());
-                }
-                else {
-                    helplineno_from_spinner.setSelection(helpline_no_fromAdapter
-                            .getPosition(patient1.getHelpline_no_from()));
-                }
-            }
             }
 
             //who is calling
@@ -1715,9 +1699,8 @@ public class IdentificationActivity extends AppCompatActivity {
                         mHelplineKnowledge.setSelection(helplineKnowledgeAdapter
                                 .getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())));
                     }
-                }
-                else {
-                     if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
+                } else {
+                    if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
                         mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                         helplineInfoOther.setText(patient1.getCaste());
                     } else {
@@ -1785,8 +1768,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (who_refferred_spinnerAdapter.getPosition(switch_hi_Who_Referred_Spinner_edit(patient1.getReferred_case())) == -1) {
                         who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("अन्य"));
                         referredOther.setText(patient1.getReferred_case());
-                    }
-                    else {
+                    } else {
                         who_refferred_spinner.setSelection(who_refferred_spinnerAdapter
                                 .getPosition(switch_hi_Who_Referred_Spinner_edit(patient1.getReferred_case())));
                     }
@@ -1794,8 +1776,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (who_refferred_spinnerAdapter.getPosition(patient1.getReferred_case()) == -1) {
                         who_refferred_spinner.setSelection(who_refferred_spinnerAdapter.getPosition("Other"));
                         referredOther.setText(patient1.getReferred_case());
-                    }
-                    else {
+                    } else {
                         who_refferred_spinner.setSelection(who_refferred_spinnerAdapter
                                 .getPosition(patient1.getReferred_case()));
                     }
@@ -1814,8 +1795,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (am_i_speaking_spinnerAdapter.getPosition(switch_hi_am_i_speaking_Spinner_edit(patient1.getAmSpeaking())) == -1) {
                         am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)"));
                         amIspeakingOther.setText(patient1.getAmSpeaking());
-                    }
-                    else {
+                    } else {
                         am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter
                                 .getPosition(switch_hi_am_i_speaking_Spinner_edit(patient1.getAmSpeaking())));
                     }
@@ -1823,8 +1803,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (am_i_speaking_spinnerAdapter.getPosition(patient1.getAmSpeaking()) == -1) {
                         am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter.getPosition("Someone else (Ask who and enter)"));
                         amIspeakingOther.setText(patient1.getAmSpeaking());
-                    }
-                    else {
+                    } else {
                         am_i_speaking_spinner.setSelection(am_i_speaking_spinnerAdapter
                                 .getPosition(patient1.getAmSpeaking()));
                     }
@@ -1854,11 +1833,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 /*String value = patient1.getType_marriage();
                 type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));*/
 
-                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String value = switch_hi_type_marriage_Spinner_edit(patient1.getType_marriage());
-                     type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));
+                    type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(value));
                 } else {
-                     type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(patient1.getType_marriage()));
+                    type_marriage_spinner.setSelection(type_marriage_spinnerAdapter.getPosition(patient1.getType_marriage()));
                 }
             }
 
@@ -1874,8 +1853,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             .getPosition(switch_hi_survivor_address_Spinner_edit(patient1.getCurrent_address())) == -1) {
                         current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("अन्य"));
                         currentaddressOther.setText(patient1.getCurrent_address());
-                    }
-                    else {
+                    } else {
                         current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter
                                 .getPosition(switch_hi_survivor_address_Spinner_edit(patient1.getCurrent_address())));
                     }
@@ -1883,8 +1861,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (current_residing_address_spinnerAdapter.getPosition(patient1.getCurrent_address()) == -1) {
                         current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter.getPosition("Other"));
                         currentaddressOther.setText(patient1.getCurrent_address());
-                    }
-                    else {
+                    } else {
                         current_residing_address_spinner.setSelection(current_residing_address_spinnerAdapter
                                 .getPosition(patient1.getCurrent_address()));
                     }
@@ -1901,8 +1878,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             .getPosition(switch_hi_with_whom_living_Spinner_edit(patient1.getWhom_living())) == -1) {
                         with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("अन्य"));
                         withwhomlivingOther.setText(patient1.getWhom_living());
-                    }
-                    else {
+                    } else {
                         with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter
                                 .getPosition(switch_hi_with_whom_living_Spinner_edit(patient1.getWhom_living())));
                     }
@@ -1910,8 +1886,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (with_whom_living_spinnerAdapter.getPosition(patient1.getWhom_living()) == -1) {
                         with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter.getPosition("Other"));
                         withwhomlivingOther.setText(patient1.getWhom_living());
-                    }
-                    else {
+                    } else {
                         with_whom_living_spinner.setSelection(with_whom_living_spinnerAdapter
                                 .getPosition(patient1.getWhom_living()));
                     }
@@ -1924,15 +1899,15 @@ public class IdentificationActivity extends AppCompatActivity {
 
             /*if (patient1.getCaste().equalsIgnoreCase("Not provided"))
                 mHelplineKnowledge.setSelection(0);*/
-         //   else {
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
-                   // mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
-                } else {
-                    mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
-                }
-         //   }
+            //   else {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                String helplineKnowledge = switch_hi_HelplineKnowledge_edit(patient1.getCaste());
+                mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(helplineKnowledge));
+                // mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+            } else {
+                mHelplineKnowledge.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+            }
+            //   }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 if (helplineKnowledgeAdapter.getPosition(switch_hi_HelplineKnowledge_edit(patient1.getCaste())) == -1) {
                     // if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
@@ -4050,10 +4025,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //start
-        if (landmark_edittext.getText().toString().equals("")) {
+       /*
+       todo not mandatory
+       if (landmark_edittext.getText().toString().equals("")) {
             landmark_edittext.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
         //2. education
         if (education_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) education_spinner.getSelectedView();
@@ -4087,11 +4064,14 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (income_edittext.getText().toString().equals("")) {
+     /*
+    todo not mandatory
+
+      if (income_edittext.getText().toString().equals("")) {
             income_edittext.setError(getString(R.string.error_field_required));
             return;
         }
-
+*/
         //4. occupation
         if (occupation_spinner_1.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) occupation_spinner_1.getSelectedView();
@@ -4108,11 +4088,13 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+/*
+todo not mandatory
 
         if (husband_income_monthly.getText().toString().equals("")) {
             husband_income_monthly.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
         //5. husband occupation
         if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
@@ -4142,11 +4124,11 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
+   /*     if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
             mNo_of_children.setError(getString(R.string.error_field_required));
             return;
         }
-
+*/
 
         //8. caste spinner
         if (caste_spinner.getSelectedItemPosition() == 0) {
@@ -4940,8 +4922,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         casteInfo = casteOther.getText().toString();
                     }
-                }
-                else {
+                } else {
                     casteInfo = StringUtils.getProvidedOthers(caste_spinner);
                 }
             } else {
@@ -4953,8 +4934,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         casteInfo = casteOther.getText().toString();
                     }
-                }
-                else {
+                } else {
                     casteInfo = StringUtils.getProvidedOthers(caste_spinner);
                 }
             }
@@ -5881,10 +5861,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //start
-        if (landmark_edittext.getText().toString().equals("")) {
+     /*
+     todo not mandatory
+     if (landmark_edittext.getText().toString().equals("")) {
             landmark_edittext.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
         //2. education
         if (education_spinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView) education_spinner.getSelectedView();
@@ -5917,11 +5899,13 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+/*
+todo not mandatory
 
         if (income_edittext.getText().toString().equals("")) {
             income_edittext.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
         //4. occupation
         if (occupation_spinner_1.getSelectedItemPosition() == 0) {
@@ -5939,11 +5923,13 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         }
+/*
+todo not mandatory
 
         if (husband_income_monthly.getText().toString().equals("")) {
             husband_income_monthly.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
         //5. husband occupation
         if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
@@ -5973,10 +5959,10 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
+      /*  if (framelayout_no_children.getVisibility() == View.VISIBLE && mNo_of_children.getText().toString().equals("")) {
             mNo_of_children.setError(getString(R.string.error_field_required));
             return;
-        }
+        }*/
 
 
         //8. caste spinner
@@ -6771,8 +6757,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         casteInfo = casteOther.getText().toString();
                     }
-                }
-                else {
+                } else {
                     casteInfo = StringUtils.getProvidedOthers(caste_spinner);
                 }
             } else {
@@ -6784,8 +6769,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     } else {
                         casteInfo = casteOther.getText().toString();
                     }
-                }
-                else {
+                } else {
                     casteInfo = StringUtils.getProvidedOthers(caste_spinner);
                 }
             }
