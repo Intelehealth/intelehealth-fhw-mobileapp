@@ -120,15 +120,19 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             if (todayPatientModel.getVisit_speciality() != null &&
                     todayPatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
-                if (todayPatientModel.getEnddate() != null) { // visit is NOT Ended
-                if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+
+                     if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                     holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
-                } else {
+                          }
+                     else {
                     holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
                 }
             }
-                else {
-                    //check the spinner value for this from the exit survey selection and then based on that checking add the text.
+             else {
+                    //check the spinner value for this from the exit survey selection and then
+                    // based on that checking add the text.
+
                 }
             }
             else {

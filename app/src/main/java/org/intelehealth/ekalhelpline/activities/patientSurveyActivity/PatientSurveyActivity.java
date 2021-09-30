@@ -202,6 +202,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));
         notes.add(getString(R.string.spinner_not_applicable));
+        notes.add("TLD Closed");
+        notes.add("TLD Resolved");
         return notes;
     }
     private void resetScale() {
