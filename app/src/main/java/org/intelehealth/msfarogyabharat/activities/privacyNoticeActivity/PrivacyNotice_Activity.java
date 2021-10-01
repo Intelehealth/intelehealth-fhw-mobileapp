@@ -243,7 +243,7 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 
         if (checkBox_cho.isChecked() && v.getId() == R.id.button_accept) {
 
-            AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
+            /*AlertDialog.Builder builder1 = new AlertDialog.Builder(this)
                     .setMessage(R.string.safe_abortion_consent);
             AlertDialog alertDialog = builder1.create();
 
@@ -277,7 +277,15 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     finish();
                 }
             });
-            alertDialog.show();
+            alertDialog.show();*/
+
+            //Clear HouseHold UUID from Session for new registration
+            sessionManager.setHouseholdUuid("");
+            Intent intent = new Intent(getApplicationContext(), IdentificationActivity.class);
+            intent.putExtra("privacy", accept.getText().toString()); //privacy value send to identificationActivity
+            Log.d("Privacy", "selected radio: " + accept.getText().toString());
+            startActivity(intent);
+
         } else if (checkBox_cho.isChecked() && v.getId() == R.id.button_reject) {
             Toast.makeText(PrivacyNotice_Activity.this,
                     getString(R.string.privacy_reject_toast), Toast.LENGTH_SHORT).show();
