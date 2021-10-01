@@ -4181,7 +4181,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
                     complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:") ||
                     complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:")) {
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("queryaboutsafeabortionbyrelativesorothers:")) {
                 flag = true;
             }
             else {
