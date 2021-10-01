@@ -4178,10 +4178,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if(complaintView != null) {
             String i = complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "");
             Log.v("main", "v: "+i);
-            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:")) {
+            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("domesticviolence-follow-up:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("domesticviolence-caseclosed:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-follow-up:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-querybyrelativesorothers:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-follow-up:")) {
                 flag = true;
             }
             else {
