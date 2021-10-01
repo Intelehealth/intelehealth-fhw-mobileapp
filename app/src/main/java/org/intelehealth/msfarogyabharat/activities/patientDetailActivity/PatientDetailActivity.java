@@ -956,9 +956,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
-           // String phType = patient_new.getEconomic_status();
-            phoneType.setText(phType);
+            if (patient_new.getEconomic_status() != null && !patient_new.getEconomic_status().isEmpty()) {
+                String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
+                phoneType.setText(phType);
+            }
         }
         else{
             phoneType.setText(patient_new.getEconomic_status());
