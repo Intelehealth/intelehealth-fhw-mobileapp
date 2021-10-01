@@ -486,7 +486,7 @@
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="click_to_download_the_images">Click to download the images</string>
     <string name="doctor">Doctor Details</string>
-    <string name="health_worker">Health worker</string>
+    <string name="health_worker">Counsellor/Out reach worker</string>
     <string name="priority">Priority</string>
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
@@ -545,7 +545,7 @@
     <string name="patient_data_failed">Case Data Failed</string>
     <string name="privacy_notice_title">Privacy Notice</string>
 <!--    <string name="no_data_active_patients">No patient records for this health worker found.</string>-->
-    <string name="no_data_active_patients">No Case records for this health worker found.</string>
+    <string name="no_data_active_patients">No Case records for this Counsellor/Out reach worker found.</string>
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
@@ -760,7 +760,7 @@
 
     <string name="What_is_the_current_marital_status">What is the current marital status?*</string>
     <string name="what_is_your_gender">What is your gender?</string>
-    <string name="landmark">Landmark*</string>
+    <string name="landmark">Landmark</string>
     <string name="education">Education</string>
     <string name="what_is_the_current_marital_status">What is the current marital status?</string>
     <string name="income_monthly">Income (Monthly)</string>
@@ -808,4 +808,6 @@
     <string name="dialog_title_enter_file_name">Enter filename</string>
     <string name="resolution_upload_reminder">Please upload first before attempting to give a resolution.</string>
     <string name="give_resolution_success">Resolution given successfully.</string>
+    <string name="not_applicable">Not applicable</string>
+    <string name="safe_abortion_consent">If the caller\'s query is regarding safe abortion, Ask if the pregnant person can come to the phone if available. If the pregnant person cannot come to the phone, ask for them to call back later. Make sure the person on the call is the pregnant person before proceeding further. Have you confirmed?</string>
 </resources>

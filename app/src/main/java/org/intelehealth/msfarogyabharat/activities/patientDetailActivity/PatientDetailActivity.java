@@ -955,15 +955,14 @@ public class PatientDetailActivity extends AppCompatActivity {
             helplineInfo.setText(patient_new.getCaste());
         }
 
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (patient_new.getEconomic_status() != null && !patient_new.getEconomic_status().isEmpty()) {
-                String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
-                phoneType.setText(phType);
-            }
-        }
-        else{
-            phoneType.setText(patient_new.getEconomic_status());
-        }
+//        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//            String phType = switch_hi_PhoneType_edit(patient_new.getEconomic_status());
+//           // String phType = patient_new.getEconomic_status();
+//            phoneType.setText(phType);
+//        }
+//        else{
+//            phoneType.setText(patient_new.getEconomic_status());
+//        }
 
 
 //        callerRelation.setText(patient_new.getSdw());
