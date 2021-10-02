@@ -399,31 +399,31 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
-                            android:orientation="horizontal">
+                            android:orientation="vertical">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginRight="5dp"
                                 android:layout_weight="1"
-                                android:orientation="vertical">
+                                android:orientation="horizontal"
+                                android:weightSum="2">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1">
+                                    android:layout_height="wrap_content">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:orientation="vertical"
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
                                         android:weightSum="4">
 
                                         <EditText
                                             android:id="@+id/identification_country"
-                                            android:layout_width="match_parent"
+                                            android:layout_width="0dip"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="3"
+                                            android:layout_weight="1.5"
                                             android:clickable="false"
                                             android:cursorVisible="false"
                                             android:drawableStart="@drawable/country_flag_icon"
@@ -441,9 +441,9 @@
 
                                         <Spinner
                                             android:id="@+id/spinner_country"
-                                            android:layout_width="fill_parent"
+                                            android:layout_width="0dip"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1" />
+                                            android:layout_weight="2.5" />
 
                                     </LinearLayout>
 
@@ -455,26 +455,26 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="5dp"
+
                                 android:layout_weight="1"
                                 android:orientation="vertical">
 
                                 <com.google.android.material.textfield.TextInputLayout
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:weightSum="4">
+                                    android:layout_height="wrap_content">
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
-                                        android:orientation="vertical">
+                                        android:gravity="center_vertical"
+                                        android:orientation="horizontal"
+                                        android:weightSum="4">
 
                                         <EditText
                                             android:id="@+id/identification_state"
-                                            android:layout_width="match_parent"
+                                            android:layout_width="0dip"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="3"
+                                            android:layout_weight="1.5"
                                             android:clickable="false"
                                             android:cursorVisible="false"
                                             android:drawableStart="@drawable/state_list_icon"
@@ -492,9 +492,9 @@
 
                                         <Spinner
                                             android:id="@+id/spinner_state"
-                                            android:layout_width="match_parent"
+                                            android:layout_width="0dip"
                                             android:layout_height="wrap_content"
-                                            android:layout_weight="1" />
+                                            android:layout_weight="2.5" />
                                     </LinearLayout>
 
 
@@ -577,6 +577,7 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
+                            android:id="@+id/identification_postal_code_ti"
                             android:layout_height="wrap_content">
 
                             <EditText

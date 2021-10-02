@@ -114,7 +114,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
     private int mAgeDays = 0;
-    private String country1, state;
+    private String country1="", state="";
     PatientsDAO patientsDAO = new PatientsDAO();
     EditText mCitizenIdEditText;
     EditText mFirstNameEditText;
@@ -344,8 +344,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             if (obj.getBoolean("mPostal")) {
                 mPostalEditText.setVisibility(View.VISIBLE);
+                findViewById(R.id.identification_postal_code_ti).setVisibility(View.VISIBLE);
             } else {
                 mPostalEditText.setVisibility(View.GONE);
+                findViewById(R.id.identification_postal_code_ti).setVisibility(View.GONE);
             }
 
             if (obj.getBoolean("mGenderM")) {
@@ -383,8 +385,8 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 economicLayout.setVisibility(View.GONE);
             }
-            country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
+//            country1 = obj.getString("mCountry");
+//            state = obj.getString("mState");
 
             if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("Индия")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
@@ -579,8 +581,8 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
 
 //            mCountrySpinner.setSelection(countryAdapter.getPosition(country1));
-            mCountrySpinner.setSelection(countryAdapter.getPosition(StringUtils.getValue(mSwitch_Country_edit(country1,
-                    sessionManager.getAppLanguage()))));
+           /* mCountrySpinner.setSelection(countryAdapter.getPosition(StringUtils.getValue(mSwitch_Country_edit(country1,
+                    sessionManager.getAppLanguage()))));*/
         }
 
 //        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
