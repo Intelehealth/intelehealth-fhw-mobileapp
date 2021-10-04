@@ -653,6 +653,12 @@ public final class StringUtils {
             case "अनुपलब्ध":
                 val = "Not Applicable";
                 break;
+            case "टीएलडी बंद":
+                val = "TLD Closed";
+                break;
+            case "टीएलडी समाधान":
+                val = "TLD Resolved";
+                break;
             default:
                 return val;
         }

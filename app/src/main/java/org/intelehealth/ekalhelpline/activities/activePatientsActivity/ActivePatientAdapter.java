@@ -142,11 +142,11 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                         if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                                holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
+                                holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             } else {
-                                holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }

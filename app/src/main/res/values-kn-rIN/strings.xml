@@ -706,4 +706,8 @@
     <string name="status">Status:</string>
     <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
     <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
+    <string name="tld_query_answered_tag">TLD QUERY ANSWERED</string>
+    <string name="tld_query_asked_tag">TLD QUERY ASKED</string>
+    <string name="tld_closed_comment">TLD Closed</string>
+    <string name="tld_resolved_comment">TLD Resolved</string>
 </resources>

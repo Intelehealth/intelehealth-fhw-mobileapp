@@ -150,11 +150,11 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                                holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
+                                holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN (TLD QUERY ANSWERED)
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             } else {
-                                holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN (TLD QUERY ASKED)
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
@@ -166,12 +166,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                                     //check for TLD Closed and TLD Resolved
                                     if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
                                             .equalsIgnoreCase("TLD Closed")) { //TLD Closed
-                                        holder.tld_query_tag.setText("TLD CLOSED");
+                                        holder.tld_query_tag.setText(R.string.tld_closed_comment);
                                         holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                         holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                                     } else if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
                                             .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
-                                        holder.tld_query_tag.setText("TLD RESOLVED");
+                                        holder.tld_query_tag.setText(R.string.tld_resolved_comment);
                                         holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                         holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                                     } else {
