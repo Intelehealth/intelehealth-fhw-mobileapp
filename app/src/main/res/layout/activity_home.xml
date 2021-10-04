@@ -58,7 +58,7 @@
                             android:layout_toEndOf="@+id/iv_new_patient"
                             android:fontFamily="@font/lato_medium"
                             android:includeFontPadding="false"
-                            android:text="New Patient"
+                            android:text="@string/button_new_pt"
                             android:textSize="26sp" />
 
                     </RelativeLayout>
@@ -152,6 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:visibility="gone"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp"

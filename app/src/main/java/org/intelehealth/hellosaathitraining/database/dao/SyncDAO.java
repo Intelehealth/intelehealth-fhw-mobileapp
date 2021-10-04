@@ -162,10 +162,10 @@ public class SyncDAO {
                                     }
                                 }
                             }
-
-                            if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
-                            }
+                            //hiding this code for Community Champion app: By Nishita
+//                            if (listPatientUUID.size() > 0) {
+//                                triggerVisitNotification(listPatientUUID);
+//                            }
                         }
                     } else {
                         sessionManager.setTriggerNoti("yes");
@@ -286,10 +286,10 @@ public class SyncDAO {
                                     }
                                 }
                             }
-
-                            if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
-                            }
+                            //hiding this code for Community Champion app: By Nishita
+//                            if (listPatientUUID.size() > 0) {
+//                                triggerVisitNotification(listPatientUUID);
+//                            }
                         }
                     } else {
                         sessionManager.setTriggerNoti("yes");
