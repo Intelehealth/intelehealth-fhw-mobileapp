@@ -14,6 +14,7 @@
 
 package org.intelehealth.msfarogyabharat.utilities;
 
+import android.util.Log;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -115,6 +116,21 @@ public final class StringUtils {
         String val = "";
         if (value != null)
             val = value;
+        return val;
+
+    }
+
+    //todo once will fix from backend side May be this method is not necessory.
+  public static String getValueNonMandetory(String value) {
+        String val = "";
+        if (value != null){
+        if(value.equalsIgnoreCase("")){
+            val="_";
+        }else{
+            val = value;
+        }
+
+        }
         return val;
 
     }
@@ -737,7 +753,7 @@ public final class StringUtils {
                 val = "कुछ/पूर्ण उच्चतर माध्यमिक";
                 break;
             case "Completed undergraduate degree/diploma/technical school":
-                val = "सपूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल";
+                val = "पूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल";
                 break;
             case "Completed postgraduate degree":
                 val = "पूर्ण स्नातकोत्तर डिग्री";

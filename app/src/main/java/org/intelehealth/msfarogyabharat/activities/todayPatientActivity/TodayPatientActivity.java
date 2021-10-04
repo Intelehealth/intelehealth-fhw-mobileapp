@@ -1,4 +1,4 @@
-package org.intelehealth.msfarogyabharat.activities.todayPatientActivity;
+ package org.intelehealth.msfarogyabharat.activities.todayPatientActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;

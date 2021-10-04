@@ -574,6 +574,7 @@
                                         android:inputType="textAutoComplete"
                                         android:maxLength="45"
                                         android:maxLines="1"
+                                        android:text=""
                                         android:singleLine="true" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
@@ -1110,17 +1111,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
+                            android:visibility="gone"
                             android:text="@string/how_do_you_know_about_helpline"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
-                            android:layout_height="10dp" />
+                            android:layout_height="10dp"
+                            android:visibility="gone"/>
 
                         <Spinner
                             android:id="@+id/spinner_helpline"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"/>
 
                         <EditText
                             android:id="@+id/other_helplineInfo_edittext"
@@ -1137,6 +1141,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
+                            android:visibility="gone"
                             android:background="?android:attr/listDivider" />
 
                         <TextView
@@ -1164,6 +1169,7 @@
                             android:layout_height="1dp"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
+                            android:visibility="gone"
                             android:background="?android:attr/listDivider" />
 
                         <!-- start of complaint -->
