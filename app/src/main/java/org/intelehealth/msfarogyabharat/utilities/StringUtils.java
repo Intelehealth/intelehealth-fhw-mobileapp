@@ -14,6 +14,7 @@
 
 package org.intelehealth.msfarogyabharat.utilities;
 
+import android.util.Log;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -115,6 +116,21 @@ public final class StringUtils {
         String val = "";
         if (value != null)
             val = value;
+        return val;
+
+    }
+
+    //todo once will fix from backend side May be this method is not necessory.
+  public static String getValueNonMandetory(String value) {
+        String val = "";
+        if (value != null){
+        if(value.equalsIgnoreCase("")){
+            val="_";
+        }else{
+            val = value;
+        }
+
+        }
         return val;
 
     }
@@ -737,7 +753,7 @@ public final class StringUtils {
                 val = "कुछ/पूर्ण उच्चतर माध्यमिक";
                 break;
             case "Completed undergraduate degree/diploma/technical school":
-                val = "सपूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल";
+                val = "पूर्ण स्नातक डिग्री/डिप्लोमा/तकनीकी स्कूल";
                 break;
             case "Completed postgraduate degree":
                 val = "पूर्ण स्नातकोत्तर डिग्री";
@@ -1522,7 +1538,10 @@ public final class StringUtils {
     public static String switch_hi_am_i_speaking_Spinner(String val) {
         switch (val) {
 
-            case "स्वयं जीवित रहें":
+//            case "स्वयं जीवित रहें":
+//                val = "Survivor themselves";
+//                break;
+                case "खुद हिंसा का सामना करने वाली महिला से":
                 val = "Survivor themselves";
                 break;
             case "कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)":
@@ -1537,8 +1556,12 @@ public final class StringUtils {
     public static String switch_hi_am_i_speaking_Spinner_edit(String val) {
         switch (val) {
 
-            case "Survivor themselves":
-                val = "स्वयं जीवित रहें";
+//            case "Survivor themselves":
+//                val = "स्वयं जीवित रहें";
+//                break;
+
+                case "Survivor themselves":
+                val = "खुद हिंसा का सामना करने वाली महिला से";
                 break;
             case "Someone else (Ask who and enter)":
                 val = "कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)";

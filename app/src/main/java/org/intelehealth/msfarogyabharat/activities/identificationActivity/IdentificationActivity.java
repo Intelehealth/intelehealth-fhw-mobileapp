@@ -606,17 +606,103 @@ public class IdentificationActivity extends AppCompatActivity {
         //on Edit....
 
         //start - edittext - edit
-        emergency_no_edittext.setText(patient1.getEmergency_phoneNo());
-        landmark_edittext.setText(patient1.getLandmark());
-        income_edittext.setText(patient1.getIncome());
-        mNo_of_children.setText(patient1.getNo_of_children());
-        husband_income_monthly.setText(patient1.getHusband_income());
-        good_mobile_edittext.setText(patient1.getGood_mobileno());
+//        emergency_no_edittext.setText(patient1.getEmergency_phoneNo());
+//        landmark_edittext.setText(patient1.getLandmark());
+//        income_edittext.setText(patient1.getIncome());
+//        mNo_of_children.setText(patient1.getNo_of_children());
+//        husband_income_monthly.setText(patient1.getHusband_income());
+        if(patient1.getEmergency_phoneNo() != null) {
+        if(patient1.getEmergency_phoneNo().equalsIgnoreCase("_")){
+            emergency_no_edittext.setText("");
+        }
+        else {
+            emergency_no_edittext.setText(patient1.getEmergency_phoneNo());
+        }
+        }
+        if(patient1.getLandmark() != null) {
+            if (patient1.getLandmark().equalsIgnoreCase("_")) {
+                landmark_edittext.setText("");
+            } else {
+
+                landmark_edittext.setText(patient1.getLandmark());
+            }
+        }
+
+        if(patient1.getIncome()!=null) {
+            if (patient1.getIncome().equalsIgnoreCase("_")) {
+                income_edittext.setText("");
+            } else {
+                income_edittext.setText(patient1.getIncome());
+            }
+        }
+
+        if(patient1.getNo_of_children()!=null){
+        if(patient1.getNo_of_children().equalsIgnoreCase("_")){
+            mNo_of_children.setText("");
+        }
+        else{
+            mNo_of_children.setText(patient1.getNo_of_children());
+        }}
+        if(patient1.getHusband_income()!=null){
+        if(patient1.getHusband_income().equalsIgnoreCase("_")){
+            husband_income_monthly.setText("");
+        }
+        else{
+            husband_income_monthly.setText(patient1.getHusband_income());
+        }}
+
+        if(patient1.getGood_mobileno()!=null){
+        if(patient1.getGood_mobileno().equalsIgnoreCase("_")){
+            good_mobile_edittext.setText("");
+        }
+        else{
+            good_mobile_edittext.setText(patient1.getGood_mobileno());
+        }}
+
+
+
+//        good_mobile_edittext.setText(patient1.getGood_mobileno());
         age_marriage_edittext.setText(patient1.getAge_marriage());
-        maternal_address_edittext.setText(patient1.getMaternal_address());
-        maternal_mobile_edittext.setText(patient1.getMaternal_mobile());
-        address_inlaws_edittext.setText(patient1.getAddress_inlaws());
-        husband_mobile_edittext.setText(patient1.getHusband_mobile());
+
+        if(patient1.getMaternal_address()!=null){
+            if(patient1.getMaternal_address().equalsIgnoreCase("_")){
+            maternal_address_edittext.setText("");
+        }
+        else {
+            maternal_address_edittext.setText(patient1.getMaternal_address());
+
+        }}
+
+        if(patient1.getMaternal_mobile()!=null){
+
+            if(patient1.getMaternal_mobile().equalsIgnoreCase("_")){
+                maternal_mobile_edittext.setText("");
+            }
+            else{
+                maternal_mobile_edittext.setText(patient1.getMaternal_mobile());
+            }
+        }
+        if(patient1.getAddress_inlaws()!=null){
+
+            if(patient1.getAddress_inlaws().equalsIgnoreCase("_")){
+                address_inlaws_edittext.setText("");
+            }
+            else{
+                address_inlaws_edittext.setText(patient1.getAddress_inlaws());
+            }
+        }
+
+//        address_inlaws_edittext.setText(patient1.getAddress_inlaws());
+
+        if(patient1.getHusband_mobile()!=null){
+
+            if(patient1.getHusband_mobile().equalsIgnoreCase("_"))
+            {husband_mobile_edittext.setText("");}
+            else{
+                husband_mobile_edittext.setText(patient1.getHusband_mobile());
+            }
+        }
+//        husband_mobile_edittext.setText(patient1.getHusband_mobile());
         //end - edittext - edit
 
         mDOB.setText(patient1.getDate_of_birth());
@@ -4097,15 +4183,15 @@ todo not mandatory
         }*/
 
         //5. husband occupation
-        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = husband_occupation_spinner;
-            cancel = true;
-            return;
-        }
+//        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = husband_occupation_spinner;
+//            cancel = true;
+//            return;
+//        }
         if (husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
             husbandoccupationOther.setError(getString(R.string.error_field_required));
             focusView = husbandoccupationOther;
@@ -4187,38 +4273,39 @@ todo not mandatory
 */
 
         //How do you know
-        if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = mHelplineKnowledge;
-            cancel = true;
-            return;
-        }
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
-                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                    helplineInfoOther.setError(getString(R.string.error_field_required));
-                    focusView = helplineInfoOther;
-                    cancel = true;
-                    return;
-                } else {
-                    helplineInfoOther.setError(null);
-                }
-            }
-        } else {
-            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
-                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
-                    helplineInfoOther.setError(getString(R.string.error_field_required));
-                    focusView = helplineInfoOther;
-                    cancel = true;
-                    return;
-                } else {
-                    helplineInfoOther.setError(null);
-                }
-            }
-        }
+        //todo remove this field
+//        if (mHelplineKnowledge.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView) mHelplineKnowledge.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = mHelplineKnowledge;
+////            cancel = true;
+////            return;
+////        }
+//        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+//            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("अन्य")) {
+//                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+//                    helplineInfoOther.setError(getString(R.string.error_field_required));
+//                    focusView = helplineInfoOther;
+//                    cancel = true;
+//                    return;
+//                } else {
+//                    helplineInfoOther.setError(null);
+//                }
+//            }
+//        } else {
+//            if (mHelplineKnowledge.getSelectedItem().toString().equalsIgnoreCase("Other")) {
+//                if (helplineInfoOther.getText().toString().equalsIgnoreCase("")) {
+//                    helplineInfoOther.setError(getString(R.string.error_field_required));
+//                    focusView = helplineInfoOther;
+//                    cancel = true;
+//                    return;
+//                } else {
+//                    helplineInfoOther.setError(null);
+//                }
+//            }
+//        }
 
         //what kind of mobile phone
 //        if (mPhoneType.getSelectedItemPosition() == 0) {
@@ -5083,7 +5170,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Emergency Phone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(emergency_no_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
             //end - emergency phone no
 
@@ -5092,7 +5180,7 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Landmark"));
-            patientAttributesDTO.setValue(StringUtils.getValue(landmark_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(landmark_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //3. Income
@@ -5100,7 +5188,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Income"));
-            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(income_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. Husband Income
@@ -5108,7 +5197,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband's Income"));
-            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(husband_income_monthly.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - complaint selection
@@ -5117,7 +5207,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for survivor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(good_mobile_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(good_mobile_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(good_mobile_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. age at marriage
@@ -5125,7 +5216,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Marriage age"));
-            patientAttributesDTO.setValue(StringUtils.getValue(age_marriage_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(age_marriage_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(age_marriage_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. maternal home address
@@ -5141,7 +5233,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal phone number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(maternal_mobile_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(maternal_mobile_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(maternal_mobile_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. address of in-laws
@@ -5149,7 +5242,7 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Address of in-laws"));
-            patientAttributesDTO.setValue(StringUtils.getValue(address_inlaws_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(address_inlaws_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. husband mobile no
@@ -5157,7 +5250,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for husband"));
-            patientAttributesDTO.setValue(StringUtils.getValue(husband_mobile_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(husband_mobile_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(husband_mobile_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
             //end - complaint selection
 
@@ -5225,7 +5319,7 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Caste Spinner
@@ -5932,15 +6026,15 @@ todo not mandatory
         }*/
 
         //5. husband occupation
-        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = husband_occupation_spinner;
-            cancel = true;
-            return;
-        }
+//        if (husband_occupation_spinner.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView) husband_occupation_spinner.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = husband_occupation_spinner;
+//            cancel = true;
+//            return;
+//        }
         if (husbandoccupationOther.getVisibility() == View.VISIBLE && husbandoccupationOther.getText().toString().equals("")) {
             husbandoccupationOther.setError(getString(R.string.error_field_required));
             focusView = husbandoccupationOther;
@@ -6917,7 +7011,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Emergency Phone Number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(emergency_no_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(emergency_no_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
             //end - emergency phone no
 
@@ -6926,7 +7021,7 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Landmark"));
-            patientAttributesDTO.setValue(StringUtils.getValue(landmark_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(landmark_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //3. Income
@@ -6934,7 +7029,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Income"));
-            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(income_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(income_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. Husband Income
@@ -6942,7 +7038,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband's Income"));
-            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(husband_income_monthly.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(husband_income_monthly.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - complaint selection
@@ -6951,7 +7048,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for survivor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(good_mobile_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(good_mobile_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(good_mobile_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. age at marriage
@@ -6959,7 +7057,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Marriage age"));
-            patientAttributesDTO.setValue(StringUtils.getValue(age_marriage_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(age_marriage_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(age_marriage_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. maternal home address
@@ -6967,7 +7066,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal home address"));
-            patientAttributesDTO.setValue(StringUtils.getValue(maternal_address_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(maternal_address_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(maternal_address_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. maternal mobile
@@ -6975,7 +7075,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maternal phone number"));
-            patientAttributesDTO.setValue(StringUtils.getValue(maternal_mobile_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(maternal_mobile_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(maternal_mobile_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. address of in-laws
@@ -6983,7 +7084,7 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Address of in-laws"));
-            patientAttributesDTO.setValue(StringUtils.getValue(address_inlaws_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(address_inlaws_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //4. husband mobile no
@@ -6991,7 +7092,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Telephone number for husband"));
-            patientAttributesDTO.setValue(StringUtils.getValue(husband_mobile_edittext.getText().toString()));
+//            patientAttributesDTO.setValue(StringUtils.getValue(husband_mobile_edittext.getText().toString()));
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(husband_mobile_edittext.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
             //end - complaint selection
 
@@ -7075,7 +7177,8 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("No. of Childrens"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
+            patientAttributesDTO.setValue(StringUtils.getValueNonMandetory(mNo_of_children.getText().toString())); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Caste Spinner
