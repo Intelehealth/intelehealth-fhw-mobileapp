@@ -171,7 +171,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatient_textview);
-        newPatient_textview.setText(R.string.new_patient);
+        newPatient_textview.setText(R.string.button_new_pt);
 
         newPatient_textview1 = findViewById(R.id.newPatient_textview_1);
         newPatient_textview1.setText(R.string.text_medical_advice);

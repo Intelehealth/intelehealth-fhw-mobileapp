@@ -67,7 +67,7 @@
 
     //Home Screen (after login)
     <string name="title_home_screen">घर</string>
-    <string name="button_new_pt">नया मामला</string>
+    <string name="button_new_pt">नया केस</string>
     <string name="button_find_pt">केस का पता लगाएं</string>
     <string name="button_diagnostic_tests">नैदानिक परीक्षण</string>
     <string name="button_active_pt">आक्टिव केस</string>
