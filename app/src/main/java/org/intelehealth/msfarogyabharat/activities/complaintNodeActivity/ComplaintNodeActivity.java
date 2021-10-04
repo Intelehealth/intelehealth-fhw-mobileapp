@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -175,6 +176,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
             File[] files = base_dir.listFiles();
+            Arrays.sort(files);
 
             for (File file : files) {
                 if(file.getName().toLowerCase().contains("resolution and feedback")) {
@@ -233,7 +235,8 @@ public class ComplaintNodeActivity extends AppCompatActivity {
 
             }
 
-        } else {
+        }
+        else {
             String[] fileNames = new String[0];
             try {
                 fileNames = getApplicationContext().getAssets().list("engines");
