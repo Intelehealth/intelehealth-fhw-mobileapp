@@ -1538,7 +1538,10 @@ public final class StringUtils {
     public static String switch_hi_am_i_speaking_Spinner(String val) {
         switch (val) {
 
-            case "स्वयं जीवित रहें":
+//            case "स्वयं जीवित रहें":
+//                val = "Survivor themselves";
+//                break;
+                case "खुद हिंसा का सामना करने वाली महिला से":
                 val = "Survivor themselves";
                 break;
             case "कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)":
@@ -1553,8 +1556,12 @@ public final class StringUtils {
     public static String switch_hi_am_i_speaking_Spinner_edit(String val) {
         switch (val) {
 
-            case "Survivor themselves":
-                val = "स्वयं जीवित रहें";
+//            case "Survivor themselves":
+//                val = "स्वयं जीवित रहें";
+//                break;
+
+                case "Survivor themselves":
+                val = "खुद हिंसा का सामना करने वाली महिला से";
                 break;
             case "Someone else (Ask who and enter)":
                 val = "कोई और है (पूछें कि वह कौन और उनका नाम और रिश्ता यहाँ एंटर करें)";
