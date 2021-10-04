@@ -116,11 +116,11 @@ public class ActivePatientActivity extends AppCompatActivity {
                     return;
                 }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
 
-                    Log.v("main", "findlastposition: "+ Integer.toString(reLayoutManager.findLastVisibleItemPosition()) +
-                            " : " + "adapteritemcount: "+ Integer.toString(mActivePatientAdapter.getItemCount() -1));
-                    Log.v("main", "newstate value: "+ newState + " " + "scrollstate: "+ RecyclerView.SCROLL_STATE_IDLE);
+                    Log.v("main", "findlastposition: " + Integer.toString(reLayoutManager.findLastVisibleItemPosition()) +
+                            " : " + "adapteritemcount: " + Integer.toString(mActivePatientAdapter.getItemCount() - 1));
+                    Log.v("main", "newstate value: " + newState + " " + "scrollstate: " + RecyclerView.SCROLL_STATE_IDLE);
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
@@ -207,7 +207,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
 
         if (cursor != null) {
@@ -253,7 +253,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b " +
                 "WHERE a.patientuuid = b.uuid " +
                 "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
 
         if (cursor != null) {

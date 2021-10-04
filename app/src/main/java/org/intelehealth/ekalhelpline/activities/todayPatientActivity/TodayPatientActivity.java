@@ -110,7 +110,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                     return;
                 }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
@@ -205,7 +205,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
         Logger.logD(TAG, query);
 
-        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -254,7 +254,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
         Logger.logD(TAG, query);
 
-        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -522,54 +522,54 @@ public class TodayPatientActivity extends AppCompatActivity {
     }
 
     private List<TodayPatientModel> getExitSurvey_Comments(int offset) {
-            List<TodayPatientModel> todayPatientList = new ArrayList<>();
-            Date cDate = new Date();
-            String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-            String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
-                    "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f " +
-                    "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
-                    "AND a.startdate LIKE '" + currentDate + "T%'   " +
-                    "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
-            Logger.logD(TAG, query);
+        List<TodayPatientModel> todayPatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
+        Logger.logD(TAG, query);
 
-            final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        try {
-                            todayPatientList.add(new TodayPatientModel(
-                                    cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("value")),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("obsvalue")))
-                            );
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                        }
-                    } while (cursor.moveToNext());
-                }
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        todayPatientList.add(new TodayPatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsvalue")))
+                        );
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
             }
-            if (cursor != null) {
-                cursor.close();
-            }
-
-            for (TodayPatientModel todayPatientModel : todayPatientList) {
-                Log.v("main", "todaysPatient: " + todayPatientModel.getFirst_name() + " " +
-                        todayPatientModel.getLast_name() + " " + todayPatientModel.getVisit_speciality() + "\n");
-            }
-
-            return todayPatientList;
         }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        for (TodayPatientModel todayPatientModel : todayPatientList) {
+            Log.v("main", "todaysPatient: " + todayPatientModel.getFirst_name() + " " +
+                    todayPatientModel.getLast_name() + " " + todayPatientModel.getVisit_speciality() + "\n");
+        }
+
+        return todayPatientList;
+    }
 
 }
 

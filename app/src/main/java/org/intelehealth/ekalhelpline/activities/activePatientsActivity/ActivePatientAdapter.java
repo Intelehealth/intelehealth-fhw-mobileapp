@@ -3,7 +3,9 @@ package org.intelehealth.ekalhelpline.activities.activePatientsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,38 +133,37 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         for (int i = 0; i < activePatient_speciality.size(); i++) {
             if (activePatientModel.getPatientuuid().equalsIgnoreCase(activePatient_speciality.get(i).getPatientuuid())) {
 
-        if (activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
-                activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+                if (activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
+                        activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
 
-            if (activePatient_speciality.get(i).getVisit_speciality() != null &&
-                    activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+                    if (activePatient_speciality.get(i).getVisit_speciality() != null &&
+                            activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
-                if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+                        if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
-                    if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                        holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
-                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                                holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            } else {
+                                holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            }
+                        }
                     } else {
-                        holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
-                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                        //  holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
                     }
+                } else {
+                    //  holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
                 }
-            } else {
-              //  holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
-            }
-        } else {
-          //  holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
-        }
 
-    }
-            else {
+            } else {
                 //do nothing...
             }
         }
         //TLD Query - end
-        if(holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
+        if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
             holder.tld_query_tag.setVisibility(View.GONE);
         }
     }

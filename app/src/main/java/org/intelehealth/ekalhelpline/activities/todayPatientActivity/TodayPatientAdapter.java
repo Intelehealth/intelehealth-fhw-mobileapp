@@ -3,7 +3,9 @@ package org.intelehealth.ekalhelpline.activities.todayPatientActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,13 +73,13 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         if (todayPatientModel.getOpenmrs_id() != null) {
             if (todayPatientModel.getLast_name() != null)
                 header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
+                        todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
             else
                 header = String.format("%s, %s", todayPatientModel.getFirst_name(), todayPatientModel.getOpenmrs_id());
         } else {
             if (todayPatientModel.getLast_name() != null)
                 header = String.format("%s %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name());
+                        todayPatientModel.getLast_name());
             else
                 header = String.format("%s", todayPatientModel.getFirst_name());
         }
@@ -86,7 +88,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
         String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
-        if (todayPatientModel.getSync().equalsIgnoreCase("0")){
+        if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -136,10 +138,10 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         for (int i = 0; i < todayPatient_Speciality.size(); i++) {
             if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_Speciality.get(i).getPatientuuid())) {
                 /* Checking the entire data with our speciality added visits here, if no speciality means visit not uploaded
-                * so, our entire data patientuuid will not match with specality visti patientuuid as the record itself will not be present... */
+                 * so, our entire data patientuuid will not match with specality visti patientuuid as the record itself will not be present... */
 
                 //start
-                if(todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
+                if (todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
                         todayPatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
 
                     if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
@@ -151,56 +153,49 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                                 holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                            }
-                            else {
+                            } else {
                                 holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
-                        }
-                        else {
+                        } else {
                             //check the spinner value for this from the exit survey selection and then
                             // based on that checking add the text.
                             for (int j = 0; j < todayPatient_exitsurvey_commentsList.size(); j++) {
                                 if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(j).getPatientuuid())) {
                                     //check for TLD Closed and TLD Resolved
-                                    if(todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                    if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
                                             .equalsIgnoreCase("TLD Closed")) { //TLD Closed
                                         holder.tld_query_tag.setText("TLD CLOSED");
                                         holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                         holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                                    }
-                                    else if(todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                    } else if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
                                             .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
                                         holder.tld_query_tag.setText("TLD RESOLVED");
                                         holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                         holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                                    }
-                                    else {
+                                    } else {
                                         holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
                                     }
                                 }
                             }
                         }
+                    } else {
+                        // holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
                     }
-                    else {
-                       // holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
-                    }
-                }
-                else {
+                } else {
                     //holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
                 }
                 //end
 
-            }
-            else {
-              //  holder.tld_query_tag.setVisibility(View.GONE);
+            } else {
+                //  holder.tld_query_tag.setVisibility(View.GONE);
             }
         }
 
 
         //TLD Query - end
-        if(holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
+        if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
             holder.tld_query_tag.setVisibility(View.GONE);
         }
 
