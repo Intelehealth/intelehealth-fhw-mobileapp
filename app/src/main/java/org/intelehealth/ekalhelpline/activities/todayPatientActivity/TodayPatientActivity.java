@@ -114,11 +114,16 @@ public class TodayPatientActivity extends AppCompatActivity {
                     Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
+                    List<TodayPatientModel> todayvisit_speciality = todayVisit_speciality(offset);
+                    List<TodayPatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
+
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
 
                     mActivePatientAdapter.todayPatientModelList.addAll(allPatientsFromDB);
+                    mActivePatientAdapter.todayPatient_Speciality.addAll(todayvisit_speciality);
+                    mActivePatientAdapter.todayPatient_exitsurvey_commentsList.addAll(todayvisit_exitsurveycomments);
                     mActivePatientAdapter.notifyDataSetChanged();
                 }
             }
@@ -129,7 +134,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             List<TodayPatientModel> todayPatientModels = doQuery(offset);
 
             List<TodayPatientModel> todayVisit_Speciality = todayVisit_speciality(offset); //get the speciality.
-            List<TodayPatientModel> todayModel_ExitSurveyComments = getExitSurvey_Comments(); //fetch the value of the COMMENTS of ExitSurvey screen
+            List<TodayPatientModel> todayModel_ExitSurveyComments = getExitSurvey_Comments(offset); //fetch the value of the COMMENTS of ExitSurvey screen
             //to check for TLD Closed or TLD Resolved... This will only come in Todays Visits and not in Active Visits.
 
             mActivePatientAdapter = new TodayPatientAdapter(todayPatientModels, this,
@@ -516,7 +521,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         return phone;
     }
 
-    private List<TodayPatientModel> getExitSurvey_Comments() {
+    private List<TodayPatientModel> getExitSurvey_Comments(int offset) {
             List<TodayPatientModel> todayPatientList = new ArrayList<>();
             Date cDate = new Date();
             String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);

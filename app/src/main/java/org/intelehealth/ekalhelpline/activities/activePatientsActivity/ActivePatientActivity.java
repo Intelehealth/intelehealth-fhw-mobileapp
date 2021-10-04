@@ -44,6 +44,7 @@ import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
+import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
 import org.intelehealth.ekalhelpline.utilities.Logger;
@@ -116,15 +117,20 @@ public class ActivePatientActivity extends AppCompatActivity {
                 }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
                         reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() -1) {
+
+                    Log.v("main", "findlastposition: "+ Integer.toString(reLayoutManager.findLastVisibleItemPosition()) +
+                            " : " + "adapteritemcount: "+ Integer.toString(mActivePatientAdapter.getItemCount() -1));
                     Log.v("main", "newstate value: "+ newState + " " + "scrollstate: "+ RecyclerView.SCROLL_STATE_IDLE);
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
+                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset);
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
 
                     mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
+                    mActivePatientAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
                     mActivePatientAdapter.notifyDataSetChanged();
                 }
             }
@@ -134,8 +140,12 @@ public class ActivePatientActivity extends AppCompatActivity {
         if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+
             List<ActivePatientModel> activePatientModels = doQuery(offset);
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this, listPatientUUID);
+            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset); //get the speciality.
+
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,
+                    listPatientUUID, activeVisit_Speciality);
             recyclerView.setAdapter(mActivePatientAdapter);
         }
 
@@ -190,12 +200,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This method retrieves visit details about patient for a particular date.
-     *
-     * @return void
-     */
-    private List<ActivePatientModel> doQuery(int offset) {
+    private List<ActivePatientModel> activeVisits_Speciality(int offset) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
@@ -223,6 +228,50 @@ public class ActivePatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("value")))
                         );
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        return activePatientList;
+    }
+
+    /**
+     * This method retrieves visit details about patient for a particular date.
+     *
+     * @return void
+     */
+    private List<ActivePatientModel> doQuery(int offset) {
+        List<ActivePatientModel> activePatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
+        final Cursor cursor = db.rawQuery(query,  new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        activePatientList.add(new ActivePatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync"))));
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }

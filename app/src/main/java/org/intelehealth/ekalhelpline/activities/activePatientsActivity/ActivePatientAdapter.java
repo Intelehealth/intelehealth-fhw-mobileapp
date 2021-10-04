@@ -27,7 +27,7 @@ import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDet
 
 public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
 
-    List<ActivePatientModel> activePatientModels, activePatient_exitsurvey_commentsList;
+    List<ActivePatientModel> activePatientModels, activePatient_speciality;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -39,11 +39,11 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     }
 
     public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID,
-                                List<ActivePatientModel> activePatient_exitsurvey_commentsList) {
+                                List<ActivePatientModel> activePatient_speciality) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
-        this.activePatient_exitsurvey_commentsList = activePatient_exitsurvey_commentsList;
+        this.activePatient_speciality = activePatient_speciality;
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 header = String.format("%s", activePatientModel.getFirst_name());
         }
 
-        if (activePatientModel.getSync().equalsIgnoreCase("0")){
+        if (activePatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -128,47 +128,43 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         //TLD Query - start
         //to check only if visit is uploaded then show the tag...
-        if(activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
+        for (int i = 0; i < activePatient_speciality.size(); i++) {
+            if (activePatientModel.getPatientuuid().equalsIgnoreCase(activePatient_speciality.get(i).getPatientuuid())) {
+
+        if (activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
                 activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
 
-            if (activePatientModel.getVisit_speciality() != null &&
-                    activePatientModel.getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+            if (activePatient_speciality.get(i).getVisit_speciality() != null &&
+                    activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
                 if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                     if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                         holder.tld_query_tag.setText("TLD QUERY ANSWERED"); //Prescription is GIVEN
-                    }
-                    else {
+                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                    } else {
                         holder.tld_query_tag.setText("TLD QUERY ASKED"); //Prescription is NOT GIVEN
+                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                     }
                 }
-               /* else {
-                    //check the spinner value for this from the exit survey selection and then
-                    // based on that checking add the text.
-                    for (int i = 0; i < todayPatient_exitsurvey_commentsList.size(); i++) {
-                        if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(i).getPatientuuid())) {
-                            //check for TLD Closed and TLD Resolved
-                            if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Closed")) {
-                                holder.tld_query_tag.setText("TLD CLOSED");
-                            }
-                            else if(todayPatient_exitsurvey_commentsList.get(i).getExitsurvey_comments()
-                                    .equalsIgnoreCase("TLD Resolved")) {
-                                holder.tld_query_tag.setText("TLD RESOLVED");
-                            }
-                        }
-                    }
-                }*/
+            } else {
+              //  holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
             }
-            else {
-                holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
-            }
+        } else {
+          //  holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
         }
-        else {
-            holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+
+    }
+            else {
+                //do nothing...
+            }
         }
         //TLD Query - end
+        if(holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_query_tag.setVisibility(View.GONE);
+        }
     }
 
     @Override
