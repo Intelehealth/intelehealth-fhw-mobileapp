@@ -202,6 +202,9 @@ public class PatientDetailActivity extends AppCompatActivity {
     String callNoteText = "";
     String gender;
 
+    int preferred_time;
+    ArrayAdapter<CharSequence> timeAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
@@ -567,11 +570,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
-        int preferred_time = R.array.preferred_time_female;
+        preferred_time = R.array.preferred_time_female;
         if (gender.equalsIgnoreCase("M")) {
             preferred_time = R.array.preferred_time_male;
         }
-        ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
+
+        timeAdapter = ArrayAdapter.createFromResource(this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_pref_time.setAdapter(timeAdapter);
         spinner_pref_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -617,7 +621,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     allBuckets.addAll(response.body().data);
                     buckets.clear();
-                    buckets.addAll(allBuckets);
+                    buckets.addAll(filterBuckets(allBuckets,selectedLanguage));
                     bucketAdapter.notifyDataSetChanged();
 
                     apiInterface.getSubscriptionStatus(urlModifiers.getSubscriptionStatusUrl(patient_new.getPhone_number()), subscriptionAuthHeader).enqueue(new Callback<SubscriptionStatus>() {
@@ -625,7 +629,28 @@ public class PatientDetailActivity extends AppCompatActivity {
                         public void onResponse(Call<SubscriptionStatus> call, Response<SubscriptionStatus> response) {
                             SubscriptionStatus body = response.body();
                             if (body != null && body.userdata != null && body.userdata.size() > 0) {
+
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
+
+                                /* This feature change i.e. populating spinners on the basis of the agant's gender is done for Sprint2 release
+                                Hence the code changes were done keeping in mind the data for already exiting patients and this was the best suited approach found.
+                                //TODO:API response needs to be modified in order to handle several other cases conveniently in future.
+                                 */
+
+
+                                //redefine bucket adapter to preset values coming from the response.
+                                buckets.clear();
+                                buckets.addAll(allBuckets);
+                                bucketAdapter.notifyDataSetChanged();
+
+                                //redefine time adapter based on the gender coming from response.
+                                if(userData.genderselected.equalsIgnoreCase("M"))
+                                    preferred_time = R.array.preferred_time_male;
+                                else
+                                    preferred_time = R.array.preferred_time_female;
+
+                                timeAdapter = ArrayAdapter.createFromResource(PatientDetailActivity.this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
+                                spinner_pref_time.setAdapter(timeAdapter);
 
                                 for (int i = 0; i < buckets.size(); i++) {
                                     if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
