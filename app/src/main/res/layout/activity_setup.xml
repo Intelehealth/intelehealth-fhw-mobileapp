@@ -364,11 +364,12 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <ImageView
+                       <!-- <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="50dip"
                             android:layout_gravity="center_horizontal"
-                            android:src="@drawable/telemed_ic" />
+                            android:src="@drawable/telemed_ic"
+                            android:visibility="gone" />-->
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
