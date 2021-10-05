@@ -52,6 +52,8 @@ public class SessionManager {
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
     private static final String PROVIDER_PHONENO = "PROVIDER_PHONENO";
+    private static final String CHW_GENDER = "chwgender";
+
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -165,6 +167,15 @@ public class SessionManager {
 
     public void setChwname(String chwname) {
         editor.putString(CHWNAME, chwname);
+        editor.commit();
+    }
+
+    public String getChwGender() {
+        return pref.getString(CHW_GENDER, "");
+    }
+
+    public void setChwGender(String chwgender) {
+        editor.putString(CHW_GENDER, chwgender);
         editor.commit();
     }
 

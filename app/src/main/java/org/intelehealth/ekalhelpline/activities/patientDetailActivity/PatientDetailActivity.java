@@ -233,10 +233,20 @@ public class PatientDetailActivity extends AppCompatActivity {
         width = metrics.widthPixels;
         height = metrics.heightPixels;
         additionalPhoneNumTR = findViewById(R.id.additionalNumberTableRow);
-        spinner_pref_gender = findViewById(R.id.spinner_pref_gender);
+        gender = sessionManager.getChwGender();
+
+        //change gender in the same format as using in api
+        if(gender.equalsIgnoreCase("Male"))
+            gender = "M";
+        else
+            gender = "F";
+
+
+        //gender spinner not required for new flow i.e. it will be based on agent's gender only
+        /*spinner_pref_gender = findViewById(R.id.spinner_pref_gender);
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.pref_gender, android.R.layout.simple_spinner_dropdown_item);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_pref_gender.setAdapter(genderAdapter);
+        spinner_pref_gender.setAdapter(genderAdapter);*/
 
 
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
@@ -448,8 +458,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
-
                 VisitDTO visitDTO = new VisitDTO();
+
                 visitDTO.setUuid(uuid);
                 visitDTO.setPatientuuid(patient_new.getUuid());
                 visitDTO.setStartdate(thisDate);
@@ -477,7 +487,6 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
                 startActivity(intent2);
             }
-
         });
 
         //  LoadFamilyMembers();
@@ -492,23 +501,26 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
-        spinner_pref_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        initSubscription(gender);
+        //gender spinner not required for new flow i.e. it will be based on agent's gender only
 
-                gender = parent.getItemAtPosition(position).toString();
-                if(gender.equalsIgnoreCase("Male"))
-                    gender = "M";
-                else
-                    gender = "F";
-                initSubscription(gender);
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+//        spinner_pref_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                gender = parent.getItemAtPosition(position).toString();
+//                if(gender.equalsIgnoreCase("Male"))
+//                    gender = "M";
+//                else
+//                    gender = "F";
+//                initSubscription(gender);
+//
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
     }
 
@@ -548,6 +560,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     return;
                 selectedBucket = bucketAdapter.getItem(position);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -558,9 +571,6 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (gender.equalsIgnoreCase("M")) {
             preferred_time = R.array.preferred_time_male;
         }
-        else
-            preferred_time = R.array.preferred_time_female;
-
         ArrayAdapter<CharSequence> timeAdapter = ArrayAdapter.createFromResource(this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_pref_time.setAdapter(timeAdapter);
@@ -600,14 +610,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
-        int finalPreferred_time = preferred_time;
+
         apiInterface.getBucketList(urlModifiers.getBucketListUrl(), subscriptionAuthHeader).enqueue(new Callback<BucketResponse>() {
             @Override
             public void onResponse(Call<BucketResponse> call, Response<BucketResponse> response) {
                 if (response.body() != null) {
                     allBuckets.addAll(response.body().data);
                     buckets.clear();
-                    buckets.addAll(filterBuckets(allBuckets, selectedLanguage));
+                    buckets.addAll(allBuckets);
                     bucketAdapter.notifyDataSetChanged();
 
                     apiInterface.getSubscriptionStatus(urlModifiers.getSubscriptionStatusUrl(patient_new.getPhone_number()), subscriptionAuthHeader).enqueue(new Callback<SubscriptionStatus>() {
@@ -616,35 +626,17 @@ public class PatientDetailActivity extends AppCompatActivity {
                             SubscriptionStatus body = response.body();
                             if (body != null && body.userdata != null && body.userdata.size() > 0) {
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
-                                if (userData.bucketsubscribedto == 0)
-                                    return;
-
-                                String[] genderArray = getResources().getStringArray(R.array.pref_gender);
-                                String genderSelect = "";
-                                if(userData.genderselected.equalsIgnoreCase("M"))
-                                    genderSelect = "Male";
-                                else
-                                    genderSelect = "Female";
-                                for (int i1 = 0; i1 < genderArray.length; i1++) {
-                                    if (genderArray[i1].equalsIgnoreCase(genderSelect)) {
-                                        spinner_pref_gender.setSelection(i1);
-                                        break;
-                                    }
-                                }
 
                                 for (int i = 0; i < buckets.size(); i++) {
                                     if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
                                         spinner_pref_bucket.setSelection(i);
-
                                         if (!TextUtils.isEmpty(userData.slotselected) && TextUtils.isDigitsOnly(userData.slotselected)) {
                                                 int slotSelect = Integer.parseInt(userData.slotselected);
-                                                spinner_pref_time.setSelection(slotSelect);
-                                        }
+                                                spinner_pref_time.setSelection(slotSelect); }
 //                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
 //                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
 //                                                spinner_pref_time.setSelection(i1);
 //                                                break;
-//
                                         break;
                                     }
                                 }
@@ -729,7 +721,6 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     private void updateSubscriptionUI(boolean enable) {
-        spinner_pref_gender.setEnabled(enable);
         spinner_pref_bucket.setEnabled(enable);
         spinner_pref_time.setEnabled(enable);
         spinner_pref_language.setEnabled(enable);

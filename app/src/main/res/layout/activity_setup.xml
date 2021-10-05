@@ -301,6 +301,21 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <android.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:entries="@array/select_gender_setup"
+                        />
+
+                    <android.widget.Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"/>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">

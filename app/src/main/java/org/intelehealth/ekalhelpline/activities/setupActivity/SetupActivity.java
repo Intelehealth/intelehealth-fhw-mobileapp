@@ -122,7 +122,7 @@ public class SetupActivity extends AppCompatActivity {
     private EditText mUrlField;
     private Button mLoginButton;
     // private Spinner mDropdownLocation;
-    private Spinner spinner_state, spinner_district,
+    private Spinner spinner_state, spinner_gender, spinner_district,
             spinner_sanch, spinner_village;
     private TextView mAndroidIdTextView;
     private RadioButton r1;
@@ -186,6 +186,8 @@ public class SetupActivity extends AppCompatActivity {
         mUrlField = findViewById(R.id.editText_URL);
         //   mDropdownLocation = findViewById(R.id.spinner_location);
         spinner_state = findViewById(R.id.spinner_state);
+        spinner_gender = findViewById(R.id.spinner_gender);
+
         /*spinner_district = findViewById(R.id.spinner_district);
         spinner_sanch = findViewById(R.id.spinner_sanch);
         spinner_village = findViewById(R.id.spinner_village);*/
@@ -634,7 +636,16 @@ public class SetupActivity extends AppCompatActivity {
             t.setError("Select State");
             t.setTextColor(Color.RED);
             Toast.makeText(SetupActivity.this, "Select Location from dropdown", Toast.LENGTH_LONG).show();
-        } /*else if (spinner_district.getSelectedItemPosition() <= 0) {
+        }
+        if (spinner_gender.getSelectedItemPosition() <= 0 || spinner_gender.getSelectedItem().toString().equalsIgnoreCase("Select Gender")) {
+            cancel = true;
+            focusView = spinner_gender;
+            TextView t = (TextView) spinner_gender.getSelectedView();
+            t.setError("Select Gender");
+            t.setTextColor(Color.RED);
+            Toast.makeText(SetupActivity.this, "Select Gender from dropdown", Toast.LENGTH_LONG).show();
+        }
+        /*else if (spinner_district.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_district;
             TextView t = (TextView) spinner_district.getSelectedView();
@@ -679,10 +690,12 @@ public class SetupActivity extends AppCompatActivity {
             }*/
 
             //state based login...
-            if(!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) {
+            if((!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) &&
+                    (!spinner_gender.getSelectedItem().toString().isEmpty() || !spinner_gender.getSelectedItem().toString().equalsIgnoreCase("Select Gender"))) {
                 String urlString = mUrlField.getText().toString();
+                String chw_gender = spinner_gender.getSelectedItem().toString();
               //  TestSetup(urlString, email, password, admin_password, village_name);
-                TestSetup(urlString, email, password, admin_password, village_name);
+                TestSetup(urlString, email, password, admin_password, village_name, chw_gender);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -1144,7 +1157,7 @@ public class SetupActivity extends AppCompatActivity {
      * If successful cretes a new {@link Account}
      * If unsuccessful details are saved in SharedPreferences.
      */
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location, String chw_gender) {
 
         ProgressDialog progress;
         progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
@@ -1203,6 +1216,9 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setServerUrlBase("https://" + CLEAN_URL + "/openmrs");
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
+
+                                            //Storing CHW Gender for Audio Subscription
+                                            sessionManager.setChwGender(chw_gender);
 
                                             //Storing State Name
                                             sessionManager.setStateName(selectedState);

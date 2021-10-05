@@ -45,6 +45,12 @@
         <item>Female</item>
     </string-array>
 
+    <string-array name="select_gender_setup">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
     <string-array name="pref_example_list_values">
         <item>1</item>
         <item>0</item>
