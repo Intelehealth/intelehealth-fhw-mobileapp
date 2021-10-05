@@ -749,4 +749,5 @@
     //sms via api
     <string name="sms_sent">SMS Sent!</string>
     <string name="sms_failed">Sending SMS Failed! Please try again later.</string>
+    <string name="mobile_number_search">"Mobile number: "</string>
 </resources>

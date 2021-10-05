@@ -31,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
+                tools:text="Test Patient, 10QWN3-9"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -38,11 +39,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                tools:text="Age:* 1 year 2 months 3 days \n Mobile number: 7304154312"
                 android:fontFamily="@font/lato_regular" />
 
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1.5pt"></View>
+
+<!--            <View-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="1.5pt"></View>-->
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
