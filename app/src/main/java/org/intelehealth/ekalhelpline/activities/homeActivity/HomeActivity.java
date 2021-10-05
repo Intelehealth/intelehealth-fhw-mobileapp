@@ -975,11 +975,12 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         // https://hstraining.intelehealth.org/intelehealth/app_update.json
-        BASE_URL = "https://" + sessionManager1.getServerUrl() + "/intelehealth/app_update.json/";
+        BASE_URL = "https://" + sessionManager1.getServerUrl() + "/intelehealth/app_update.json";
         Log.v("app_update", "server url: " + BASE_URL);
 
-        ApiClient.changeApiBaseUrl(BASE_URL);
-        disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
+     //  ApiClient.changeApiBaseUrl(BASE_URL);
+        disposable.add(
+                (Disposable) AppConstants.apiInterface.checkAppUpdate(BASE_URL)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
@@ -1030,7 +1031,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e("Error", "" + e);
+                        Log.e("app_update", "" + e);
                     }
                 })
         );
