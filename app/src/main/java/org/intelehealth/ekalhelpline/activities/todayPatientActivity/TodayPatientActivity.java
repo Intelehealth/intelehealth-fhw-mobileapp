@@ -23,7 +23,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -60,6 +62,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     RecyclerView mTodayPatientList;
     MaterialAlertDialogBuilder dialogBuilder;
+    TextView no_records_found_textview;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
@@ -99,6 +102,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         mTodayPatientList = findViewById(R.id.today_patient_recycler_view);
+        no_records_found_textview = findViewById(R.id.no_records_found_textview);
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mTodayPatientList.setLayoutManager(reLayoutManager);
@@ -240,7 +244,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_today_patient, menu);
+       // inflater.inflate(R.menu.menu_today_patient, menu);
         inflater.inflate(R.menu.today_filter, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -293,6 +297,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                     // If the user checked the item, add it to the selected items
                     selectedItems.add(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+
                 } else if (selectedItems.contains(which)) {
                     // Else, if the item is already in the array, remove it
                     selectedItems.remove(finalCreator_uuid[which]);
@@ -322,7 +327,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
 
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+      //  IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
     }
 
     private void doQueryWithProviders(List<String> providersuuids) {
@@ -365,18 +370,28 @@ public class TodayPatientActivity extends AppCompatActivity {
             cursor.close();
         }
 
+        TodayPatientAdapter mTodayPatientAdapter;
+        LinearLayoutManager linearLayoutManager;
+
         if (!todayPatientList.isEmpty()) {
             for (TodayPatientModel todayPatientModel : todayPatientList)
                 Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name());
 
-            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
-            mTodayPatientList.setLayoutManager(linearLayoutManager);
-            mTodayPatientList.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
-            mTodayPatientList.setAdapter(mTodayPatientAdapter);
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
+            no_records_found_textview.setVisibility(View.GONE);
         }
+        else {
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
+             no_records_found_textview.setVisibility(View.VISIBLE);
+        }
+
+        linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
+        mTodayPatientList.setLayoutManager(linearLayoutManager);
+       /* mTodayPatientList.addItemDecoration(new
+                DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));*/
+        mTodayPatientList.setAdapter(mTodayPatientAdapter);
+        mTodayPatientAdapter.notifyDataSetChanged(); //since, again we are updating...
 
     }
 
@@ -423,7 +438,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
         }
 
     }
