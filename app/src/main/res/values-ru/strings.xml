@@ -97,7 +97,7 @@
     <string name="identification_screen_prompt_education" translatable="false">Уровень образования</string>
     <string name="identification_screen_prompt_country" translatable="false">Страна *</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">Почтовый индекс</string>
-    <string name="identification_screen_prompt_relationship" translatable="false">Сын/дочь/жена</string>
+    <string name="identification_screen_prompt_relationship" translatable="false">Имя опекуна</string>
     <string name="identification_screen_prompt_occupation" translatable="false">Профессия</string>
     <string name="identification_screen_snack_patient_created" translatable="false">Пациент создан! Загружаю на сервер.</string>
     <string name="identification_screen_error_data_fields" translatable="false">Ошибка: поля данных отформатированы неправильно</string>
