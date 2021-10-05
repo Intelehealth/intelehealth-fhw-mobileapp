@@ -96,7 +96,7 @@
     <string name="identification_screen_prompt_education" translatable="false">Education level</string>
     <string name="identification_screen_prompt_country" translatable="false">Country *</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
-    <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
+    <string name="identification_screen_prompt_relationship" translatable="false">Guardian’s name</string>
     <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>
     <string name="identification_screen_snack_patient_created" translatable="false">Patient created! Uploading to server.</string>
     <string name="identification_screen_error_data_fields" translatable="false">Error: data fields are not formatted correctly</string>
