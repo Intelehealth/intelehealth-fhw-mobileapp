@@ -83,6 +83,12 @@ public class ComplaintNodeListAdapter extends RecyclerView.Adapter<ComplaintNode
 
                // itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext,R.color.amber));
                 if(!thisNode.isSelected()) {
+                    for(int i=0;i<getItemCount();i++)
+                    {
+                        mNodesFilter.get(i).setSelected(false);
+                        itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                        itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
+                    }
                     thisNode.setSelected(true);
                     itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                     itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
