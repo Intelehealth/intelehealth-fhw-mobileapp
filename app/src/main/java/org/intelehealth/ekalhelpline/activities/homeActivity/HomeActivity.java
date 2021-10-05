@@ -969,16 +969,14 @@ public class HomeActivity extends AppCompatActivity {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
             versionCode = pInfo.versionCode;
+            Log.v("app_update", "version code: " + versionCode);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
-        if(BuildConfig.DEBUG) {
-            BASE_URL = "https://"; // enter hellosathi url here...
-        }
-        else {
-            BASE_URL = "https://"; // enter hellosathi url here...
-        }
+        // https://hstraining.intelehealth.org/intelehealth/app_update.json
+        BASE_URL = "https://" + sessionManager1.getServerUrl() + "/intelehealth/app_update.json/";
+        Log.v("app_update", "server url: " + BASE_URL);
 
         ApiClient.changeApiBaseUrl(BASE_URL);
         disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
@@ -990,7 +988,7 @@ public class HomeActivity extends AppCompatActivity {
                         int latestVersionCode = 0;
                         if (!res.getLatestVersionCode().isEmpty()) {
                             latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                            Log.v("main", "latest app version: " + Integer.toString(latestVersionCode));
+                            Log.v("app_update", "latest app version: " + Integer.toString(latestVersionCode));
                         }
 
                         if (latestVersionCode > versionCode) {
