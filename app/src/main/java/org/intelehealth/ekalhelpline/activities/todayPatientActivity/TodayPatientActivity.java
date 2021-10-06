@@ -46,6 +46,7 @@ import org.intelehealth.ekalhelpline.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
+import org.intelehealth.ekalhelpline.models.ActivePatientModel;
 import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
@@ -424,7 +425,118 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+        String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
+                "WHERE a.patientuuid = b.uuid " +
+                "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "ORDER BY a.patientuuid ASC ";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        todayPatientList.add(new TodayPatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync"))));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        TodayPatientAdapter mTodayPatientAdapter;
+        LinearLayoutManager linearLayoutManager;
+        List<TodayPatientModel> speciality_list = getSpeciality_Filter(providersuuids);
+        List<TodayPatientModel> exitsurvey_comments_list = getExitSurvey_Filter(providersuuids);
+
+        if (!todayPatientList.isEmpty()) {
+            for (TodayPatientModel todayPatientModel : todayPatientList)
+                Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name() + " " +
+                        todayPatientModel.getVisit_speciality());
+
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, exitsurvey_comments_list, speciality_list);
+            no_records_found_textview.setVisibility(View.GONE);
+        }
+        else {
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, exitsurvey_comments_list, speciality_list);
+             no_records_found_textview.setVisibility(View.VISIBLE);
+             no_records_found_textview.setHint(R.string.no_records_found);
+        }
+
+        linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
+        mTodayPatientList.setLayoutManager(linearLayoutManager);
+       /* mTodayPatientList.addItemDecoration(new
+                DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));*/
+        mTodayPatientList.setAdapter(mTodayPatientAdapter);
+        mTodayPatientAdapter.notifyDataSetChanged(); //since, again we are updating...
+
+    }
+
+    private List<TodayPatientModel> getExitSurvey_Filter(List<String> providersuuids) {
+        List<TodayPatientModel> todayPatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
+        String query = "SELECT distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d, tbl_obs f " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND c.uuid = f.encounteruuid " +
+                "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "ORDER BY a.patientuuid ASC ";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        todayPatientList.add(new TodayPatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsvalue"))));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return todayPatientList;
+    }
+
+    private List<TodayPatientModel> getSpeciality_Filter(List<String> providersuuids) {
+        List<TodayPatientModel> todayPatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
+        String query = "SELECT distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
@@ -449,8 +561,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
                                 cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("value")))
-                        );
+                                cursor.getString(cursor.getColumnIndexOrThrow("value"))));
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }
@@ -460,32 +571,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         if (cursor != null) {
             cursor.close();
         }
-
-        TodayPatientAdapter mTodayPatientAdapter;
-        LinearLayoutManager linearLayoutManager;
-
-        if (!todayPatientList.isEmpty()) {
-            for (TodayPatientModel todayPatientModel : todayPatientList)
-                Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name() + " " +
-                        todayPatientModel.getVisit_speciality());
-
-             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
-            no_records_found_textview.setVisibility(View.GONE);
-        }
-        else {
-             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
-             no_records_found_textview.setVisibility(View.VISIBLE);
-             no_records_found_textview.setHint(R.string.no_records_found);
-        }
-
-        linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
-        mTodayPatientList.setLayoutManager(linearLayoutManager);
-       /* mTodayPatientList.addItemDecoration(new
-                DividerItemDecoration(this,
-                DividerItemDecoration.VERTICAL));*/
-        mTodayPatientList.setAdapter(mTodayPatientAdapter);
-        mTodayPatientAdapter.notifyDataSetChanged(); //since, again we are updating...
-
+        return todayPatientList;
     }
 
 
