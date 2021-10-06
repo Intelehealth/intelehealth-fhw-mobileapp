@@ -21,6 +21,10 @@ public class Result {
     @Expose
     private List<Attribute> attributes = null;
 
+    @SerializedName("person")
+    @Expose
+    private Person person;
+
     public String getUuid() {
         return uuid;
     }
@@ -53,4 +57,11 @@ public class Result {
         this.attributes = attributes;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
 }

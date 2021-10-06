@@ -186,7 +186,7 @@ public class SetupActivity extends AppCompatActivity {
         mUrlField = findViewById(R.id.editText_URL);
         //   mDropdownLocation = findViewById(R.id.spinner_location);
         spinner_state = findViewById(R.id.spinner_state);
-        spinner_gender = findViewById(R.id.spinner_gender);
+//        spinner_gender = findViewById(R.id.spinner_gender);
 
         /*spinner_district = findViewById(R.id.spinner_district);
         spinner_sanch = findViewById(R.id.spinner_sanch);
@@ -637,14 +637,14 @@ public class SetupActivity extends AppCompatActivity {
             t.setTextColor(Color.RED);
             Toast.makeText(SetupActivity.this, "Select Location from dropdown", Toast.LENGTH_LONG).show();
         }
-        if (spinner_gender.getSelectedItemPosition() <= 0 || spinner_gender.getSelectedItem().toString().equalsIgnoreCase("Select Gender")) {
-            cancel = true;
-            focusView = spinner_gender;
-            TextView t = (TextView) spinner_gender.getSelectedView();
-            t.setError("Select Gender");
-            t.setTextColor(Color.RED);
-            Toast.makeText(SetupActivity.this, "Select Gender from dropdown", Toast.LENGTH_LONG).show();
-        }
+//        if (spinner_gender.getSelectedItemPosition() <= 0 || spinner_gender.getSelectedItem().toString().equalsIgnoreCase("Select Gender")) {
+//            cancel = true;
+//            focusView = spinner_gender;
+//            TextView t = (TextView) spinner_gender.getSelectedView();
+//            t.setError("Select Gender");
+//            t.setTextColor(Color.RED);
+//            Toast.makeText(SetupActivity.this, "Select Gender from dropdown", Toast.LENGTH_LONG).show();
+//        }
         /*else if (spinner_district.getSelectedItemPosition() <= 0) {
             cancel = true;
             focusView = spinner_district;
@@ -690,12 +690,11 @@ public class SetupActivity extends AppCompatActivity {
             }*/
 
             //state based login...
-            if((!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase("")) &&
-                    (!spinner_gender.getSelectedItem().toString().isEmpty() || !spinner_gender.getSelectedItem().toString().equalsIgnoreCase("Select Gender"))) {
+            if((!selectedState.isEmpty() || selectedState != null || !selectedState.equalsIgnoreCase(""))) {
                 String urlString = mUrlField.getText().toString();
-                String chw_gender = spinner_gender.getSelectedItem().toString();
+//                String chw_gender = spinner_gender.getSelectedItem().toString();
               //  TestSetup(urlString, email, password, admin_password, village_name);
-                TestSetup(urlString, email, password, admin_password, village_name, chw_gender);
+                TestSetup(urlString, email, password, admin_password, village_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -1157,7 +1156,7 @@ public class SetupActivity extends AppCompatActivity {
      * If successful cretes a new {@link Account}
      * If unsuccessful details are saved in SharedPreferences.
      */
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location, String chw_gender) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
 
         ProgressDialog progress;
         progress = new ProgressDialog(SetupActivity.this, R.style.AlertDialogStyle);
@@ -1217,8 +1216,8 @@ public class SetupActivity extends AppCompatActivity {
                                             sessionManager.setBaseUrl(BASE_URL);
                                             sessionManager.setSetupComplete(true);
 
-                                            //Storing CHW Gender for Audio Subscription
-                                            sessionManager.setChwGender(chw_gender);
+//                                            //Storing CHW Gender for Audio Subscription
+//                                            sessionManager.setChwGender(chw_gender);
 
                                             //Storing State Name
                                             sessionManager.setStateName(selectedState);
@@ -1335,6 +1334,21 @@ public class SetupActivity extends AppCompatActivity {
                                                                     Log.d("loginmodell", "sess_phoneno: "+
                                                                             sessionManager.getProviderPhoneno());
                                                                 }
+
+                                                                // Here: we are getting the gender for
+                                                                sessionManager.setChwGender(loginProviderModel.getResults().get(i).getPerson().getGender());
+//                                                                if(loginProviderModel.getResults().get(i)
+//                                                                        .getAttributes().get(j)
+//                                                                        .getAttributeType().getUuid()
+//                                                                        .equalsIgnoreCase("cfac5f2d-1033-4994-84cf-ccba9ce86436")) {
+//                                                                    //This states that this uuidtype is of Phone no and not whatsapp...
+//                                                                    sessionManager.setChwGender(
+//                                                                            loginProviderModel.getResults().get(i).getAttributes()
+//                                                                                    .get(j).getValue());
+//
+//                                                                    Log.d("loginmodell", "sess_gender: "+
+//                                                                            sessionManager.getChwGender());
+//                                                                }
                                                             }
                                                         }
                                                     }

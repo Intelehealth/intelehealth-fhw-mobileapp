@@ -239,10 +239,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         gender = sessionManager.getChwGender();
 
         //change gender in the same format as using in api
-        if(gender.equalsIgnoreCase("Male"))
-            gender = "M";
-        else
-            gender = "F";
+//        if(gender.equalsIgnoreCase("Male"))
+//            gender = "M";
+//        else
+//            gender = "F";
 
 
         //gender spinner not required for new flow i.e. it will be based on agent's gender only
