@@ -247,6 +247,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_refuse_followUp));
         notes.add(getString(R.string.spinner_not_applicable));
         notes.add(getString(R.string.Other));
+        notes.add(getString(R.string.tld_closed_comment));
+        notes.add(getString(R.string.tld_resolved_comment));
         return notes;
     }
     private void resetScale() {

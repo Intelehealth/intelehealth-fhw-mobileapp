@@ -674,6 +674,12 @@ public final class StringUtils {
             case "अन्य":
                 val = "Other";
                 break;
+            case "टीएलडी बंद":
+                val = "TLD Closed";
+                break;
+            case "टीएलडी समाधान":
+                val = "TLD Resolved";
+                break;
             default:
                 return val;
         }

@@ -757,4 +757,8 @@
     <string name="pending_follow_up">Patient already has a follow up scheduled for previous visit. </string>
     <string name="still_continue">Do you still want to continue?</string>
     <string name="Other">Other</string>
+    <string name="tld_query_answered_tag">TLD QUERY ANSWERED</string>
+    <string name="tld_query_asked_tag">TLD QUERY ASKED</string>
+    <string name="tld_closed_comment">TLD Closed</string>
+    <string name="tld_resolved_comment">TLD Resolved</string>
 </resources>

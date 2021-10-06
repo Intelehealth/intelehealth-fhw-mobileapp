@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/linearLayout"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
@@ -49,6 +50,17 @@
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/lato_regular"
                     android:text="Age: 11 years, 5 months" />
+
+                <TextView
+                    android:id="@+id/tld_query_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="@dimen/padding_2dp"
+                    tools:text="TLD Query Asked" />
+
 
                 <View
                     android:layout_width="fill_parent"

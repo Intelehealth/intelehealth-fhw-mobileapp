@@ -3,7 +3,9 @@ package org.intelehealth.ekalhelpline.activities.activePatientsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import java.util.List;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
+import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
@@ -26,7 +29,7 @@ import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDet
 
 public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
 
-    List<ActivePatientModel> activePatientModels;
+    List<ActivePatientModel> activePatientModels, activePatient_speciality;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -35,6 +38,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+    }
+
+    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID,
+                                List<ActivePatientModel> activePatient_speciality) {
+        this.activePatientModels = activePatientModels;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+        this.activePatient_speciality = activePatient_speciality;
     }
 
     @Override
@@ -66,7 +77,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 header = String.format("%s", activePatientModel.getFirst_name());
         }
 
-        if (activePatientModel.getSync().equalsIgnoreCase("0")){
+        if (activePatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -116,6 +127,45 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 holder.ivPriscription.setTag("1");
             }
         }
+
+        //TLD Query - start
+        //to check only if visit is uploaded then show the tag...
+        for (int i = 0; i < activePatient_speciality.size(); i++) {
+            if (activePatientModel.getPatientuuid().equalsIgnoreCase(activePatient_speciality.get(i).getPatientuuid())) {
+
+                if (activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
+                        activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+
+                    if (activePatient_speciality.get(i).getVisit_speciality() != null &&
+                            activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+
+                        if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+
+                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                                holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            } else {
+                                holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            }
+                        }
+                    } else {
+                        //  holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                    }
+                } else {
+                    //  holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+                }
+
+            } else {
+                //do nothing...
+            }
+        }
+        //TLD Query - end
+        if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_query_tag.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -135,6 +185,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
+        private TextView tld_query_tag;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
@@ -143,6 +194,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
+            tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
             rootView = itemView;
         }
 

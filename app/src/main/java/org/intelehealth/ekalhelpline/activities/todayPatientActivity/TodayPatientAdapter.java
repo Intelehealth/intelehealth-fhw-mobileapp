@@ -3,7 +3,9 @@ package org.intelehealth.ekalhelpline.activities.todayPatientActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,7 @@ import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
 public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapter.TodayPatientViewHolder> {
 
-    List<TodayPatientModel> todayPatientModelList;
+    List<TodayPatientModel> todayPatientModelList, todayPatient_exitsurvey_commentsList, todayPatient_Speciality;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
@@ -35,6 +37,25 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+    }
+
+  /*  public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
+                               ArrayList<String> _listPatientUUID, List<TodayPatientModel> todayPatient_exitsurvey_commentsList) {
+        this.todayPatientModelList = todayPatientModelList;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+        this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
+    }*/
+
+    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
+                               ArrayList<String> _listPatientUUID,
+                               List<TodayPatientModel> todayPatient_exitsurvey_commentsList,
+                               List<TodayPatientModel> todayPatient_Speciality) {
+        this.todayPatientModelList = todayPatientModelList;
+        this.context = context;
+        this.listPatientUUID = _listPatientUUID;
+        this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
+        this.todayPatient_Speciality = todayPatient_Speciality;
     }
 
     @Override
@@ -52,13 +73,13 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         if (todayPatientModel.getOpenmrs_id() != null) {
             if (todayPatientModel.getLast_name() != null)
                 header = String.format("%s %s, %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
+                        todayPatientModel.getLast_name(), todayPatientModel.getOpenmrs_id());
             else
                 header = String.format("%s, %s", todayPatientModel.getFirst_name(), todayPatientModel.getOpenmrs_id());
         } else {
             if (todayPatientModel.getLast_name() != null)
                 header = String.format("%s %s", todayPatientModel.getFirst_name(),
-                    todayPatientModel.getLast_name());
+                        todayPatientModel.getLast_name());
             else
                 header = String.format("%s", todayPatientModel.getFirst_name());
         }
@@ -67,7 +88,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
         String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
-        if (todayPatientModel.getSync().equalsIgnoreCase("0")){
+        if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -77,6 +98,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
         holder.getHeadTextView().setText(header);
         holder.getBodyTextView().setText(body);
+
         if (todayPatientModel.getEnddate() == null) {
             holder.getIndicatorTextView().setText(R.string.active);
             holder.getIndicatorTextView().setBackgroundColor(Color.GREEN);
@@ -84,6 +106,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
+
         holder.getRootView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +133,71 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             }
         }
 
+        //TLD Query - start
+        //to check only if visit is uploaded then show the tag...
+        for (int i = 0; i < todayPatient_Speciality.size(); i++) {
+            if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_Speciality.get(i).getPatientuuid())) {
+                /* Checking the entire data with our speciality added visits here, if no speciality means visit not uploaded
+                 * so, our entire data patientuuid will not match with specality visti patientuuid as the record itself will not be present... */
+
+                //start
+                if (todayPatientModel.getSync() != null && (todayPatientModel.getSync().equalsIgnoreCase("1") ||
+                        todayPatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+
+                    if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
+                            todayPatient_Speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+
+                        if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+
+                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                                holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN (TLD QUERY ANSWERED)
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            } else {
+                                holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN (TLD QUERY ASKED)
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            }
+                        } else {
+                            //check the spinner value for this from the exit survey selection and then
+                            // based on that checking add the text.
+                            for (int j = 0; j < todayPatient_exitsurvey_commentsList.size(); j++) {
+                                if (todayPatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(j).getPatientuuid())) {
+                                    //check for TLD Closed and TLD Resolved
+                                    if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                            .equalsIgnoreCase("TLD Closed")) { //TLD Closed
+                                        holder.tld_query_tag.setText(R.string.tld_closed_comment);
+                                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                    } else if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                            .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
+                                        holder.tld_query_tag.setText(R.string.tld_resolved_comment);
+                                        holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                        holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                    } else {
+                                        holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                    }
+                } else {
+                    //holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
+                }
+                //end
+
+            } else {
+                //  holder.tld_query_tag.setVisibility(View.GONE);
+            }
+        }
+
+
+        //TLD Query - end
+        if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_query_tag.setVisibility(View.GONE);
+        }
 
     }
 
@@ -131,6 +219,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
+        private TextView tld_query_tag;
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
@@ -139,6 +228,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
+            tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
             rootView = itemView;
         }
 
@@ -177,5 +267,6 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         public void setTv_not_uploaded(TextView tv_not_uploaded) {
             this.tv_not_uploaded = tv_not_uploaded;
         }
+
     }
 }
