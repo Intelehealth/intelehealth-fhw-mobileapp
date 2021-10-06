@@ -107,8 +107,8 @@ public interface ApiInterface {
     @GET("/api/mindmap/download")
     Observable<DownloadMindMapRes> DOWNLOAD_MIND_MAP_RES_OBSERVABLE(@Query("key") String licenseKey);
 
-    @GET("/intelehealth/app_update.json")
-    Single<CheckAppUpdateRes> checkAppUpdate();
+    @GET
+    Single<CheckAppUpdateRes> checkAppUpdate(@Url String url);
 
     @GET
     Single<String> CALL_PATIENT_IVR(@Url String url);
