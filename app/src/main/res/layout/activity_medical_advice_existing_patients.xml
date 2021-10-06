@@ -189,9 +189,22 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <com.google.android.material.textfield.TextInputLayout
+                            <Space
+                                android:layout_width="10dp"
+                                android:layout_height="10dp" />
+
+                            <Spinner
+                                android:id="@+id/spinner_curosityResolution"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:entries="@array/curosityResolution_array"/>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/curosity_textinputlayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                tools:visibility="visible"
                                 android:hint="@string/txt_additional_info">
 
                                 <com.google.android.material.textfield.TextInputEditText

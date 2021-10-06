@@ -184,7 +184,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText educationText;
     TextInputLayout casteLayout;
     TextInputLayout economicLayout;
-    TextInputLayout educationLayout;
+    TextInputLayout educationLayout, curosity_textinputlayout;
     LinearLayout countryStateLayout;
     Spinner mCaste;
     Spinner mEducation;
@@ -205,12 +205,12 @@ public class IdentificationActivity extends AppCompatActivity {
     private int retainPickerDate;
     Spinner occupation_spinner, bankaccount_spinner, mobilephone_spinner, whatsapp_spinner,
             source_of_water_spinner, howtomake_water_safe_spinner, water_availability_spinner,
-            toilet_facility_spinner, structure_of_house_spinner;
+            toilet_facility_spinner, structure_of_house_spinner, spinner_curosityResolution;
     MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
     EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
             occupation_edittext, watersafe_edittext, toiletfacility_edittext;
     CardView cardview_household;
-    ArrayAdapter<CharSequence> occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
+    ArrayAdapter<CharSequence>  adapter_curosityResolution, occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
@@ -229,7 +229,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //Additional questions
     Spinner callerRelationSpinner, helplineInfoSpinner, numberRelationSpinner, preferredLangSpinner;
     EditText otherHelplineInfoET;
-    String helplineInfo = "";
+    String helplineInfo = "", curosityInfo = "";
     String callerPrefLanguage = "";
     ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter , numberRelationAdapter;
 
@@ -560,7 +560,10 @@ public class IdentificationActivity extends AppCompatActivity {
             et_medical_advice_extra = llMedicalAdvice.findViewById(R.id.et_medical_advice_extra);
             cbOthers = llMedicalAdvice.findViewById(R.id.cbOthers);
 
+            spinner_curosityResolution = llMedicalAdvice.findViewById(R.id.spinner_curosityResolution);
+            curosity_textinputlayout = llMedicalAdvice.findViewById(R.id.curosity_textinputlayout);
             et_medical_advice_additional = llMedicalAdvice.findViewById(R.id.et_medical_advice_additional);
+
             cbOthers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -704,6 +707,20 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
+        if(isMedicalAdvice) {
+            try { // curosity resolution Spinner
+                String curosityLanguage = "curosityResolution_array_" + sessionManager.getAppLanguage();
+                int curosity = res.getIdentifier(curosityLanguage, "array", getApplicationContext().getPackageName());
+                if (curosity != 0) {
+                    adapter_curosityResolution = ArrayAdapter.createFromResource(this,
+                            curosity, R.layout.custom_spinner);
+                }
+                spinner_curosityResolution.setAdapter(adapter_curosityResolution);
+            } catch (Exception e) {
+                Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+            } //curosity resolution Spinner End...
+        }
+
         //Occupation Adapter ...
       /*  try {
             String occupationLanguage = "occupation_spinner_" + sessionManager.getAppLanguage();
@@ -724,6 +741,32 @@ public class IdentificationActivity extends AppCompatActivity {
 //        occupation_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.occupation_spinner));
 
+        if(isMedicalAdvice) {
+            //curosity start
+            spinner_curosityResolution.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selected_curosityOption = parent.getItemAtPosition(position).toString();
+
+                    if (selected_curosityOption.equalsIgnoreCase("Other") ||
+                            selected_curosityOption.equalsIgnoreCase("अन्य")) {
+                        curosity_textinputlayout.setVisibility(View.VISIBLE);
+                        et_medical_advice_additional.setFocusable(true);
+                    } else {
+                        curosity_textinputlayout.setVisibility(View.GONE);
+                        et_medical_advice_additional.setText("");
+                        et_medical_advice_additional.setError(null);
+                    }
+                }
+
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            //curosity end...
+        }
 /*
         occupation_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1121,6 +1164,7 @@ public class IdentificationActivity extends AppCompatActivity {
             mGender = "Other";
         }
         if (patientID_edit != null) {
+
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
@@ -2200,13 +2244,6 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        //check if privacy notice is checked
-        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
-            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2240,6 +2277,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         }
 
+        //empty data validation
+/*
         if (isMedicalAdvice
                 && !cbCovidConcern.isChecked()
                 && !cbVaccineGuide.isChecked()
@@ -2255,15 +2294,25 @@ public class IdentificationActivity extends AppCompatActivity {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
+*/
 
 //        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
 //            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
 //            return;
 //        }
-        if (isMedicalAdvice && TextUtils.isEmpty(et_medical_advice_additional.getText())) {
+
+        //empty data validation...
+        /*if (isMedicalAdvice && TextUtils.isEmpty(et_medical_advice_additional.getText())
+                && curosity_textinputlayout.getVisibility() == View.VISIBLE) {
+
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if (isMedicalAdvice && curosity_textinputlayout.getVisibility() == View.GONE) {
+            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
+            return;
+        }*/
 
 
    /*     ArrayList<EditText> values = new ArrayList<>();
@@ -2408,7 +2457,9 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
+        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
         {
             if(otherHelplineInfoET.getText().toString().equalsIgnoreCase(""))
             {
@@ -2447,6 +2498,41 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             autocompleteDistrict.setError(null);
+        }
+
+        //curosity resolution validation - start
+        if(isMedicalAdvice) {
+            if (spinner_curosityResolution.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) spinner_curosityResolution.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = spinner_curosityResolution;
+                cancel = true;
+                return;
+            }
+
+            //editText validation for Other
+            if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                    spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                    spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("इतर")) {
+                if (et_medical_advice_additional.getText().toString().equalsIgnoreCase("")) {
+                    et_medical_advice_additional.setError(getString(R.string.error_medical_visit_data));
+                    focusView = et_medical_advice_additional;
+                    cancel = true;
+                    return;
+                } else {
+                    et_medical_advice_additional.setError(null);
+                }
+            }
+        }
+        //curosity resolution validation - end
+
+        //check if privacy notice is checked
+        if (TextUtils.isEmpty(patientID_edit) && !chb_agree_privacy.isChecked()) {
+            Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first),
+                    Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2670,7 +2756,25 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
 
-            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
+            //curosity - start
+            if(isMedicalAdvice) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                        curosityInfo = et_medical_advice_additional.getText().toString();
+                    else
+                        curosityInfo = StringUtils.getProvided(spinner_curosityResolution);
+                } else {
+                    if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                        curosityInfo = et_medical_advice_additional.getText().toString();
+                    else
+                        curosityInfo = StringUtils.getProvided(spinner_curosityResolution);
+                }
+            }
+            //curosity - end
+
+            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                    helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                    helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
                 helplineInfo = otherHelplineInfoET.getText().toString();
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();
@@ -3147,7 +3251,8 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
+        if (isMedicalAdvice && cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())
+                && curosity_textinputlayout.getVisibility() == View.VISIBLE) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -4018,8 +4123,18 @@ public class IdentificationActivity extends AppCompatActivity {
             insertion = insertion.concat(Node.next_line + cbExercises.getText());
         if (cbOthers.isChecked())
             insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
-        if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
-            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
+
+        //adding of data...
+        if(curosity_textinputlayout.getVisibility() == View.VISIBLE) {
+            if (!TextUtils.isEmpty(et_medical_advice_additional.getText().toString())) {
+                insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info),
+                        curosityInfo));
+            }
+        }
+        else {
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info),
+                    curosityInfo));
+        }
 
         obsDTO.setValue(insertion);
 

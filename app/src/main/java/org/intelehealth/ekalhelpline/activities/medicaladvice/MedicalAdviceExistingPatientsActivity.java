@@ -6,17 +6,22 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.R;
@@ -35,6 +40,7 @@ import org.intelehealth.ekalhelpline.models.dto.ObsDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
 import org.intelehealth.ekalhelpline.syncModule.SyncUtils;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
+import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
@@ -60,6 +66,10 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
             cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
     private EditText et_medical_advice_extra, et_medical_advice_additional;
+    TextInputLayout curosity_textinputlayout;
+    Spinner spinner_curosityResolution;
+    ArrayAdapter<CharSequence> adapter_curosityResolution;
+    String curosityInfo = "";
 
     public static void start(Context context, String patientUuid, String patientName) {
         Intent starter = new Intent(context, MedicalAdviceExistingPatientsActivity.class);
@@ -109,14 +119,6 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
 
         }
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(v -> {
-            if (patientUuid != null) {
-                createMedicalAdviceVisit();
-            }
-        });
-
-
         View llMedicalAdvice = findViewById(R.id.ll_medical_advice);
         llMedicalAdvice.setVisibility(View.VISIBLE);
 
@@ -129,8 +131,57 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         cbMentalHealth = llMedicalAdvice.findViewById(R.id.cbMentalHealth);
         cbExercises = llMedicalAdvice.findViewById(R.id.cbExercises);
         cbOthers = llMedicalAdvice.findViewById(R.id.cbOthers);
-        et_medical_advice_extra = llMedicalAdvice.findViewById(R.id.et_medical_advice_extra);
+        et_medical_advice_extra = llMedicalAdvice.findViewById(R.id.et_medical_advice_extra); //no use now
+
+        spinner_curosityResolution = llMedicalAdvice.findViewById(R.id.spinner_curosityResolution);
+        curosity_textinputlayout = llMedicalAdvice.findViewById(R.id.curosity_textinputlayout);
         et_medical_advice_additional = llMedicalAdvice.findViewById(R.id.et_medical_advice_additional);
+
+        try { // curosity resolution Spinner
+            String curosityLanguage = "curosityResolution_array_" + sessionManager.getAppLanguage();
+            int curosity = getResources().getIdentifier(curosityLanguage, "array", getApplicationContext().getPackageName());
+            if (curosity != 0) {
+                adapter_curosityResolution = ArrayAdapter.createFromResource(this,
+                        curosity, R.layout.custom_spinner);
+            }
+            spinner_curosityResolution.setAdapter(adapter_curosityResolution);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+        } //curosity resolution Spinner End...
+
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(v -> {
+            if (patientUuid != null) {
+                createMedicalAdviceVisit();
+            }
+        });
+
+        //curosity start
+        spinner_curosityResolution.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selected_curosityOption = parent.getItemAtPosition(position).toString();
+
+                if (selected_curosityOption.equalsIgnoreCase("Other") ||
+                        selected_curosityOption.equalsIgnoreCase("अन्य")) {
+                    curosity_textinputlayout.setVisibility(View.VISIBLE);
+                    et_medical_advice_additional.setFocusable(true);
+                } else {
+                    curosity_textinputlayout.setVisibility(View.GONE);
+                    et_medical_advice_additional.setText("");
+                    et_medical_advice_additional.setError(null);
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //curosity end...
+
         cbOthers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -157,6 +208,53 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
     }
 
     void createMedicalAdviceVisit() {
+
+        //curosity validation - start
+        if (spinner_curosityResolution.getSelectedItemPosition() == 0) {
+            TextView errorText = (TextView) spinner_curosityResolution.getSelectedView();
+            errorText.setError("");
+            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+            spinner_curosityResolution.requestFocus();
+//            focusView = spinner_curosityResolution;
+//            cancel = true;
+            return;
+        }
+
+        //editText validation for Other
+        if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("इतर")) {
+
+            if (et_medical_advice_additional.getText().toString().equalsIgnoreCase("")) {
+                et_medical_advice_additional.setError(getString(R.string.error_medical_visit_data));
+                et_medical_advice_additional.requestFocus();
+//                focusView = et_medical_advice_additional;
+//                cancel = true;
+                return;
+            } else {
+                et_medical_advice_additional.setError(null);
+            }
+        }
+
+
+        //curosity validation - end
+
+        //curosity - start
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
+                    curosityInfo = et_medical_advice_additional.getText().toString();
+                else
+                    curosityInfo = StringUtils.getProvided(spinner_curosityResolution);
+            } else {
+                if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("Other"))
+                    curosityInfo = et_medical_advice_additional.getText().toString();
+                else
+                    curosityInfo = StringUtils.getProvided(spinner_curosityResolution);
+            }
+        //curosity - end
+
+/*
         if (!cbCovidConcern.isChecked()
                 && !cbVaccineGuide.isChecked()
                 && !cbCovidConcern.isChecked()
@@ -171,13 +269,14 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
+*/
 
 //        if (cbOthers.isChecked() && TextUtils.isEmpty(et_medical_advice_extra.getText())) {
 //            Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
 //            return;
 //        }
 
-        if (TextUtils.isEmpty(et_medical_advice_additional.getText())) {
+       /* if (TextUtils.isEmpty(et_medical_advice_additional.getText())) {
             Toast.makeText(context, R.string.error_medical_visit_data, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -186,7 +285,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(patientUuid) && !chb_agree_privacy.isChecked()) {
             Toast.makeText(context, getString(R.string.please_read_out_privacy_consent_first), Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
 
         //formats used in databases to store the start & end date
@@ -268,8 +367,21 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
             insertion = insertion.concat(Node.next_line + cbExercises.getText());
         if (cbOthers.isChecked())
             insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
-        if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
-            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));
+
+       /* if (!TextUtils.isEmpty(et_medical_advice_additional.getText()))
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info), et_medical_advice_additional.getText()));*/
+        //adding of data...
+        if(curosity_textinputlayout.getVisibility() == View.VISIBLE) {
+            if (!TextUtils.isEmpty(et_medical_advice_additional.getText().toString())) {
+                insertion = insertion.concat(Node.next_line + String.format("%s: %s",
+                        getString(R.string.txt_additional_info), curosityInfo));
+            }
+        }
+        else {
+            insertion = insertion.concat(Node.next_line + String.format("%s: %s",
+                    getString(R.string.txt_additional_info), curosityInfo));
+        }
+
         obsDTO.setValue(insertion);
 
         obsDTO.setUuid(AppConstants.NEW_UUID);
