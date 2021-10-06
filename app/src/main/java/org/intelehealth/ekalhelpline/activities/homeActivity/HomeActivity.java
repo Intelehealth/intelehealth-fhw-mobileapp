@@ -56,6 +56,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.ekalhelpline.activities.recordings.RecordingsActivity;
 import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
 import org.intelehealth.ekalhelpline.utilities.FollowUpNotificationWorker;
@@ -481,6 +482,14 @@ public class HomeActivity extends AppCompatActivity {
 //                return true;
             case R.id.settingsOption:
                 settings();
+                return true;
+
+            case R.id.recordingsOption:
+                if (NetworkConnection.isOnline(context)) {
+                    RecordingsActivity.start(context);
+                } else {
+                    Toast.makeText(context, R.string.no_network, Toast.LENGTH_SHORT).show();
+                }
                 return true;
 
             case R.id.performanceOption:

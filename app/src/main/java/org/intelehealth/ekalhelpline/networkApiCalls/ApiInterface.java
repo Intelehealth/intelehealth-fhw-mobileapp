@@ -1,6 +1,7 @@
 package org.intelehealth.ekalhelpline.networkApiCalls;
 
 
+import org.intelehealth.ekalhelpline.activities.recordings.RecordingResponse;
 import org.intelehealth.ekalhelpline.models.BucketResponse;
 import org.intelehealth.ekalhelpline.models.CheckAppUpdateRes;
 import org.intelehealth.ekalhelpline.models.DownloadMindMapRes;
@@ -146,5 +147,8 @@ public interface ApiInterface {
     @POST
     Call<PrescriptionUrl> getPrescriptionShortUrl(@Url String url, @Body PrescriptionBody data);
 
+    @GET
+    Call<RecordingResponse> getRecordings(@Url String url,
+                                          @Header("Authorization") String authHeader);
 }
 
