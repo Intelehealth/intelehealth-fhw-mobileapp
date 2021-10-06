@@ -188,17 +188,24 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     complaints.add(currentNode);
                 }
             }
+
             //remove items from complaints array here...
+            /*
+             * 1 = Male
+             * 0 = Female
+             */
             mgender = PatientsDAO.fetch_gender(patientUuid);
+            Log.v("main", "Gender: " + mgender);
 
             for (int i = 0; i < complaints.size(); i++) {
-                if (mgender.equalsIgnoreCase("M") &&
-                        complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                if (mgender.equalsIgnoreCase("M")
+                        && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                     complaints.get(i).remove(complaints, i);
                     i--;
-                } else if (mgender.equalsIgnoreCase("F") &&
-                        complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                } else if ((mgender.equalsIgnoreCase("F") || mgender.equalsIgnoreCase("Other"))
+                        && complaints.get(i).getGender().equalsIgnoreCase("1")) {
+
                     complaints.get(i).remove(complaints, i);
                     i--;
                 }
@@ -242,13 +249,14 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                 mgender = PatientsDAO.fetch_gender(patientUuid);
 
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (mgender.equalsIgnoreCase("M") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("0")) {
+                    if (mgender.equalsIgnoreCase("M")
+                            && complaints.get(i).getGender().equalsIgnoreCase("0")) {
 
                         complaints.get(i).remove(complaints, i);
                         i--;
-                    } else if (mgender.equalsIgnoreCase("F") &&
-                            complaints.get(i).getGender().equalsIgnoreCase("1")) {
+                    } else if ((mgender.equalsIgnoreCase("F") || mgender.equalsIgnoreCase("Other"))
+                            && complaints.get(i).getGender().equalsIgnoreCase("1")) {
+
                         complaints.get(i).remove(complaints, i);
                         i--;
                     }
