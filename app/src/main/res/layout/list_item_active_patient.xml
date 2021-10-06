@@ -99,7 +99,10 @@
                     android:paddingBottom="3dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:text="Visit not uploaded"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:textColor="@color/font_black_2"/>
 
             </LinearLayout>
 

@@ -63,6 +63,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     TextView textView;
     RecyclerView recyclerView;
     MaterialAlertDialogBuilder dialogBuilder;
+    TextView no_records_found_textview;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -96,6 +97,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 //        mToolbar.setOverflowIcon(drawable);
 
         mActivePatientList = findViewById(R.id.today_patient_recycler_view);
+        no_records_found_textview = findViewById(R.id.no_records_found_textview);
 
         setSupportActionBar(mToolbar);
         mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -321,7 +323,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_today_patient, menu);
+       // inflater.inflate(R.menu.menu_today_patient, menu);
         inflater.inflate(R.menu.today_filter, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -399,7 +401,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+     //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
@@ -445,7 +447,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+          //  IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
 
     }
@@ -495,30 +497,26 @@ public class ActivePatientActivity extends AppCompatActivity {
             cursor.close();
         }
 
+        ActivePatientAdapter mActivePatientAdapter;
+        LinearLayoutManager linearLayoutManager;
+
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            /*recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));
-            recyclerView.setAdapter(mActivePatientAdapter);*/
-            recyclerView.setVisibility(View.VISIBLE);
-            TextView t = findViewById(R.id.ttt);
-            t.setVisibility(View.GONE);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            no_records_found_textview.setVisibility(View.GONE);
+
         } else {
-            TextView t = findViewById(R.id.ttt);
-            t.setVisibility(View.VISIBLE);
-            t.setHint(getString(R.string.no_data_active_patients));
-            recyclerView.setVisibility(View.GONE);
-            //recyclerView.addView(t);
-            // Intent i = new Intent(this, HomeActivity.class);
-            //startActivity(i);
-            //recyclerView.setVisibility(View.GONE);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            no_records_found_textview.setVisibility(View.VISIBLE);
+            no_records_found_textview.setHint(R.string.no_records_found);
         }
+
+        linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(mActivePatientAdapter);
+        mActivePatientAdapter.notifyDataSetChanged();
 
     }
 

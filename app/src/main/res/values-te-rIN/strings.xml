@@ -550,5 +550,7 @@
     <string name="tld_query_asked_tag">TLD QUERY ASKED</string>
     <string name="tld_closed_comment">TLD Closed</string>
     <string name="tld_resolved_comment">TLD Resolved</string>
+    <string name="mobile_number_search">\"Mobile number: \"</string>
+    <string name="no_records_found">No records found</string>
 
 </resources>
