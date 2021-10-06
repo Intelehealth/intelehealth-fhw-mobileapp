@@ -132,10 +132,21 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(notesSpinner.getSelectedItem().equals("Other"))
-                     mComments.setVisibility(View.VISIBLE);
-                else
-                    mComments.setVisibility(View.GONE);
+                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    if(notesSpinner.getSelectedItem().equals("अन्य")) {
+                            mComments.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        mComments.setVisibility(View.GONE);
+                    }
+                }
+                else {
+                    if(notesSpinner.getSelectedItem().equals("Other"))
+                        mComments.setVisibility(View.VISIBLE);
+                    else
+                        mComments.setVisibility(View.GONE);
+                }
+
             }
 
             @Override
@@ -169,18 +180,51 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sessionManager.getAppLanguage().equals("hi"))
+
+                //validation for no spinner value selected...
+                if(notesSpinner.getSelectedItem().toString().equalsIgnoreCase("Select")) {
+                    Toast.makeText(PatientSurveyActivity.this,
+                            getResources().getString(R.string.select_reason_toast), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // validation for empty editText...
+                if(mComments.getVisibility() == View.VISIBLE &&
+                mComments.getText().toString().equalsIgnoreCase("")) {
+                    mComments.setError(getResources().getString(R.string.error_field_required));
+                    mComments.setFocusable(true);
+                    mComments.setFocusableInTouchMode(true);
+                    mComments.requestFocus();
+                    return;
+                }
+                else {
+                    mComments.setError(null);
+                }
+
+                if(sessionManager.getAppLanguage().equals("hi")) {
                     noteText = switch_hi_endFollowUp_edit(notesSpinner.getSelectedItem().toString());
-                else
+                }
+                else {
                     noteText = notesSpinner.getSelectedItem().toString();
+                }
+
+                if(noteText.equalsIgnoreCase("Other")) {
+                    noteText = "Other: " + mComments.getText().toString();
+                }
+                else {
+                    // do nothing
+                }
+
                 rating = String.valueOf(ratingBar.getRating());
+
                 if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("") && (!noteText.equalsIgnoreCase("Select"))) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
                 }
                 else if(noteText.equalsIgnoreCase("Select"))
-                    Toast.makeText(PatientSurveyActivity.this,getResources().getString(R.string.select_reason_toast),Toast.LENGTH_LONG).show();
+                    Toast.makeText(PatientSurveyActivity.this,
+                            getResources().getString(R.string.select_reason_toast),Toast.LENGTH_LONG).show();
             }
         });
 
@@ -202,6 +246,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));
         notes.add(getString(R.string.spinner_not_applicable));
+        notes.add(getString(R.string.Other));
         return notes;
     }
     private void resetScale() {

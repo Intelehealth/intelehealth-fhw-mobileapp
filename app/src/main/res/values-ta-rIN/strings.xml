@@ -582,5 +582,6 @@
     <string name="status">Status:</string>
     <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
     <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
+    <string name="Other">Other</string>
 
 </resources>

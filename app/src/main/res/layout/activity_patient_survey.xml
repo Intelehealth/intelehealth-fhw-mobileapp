@@ -136,7 +136,6 @@
             <EditText
                 android:id="@+id/editText_exit_survey"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:freezesText="true"
@@ -145,6 +144,8 @@
                 android:inputType="textCapSentences"
                 android:singleLine="false"
                 android:tag="@string/tag_optional"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:fontFamily="@font/lato_regular"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -191,6 +192,7 @@
                 android:fontFamily="@font/lato_bold" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/button_survey_skip"
                 style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"
