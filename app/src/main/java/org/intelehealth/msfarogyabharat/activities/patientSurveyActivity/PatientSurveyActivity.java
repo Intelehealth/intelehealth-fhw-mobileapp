@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.LocaleList;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -102,8 +104,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
         sessionManager = new SessionManager(this);
         appLanguage = sessionManager.getAppLanguage();
-        if(!appLanguage.equalsIgnoreCase(""))
-        {
+        if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -113,6 +114,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         patientNoteList = getPatientNoteList();
         patientNoteAdapter = new ArrayAdapter<>(PatientSurveyActivity.this, android.R.layout.simple_spinner_dropdown_item, patientNoteList);
         notesSpinner.setAdapter(patientNoteAdapter);
+
         mScaleButton1 = findViewById(R.id.button_scale_1);
         mScaleButton2 = findViewById(R.id.button_scale_2);
         mScaleButton3 = findViewById(R.id.button_scale_3);
@@ -126,8 +128,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(notesSpinner.getSelectedItem().equals("Other"))
-                     mComments.setVisibility(View.VISIBLE);
+                if (notesSpinner.getSelectedItem().equals("Other"))
+                    mComments.setVisibility(View.VISIBLE);
                 else
                     mComments.setVisibility(View.GONE);
             }
@@ -175,17 +177,20 @@ public class PatientSurveyActivity extends AppCompatActivity {
 //                else
                 noteText = notesSpinner.getSelectedItem().toString();
                 rating = String.valueOf(ratingBar.getRating());
-                if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("")) {
+                if (rating != null && !TextUtils.isEmpty(rating)&& !rating.equalsIgnoreCase("0.0") && !noteText.equalsIgnoreCase("") && !notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason)) && !noteText.equalsIgnoreCase(getString(R.string.spinner_select_reason))) {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
-//                } else {
-//                    if(noteText.equalsIgnoreCase(""))
-//                        mComments.setError("This field is required");
-//                    else
-//                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_survey_toast), Toast.LENGTH_LONG).show();
-//                }
+                } else {
+                    if (notesSpinner.getSelectedItem().toString().equalsIgnoreCase(getString(R.string.spinner_select_reason)))
+                    {
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_servey_validation_toast_for_reasone), Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), getResources().getString(R.string.exit_servey_validation_toast_for_Rating), Toast.LENGTH_LONG).show();
+                    }
                 }
+
             }
         });
 
@@ -197,16 +202,20 @@ public class PatientSurveyActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<String> getPatientNoteList()
-    {
+    private ArrayList<String> getPatientNoteList() {
         ArrayList<String> notes = new ArrayList<>();
+        notes.add(getString(R.string.spinner_select_reason));
         notes.add(getString(R.string.spinner_recovered));
         notes.add(getString(R.string.spinner_referred));
         notes.add(getString(R.string.spinner_died));
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));
+        notes.add(getString(R.string.spinner_Tested_Negative_for_COVID_19));
+        notes.add(getString(R.string.spinner_not_aplicable));
+
         return notes;
     }
+
     private void resetScale() {
         ArrayList<ImageButton> scale = new ArrayList<>();
         scale.add(mScaleButton1);
@@ -281,7 +290,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
         Locale.setDefault(locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             conf.setLocale(locale);
-            getApplicationContext().createConfigurationContext(conf); }
+            getApplicationContext().createConfigurationContext(conf);
+        }
         DisplayMetrics dm = res.getDisplayMetrics();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             conf.setLocales(new LocaleList(locale));
