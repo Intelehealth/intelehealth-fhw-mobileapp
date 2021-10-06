@@ -7,4 +7,8 @@ public class Recording {
     @SerializedName("RecordingURL")
     @Expose
     public String RecordingURL;
+
+    @SerializedName("Caller")
+    @Expose
+    public String Caller;
 }

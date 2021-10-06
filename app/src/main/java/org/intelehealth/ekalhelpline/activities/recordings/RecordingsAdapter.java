@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.ekalhelpline.models.dto.PatientDTO;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 
 import java.util.List;
 
@@ -40,11 +42,16 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
         final Recording recording = patients.get(position);
         if (recording != null) {
-            holder.headTextView.setText(recording.RecordingURL);
+            holder.headTextView.setText(recording.Caller);
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (NetworkConnection.isOnline(context) && recording != null) {
+                    AudioPlayerActivity.start(v.getContext(), recording.RecordingURL, recording.Caller);
+                } else {
+                    Toast.makeText(context, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
