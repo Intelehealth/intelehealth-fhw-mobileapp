@@ -383,6 +383,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         else {
              mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
              no_records_found_textview.setVisibility(View.VISIBLE);
+             no_records_found_textview.setHint(R.string.no_records_found);
         }
 
         linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);

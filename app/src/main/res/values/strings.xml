@@ -750,4 +750,5 @@
     <string name="sms_sent">SMS Sent!</string>
     <string name="sms_failed">Sending SMS Failed! Please try again later.</string>
     <string name="mobile_number_search">"Mobile number: "</string>
+    <string name="no_records_found">No records found</string>
 </resources>

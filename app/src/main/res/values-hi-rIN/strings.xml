@@ -762,4 +762,5 @@
     <string name="sms_failed">एसएमएस भेजना विफल! बाद में पुन: प्रयास करें।</string>
     <string name="hint_resolution_given">दिया गया संकल्प दर्ज करें</string>
     <string name="mobile_number_search">"मोबाइल नंबर: "</string>
+    <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
 </resources>

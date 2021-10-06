@@ -36,7 +36,7 @@
                     android:id="@+id/no_records_found_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No records found"
+                    tools:text="No records found"
                     android:textSize="20sp"
                     android:fontFamily="@font/lato_bold"
                     android:textColor="@color/font_black_2"
@@ -50,8 +50,7 @@
                 android:id="@+id/today_patient_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                tools:listitem="@layout/list_item_today_patient"/>
+                android:layout_marginTop="5dp" />
         </RelativeLayout>
 
 

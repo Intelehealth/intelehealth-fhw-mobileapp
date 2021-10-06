@@ -516,5 +516,6 @@
     <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
     <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
     <string name="mobile_number_search">\"Mobile number: \"</string>
+    <string name="no_records_found">No records found</string>
 
 </resources>

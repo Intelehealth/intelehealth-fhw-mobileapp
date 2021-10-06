@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal">
 
@@ -38,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato_bold"
                     android:includeFontPadding="false"
+                    android:text="@string/test_2_vibha_onplus_6t_10fke_7"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -45,7 +47,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:fontFamily="@font/lato_regular" />
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Age: 11 years, 5 months"/>
 
                 <View
                     android:layout_width="fill_parent"
@@ -70,6 +73,7 @@
                     android:paddingStart="5dp"
                     android:paddingTop="3dp"
                     android:paddingEnd="5dp"
+                    android:text="Active"
                     android:paddingBottom="3dp" />
 
                 <TextView
@@ -85,7 +89,10 @@
                     android:paddingBottom="3dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:visibility="gone" />
+                    android:text="Visit not uploaded"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    tools:textColor="@color/font_black_2"/>
 
             </LinearLayout>
 
