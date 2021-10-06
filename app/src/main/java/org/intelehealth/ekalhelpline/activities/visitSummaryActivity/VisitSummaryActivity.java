@@ -1263,7 +1263,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
-        ArrayAdapter<String> stringArrayAdapter;
+     /*   ArrayAdapter<String> stringArrayAdapter;
         if (items != null) {
             items.add(0, "Select Specialization");
             stringArrayAdapter =
@@ -1277,7 +1277,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             (this, android.R.layout.simple_spinner_dropdown_item,
                                     getResources().getStringArray(R.array.speciality_values));
             speciality_spinner.setAdapter(stringArrayAdapter);
-        }
+        }*/
 
         //If TLD Query as Reason for Call (Chief Complaint) then set TLD Query as autoselected value for Spinner...
         if(complaintView.getText().toString().contains("TLD Query")) {

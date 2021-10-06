@@ -460,7 +460,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     private void doQueryWithProviders(List<String> providersuuids) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query = "select  distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
+        String query = "select distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
                 "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
                 "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                 "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
@@ -499,16 +499,16 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         ActivePatientAdapter mActivePatientAdapter;
         LinearLayoutManager linearLayoutManager;
-
+        List<ActivePatientModel> speciality_list = getSpeciality_Filter(providersuuids);
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, speciality_list);
             no_records_found_textview.setVisibility(View.GONE);
 
         } else {
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, speciality_list);
             no_records_found_textview.setVisibility(View.VISIBLE);
             no_records_found_textview.setHint(R.string.no_records_found);
         }
@@ -518,6 +518,48 @@ public class ActivePatientActivity extends AppCompatActivity {
         recyclerView.setAdapter(mActivePatientAdapter);
         mActivePatientAdapter.notifyDataSetChanged();
 
+    }
+
+    private List<ActivePatientModel> getSpeciality_Filter(List<String> providersuuids) {
+        List<ActivePatientModel> activePatientList = new ArrayList<>();
+        String query = "select distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth, d.value " +
+                "from tbl_visit a,tbl_encounter b ,tbl_patient c, tbl_visit_attribute d " +
+                "where b.visituuid=a.uuid and a.uuid = d.visit_uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        activePatientList.add(new ActivePatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value")))
+                        );
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        } else {
+            // activePatientList.clear();
+            //Toast.makeText(this, "No patients where looked by this health worker!", Toast.LENGTH_SHORT).show();
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return activePatientList;
     }
 
     private String phoneNumber(String patientuuid) throws DAOException {

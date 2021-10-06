@@ -130,6 +130,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
         //TLD Query - start
         //to check only if visit is uploaded then show the tag...
+        if(activePatient_speciality != null) {
         for (int i = 0; i < activePatient_speciality.size(); i++) {
             if (activePatientModel.getPatientuuid().equalsIgnoreCase(activePatient_speciality.get(i).getPatientuuid())) {
 
@@ -162,6 +163,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 //do nothing...
             }
         }
+    }
         //TLD Query - end
         if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
             holder.tld_query_tag.setVisibility(View.GONE);
