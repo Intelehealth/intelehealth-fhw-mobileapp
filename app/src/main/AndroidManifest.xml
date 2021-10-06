@@ -231,6 +231,21 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
+
+        <activity
+            android:name=".activities.recordings.RecordingsActivity"
+            android:configChanges="uiMode"
+            android:label="@string/call_recordings"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activities.recordings.AudioPlayerActivity"
+            android:configChanges="uiMode"
+            android:label="@string/title_activity_search_patient"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">

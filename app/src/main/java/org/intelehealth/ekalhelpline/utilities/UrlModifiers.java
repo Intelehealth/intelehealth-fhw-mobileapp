@@ -126,4 +126,8 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl() +
                 ":3004/api/mindmap/shortLink";
         return BASE_URL; }
+
+    public String getRecordingListUrl(String number) {
+        return String.format("https://hellosaathi.uninhibited.org.in/recordings/%s", number);
+    }
 }
