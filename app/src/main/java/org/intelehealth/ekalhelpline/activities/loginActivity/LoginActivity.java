@@ -55,6 +55,7 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -329,7 +330,7 @@ public class LoginActivity extends AppCompatActivity {
                                         for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
                                             Log.i(TAG, "doInBackground: " + loginProviderModel.getResults().get(i).getUuid());
                                             sessionManager.setProviderID(loginProviderModel.getResults().get(i).getUuid());
-
+//                                            sessionManager.setChwGender(loginProviderModel.getResults().get(i).getPerson().getGender());
                                             provider_url_uuid = loginProviderModel.getResults().get(i).getUuid();
 //                                                success = true;
                                           /*  final Account account = new Account(mEmail, "io.intelehealth.openmrs");
@@ -405,7 +406,54 @@ public class LoginActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onComplete() {
+                                    Gson gson1 = new Gson();
+                                    UrlModifiers urlModifiers = new UrlModifiers();
+                                    String url = urlModifiers.loginUrlProvider_phone(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
+                                    Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface
+                                            .LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
+                                    loginProviderModelObservable
+                                            .subscribeOn(Schedulers.io())
+                                            .observeOn(AndroidSchedulers.mainThread())
+                                            .subscribe(new DisposableObserver<LoginProviderModel>() {
+                                                @Override
+                                                public void onNext(@NonNull LoginProviderModel loginProviderModel) {
+                                                    Log.d("loginmodell", "phonenu: "+ gson1.toJson(loginProviderModel));
+                                                    if(loginProviderModel.getResults().size() != 0) {
+                                                        for (int i = 0; i < loginProviderModel.getResults().size(); i++) {
+                                                            //Here, we are getting only one results item...
 
+                                                            for (int j = 0; j < loginProviderModel.getResults()
+                                                                    .get(i).getAttributes().size(); j++) {
+
+                                                                // Here: we are getting the gender for
+                                                                sessionManager.setChwGender(loginProviderModel.getResults().get(i).getPerson().getGender());
+//                                                                if(loginProviderModel.getResults().get(i)
+//                                                                        .getAttributes().get(j)
+//                                                                        .getAttributeType().getUuid()
+//                                                                        .equalsIgnoreCase("cfac5f2d-1033-4994-84cf-ccba9ce86436")) {
+//                                                                    //This states that this uuidtype is of Phone no and not whatsapp...
+//                                                                    sessionManager.setChwGender(
+//                                                                            loginProviderModel.getResults().get(i).getAttributes()
+//                                                                                    .get(j).getValue());
+//
+//                                                                    Log.d("loginmodell", "sess_gender: "+
+//                                                                            sessionManager.getChwGender());
+//                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onError(@NonNull Throwable e) {
+
+                                                }
+
+                                                @Override
+                                                public void onComplete() {
+
+                                                }
+                                            });
                                 }
                             });
                 }
