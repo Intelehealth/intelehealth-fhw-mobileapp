@@ -467,19 +467,21 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         TodayPatientAdapter mTodayPatientAdapter;
         LinearLayoutManager linearLayoutManager;
-        List<TodayPatientModel> speciality_list = getSpeciality_Filter(providersuuids);
-        List<TodayPatientModel> exitsurvey_comments_list = getExitSurvey_Filter(providersuuids);
+        List<TodayPatientModel> speciality_list = getSpeciality_Filter(providersuuids, date);
+        List<TodayPatientModel> exitsurvey_comments_list = getExitSurvey_Filter(providersuuids, date);
 
         if (!todayPatientList.isEmpty()) {
             for (TodayPatientModel todayPatientModel : todayPatientList)
                 Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name() + " " +
                         todayPatientModel.getVisit_speciality());
 
-             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, exitsurvey_comments_list, speciality_list);
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this,
+                     listPatientUUID, exitsurvey_comments_list, speciality_list);
             no_records_found_textview.setVisibility(View.GONE);
         }
         else {
-             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, exitsurvey_comments_list, speciality_list);
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID,
+                     exitsurvey_comments_list, speciality_list);
              no_records_found_textview.setVisibility(View.VISIBLE);
              no_records_found_textview.setHint(R.string.no_records_found);
         }
@@ -494,7 +496,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
     }
 
-    private List<TodayPatientModel> getExitSurvey_Filter(List<String> providersuuids) {
+    private List<TodayPatientModel> getExitSurvey_Filter(List<String> providersuuids, String date) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
@@ -502,7 +504,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d, tbl_obs f " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND c.uuid = f.encounteruuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "AND a.startdate LIKE '" + date + "%' " +
                 "ORDER BY a.patientuuid ASC ";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
@@ -537,7 +539,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         return todayPatientList;
     }
 
-    private List<TodayPatientModel> getSpeciality_Filter(List<String> providersuuids) {
+    private List<TodayPatientModel> getSpeciality_Filter(List<String> providersuuids, String date) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
@@ -545,7 +547,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "AND a.startdate LIKE '" + date + "%' " +
                 "ORDER BY a.patientuuid ASC ";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
