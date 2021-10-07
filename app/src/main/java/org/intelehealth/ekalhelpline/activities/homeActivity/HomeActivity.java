@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SyncUtils syncUtils = new SyncUtils();
     // CardView c1, c2, c3, c4, c5, c6;
-    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
+    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7_followUp;
     private String key = null;
     private String licenseUrl = null;
 
@@ -135,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge, followUp_textView;
 
     //for auto update app
     private int REQUEST_CODE = 11;
@@ -186,6 +186,7 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7_followUp = findViewById(R.id.cardview_follow_up);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -209,10 +210,20 @@ public class HomeActivity extends AppCompatActivity {
         // manualSyncButton.setText(R.string.sync_now);
         manualSyncButton.setText(R.string.refresh);
 
+        followUp_textView = findViewById(R.id.tvFollowUp);
+        followUp_textView.setText(R.string.title_follow_up);
+
         tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
         tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
         FollowUpNotificationWorker.schedule();
+
+        c7_followUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFollowUpClick(view);
+            }
+        });
 
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
