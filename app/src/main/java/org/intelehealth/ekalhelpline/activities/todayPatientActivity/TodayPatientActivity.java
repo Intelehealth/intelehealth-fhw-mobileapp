@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.todayPatientActivity;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,12 +36,14 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.intelehealth.ekalhelpline.database.InteleHealthDatabaseHelper;
@@ -64,6 +68,7 @@ public class TodayPatientActivity extends AppCompatActivity {
     RecyclerView mTodayPatientList;
     MaterialAlertDialogBuilder dialogBuilder;
     TextView no_records_found_textview;
+    String date_string = "";
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
@@ -402,7 +407,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
-                doQueryWithProviders(selectedItems);
+                getCalendarPicker(selectedItems);
             }
         });
 
@@ -421,17 +426,17 @@ public class TodayPatientActivity extends AppCompatActivity {
       //  IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
     }
 
-    private void doQueryWithProviders(List<String> providersuuids) {
+    private void doQueryWithProviders(List<String> providersuuids, String date) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
         String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
+                "AND a.startdate LIKE '" + date + "%' " +
                 "ORDER BY a.patientuuid ASC ";
-        Logger.logD(TAG, query);
+        Logger.logV("main", query);
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
@@ -696,6 +701,40 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         return todayPatientList;
     }
+
+    private void getCalendarPicker(ArrayList selectedItems_data) {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(TodayPatientActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, month, dayOfMonth);
+                        date_string = todaydateFormat.format(calendar.getTime());
+                        Log.v("date", "picker_active: "+ date_string);
+
+                        doQueryWithProviders(selectedItems_data, date_string);
+
+                    }
+                }, year, month, day);
+
+        datePickerDialog.show();
+
+        Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = datePickerDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+    }
+
+
 
 }
 
