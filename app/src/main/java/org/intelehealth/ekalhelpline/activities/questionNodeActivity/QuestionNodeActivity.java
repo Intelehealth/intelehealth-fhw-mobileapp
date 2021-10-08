@@ -239,27 +239,29 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
-            Node rootNode = currentNode.getOption(groupPosition);
-            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-
-                    }
-                }
-            }
-            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
-            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (!childNode.getId().equals(question.getId())) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-                    }
-                }
-            }
-            adapter.notifyDataSetChanged();
+            //discard
+//            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+//            Node rootNode = currentNode.getOption(groupPosition);
+//            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+//                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+//                    Node childNode = rootNode.getOptionsList().get(i);
+//                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+//                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+//
+//                    }
+//                }
+//            }
+//            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
+//            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+//                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+//                    Node childNode = rootNode.getOptionsList().get(i);
+//                    if (!childNode.getId().equals(question.getId())) {
+//                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+//                    }
+//                }
+//            }
+//
+//            adapter.notifyDataSetChanged();
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -278,7 +280,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
-        } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
+        }
+
+        else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
@@ -291,38 +295,42 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-        } else {
+        }
 
+        else {
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
-            question.toggleSelected();
-            if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected(true);
-            } else {
-                currentNode.getOption(groupPosition).setUnselected();
-            }
+                question.toggleSelected();
+                if (currentNode.getOption(groupPosition).anySubSelected()) {
+                    currentNode.getOption(groupPosition).setSelected(true);
+                } else {
+                    currentNode.getOption(groupPosition).setUnselected();
+                }
 
 
-            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
-            Node rootNode = currentNode.getOption(groupPosition);
-            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+
+                    //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+                    Node rootNode = currentNode.getOption(groupPosition);
+                    if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                        for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                            Node childNode = rootNode.getOptionsList().get(i);
+                            if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                                currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+
+                            }
+                        }
+                    }
+                    Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                    if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                        for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                            Node childNode = rootNode.getOptionsList().get(i);
+                            if (!childNode.getId().equals(question.getId())) {
+                                currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            }
+                        }
 
                     }
                 }
-            }
-            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
-            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (!childNode.getId().equals(question.getId())) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-                    }
-                }
-            }
-            adapter.notifyDataSetChanged();
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
