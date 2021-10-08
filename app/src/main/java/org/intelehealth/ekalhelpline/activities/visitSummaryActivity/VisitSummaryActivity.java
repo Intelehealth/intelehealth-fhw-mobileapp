@@ -609,7 +609,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setView(editText);
                     String htmlDoc = sms_prescription();
 
-                    //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
                     alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
                     alertDialog.setPositiveButton(getResources().getString(R.string.share),
                             new DialogInterface.OnClickListener() {
@@ -617,17 +616,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         //code to send via sms
-//                                        String phoneNumber = "+91" + editText.getText().toString();
-//                                        startActivity(new Intent(Intent.ACTION_VIEW,
-//                                                Uri.fromParts("sms", phoneNumber, null))
-//                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
+                                        String phoneNumber = "+91" + editText.getText().toString();
+                                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                                Uri.fromParts("sms", phoneNumber, null))
+                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
 
                                         //code to send via api
-                                        customProgressDialog.show();
-                                        UrlModifiers urlModifiers = new UrlModifiers();
-                                        String phoneNumber = editText.getText().toString();
-                                        String prescriptionLink = urlModifiers.setSMSPresciptionUrl(visitUUID,patient.getOpenmrs_id().toString());
-                                        generateShortPrescUrl(prescriptionLink, phoneNumber);
+                                       // customProgressDialog.show();
+
+//                                        UrlModifiers urlModifiers = new UrlModifiers();
+//                                        String phoneNumber = editText.getText().toString();
+//                                        String prescriptionLink = urlModifiers.setSMSPresciptionUrl(visitUUID,patient.getOpenmrs_id());
+//                                        generateShortPrescUrl(prescriptionLink, phoneNumber);
+
 //                                        String body =  "प्रिय "+ patientName +", हॅलो साथी ला कॉल केल्याबद्दल धन्यवाद.आपली औषधोपचार डाउनलोड करण्यासाठी येथे उपलब्ध आहे " + prescriptionUrl;
 //                                        String body =  "Hello Sathi Helpline Project Dear Test N Your prescription is available to download at http://localhost/intelehealth/#/l/hj - Powered by Intelehealth";
 //                                        sendPrescriptionSms(phoneNumber,body);
@@ -2080,7 +2081,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918046114321" + "</span>" /*+*/
+                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>" /*+*/
 
                    /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
                     + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
