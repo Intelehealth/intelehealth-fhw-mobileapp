@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-
-import androidx.appcompat.app.AlertDialog;
-
 import android.os.Build;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -28,15 +25,24 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity;
+import org.intelehealth.ekalhelpline.activities.complaintNodeActivity.CustomArrayAdapter;
+import org.intelehealth.ekalhelpline.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
+import org.intelehealth.ekalhelpline.models.AnswerResult;
+import org.intelehealth.ekalhelpline.utilities.InputFilterMinMax;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,15 +58,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.activities.questionNodeActivity.QuestionsAdapter;
-import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
-import org.intelehealth.ekalhelpline.utilities.InputFilterMinMax;
-import org.intelehealth.ekalhelpline.utilities.SessionManager;
-
-import org.intelehealth.ekalhelpline.activities.cameraActivity.CameraActivity;
-import org.intelehealth.ekalhelpline.activities.complaintNodeActivity.CustomArrayAdapter;
 
 /**
  * Created by Amal Afroz Alam on 21, April, 2016.
@@ -106,7 +103,7 @@ public class Node implements Serializable {
     private boolean rootNode;
 
     private boolean complaint;
-    private boolean required;
+    private boolean required = false;
     private boolean terminal;
     private boolean hasAssociations;
     private boolean aidAvailable;
@@ -320,13 +317,15 @@ public class Node implements Serializable {
 
             this.choiceType = jsonNode.optString("choice-type");
 
-            this.required = false;
+            //this.required = false;
 
             this.positiveCondition = jsonNode.optString("pos-condition");
             this.negativeCondition = jsonNode.optString("neg-condition");
 
             this.pop_up = jsonNode.optString("pop-up");
             this.hasPopUp = !pop_up.isEmpty();
+
+            this.required = jsonNode.optBoolean("isRequired");
 
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -806,15 +805,14 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                     } else {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -830,15 +828,14 @@ public class Node implements Serializable {
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                     } else {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -983,15 +980,14 @@ public class Node implements Serializable {
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
-                        if(!dateString.equalsIgnoreCase("")) {
+                        if (!dateString.equalsIgnoreCase("")) {
                             if (node.getLanguage().contains("_")) {
                                 node.setLanguage(node.getLanguage().replace("_", dateString));
                             } else {
                                 node.addLanguage(dateString);
                                 //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                             }
-                        }
-                        else {
+                        } else {
                             if (node.getLanguage().contains("_")) {
                                 node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                             } else {
@@ -1121,15 +1117,14 @@ public class Node implements Serializable {
                /* numberPicker.setValue(numberPicker.getValue());
                 String value = String.valueOf(numberPicker.getValue());*/
 //                String value = et_enter_value.getText().toString();
-                if(!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+                if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
                     } else {
                         node.addLanguage(et_enter_value.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -1146,15 +1141,14 @@ public class Node implements Serializable {
         numberDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(!et_enter_value.getText().toString().equalsIgnoreCase("")) {
+                if (!et_enter_value.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", et_enter_value.getText().toString()));
                     } else {
                         node.addLanguage(et_enter_value.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -1375,10 +1369,9 @@ public class Node implements Serializable {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                if(editable.toString().length()!=0)
-                {
+                if (editable.toString().length() != 0) {
                     Integer value = Integer.parseInt(editable.toString());
-                    if(value>= quantityPicker.getMinValue())
+                    if (value >= quantityPicker.getMinValue())
                         quantityPicker.setValue(value);
                 }
             }
@@ -1408,15 +1401,14 @@ public class Node implements Serializable {
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
-                if(quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("") ) {
+                if (quantityPicker.getValue() != '0' || !durationString.equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_",durationString));
+                        node.setLanguage(node.getLanguage().replace("_", durationString));
                     } else {
                         node.addLanguage(durationString);
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
-                }
-                else {
+                } else {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -1434,12 +1426,12 @@ public class Node implements Serializable {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                    } else {
-                        node.addLanguage("Question not answered");
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                } else {
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                }
 
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -1450,18 +1442,13 @@ public class Node implements Serializable {
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
-    private static EditText findInput(ViewGroup np)
-    {
+    private static EditText findInput(ViewGroup np) {
         int count = np.getChildCount();
-        for(int i=0;i<count;i++)
-        {
+        for (int i = 0; i < count; i++) {
             final View child = np.getChildAt(i);
-            if(child instanceof ViewGroup)
-            {
+            if (child instanceof ViewGroup) {
                 findInput((ViewGroup) child);
-            }
-            else if (child instanceof EditText)
-            {
+            } else if (child instanceof EditText) {
                 return (EditText) child;
             }
         }
@@ -1684,8 +1671,8 @@ public class Node implements Serializable {
         return unit;
     }
 
-   
-private static String te_en(String unit) {
+
+    private static String te_en(String unit) {
         switch (unit) {
             case "గంటలు":
                 unit = "Hours";
@@ -1715,7 +1702,7 @@ private static String te_en(String unit) {
     }
 
 
-private static String bn_en(String unit) {
+    private static String bn_en(String unit) {
         switch (unit) {
             case "ঘন্টার":
                 unit = "Hours";
@@ -1745,8 +1732,8 @@ private static String bn_en(String unit) {
     }
 
 
-private static String ml_en(String unit) {
-    
+    private static String ml_en(String unit) {
+
         switch (unit) {
             case "മണിക്കൂറുകൾ":
                 unit = "Hours";
@@ -2368,16 +2355,16 @@ private static String ml_en(String unit) {
     public String getDisplay_telugu() {
         return display_telugu;
     }
+
     public String getDisplay_bengali() {
         return display_bengali;
     }
 
-    public String getDisplay_tamil()
-    {
+    public String getDisplay_tamil() {
         return display_tamil;
     }
-    public void setDisplay_tamil(String display_tamil)
-    {
+
+    public void setDisplay_tamil(String display_tamil) {
         this.display_tamil = display_tamil;
     }
 
@@ -3062,6 +3049,36 @@ private static String ml_en(String unit) {
         no.remove(index);
     }
 
+    //Check to see if all required exams have been answered before moving on.
+    public AnswerResult checkAllRequiredAnswered() {
+        AnswerResult answerResult = new AnswerResult();
+        answerResult.totalCount = optionsList.size();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(IntelehealthApplication.getAppContext().getResources().getString(R.string.answer_following_questions));
+        stringBuilder.append("\n");
+        for (int i = 0; i < optionsList.size(); i++) {
+            Node node = optionsList.get(i);
+            if (node.isRequired()) {
+                if (node.optionsList != null && !node.optionsList.isEmpty()) {
+                    if (!node.isSelected() || !node.anySubSelected()) {
+                        stringBuilder.append("\n").append("* ").append(node.text);
+                        answerResult.result = false;
+                    }
+                } else {
+                    if (!node.isSelected()) {
+                        stringBuilder.append("\n").append("* ").append(node.text);
+                        answerResult.result = false;
+                    }
+                }
+
+                Log.v(TAG, node.text);
+                Log.v(TAG, node.text);
+                Log.v(TAG, String.valueOf(node.isSelected()));
+            }
+        }
+        answerResult.requiredStrings = stringBuilder.toString();
+        return answerResult;
+    }
 
 }
 

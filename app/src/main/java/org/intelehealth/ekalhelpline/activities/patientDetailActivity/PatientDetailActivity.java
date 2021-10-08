@@ -197,13 +197,16 @@ public class PatientDetailActivity extends AppCompatActivity {
     private CheckBox chb_subscription;
     private Button btnSubscribe;
     private String subscriptionAuthHeader = "Bearer bnVyc2UxOk51cnNlMTIz";
-    private CharSequence selectedSubscriptionTime, selectedLanguage;
-    private BucketResponse.Bucket selectedBucket;
+    private CharSequence selectedSubscriptionTime, selectedLanguage, selectedSubscriptionTime2, selectedLanguage2;
+    private BucketResponse.Bucket selectedBucket, selectedBucket2;
     String callNoteText = "";
     String gender;
 
-    int preferred_time;
+//    int preferred_time;
     ArrayAdapter<CharSequence> timeAdapter;
+
+    private Spinner spinner_pref_bucket2, spinner_pref_time2, spinner_pref_language2;
+    private Button btnSubscribe2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -543,7 +546,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        updateSubscriptionUI(chb_subscription.isChecked());
         btnSubscribe = findViewById(R.id.btnSubscribe);
         if (!NetworkConnection.isOnline(this) || TextUtils.isEmpty(patient_new.getPhone_number())) {
-            updateSubscriptionUI(false);
+            updateSubscriptionUI(false, 0);
             return;
         }
 
@@ -570,12 +573,12 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
-        preferred_time = R.array.preferred_time_female;
+        final int[] preferred_time = {R.array.preferred_time_female};
         if (gender.equalsIgnoreCase("M")) {
-            preferred_time = R.array.preferred_time_male;
+            preferred_time[0] = R.array.preferred_time_male;
         }
 
-        timeAdapter = ArrayAdapter.createFromResource(this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
+        timeAdapter = ArrayAdapter.createFromResource(this, preferred_time[0], android.R.layout.simple_spinner_dropdown_item);
         timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_pref_time.setAdapter(timeAdapter);
         spinner_pref_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -632,6 +635,14 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
 
+                                if (!gender.equalsIgnoreCase(userData.genderselected)) {
+                                    SubscriptionStatus.UserData userData2 = null;
+                                    if (body.userdata.size() > 1) {
+                                        userData2 = body.userdata.get(1);
+                                    }
+                                    initSubscription2(gender,  allBuckets, userData2);
+                                }
+
                                 /* This feature change i.e. populating spinners on the basis of the agant's gender is done for Sprint2 release
                                 Hence the code changes were done keeping in mind the data for already exiting patients and this was the best suited approach found.
                                 //TODO:API response needs to be modified in order to handle several other cases conveniently in future.
@@ -645,11 +656,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                                 //redefine time adapter based on the gender coming from response.
                                 if(userData.genderselected.equalsIgnoreCase("M"))
-                                    preferred_time = R.array.preferred_time_male;
+                                    preferred_time[0] = R.array.preferred_time_male;
                                 else
-                                    preferred_time = R.array.preferred_time_female;
+                                    preferred_time[0] = R.array.preferred_time_female;
 
-                                timeAdapter = ArrayAdapter.createFromResource(PatientDetailActivity.this, preferred_time, android.R.layout.simple_spinner_dropdown_item);
+                                timeAdapter = ArrayAdapter.createFromResource(PatientDetailActivity.this, preferred_time[0], android.R.layout.simple_spinner_dropdown_item);
                                 spinner_pref_time.setAdapter(timeAdapter);
 
                                 for (int i = 0; i < buckets.size(); i++) {
@@ -666,7 +677,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     }
                                 }
 
-                                updateSubscriptionUI(false);
+                                updateSubscriptionUI(false, 0);
                                 findViewById(R.id.bucket_language).setVisibility(View.GONE);
                             }
                         }
@@ -716,7 +727,171 @@ public class PatientDetailActivity extends AppCompatActivity {
                         SubscriptionStatus body = response.body();
                         String message = body.data;
                         if (body != null) {
-                            updateSubscriptionUI(false);
+                            updateSubscriptionUI(false, 0);
+                            if(sessionManager.getAppLanguage().equals("hi"))
+                                message = switch_hi_subs_response(body.data) ;
+                            else
+                                message = body.data;
+                            new AlertDialog.Builder(context).setMessage(message).setPositiveButton(R.string.generic_ok, null).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubscriptionStatus> call, Throwable t) {
+                        new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                    }
+                });
+            }
+        });
+    }
+
+    private void initSubscription2(String gender, ArrayList<BucketResponse.Bucket> allBuckets, SubscriptionStatus.UserData userData) {
+        findViewById(R.id.cardView_subscription2).setVisibility(View.VISIBLE);
+        spinner_pref_bucket2 = findViewById(R.id.spinner_pref_bucket2);
+        spinner_pref_time2 = findViewById(R.id.spinner_pref_time2);
+        spinner_pref_language2 = findViewById(R.id.spinner_pref_language2);
+        btnSubscribe2 = findViewById(R.id.btnSubscribe2);
+//        if (!NetworkConnection.isOnline(this) || TextUtils.isEmpty(patient_new.getPhone_number())) {
+//            updateSubscriptionUI(false);
+//            return;
+//        }
+
+        ArrayList<BucketResponse.Bucket> buckets = new ArrayList<>();
+//        ArrayList<BucketResponse.Bucket> allBuckets = new ArrayList<>();
+//        BucketResponse.Bucket e = new BucketResponse.Bucket();
+//        e.bucketName = getString(R.string.select_bucket);
+//        allBuckets.add(e);
+        ArrayAdapter<BucketResponse.Bucket> bucketAdapter = new ArrayAdapter<BucketResponse.Bucket>(this,
+                android.R.layout.simple_spinner_item, buckets);
+        bucketAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_pref_bucket2.setAdapter(bucketAdapter);
+        spinner_pref_bucket2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0)
+                    return;
+                selectedBucket2 = bucketAdapter.getItem(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        final int[] preferred_time = {R.array.preferred_time_female};
+        if (gender.equalsIgnoreCase("M")) {
+            preferred_time[0] = R.array.preferred_time_male;
+        }
+
+        timeAdapter = ArrayAdapter.createFromResource(this, preferred_time[0], android.R.layout.simple_spinner_dropdown_item);
+        timeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_pref_time2.setAdapter(timeAdapter);
+        spinner_pref_time2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0)
+                    return;
+                selectedSubscriptionTime2 = String.valueOf(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        ArrayAdapter<CharSequence> languageAdapter = ArrayAdapter.createFromResource(this, R.array.language_names, android.R.layout.simple_spinner_dropdown_item);
+        languageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_pref_language2.setAdapter(languageAdapter);
+        selectedLanguage2 = getResources().getStringArray(R.array.language_names)[0];
+        spinner_pref_language2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedLanguage2 = languageAdapter.getItem(position);
+                buckets.clear();
+                buckets.addAll(filterBuckets(allBuckets, selectedLanguage2));
+                spinner_pref_bucket2.setSelection(0);
+                bucketAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+
+        if (userData != null) {
+
+            //redefine bucket adapter to preset values coming from the response.
+            buckets.clear();
+            buckets.addAll(allBuckets);
+            bucketAdapter.notifyDataSetChanged();
+
+            //redefine time adapter based on the gender coming from response.
+            if (userData.genderselected.equalsIgnoreCase("M"))
+                preferred_time[0] = R.array.preferred_time_male;
+            else
+                preferred_time[0] = R.array.preferred_time_female;
+
+            timeAdapter = ArrayAdapter.createFromResource(PatientDetailActivity.this, preferred_time[0], android.R.layout.simple_spinner_dropdown_item);
+            spinner_pref_time2.setAdapter(timeAdapter);
+
+            for (int i = 0; i < buckets.size(); i++) {
+                if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
+                    spinner_pref_bucket2.setSelection(i);
+                    if (!TextUtils.isEmpty(userData.slotselected) && TextUtils.isDigitsOnly(userData.slotselected)) {
+                        int slotSelect = Integer.parseInt(userData.slotselected);
+                        spinner_pref_time2.setSelection(slotSelect);
+                    }
+//                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
+//                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
+//                                                spinner_pref_time.setSelection(i1);
+//                                                break;
+                    break;
+                }
+            }
+
+            updateSubscriptionUI(false, 1);
+            findViewById(R.id.bucket_language2).setVisibility(View.GONE);
+        }
+
+
+        btnSubscribe2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!NetworkConnection.isOnline(context)) {
+                    Toast.makeText(context, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (selectedSubscriptionTime2 == null) {
+                    Toast.makeText(context, R.string.error_time_not_selected, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (selectedBucket2 == null) {
+                    Toast.makeText(context, R.string.error_bucket_not_selected, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                SubscriptionData data = new SubscriptionData();
+                data.gender = gender;
+                data.phonenumber = patient_new.getPhone_number();
+                data.bucketsubscribedto = selectedBucket2.bucketId;
+                data.slotselected = selectedSubscriptionTime2.toString();
+                data.subscribedby = sessionManager.getProviderID();
+                data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language2.getSelectedItemPosition()];
+                apiInterface.subscribe(urlModifiers.getSubscriptionUrl(), subscriptionAuthHeader, data).enqueue(new Callback<SubscriptionStatus>() {
+                    @Override
+                    public void onResponse(Call<SubscriptionStatus> call, Response<SubscriptionStatus> response) {
+                        SubscriptionStatus body = response.body();
+                        String message = body.data;
+                        if (body != null) {
+                            updateSubscriptionUI(false, 1);
                             if(sessionManager.getAppLanguage().equals("hi"))
                                 message = switch_hi_subs_response(body.data) ;
                             else
@@ -745,15 +920,27 @@ public class PatientDetailActivity extends AppCompatActivity {
         return buckets;
     }
 
-    private void updateSubscriptionUI(boolean enable) {
-        spinner_pref_bucket.setEnabled(enable);
-        spinner_pref_time.setEnabled(enable);
-        spinner_pref_language.setEnabled(enable);
-        btnSubscribe.setEnabled(enable);
-        if (!enable) {
-            btnSubscribe.setAlpha(0.8f);
+    private void updateSubscriptionUI(boolean enable, int index) {
+        if (index == 0) {
+            spinner_pref_bucket.setEnabled(enable);
+            spinner_pref_time.setEnabled(enable);
+            spinner_pref_language.setEnabled(enable);
+            btnSubscribe.setEnabled(enable);
+            if (!enable) {
+                btnSubscribe.setAlpha(0.8f);
+            } else {
+                btnSubscribe.setAlpha(1);
+            }
         } else {
-            btnSubscribe.setAlpha(1);
+            spinner_pref_bucket2.setEnabled(enable);
+            spinner_pref_time2.setEnabled(enable);
+            spinner_pref_language2.setEnabled(enable);
+            btnSubscribe2.setEnabled(enable);
+            if (!enable) {
+                btnSubscribe2.setAlpha(0.8f);
+            } else {
+                btnSubscribe2.setAlpha(1);
+            }
         }
     }
 

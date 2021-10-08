@@ -39,10 +39,10 @@
 
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"
-            android:exported="true"
             android:configChanges="uiMode"
+            android:exported="true"
             android:label="@string/title_follow_up"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ivrCallResponseActivity.IVRCallResponseActivity"
             android:label="@string/Daily_Performance_Activity_Title" />
@@ -238,14 +238,14 @@
             android:configChanges="uiMode"
             android:label="@string/call_recordings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.recordings.AudioPlayerActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_search_patient"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"

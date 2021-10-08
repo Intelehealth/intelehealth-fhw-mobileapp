@@ -7,6 +7,10 @@ import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 public class UrlModifiers {
     private SessionManager sessionManager = null;
 
+    public UrlModifiers() {
+        this.sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+    }
+
     public String loginUrl(String CLEAN_URL) {
 
         String urlModifier = "session";
@@ -98,15 +102,18 @@ public class UrlModifiers {
     }
 
     public String getBucketListUrl() {
-        return "https://hellosaathi.uninhibited.org.in/buckets";
+//        return "https://hellosaathi.uninhibited.org.in/buckets";
+        return "https://" + sessionManager.getServerUrl() + "/buckets";
     }
 
     public String getSubscriptionStatusUrl(String number) {
-        return String.format("https://hellosaathi.uninhibited.org.in/status/%s", number);
+//        return String.format("https://hellosaathi.uninhibited.org.in/status/%s", number);
+        return String.format("https://" + sessionManager.getServerUrl() + "/status/%s", number);
     }
 
     public String getSubscriptionUrl() {
-        return "https://hellosaathi.uninhibited.org.in/subscribe";
+//        return "https://hellosaathi.uninhibited.org.in/subscribe";
+        return "https://" + sessionManager.getServerUrl() + "/subscribe";
     }
 
     public String setSMSPresciptionUrl( String visitUUid, String openMRSID) {
@@ -128,6 +135,6 @@ public class UrlModifiers {
         return BASE_URL; }
 
     public String getRecordingListUrl(String number) {
-        return String.format("https://hellosaathi.uninhibited.org.in/recordings/%s", number);
+        return String.format("https://" + sessionManager.getServerUrl() + "/recordings/%s", number);
     }
 }

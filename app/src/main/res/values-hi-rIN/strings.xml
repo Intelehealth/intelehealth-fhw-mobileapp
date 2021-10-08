@@ -775,4 +775,6 @@
     <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
     <string name="pending_follow_up">रोगी के पास पिछली यात्रा के लिए पहले से ही एक अनुवर्ती कार्यक्रम है।</string>
     <string name="still_continue">क्या आप अभी भी जारी रखना चाहते हैं?</string>
+    <string name="call_recordings">कॉल रिकॉर्डिंग</string>
+    <string name="answer_following_questions">Following are the compulsory questions</string>
 </resources>

@@ -7,20 +7,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -31,7 +17,36 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
+
+import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.ekalhelpline.app.AppConstants;
+import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
+import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
+import org.intelehealth.ekalhelpline.database.dao.ImagesDAO;
+import org.intelehealth.ekalhelpline.database.dao.ObsDAO;
+import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
+import org.intelehealth.ekalhelpline.knowledgeEngine.Node;
+import org.intelehealth.ekalhelpline.models.AnswerResult;
+import org.intelehealth.ekalhelpline.models.dto.ObsDTO;
+import org.intelehealth.ekalhelpline.utilities.FileUtils;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+import org.intelehealth.ekalhelpline.utilities.StringUtils;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
+import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
+import org.intelehealth.ekalhelpline.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -239,27 +254,29 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
-            Node rootNode = currentNode.getOption(groupPosition);
-            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-
-                    }
-                }
-            }
-            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
-            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (!childNode.getId().equals(question.getId())) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-                    }
-                }
-            }
-            adapter.notifyDataSetChanged();
+            //discard
+//            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+//            Node rootNode = currentNode.getOption(groupPosition);
+//            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+//                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+//                    Node childNode = rootNode.getOptionsList().get(i);
+//                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+//                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+//
+//                    }
+//                }
+//            }
+//            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
+//            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+//                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+//                    Node childNode = rootNode.getOptionsList().get(i);
+//                    if (!childNode.getId().equals(question.getId())) {
+//                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+//                    }
+//                }
+//            }
+//
+//            adapter.notifyDataSetChanged();
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -278,7 +295,9 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 Node.subLevelQuestion(question, QuestionNodeActivity.this, adapter, filePath.toString(), imageName);
                 //If the knowledgeEngine is not terminal, that means there are more questions to be asked for this branch.
             }
-        } else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
+        }
+
+        else if ((currentNode.getOption(groupPosition).getChoiceType().equals("single")) && currentNode.getOption(groupPosition).anySubSelected()) {
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
             //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(QuestionNodeActivity.this,R.style.AlertDialogStyle);
             alertDialogBuilder.setMessage(R.string.this_question_only_one_answer);
@@ -291,38 +310,42 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-        } else {
+        }
 
+        else {
             Node question = currentNode.getOption(groupPosition).getOption(childPosition);
-            question.toggleSelected();
-            if (currentNode.getOption(groupPosition).anySubSelected()) {
-                currentNode.getOption(groupPosition).setSelected(true);
-            } else {
-                currentNode.getOption(groupPosition).setUnselected();
-            }
+                question.toggleSelected();
+                if (currentNode.getOption(groupPosition).anySubSelected()) {
+                    currentNode.getOption(groupPosition).setSelected(true);
+                } else {
+                    currentNode.getOption(groupPosition).setUnselected();
+                }
 
 
-            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
-            Node rootNode = currentNode.getOption(groupPosition);
-            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+
+                    //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+                    Node rootNode = currentNode.getOption(groupPosition);
+                    if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                        for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                            Node childNode = rootNode.getOptionsList().get(i);
+                            if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                                currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+
+                            }
+                        }
+                    }
+                    Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                    if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                        for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                            Node childNode = rootNode.getOptionsList().get(i);
+                            if (!childNode.getId().equals(question.getId())) {
+                                currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                            }
+                        }
 
                     }
                 }
-            }
-            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
-            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
-                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
-                    Node childNode = rootNode.getOptionsList().get(i);
-                    if (!childNode.getId().equals(question.getId())) {
-                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-                    }
-                }
-            }
-            adapter.notifyDataSetChanged();
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -354,6 +377,23 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
      */
     private void fabClick() {
         nodeComplete = true;
+
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered();
+        if (!answerResult.result) {
+            // show alert dialog
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            Dialog alertDialog = alertDialogBuilder.show();
+            Log.v(TAG, answerResult.requiredStrings);
+            return;
+        }
 
         if (!complaintConfirmed) {
             questionsMissing();
@@ -577,7 +617,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ")) ||
                     (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                            .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
@@ -756,8 +796,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "દર અઠવાડિયે વખત")
                     .replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "વર્ષ દીઠ વખત")));
-        }
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই")
                     .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
@@ -785,7 +824,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "வாரத்திற்கு")
                     .replace("times per month", "ஒரு மாதத்திற்கு")
                     .replace("times per year", "வருடத்திற்கு")));
-        } 
+        }
         //Telugu Language Support...
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
@@ -831,9 +870,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "ആഴ്ചയിൽ തവണ")
                     .replace("times per month", "മാസത്തിൽ തവണ")
                     .replace("times per year", "വർഷത്തിൽ തവണ")));
-        }
-
-        else {
+        } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 

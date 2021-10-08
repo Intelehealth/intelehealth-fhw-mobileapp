@@ -94,11 +94,11 @@ public class RecordingsActivity extends AppCompatActivity {
                     if (recordingList.size() > 0) {
                         msg.setVisibility(View.GONE);
                     } else {
-                        msg.setText(R.string.message_no_data);
+                        msg.setText(R.string.no_records_found);
                     }
                     recyclerView.setAdapter(new RecordingsAdapter(recordingList, RecordingsActivity.this));
                 } else {
-                    msg.setText(R.string.message_no_data);
+                    msg.setText(R.string.no_records_found);
                 }
             }
 
