@@ -764,5 +764,4 @@
     <string name="mobile_number_search">"Mobile number: "</string>
     <string name="no_records_found">No records found</string>
     <string name="call_recordings">Call Recordings</string>
-    <string name="message_no_data">No data</string>
 </resources>
