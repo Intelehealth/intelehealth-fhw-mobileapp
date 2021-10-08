@@ -769,4 +769,5 @@
     <string name="mobile_number_search">"मोबाइल नंबर: "</string>
     <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
     <string name="call_recordings">कॉल रिकॉर्डिंग</string>
+    <string name="answer_following_questions">Following are the compulsory questions</string>
 </resources>
