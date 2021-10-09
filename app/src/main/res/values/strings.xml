@@ -769,4 +769,10 @@
     <string name="second_attempt">TLD 2nd Attempt</string>
     <string name="third_attempt">TLD 3rd Attempt</string>
     <string name="doctor_visit_scheduled">Doctor visit scheduled</string>
+    <string name="doctor_visit_closed">Doctor Visit Closed</string>
+    <string name="call_dropped_disturbed">Calls Dropped/Calls Disturbed</string>
+    <string name="doctor_resolution">Doctor Resolution</string>
+    <string name="dr_first_attempt">Doctor 1st Attempt</string>
+    <string name="dr_second_attempt">Doctor 2nd Attempt</string>
+    <string name="dr_third_attempt">Doctor 3rd Attempt</string>
 </resources>
