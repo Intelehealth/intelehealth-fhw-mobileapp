@@ -212,7 +212,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
-                "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
+                "limit ? offset ?";
         Logger.logD(TAG, query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
@@ -662,7 +662,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
-                "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
+                "limit ? offset ?";
         Logger.logD(TAG, query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});

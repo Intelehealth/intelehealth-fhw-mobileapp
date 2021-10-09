@@ -127,6 +127,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
                     List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset);
+
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
@@ -161,7 +162,6 @@ public class ActivePatientActivity extends AppCompatActivity {
     }
 
     private void getVisits() {
-
         ArrayList<String> encounterVisitUUID = new ArrayList<String>();
         HashSet<String> hsPatientUUID = new HashSet<String>();
 
@@ -198,41 +198,27 @@ public class ActivePatientActivity extends AppCompatActivity {
             hsPatientUUID.addAll(listPatientUUID);
             listPatientUUID.clear();
             listPatientUUID.addAll(hsPatientUUID);
-
         }
     }
 
     private List<ActivePatientModel> activeVisits_Speciality(int offset) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
+                "AND a.enddate is NULL OR a.enddate='' limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        Log.v("main", "active: "+ query);
 
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    try {
-                        activePatientList.add(new ActivePatientModel(
-                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("value")))
-                        );
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
+                    activePatientList.add(new ActivePatientModel(
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("value")))
+                    );
                 } while (cursor.moveToNext());
             }
         }
@@ -532,24 +518,10 @@ public class ActivePatientActivity extends AppCompatActivity {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    try {
-                        activePatientList.add(new ActivePatientModel(
-                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("value")))
-                        );
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
+                    activePatientList.add(new ActivePatientModel(
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("value")))
+                    );
                 } while (cursor.moveToNext());
             }
         } else {
