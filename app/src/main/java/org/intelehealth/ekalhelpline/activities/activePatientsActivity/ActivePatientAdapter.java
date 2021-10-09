@@ -22,6 +22,8 @@ import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.*;
 
 /**
  * Created by Dexter Barretto on 5/20/17.
@@ -34,11 +36,13 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    SessionManager sessionManager;
 
     public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+        sessionManager = new SessionManager(context);
     }
 
     public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID,
@@ -47,6 +51,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.activePatient_speciality = activePatient_speciality;
+        sessionManager = new SessionManager(context);
     }
 
     @Override
@@ -144,8 +149,13 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                         if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                             //Reason for Call - Start
-                            holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid()));
-
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                                holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(
+                                        PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid())));
+                            }
+                            else {
+                                holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid()));
+                            }
                             holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             //Reason for Call - End

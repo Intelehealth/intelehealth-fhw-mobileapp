@@ -20,6 +20,9 @@ import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDet
 import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
 import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.*;
 
 
 /**
@@ -33,20 +36,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    SessionManager sessionManager;
 
     public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+        sessionManager = new SessionManager(context);
     }
-
-  /*  public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
-                               ArrayList<String> _listPatientUUID, List<TodayPatientModel> todayPatient_exitsurvey_commentsList) {
-        this.todayPatientModelList = todayPatientModelList;
-        this.context = context;
-        this.listPatientUUID = _listPatientUUID;
-        this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
-    }*/
 
     public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
                                ArrayList<String> _listPatientUUID,
@@ -57,6 +54,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.listPatientUUID = _listPatientUUID;
         this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
         this.todayPatient_Speciality = todayPatient_Speciality;
+        sessionManager = new SessionManager(context);
     }
 
     @Override
@@ -153,7 +151,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                             //Reason for Call - Start
-                            holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid()));
+                            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                                holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(
+                                        PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid())));
+                            }
+                            else {
+                                holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid()));
+                            }
+
                             holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             //Reason for Call - End

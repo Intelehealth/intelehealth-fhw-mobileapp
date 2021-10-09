@@ -686,6 +686,23 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_hi_Reason_for_Call_TAG(String val) {
+        switch (val) {
+            case "TLD 1st Attempt":
+                val = "टीएलडी पहला प्रयास";
+                break;
+            case "TLD 2nd Attempt":
+                val = "टीएलडी दूसरा प्रयास";
+                break;
+            case "TLD 3rd Attempt":
+                val = "टीएलडी तीसरा प्रयास";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_callNoteValue_edit(String val) {
         switch (val) {
             case "कॉलर ने कॉल बैक के लिए अनुरोध किया":
