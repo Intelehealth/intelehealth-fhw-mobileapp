@@ -201,7 +201,7 @@
     <string name="name_button_download"> बटन डाउनलोड</string>
     <string name="visit_summary_follow_up_date">तारीख का पालन करे</string>
     <string name="visit_summary_follow_up_reminder">कृप्या मरीज को उसके तारीख याद दिलाये:</string>
-    <string name="visit_summary_upload_reminder">कृप्या डालने से पहले यात्रा समाप्त करने का प्रयास करें!</string>
+    <string name="visit_summary_upload_reminder">कृपया पहले विज़िट अपलोड करें!</string>
 
 
     //Diagnostic Tests Screen
@@ -330,7 +330,7 @@
     <string name="visit_images">छवियों पर जाएँ</string>
     <string name="prescription">पर्चे</string>
 
-    <string name="error_no_data">यात्रा समाप्त करने का प्रयास करने से पहले कृपया पहले डाउनलोड करें।</string>
+    <string name="error_no_data">कृपया पहले दवा का पचा॔ डाउनलोड करें।</string>
     <string name="error_phone_number">फ़ोन नंबर खाली नहीं हो सकता</string>
     <string name="action_end_visit">विजिट समाप्त </string>
 

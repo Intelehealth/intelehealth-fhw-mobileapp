@@ -376,9 +376,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.summary_home: {
 //                NavUtils.navigateUpFromSameTask(this);
+                if(speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Agent Resolution")  && (!isVisitSpecialityExists))
+                {
+                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+                    alertDialogBuilder.setMessage(getResources().getString(R.string.visit_summary_upload_reminder));
+                    alertDialogBuilder.setNeutralButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                    IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+                }
+                else {
                 Intent i = new Intent(this, HomeActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
+            }
                 return true;
             }
             case R.id.summary_print: {
