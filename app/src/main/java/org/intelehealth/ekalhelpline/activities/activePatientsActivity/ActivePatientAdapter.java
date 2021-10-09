@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
 import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
@@ -142,6 +143,14 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 
                         if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
+                            //Reason for Call - Start
+                            holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid()));
+
+                            holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            //Reason for Call - End
+
+
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                                 holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
@@ -168,6 +177,10 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
             holder.tld_query_tag.setVisibility(View.GONE);
         }
+
+        if (holder.tld_reason_for_call.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_reason_for_call.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -187,7 +200,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
-        private TextView tld_query_tag;
+        private TextView tld_query_tag, tld_reason_for_call;
 
         public ActivePatientViewHolder(View itemView) {
             super(itemView);
@@ -197,6 +210,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
             tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
+            tld_reason_for_call = itemView.findViewById(R.id.reason_for_call_tag);
             rootView = itemView;
         }
 
