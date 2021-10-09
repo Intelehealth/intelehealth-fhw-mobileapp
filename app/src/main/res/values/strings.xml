@@ -768,4 +768,5 @@
     <string name="first_attempt">TLD 1st Attempt</string>
     <string name="second_attempt">TLD 2nd Attempt</string>
     <string name="third_attempt">TLD 3rd Attempt</string>
+    <string name="doctor_visit_scheduled">Doctor visit scheduled</string>
 </resources>

@@ -525,5 +525,6 @@
     <string name="first_attempt">1st attempt</string>
     <string name="second_attempt">Second Attempt</string>
     <string name="third_attempt">Third Attempt</string>
+    <string name="doctor_visit_scheduled">Doctor visit scheduled</string>
 
 </resources>

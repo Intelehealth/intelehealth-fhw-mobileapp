@@ -154,7 +154,6 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
                             //Reason for Call - Start
                             holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid()));
-
                             holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             //Reason for Call - End
@@ -190,7 +189,18 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                             }
                         }
                     } else {
-                        // holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                        // Specilaity is not TLD Query and Agent Resolution
+                        if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
+                                !todayPatient_Speciality.get(i).getVisit_speciality().equalsIgnoreCase("Agent Resolution")) {
+
+                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                               // do nothing //Prescription is GIVEN
+                            } else {
+                                holder.tld_query_tag.setText(R.string.doctor_visit_scheduled); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            }
+                        }
                     }
                 } else {
                     //holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.

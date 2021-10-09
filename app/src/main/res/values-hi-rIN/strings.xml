@@ -771,4 +771,5 @@
     <string name="first_attempt">टीएलडी पहला प्रयास</string>
     <string name="second_attempt">टीएलडी दूसरा प्रयास</string>
     <string name="third_attempt">टीएलडी तीसरा प्रयास</string>
+    <string name="doctor_visit_scheduled">Doctor visit scheduled</string>
 </resources>
