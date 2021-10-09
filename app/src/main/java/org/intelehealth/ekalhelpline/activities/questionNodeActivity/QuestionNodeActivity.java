@@ -1,6 +1,7 @@
 package org.intelehealth.ekalhelpline.activities.questionNodeActivity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -97,7 +98,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     Boolean complaintConfirmed = false;
     SessionManager sessionManager = null;
     private float float_ageYear_Month;
-
+    Context context;
 
     //    Knowledge mKnowledge; //Knowledge engine
     // ExpandableListView questionListView;
@@ -134,6 +135,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
+        context = QuestionNodeActivity.this;
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -378,7 +380,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
     private void fabClick() {
         nodeComplete = true;
 
-        AnswerResult answerResult = currentNode.checkAllRequiredAnswered();
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered(context);
         if (!answerResult.result) {
             // show alert dialog
             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);

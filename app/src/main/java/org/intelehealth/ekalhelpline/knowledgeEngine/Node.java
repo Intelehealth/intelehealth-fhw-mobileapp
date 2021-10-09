@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.knowledgeEngine;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -3050,23 +3051,42 @@ public class Node implements Serializable {
     }
 
     //Check to see if all required exams have been answered before moving on.
-    public AnswerResult checkAllRequiredAnswered() {
+    public AnswerResult checkAllRequiredAnswered(Context context) {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(context);
+        String locale = sessionManager.getCurrentLang();
+
         AnswerResult answerResult = new AnswerResult();
         answerResult.totalCount = optionsList.size();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(IntelehealthApplication.getAppContext().getResources().getString(R.string.answer_following_questions));
+        stringBuilder.append(context.getResources().getString(R.string.answer_following_questions));
         stringBuilder.append("\n");
         for (int i = 0; i < optionsList.size(); i++) {
             Node node = optionsList.get(i);
             if (node.isRequired()) {
                 if (node.optionsList != null && !node.optionsList.isEmpty()) {
                     if (!node.isSelected() || !node.anySubSelected()) {
-                        stringBuilder.append("\n").append("* ").append(node.text);
+                        switch(locale) {
+                            case "en":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display);
+                                break;
+                            case "hi":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_hindi);
+                                break;
+                        }
                         answerResult.result = false;
                     }
                 } else {
                     if (!node.isSelected()) {
-                        stringBuilder.append("\n").append("* ").append(node.text);
+                        switch(locale) {
+                            case "en":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display);
+                                break;
+                            case "hi":
+                                stringBuilder.append("\n").append(bullet + " ").append(node.display_hindi);
+                                break;
+                        }
                         answerResult.result = false;
                     }
                 }
