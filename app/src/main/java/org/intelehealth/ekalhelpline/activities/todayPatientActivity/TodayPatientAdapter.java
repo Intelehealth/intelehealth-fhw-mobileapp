@@ -201,6 +201,10 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
                         }
+                        else {
+                            //do nothing
+                            holder.tld_query_tag.setText("");
+                        }
                     }
                 } else {
                     //holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
