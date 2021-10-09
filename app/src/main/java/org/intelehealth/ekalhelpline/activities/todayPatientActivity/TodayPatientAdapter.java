@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
 import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
@@ -133,6 +134,8 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             }
         }
 
+      //  PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid());
+
         //TLD Query - start
         //to check only if visit is uploaded then show the tag...
         for (int i = 0; i < todayPatient_Speciality.size(); i++) {
@@ -149,6 +152,13 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
                         if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
+                            //Reason for Call - Start
+                            holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid()));
+
+                            holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            //Reason for Call - End
+
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                                 holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN (TLD QUERY ANSWERED)
                             } else {
@@ -156,6 +166,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                             }
                             holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                             holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+
                         } else {
                             //check the spinner value for this from the exit survey selection and then
                             // based on that checking add the text.
@@ -197,6 +208,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             holder.tld_query_tag.setVisibility(View.GONE);
         }
 
+        if (holder.tld_reason_for_call.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_reason_for_call.setVisibility(View.GONE);
+        }
+
+
+
     }
 
     @Override
@@ -217,7 +234,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
-        private TextView tld_query_tag;
+        private TextView tld_query_tag, tld_reason_for_call;
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
@@ -227,6 +244,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
             tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
+            tld_reason_for_call = itemView.findViewById(R.id.reason_for_call_tag);
             rootView = itemView;
         }
 

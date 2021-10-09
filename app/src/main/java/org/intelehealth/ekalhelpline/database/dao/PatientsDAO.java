@@ -11,6 +11,7 @@ import android.util.Log;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
@@ -585,6 +586,39 @@ public class PatientsDAO {
         return gender;
     }
 
+    public static String getReason_for_Call(String patientUuid) {
+        String value = "";
+        List<String> value_array = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            Cursor cursor = db.rawQuery("SELECT value FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid = ?",
+                    new String[]{patientUuid, "b869c571-4515-4c98-9576-edc1d74235ee"});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                    if(!value.equalsIgnoreCase(""))
+                        value_array = Arrays.asList(value.split(","));
+                    else
+                        value_array.add("");
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e) {
+
+        }
+        finally {
+            db.endTransaction();
+        }
+
+        if(value_array.size() == 0)
+            value_array.add("");
+
+
+        return value_array.get(value_array.size() - 1);
+    }
 
     /**
      * @param patientUuid PatientUuid of the Patient that is selected
