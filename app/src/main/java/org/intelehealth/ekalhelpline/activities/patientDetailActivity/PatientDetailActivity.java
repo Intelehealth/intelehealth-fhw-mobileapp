@@ -775,6 +775,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_doctor_followUp));
         notes.add(getString(R.string.spinner_outreach));
         notes.add(getString(R.string.spinner_general_followUp));
+        notes.add(getString(R.string.first_attempt));
+        notes.add(getString(R.string.second_attempt));
+        notes.add(getString(R.string.third_attempt));
         notes.add(getString(R.string.spinner_other));
         return notes;
     }

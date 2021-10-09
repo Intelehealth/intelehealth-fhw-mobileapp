@@ -61,6 +61,17 @@
                     android:paddingVertical="@dimen/padding_2dp"
                     tools:text="TLD Query Asked" />
 
+                <TextView
+                    android:id="@+id/reason_for_call_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="@dimen/padding_2dp"
+                    tools:text="First Attempt" />
+
+
 
                 <View
                     android:layout_width="fill_parent"

@@ -151,13 +151,11 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                                 holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN (TLD QUERY ANSWERED)
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             } else {
                                 holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN (TLD QUERY ASKED)
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
+                            holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                         } else {
                             //check the spinner value for this from the exit survey selection and then
                             // based on that checking add the text.

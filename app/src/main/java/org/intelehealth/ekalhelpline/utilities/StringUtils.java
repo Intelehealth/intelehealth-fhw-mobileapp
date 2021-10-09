@@ -709,6 +709,15 @@ public final class StringUtils {
             case "जेनरल फ़ॉलो अप":
                 val = "General Follow up";
                 break;
+            case "टीएलडी पहला प्रयास":
+                val = "TLD 1st Attempt";
+                break;
+            case "टीएलडी दूसरा प्रयास":
+                val = "TLD 2nd Attempt";
+                break;
+            case "टीएलडी तीसरा प्रयास":
+                val = "TLD 3rd Attempt";
+                break;
             case "अन्य":
                 val = "Other";
                 break;

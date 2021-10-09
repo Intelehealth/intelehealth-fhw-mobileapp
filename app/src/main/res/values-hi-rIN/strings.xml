@@ -768,4 +768,7 @@
     <string name="tld_resolved_comment">टीएलडी समाधान</string>
     <string name="mobile_number_search">"मोबाइल नंबर: "</string>
     <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
+    <string name="first_attempt">टीएलडी पहला प्रयास</string>
+    <string name="second_attempt">टीएलडी दूसरा प्रयास</string>
+    <string name="third_attempt">टीएलडी तीसरा प्रयास</string>
 </resources>

@@ -765,4 +765,7 @@
     <string name="no_records_found">No records found</string>
     <string name="call_recordings">Call Recordings</string>
     <string name="message_no_data">No data</string>
+    <string name="first_attempt">TLD 1st Attempt</string>
+    <string name="second_attempt">TLD 2nd Attempt</string>
+    <string name="third_attempt">TLD 3rd Attempt</string>
 </resources>
