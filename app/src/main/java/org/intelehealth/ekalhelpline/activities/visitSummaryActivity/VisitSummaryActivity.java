@@ -431,8 +431,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         !hasPrescription.equalsIgnoreCase("true"))
                 {
                     String message = "";
-                    if((!isVisitSpecialityExists))
+                    if((!isVisitSpecialityExists)) {
                         message = getString(R.string.visit_summary_upload_reminder);
+                    }
                     else
                         message = getString(R.string.error_no_data);
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
@@ -705,12 +706,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
+        downloadButton.setVisibility(View.GONE);
+        card_print.setVisibility(View.GONE);
+        card_share.setVisibility(View.GONE);
+
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
         isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
         if (isVisitSpecialityExists) {
             speciality_spinner.setEnabled(false);
             tilAgentResolution.setEnabled(false);
+
+            if(!speciality_spinner.getSelectedItem().toString().equalsIgnoreCase(AppConstants.AGENT_RESOLUTION)) {
+                downloadButton.setVisibility(View.VISIBLE);
+                card_print.setVisibility(View.VISIBLE);
+                card_share.setVisibility(View.VISIBLE);
+            }
         }
 
         //spinner is being populated with the speciality values...
@@ -725,6 +736,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if(special_value.equalsIgnoreCase("Curiosity Resolution"))
         {
+            downloadButton.setVisibility(View.GONE);
             card_print.setVisibility(View.GONE);
             card_share.setVisibility(View.GONE);
         }
@@ -767,8 +779,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String agent_resolution_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.ATTRIBUTE_AGENT_RESOLUTION_GIVEN);
                 etAgentResolution.setText(agent_resolution_value);
             }
-        } else {
-
         }
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -784,6 +794,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 } else {
                     tilAgentResolution.setVisibility(View.GONE);
                 }
+
             }
 
             @Override
@@ -853,8 +864,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physcialExaminationImagesDownload();
 
 
-        downloadButton.setEnabled(false);
-        downloadButton.setVisibility(View.GONE);
+//        downloadButton.setEnabled(false);
+//        downloadButton.setVisibility(View.GONE);
         if (isPastVisit) {
             //editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
@@ -1038,6 +1049,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     if (isVisitSpecialityExists) {
                         speciality_spinner.setEnabled(false);
                         tilAgentResolution.setEnabled(false);
+
                     }
 
                     VisitAttributeListDAO visit_state_attributes = new VisitAttributeListDAO();
