@@ -316,10 +316,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             Node groupNode = mGroupNode.getOption(mGroupPos);
 
-            if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
+            if (groupNode.getText() != null && ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ") && thisNode.isNoSelected())
                     || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected())
-                    || thisNode.isSelected()) {
+                    || thisNode.isSelected())) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
             } else {
