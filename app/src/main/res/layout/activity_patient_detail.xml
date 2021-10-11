@@ -462,8 +462,8 @@
                                 android:id="@+id/textView_SDW"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_marginStart="8dip"
+                                android:layout_weight="1"
 
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -496,8 +496,8 @@
                                 android:id="@+id/textView_occupation"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_marginStart="8dip"
+                                android:layout_weight="1"
 
                                 android:fontFamily="@font/lato_regular"
                                 android:includeFontPadding="false"
@@ -832,10 +832,12 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginTop="16dp"
-                android:elevation="5dp"
-                android:fontFamily="@font/lato_bold"
+                android:elevation="8dp"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="@string/button_new_visit" />
+                android:minHeight="56dip"
+                android:text="@string/button_new_visit"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_previous_visits"

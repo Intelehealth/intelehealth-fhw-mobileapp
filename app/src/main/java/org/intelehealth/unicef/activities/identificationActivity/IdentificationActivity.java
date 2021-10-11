@@ -387,7 +387,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 //            country1 = obj.getString("mCountry");
 //            state = obj.getString("mState");
-
+            country1 = sessionManager.getAppLanguage().equals("ru") ? "Кыргызстан" : "Kyrgyzstan";
             if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("Индия")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
                 ((TextView) findViewById(R.id.country_code_tv)).setText("+91");
@@ -580,7 +580,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         } else {
 
-//            mCountrySpinner.setSelection(countryAdapter.getPosition(country1));
+         mCountrySpinner.setSelection(countryAdapter.getPosition(country1));
            /* mCountrySpinner.setSelection(countryAdapter.getPosition(StringUtils.getValue(mSwitch_Country_edit(country1,
                     sessionManager.getAppLanguage()))));*/
         }
@@ -1868,13 +1868,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(StringUtils.getValue(mOccupationEditText.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
-            patientAttributesDTO = new PatientAttributesDTO();
+            /*patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Economic Status"));
             //patientAttributesDTO.setValue(StringUtils.getProvided(mEconomicStatusSpinner));
             patientAttributesDTO.setValue(mEconomicStatusSpinner.getSelectedItem().toString());
-            patientAttributesDTOList.add(patientAttributesDTO);
+            patientAttributesDTOList.add(patientAttributesDTO);*/
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
