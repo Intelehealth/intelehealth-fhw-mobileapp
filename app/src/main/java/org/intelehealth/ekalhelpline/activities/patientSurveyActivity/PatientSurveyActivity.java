@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.activities.patientSurveyActivity;
 
 import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_endFollowUp_edit;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
@@ -33,6 +35,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -87,6 +90,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     private RatingBar ratingBar;
 
+    //Schedule Follow Up
+    TextView schedule_TV;
+    String followUpDate = " ";
+    DatePickerDialog datePicker;
+
     @Override
     public void onBackPressed() {
         //do nothing
@@ -127,7 +135,31 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSkip = findViewById(R.id.button_survey_skip);
         mSubmit = findViewById(R.id.button_survey_submit);
         ratingBar = findViewById(R.id.ratingBar);
+        schedule_TV = findViewById(R.id.schedule_textView);
 
+        // initialising the layout
+        final Calendar calendar = Calendar.getInstance();
+
+        schedule_TV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                datePicker = new DatePickerDialog(PatientSurveyActivity.this, R.style.DialogTheme,new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        String myFormat = "dd-MM-yyyy"; //In which you need put here
+                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                        schedule_TV.setText("Follow-Up Scheduled On: " + sdf.format(calendar.getTime()));
+                        followUpDate = sdf.format(calendar.getTime());
+                    }
+                },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                datePicker.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                datePicker.show();
+            }
+        });
 
         notesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -217,7 +249,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
                 rating = String.valueOf(ratingBar.getRating());
 
-                if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("") && (!noteText.equalsIgnoreCase("Select"))) {
+                if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("") && (!noteText.equalsIgnoreCase("Select")))
+                {
                     Log.d(TAG, "Rating is " + rating);
                     uploadSurvey();
                     endVisit();
@@ -235,6 +268,13 @@ public class PatientSurveyActivity extends AppCompatActivity {
             }
         });
     }
+
+//    private void updateLabel() {
+//        String myFormat = "dd-MM-yyyy"; //In which you need put here
+//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+//        schedule_TV.setText("Follow-Up Scheduled On: " + sdf.format(calendar.getTime()));
+//        followUpDate = sdf.format(calendar.getTime());
+//    }
 
     private ArrayList<String> getPatientNoteList()
     {
@@ -307,6 +347,12 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setEncounteruuid(uuid);
         obsDTO.setValue(noteText);
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
+        obsDTOList.add(obsDTO);
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(uuid);
+        obsDTO.setValue(followUpDate); //date
+        obsDTO.setConceptuuid(UuidDictionary.FOLLOW_UP_VISIT);
         obsDTOList.add(obsDTO);
         try {
             obsDAO.insertObsToDb(obsDTOList);

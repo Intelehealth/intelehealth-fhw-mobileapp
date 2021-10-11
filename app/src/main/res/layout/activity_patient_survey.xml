@@ -170,6 +170,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+        <TextView
+            android:id="@+id/schedule_textView"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato_regular"
+            android:includeFontPadding="false"
+            android:paddingTop="@dimen/padding_card_title_text"
+            android:text="@string/schedule_follow_up"
+            android:drawableStart="@drawable/ic_baseline_event_24"
+            android:drawablePadding="5dip"
+            android:textSize="18sp"
+            android:focusable="false"/>
+
+
         <RelativeLayout
             android:id="@+id/button_layout"
             android:layout_width="match_parent"
