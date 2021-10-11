@@ -207,15 +207,15 @@ public class CameraActivity extends AppCompatActivity {
 
                     float ratioX = actualWidth / (float) options.outWidth;
                     float ratioY = actualHeight / (float) options.outHeight;
-                    float middleX = actualWidth / 2.0f;
-                    float middleY = actualHeight / 2.0f;
+                    float middleX = actualWidth / 4.0f;
+                    float middleY = actualHeight / 4.0f;
 
                     Matrix scaleMatrix = new Matrix();
                     scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
 
                     Canvas canvas = new Canvas(scaledBitmap);
                     canvas.setMatrix(scaleMatrix);
-                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
+                    canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 4, middleY - bmp.getHeight() / 4, new Paint(
                             Paint.FILTER_BITMAP_FLAG));
 
                     ExifInterface exif;
@@ -244,7 +244,7 @@ public class CameraActivity extends AppCompatActivity {
                     String filename = filePath;
                     try {
                         out = new FileOutputStream(file);
-                        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 95, out);
+                        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 70, out);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } finally {
