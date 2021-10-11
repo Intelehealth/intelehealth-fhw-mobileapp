@@ -64,6 +64,8 @@ public class ActivePatientActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     MaterialAlertDialogBuilder dialogBuilder;
     TextView no_records_found_textview;
+    ProviderDAO providerDAO = new ProviderDAO();
+    String user_data = "", chw_name = "";
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -110,6 +112,9 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
+
+        chw_name = sessionManager.getChwname();
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -125,8 +130,14 @@ public class ActivePatientActivity extends AppCompatActivity {
                     Log.v("main", "newstate value: " + newState + " " + "scrollstate: " + RecyclerView.SCROLL_STATE_IDLE);
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
-                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset);
-                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset);
+
+                    if(user_data.equalsIgnoreCase("")) {
+                        user_data = providerDAO.getSetupUser_uuid(chw_name);
+                        Log.v("main", "chwname: " + user_data);
+                    }
+
+                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset, user_data);
+                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, user_data);
 
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
@@ -144,8 +155,10 @@ public class ActivePatientActivity extends AppCompatActivity {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            List<ActivePatientModel> activePatientModels = doQuery(offset);
-            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset); //get the speciality.
+            user_data = providerDAO.getSetupUser_uuid(chw_name);
+            Log.v("main", "chwname: "+ user_data);
+            List<ActivePatientModel> activePatientModels = doQuery(offset, user_data);
+            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, user_data); //get the speciality.
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,
                     listPatientUUID, activeVisit_Speciality);
@@ -201,14 +214,14 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
     }
 
-    private List<ActivePatientModel> activeVisits_Speciality(int offset) {
+    private List<ActivePatientModel> activeVisits_Speciality(int offset, String user_data_) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
-                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
-                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
-                "AND a.enddate is NULL OR a.enddate='' limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
+                "WHERE b.uuid = a.patientuuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
+                "AND (a.enddate is NULL OR a.enddate='') AND y.uuid = ? limit ? offset ?";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
         Log.v("main", "active: "+ query);
 
 
@@ -234,14 +247,15 @@ public class ActivePatientActivity extends AppCompatActivity {
      *
      * @return void
      */
-    private List<ActivePatientModel> doQuery(int offset) {
+    private List<ActivePatientModel> doQuery(int offset, String user_uuid) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String query = "SELECT   a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC  limit ? offset ?";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
+        Log.v("main", "doquery: "+ query);
 
 
         if (cursor != null) {
@@ -334,7 +348,6 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     private void displaySingleSelectionDialog() {
 
-        ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
         String[] creator_uuid = null;
