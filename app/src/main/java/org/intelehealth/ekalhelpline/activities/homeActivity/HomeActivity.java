@@ -122,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SyncUtils syncUtils = new SyncUtils();
     // CardView c1, c2, c3, c4, c5, c6;
-    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
+    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7, c8;
     private String key = null;
     private String licenseUrl = null;
 
@@ -186,6 +186,8 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7 = findViewById(R.id.cardview_closed_visits);
+        c8 = findViewById(R.id.cardview_completed_visits);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -299,6 +301,26 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //Closed Visits - start
+        c6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
+                startActivity(intent);
+            }
+        });
+        //Closed Visits - end
+
+        //Completed - start
+        c7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, ActivePatientActivity.class);
+                startActivity(intent);
+            }
+        });
+        //Completed - end
+
         c5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

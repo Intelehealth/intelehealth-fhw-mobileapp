@@ -684,6 +684,8 @@
         <string name="dr_first_attempt">Doctor 1st Attempt</string>
         <string name="dr_second_attempt">Doctor 2nd Attempt</string>
         <string name="dr_third_attempt">Doctor 3rd Attempt</string>
+    <string name="completed_visits_HomeScreen">Completed Visits</string>
+        <string name="closed_visits_HomeScreen">Closed Visits</string>
 
 
 </resources>
