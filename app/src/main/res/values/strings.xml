@@ -198,7 +198,7 @@
     <string name="name_button_download">button_download</string>
     <string name="visit_summary_follow_up_date">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder">Please remind the patient of their follow up date: </string>
-    <string name="visit_summary_upload_reminder">Please upload first before attempting to mark the visit as resolved.</string>
+    <string name="visit_summary_upload_reminder">Please upload the visit first.</string>
 
 
     //Diagnostic Tests Screen
@@ -317,7 +317,7 @@
     <string name="visit_images">Visit Images</string>
     <string name="prescription">Prescription</string>
 
-    <string name="error_no_data">Please download first before attempting to mark the visit as resolved.</string>
+    <string name="error_no_data">Please download the prescription first.</string>
     <string name="error_phone_number">Phone number can\'t be empty</string>
     <string name="action_end_visit">Resolved Visit</string>
 
@@ -765,5 +765,5 @@
     <string name="no_records_found">No records found</string>
     <string name="call_recordings">Call Recordings</string>
     <string name="message_no_data">No data</string>
-    <string name="answer_following_questions">Following are the compulsory questions</string>
+    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 </resources>
