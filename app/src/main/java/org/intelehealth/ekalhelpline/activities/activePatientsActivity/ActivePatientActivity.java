@@ -65,7 +65,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     MaterialAlertDialogBuilder dialogBuilder;
     TextView no_records_found_textview;
     ProviderDAO providerDAO = new ProviderDAO();
-    String user_data = "", chw_name = "";
+    String chw_name = "";
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -112,8 +112,8 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
-
-        chw_name = sessionManager.getChwname();
+       // chw_name = sessionManager.getChwname();
+        chw_name = sessionManager.getProviderID();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -131,13 +131,8 @@ public class ActivePatientActivity extends AppCompatActivity {
                     Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
 
-                    if(user_data.equalsIgnoreCase("")) {
-                        user_data = providerDAO.getSetupUser_uuid(chw_name);
-                        Log.v("main", "chwname: " + user_data);
-                    }
-
-                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset, user_data);
-                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, user_data);
+                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
+                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
 
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
@@ -155,10 +150,8 @@ public class ActivePatientActivity extends AppCompatActivity {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            user_data = providerDAO.getSetupUser_uuid(chw_name);
-            Log.v("main", "chwname: "+ user_data);
-            List<ActivePatientModel> activePatientModels = doQuery(offset, user_data);
-            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, user_data); //get the speciality.
+            List<ActivePatientModel> activePatientModels = doQuery(offset, chw_name);
+            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,
                     listPatientUUID, activeVisit_Speciality);
@@ -347,7 +340,6 @@ public class ActivePatientActivity extends AppCompatActivity {
 
 
     private void displaySingleSelectionDialog() {
-
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
         String[] creator_uuid = null;

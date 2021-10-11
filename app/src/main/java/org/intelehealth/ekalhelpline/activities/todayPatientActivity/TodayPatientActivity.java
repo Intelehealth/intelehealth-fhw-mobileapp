@@ -74,6 +74,8 @@ public class TodayPatientActivity extends AppCompatActivity {
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private TodayPatientAdapter mActivePatientAdapter;
+    String user_data = "", chw_name = "";
+    ProviderDAO providerDAO = new ProviderDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,8 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mTodayPatientList.setLayoutManager(reLayoutManager);
+        chw_name = sessionManager.getProviderID();
+
         mTodayPatientList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -123,8 +127,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                         reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
-                    List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
-                    List<TodayPatientModel> todayvisit_speciality = todayVisit_speciality(offset);
+
+                    List<TodayPatientModel> allPatientsFromDB = doQuery(offset, chw_name);
+                    List<TodayPatientModel> todayvisit_speciality = todayVisit_speciality(offset, chw_name);
                     List<TodayPatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
 
                     if (allPatientsFromDB.size() < limit) {
@@ -141,9 +146,9 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
-            List<TodayPatientModel> todayPatientModels = doQuery(offset);
 
-            List<TodayPatientModel> todayVisit_Speciality = todayVisit_speciality(offset); //get the speciality.
+            List<TodayPatientModel> todayPatientModels = doQuery(offset, chw_name);
+            List<TodayPatientModel> todayVisit_Speciality = todayVisit_speciality(offset, chw_name); //get the speciality.
             List<TodayPatientModel> todayModel_ExitSurveyComments = getExitSurvey_Comments(offset); //fetch the value of the COMMENTS of ExitSurvey screen
             //to check for TLD Closed or TLD Resolved... This will only come in Todays Visits and not in Active Visits.
 
@@ -204,18 +209,18 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
     }
 
-    private List<TodayPatientModel> todayVisit_speciality(int offset) {
+    private List<TodayPatientModel> todayVisit_speciality(int offset, String user_data_) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
-                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
-                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND y.uuid = ? " +
                 "limit ? offset ?";
-        Logger.logD(TAG, query);
+        Logger.logD(TAG, "\n today_specilaity: "+query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -253,18 +258,18 @@ public class TodayPatientActivity extends AppCompatActivity {
     }
 
 
-    private List<TodayPatientModel> doQuery(int offset) {
+    private List<TodayPatientModel> doQuery(int offset, String user_uuid) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND d.uuid = ? " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
-        Logger.logD(TAG, query);
+        Logger.logD(TAG, "today_doquery: " + query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -366,7 +371,6 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
     private void displaySingleSelectionDialog() {
-        ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
         String[] creator_uuid = null;
@@ -663,7 +667,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
                 "limit ? offset ?";
-        Logger.logD(TAG, query);
+        Logger.logD(TAG, "\n today_exit: " +query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 

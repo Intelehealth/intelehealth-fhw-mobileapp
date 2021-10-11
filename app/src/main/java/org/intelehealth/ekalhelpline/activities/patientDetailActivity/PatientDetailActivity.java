@@ -392,6 +392,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     newVisitStart(sqLiteDatabase,cols);
 
             }
+
             private void newVisitStart(SQLiteDatabase sqLiteDatabase, String[] cols) {
 
                 String CREATOR_ID = sessionManager.getCreatorID();
