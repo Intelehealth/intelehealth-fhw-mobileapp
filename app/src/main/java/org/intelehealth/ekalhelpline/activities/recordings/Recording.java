@@ -11,4 +11,8 @@ public class Recording {
     @SerializedName("Caller")
     @Expose
     public String Caller;
+
+    @SerializedName("language")
+    @Expose
+    public String language;
 }

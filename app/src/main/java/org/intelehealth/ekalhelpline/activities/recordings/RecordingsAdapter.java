@@ -2,6 +2,7 @@ package org.intelehealth.ekalhelpline.activities.recordings;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,13 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
         final Recording recording = patients.get(position);
         if (recording != null) {
             holder.headTextView.setText(recording.Caller);
+            if (!TextUtils.isEmpty(recording.language)) {
+                holder.bodyTextView.setText(recording.language);
+                holder.bodyTextView.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.bodyTextView.setVisibility(View.GONE);
+            }
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,12 +72,13 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
 
     class Myholder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
-        private TextView headTextView;
+        private TextView headTextView, bodyTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             linearLayout = itemView.findViewById(R.id.searchlinear);
+            bodyTextView = itemView.findViewById(R.id.list_item_body);
         }
     }
 

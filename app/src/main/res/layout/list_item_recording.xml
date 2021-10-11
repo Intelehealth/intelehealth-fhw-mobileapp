@@ -31,6 +31,18 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
+                tools:text="1000000000"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/list_item_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:includeFontPadding="false"
+                android:layout_below="@id/list_item_head"
+                tools:text="Hindi"
+                android:layout_marginTop="4dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <ImageView
