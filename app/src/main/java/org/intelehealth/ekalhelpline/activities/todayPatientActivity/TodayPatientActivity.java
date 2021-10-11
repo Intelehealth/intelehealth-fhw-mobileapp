@@ -318,16 +318,16 @@ public class TodayPatientActivity extends AppCompatActivity {
         return todayPatientList;
     }
 
-    public static long getTodayVisitsCount(SQLiteDatabase db) {
+    public static long getTodayVisitsCount(SQLiteDatabase db, String chwUser) {
         int count =0;
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b  " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'";
-        Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query, null);
+        String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND d.uuid = ? ";
+        Logger.logD(TAG, "count_hi: " +query + "chw" + chwUser);
+        final Cursor cursor = db.rawQuery(query, new String[]{chwUser});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
