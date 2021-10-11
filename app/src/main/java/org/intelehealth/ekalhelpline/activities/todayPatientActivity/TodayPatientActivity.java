@@ -213,10 +213,10 @@ public class TodayPatientActivity extends AppCompatActivity {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+        String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%' AND y.uuid = ? " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? " +
                 "limit ? offset ?";
         Logger.logD(TAG, "\n today_specilaity: "+query);
 

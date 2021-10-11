@@ -210,10 +210,10 @@ public class ActivePatientActivity extends AppCompatActivity {
     private List<ActivePatientModel> activeVisits_Speciality(int offset, String user_data_) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+        String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND y.uuid = ? limit ? offset ?";
+                "AND (a.enddate is NULL OR a.enddate='') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
         Log.v("main", "active: "+ query);
 
