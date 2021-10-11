@@ -149,15 +149,17 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                         if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
                             //Reason for Call - Start
-                            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                                holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(
-                                        PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid())));
+                            String tld_call = PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid());
+                            if(tld_call.equalsIgnoreCase("TLD 1st Attempt") || tld_call.equalsIgnoreCase("TLD 2nd Attempt") ||
+                                    tld_call.equalsIgnoreCase("TLD 3rd Attempt")) {
+                                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                                    holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(tld_call));
+                                } else {
+                                    holder.tld_reason_for_call.setText(tld_call);
+                                }
+                                holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
-                            else {
-                                holder.tld_reason_for_call.setText(PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid()));
-                            }
-                            holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                            holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             //Reason for Call - End
 
 
