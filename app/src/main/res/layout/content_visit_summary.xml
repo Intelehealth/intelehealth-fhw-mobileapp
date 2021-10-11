@@ -1146,6 +1146,54 @@
         </androidx.cardview.widget.CardView>
 
 
+        <!-- for camp/remote mode-->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/casemode_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/padding_card"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/titleBar_cardview"
+                    android:fontFamily="@font/lato_bold"
+                    android:paddingVertical="12dp"
+                    android:paddingStart="20dp"
+                    android:text="@string/mode_cardview_title"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size" />
+
+                <Spinner
+                    android:id="@+id/casemode_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="25dp"
+                    android:entries="@array/casemode_values"
+                    android:focusable="true" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+
+        <!--  -->
+
+
         <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/flageddetails"
             android:layout_width="match_parent"
