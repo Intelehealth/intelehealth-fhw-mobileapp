@@ -324,7 +324,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 }
 
 
-                if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+                if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms") && !currentNode.findDisplay().equalsIgnoreCase("जुड़े लक्षण")) {
 
                     //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
                     Node rootNode = currentNode.getOption(groupPosition);
