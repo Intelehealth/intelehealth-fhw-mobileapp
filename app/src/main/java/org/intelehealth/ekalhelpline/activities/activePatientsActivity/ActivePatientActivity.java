@@ -44,6 +44,7 @@ import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
+import org.intelehealth.ekalhelpline.models.Active_Model;
 import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
@@ -132,6 +133,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                     offset += limit;
 
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
+                    allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
                     List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
 
                     if (allPatientsFromDB.size() < limit) {
@@ -151,6 +153,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
 
             List<ActivePatientModel> activePatientModels = doQuery(offset, chw_name);
+            activePatientModels = fetch_Prescription_Data(activePatientModels);
             List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,
@@ -159,6 +162,39 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
 
         getVisits();
+    }
+
+    private List<ActivePatientModel> fetch_Prescription_Data
+            (List<ActivePatientModel> activePatientModels_) {
+
+        List<Active_Model> data = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT x.uuid as p_uuid, a.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND b.encounter_type_uuid = ?",
+                new String[]{"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"});
+        //this means Prescription is present...
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                data.add(new Active_Model(cursor.getString(cursor.getColumnIndexOrThrow("p_uuid")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("uuid"))));
+            }
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        for (int i = 0; i < data.size(); i++) {
+            for (int j = 0; j < activePatientModels_.size(); j++) {
+                if(data.get(i).getPatient_uuid().equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
+                    activePatientModels_.remove(j);
+              }
+            }
+        }
+
+        return activePatientModels_;
     }
 
     @Override
