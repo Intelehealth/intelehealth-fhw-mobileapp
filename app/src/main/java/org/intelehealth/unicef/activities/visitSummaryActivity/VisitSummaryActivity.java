@@ -692,16 +692,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         if (specialityList != null) {
             for (int i = 0; i < specialityList.size(); i++) {
-                if (specialityList.get(i).equals("Pediatrician")) {
-                    specialityListRussian.add("педиатр");
-                } else if (specialityList.get(i).equals("Neonatologist")) {
-                    specialityListRussian.add("неонатолог");
-                } else if (specialityList.get(i).equals("Neuropathologist")) {
-                    specialityListRussian.add("невропатолог");
-                } else if (specialityList.get(i).equals("Family doctor")) {
-                    specialityListRussian.add("семейный врач");
-                } else if (specialityList.get(i).equals("Infectious disease specialist")) {
-                    specialityListRussian.add("инфекционист");
+                if (specialityList.get(i).equalsIgnoreCase("Infectionist")) {
+                    specialityListRussian.add("Инфекционист");
+                } else if (specialityList.get(i).equalsIgnoreCase("Neurologist")) {
+                    specialityListRussian.add("Невролог");
+                } else if (specialityList.get(i).equalsIgnoreCase("Family Doctor")) {
+                    specialityListRussian.add("Семейный врач");
+                } else if (specialityList.get(i).equalsIgnoreCase("Pediatrician")) {
+                    specialityListRussian.add("Педиатр");
+                } else if (specialityList.get(i).equalsIgnoreCase("Neonatologist")) {
+                    specialityListRussian.add("Неонатолог");
                 }
             }
             specialityList.add(0, getString(R.string.select_specialization_text));
