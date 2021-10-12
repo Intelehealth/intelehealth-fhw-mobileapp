@@ -48,6 +48,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.utilities.BitmapUtils;
+import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -424,7 +425,31 @@ public class CameraActivity extends AppCompatActivity {
                                     });
                                     alertDialog.show();
 
+                                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(View v) {
+                                            String img = editText.getText().toString();
 
+                                            if (!StringUtils.isValidFileName(img)) {
+                                                Toast.makeText(CameraActivity.this, R.string.invalid_filename, Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                            alertDialog.dismiss();
+
+                                            File to = new File(IntelehealthApplication.getAppContext()
+                                                    .getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator,img + ".jpg");
+                                            Log.v("main", "file_new: "+ from + "\n" + to + "\n" + to.getAbsolutePath());
+
+                                            if(from.exists())
+                                                from.renameTo(to);
+
+                                            compressImageAndSave(to.getAbsolutePath(), img);
+
+                                            Toast.makeText(CameraActivity.this, getResources().getString(R.string.image_saved),
+                                                    Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
 
 

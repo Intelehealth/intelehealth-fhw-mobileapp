@@ -175,6 +175,24 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                     }
                 });
                 alertDialog.show();
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v) {
+                        m_finalImageName = editText.getText().toString();
+
+                        if (!StringUtils.isValidFileName(m_finalImageName)) {
+                            Toast.makeText(AdditionalDocumentsActivity.this, R.string.invalid_filename, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        alertDialog.dismiss();
+
+                        final String finalFilePath = AppConstants.IMAGE_PATH + m_finalImageName + ".jpg";
+                        BitmapUtils.copyFile(picturePath, finalFilePath);
+                        compressImageAndSave(finalFilePath, m_finalImageName);
+                    }
+                });
             }
         }
     }
