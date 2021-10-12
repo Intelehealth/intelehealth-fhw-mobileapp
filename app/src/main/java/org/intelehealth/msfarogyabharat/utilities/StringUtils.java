@@ -2208,4 +2208,16 @@ public final class StringUtils {
         }
 
     }
+
+    public static boolean isValidFileName(String file) {
+        String valid = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`~!@#$%^&*()-_+=[{]}\\|;:'\";:/?.>,< ";
+        boolean result = true;
+        for (char c : file.toCharArray()) {
+            if (!valid.contains(String.valueOf(c))) {
+                result = false;
+                break;
+            }
+        }
+        return result;
+    }
 }
