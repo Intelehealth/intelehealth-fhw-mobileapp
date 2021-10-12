@@ -39,13 +39,10 @@ import java.util.Locale;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.app.AppConstants;
-import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
-import org.intelehealth.ekalhelpline.models.Active_Model;
-import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
 import org.intelehealth.ekalhelpline.utilities.Logger;
@@ -167,18 +164,17 @@ public class ActivePatientActivity extends AppCompatActivity {
     private List<ActivePatientModel> fetch_Prescription_Data
             (List<ActivePatientModel> activePatientModels_) {
 
-        List<Active_Model> data = new ArrayList<>();
+        List<String> data = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT x.uuid as p_uuid, a.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND b.encounter_type_uuid = ?",
+        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND b.encounter_type_uuid = ?",
                 new String[]{"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"});
         //this means Prescription is present...
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
-                data.add(new Active_Model(cursor.getString(cursor.getColumnIndexOrThrow("p_uuid")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("uuid"))));
+                data.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
             }
         }
 
@@ -188,7 +184,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         for (int i = 0; i < data.size(); i++) {
             for (int j = 0; j < activePatientModels_.size(); j++) {
-                if(data.get(i).getPatient_uuid().equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
+                if(data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
                     activePatientModels_.remove(j);
               }
             }
