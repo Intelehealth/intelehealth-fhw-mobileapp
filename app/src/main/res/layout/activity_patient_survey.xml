@@ -171,8 +171,8 @@
             android:layout_height="wrap_content"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/schedule_textView"
-            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_regular"

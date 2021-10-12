@@ -139,6 +139,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         // initialising the layout
         final Calendar calendar = Calendar.getInstance();
+        final Calendar newCalendar = Calendar.getInstance();
 
         schedule_TV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,11 +153,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
                         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         String myFormat = "dd-MM-yyyy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
-                        schedule_TV.setText("Follow-Up Scheduled On: " + sdf.format(calendar.getTime()));
+                        schedule_TV.setText(getString(R.string.follow_up_scheduled_on) + " " + sdf.format(calendar.getTime()));
                         followUpDate = sdf.format(calendar.getTime());
                     }
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                datePicker.getDatePicker().setMinDate(calendar.getTimeInMillis());
+                datePicker.getDatePicker().setMinDate(newCalendar.getTimeInMillis());
                 datePicker.show();
             }
         });
@@ -165,19 +166,26 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    if(notesSpinner.getSelectedItem().equals("अन्य")) {
+                    if(notesSpinner.getSelectedItem().equals("अन्य"))
                             mComments.setVisibility(View.VISIBLE);
-                    }
-                    else {
+                    else
                         mComments.setVisibility(View.GONE);
-                    }
+
+                    if(notesSpinner.getSelectedItem().equals(getString(R.string.schedule_follow_up)))
+                        schedule_TV.setVisibility(View.VISIBLE);
+                    else
+                        schedule_TV.setVisibility(View.GONE);
                 }
                 else {
                     if(notesSpinner.getSelectedItem().equals("Other"))
                         mComments.setVisibility(View.VISIBLE);
                     else
                         mComments.setVisibility(View.GONE);
-                }
+
+                    if(notesSpinner.getSelectedItem().equals(getString(R.string.schedule_follow_up)))
+                        schedule_TV.setVisibility(View.VISIBLE);
+                    else
+                        schedule_TV.setVisibility(View.GONE);                }
 
             }
 
@@ -233,6 +241,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     mComments.setError(null);
                 }
 
+                if(schedule_TV.getVisibility() == View.VISIBLE &&
+                        followUpDate.equalsIgnoreCase("")) {
+                    Toast.makeText(PatientSurveyActivity.this,"Select follow-up date",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(sessionManager.getAppLanguage().equals("hi")) {
                     noteText = switch_hi_endFollowUp_edit(notesSpinner.getSelectedItem().toString());
                 }
@@ -283,6 +296,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_recovered));
         notes.add(getString(R.string.spinner_referred));
         notes.add(getString(R.string.spinner_died));
+        notes.add(getString(R.string.schedule_follow_up));
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));
         notes.add(getString(R.string.spinner_not_applicable));
@@ -348,12 +362,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setValue(noteText);
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
         obsDTOList.add(obsDTO);
-        obsDTO = new ObsDTO();
-        obsDTO.setUuid(UUID.randomUUID().toString());
-        obsDTO.setEncounteruuid(uuid);
-        obsDTO.setValue(followUpDate); //date
-        obsDTO.setConceptuuid(UuidDictionary.FOLLOW_UP_VISIT);
-        obsDTOList.add(obsDTO);
+        if(!followUpDate.isEmpty() && !followUpDate.equalsIgnoreCase("")) {
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(uuid);
+            obsDTO.setValue(followUpDate); //date
+            obsDTO.setConceptuuid(UuidDictionary.FOLLOW_UP_VISIT);
+            obsDTOList.add(obsDTO);
+        }
         try {
             obsDAO.insertObsToDb(obsDTOList);
         } catch (DAOException e) {
