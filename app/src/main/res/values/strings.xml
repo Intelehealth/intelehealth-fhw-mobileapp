@@ -373,6 +373,7 @@
     <string name="spinner_referred">Referred</string>
     <string name="spinner_died">Died</string>
     <string name="spinner_loss_followUp">Loss to Follow up</string>
+    <string name="spinner_followUp">Schedule Follow up</string>
     <string name="spinner_refuse_followUp">Refusing Follow up</string>
     <string name="spinner_not_applicable">Not Applicable</string>
     <string name="select_reason_toast">Select a valid reason to mark visit as resolved</string>
@@ -767,4 +768,6 @@
     <string name="message_no_data">No data</string>
     <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
     <string name="schedule_follow_up"><u>Schedule a Follow Up</u> </string>
+    <string name="due_on">Due Date:</string>
+    <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
 </resources>

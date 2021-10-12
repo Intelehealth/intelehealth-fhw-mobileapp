@@ -777,4 +777,7 @@
     <string name="still_continue">क्या आप अभी भी जारी रखना चाहते हैं?</string>
     <string name="call_recordings">कॉल रिकॉर्डिंग</string>
     <string name="answer_following_questions">निम्नलिखित अनिवार्य प्रश्न हैं, कृपया उत्तर दीजिये</string>
+    <string name="schedule_follow_up"><u>फॉलो अप शेड्यूल करें</u> </string>
+    <string name="due_on">नियत तारीख:</string>
+    <string name="follow_up_scheduled_on">फॉलो-अप शेड्यूल किया गया:</string>
 </resources>
