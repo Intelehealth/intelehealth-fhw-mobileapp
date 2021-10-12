@@ -92,12 +92,23 @@ public class FollowUpNotificationWorker extends Worker {
         int count = 0;
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%" + currentDate + "%')))";
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
         final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    count++;
+                        try {
+                            String followUpDate = cursor.getString(cursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                            Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
+                            Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
+                            int value = followUp.compareTo(currentD);
+                            if (value == -1 || value == 0) {
+                                count++;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                 } while (cursor.moveToNext());
             }
             if (cursor != null) {

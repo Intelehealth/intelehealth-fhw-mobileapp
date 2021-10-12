@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.ekalhelpline.models.FollowUpModel;
 import org.intelehealth.ekalhelpline.models.dto.PatientDTO;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
 
@@ -26,37 +27,55 @@ import java.util.List;
 
 public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatientAdapter.Myholder>{
 
-    List<PatientDTO> patients;
+    List<FollowUpModel> patients;
     Context context;
 
-    public FollowUpPatientAdapter(List<PatientDTO> patients, Context context) {
+    public FollowUpPatientAdapter(List<FollowUpModel> patients, Context context) {
         this.patients = patients;
         this.context = context;
     }
+
+
     @NonNull
     @Override
     public Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.list_item_today_patient, parent, false);
+        View row = inflater.inflate(R.layout.list_item_followup_patient, parent, false);
         return new Myholder(row);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
-        final PatientDTO patinet = patients.get(position);
+        final FollowUpModel patinet = patients.get(position);
+        holder.setIsRecyclable(false);
         if (patinet != null) {
 
-            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
+            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDate_of_birth(), context);
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
-            if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + ", " + patinet.getOpenmrsId());
+            if (patinet.getOpenmrs_id() != null)
+                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name()
+                        + ", " + patinet.getOpenmrs_id());
             else
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
 
             holder.bodyTextView.setText(body);
 
+            if(!patinet.getFollowup_date().equalsIgnoreCase("null")) {
+                holder.linearLayout.setVisibility(View.VISIBLE);
+                holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+                holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
+            }
+            else
+            {
+                holder.linearLayout.setVisibility(View.GONE);
+                holder.indicatorTextView.setVisibility(View.GONE);
+            }
+            if(patinet.getVisit_speciality().equalsIgnoreCase("TLD Query") || patinet.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
+                    patinet.getVisit_speciality().contains("Gynecologist") || patinet.getVisit_speciality().contains("Ayurvedic Physician"))
+                holder.speciality_tag.setText(patinet.getVisit_speciality());
+            else
+                holder.speciality_tag.setText("Agent Resolution");
         }
 
         holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
@@ -89,16 +108,18 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             private TextView indicatorTextView;
             private View rootView;
             private ImageView ivPriscription;
+            private TextView speciality_tag;
+
 
             public Myholder(View itemView) {
                 super(itemView);
 
-                linearLayout = itemView.findViewById(R.id.linearLayout);
+                linearLayout = itemView.findViewById(R.id.dueDateLL);
                 headTextView = itemView.findViewById(R.id.list_item_head_text_view);
                 bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
                 indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
                 ivPriscription = itemView.findViewById(R.id.iv_prescription);
-                indicatorTextView.setVisibility(View.GONE);
+                speciality_tag = itemView.findViewById(R.id.speciality_tag);
                 rootView = itemView;
             }
 
