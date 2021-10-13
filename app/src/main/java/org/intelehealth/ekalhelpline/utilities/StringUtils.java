@@ -111,6 +111,21 @@ public final class StringUtils {
         return sb.toString();
     }
 
+    //todo once will fix from backend side May be this method is not necessory.
+    public static String getValueNonMandetory(String value) {
+        String val = "";
+        if (value != null){
+            if(value.equalsIgnoreCase("")){
+                val="NA";
+            }else{
+                val = value;
+            }
+
+        }
+        return val;
+
+    }
+
     public static String getValue(String value) {
         String val = "";
         if (value != null)
