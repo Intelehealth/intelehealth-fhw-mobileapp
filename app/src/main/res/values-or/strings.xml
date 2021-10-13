@@ -527,4 +527,5 @@
     <string name="chat_fab">ଚାଟ୍ ଫାବ୍ |</string>
     <string name="ok_close_now">ଠିକ ଅଛି, ଏହାକୁ ବନ୍ଦ କର </string>
     <string name="retry_again">ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ!</string>
+    <string name="notification_title">Realtime sync is ON!</string>
 </resources>

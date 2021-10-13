@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
@@ -32,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
 import android.webkit.WebView;
@@ -46,6 +49,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -64,6 +68,7 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
@@ -315,6 +320,7 @@ public class HomeActivity extends AppCompatActivity {
         }*/
 
         showProgressbar();
+        requestPermission();
     }
 
     private void saveToken() {
@@ -1046,6 +1052,52 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+               saveToken();
+    }
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+
+    private void requestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+            } else {
+                //Permission Granted-System will work
+            }
+        }
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        Window window = getWindow();
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+        );
+
+        super.onAttachedToWindow();
     }
 
 }

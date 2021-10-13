@@ -19,6 +19,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" /> <!-- added support to lenova tab 2 -->
@@ -294,6 +299,39 @@
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />
+
+
+        <!--Firebase Realdb -->
+        <receiver
+            android:name=".services.firebase_services.CallRTCNotifyReceiver"
+            android:exported="false">
+            <intent-filter android:priority="100">
+                <action
+                    android:name="org.intelehealth.app.RTC_MESSAGE_EVENT"
+                    android:enabled="true" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".services.firebase_services.RestartServiceReceiver"
+            android:exported="false">
+            <intent-filter android:priority="99">
+                <action
+                    android:name="org.intelehealth.app.RTC_SERVICE_START"
+                    android:enabled="true" />
+            </intent-filter>
+            <intent-filter android:priority="99">
+                <action
+                    android:name="android.intent.action.BOOT_COMPLETED"
+                    android:enabled="true" />
+            </intent-filter>
+        </receiver>
+
+
+        <service
+            android:name=".services.firebase_services.CallListenerBackgroundService"
+            android:enabled="true"
+            android:exported="true" />
+        <!--END-->
     </application>
 
 </manifest>

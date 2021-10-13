@@ -654,4 +654,5 @@
     <string name="chat_fab">चैट फैब</string>
     <string name="ok_close_now">ठीक है, इसे बंद करें</string>
     <string name="retry_again">पुन: प्रयास करें!</string>
+    <string name="notification_title">Realtime sync is ON!</string>
 </resources>

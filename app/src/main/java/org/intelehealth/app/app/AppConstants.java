@@ -8,19 +8,19 @@ import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
-
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.syncModule.LastSyncWork;
+import org.intelehealth.app.syncModule.SyncWorkManager;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidGenerator;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.syncModule.SyncWorkManager;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -81,7 +81,6 @@ public class AppConstants {
                     .build();
 
 
-
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
             new OneTimeWorkRequest.Builder(VisitSummaryWork.class)
@@ -101,5 +100,19 @@ public class AppConstants {
     public static final int SYNC_PUSH_DATA_DONE = 2;
     public static final int SYNC_PATIENT_PROFILE_IMAGE_PUSH_DONE = 3;
     public static final int SYNC_OBS_IMAGE_PUSH_DONE = 4;
+
+    public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://hand-in-hand-c6a7d-default-rtdb.asia-southeast1.firebasedatabase.app/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
+
+
+    public static String getFirebaseRTDBUrl() {
+        return FIREBASE_REAL_TIME_DB_BASE_URL;
+
+    }
+
+    public static String getFirebaseRTDBRootRef() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.", "_") + "/" + FIREBASE_REAL_TIME_DB_BASE_REF;
+
+    }
 }
 

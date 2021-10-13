@@ -562,4 +562,5 @@
 
     <string name="complaint_dialog_title">కాల్ కారణం</string>
     <string name="visit_summary_complaint">కాల్ కారణం</string>
+    <string name="notification_title">Realtime sync is ON!</string>
 </resources>

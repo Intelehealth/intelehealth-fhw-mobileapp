@@ -135,6 +135,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     api 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.firebase:firebase-database'
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
