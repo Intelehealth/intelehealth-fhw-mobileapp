@@ -222,13 +222,13 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         } else {
             String[] fileNames = new String[0];
             try {
-                fileNames = getApplicationContext().getAssets().list("engines");
+                fileNames = getApplicationContext().getAssets().list("Engines");
             } catch (IOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
             if (fileNames != null) {
                 for (String name : fileNames) {
-                    String fileLocation = "engines/" + name;
+                    String fileLocation = "Engines/" + name;
                     currentFile = FileUtils.encodeJSON(this, fileLocation);
                     Node currentNode = new Node(currentFile);
                     complaints.add(currentNode);
