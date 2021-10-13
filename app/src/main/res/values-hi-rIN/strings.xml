@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">हैंड इन हैंड</string>
+    <string name="app_name" translatable="false">HIHIटेलीहेल्थ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen-----इंटेलीहेल्थ
-    <string name="title_activity_login" translatable="false">हैंड इन हैंड</string>
+    <string name="title_activity_login" translatable="false">HIHIटेलीहेल्थ</string>
     <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
     <string name="prompt_password" translatable="false">कुंजिका</string>
     <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
@@ -588,8 +588,8 @@
     <string name="economic_values_missing">आर्थिक मूल्य गायब है</string>
     <string name="education_values_missing">शिक्षा मूल्य गायब है</string>
     //---------change here intelehealth-------------------------
-    <string name="intelehealth_a_telemedicine_platform">हैंड इन हैंड एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
-    <string name="intelehealth_name">हैंड इन हैंड</string>
+    <string name="intelehealth_a_telemedicine_platform">HIHIटेलीहेल्थ एक टेलीमेडिसिन एप है जो ग्रामीण और दूरदराज के क्षेत्रों में दूरदराज के डॉक्टरों के साथ स्वास्थ्य कार्यकर्ताओं को जोड़ता है ताकि वे अपने रोगियों के लिए उच्च गुणवत्ता वाली स्वास्थ्य सेवाएं प्रदान कर सकें।</string>
+    <string name="intelehealth_name">HIHIटेलीहेल्थ</string>
     <string name="Ayu_name">आयु</string>
     <string name="close_button">बंद</string>
     <string name="active_tag_patientDetail">सक्रिय</string>
@@ -657,6 +657,10 @@
     <string name="ok_close_now">ठीक है, इसे बंद करें</string>
     <string name="retry_again">पुन: प्रयास करें!</string>
 
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्ते,हैंड इन हैंड का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्ते,HIHIटेलीहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें"</string>
     <string name="and_enter_your_patient_id">"और अपनी मरीज़ आईडी दर्ज करें -"</string>
+
+    <string name="mode_cardview_title">केस मोड</string>
+    <string name="select_mode_text">चुने मोड</string>
+    <string name="please_select_mode_msg">कृपया केस मोड चुने</string>
 </resources>

@@ -33,7 +33,7 @@
         <item>बच्चों का चिकित्सक</item>
     </string-array>
 
-<!--    kuldeep
+<!--
     <string-array name="speciality_value_tamil">
         <item></item>
         <item></item>
@@ -43,8 +43,16 @@
         <item></item>
     </string-array>-->
 
-    <string-array name="casemode_values">
+    <string-array name="casemode_values_en">
         <item>Select Mode</item>
+        <item>Live Generalized</item>
+        <item>Live Specialized</item>
+        <item>Telehealth Generalized</item>
+        <item>Telehealth Specialized</item>
+    </string-array>
+
+    <string-array name="casemode_values_hi">
+        <item>चुने मोड</item>
         <item>Live Generalized</item>
         <item>Live Specialized</item>
         <item>Telehealth Generalized</item>
@@ -73,7 +81,6 @@
         <item>Philippines</item>-->
     </string-array>
 
-    //-------kuldeep---------------
     <string-array name="countries_ta">
         <item>Select Country</item>
         <item>India</item>
@@ -129,7 +136,6 @@
         <item>स्नातक और उच्चतर</item>
     </string-array>
 
-    <!-- kuldeep -->
     <!--<string-array name="education_ta">
         <item>தேர்ந்தெடு</item>
         <item></item>
@@ -175,7 +181,7 @@
         <item>अनुसूचित जनजाति</item>
         <item>अन्य</item>
     </string-array>
-<!--      kuldeep      -->
+
     <!--<string-array name="caste_ta">
         <item></item>
         <item></item>
@@ -219,7 +225,6 @@
         <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
-    <!-- kuldeep -->
     <string-array name="economic_ta">
         <item>Select</item>
         <item>APL</item>
@@ -259,7 +264,6 @@
         <item>West Bengal</item>
     </string-array>
 
-    <!--     kuldeep     -->
     <string-array name="states_india_ta">
         <item>Select State</item>
         <item>Andhra Pradesh</item>

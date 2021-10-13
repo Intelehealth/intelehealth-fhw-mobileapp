@@ -1181,7 +1181,6 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="25dp"
-                    android:entries="@array/casemode_values"
                     android:focusable="true" />
 
             </LinearLayout>

@@ -733,11 +733,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringModeArrayAdapter;
 
+        String caseModeStr="casemode_values_"+ sessionManager.getAppLanguage();
+        int caseModeVal=getResources().getIdentifier(caseModeStr, "array", getApplicationContext().getPackageName());
+
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         stringModeArrayAdapter =
                 new ArrayAdapter<String>
                         (this, android.R.layout.simple_spinner_dropdown_item,
-                                getResources().getStringArray(R.array.casemode_values));
+                                getResources().getStringArray(caseModeVal));
         casemode_spinner.setAdapter(stringModeArrayAdapter);
 
         int spinner_position = stringModeArrayAdapter.getPosition(mode_value);
@@ -747,7 +750,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Log.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-
                 casemode_selected = adapterView.getItemAtPosition(i).toString();
                 Log.d("SPINNER", "SPINNER_Selected_final: " + casemode_selected);
             }
@@ -760,9 +762,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //end - spinner - casemode...
 
         //   VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
-//        if (hasPrescription.equalsIgnoreCase("true")) {
-//            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-//        }
+        //    if (hasPrescription.equalsIgnoreCase("true")) {
+        //    ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+        //   }
 
         baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         obsImgdir = new File(AppConstants.IMAGE_PATH);
