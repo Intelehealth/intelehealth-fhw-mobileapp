@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,10 +33,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity;
@@ -66,6 +71,7 @@ public class Completed_Visits_Activity extends AppCompatActivity {
     TextView no_records_found_textview;
     ProviderDAO providerDAO = new ProviderDAO();
     String chw_name = "";
+    Set<ActivePatientModel> set_list = new LinkedHashSet<>();
     List<ActivePatientModel> new_list = new ArrayList<>();
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
@@ -90,7 +96,7 @@ public class Completed_Visits_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
         setContentView(R.layout.activity_completed_visits);
-        setTitle(getString(R.string.title_activity_active_patient));
+//        setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 
 
@@ -115,11 +121,22 @@ public class Completed_Visits_Activity extends AppCompatActivity {
         // chw_name = sessionManager.getChwname();
         chw_name = sessionManager.getProviderID();
 
+/*
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (mActivePatientAdapter.activePatientModels != null && mActivePatientAdapter.activePatientModels.size() < limit) {
+
+                    offset += limit;
+                    List<ActivePatientModel> allPatientsFromDB = doQuery(chw_name);
+                    if(allPatientsFromDB.size() > 0) {
+                        allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
+                        List<ActivePatientModel> visit_speciality = activeVisits_Speciality(chw_name);
+                        mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
+                        mActivePatientAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
+                        mActivePatientAdapter.notifyDataSetChanged();
+                    }
                     return;
                 }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
@@ -131,9 +148,9 @@ public class Completed_Visits_Activity extends AppCompatActivity {
                     Toast.makeText(Completed_Visits_Activity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
 
-                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
+                    List<ActivePatientModel> allPatientsFromDB = doQuery(chw_name);
                     allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
-                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
+                    List<ActivePatientModel> visit_speciality = activeVisits_Speciality(chw_name);
 
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
@@ -145,15 +162,16 @@ public class Completed_Visits_Activity extends AppCompatActivity {
                 }
             }
         });
+*/
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
             textView.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            List<ActivePatientModel> activePatientModels = doQuery(offset, chw_name);
+            List<ActivePatientModel> activePatientModels = doQuery(chw_name);
             activePatientModels = fetch_Prescription_Data(activePatientModels);
-            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
+            List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(chw_name); //get the speciality.
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, Completed_Visits_Activity.this,
                     listPatientUUID, activeVisit_Speciality);
@@ -186,15 +204,22 @@ public class Completed_Visits_Activity extends AppCompatActivity {
 
         for (int i = 0; i < data.size(); i++) {
             for (int j = 0; j < activePatientModels_.size(); j++) {
-                if(!data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
+                if(data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
                   //  activePatientModels_.remove(j);
+                    set_list.add(activePatientModels_.get(j));
                 }
                 else {
-                    new_list.add(activePatientModels_.get(j));
+//                    new_list.add(activePatientModels_.get(j));
                 }
             }
         }
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            new_list = set_list.stream().collect(Collectors.toList());
+        }*/
 
+        for (ActivePatientModel sub: set_list) {
+            new_list.add(sub);
+        }
         return new_list;
     }
 
@@ -244,14 +269,14 @@ public class Completed_Visits_Activity extends AppCompatActivity {
         }
     }
 
-    private List<ActivePatientModel> activeVisits_Speciality(int offset, String user_data_) {
+    private List<ActivePatientModel> activeVisits_Speciality(String user_data_) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
+                "AND (a.enddate is NULL OR a.enddate='') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ?";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_data_});
         Log.v("main", "active: "+ query);
 
 
@@ -277,14 +302,14 @@ public class Completed_Visits_Activity extends AppCompatActivity {
      *
      * @return void
      */
-    private List<ActivePatientModel> doQuery(int offset, String user_uuid) {
+    private List<ActivePatientModel> doQuery(String user_uuid) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
+                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid});
         Log.v("main", "doquery: "+ query);
 
 
