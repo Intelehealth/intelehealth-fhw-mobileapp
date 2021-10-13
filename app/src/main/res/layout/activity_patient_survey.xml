@@ -172,12 +172,14 @@
 
         <TextView
             android:visibility="gone"
+            tools:visibility="visible"
             android:id="@+id/schedule_textView"
             android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato_regular"
             android:includeFontPadding="false"
-            android:paddingTop="@dimen/padding_card_title_text"
+            android:padding="@dimen/padding_card_title_text"
             android:text="@string/schedule_follow_up"
             android:drawableStart="@drawable/ic_baseline_event_24"
             android:drawablePadding="5dip"

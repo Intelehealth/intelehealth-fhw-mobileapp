@@ -772,7 +772,7 @@
     //FollowUpVisits
     <string name="title_follow_up">फॉलो अप विज़िट</string>
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
-    <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
+    <string name="title_follow_up_reminder_desc">नमस्कार, कुछ फॉलो अप विज़िट लंबित हैं, कृपया फॉलो अप कार्रवाई करें।</string>
     <string name="pending_follow_up">रोगी के पास पिछली यात्रा के लिए पहले से ही एक अनुवर्ती कार्यक्रम है।</string>
     <string name="still_continue">क्या आप अभी भी जारी रखना चाहते हैं?</string>
     <string name="call_recordings">कॉल रिकॉर्डिंग</string>
@@ -780,4 +780,7 @@
     <string name="schedule_follow_up"><u>फॉलो अप शेड्यूल करें</u> </string>
     <string name="due_on">नियत तारीख:</string>
     <string name="follow_up_scheduled_on">फॉलो-अप शेड्यूल किया गया:</string>
+    <string name="select_follow_up_date">पहले एक फॉलो-अप तारीख चुनें</string>
+    <string name="follow_up_already_scheduled">फॉलो-अप पहले से ही डॉक्टर द्वारा निर्धारित किया गया है:</string>
+
 </resources>

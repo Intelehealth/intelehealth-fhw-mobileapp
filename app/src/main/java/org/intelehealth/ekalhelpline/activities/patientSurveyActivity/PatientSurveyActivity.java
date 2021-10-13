@@ -109,6 +109,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             state = intent.getStringExtra("state");
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
+            followUpDate = intent.getStringExtra("followUpDate");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
@@ -136,6 +137,13 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mSubmit = findViewById(R.id.button_survey_submit);
         ratingBar = findViewById(R.id.ratingBar);
         schedule_TV = findViewById(R.id.schedule_textView);
+
+        if(!followUpDate.equalsIgnoreCase(" "))
+        {
+            schedule_TV.setVisibility(View.VISIBLE);
+            schedule_TV.setEnabled(false);
+            schedule_TV.setText(getString(R.string.follow_up_already_scheduled) + " " + followUpDate);
+        }
 
         // initialising the layout
         final Calendar calendar = Calendar.getInstance();
@@ -242,8 +250,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
                 }
 
                 if(schedule_TV.getVisibility() == View.VISIBLE &&
-                        followUpDate.equalsIgnoreCase("")) {
-                    Toast.makeText(PatientSurveyActivity.this,"Select follow-up date",Toast.LENGTH_SHORT).show();
+                        (followUpDate.equalsIgnoreCase(" ")) ||followUpDate.equalsIgnoreCase("")) {
+                    Toast.makeText(PatientSurveyActivity.this,getResources().getString(R.string.select_follow_up_date),Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(sessionManager.getAppLanguage().equals("hi")) {
@@ -296,6 +304,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_recovered));
         notes.add(getString(R.string.spinner_referred));
         notes.add(getString(R.string.spinner_died));
+        if(!intentTag.equalsIgnoreCase("medicalAdvice"))
         notes.add(getString(R.string.schedule_follow_up));
         notes.add(getString(R.string.spinner_loss_followUp));
         notes.add(getString(R.string.spinner_refuse_followUp));

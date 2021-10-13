@@ -770,4 +770,6 @@
     <string name="schedule_follow_up"><u>Schedule a Follow Up</u> </string>
     <string name="due_on">Due Date:</string>
     <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
+    <string name="select_follow_up_date">Select a follow-up date</string>
+    <string name="follow_up_already_scheduled">Follow-Up Already Scheduled by Doctor On:</string>
 </resources>
