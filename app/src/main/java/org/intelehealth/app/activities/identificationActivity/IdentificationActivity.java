@@ -44,6 +44,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -388,6 +390,7 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 economicLayout.setVisibility(View.GONE);
             }
+
             country1 = obj.getString("mCountry");
             state = obj.getString("mState");
 
@@ -432,6 +435,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 countryVal, R.layout.custom_spinner);
         countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
+        mCountry.setEnabled(false);
 
 //        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.caste, R.layout.custom_spinner);
@@ -583,7 +587,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
         } else {
-            mCountry.setSelection(countryAdapter.getPosition(country1));
+            String[] countryArray = getResources().getStringArray(R.array.countries_en);
+            int pos = Arrays.asList(countryArray).indexOf(country1);
+            mCountry.setSelection(pos);
+            //mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
@@ -594,7 +601,9 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
-                    String country = adapterView.getItemAtPosition(i).toString();
+                    //String country = adapterView.getItemAtPosition(i).toString();
+                    String[] countryArray = getResources().getStringArray(R.array.countries_en);
+                    String country = countryArray[i];
 
                     if (country.matches("India")) {
 
@@ -608,10 +617,14 @@ public class IdentificationActivity extends AppCompatActivity {
                         mState.setAdapter(stateAdapter);
                         // setting state according database when user clicks edit details
 
-                        if (patientID_edit != null)
+                        if (patientID_edit != null) {
                             mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                        else
-                            mState.setSelection(stateAdapter.getPosition(state));
+                        } else {
+                            String[] stateArray = getResources().getStringArray(R.array.states_india_en);
+                            int pos = Arrays.asList(stateArray).indexOf(state);
+                            mState.setSelection(pos);
+                            //mState.setSelection(stateAdapter.getPosition(state));
+                        }
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -651,7 +664,9 @@ public class IdentificationActivity extends AppCompatActivity {
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String state = parent.getItemAtPosition(position).toString();
+                String[] stateArray = getResources().getStringArray(R.array.states_india_en);
+                String state = stateArray[position];
+                //String state = parent.getItemAtPosition(position).toString();
                 if (state.matches("Odisha")) {
                     //Creating the instance of ArrayAdapter containing list of fruit names
                     ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -1372,10 +1387,23 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+
+            String[] countryArray = getResources().getStringArray(R.array.countries_en);
+            int con_pos = mCountry.getSelectedItemPosition();
+            patientdto.setCountry(StringUtils.getValue(countryArray[con_pos]));
+            //patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+
+
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+
+            String[] stateArray = getResources().getStringArray(R.array.states_india_en);
+            int state_pos = mState.getSelectedItemPosition();
+           // mState.setSelection(pos);
+            patientdto.setStateprovince(StringUtils.getValue(stateArray[state_pos]));
+
+            //patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1383,6 +1411,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTOList.add(patientAttributesDTO);
+
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

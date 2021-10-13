@@ -70,7 +70,6 @@ public class ActivePatientActivity extends AppCompatActivity {
         setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 
-
         Drawable drawable = ContextCompat.getDrawable(getApplicationContext(),
                 R.drawable.ic_sort_white_24dp);
 //        mToolbar.setOverflowIcon(drawable);

@@ -33,7 +33,7 @@
         <item>बच्चों का चिकित्सक</item>
     </string-array>
 
-<!--    kuldeep
+<!--
     <string-array name="speciality_value_tamil">
         <item></item>
         <item></item>
@@ -42,6 +42,22 @@
         <item></item>
         <item></item>
     </string-array>-->
+
+    <string-array name="casemode_values_en">
+        <item>Select Mode</item>
+        <item>Live Generalized</item>
+        <item>Live Specialized</item>
+        <item>Telehealth Generalized</item>
+        <item>Telehealth Specialized</item>
+    </string-array>
+
+    <string-array name="casemode_values_hi">
+        <item>चुने मोड</item>
+        <item>Live Generalized</item>
+        <item>Live Specialized</item>
+        <item>Telehealth Generalized</item>
+        <item>Telehealth Specialized</item>
+    </string-array>
 
     <string-array name="pref_example_list_titles">
         <item>Always</item>
@@ -61,23 +77,26 @@
     <string-array name="countries_en">
         <item>Select Country</item>
         <item>India</item>
-        <item>United States</item>
-        <item>Philippines</item>
+       <!-- <item>United States</item>
+        <item>Philippines</item>-->
     </string-array>
 
-    //-------kuldeep---------------
     <string-array name="countries_ta">
         <item>Select Country</item>
         <item>India</item>
-        <item>United States</item>
-        <item>Philippines</item>
+        <!--<item>United States</item>
+        <item>Philippines</item>-->
     </string-array>
 
-    <string-array name="countries_hi">
-        <item>Select Country</item>
+    <!--<string-array name="countries_hi">
+        <item>देश चुनें</item>
         <item>India</item>
-        <item>United States</item>
-        <item>Philippines</item>
+       &lt;!&ndash; <item>United States</item>
+        <item>Philippines</item>&ndash;&gt;
+    </string-array>-->
+    <string-array name="countries_hi">
+        <item>देश चुनें</item>
+        <item>भारत</item>
     </string-array>
 //-------------------------------------------
 
@@ -117,7 +136,6 @@
         <item>स्नातक और उच्चतर</item>
     </string-array>
 
-    <!-- kuldeep -->
     <!--<string-array name="education_ta">
         <item>தேர்ந்தெடு</item>
         <item></item>
@@ -163,7 +181,7 @@
         <item>अनुसूचित जनजाति</item>
         <item>अन्य</item>
     </string-array>
-<!--      kuldeep      -->
+
     <!--<string-array name="caste_ta">
         <item></item>
         <item></item>
@@ -207,7 +225,6 @@
         <item>गरीबी रेखा से नीचे</item>
     </string-array>
 
-    <!-- kuldeep -->
     <string-array name="economic_ta">
         <item>Select</item>
         <item>APL</item>
@@ -247,7 +264,6 @@
         <item>West Bengal</item>
     </string-array>
 
-    <!--     kuldeep     -->
     <string-array name="states_india_ta">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
@@ -282,7 +298,40 @@
     </string-array>
 
     <string-array name="states_india_hi">
-        <item>Select State</item>
+        <item>राज्य चुनें</item>
+        <item>आंध्र प्रदेश</item>
+        <item>अरुणाचल प्रदेश</item>
+        <item>असम</item>
+        <item>बिहार</item>
+        <item>छत्तीसगढ</item>
+        <item>गोवा</item>
+        <item>गुजरात</item>
+        <item>हरियाणा</item>
+        <item>हिमाचल प्रदेश</item>
+        <item>जम्मू - कश्मीर</item>
+        <item>झारखंड</item>
+        <item>कर्नाटक</item>
+        <item>केरल</item>
+        <item>मध्य प्रदेश</item>
+        <item>महाराष्ट्र</item>
+        <item>मणिपुर</item>
+        <item>मेघालय</item>
+        <item>मिजोरम</item>
+        <item>नगालैंड</item>
+        <item>ओडिशा</item>
+        <item>पंजाब</item>
+        <item>राजस्थान</item>
+        <item>सिक्किम</item>
+        <item>तमिलनाडु</item>
+        <item>तेलंगाना</item>
+        <item>त्रिपुरा</item>
+        <item>उत्तर प्रदेश</item>
+        <item>उत्तराखंड</item>
+        <item>पश्चिम बंगाल</item>
+    </string-array>
+
+    <!--<string-array name="states_india_hi">
+        <item>राज्य चुनें</item>
         <item>Andhra Pradesh</item>
         <item>Arunachal Pradesh</item>
         <item>Assam</item>
@@ -312,7 +361,7 @@
         <item>Uttar Pradesh</item>
         <item>Uttarakhand</item>
         <item>West Bengal</item>
-    </string-array>
+    </string-array>-->
 
     <!---->
 

@@ -50,6 +50,7 @@ public class SessionManager {
     private static final String CURRENT_LANG = "CURRENT_LANG";
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
+    private static final String STATENAME = "STATENAME";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -153,6 +154,15 @@ public class SessionManager {
 
     public void setChwname(String chwname) {
         editor.putString(CHWNAME, chwname);
+        editor.commit();
+    }
+
+    public String getStateName() {
+        return pref.getString(STATENAME, "");
+    }
+
+    public void setStateName(String stateName) {
+        editor.putString(STATENAME, stateName);
         editor.commit();
     }
 

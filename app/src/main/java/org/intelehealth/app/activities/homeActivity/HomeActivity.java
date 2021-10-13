@@ -58,7 +58,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
+import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
@@ -70,6 +72,7 @@ import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -123,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6;
     private String key = null;
     private String licenseUrl = null;
 
@@ -136,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
-    TextView findPatients_textview, todaysVisits_textview,
+    TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
     private ObjectAnimator syncAnimator;
 
@@ -175,7 +178,7 @@ public class HomeActivity extends AppCompatActivity {
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-//        c1 = findViewById(R.id.cardview_newpat);
+        c1 = findViewById(R.id.cardview_newpat);
         c2 = findViewById(R.id.cardview_find_patient);
         c3 = findViewById(R.id.cardview_today_patient);
         c4 = findViewById(R.id.cardview_active_patients);
@@ -183,8 +186,8 @@ public class HomeActivity extends AppCompatActivity {
         c6 = findViewById(R.id.cardview_help_whatsapp);
 
         //card textview referrenced to fix bug of localization not working in some cases...
-        /*newPatient_textview = findViewById(R.id.newPatient_textview);
-        newPatient_textview.setText(R.string.new_patient);*/
+        newPatient_textview = findViewById(R.id.newPatients_textview);
+        newPatient_textview.setText(R.string.new_patient);
 
         findPatients_textview = findViewById(R.id.findPatients_textview);
         findPatients_textview.setText(R.string.find_patient);
@@ -223,7 +226,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        /*c1.setOnClickListener(new View.OnClickListener() {
+        c1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Loads the config file values and check for the boolean value of privacy key.
@@ -239,7 +242,7 @@ public class HomeActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             }
-        });*/
+        });
         c2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -421,7 +424,6 @@ public class HomeActivity extends AppCompatActivity {
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCancelable(false);
     }
-
 
     private String CalculateAgoTime() {
         String finalTime = "";
@@ -646,8 +648,6 @@ public class HomeActivity extends AppCompatActivity {
                         });
 
                         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
-
-
                     }
 
                 } else {

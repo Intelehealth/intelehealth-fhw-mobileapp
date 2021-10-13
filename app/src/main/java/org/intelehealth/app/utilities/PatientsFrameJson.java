@@ -178,6 +178,10 @@ public class PatientsFrameJson {
                 encounterList.add(encounter);
             }
 
+            if (casemode_row_exist_check(encounter.getVisit())){
+                encounterList.add(encounter);
+            }
+
     }
 
         pushRequestApiCall.setPatients(patientList);
@@ -186,7 +190,6 @@ public class PatientsFrameJson {
         pushRequestApiCall.setEncounters(encounterList);
         Gson gson = new Gson();
         Log.d("OBS: ","OBS: "+gson.toJson(pushRequestApiCall));
-
 
         return pushRequestApiCall;
     }
@@ -200,8 +203,27 @@ public class PatientsFrameJson {
         boolean isExists = false;
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
-                new String[]{uuid});
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
+                new String[]{uuid,"3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
+    }
+
+    private boolean casemode_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
+                new String[]{uuid,"443d91e7-3897-4307-a549-787da32e241e"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {

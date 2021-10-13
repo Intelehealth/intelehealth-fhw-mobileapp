@@ -149,7 +149,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 confirmComplaints();
             }
         });
@@ -162,7 +161,6 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         }
 
         complaints = new ArrayList<>();
-
 
         boolean hasLicense = false;
 //        if (sessionManager.getLicenseKey() != null && !sessionManager.getLicenseKey().isEmpty())

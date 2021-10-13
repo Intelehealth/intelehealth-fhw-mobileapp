@@ -23,6 +23,8 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 public class ProviderAttributeLIstDAO {
     private long createdRecordsCount = 0;
+    private long creatRecordsCount = 0;
+    private int count=0;
 
     public boolean insertProvidersAttributeList(List<ProviderAttributeListDTO> providerAttributeListDTOS)
             throws DAOException {
@@ -61,7 +63,6 @@ public class ProviderAttributeLIstDAO {
             attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062"))
             {
                 createdRecordsCount = db.insertWithOnConflict("tbl_dr_speciality", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-
                 if(createdRecordsCount != -1)
                 {
                     Log.d("SPECI", "SIZEXXX: " + createdRecordsCount);
@@ -72,8 +73,6 @@ public class ProviderAttributeLIstDAO {
                 }
 
             }
-
-
         }
         catch (SQLException e)
         {
@@ -111,7 +110,6 @@ public class ProviderAttributeLIstDAO {
         return listDTOArrayList;
     }
 
-
     public List<Uuid_Value> getSpeciality_Uuid_Value() {
         List<Uuid_Value> listDTOArrayList = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -135,8 +133,4 @@ public class ProviderAttributeLIstDAO {
         db.close();
         return listDTOArrayList;
     }
-
-
-
-
 }
