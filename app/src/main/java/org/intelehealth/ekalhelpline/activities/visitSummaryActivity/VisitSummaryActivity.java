@@ -80,6 +80,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.ekalhelpline.models.PrescriptionBody;
 import org.intelehealth.ekalhelpline.models.PrescriptionSms;
 import org.intelehealth.ekalhelpline.models.PrescriptionUrl;
@@ -633,10 +634,50 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         //code to send via sms
-                                        String phoneNumber = "+91" + editText.getText().toString();
-                                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                                Uri.fromParts("sms", phoneNumber, null))
-                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
+                                        String[] item = {"SMS", "Whatsapp"};
+                                        MaterialAlertDialogBuilder singlechoice = new MaterialAlertDialogBuilder
+                                                (VisitSummaryActivity.this, R.style.AlertDialogStyle);
+                                        singlechoice.setTitle("Select Choice");
+                                        singlechoice.setCancelable(false);
+                                        singlechoice.setSingleChoiceItems(item, 0,  null);
+
+                                        singlechoice.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                String selection = "";
+                                                int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
+                                                Log.v("main", "dialog_index" + selectedPosition);
+
+                                                if(selectedPosition == 0) {
+                                                    // SMS
+                                                    String phoneNumber = "+91" + editText.getText().toString();
+                                                    startActivity(new Intent(Intent.ACTION_VIEW,
+                                                            Uri.fromParts("sms", phoneNumber, null))
+                                                            .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
+                                                }
+                                                else if(selectedPosition == 1) {
+                                                    // Whatsapp
+                                                    String phoneNumberWithCountryCode = "+91" + editText.getText().toString();
+                                                    String message = Html.fromHtml(htmlDoc).toString();
+
+                                                    startActivity(new Intent(Intent.ACTION_VIEW,
+                                                            Uri.parse(
+                                                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                                                            phoneNumberWithCountryCode, message))));
+                                                }
+                                            }
+                                        });
+                                        AlertDialog alertDialog = singlechoice.create();
+                                        alertDialog.show();
+
+                                        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+                                        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                                        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+
 
                                         //code to send via api
                                        // customProgressDialog.show();
