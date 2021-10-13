@@ -410,6 +410,7 @@ public class MedicalAdviceExistingPatientsActivity extends AppCompatActivity {
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("name", patientName);
         intent.putExtra("tag", "medicalAdvice");
+        intent.putExtra("followUpDate", " ");
         startActivity(intent);
     }
 
