@@ -173,6 +173,7 @@ public class Completed_Visits_Activity extends AppCompatActivity {
 
             List<ActivePatientModel> activePatientModels = doQuery(chw_name);
             activePatientModels = fetch_Prescription_Data(activePatientModels);
+            Log.v("main", "oncreate completed count:: " + activePatientModels.size());
             List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(chw_name); //get the speciality.
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, Completed_Visits_Activity.this,
@@ -374,16 +375,20 @@ public class Completed_Visits_Activity extends AppCompatActivity {
         if (cursor != null) {
             cursor.close();
         }*/
-        List<ActivePatientModel> activePatientModels = doQuery_(chwUser);
-        activePatientModels = fetch_Prescription_Data_(activePatientModels);
-        Log.v("main", "completed count:: "+activePatientModels.size());
+        int count = 0;
+        List<ActivePatientModel> activePatientModels_ = doQuery_(chwUser);
+        activePatientModels_ = fetch_Prescription_Data_(activePatientModels_);
+        Log.v("main", "completed count:: " + activePatientModels_.size());
 
-        return activePatientModels.size();
+        count = activePatientModels_.size();
+        return count;
     }
 
     private static List<ActivePatientModel> fetch_Prescription_Data_
             (List<ActivePatientModel> activePatientModels_) {
 
+        new_list_.clear();
+        set_list_.clear();
         List<String> data = new ArrayList<>();
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
