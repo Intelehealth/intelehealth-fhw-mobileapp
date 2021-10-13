@@ -178,7 +178,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND b.encounter_type_uuid = ? ORDER BY a.startdate ASC",
+        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND (a.enddate is NULL OR a.enddate = '') AND b.encounter_type_uuid = ? ORDER BY a.startdate ASC",
                 new String[]{"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"});
         //this means Prescription is present...as Visit is Complete - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
 
@@ -334,13 +334,103 @@ public class ActivePatientActivity extends AppCompatActivity {
         return activePatientList;
     }
 
+    private static List<ActivePatientModel> doQuery_(String user_uuid) {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        List<ActivePatientModel> activePatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid});
+        Log.v("main", "doquery: "+ query);
+
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        activePatientList.add(new ActivePatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber_(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync"))));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+//        if (!activePatientList.isEmpty()) {
+//            for (ActivePatientModel activePatientModel : activePatientList)
+//                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
+//
+//            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+//            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+//            recyclerView.setLayoutManager(linearLayoutManager);
+//           /* recyclerView.addItemDecoration(new
+//                    DividerItemDecoration(this,
+//                    DividerItemDecoration.VERTICAL));*/
+//            recyclerView.setAdapter(mActivePatientAdapter);
+//        }
+        return activePatientList;
+    }
+
+    private static List<ActivePatientModel> fetch_Prescription_Data_
+            (List<ActivePatientModel> activePatientModels_) {
+
+        List<String> data = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+
+        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND (a.enddate is NULL OR a.enddate = '') AND b.encounter_type_uuid = ? ORDER BY a.startdate ASC",
+                new String[]{"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"});
+        //this means Prescription is present...as Visit is Complete - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                data.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+            }
+        }
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        for (int i = 0; i < data.size(); i++) {
+            for (int j = 0; j < activePatientModels_.size(); j++) {
+                if(data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
+                    activePatientModels_.remove(j);
+                }
+            }
+        }
+
+        return activePatientModels_;
+    }
+
+
     public static long getActiveVisitsCount(SQLiteDatabase db, String chwUser) {
-        int count =0;
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
+       // int count =0;
+        List<ActivePatientModel> activePatientModels = doQuery_(chwUser);
+        activePatientModels = fetch_Prescription_Data_(activePatientModels);
+        Log.v("main", "count:: "+activePatientModels.size());
+
+    /*    String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ";
-        Logger.logD(TAG, query);
+                "AND (a.enddate is NULL OR a.enddate='') AND c.encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND d.uuid = ? GROUP BY a.uuid ";
+        Logger.logD(TAG, "active_count: " +query);
         final Cursor cursor = db.rawQuery(query, new String[]{chwUser});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -351,8 +441,8 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
         if (cursor != null) {
             cursor.close();
-        }
-        return count;
+        }*/
+        return activePatientModels.size();
     }
 
     @Override
@@ -580,6 +670,27 @@ public class ActivePatientActivity extends AppCompatActivity {
         }
         return activePatientList;
     }
+
+    private static String phoneNumber_(String patientuuid) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String phone = null;
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        }
+        idCursor.close();
+
+        return phone;
+    }
+
 
     private String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
