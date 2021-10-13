@@ -32,7 +32,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.*;
 
 public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
 
-    List<ActivePatientModel> activePatientModels, activePatient_speciality;
+    public List<ActivePatientModel> activePatientModels, activePatient_speciality;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;

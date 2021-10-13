@@ -1,4 +1,4 @@
-package org.intelehealth.ekalhelpline.activities.activePatientsActivity;
+package org.intelehealth.ekalhelpline.activities.completedvisits;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientAdapter;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
@@ -52,8 +54,8 @@ import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
-public class ActivePatientActivity extends AppCompatActivity {
-    private static final String TAG = ActivePatientActivity.class.getSimpleName();
+public class Completed_Visits_Activity extends AppCompatActivity {
+    private static final String TAG = Completed_Visits_Activity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     Toolbar mToolbar;
@@ -64,7 +66,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     TextView no_records_found_textview;
     ProviderDAO providerDAO = new ProviderDAO();
     String chw_name = "";
-
+    List<ActivePatientModel> new_list = new ArrayList<>();
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
     int limit = 20, offset = 0;
@@ -87,7 +89,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
-        setContentView(R.layout.activity_active_patient);
+        setContentView(R.layout.activity_completed_visits);
         setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 
@@ -110,7 +112,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
-       // chw_name = sessionManager.getChwname();
+        // chw_name = sessionManager.getChwname();
         chw_name = sessionManager.getProviderID();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -118,16 +120,6 @@ public class ActivePatientActivity extends AppCompatActivity {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (mActivePatientAdapter.activePatientModels != null && mActivePatientAdapter.activePatientModels.size() < limit) {
-
-                    offset += limit;
-                    List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
-                    if(allPatientsFromDB.size() > 0) {
-                        allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
-                        List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
-                        mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
-                        mActivePatientAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
-                        mActivePatientAdapter.notifyDataSetChanged();
-                    }
                     return;
                 }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
@@ -136,7 +128,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                     Log.v("main", "findlastposition: " + Integer.toString(reLayoutManager.findLastVisibleItemPosition()) +
                             " : " + "adapteritemcount: " + Integer.toString(mActivePatientAdapter.getItemCount() - 1));
                     Log.v("main", "newstate value: " + newState + " " + "scrollstate: " + RecyclerView.SCROLL_STATE_IDLE);
-                    Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Completed_Visits_Activity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
 
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
@@ -163,7 +155,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             activePatientModels = fetch_Prescription_Data(activePatientModels);
             List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
 
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, Completed_Visits_Activity.this,
                     listPatientUUID, activeVisit_Speciality);
             recyclerView.setAdapter(mActivePatientAdapter);
         }
@@ -194,13 +186,16 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         for (int i = 0; i < data.size(); i++) {
             for (int j = 0; j < activePatientModels_.size(); j++) {
-                if(data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
-                    activePatientModels_.remove(j);
-              }
+                if(!data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
+                  //  activePatientModels_.remove(j);
+                }
+                else {
+                    new_list.add(activePatientModels_.get(j));
+                }
             }
         }
 
-        return activePatientModels_;
+        return new_list;
     }
 
     @Override
@@ -358,7 +353,7 @@ public class ActivePatientActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-       // inflater.inflate(R.menu.menu_today_patient, menu);
+        // inflater.inflate(R.menu.menu_today_patient, menu);
         inflater.inflate(R.menu.today_filter, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -392,7 +387,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        dialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
+        dialogBuilder = new MaterialAlertDialogBuilder(Completed_Visits_Activity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
 
         String[] finalCreator_names = creator_names;
@@ -434,7 +429,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-     //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
@@ -480,7 +475,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-          //  IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+            //  IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
 
     }
@@ -537,16 +532,16 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, speciality_list);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, Completed_Visits_Activity.this, listPatientUUID, speciality_list);
             no_records_found_textview.setVisibility(View.GONE);
 
         } else {
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, speciality_list);
+            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, Completed_Visits_Activity.this, listPatientUUID, speciality_list);
             no_records_found_textview.setVisibility(View.VISIBLE);
             no_records_found_textview.setHint(R.string.no_records_found);
         }
 
-        linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+        linearLayoutManager = new LinearLayoutManager(Completed_Visits_Activity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(mActivePatientAdapter);
         mActivePatientAdapter.notifyDataSetChanged();

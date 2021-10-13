@@ -36,8 +36,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.Completed_Visits_Activity"></activity>
+
+        <activity android:name=".activities.completedvisits.Completed_Visits_Activity"
+            android:configChanges="uiMode"
+            android:label="Completed Visits"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activities.Closed_Visits_Activity" />
+
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"

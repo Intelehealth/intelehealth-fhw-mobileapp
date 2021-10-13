@@ -54,7 +54,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.activities.Closed_Visits_Activity;
-import org.intelehealth.ekalhelpline.activities.Completed_Visits_Activity;
+import org.intelehealth.ekalhelpline.activities.completedvisits.Completed_Visits_Activity;
 import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
@@ -304,7 +304,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
         //Closed Visits - start
-        c6.setOnClickListener(new View.OnClickListener() {
+        c7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, Closed_Visits_Activity.class);
@@ -314,7 +314,7 @@ public class HomeActivity extends AppCompatActivity {
         //Closed Visits - end
 
         //Completed - start
-        c7.setOnClickListener(new View.OnClickListener() {
+        c8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, Completed_Visits_Activity.class);
