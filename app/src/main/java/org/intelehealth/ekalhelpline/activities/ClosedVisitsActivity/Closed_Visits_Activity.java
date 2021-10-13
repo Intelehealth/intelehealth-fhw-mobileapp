@@ -1,4 +1,4 @@
-package org.intelehealth.ekalhelpline.activities;
+package org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

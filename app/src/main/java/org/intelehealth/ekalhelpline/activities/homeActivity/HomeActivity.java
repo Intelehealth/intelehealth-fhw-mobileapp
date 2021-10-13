@@ -53,13 +53,11 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.ekalhelpline.activities.Closed_Visits_Activity;
+import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.Closed_Visits_Activity;
 import org.intelehealth.ekalhelpline.activities.completedvisits.Completed_Visits_Activity;
 import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
-import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalhelpline.activities.recordings.RecordingsActivity;
-import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
 import org.intelehealth.ekalhelpline.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;

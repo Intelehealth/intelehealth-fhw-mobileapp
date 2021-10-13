@@ -39,11 +39,15 @@
 
         <activity android:name=".activities.completedvisits.Completed_Visits_Activity"
             android:configChanges="uiMode"
-            android:label="Completed Visits"
+            android:label="@string/Completed_Visits"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.Closed_Visits_Activity" />
+        <activity android:name=".activities.ClosedVisitsActivity.Closed_Visits_Activity"
+            android:configChanges="uiMode"
+            android:label="@string/Closed_Visits"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"

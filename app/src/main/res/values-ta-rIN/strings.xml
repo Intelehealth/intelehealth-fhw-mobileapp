@@ -601,5 +601,7 @@
     <string name="dr_third_attempt">Doctor 3rd Attempt</string>
     <string name="completed_visits_HomeScreen">Completed Visits</string>
     <string name="closed_visits_HomeScreen">Closed Visits</string>
+    <string name="Completed_Visits">Completed Visits</string>
+    <string name="Closed_Visits">Closed Visits</string>
 
 </resources>
