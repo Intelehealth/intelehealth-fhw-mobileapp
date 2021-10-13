@@ -229,7 +229,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-        inflater.inflate(R.menu.today_filter, menu);
+       // inflater.inflate(R.menu.today_filter, menu);
 //        inflater.inflate(R.menu.today_filter, menu);
         // Get the SearchView and set the searchable configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
