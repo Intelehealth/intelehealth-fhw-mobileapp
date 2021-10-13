@@ -3555,6 +3555,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
+                        intent.putExtra("followUpDate", followUpDate);
                         startActivity(intent);
                     }
                 });
@@ -3568,6 +3569,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
+                intent.putExtra("followUpDate", " ");
                 startActivity(intent);
             }
         }
