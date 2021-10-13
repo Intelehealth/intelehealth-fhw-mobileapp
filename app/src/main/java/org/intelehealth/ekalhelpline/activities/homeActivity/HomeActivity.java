@@ -135,7 +135,8 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge,
+            tvTodayVisitsBadge, tvActiveVisitsBadge, tvClosedVisitsBadge, tvCompletedVisitsBadge;
 
     //for auto update app
     private int REQUEST_CODE = 11;
@@ -214,6 +215,9 @@ public class HomeActivity extends AppCompatActivity {
         tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
         tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
+        tvClosedVisitsBadge = findViewById(R.id.tvClosedVisitsBadge);
+        tvCompletedVisitsBadge = findViewById(R.id.tvCompletedVisitsBadge);
+
         FollowUpNotificationWorker.schedule();
 
         //Help section of watsapp...
@@ -813,7 +817,10 @@ public class HomeActivity extends AppCompatActivity {
         String chwName = sessionManager1.getProviderID();
         long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
         long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long closedPatientCount = Closed_Visits_Activity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long completedPatientCount = Completed_Visits_Activity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+
         if (followUpCount > 0) {
             tvFollowUpBadge.setVisibility(View.VISIBLE);
             tvFollowUpBadge.setText(String.valueOf(followUpCount));
@@ -826,6 +833,15 @@ public class HomeActivity extends AppCompatActivity {
             tvActiveVisitsBadge.setVisibility(View.VISIBLE);
             tvActiveVisitsBadge.setText(String.valueOf(activePatientCount));
         }
+        if (closedPatientCount > 0) {
+            tvClosedVisitsBadge.setVisibility(View.VISIBLE);
+            tvClosedVisitsBadge.setText(String.valueOf(closedPatientCount));
+        }
+        if (completedPatientCount > 0) {
+            tvCompletedVisitsBadge.setVisibility(View.VISIBLE);
+            tvCompletedVisitsBadge.setText(String.valueOf(completedPatientCount));
+        }
+
     }
 
     @Override

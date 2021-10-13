@@ -424,7 +424,7 @@ public class ActivePatientActivity extends AppCompatActivity {
        // int count =0;
         List<ActivePatientModel> activePatientModels = doQuery_(chwUser);
         activePatientModels = fetch_Prescription_Data_(activePatientModels);
-        Log.v("main", "count:: "+activePatientModels.size());
+        Log.v("main", "active count:: "+activePatientModels.size());
 
     /*    String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
