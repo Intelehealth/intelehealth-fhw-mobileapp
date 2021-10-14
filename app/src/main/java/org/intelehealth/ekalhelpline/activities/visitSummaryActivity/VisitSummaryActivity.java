@@ -589,11 +589,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(hasPrescription.equalsIgnoreCase("true")) {
 
-                try {
-                    doWebViewPrint_Button();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                    try {
+                        doWebViewPrint_Button();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                 else {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                    alertDialog.setMessage(getResources().getString(R.string.error_no_data));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.ok),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog dialog = alertDialog.show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+
                 }
             }
         });
@@ -1027,6 +1045,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     card_share.setVisibility(View.VISIBLE);
                 }
 
+                //If no internet is present then agent should be forcefully sent to Home Screen
+                if((isConnected || !NetworkConnection.isOnline(getApplication())) && !speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Agent Resolution"))
+                {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+                    alertDialog.setCancelable(false);
+                    alertDialog.setMessage(getResources().getString(R.string.currently_no_internet_dialog));
+                    alertDialog.setPositiveButton(getResources().getString(R.string.go_to_home),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    Intent i = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(i);
+                                }
+                            });
+                    AlertDialog dialog = alertDialog.show();
+                    Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                    IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+                }
+
                 //HSH-93 end
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
@@ -1141,6 +1181,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                                     if (isVisitSpecialityExists) {
+                                        String speciality = speciality_spinner.getSelectedItem().toString();
+                                        showExitDialog(speciality);
                                         speciality_spinner.setEnabled(false);
                                         tilAgentResolution.setEnabled(false);
                                     }
@@ -1830,6 +1872,64 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag.setChecked(false);
             }
         }
+    }
+
+    private void showExitDialog(String speciality) {
+        uploadButton.setEnabled(false);
+        if(speciality.equalsIgnoreCase("Agent Resolution"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+            alertDialog.setMessage(getResources().getString(R.string.want_to_mark_as_resolved));
+            alertDialog.setCancelable(false);
+            alertDialog.setPositiveButton(getResources().getString(R.string.resolve_visit_dialog),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(VisitSummaryActivity.this, PatientSurveyActivity.class);
+                            intent.putExtra("patientUuid", patientUuid);
+                            intent.putExtra("visitUuid", visitUuid);
+                            intent.putExtra("encounterUuidVitals", encounterVitals);
+                            intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                            intent.putExtra("state", state);
+                            intent.putExtra("name", patientName);
+                            intent.putExtra("tag", intentTag);
+                            intent.putExtra("followUpDate", " ");
+                            startActivity(intent);
+                        }
+                    });
+            AlertDialog dialog = alertDialog.show();
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
+        else if(NetworkConnection.isOnline(getApplication()) && !speciality.equalsIgnoreCase("Agent Resolution"))
+        {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
+            alertDialog.setMessage(getResources().getString(R.string.wish_to_do_next));
+            alertDialog.setCancelable(false);
+            alertDialog.setNegativeButton(getResources().getString(R.string.go_to_home),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Intent i = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(i);
+                        }
+                    });
+            alertDialog.setPositiveButton(getResources().getString(R.string.save_and_continue), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = alertDialog.show();
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+            //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+            IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
+        }
+
     }
 
     private void generateShortPrescUrl(String prescriptionLink, String phoneNumber) {

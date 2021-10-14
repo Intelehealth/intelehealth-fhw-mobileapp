@@ -783,4 +783,12 @@
     <string name="select_follow_up_date">पहले एक फॉलो-अप तारीख चुनें</string>
     <string name="follow_up_already_scheduled">फॉलो-अप पहले से ही डॉक्टर द्वारा निर्धारित किया गया है:</string>
 
+    //New Validations added on visit summary
+    <string name="want_to_mark_as_resolved">क्या आप विज़िट को समाधान के रूप में चिह्नित करना चाहते हैं?</string>
+    <string name="resolve_visit_dialog">विजिट समाप्त करें</string>
+    <string name="wish_to_do_next">आप आगे क्या करना चाहते हैं?</string>
+    <string name="go_to_home">होम पर जाये</string>
+    <string name="save_and_continue">सहेजें और जारी रखें</string>
+    <string name="currently_no_internet_dialog">आप वर्तमान में ऑफ़लाइन हैं। जब आप वापस ऑनलाइन होंगे तो आपकी विज़िट अपलोड हो जाएगी</string>
+
 </resources>

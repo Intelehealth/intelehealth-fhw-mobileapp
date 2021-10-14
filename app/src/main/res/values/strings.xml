@@ -772,4 +772,12 @@
     <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
     <string name="select_follow_up_date">Select a follow-up date</string>
     <string name="follow_up_already_scheduled">Follow-Up Already Scheduled by Doctor On:</string>
+
+    //New Validations added on visit summary
+    <string name="want_to_mark_as_resolved">Do you want to mark the visit as resolved?</string>
+    <string name="resolve_visit_dialog">Resolve Visit</string>
+    <string name="wish_to_do_next">What do you wish to do next?</string>
+    <string name="go_to_home">Go To Home</string>
+    <string name="save_and_continue">Save &amp; Continue</string>
+    <string name="currently_no_internet_dialog">You are currently offline. Your visit will be uploaded when you are back online</string>
 </resources>
