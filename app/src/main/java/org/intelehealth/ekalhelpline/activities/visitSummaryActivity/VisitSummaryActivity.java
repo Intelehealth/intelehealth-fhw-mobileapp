@@ -634,8 +634,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
                     };
 
-//                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-//                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
 
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
                     editText.setText(patient.getPhone_number());
@@ -675,13 +675,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                                 }
                                                 else if(selectedPosition == 1) {
                                                     // Whatsapp
-                                                    String phoneNumberWithCountryCode = "+91" + editText.getText().toString();
+                                                    String phoneNumber = "+91" + editText.getText().toString();
+                                                    String whatsappMessage = "Hello, Thank you for using Intelehealth. To Download your " +
+                                                            "prescription please click here " + whatsapp_url + " and enter your Patient " +
+                                                            "ID - " + idView.getText().toString();
+
+                                                    startActivity(new Intent(Intent.ACTION_VIEW,
+                                                            Uri.parse(
+                                                                    String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                                                            phoneNumber, whatsappMessage))));
+
+                                                   /* String phoneNumberWithCountryCode = "+91" + editText.getText().toString();
                                                     String message = Html.fromHtml(htmlDoc).toString();
 
                                                     startActivity(new Intent(Intent.ACTION_VIEW,
                                                             Uri.parse(
                                                                     String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
-                                                                            phoneNumberWithCountryCode, message))));
+                                                                            phoneNumberWithCountryCode, message))));*/
                                                 }
                                             }
                                         });
