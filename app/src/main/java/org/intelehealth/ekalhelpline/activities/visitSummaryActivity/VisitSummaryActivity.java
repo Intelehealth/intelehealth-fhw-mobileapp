@@ -1087,7 +1087,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
 
                 //If no internet is present then agent should be forcefully sent to Home Screen
-                if((isConnected || !NetworkConnection.isOnline(getApplication())) && !speciality_spinner.getSelectedItem().toString().equalsIgnoreCase("Agent Resolution"))
+                if((isConnected || !NetworkConnection.isOnline(getApplication())))
                 {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
                     alertDialog.setCancelable(false);
@@ -1917,7 +1917,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void showExitDialog(String speciality) {
         uploadButton.setEnabled(false);
-        if(speciality.equalsIgnoreCase("Agent Resolution"))
+        if(NetworkConnection.isOnline(getApplication()) && speciality.equalsIgnoreCase("Agent Resolution"))
         {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
             alertDialog.setMessage(getResources().getString(R.string.want_to_mark_as_resolved));
