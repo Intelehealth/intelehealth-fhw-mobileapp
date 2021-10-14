@@ -395,6 +395,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     newVisitStart(sqLiteDatabase,cols);
 
             }
+
             private void newVisitStart(SQLiteDatabase sqLiteDatabase, String[] cols) {
 
                 String CREATOR_ID = sessionManager.getCreatorID();
@@ -963,6 +964,13 @@ public class PatientDetailActivity extends AppCompatActivity {
         notes.add(getString(R.string.spinner_doctor_followUp));
         notes.add(getString(R.string.spinner_outreach));
         notes.add(getString(R.string.spinner_general_followUp));
+        notes.add(getString(R.string.first_attempt));
+        notes.add(getString(R.string.second_attempt));
+        notes.add(getString(R.string.third_attempt));
+        notes.add(getString(R.string.doctor_resolution));
+        notes.add(getString(R.string.dr_first_attempt));
+        notes.add(getString(R.string.dr_second_attempt));
+        notes.add(getString(R.string.dr_third_attempt));
         notes.add(getString(R.string.spinner_other));
         return notes;
     }

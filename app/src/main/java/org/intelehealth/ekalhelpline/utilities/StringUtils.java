@@ -695,6 +695,29 @@ public final class StringUtils {
             case "टीएलडी समाधान":
                 val = "TLD Resolved";
                 break;
+            case "डॉक्टर का दौरा बंद":
+                val = "Doctor Visit Closed";
+                break;
+            case "कॉल ड्रॉप/कॉल डिस्टर्ब":
+                val = "Calls Dropped/Calls Disturbed";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_Reason_for_Call_TAG(String val) {
+        switch (val) {
+            case "TLD 1st Attempt":
+                val = "टीएलडी पहला प्रयास";
+                break;
+            case "TLD 2nd Attempt":
+                val = "टीएलडी दूसरा प्रयास";
+                break;
+            case "TLD 3rd Attempt":
+                val = "टीएलडी तीसरा प्रयास";
+                break;
             default:
                 return val;
         }
@@ -723,6 +746,27 @@ public final class StringUtils {
                 break;
             case "जेनरल फ़ॉलो अप":
                 val = "General Follow up";
+                break;
+            case "टीएलडी पहला प्रयास":
+                val = "TLD 1st Attempt";
+                break;
+            case "टीएलडी दूसरा प्रयास":
+                val = "TLD 2nd Attempt";
+                break;
+            case "टीएलडी तीसरा प्रयास":
+                val = "TLD 3rd Attempt";
+                break;
+            case "डॉक्टर संकल्प":
+                val = "Doctor Resolution";
+                break;
+            case "डॉक्टर पहला प्रयास":
+                val = "Doctor 1st Attempt";
+                break;
+            case "डॉक्टर दूसरा प्रयास":
+                val = "Doctor 2nd Attempt";
+                break;
+            case "डॉक्टर तीसरा प्रयास":
+                val = "Doctor 3rd Attempt";
                 break;
             case "अन्य":
                 val = "Other";

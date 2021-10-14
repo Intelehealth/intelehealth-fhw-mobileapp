@@ -17,8 +17,12 @@ import java.util.List;
 
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.ekalhelpline.database.dao.PatientsDAO;
 import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.utilities.DateAndTimeUtils;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+
+import static org.intelehealth.ekalhelpline.utilities.StringUtils.*;
 
 
 /**
@@ -32,20 +36,14 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    SessionManager sessionManager;
 
     public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+        sessionManager = new SessionManager(context);
     }
-
-  /*  public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
-                               ArrayList<String> _listPatientUUID, List<TodayPatientModel> todayPatient_exitsurvey_commentsList) {
-        this.todayPatientModelList = todayPatientModelList;
-        this.context = context;
-        this.listPatientUUID = _listPatientUUID;
-        this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
-    }*/
 
     public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context,
                                ArrayList<String> _listPatientUUID,
@@ -56,6 +54,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         this.listPatientUUID = _listPatientUUID;
         this.todayPatient_exitsurvey_commentsList = todayPatient_exitsurvey_commentsList;
         this.todayPatient_Speciality = todayPatient_Speciality;
+        sessionManager = new SessionManager(context);
     }
 
     @Override
@@ -133,6 +132,8 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             }
         }
 
+      //  PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid());
+
         //TLD Query - start
         //to check only if visit is uploaded then show the tag...
         for (int i = 0; i < todayPatient_Speciality.size(); i++) {
@@ -149,15 +150,28 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 
                         if (todayPatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
+                            //Reason for Call - Start
+                            String tld_call = PatientsDAO.getReason_for_Call(todayPatient_Speciality.get(i).getPatientuuid());
+                            if(tld_call.equalsIgnoreCase("TLD 1st Attempt") || tld_call.equalsIgnoreCase("TLD 2nd Attempt") ||
+                            tld_call.equalsIgnoreCase("TLD 3rd Attempt")) {
+                                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                                    holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(tld_call));
+                                } else {
+                                    holder.tld_reason_for_call.setText(tld_call);
+                                }
+                                holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            }
+                            //Reason for Call - End
+
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                                 holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN (TLD QUERY ANSWERED)
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             } else {
                                 holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN (TLD QUERY ASKED)
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                             }
+                            holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                            holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+
                         } else {
                             //check the spinner value for this from the exit survey selection and then
                             // based on that checking add the text.
@@ -181,7 +195,22 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                             }
                         }
                     } else {
-                        // holder.tld_query_tag.setVisibility(View.GONE); // If visit speciality is not TLD Query then.
+                        // Specilaity is not TLD Query and Agent Resolution
+                        if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
+                                !todayPatient_Speciality.get(i).getVisit_speciality().equalsIgnoreCase("Agent Resolution")) {
+
+                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                               // do nothing //Prescription is GIVEN
+                            } else {
+                                holder.tld_query_tag.setText(R.string.doctor_visit_scheduled); //Prescription is NOT GIVEN
+                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                            }
+                        }
+                        else {
+                            //do nothing
+                            holder.tld_query_tag.setText("");
+                        }
                     }
                 } else {
                     //holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
@@ -198,6 +227,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
             holder.tld_query_tag.setVisibility(View.GONE);
         }
+
+        if (holder.tld_reason_for_call.getText().toString().equalsIgnoreCase("")) {
+            holder.tld_reason_for_call.setVisibility(View.GONE);
+        }
+
+
 
     }
 
@@ -219,7 +254,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private View rootView;
         private ImageView ivPriscription;
         private TextView tv_not_uploaded;
-        private TextView tld_query_tag;
+        private TextView tld_query_tag, tld_reason_for_call;
 
         public TodayPatientViewHolder(View itemView) {
             super(itemView);
@@ -229,6 +264,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
             tv_not_uploaded = (TextView) itemView.findViewById(R.id.tv_not_uploaded);
             tld_query_tag = (TextView) itemView.findViewById(R.id.tld_query_tag);
+            tld_reason_for_call = itemView.findViewById(R.id.reason_for_call_tag);
             rootView = itemView;
         }
 

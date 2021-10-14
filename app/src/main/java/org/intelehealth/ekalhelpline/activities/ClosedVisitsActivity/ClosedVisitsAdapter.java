@@ -1,4 +1,4 @@
-package org.intelehealth.ekalhelpline.activities.activePatientsActivity;
+package org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,27 +30,39 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.*;
  * Github : @dbarretto
  */
 
-public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdapter.ActivePatientViewHolder> {
+public class ClosedVisitsAdapter extends RecyclerView.Adapter<ClosedVisitsAdapter.ActivePatientViewHolder> {
 
-    public List<ActivePatientModel> activePatientModels, activePatient_speciality;
+    public List<ActivePatientModel> activePatientModels, todayPatient_exitsurvey_commentsList, activePatient_speciality;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
     SessionManager sessionManager;
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
+    public ClosedVisitsAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         sessionManager = new SessionManager(context);
     }
 
-    public ActivePatientAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID,
+    public ClosedVisitsAdapter(List<ActivePatientModel> activePatientModels, Context context, ArrayList<String> _listPatientUUID,
                                 List<ActivePatientModel> activePatient_speciality) {
         this.activePatientModels = activePatientModels;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
         this.activePatient_speciality = activePatient_speciality;
+        sessionManager = new SessionManager(context);
+    }
+
+    public ClosedVisitsAdapter(List<ActivePatientModel> activePatientModels, Context context,
+                               ArrayList<String> listPatientUUID, List<ActivePatientModel> todayvisit_exitsurveycomments,
+                               List<ActivePatientModel> activeVisit_speciality) {
+
+        this.activePatientModels = activePatientModels;
+        this.context = context;
+        this.listPatientUUID = listPatientUUID;
+        this.todayPatient_exitsurvey_commentsList = todayvisit_exitsurveycomments;
+        this.activePatient_speciality = activeVisit_speciality;
         sessionManager = new SessionManager(context);
     }
 
@@ -137,69 +149,94 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         //TLD Query - start
         //to check only if visit is uploaded then show the tag...
         if(activePatient_speciality != null) {
-        for (int i = 0; i < activePatient_speciality.size(); i++) {
-            if (activePatientModel.getPatientuuid().equalsIgnoreCase(activePatient_speciality.get(i).getPatientuuid())) {
+            for (int i = 0; i < activePatient_speciality.size(); i++) {
+                if (activePatientModel.getPatientuuid().equalsIgnoreCase(activePatient_speciality.get(i).getPatientuuid())) {
 
-                if (activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
-                        activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
+                    if (activePatientModel.getSync() != null && (activePatientModel.getSync().equalsIgnoreCase("1") ||
+                            activePatientModel.getSync().toLowerCase().equalsIgnoreCase("true"))) { //if visit is uploaded.
 
-                    if (activePatient_speciality.get(i).getVisit_speciality() != null &&
-                            activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
+                        if (activePatient_speciality.get(i).getVisit_speciality() != null &&
+                                activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
-                        if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
+                            if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
 
-                            //Reason for Call - Start
-                            String tld_call = PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid());
-                            if(tld_call.equalsIgnoreCase("TLD 1st Attempt") || tld_call.equalsIgnoreCase("TLD 2nd Attempt") ||
-                                    tld_call.equalsIgnoreCase("TLD 3rd Attempt")) {
-                                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                                    holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(tld_call));
-                                } else {
-                                    holder.tld_reason_for_call.setText(tld_call);
+                                //Reason for Call - Start
+                                String tld_call = PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid());
+                                if(tld_call.equalsIgnoreCase("TLD 1st Attempt") || tld_call.equalsIgnoreCase("TLD 2nd Attempt") ||
+                                        tld_call.equalsIgnoreCase("TLD 3rd Attempt")) {
+                                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                                        holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(tld_call));
+                                    } else {
+                                        holder.tld_reason_for_call.setText(tld_call);
+                                    }
+                                    holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                    holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
                                 }
-                                holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                //Reason for Call - End
+
+
+                                if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                                    holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN
+                                    holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                    holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                } else {
+                                    holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN
+                                    holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                    holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                }
                             }
-                            //Reason for Call - End
+                            else {
+                                //Visit is ended...
+                                //check the spinner value for this from the exit survey selection and then
+                                // based on that checking add the text.
+                                for (int j = 0; j < todayPatient_exitsurvey_commentsList.size(); j++) {
+                                    if (activePatientModel.getPatientuuid().equalsIgnoreCase(todayPatient_exitsurvey_commentsList.get(j).getPatientuuid())) {
 
+                                        //check for TLD Closed and TLD Resolved
+                                        if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                                .equalsIgnoreCase("TLD Closed")) { //TLD Closed
+                                            holder.tld_query_tag.setText(R.string.tld_closed_comment);
+                                            holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                            holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                        } else if (todayPatient_exitsurvey_commentsList.get(j).getExitsurvey_comments()
+                                                .equalsIgnoreCase("TLD Resolved")) { //TLD Resolved
+                                            holder.tld_query_tag.setText(R.string.tld_resolved_comment);
+                                            holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                            holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                        } else {
+                                            holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
+                                        }
+                                    }
+                                }
+                                //end...
+                            }
+                        } else {
+                            // Specilaity is not TLD Query and Agent Resolution
+                            if (activePatient_speciality.get(i).getVisit_speciality() != null &&
+                                    !activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("Agent Resolution")) {
 
-                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                                holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                            } else {
-                                holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
+                                    // do nothing //Prescription is GIVEN
+                                } else {
+                                    holder.tld_query_tag.setText(R.string.doctor_visit_scheduled); //Prescription is NOT GIVEN
+                                    holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+                                    holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
+                                }
+                            }
+                            else {
+                                //do nothing...
+                                holder.tld_query_tag.setText("");
                             }
                         }
                     } else {
-                        // Specilaity is not TLD Query and Agent Resolution
-                        if (activePatient_speciality.get(i).getVisit_speciality() != null &&
-                                !activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("Agent Resolution")) {
-
-                            if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                                // do nothing //Prescription is GIVEN
-                            } else {
-                                holder.tld_query_tag.setText(R.string.doctor_visit_scheduled); //Prescription is NOT GIVEN
-                                holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                            }
-                        }
-                        else {
-                            //do nothing...
-                            holder.tld_query_tag.setText("");
-                        }
+                        //  holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
                     }
-                } else {
-                    //  holder.tld_query_tag.setVisibility(View.GONE); // If visit is not uploaded then.
-                }
 
-            } else {
-                //do nothing...
+                } else {
+                    //do nothing...
+                }
             }
         }
-    }
         //TLD Query - end
         if (holder.tld_query_tag.getText().toString().equalsIgnoreCase("")) {
             holder.tld_query_tag.setVisibility(View.GONE);

@@ -1,4 +1,4 @@
-package org.intelehealth.ekalhelpline.activities.activePatientsActivity;
+package org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -38,11 +39,13 @@ import java.util.List;
 import java.util.Locale;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.ClosedVisitsAdapter;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.database.dao.EncounterDAO;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.database.dao.VisitsDAO;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
+import org.intelehealth.ekalhelpline.models.TodayPatientModel;
 import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
 import org.intelehealth.ekalhelpline.models.dto.VisitDTO;
 import org.intelehealth.ekalhelpline.utilities.Logger;
@@ -52,8 +55,8 @@ import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
-public class ActivePatientActivity extends AppCompatActivity {
-    private static final String TAG = ActivePatientActivity.class.getSimpleName();
+public class Closed_Visits_Activity extends AppCompatActivity {
+    private static final String TAG = Closed_Visits_Activity.class.getSimpleName();
     private SQLiteDatabase db;
     SessionManager sessionManager = null;
     Toolbar mToolbar;
@@ -69,7 +72,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
-    private ActivePatientAdapter mActivePatientAdapter;
+    private ClosedVisitsAdapter mClosedVisitAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
         setContentView(R.layout.activity_active_patient);
-        setTitle(getString(R.string.title_activity_active_patient));
+     //   setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 
 
@@ -110,46 +113,51 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
-       // chw_name = sessionManager.getChwname();
+        // chw_name = sessionManager.getChwname();
         chw_name = sessionManager.getProviderID();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (mActivePatientAdapter.activePatientModels != null && mActivePatientAdapter.activePatientModels.size() < limit) {
+                if (mClosedVisitAdapter.activePatientModels != null && mClosedVisitAdapter.activePatientModels.size() < limit) {
 
                     offset += limit;
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
                     if(allPatientsFromDB.size() > 0) {
-                        allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
+                     //   allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
                         List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
-                        mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
-                        mActivePatientAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
-                        mActivePatientAdapter.notifyDataSetChanged();
+                        List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
+                        
+                        mClosedVisitAdapter.activePatientModels.addAll(allPatientsFromDB);
+                        mClosedVisitAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
+                        mClosedVisitAdapter.todayPatient_exitsurvey_commentsList.addAll(todayvisit_exitsurveycomments);
+                        mClosedVisitAdapter.notifyDataSetChanged();
                     }
                     return;
                 }
                 if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE &&
-                        reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
+                        reLayoutManager.findLastVisibleItemPosition() == mClosedVisitAdapter.getItemCount() - 1) {
 
                     Log.v("main", "findlastposition: " + Integer.toString(reLayoutManager.findLastVisibleItemPosition()) +
-                            " : " + "adapteritemcount: " + Integer.toString(mActivePatientAdapter.getItemCount() - 1));
+                            " : " + "adapteritemcount: " + Integer.toString(mClosedVisitAdapter.getItemCount() - 1));
                     Log.v("main", "newstate value: " + newState + " " + "scrollstate: " + RecyclerView.SCROLL_STATE_IDLE);
-                    Toast.makeText(ActivePatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Closed_Visits_Activity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
 
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
-                    allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
+                  //  allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
                     List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
+                    List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
 
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
 
-                    mActivePatientAdapter.activePatientModels.addAll(allPatientsFromDB);
-                    mActivePatientAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
-                    mActivePatientAdapter.notifyDataSetChanged();
+                    mClosedVisitAdapter.activePatientModels.addAll(allPatientsFromDB);
+                    mClosedVisitAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
+                    mClosedVisitAdapter.todayPatient_exitsurvey_commentsList.addAll(todayvisit_exitsurveycomments);
+                    mClosedVisitAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -160,12 +168,13 @@ public class ActivePatientActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
 
             List<ActivePatientModel> activePatientModels = doQuery(offset, chw_name);
-            activePatientModels = fetch_Prescription_Data(activePatientModels);
+           // activePatientModels = fetch_Prescription_Data(activePatientModels);
             List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
+            List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
 
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,
-                    listPatientUUID, activeVisit_Speciality);
-            recyclerView.setAdapter(mActivePatientAdapter);
+            mClosedVisitAdapter = new ClosedVisitsAdapter(activePatientModels, Closed_Visits_Activity.this,
+                    listPatientUUID, todayvisit_exitsurveycomments, activeVisit_Speciality);
+            recyclerView.setAdapter(mClosedVisitAdapter);
         }
 
         getVisits();
@@ -178,7 +187,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND (a.enddate is NULL OR a.enddate = '') AND b.encounter_type_uuid = ? ORDER BY a.startdate ASC",
+        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND b.encounter_type_uuid = ? ORDER BY a.startdate ASC",
                 new String[]{"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"});
         //this means Prescription is present...as Visit is Complete - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
 
@@ -196,7 +205,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             for (int j = 0; j < activePatientModels_.size(); j++) {
                 if(data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
                     activePatientModels_.remove(j);
-              }
+                }
             }
         }
 
@@ -255,7 +264,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? limit ? offset ?";
+                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? ORDER BY a.startdate DESC limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
         Log.v("main", "active: "+ query);
 
@@ -288,7 +297,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC limit ? offset ?";
+                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate DESC limit ? offset ?";
         final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
         Log.v("main", "doquery: "+ query);
 
@@ -323,16 +332,65 @@ public class ActivePatientActivity extends AppCompatActivity {
 //            for (ActivePatientModel activePatientModel : activePatientList)
 //                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 //
-//            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+//            ClosedVisitAdapter mClosedVisitAdapter = new ClosedVisitAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
 //            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
 //            recyclerView.setLayoutManager(linearLayoutManager);
 //           /* recyclerView.addItemDecoration(new
 //                    DividerItemDecoration(this,
 //                    DividerItemDecoration.VERTICAL));*/
-//            recyclerView.setAdapter(mActivePatientAdapter);
+//            recyclerView.setAdapter(mClosedVisitAdapter);
 //        }
         return activePatientList;
     }
+
+    public static long getActiveVisitsCount(SQLiteDatabase db, String chwUser) {
+        /*int count =0;
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ";
+        Logger.logD(TAG, query);
+        final Cursor cursor = db.rawQuery(query, new String[]{chwUser});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    count++;
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return count;*/
+
+        int count = 0;
+        List<ActivePatientModel> allPatientsFromDB = doQuery_(chwUser);
+        count = allPatientsFromDB.size();
+        Log.v("main", "completed count:: " + allPatientsFromDB.size());
+        return count;
+
+    }
+
+    private static String phoneNumber_(String patientuuid) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        String phone = null;
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        }
+        idCursor.close();
+
+        return phone;
+    }
+
 
     private static List<ActivePatientModel> doQuery_(String user_uuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
@@ -341,7 +399,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC";
+                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC";
         final Cursor cursor = db.rawQuery(query, new String[]{user_uuid});
         Log.v("main", "doquery: "+ query);
 
@@ -376,79 +434,22 @@ public class ActivePatientActivity extends AppCompatActivity {
 //            for (ActivePatientModel activePatientModel : activePatientList)
 //                Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 //
-//            ActivePatientAdapter mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
+//            ClosedVisitAdapter mClosedVisitAdapter = new ClosedVisitAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID);
 //            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
 //            recyclerView.setLayoutManager(linearLayoutManager);
 //           /* recyclerView.addItemDecoration(new
 //                    DividerItemDecoration(this,
 //                    DividerItemDecoration.VERTICAL));*/
-//            recyclerView.setAdapter(mActivePatientAdapter);
+//            recyclerView.setAdapter(mClosedVisitAdapter);
 //        }
         return activePatientList;
     }
 
-    private static List<ActivePatientModel> fetch_Prescription_Data_
-            (List<ActivePatientModel> activePatientModels_) {
-
-        List<String> data = new ArrayList<>();
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
-
-        Cursor cursor = db.rawQuery("SELECT x.uuid FROM tbl_patient x, tbl_visit a, tbl_encounter b where x.uuid = a.patientuuid and a.uuid = b.visituuid AND (a.enddate is NULL OR a.enddate = '') AND b.encounter_type_uuid = ? ORDER BY a.startdate ASC",
-                new String[]{"bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"});
-        //this means Prescription is present...as Visit is Complete - bd1fbfaa-f5fb-4ebd-b75c-564506fc309e
-
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                data.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-            }
-        }
-
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-
-        for (int i = 0; i < data.size(); i++) {
-            for (int j = 0; j < activePatientModels_.size(); j++) {
-                if(data.get(i).equalsIgnoreCase(activePatientModels_.get(j).getPatientuuid())) {
-                    activePatientModels_.remove(j);
-                }
-            }
-        }
-
-        return activePatientModels_;
-    }
-
-
-    public static long getActiveVisitsCount(SQLiteDatabase db, String chwUser) {
-       // int count =0;
-        List<ActivePatientModel> activePatientModels = doQuery_(chwUser);
-        activePatientModels = fetch_Prescription_Data_(activePatientModels);
-        Log.v("main", "active count:: "+activePatientModels.size());
-
-    /*    String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
-                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
-                "WHERE a.patientuuid = b.uuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND c.encounter_type_uuid = 'bd1fbfaa-f5fb-4ebd-b75c-564506fc309e' AND d.uuid = ? GROUP BY a.uuid ";
-        Logger.logD(TAG, "active_count: " +query);
-        final Cursor cursor = db.rawQuery(query, new String[]{chwUser});
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    count++;
-                } while (cursor.moveToNext());
-            }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }*/
-        return activePatientModels.size();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-       // inflater.inflate(R.menu.menu_today_patient, menu);
+        // inflater.inflate(R.menu.menu_today_patient, menu);
         inflater.inflate(R.menu.today_filter, menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -482,7 +483,7 @@ public class ActivePatientActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        dialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
+        dialogBuilder = new MaterialAlertDialogBuilder(Closed_Visits_Activity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
 
         String[] finalCreator_names = creator_names;
@@ -524,7 +525,7 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-     //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
@@ -570,7 +571,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-          //  IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+            //  IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         }
 
     }
@@ -620,26 +621,26 @@ public class ActivePatientActivity extends AppCompatActivity {
             cursor.close();
         }
 
-        ActivePatientAdapter mActivePatientAdapter;
+        ClosedVisitsAdapter mClosedVisitAdapter;
         LinearLayoutManager linearLayoutManager;
         List<ActivePatientModel> speciality_list = getSpeciality_Filter(providersuuids);
         if (!activePatientList.isEmpty()) {
             for (ActivePatientModel activePatientModel : activePatientList)
                 Logger.logD(TAG, activePatientModel.getFirst_name() + " " + activePatientModel.getLast_name());
 
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, speciality_list);
+            mClosedVisitAdapter = new ClosedVisitsAdapter(activePatientList, Closed_Visits_Activity.this, listPatientUUID, speciality_list);
             no_records_found_textview.setVisibility(View.GONE);
 
         } else {
-            mActivePatientAdapter = new ActivePatientAdapter(activePatientList, ActivePatientActivity.this, listPatientUUID, speciality_list);
+            mClosedVisitAdapter = new ClosedVisitsAdapter(activePatientList, Closed_Visits_Activity.this, listPatientUUID, speciality_list);
             no_records_found_textview.setVisibility(View.VISIBLE);
             no_records_found_textview.setHint(R.string.no_records_found);
         }
 
-        linearLayoutManager = new LinearLayoutManager(ActivePatientActivity.this);
+        linearLayoutManager = new LinearLayoutManager(Closed_Visits_Activity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(mActivePatientAdapter);
-        mActivePatientAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(mClosedVisitAdapter);
+        mClosedVisitAdapter.notifyDataSetChanged();
 
     }
 
@@ -671,27 +672,6 @@ public class ActivePatientActivity extends AppCompatActivity {
         return activePatientList;
     }
 
-    private static String phoneNumber_(String patientuuid) throws DAOException {
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        String phone = null;
-        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
-        try {
-            if (idCursor.getCount() != 0) {
-                while (idCursor.moveToNext()) {
-
-                    phone = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
-
-                }
-            }
-        } catch (SQLException s) {
-            FirebaseCrashlytics.getInstance().recordException(s);
-        }
-        idCursor.close();
-
-        return phone;
-    }
-
-
     private String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
         Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7' ", new String[]{patientuuid});
@@ -710,6 +690,56 @@ public class ActivePatientActivity extends AppCompatActivity {
 
         return phone;
     }
+
+    private List<ActivePatientModel> getExitSurvey_Comments(int offset) {
+        List<ActivePatientModel> todayPatientList = new ArrayList<>();
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid AND (a.enddate is NOT NULL OR a.enddate != '') " +
+                "ORDER BY a.startdate DESC limit ? offset ?";
+        Logger.logD(TAG, "\n today_exit: " +query);
+
+        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        todayPatientList.add(new ActivePatientModel(
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("value")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("obsvalue")))
+                        );
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        for (ActivePatientModel todayPatientModel : todayPatientList) {
+            Log.v("main", "todaysPatient: " + todayPatientModel.getFirst_name() + " " +
+                    todayPatientModel.getLast_name() + " " + todayPatientModel.getVisit_speciality() + "\n");
+        }
+
+        return todayPatientList;
+    }
+
 
 }
 

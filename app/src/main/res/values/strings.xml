@@ -780,4 +780,18 @@
     <string name="go_to_home">Go To Home</string>
     <string name="save_and_continue">Save &amp; Continue</string>
     <string name="currently_no_internet_dialog">You are currently offline. Your visit will be uploaded when you are back online</string>
+    <string name="first_attempt">TLD 1st Attempt</string>
+    <string name="second_attempt">TLD 2nd Attempt</string>
+    <string name="third_attempt">TLD 3rd Attempt</string>
+    <string name="doctor_visit_scheduled">Doctor visit scheduled</string>
+    <string name="doctor_visit_closed">Doctor Visit Closed</string>
+    <string name="call_dropped_disturbed">Calls Dropped/Calls Disturbed</string>
+    <string name="doctor_resolution">Doctor Resolution</string>
+    <string name="dr_first_attempt">Doctor 1st Attempt</string>
+    <string name="dr_second_attempt">Doctor 2nd Attempt</string>
+    <string name="dr_third_attempt">Doctor 3rd Attempt</string>
+    <string name="completed_visits_HomeScreen">Completed Visits</string>
+    <string name="closed_visits_HomeScreen">Closed Visits</string>
+    <string name="Completed_Visits">Completed Visits</string>
+    <string name="Closed_Visits">Closed Visits</string>
 </resources>

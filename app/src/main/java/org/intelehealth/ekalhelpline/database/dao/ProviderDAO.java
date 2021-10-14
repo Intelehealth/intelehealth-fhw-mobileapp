@@ -114,4 +114,30 @@ public class ProviderDAO {
 
     }
 
+    public String getSetupUser_uuid(String chwname) {
+        String providersUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "select a.uuid from tbl_provider a, tbl_encounter b , tbl_visit c where a.uuid = b.provider_uuid and b.visituuid = c.uuid and a.family_name = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{chwname});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    providersUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                    // providersList.add(cursor.getString(cursor.getColumnIndexOrThrow("given_name")) + cursor.getString(cursor.getColumnIndexOrThrow("family_name")));
+
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        } finally {
+            db.endTransaction();
+
+        }
+        return providersUuid;
+    }
+
+
 }

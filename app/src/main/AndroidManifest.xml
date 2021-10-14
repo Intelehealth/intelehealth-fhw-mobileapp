@@ -37,6 +37,18 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <activity android:name=".activities.completedvisits.Completed_Visits_Activity"
+            android:configChanges="uiMode"
+            android:label="@string/Completed_Visits"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activities.ClosedVisitsActivity.Closed_Visits_Activity"
+            android:configChanges="uiMode"
+            android:label="@string/Closed_Visits"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"
             android:configChanges="uiMode"
@@ -55,7 +67,6 @@
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activities.additionalDocumentsActivity.AdditionalDocumentsActivity"
             android:configChanges="uiMode"
@@ -232,7 +243,6 @@
             android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
         <!-- android:name=".services.OnClearFromRecentService" -->
         <!-- android:stopWithTask="false" /> -->
-
         <activity
             android:name=".activities.recordings.RecordingsActivity"
             android:configChanges="uiMode"
@@ -240,6 +250,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.recordings.AudioPlayerActivity"
             android:configChanges="uiMode"

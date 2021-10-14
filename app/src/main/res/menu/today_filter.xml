@@ -8,6 +8,7 @@
     <item
         android:id="@+id/action_filter"
         android:title="@string/filter_by_creator"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_baseline_filter_24"
+        app:showAsAction="always"/>
 
 </menu>

@@ -312,6 +312,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
         notes.add(getString(R.string.Other));
         notes.add(getString(R.string.tld_closed_comment));
         notes.add(getString(R.string.tld_resolved_comment));
+        notes.add(getString(R.string.doctor_visit_closed));
+        notes.add(getString(R.string.call_dropped_disturbed));
         return notes;
     }
     private void resetScale() {

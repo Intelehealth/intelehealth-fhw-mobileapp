@@ -53,11 +53,11 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.Closed_Visits_Activity;
+import org.intelehealth.ekalhelpline.activities.completedvisits.Completed_Visits_Activity;
 import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
-import org.intelehealth.ekalhelpline.BuildConfig;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.ekalhelpline.activities.recordings.RecordingsActivity;
-import org.intelehealth.ekalhelpline.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
 import org.intelehealth.ekalhelpline.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
@@ -122,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SyncUtils syncUtils = new SyncUtils();
     // CardView c1, c2, c3, c4, c5, c6;
+    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7, c8;
     CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7_followUp;
     private String key = null;
     private String licenseUrl = null;
@@ -136,6 +137,8 @@ public class HomeActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge, followUp_textView;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge,
+            tvTodayVisitsBadge, tvActiveVisitsBadge, tvClosedVisitsBadge, tvCompletedVisitsBadge;
 
     //for auto update app
     private int REQUEST_CODE = 11;
@@ -187,6 +190,8 @@ public class HomeActivity extends AppCompatActivity {
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
         c7_followUp = findViewById(R.id.cardview_follow_up);
+        c7 = findViewById(R.id.cardview_closed_visits);
+        c8 = findViewById(R.id.cardview_completed_visits);
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -216,6 +221,9 @@ public class HomeActivity extends AppCompatActivity {
         tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
         tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
+        tvClosedVisitsBadge = findViewById(R.id.tvClosedVisitsBadge);
+        tvCompletedVisitsBadge = findViewById(R.id.tvCompletedVisitsBadge);
+
         FollowUpNotificationWorker.schedule();
 
         c7_followUp.setOnClickListener(new View.OnClickListener() {
@@ -310,6 +318,26 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //Closed Visits - start
+        c7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, Closed_Visits_Activity.class);
+                startActivity(intent);
+            }
+        });
+        //Closed Visits - end
+
+        //Completed - start
+        c8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, Completed_Visits_Activity.class);
+                startActivity(intent);
+            }
+        });
+        //Completed - end
+
         c5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -799,9 +827,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showFollowUpBadge() {
+        String chwName = sessionManager1.getProviderID();
         long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
-        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long closedPatientCount = Closed_Visits_Activity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long completedPatientCount = Completed_Visits_Activity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+
         if (followUpCount > 0) {
             tvFollowUpBadge.setVisibility(View.VISIBLE);
             tvFollowUpBadge.setText(String.valueOf(followUpCount));
@@ -814,6 +846,15 @@ public class HomeActivity extends AppCompatActivity {
             tvActiveVisitsBadge.setVisibility(View.VISIBLE);
             tvActiveVisitsBadge.setText(String.valueOf(activePatientCount));
         }
+        if (closedPatientCount > 0) {
+            tvClosedVisitsBadge.setVisibility(View.VISIBLE);
+            tvClosedVisitsBadge.setText(String.valueOf(closedPatientCount));
+        }
+        if (completedPatientCount > 0) {
+            tvCompletedVisitsBadge.setVisibility(View.VISIBLE);
+            tvCompletedVisitsBadge.setText(String.valueOf(completedPatientCount));
+        }
+
     }
 
     @Override

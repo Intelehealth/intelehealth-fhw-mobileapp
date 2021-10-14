@@ -791,4 +791,18 @@
     <string name="save_and_continue">सहेजें और जारी रखें</string>
     <string name="currently_no_internet_dialog">आप वर्तमान में ऑफ़लाइन हैं। जब आप वापस ऑनलाइन होंगे तो आपकी विज़िट अपलोड हो जाएगी</string>
 
+    <string name="first_attempt">टीएलडी पहला प्रयास</string>
+    <string name="second_attempt">टीएलडी दूसरा प्रयास</string>
+    <string name="third_attempt">टीएलडी तीसरा प्रयास</string>
+    <string name="doctor_visit_scheduled">डॉक्टर का दौरा निर्धारित</string>
+    <string name="doctor_visit_closed">डॉक्टर का दौरा बंद</string>
+    <string name="call_dropped_disturbed">कॉल ड्रॉप/कॉल डिस्टर्ब</string>
+    <string name="doctor_resolution">डॉक्टर संकल्प</string>
+    <string name="dr_first_attempt">डॉक्टर पहला प्रयास</string>
+    <string name="dr_second_attempt">डॉक्टर दूसरा प्रयास</string>
+    <string name="dr_third_attempt">डॉक्टर तीसरा प्रयास</string>
+    <string name="completed_visits_HomeScreen">Completed Visits</string>
+    <string name="closed_visits_HomeScreen">Closed Visits</string>
+    <string name="Completed_Visits">Completed Visits</string>
+    <string name="Closed_Visits">Closed Visits</string>
 </resources>

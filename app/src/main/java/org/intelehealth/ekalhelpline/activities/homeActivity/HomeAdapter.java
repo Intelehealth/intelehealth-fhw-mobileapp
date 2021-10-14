@@ -33,6 +33,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
             IntelehealthApplication.getAppContext().getString(R.string.find_patient),
             IntelehealthApplication.getAppContext().getString(R.string.today_visits),
             IntelehealthApplication.getAppContext().getString(R.string.active_visits),
+            "Closed Visits",
+            "Completed Visits",
             IntelehealthApplication.getAppContext().getString(R.string.video_library),
             IntelehealthApplication.getAppContext().getString(R.string.lastsync_normal)
 
@@ -42,7 +44,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.IconViewHolder
 //   TODO: Change placeholder icon "android.R.drawable.ic_menu_my_calendar"
 
     final int[] icons = {R.drawable.ic_person_add_24dp, R.drawable.ic_search_24dp,
-            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_active_patients_black, R.drawable.ic_play_circle_filled_black_24dp
+            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_active_patients_black,
+            R.drawable.ic_calendar_intele_24dp, R.drawable.ic_calendar_intele_24dp,
+            R.drawable.ic_play_circle_filled_black_24dp
             , android.R.drawable.ic_menu_preferences
     };
 

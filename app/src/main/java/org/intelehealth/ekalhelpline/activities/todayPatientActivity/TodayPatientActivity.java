@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.todayPatientActivity;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,12 +36,14 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
 import org.intelehealth.ekalhelpline.database.InteleHealthDatabaseHelper;
@@ -64,11 +68,14 @@ public class TodayPatientActivity extends AppCompatActivity {
     RecyclerView mTodayPatientList;
     MaterialAlertDialogBuilder dialogBuilder;
     TextView no_records_found_textview;
+    String date_string = "";
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     private TodayPatientAdapter mActivePatientAdapter;
+    String user_data = "", chw_name = "";
+    ProviderDAO providerDAO = new ProviderDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +114,8 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         mTodayPatientList.setLayoutManager(reLayoutManager);
+        chw_name = sessionManager.getProviderID();
+
         mTodayPatientList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -118,8 +127,9 @@ public class TodayPatientActivity extends AppCompatActivity {
                         reLayoutManager.findLastVisibleItemPosition() == mActivePatientAdapter.getItemCount() - 1) {
                     Toast.makeText(TodayPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
                     offset += limit;
-                    List<TodayPatientModel> allPatientsFromDB = doQuery(offset);
-                    List<TodayPatientModel> todayvisit_speciality = todayVisit_speciality(offset);
+
+                    List<TodayPatientModel> allPatientsFromDB = doQuery(offset, chw_name);
+                    List<TodayPatientModel> todayvisit_speciality = todayVisit_speciality(offset, chw_name);
                     List<TodayPatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
 
                     if (allPatientsFromDB.size() < limit) {
@@ -136,9 +146,9 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
-            List<TodayPatientModel> todayPatientModels = doQuery(offset);
 
-            List<TodayPatientModel> todayVisit_Speciality = todayVisit_speciality(offset); //get the speciality.
+            List<TodayPatientModel> todayPatientModels = doQuery(offset, chw_name);
+            List<TodayPatientModel> todayVisit_Speciality = todayVisit_speciality(offset, chw_name); //get the speciality.
             List<TodayPatientModel> todayModel_ExitSurveyComments = getExitSurvey_Comments(offset); //fetch the value of the COMMENTS of ExitSurvey screen
             //to check for TLD Closed or TLD Resolved... This will only come in Todays Visits and not in Active Visits.
 
@@ -199,18 +209,18 @@ public class TodayPatientActivity extends AppCompatActivity {
         }
     }
 
-    private List<TodayPatientModel> todayVisit_speciality(int offset) {
+    private List<TodayPatientModel> todayVisit_speciality(int offset, String user_data_) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
-                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d " +
-                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
-                "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
-        Logger.logD(TAG, query);
+        String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? " +
+                "limit ? offset ?";
+        Logger.logD(TAG, "\n today_specilaity: "+query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -248,18 +258,18 @@ public class TodayPatientActivity extends AppCompatActivity {
     }
 
 
-    private List<TodayPatientModel> doQuery(int offset) {
+    private List<TodayPatientModel> doQuery(int offset, String user_uuid) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND d.uuid = ? " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
-        Logger.logD(TAG, query);
+        Logger.logD(TAG, "today_doquery: " + query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -308,16 +318,16 @@ public class TodayPatientActivity extends AppCompatActivity {
         return todayPatientList;
     }
 
-    public static long getTodayVisitsCount(SQLiteDatabase db) {
+    public static long getTodayVisitsCount(SQLiteDatabase db, String chwUser) {
         int count =0;
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b  " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'";
-        Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query, null);
+        String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+                "AND a.startdate LIKE '" + currentDate + "T%' AND d.uuid = ? ";
+        Logger.logD(TAG, "count_hi: " +query + "chw" + chwUser);
+        final Cursor cursor = db.rawQuery(query, new String[]{chwUser});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -361,7 +371,6 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
     private void displaySingleSelectionDialog() {
-        ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
         String[] creator_names = null;
         String[] creator_uuid = null;
@@ -402,7 +411,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
-                doQueryWithProviders(selectedItems);
+                getCalendarPicker(selectedItems);
             }
         });
 
@@ -421,17 +430,17 @@ public class TodayPatientActivity extends AppCompatActivity {
       //  IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
     }
 
-    private void doQueryWithProviders(List<String> providersuuids) {
+    private void doQueryWithProviders(List<String> providersuuids, String date) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
         String query = "SELECT  distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
                 "WHERE a.patientuuid = b.uuid " +
-                "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') " +
+                "AND a.startdate LIKE '" + date + "%' " +
                 "ORDER BY a.patientuuid ASC ";
-        Logger.logD(TAG, query);
+        Logger.logV("main", query);
         final Cursor cursor = db.rawQuery(query, null);
 
         if (cursor != null) {
@@ -462,19 +471,21 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         TodayPatientAdapter mTodayPatientAdapter;
         LinearLayoutManager linearLayoutManager;
-        List<TodayPatientModel> speciality_list = getSpeciality_Filter(providersuuids);
-        List<TodayPatientModel> exitsurvey_comments_list = getExitSurvey_Filter(providersuuids);
+        List<TodayPatientModel> speciality_list = getSpeciality_Filter(providersuuids, date);
+        List<TodayPatientModel> exitsurvey_comments_list = getExitSurvey_Filter(providersuuids, date);
 
         if (!todayPatientList.isEmpty()) {
             for (TodayPatientModel todayPatientModel : todayPatientList)
                 Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name() + " " +
                         todayPatientModel.getVisit_speciality());
 
-             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, exitsurvey_comments_list, speciality_list);
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this,
+                     listPatientUUID, exitsurvey_comments_list, speciality_list);
             no_records_found_textview.setVisibility(View.GONE);
         }
         else {
-             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, exitsurvey_comments_list, speciality_list);
+             mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID,
+                     exitsurvey_comments_list, speciality_list);
              no_records_found_textview.setVisibility(View.VISIBLE);
              no_records_found_textview.setHint(R.string.no_records_found);
         }
@@ -489,7 +500,7 @@ public class TodayPatientActivity extends AppCompatActivity {
 
     }
 
-    private List<TodayPatientModel> getExitSurvey_Filter(List<String> providersuuids) {
+    private List<TodayPatientModel> getExitSurvey_Filter(List<String> providersuuids, String date) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
@@ -497,7 +508,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d, tbl_obs f " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND c.uuid = f.encounteruuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "AND a.startdate LIKE '" + date + "%' " +
                 "ORDER BY a.patientuuid ASC ";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
@@ -532,7 +543,7 @@ public class TodayPatientActivity extends AppCompatActivity {
         return todayPatientList;
     }
 
-    private List<TodayPatientModel> getSpeciality_Filter(List<String> providersuuids) {
+    private List<TodayPatientModel> getSpeciality_Filter(List<String> providersuuids, String date) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
@@ -540,7 +551,7 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_visit_attribute d " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid " +
                 "AND c.visituuid=a.uuid and c.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "AND a.startdate LIKE '" + currentDate + "T%'" +
+                "AND a.startdate LIKE '" + date + "%' " +
                 "ORDER BY a.patientuuid ASC ";
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
@@ -655,8 +666,8 @@ public class TodayPatientActivity extends AppCompatActivity {
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f " +
                 "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
                 "AND a.startdate LIKE '" + currentDate + "T%'   " +
-                "GROUP BY a.uuid ORDER BY a.patientuuid ASC limit ? offset ?";
-        Logger.logD(TAG, query);
+                "limit ? offset ?";
+        Logger.logD(TAG, "\n today_exit: " +query);
 
         final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
@@ -696,6 +707,40 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         return todayPatientList;
     }
+
+    private void getCalendarPicker(ArrayList selectedItems_data) {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(TodayPatientActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, month, dayOfMonth);
+                        date_string = todaydateFormat.format(calendar.getTime());
+                        Log.v("date", "picker_active: "+ date_string);
+
+                        doQueryWithProviders(selectedItems_data, date_string);
+
+                    }
+                }, year, month, day);
+
+        datePickerDialog.show();
+
+        Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = datePickerDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+
+    }
+
+
 
 }
 
