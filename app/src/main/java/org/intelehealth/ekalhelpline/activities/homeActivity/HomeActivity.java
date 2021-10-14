@@ -122,8 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SyncUtils syncUtils = new SyncUtils();
     // CardView c1, c2, c3, c4, c5, c6;
-    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7, c8;
-    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7_followUp;
+    CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6, c7, c8, c7_followUp;
     private String key = null;
     private String licenseUrl = null;
 
@@ -136,9 +135,9 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge, followUp_textView;
             activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge,
-            tvTodayVisitsBadge, tvActiveVisitsBadge, tvClosedVisitsBadge, tvCompletedVisitsBadge;
+            tvTodayVisitsBadge, tvActiveVisitsBadge, followUp_textView,
+            tvClosedVisitsBadge, tvCompletedVisitsBadge;
 
     //for auto update app
     private int REQUEST_CODE = 11;
