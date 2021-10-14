@@ -365,7 +365,7 @@ public class HomeActivity extends AppCompatActivity {
                     chatIntent.putExtra("toUuid", toUUId);
                     startActivity(chatIntent);
 
-                } /*else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
                     //Log.d(TAG, "actionType : VIDEO_CALL");
                     Intent in = new Intent(this, CompleteActivity.class);
                     String roomId = remoteMessage.getString("roomId");
@@ -376,7 +376,7 @@ public class HomeActivity extends AppCompatActivity {
                     in.putExtra("doctorname", doctorName);
                     in.putExtra("nurseId", nurseId);
                     startActivity(in);
-                }*/
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -1,25 +1,25 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
-INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
+INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
 	package
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:4:5-38
 		INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
 		INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	xmlns:tools
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
 		INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
-		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-62:12
+		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:1-63:12
 		INJECTED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:2:11-69
@@ -74,7 +74,7 @@ ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src
 	android:name
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:20:22-72
 application
-ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-60:19
+ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:22:5-61:19
 	android:supportsRtl
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:25:9-35
 	android:label
@@ -94,11 +94,13 @@ ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src
 	android:name
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:30:13-64
 activity#org.intelehealth.apprtc.CompleteActivity
-ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-59:59
+ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-60:59
 	android:screenOrientation
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:58:13-49
+	android:showOnLockScreen
+		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-44
 	android:theme
-		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-56
+		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:60:13-56
 	android:name
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:57:13-68
 uses-sdk

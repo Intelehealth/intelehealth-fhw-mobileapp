@@ -61,6 +61,7 @@
         <activity
             android:name="org.intelehealth.apprtc.CompleteActivity"
             android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

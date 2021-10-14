@@ -163,8 +163,6 @@ public class CallListenerBackgroundService extends Service {
                         intent.setAction("org.intelehealth.app.RTC_MESSAGE_EVENT");
                         sendBroadcast(intent);
                     }
-
-
                 }
 
                 @Override
