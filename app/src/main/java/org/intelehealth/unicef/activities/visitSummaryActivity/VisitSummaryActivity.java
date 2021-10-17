@@ -1879,6 +1879,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String[] visitIDArgs = {visitUuid};
         db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         final Cursor visitIDCursor = db.query("tbl_visit", columnsToReturn, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
+        if (visitIDCursor == null || !visitIDCursor.moveToFirst()) {
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            return;
+        }
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
@@ -3804,6 +3808,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             physcialExaminationImagesDownload();
 
         } catch (DAOException e) {
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 

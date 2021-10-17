@@ -200,8 +200,8 @@
             android:name="org.intelehealth.unicef.activities.homeActivity.HomeActivity"
             android:configChanges="uiMode"
             android:label="@string/title_activity_home"
-            android:showOnLockScreen="true"
             android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -275,7 +275,7 @@
         </service>
 
         <receiver
-            android:name=".Network.NetworkChangeListener"
+            android:name="org.intelehealth.unicef.utilities.NetworkChangeListener"
             android:label="NetworkChangeReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
