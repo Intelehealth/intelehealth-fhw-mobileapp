@@ -611,9 +611,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String countryCode = "+91";
-                                        if(patient.getCountry().equalsIgnoreCase("Kyrgyzstan") || patient.getCountry().equalsIgnoreCase("Кыргызстан"))
+                                        if (patient.getCountry().equalsIgnoreCase("Kyrgyzstan") || patient.getCountry().equalsIgnoreCase("Кыргызстан"))
                                             countryCode = "+996";
-                                            String phoneNumber = countryCode + editText.getText().toString();
+                                        String phoneNumber = countryCode + editText.getText().toString();
                                         String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                                 + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
 
@@ -1882,8 +1882,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
-        String mDate = sessionManager.getAppLanguage().equalsIgnoreCase("ru") ? ru__or_dob(DateAndTimeUtils.SimpleDatetoLongDate(startDateTime)):DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
-        mDate = mDate.replaceAll("-"," ");
+        String mDate = sessionManager.getAppLanguage().equalsIgnoreCase("ru") ? ru__or_dob(DateAndTimeUtils.SimpleDatetoLongDate(startDateTime)) : DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+        mDate = mDate.replaceAll("-", " ");
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
             mPatHist = "";
@@ -3856,13 +3856,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+        try {
+            if (downloadPrescriptionService != null) {
+                LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            }
+            if (receiver != null) {
+                unregisterReceiver(receiver);
+            }
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
-        if (receiver != null) {
-            unregisterReceiver(receiver);
-        }
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

@@ -1,6 +1,8 @@
 package org.intelehealth.unicef.activities.pastMedicalHistoryActivity;
 
 
+import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -64,8 +66,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import static org.intelehealth.unicef.database.dao.PatientsDAO.fetch_gender;
 
 public class PastMedicalHistoryActivity extends AppCompatActivity implements QuestionsAdapter.FabClickListener {
 
@@ -280,7 +280,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         } else {
-            Log.v(TAG, "mFileName - "+mFileName);
+            Log.v(TAG, "mFileName - " + mFileName);
             patientHistoryMap = new Node(FileUtils.encodeJSON(this, mFileName)); //Load the patient history mind map
         }
 
@@ -290,7 +290,11 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
 
         mgender = fetch_gender(patientUuid);
-
+        if (patientHistoryMap == null) {
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
         if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
         } else if (mgender.equalsIgnoreCase("F")) {
@@ -607,7 +611,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                                 // remove the visit
                                 VisitsDAO visitsDAO = new VisitsDAO();
                                 int count = visitsDAO.deleteByVisitUUID(visitUuid);
-                                if(count!=0) {
+                                if (count != 0) {
 
                                     ObsDAO obsDAO = new ObsDAO();
                                     obsDAO.deleteByEncounterUud(encounterAdultIntials);
