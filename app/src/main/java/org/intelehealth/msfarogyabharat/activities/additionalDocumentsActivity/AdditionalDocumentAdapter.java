@@ -86,7 +86,9 @@ String mEncounterVisitUUID;
         String doc_array[] = doc.split(".jpg");
 
         Log.v("main", "doc: "+doc);
-        holder.getDocumentNameTextView().setText(doc_array[0]);
+        if (doc_array != null && doc_array.length > 0) {
+            holder.getDocumentNameTextView().setText(doc_array[0]);
+        }
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
 

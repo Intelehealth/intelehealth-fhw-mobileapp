@@ -1021,8 +1021,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
                 } else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError(getResources().getString(R.string.please_select_specialization));
-                    t.setTextColor(Color.RED);
+                    if (t != null) {
+                        t.setError(getResources().getString(R.string.please_select_specialization));
+                        t.setTextColor(Color.RED);
+                    }
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
                             .setMessage(getResources().getString(R.string.please_select_specialization))
