@@ -113,6 +113,7 @@ public class ActivePatientActivity extends AppCompatActivity {
        // chw_name = sessionManager.getChwname();
         chw_name = sessionManager.getProviderID();
 
+/*
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -153,6 +154,7 @@ public class ActivePatientActivity extends AppCompatActivity {
                 }
             }
         });
+*/
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         if (sessionManager.isPullSyncFinished()) {
@@ -255,8 +257,8 @@ public class ActivePatientActivity extends AppCompatActivity {
         String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
+                "AND (a.enddate is NULL OR a.enddate='') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ?";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_data_});
         Log.v("main", "active: "+ query);
 
 
@@ -288,8 +290,8 @@ public class ActivePatientActivity extends AppCompatActivity {
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate ASC limit ? offset ?";
-        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
+                "AND (a.enddate is NULL OR a.enddate='') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate";
+        final Cursor cursor = db.rawQuery(query, new String[]{user_uuid});
         Log.v("main", "doquery: "+ query);
 
 
