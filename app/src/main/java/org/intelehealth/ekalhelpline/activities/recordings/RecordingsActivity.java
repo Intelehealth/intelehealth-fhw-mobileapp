@@ -80,7 +80,7 @@ public class RecordingsActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
 
-        String encoded = "Basic " + sessionManager.getEncoded();
+        String encoded = "Basic bnVyc2UxOk51cnNlMTIz";
         apiInterface.getRecordings(urlModifiers.getRecordingListUrl(sessionManager.getProviderPhoneno()), encoded).enqueue(new Callback<RecordingResponse>() {
             @Override
             public void onResponse(Call<RecordingResponse> call, Response<RecordingResponse> response) {
