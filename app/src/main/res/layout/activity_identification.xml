@@ -46,6 +46,88 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:id="@+id/ll_agent_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            app:srcCompat="@drawable/svg_person_details"></ImageView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:ems="10"
+                            android:fontFamily="@font/lato_bold"
+                            android:gravity="center_vertical"
+                            android:includeFontPadding="false"
+                            android:text="@string/agent_information"
+                            android:textSize="@dimen/card_content_text_size" />
+
+                    </LinearLayout>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView_agent_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="4dp"
+                        app:cardCornerRadius="10sp"
+                        app:cardElevation="3dp"
+                        app:cardPreventCornerOverlap="false">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="8dp">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <!--Can't access Vector drawables directly,that's why putted into another DrawableContainer-->
+                                <!--On the Left or Right of textview or Editext-->
+
+                                <EditText
+                                    android:id="@+id/identification_cc_name"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableStart="@drawable/person_icon"
+                                    android:drawableLeft="@drawable/person_icon"
+                                    android:drawablePadding="10dp"
+                                    android:ems="10"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:freezesText="true"
+                                    android:hint="@string/identification_screen_prompt_cc_name"
+                                    android:imeOptions="actionUnspecified"
+                                    android:inputType="textCapWords"
+                                    android:maxLength="25"
+                                    android:maxLines="1"
+                                    android:singleLine="true"
+                                    android:textSize="@dimen/card_content_sub_text_size" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                            />
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -828,9 +910,30 @@
                             android:id="@+id/other_helplineInfo_edittext"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:hint="@string/identification_screen_checkbox_other"
                             android:textSize="@dimen/card_content_sub_text_size"
-                            android:visibility="gone"
-                            android:hint="@string/identification_screen_checkbox_other" />
+                            android:visibility="gone" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:text="@string/MHH_air_SRH_issue"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_MHH_issue_knowledge"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
 
                     </LinearLayout>
 
@@ -838,8 +941,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
-                        android:padding="8dp">
+                        android:padding="8dp"
+                        android:visibility="gone">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
@@ -1503,70 +1606,70 @@
                                 android:id="@+id/cbVaccineGuide"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/vaccination_guidance" />
+                                android:text="@string/vaccination_guidance"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbCovidConcern"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/concern_about_covid_re_infection" />
+                                android:text="@string/concern_about_covid_re_infection"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManagingBreathlessness"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/managing_breathlessness" />
+                                android:text="@string/managing_breathlessness"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageVoiceIssue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/managing_issues_with_voice" />
+                                android:text="@string/managing_issues_with_voice"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbManageEating"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/managing_eating_drinking" />
+                                android:text="@string/managing_eating_drinking"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbDealProblems"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/dealing_problems" />
+                                android:text="@string/dealing_problems"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbMentalHealth"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/managing_mental_health" />
+                                android:text="@string/managing_mental_health"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbExercises"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/exercises" />
+                                android:text="@string/exercises"
+                                android:visibility="gone" />
 
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cbOthers"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:text="@string/txt_others" />
+                                android:text="@string/txt_others"
+                                android:visibility="gone" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone"
-                                android:hint="@string/txt_others">
+                                android:hint="@string/txt_others"
+                                android:visibility="gone">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/et_medical_advice_extra"

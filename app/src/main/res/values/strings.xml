@@ -749,4 +749,11 @@
     //sms via api
     <string name="sms_sent">SMS Sent!</string>
     <string name="sms_failed">Sending SMS Failed! Please try again later.</string>
+
+
+    //New Registration Changes
+    <string name="identification_screen_prompt_cc_name">Community Champion\'s name *</string>
+    <string name="MHH_air_SRH_issue">Do you have any MHH air SRH related Issue?</string>
+    <string name="agent_information">Agent Information</string>
+
 </resources>

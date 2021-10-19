@@ -142,7 +142,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeDays = 0;
     private String country1, state;
     PatientsDAO patientsDAO = new PatientsDAO();
-    EditText mFirstName;
+    EditText mFirstName, mCCName;
     EditText mMiddleName;
     EditText mLastName;
     EditText mDOB;
@@ -258,6 +258,12 @@ public class IdentificationActivity extends AppCompatActivity {
             }
         });
         // sessionManager = new SessionManager(this);
+
+        mCCName = findViewById(R.id.identification_cc_name);
+        mCCName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
+        if(!sessionManager.getChwname().isEmpty() && !sessionManager.getChwname().equalsIgnoreCase("") && sessionManager.getChwname()!=null)
+            mCCName.setText(sessionManager.getChwname());
+
         mFirstName = findViewById(R.id.identification_first_name);
         mFirstName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
 
