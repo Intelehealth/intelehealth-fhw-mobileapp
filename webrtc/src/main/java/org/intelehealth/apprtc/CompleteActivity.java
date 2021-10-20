@@ -16,6 +16,8 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -121,6 +123,18 @@ public class CompleteActivity extends AppCompatActivity {
 
     BroadcastReceiver broadcastReceiver;
     boolean mMicrophonePluggedIn = false;
+
+    public void onAttachedToWindow() {
+        Window window = getWindow();
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+        );
+
+        super.onAttachedToWindow();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -332,6 +346,12 @@ public class CompleteActivity extends AppCompatActivity {
      * Release all resources & close the scoket
      */
     private void disconnectAll() {
+
+        if (videoCapturer != null) {
+            videoCapturer.dispose();
+
+        }
+
         if (socket != null) {
             socket.disconnect();
             socket = null;
@@ -425,9 +445,7 @@ public class CompleteActivity extends AppCompatActivity {
                 Log.d(TAG, "connectToSignallingServer: connect");
                 //socket.emit("create or join", "foo");
                 if (!mIsInComingRequest) {
-
                     socket.emit("create or join", mRoomId);
-
                 }
             }).on("ipaddr", args -> {
                 Log.d(TAG, "connectToSignallingServer: ipaddr");

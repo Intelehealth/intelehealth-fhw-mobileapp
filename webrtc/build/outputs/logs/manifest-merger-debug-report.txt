@@ -82,7 +82,7 @@ ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src
 	tools:ignore
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:27:9-49
 	android:allowBackup
-		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:9-35
+		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:23:9-36
 	android:theme
 		ADDED from C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:26:9-40
 activity#org.intelehealth.apprtc.ChatActivity

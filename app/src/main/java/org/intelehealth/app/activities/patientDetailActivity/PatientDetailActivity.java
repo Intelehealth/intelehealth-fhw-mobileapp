@@ -687,7 +687,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             addrFinalView.setText(addrFinalLine);
         }
 
-
         phoneView.setText(patient_new.getPhone_number());
 //        education_statusView.setText(patient_new.getEducation_level());
 //        economic_statusView.setText(patient_new.getEconomic_status());

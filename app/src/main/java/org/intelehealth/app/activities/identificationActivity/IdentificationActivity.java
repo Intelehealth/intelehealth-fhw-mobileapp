@@ -109,7 +109,6 @@ public class IdentificationActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
     private ArrayAdapter<CharSequence> economicStatusAdapter;
-    //---------kuldeep-------------------------
     //private ArrayAdapter<CharSequence> countryAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -426,8 +425,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
         Resources res = getResources();
 
-        //----------------kuldeep--------------
-
         String countryStr="countries_"+ sessionManager.getAppLanguage();
         //int countryVal=R.array.countries_en;
         int countryVal=res.getIdentifier(countryStr, "array", getApplicationContext().getPackageName());
@@ -520,7 +517,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String education = switch_hi_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                } //-----------------kuldeep-----------------------------
+                }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String education = switch_ta_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
@@ -548,7 +545,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String economic = switch_hi_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }//------------------------kuldeep---------------------------
+                }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String economic = switch_ta_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
@@ -571,7 +568,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String caste = switch_hi_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }//---------------------kuldeep--------------------
+                }
                 else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String caste = switch_ta_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
@@ -607,7 +604,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     if (country.matches("India")) {
 
-                        //----------------------kuldeep---------------------
                         String stateStr="states_india_"+ sessionManager.getAppLanguage();
                         int stateVal=res.getIdentifier(stateStr, "array", getApplicationContext().getPackageName());
                         //R.array.states_india
@@ -749,7 +745,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                     mDOB.setText(dob_text);
-                } //------------kuldeep----------
+                }
                 else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
                     mDOB.setText(dob_text);
@@ -800,7 +796,7 @@ public class IdentificationActivity extends AppCompatActivity {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String dob_text = en__hi_dob(dob); //to show text of English into Hindi...
                 mDOB.setText(dob_text);
-            }//---------kuldeep-------------
+            }
             else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
                 mDOB.setText(dob_text);
@@ -924,7 +920,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                         mDOB.setText(dob_text);
-                    }//-----------kuldeep-------------
+                    }
                     else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
                         mDOB.setText(dob_text);
