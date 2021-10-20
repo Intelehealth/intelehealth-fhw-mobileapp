@@ -96,6 +96,7 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
+    private String pregnancy_date;
 
 
     //for Associated Complaints and medical history only
@@ -167,6 +168,8 @@ public class Node implements Serializable {
             this.min_age = jsonNode.optString("age_min");
 
             this.max_age = jsonNode.optString("age_max");
+
+            this.pregnancy_date = jsonNode.optString("pregnancy_date");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -364,6 +367,7 @@ public class Node implements Serializable {
         this.gender = source.gender;
         this.min_age = source.min_age;
         this.max_age = source.max_age;
+        this.pregnancy_date = source.pregnancy_date;
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
@@ -1016,7 +1020,14 @@ public class Node implements Serializable {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
-                            node.addLanguage(" " + dateString);
+                            if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
+                                String pregnancy_week = pregnancy_calculator(dateString);
+                                node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
+                            }
+                            else {
+                                node.addLanguage(" " + dateString);
+                            }
+                            
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
@@ -1748,7 +1759,14 @@ private static String ml_en(String unit) {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
-                            node.addLanguage(" " + dateString);
+                            if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
+                                String pregnancy_week = pregnancy_calculator(dateString);
+                                node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
+                            }
+                            else {
+                                node.addLanguage(" " + dateString);
+                            }
+
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
@@ -1760,6 +1778,12 @@ private static String ml_en(String unit) {
         datePickerDialog.setTitle(R.string.question_date_picker);
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+    }
+
+    private static String pregnancy_calculator(String dateString) {
+        String pregnancyTime = "";
+
+        return "2 week";
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -2404,6 +2428,14 @@ private static String ml_en(String unit) {
 
     public void setMax_age(String max_age) {
         this.max_age = max_age;
+    }
+
+    public String getPregnancy_date() {
+        return pregnancy_date;
+    }
+
+    public void setPregnancy_date(String pregnancy_date) {
+        this.pregnancy_date = pregnancy_date;
     }
 
     public boolean isRequired() {
