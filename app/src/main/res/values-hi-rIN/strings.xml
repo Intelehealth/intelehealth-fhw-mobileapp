@@ -677,4 +677,7 @@
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
 
+
+    <string name="due_on">नियत तारीख:</string>
+    <string name="follow_up_scheduled_on">फॉलो-अप शेड्यूल किया गया:</string>
 </resources>

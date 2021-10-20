@@ -717,4 +717,8 @@
     <string name="title_follow_up">Follow Up Visits</string>
     <string name="title_follow_reminder">Follow up visit reminder</string>
     <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
+
+
+    <string name="due_on">Due Date:</string>
+    <string name="follow_up_scheduled_on">Follow-Up Scheduled On:</string>
 </resources>

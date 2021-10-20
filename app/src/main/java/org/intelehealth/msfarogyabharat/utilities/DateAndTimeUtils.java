@@ -2,10 +2,14 @@ package org.intelehealth.msfarogyabharat.utilities;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.TimeUtils;
 
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.parse.Parse;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -13,8 +17,10 @@ import org.joda.time.PeriodType;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import org.intelehealth.msfarogyabharat.R;
 
@@ -67,7 +73,7 @@ public class DateAndTimeUtils {
     public String currentDateTime() {
         Locale.setDefault(Locale.ENGLISH);
         DateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-// you can get seconds by adding  "...:ss" to it
+// you can get seconds by adding  "...:ss" to it 2021-10-06T11:07:42.000+0530
         Date todayDate = new Date();
         return date.format(todayDate);
     }
@@ -311,6 +317,58 @@ public class DateAndTimeUtils {
             sdf1 = null;
         }
         return result;
+    }
+    public static boolean olderThan10Days(Date givenDate)
+    {
+        boolean result =
+                Days.daysBetween(new DateTime(givenDate), new DateTime()).isGreaterThan(Days.days(2));
+        return result;
+    }
+
+   public static int mGetDaysAccording(String OldDate){
+        int mDays=0;
+        try {
+
+            SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
+//            Date past = (f).parse("20-29-29");
+            Date past = (f).parse(""+OldDate);
+            Date now = new Date();
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(now.getTime() - past.getTime());
+            long minutes = java.util.concurrent.TimeUnit.MILLISECONDS.toMinutes(now.getTime() - past.getTime());
+            long hours = java.util.concurrent.TimeUnit.MILLISECONDS.toHours(now.getTime() - past.getTime());
+            long days = TimeUnit.MILLISECONDS.toDays(now.getTime() - past.getTime());
+            if(days>0) {
+                mDays = (int) Long.parseLong(String.valueOf(days));
+            }
+            else {
+                mDays=0;
+            }
+            if (seconds < 60) {
+                System.out.println(seconds + "sec ago");
+
+            } else if (minutes < 300) {
+                System.out.println("minutes ago");
+            } else if ((hours < 24)) {
+                System.out.println("minutes ago");
+            } else if (days % 2 == 0) {
+
+            } else {
+
+        }
+        }catch (Exception e){
+            return 0;
+        }
+         return mDays;
+    }
+     public  static String getCurrentDate (){
+         Calendar calendar;
+         SimpleDateFormat dateFormat;
+         String date;
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        date = dateFormat.format(calendar.getTime());
+        return date;
+
     }
 
 }
