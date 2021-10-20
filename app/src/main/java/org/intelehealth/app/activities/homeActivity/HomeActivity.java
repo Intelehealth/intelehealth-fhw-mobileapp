@@ -323,7 +323,6 @@ public class HomeActivity extends AppCompatActivity {
         }*/
 
         showProgressbar();
-        requestPermission();
     }
 
     private void saveToken() {
@@ -415,8 +414,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showProgressbar() {
-
-
 // instantiate it within the onCreate method
         mProgressDialog = new ProgressDialog(HomeActivity.this);
         mProgressDialog.setMessage(getString(R.string.download_protocols));
@@ -870,7 +867,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onComplete() {
-
+                            Log.e(TAG, "complete pull");
                         }
                     });
         } catch (IllegalArgumentException e) {
@@ -992,7 +989,6 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Logger.logD("syncBroadcastReceiver", "onReceive! " + intent);
-
             if (intent != null && intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
                 if (sessionManager.isFirstTimeLaunched()) {
@@ -1042,16 +1038,17 @@ public class HomeActivity extends AppCompatActivity {
                 sessionManager.setMigration(true);
                 // initial setup/sync done and now we can set the periodic background sync job
                 // given some delay after initial sync
+                requestPermission();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
                         WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
                     }
                 }, 10000);
+            }else{
+                requestPermission();
             }
         }
-
     }
 
     @Override
