@@ -237,7 +237,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
 
                                 }
-                                else if (mValue.trim().equalsIgnoreCase("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                else if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
                                     modelList.add(new FollowUpModel(
                                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -258,7 +258,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 // todo No need to added
                                 }
                             } else {
-                                if (mValue.trim().equalsIgnoreCase("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
+                                if (mValue.trim().contains("Severe.") || mValue.trim().equalsIgnoreCase("Severe.")) {
                                     modelList.add(new FollowUpModel(
                                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -299,45 +299,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
 
                 }
-//            if (value == -1) {
 
-//                Log.d("fjfj","djjds  "+followUp);
-
-//               if(olderThan10Days(followUp) ==true){
-////                   Toast.makeText(FollowUpPatientActivity.this,"last 10 days"+Toast.LENGTH_LONG).show();
-//                   Toast.makeText(FollowUpPatientActivity.this, "last 10 days="+followUp, Toast.LENGTH_LONG).show();
-//
-//               }else{
-//                   Toast.makeText(FollowUpPatientActivity.this, " days="+followUp, Toast.LENGTH_LONG).show();
-//
-//                   //todo data will add in list
-//               }
-//               if()
-//                modelList.add(new FollowUpModel(
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-//                        StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),""+getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
-//            } else if (value >= 0) {
-//                modelList.add(new FollowUpModel(
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-//                        StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
-//                        searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),""+getSeverity(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
-//            }
-//        }
                 catch (Exception e) {
                     e.printStackTrace();
                 }

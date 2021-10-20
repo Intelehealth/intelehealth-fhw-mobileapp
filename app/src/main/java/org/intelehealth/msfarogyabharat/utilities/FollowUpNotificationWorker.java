@@ -154,14 +154,14 @@ public class FollowUpNotificationWorker extends Worker {
                                     if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.")|| mValue.trim().contains("Mild."))
                                     {
                                         count++;
-                                    } else if (mValue.trim().equalsIgnoreCase("Severe.")) {
+                                    } else if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
                                         count++;
                                     } else {
 // todo No need to added
                                     }
                                 }
                                 else {
-                                    if (mValue.trim().equalsIgnoreCase("Severe.")) {
+                                    if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
                                         count++;
                                     } else {
 
