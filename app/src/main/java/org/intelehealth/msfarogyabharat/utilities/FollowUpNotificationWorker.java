@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -21,9 +22,15 @@ import org.intelehealth.msfarogyabharat.BuildConfig;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.models.FollowUpModel;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.mGetDaysAccording;
 
 public class FollowUpNotificationWorker extends Worker {
     private final static String TAG = "FollowUpNotificationWorker";
@@ -84,27 +91,120 @@ public class FollowUpNotificationWorker extends Worker {
         scheduled = true;
     }
 
+//    public static long getFollowUpCount(SQLiteDatabase db) {
+//        /*final Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v  where  v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.value like '%Moderate%' or o.value like '%Mild%' or 'Severe')))", null);
+//        boolean result = searchCursor.moveToFirst();
+//        searchCursor.close();
+//        return result;*/
+////        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and (o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%'))))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
+//        int count = 0;
+//        Date cDate = new Date();
+//        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+//        String query = "SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate like '%Sep 12, 2021%' or v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%"+ currentDate +"%')))";
+//        final Cursor cursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+//        try {
+//            if (cursor.moveToFirst()) {
+//                do {
+//                    String uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+//                    String severity = getSeverity(uuid, db);
+//                    if (severity == null)
+//                        continue;
+//                    count++;
+//                } while (cursor.moveToNext());
+//                cursor.close();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return count;
+//    }
     public static long getFollowUpCount(SQLiteDatabase db) {
-        /*final Cursor searchCursor = db.rawQuery("SELECT * FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v  where  v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.value like '%Moderate%' or o.value like '%Mild%' or 'Severe')))", null);
-        boolean result = searchCursor.moveToFirst();
-        searchCursor.close();
-        return result;*/
-//        return DatabaseUtils.longForQuery(db, "SELECT COUNT(*) as count FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and (o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%'))))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
+
         int count = 0;
-        final Cursor searchCursor = db.rawQuery("SELECT uuid FROM tbl_patient as p where p.uuid in (select v.patientuuid from tbl_visit as v where v.enddate is NULL and v.uuid in (select e.visituuid from tbl_encounter as e where e.uuid in (select o.encounteruuid from tbl_obs as o where o.conceptuuid = ? and o.value like '%Moderate%' or o.value like '%Mild%' or o.value like '%Severe%')))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION});
-        try {
-            if (searchCursor.moveToFirst()) {
+        Date cDate = new Date();
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
                 do {
-                    String uuid = searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"));
-                    String severity = getSeverity(uuid, db);
-                    if (severity != null && severity.contains("Asymptomatic"))
-                        continue;
-                    count++;
-                } while (searchCursor.moveToNext());
+                    try {
+                        String visitDateFollowup = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+                        String followUpDate = cursor.getString(cursor.getColumnIndexOrThrow("value")).substring(0,10);
+                        SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+                        Date startDate = sd1.parse(visitDateFollowup);
+
+                        String newStartDate = new SimpleDateFormat("dd-MM-yyyy").format(startDate);
+                        Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
+
+                        Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
+//                        Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
+                        int value = followUp.compareTo(currentD);
+                        String mSeverityValue = getSeverity(cursor.getString(cursor.getColumnIndexOrThrow("uuid")),db);
+                        Log.d("mSeverityValue", "mSeverityValue++ " + mSeverityValue);
+                        String[] arrSplit_2 = mSeverityValue.split("-");
+                        String mValue = arrSplit_2[arrSplit_2.length - 1];
+                        int days = mGetDaysAccording(newStartDate);
+
+                        if (value == -1) {
+//                            count++;
+
+                            if (days > 0 && days < 11) {
+                                if (days % 2 == 0) {
+                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.")|| mValue.trim().contains("Mild."))
+                                    {
+                                        count++;
+                                    } else if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    } else {
+// todo No need to added
+                                    }
+                                }
+                                else {
+                                    if (mValue.contains("Severe.")||mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    } else {
+
+                                    }
+                                }
+
+                            } else { // todo No need to added
+                            }
+                        }
+                        else if(value>0) {
+                            if (days > 0 && days < 11 && days != 0) {
+                                if (days % 2 == 0) {
+                                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") || mValue.trim().contains("Moderate.") || mValue.trim().contains("Mild.")) {
+                                        count++;
+                                    } else if (mValue.trim().equalsIgnoreCase("Severe.")|| mValue.trim().contains("Severe.")) {
+                                        count++;
+                                    } else {
+// todo No need to added
+                                    }
+                                } else {
+                                    if (mValue.trim().contains("Severe.") ||mValue.trim().equalsIgnoreCase("Severe.")) {
+                                        count++;
+                                    } else {
+
+                                    }
+                                }
+
+                            }
+
+                        }
+                        else{
+                            count++;
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } while (cursor.moveToNext());
             }
-            searchCursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (cursor != null) {
+                cursor.close();
+            }
         }
         return count;
     }
@@ -140,5 +240,17 @@ public class FollowUpNotificationWorker extends Worker {
                 .setContentText(text).build();
         mNotifyManager.notify(mId, mBuilder.build());
 
+    }
+
+    private String msetSeverity(String patientUid) {
+        String severity = null;
+        final Cursor obsCursor = db.rawQuery("select o.value from tbl_obs as o where o.conceptuuid = ? and encounteruuid in (select e.uuid from tbl_encounter as e where e.visituuid in (select v.uuid from tbl_visit as v where v.patientuuid = ?))", new String[]{UuidDictionary.PHYSICAL_EXAMINATION, patientUid});
+        if (obsCursor.moveToFirst()) {
+            do {
+                severity = obsCursor.getString(obsCursor.getColumnIndexOrThrow("value"));
+            } while (obsCursor.moveToNext());
+            obsCursor.close();
+        }
+        return severity;
     }
 }

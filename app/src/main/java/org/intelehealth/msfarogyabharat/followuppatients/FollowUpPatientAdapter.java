@@ -2,6 +2,7 @@ package org.intelehealth.msfarogyabharat.followuppatients;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,17 +17,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.msfarogyabharat.models.FollowUpModel;
 import org.intelehealth.msfarogyabharat.models.dto.PatientDTO;
 import org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.getCurrentDate;
+import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.mGetDaysAccording;
+
 public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatientAdapter.Myholder> {
-    List<PatientDTO> patients;
+    List<FollowUpModel> patients;
     Context context;
     LayoutInflater layoutInflater;
 
-    public FollowUpPatientAdapter(List<PatientDTO> patients, Context context) {
+    public FollowUpPatientAdapter(List<FollowUpModel> patients, Context context) {
         this.patients = patients;
         this.context = context;
     }
@@ -41,28 +49,114 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
 
     @Override
     public void onBindViewHolder(@NonNull Myholder holder, int position) {
-        final PatientDTO patinet = patients.get(position);
+        final FollowUpModel patinet = patients.get(position);
+
         if (patinet != null) {
             //int age = DateAndTimeUtils.getAge(patinet.getDateofbirth(),context);
 
-            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDateofbirth(), context);
+            String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDate_of_birth(), context);
             //String dob = DateAndTimeUtils.SimpleDatetoLongDate(patinet.getDateofbirth());
             String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
 
-            if (patinet.getOpenmrsId() != null)
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname()
-                        + ", " + patinet.getOpenmrsId());
+            if (patinet.getOpenmrs_id() != null)
+                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name()
+                        + ", " + patinet.getOpenmrs_id());
             else
-                holder.headTextView.setText(patinet.getFirstname() + " " + patinet.getLastname());
+                holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name());
 
             holder.bodyTextView.setText(body);
-            if (TextUtils.isEmpty(patinet.comment)) {
+            if (TextUtils.isEmpty(patinet.getComment())) {
                 holder.commentTextView.setVisibility(View.GONE);
             } else {
-                holder.commentTextView.setText(Html.fromHtml(patinet.comment));
+                holder.commentTextView.setText(Html.fromHtml(patinet.getComment()));
                 holder.commentTextView.setVisibility(View.VISIBLE);
             }
         }
+        if (patinet.getFollowup_date().equalsIgnoreCase("null")) {
+holder.dueDateTextView.setVisibility(View.GONE);
+        }
+        else{
+            holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
+
+            holder.dueDateTextView.setVisibility(View.VISIBLE);
+        }
+
+//        if (!patinet.getVisitStartDate().equalsIgnoreCase("null")) {
+//
+//            String[] arrSplit_2 = patinet.getComment().split("-");
+//            String mValue = arrSplit_2[arrSplit_2.length - 1];
+//            String visitDateStartDate = patinet.getVisitStartDate();
+//            SimpleDateFormat sd1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+//            Date startDate = null;
+//            try {
+//                startDate = sd1.parse(visitDateStartDate);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//            String newStartDate = new SimpleDateFormat("dd-MM-yyyy").format(startDate);
+//
+//            int days=mGetDaysAccording(newStartDate);
+//
+//
+//            if (days > 0) {
+//                if (days % 2 == 0) {
+//                    if (mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.") ||mValue.trim().contains("Moderate.") ||mValue.trim().contains("Mild."))
+//                    {
+//                        holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + "" +newStartDate);
+//                    }
+//                    else  if(mValue.trim().equalsIgnoreCase("Severe.")){
+//                        holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + "Today" + newStartDate);
+//
+//                    }else{
+////                        holder.linearLayout.setVisibility(View.GONE);
+////                        patients.remove(patinet);
+////                        notifyItemRemoved(position);
+////                        notifyItemRangeChanged(position, patients.size());
+//                        holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + "remove" + newStartDate);
+//                    }
+//                }
+//                else {
+//                    if(mValue.equalsIgnoreCase("Severe.")) {
+//                        holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + getCurrentDate());
+//                    }
+//                    if(mValue.trim().equalsIgnoreCase("Mild.") || mValue.trim().equalsIgnoreCase("Moderate.")||mValue.trim().contains("Moderate.") ||mValue.trim().contains("Mild."))
+//                    {
+//                        holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + "R" + newStartDate);
+//                    }
+//                    else{
+//
+//                        holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + "???" + newStartDate);
+////                        patients.remove(patinet);
+//////                        notifyItemRemoved(position);
+////                        notifyItemRangeChanged(position, patients.size());
+////                        patients.remove(patinet);
+//                    }
+////                patients.remove(position);
+////                notifyDataSetChanged();
+////                    holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + patinet.getFollowup_date());
+//
+//                    //todo remove from list===========
+//                }
+//
+//
+//            } else {
+//                holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + patinet.getVisitStartDate());
+//
+//
+//            }
+////            holder.linearLayout.setVisibility(View.VISIBLE);
+//            holder.dueDateTextView.setVisibility(View.VISIBLE);
+////          holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.lite_red));
+////            holder.dueDateTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
+//
+//        }
+//        else {
+//            holder.linearLayout.setVisibility(View.GONE);
+//            holder.dueDateTextView.setVisibility(View.GONE);
+//        }
+
+
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,10 +164,10 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                 String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
                 intent.putExtra("patientUuid", patinet.getUuid());
-                intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
+                intent.putExtra("patientName", patinet.getFirst_name() + "" + patinet.getLast_name());
                 intent.putExtra("status", patientStatus);
                 intent.putExtra("tag", "search");
-                intent.putExtra("intentTag2","findPatient");
+                intent.putExtra("intentTag2", "findPatient");
                 intent.putExtra("hasPrescription", "false");
                 intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
                 context.startActivity(intent);
@@ -82,8 +176,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return patients.size();
     }
 
@@ -91,13 +184,14 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
         LinearLayout linearLayout;
         private TextView headTextView;
         private TextView bodyTextView;
-        private TextView commentTextView;
+        private TextView commentTextView, dueDateTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
             commentTextView = itemView.findViewById(R.id.list_item_comment);
+            dueDateTextView = itemView.findViewById(R.id.list_item_DueDate);
             linearLayout = itemView.findViewById(R.id.searchlinear);
         }
     }
