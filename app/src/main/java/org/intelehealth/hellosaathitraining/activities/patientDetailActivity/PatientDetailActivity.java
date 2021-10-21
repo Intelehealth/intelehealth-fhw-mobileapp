@@ -540,7 +540,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
-                selectedSubscriptionTime = timeAdapter.getItem(position);
+                selectedSubscriptionTime = String.valueOf(position);
             }
 
             @Override
@@ -843,7 +843,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                         SubscriptionStatus body = response.body();
                         String message = body.data;
                         if (body != null) {
-                            updateSubscriptionUI(false, 1);                            if(sessionManager.getAppLanguage().equals("hi"))
+                            updateSubscriptionUI(false, 1);
+                            if(sessionManager.getAppLanguage().equals("hi"))
                                 message = switch_hi_subs_response(body.data) ;
                             else
                                 message = body.data;

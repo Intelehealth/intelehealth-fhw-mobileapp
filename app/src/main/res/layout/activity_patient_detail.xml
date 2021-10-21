@@ -1336,6 +1336,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/preferred_gender_TIL"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="wrap_content">
 
                             <LinearLayout
