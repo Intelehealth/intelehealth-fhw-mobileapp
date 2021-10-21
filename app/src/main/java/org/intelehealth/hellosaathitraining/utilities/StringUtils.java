@@ -111,6 +111,20 @@ public final class StringUtils {
         return sb.toString();
     }
 
+    public static String getValueNonMandatory(String value) {
+        String val = "";
+        if (value != null){
+            if(value.equalsIgnoreCase("")){
+                val="NA";
+            }else{
+                val = value;
+            }
+
+        }
+        return val;
+
+    }
+
     public static String getValue(String value) {
         String val = "";
         if (value != null)

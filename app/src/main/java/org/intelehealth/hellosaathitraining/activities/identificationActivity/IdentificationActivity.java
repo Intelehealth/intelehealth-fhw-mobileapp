@@ -2559,7 +2559,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mCCName.getText().toString().equals("")  &&!mFirstName.getText().toString().equals("")  && !mLastName.getText().toString().equals("")  && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
+        if (!mCCName.getText().toString().equals("")  &&!mFirstName.getText().toString().equals("")  && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked()) && (mSubscrYes.isChecked() || mSubscrNo.isChecked() || mSubscrAlready.isChecked())) {
 
@@ -2575,9 +2575,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
+//            if (mLastName.getText().toString().equals("")) {
+//                mLastName.setError(getString(R.string.error_field_required));
+//            }
 
 //            if (mDOB.getText().toString().equals("")) {
 //                mDOB.setError(getString(R.string.error_field_required));
@@ -2981,7 +2981,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setLastname(StringUtils.getValueNonMandatory(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondaryphonenumber(StringUtils.getValue(mAddPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
@@ -3587,7 +3587,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mCCName.getText().toString().equals("")
                 &&!mFirstName.getText().toString().equals("")
-                && !mLastName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("") && !mPhoneNum.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked()) && (mSubscrYes.isChecked() || mSubscrNo.isChecked() || mSubscrAlready.isChecked())) {
@@ -3604,9 +3603,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mFirstName.setError(getString(R.string.error_field_required));
             }
 
-            if (mLastName.getText().toString().equals("")) {
-                mLastName.setError(getString(R.string.error_field_required));
-            }
+//            if (mLastName.getText().toString().equals("")) {
+//                mLastName.setError(getString(R.string.error_field_required));
+//            }
 
 //            if (mDOB.getText().toString().equals("")) {
 //                mDOB.setError(getString(R.string.error_field_required));
@@ -4012,7 +4011,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
-            patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
+            patientdto.setLast_name(StringUtils.getValueNonMandatory(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             patientdto.setSecondary_phone_number(StringUtils.getValue(mAddPhoneNum.getText().toString()));
             patientdto.setGender(StringUtils.getValue(mGender));
