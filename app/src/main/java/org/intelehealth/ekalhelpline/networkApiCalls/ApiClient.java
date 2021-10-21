@@ -36,11 +36,11 @@ public class ApiClient {
     public static <S> S createService(Class<S> serviceClass) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
-        client.connectTimeout(70, TimeUnit.SECONDS);
-        client.readTimeout(70, TimeUnit.SECONDS);
-        client.writeTimeout(70, TimeUnit.SECONDS);
+        client.connectTimeout(300, TimeUnit.SECONDS);
+        client.readTimeout(300, TimeUnit.SECONDS);
+        client.writeTimeout(300, TimeUnit.SECONDS);
         retrofit = builder.client(client.build()).build();
         return retrofit.create(serviceClass);
     }
@@ -49,9 +49,9 @@ public class ApiClient {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
-        client.connectTimeout(70, TimeUnit.SECONDS);
-        client.readTimeout(70, TimeUnit.SECONDS);
-        client.writeTimeout(70, TimeUnit.SECONDS);
+        client.connectTimeout(300, TimeUnit.SECONDS);
+        client.readTimeout(300, TimeUnit.SECONDS);
+        client.writeTimeout(300, TimeUnit.SECONDS);
         Retrofit.Builder builder = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
