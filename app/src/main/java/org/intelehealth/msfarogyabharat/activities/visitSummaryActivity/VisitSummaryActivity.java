@@ -629,9 +629,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
-        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+        /*isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
         if (isVisitSpecialityExists)
-            speciality_spinner.setEnabled(false);
+            speciality_spinner.setEnabled(false);*/
 
         //spinner is being populated with the speciality values...
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();

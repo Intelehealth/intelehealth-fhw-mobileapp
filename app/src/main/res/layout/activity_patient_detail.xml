@@ -1062,12 +1062,13 @@
                         android:padding="@dimen/padding_card">
 
                         <TextView
+                            android:id="@+id/textview_showallvisits"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
                             android:includeFontPadding="false"
-                            android:textSize="@dimen/card_title_text_size"
-                            android:visibility="gone" />
+                            android:textSize="18sp"
+                            android:text="Show All Visits"/>
 
 
                     </LinearLayout>

@@ -176,6 +176,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
     TextView phoneView;
+    TextView textview_showallvisits;
     String privacy_value_selected;
 
     ImageView ivPrescription;
@@ -210,6 +211,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        textview_showallvisits = findViewById(R.id.textview_showallvisits);
         newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
@@ -225,11 +227,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             hasPrescription = intent.getStringExtra("hasPrescription");
             MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
-//            String phoneNumber = intent.getStringExtra("phoneNumber");
-//            if (!TextUtils.isEmpty(phoneNumber)) {
-//                sendWelcomeSms(phoneNumber);
-//            }
-
             intentTag = intent.getStringExtra("tag");
             intentTag1 = intent.getStringExtra("intentTag1");
             intentTag2 = intent.getStringExtra("intentTag2");
@@ -320,6 +317,22 @@ public class PatientDetailActivity extends AppCompatActivity {
             //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         }
 
+        textview_showallvisits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+                /*intentTag = intent.getStringExtra("tag");
+                intentTag1 = intent.getStringExtra("intentTag1");
+                intentTag2 = intent.getStringExtra("intentTag2");*/
+
+                intent.putExtra("patientUuid", patientUuid);
+                intent.putExtra("patientName", patientName);
+                intent.putExtra("hasPrescription", hasPrescription);
+                intent.putExtra("MedicalAdvice", MedicalAdvice);
+
+                startActivity(intent);
+            }
+        });
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1052,6 +1065,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             CardView histCardView = findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {
+            // no use here looping...
             visitUuidList = new ArrayList<>();
             String visitIDSelection = "patientuuid = ?";
             String[] visitIDArgs = {patientUuid};
@@ -1059,12 +1073,13 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                 do {
                     visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-                    visitUuidList.add(visitUuid);
+                    visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
                 } while (visitIDCursor.moveToNext());
             }
             if (visitIDCursor != null) {
                 visitIDCursor.close();
             }
+            //no use...for loop...
             for (String visituuid : visitUuidList) {
                 Logger.logD(TAG, visituuid);
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -1089,8 +1104,10 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             familyHistory(famHistView, patientUuid, encounterAdultIntials);
             pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
-            pastVisits(patientUuid);
+           // pastVisits(patientUuid);
         }
+
+
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
