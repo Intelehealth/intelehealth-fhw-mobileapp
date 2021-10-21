@@ -2072,23 +2072,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+            //if(sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
+           // {
+                if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+                }
+           // }else {
+                else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                 } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
+           // }
         }
         String font_face = "<style>" +
                 "                @font-face {" +
@@ -2432,21 +2437,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
-            }
+           // if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+                }
+          //  } else {
+                else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+                    fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+                }
+          //  }
         }
         String font_face = "<style>" +
                 "                @font-face {" +
