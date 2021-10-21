@@ -54,6 +54,7 @@
     <array name="preferred_time_female">
         <item>Select Time</item>
         <item>11am-2pm</item>
+        <item>2pm-5pm</item>
         <item>6pm-9pm</item>
     </array>
 

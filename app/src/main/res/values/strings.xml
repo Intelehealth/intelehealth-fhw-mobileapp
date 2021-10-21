@@ -762,7 +762,7 @@
     <string name="enter_issue">What is the issue?*</string>
     <string name="subscription_consent">Do you want to subscribe to audio stories?</string>
     <string name="already_subscribed">Already Subscribed</string>
-    <string name="subsc_status">Subscription Status</string>
+    <string name="subsc_status">Subscription Consent</string>
     <string name="patient_called_helpline">Called Helpline</string>
     <string name="marital_status">Marital Status</string>
     <string name="mhh_issue">MHH air SRH related issue</string>

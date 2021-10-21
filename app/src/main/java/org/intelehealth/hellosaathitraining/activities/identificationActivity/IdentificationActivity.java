@@ -1194,6 +1194,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "yes");
             }
 
+            mSubscrAlready.setEnabled(false);
+            mSubscrNo.setEnabled(false);
+            mSubscrYes.setEnabled(false);
 
         }
 

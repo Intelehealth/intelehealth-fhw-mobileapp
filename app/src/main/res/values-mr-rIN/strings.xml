@@ -734,7 +734,7 @@
         <string name="enter_issue">समस्या काय आहे?*</string>
         <string name="subscription_consent">तुम्हाला ऑडिओ स्टोरी सदस्यता घ्यायची आहे का?</string>
         <string name="already_subscribed">आधीच सदस्यता घेतली आहे</string>
-        <string name="subsc_status"> सदस्यता स्थिती</string>
+        <string name="subsc_status">सदस्यता संमती</string>
         <string name="patient_called_helpline">हेल्पलाइनला फोन केला</string>
         <string name="marital_status"> वैवाहिक स्थिती</string>
         <string name="mhh_issue">MHH एअर SRH संबंधित समस्या</string>
