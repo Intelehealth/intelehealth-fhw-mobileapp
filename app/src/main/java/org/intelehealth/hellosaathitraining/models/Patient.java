@@ -36,6 +36,12 @@ public class Patient {
     private String structure_house;
     private String hectars_land;
     private String emergency;
+    private String subscription_consent;
+    private String called_helpline;
+    private String marital_status;
+    private String spouse_contact_number;
+    private String chw_name;
+    private String mhh_issue;
 
     public String getUuid() {
         return uuid;
@@ -315,5 +321,53 @@ public class Patient {
 
     public void setPreferred_language(String preferred_language) {
         this.preferred_language = preferred_language;
+    }
+
+    public String getSubscription_consent() {
+        return subscription_consent;
+    }
+
+    public void setSubscription_consent(String subscription_consent) {
+        this.subscription_consent = subscription_consent;
+    }
+
+    public String getCalled_helpline() {
+        return called_helpline;
+    }
+
+    public void setCalled_helpline(String called_helpline) {
+        this.called_helpline = called_helpline;
+    }
+
+    public String getMarital_status() {
+        return marital_status;
+    }
+
+    public void setMarital_status(String marital_status) {
+        this.marital_status = marital_status;
+    }
+
+    public String getSpouse_contact_number() {
+        return spouse_contact_number;
+    }
+
+    public void setSpouse_contact_number(String spouse_contact_number) {
+        this.spouse_contact_number = spouse_contact_number;
+    }
+
+    public String getChw_name() {
+        return chw_name;
+    }
+
+    public void setChw_name(String chw_name) {
+        this.chw_name = chw_name;
+    }
+
+    public String getMhh_issue() {
+        return mhh_issue;
+    }
+
+    public void setMhh_issue(String mhh_issue) {
+        this.mhh_issue = mhh_issue;
     }
 }

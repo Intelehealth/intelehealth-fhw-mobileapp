@@ -723,4 +723,21 @@
     <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
         <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
 
+        //New Registration Changes
+        <string name="identification_screen_prompt_cc_name">कम्युनिटी चॅम्पियनचे नाव*</string>
+        <string name="MHH_air_SRH_issue">तुमच्याकडे MHH एअर SRH संबंधित समस्या आहे का?*</string>
+        <string name="agent_information">एजंट माहिती</string>
+        <string name="subscription_information">सदस्यता माहिती</string>
+        <string name="called_helpline"> तुम्ही हेल्पलाईनवर फोन केला का?*</string>
+        <string name="married"> तुमचे लग्न झाले आहे का?*</string>
+        <string name="spouse_phone_number"> जोडीदाराचा फोन नंबर*</string>
+        <string name="enter_issue">समस्या काय आहे?*</string>
+        <string name="subscription_consent">तुम्हाला ऑडिओ स्टोरी सदस्यता घ्यायची आहे का?</string>
+        <string name="already_subscribed">आधीच सदस्यता घेतली आहे</string>
+        <string name="subsc_status"> सदस्यता स्थिती</string>
+        <string name="patient_called_helpline">हेल्पलाइनला फोन केला</string>
+        <string name="marital_status"> वैवाहिक स्थिती</string>
+        <string name="mhh_issue">MHH एअर SRH संबंधित समस्या</string>
+        <string name="identification_screen_dialog_error_subscription">सदस्यता संमती दिली जात नाही</string>
+
 </resources>

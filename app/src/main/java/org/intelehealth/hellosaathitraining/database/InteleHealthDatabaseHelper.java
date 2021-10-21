@@ -80,6 +80,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "economic_status TEXT," +
             "education_status TEXT," +
             "caste TEXT," +
+            "called_helpline TEXT," +
+            "mhh_issue TEXT," +
+            "marital_status TEXT," +
+            "subscription_consent TEXT," +
+            "chw_name TEXT," +
             "dead Text," +
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
@@ -213,6 +218,12 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('36d207d6-bee7-4b3e-9196-7d053c6eddce','COMMENTS')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('d2ac5af4-392b-4749-9a53-baca25821452','ATTRIBUTE_SECONDARY_PHONE_NUMBER')");
             db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('796db5bc-8001-42fd-a652-cabddf3f39bf','ATTRIBUTE_PREFERRED_LANGUAGE')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('5e0c2f9d-978b-4e9b-8e99-e8fc291ee475','ATTRIBUTE_SUBSCRIPTION_CONSENT')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('3e114fc0-d073-496a-b5fc-fce35bede93d','ATTRIBUTE_CHW_NAME')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('2af6718c-e21c-485b-8bd7-4cf1cfaf87f7','ATTRIBUTE_MHH_ISSUE')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('b1a4ee09-0fc9-44cb-a953-a653de7b74ba','ATTRIBUTE_CALLED_HELPLINE')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('9382bda0-eabf-49c5-af67-3590d07ec674','ATTRIBUTE_MARITAL_STATUS')");
+            db.execSQL("INSERT OR REPLACE INTO tbl_uuid_dictionary (uuid,name) VALUES('ebdfdac6-ad09-48be-ad3f-90697954b9ba','ATTRIBUTE_SPOUSE_PHONE_NUMBER')");
         }
     }
 

@@ -103,6 +103,7 @@ import org.intelehealth.hellosaathitraining.activities.visitSummaryActivity.Visi
 import org.intelehealth.hellosaathitraining.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.hellosaathitraining.utilities.NetworkConnection;
 import org.intelehealth.hellosaathitraining.utilities.exception.DAOException;
+import org.w3c.dom.Text;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -121,13 +122,18 @@ import retrofit2.Response;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.en__or_dob;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_callNoteValue_edit;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_called_helpline_edit;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_callerRelation;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_en_called_helpline;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_helplineInfo;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_numberRelation;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_subs_response;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_whatsapp_edit;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_called_helpline_edit;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_callerRelation;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_helplineInfo;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_numberRelation;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_whatsapp_edit;
 
 public class PatientDetailActivity extends AppCompatActivity {
     private static final String TAG = PatientDetailActivity.class.getSimpleName();
@@ -787,7 +793,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "secondary_phone_number","preferred_language", "gender", "sdw",
-                "patient_photo"};
+                "patient_photo", "called_helpline", "mhh_issue", "marital_status", "subscription_consent"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -808,6 +814,10 @@ public class PatientDetailActivity extends AppCompatActivity {
                 patient_new.setPreferred_language(idCursor.getString(idCursor.getColumnIndexOrThrow("preferred_language")));
                 patient_new.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patient_new.setPatient_photo(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patient_new.setCalled_helpline(idCursor.getString(idCursor.getColumnIndexOrThrow("called_helpline")));
+                patient_new.setSubscription_consent(idCursor.getString(idCursor.getColumnIndexOrThrow("subscription_consent")));
+                patient_new.setMhh_issue(idCursor.getString(idCursor.getColumnIndexOrThrow("mhh_issue")));
+                patient_new.setMarital_status(idCursor.getString(idCursor.getColumnIndexOrThrow("marital_status")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -838,6 +848,22 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                 if (name.equalsIgnoreCase("Preferred Language")) {
                     patient_new.setPreferred_language(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Did they call the helpline?")) {
+                    patient_new.setCalled_helpline(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Consent for Subscription")) {
+                    patient_new.setSubscription_consent(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Do you have any MHH air SRH related Issue")) {
+                    patient_new.setMhh_issue(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase("Married")) {
+                    patient_new.setMarital_status(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
               /*  if (name.equalsIgnoreCase("Education Level")) {
@@ -886,6 +912,10 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
+        TextView calledHelpline = findViewById(R.id.textView_calledHelpline);
+        TextView subscrConsent = findViewById(R.id.textView_subscStatus);
+        TextView mhhIssueTV = findViewById(R.id.textView_mhh_issue);
+        TextView maritalStatusTV = findViewById(R.id.textView_marital_status);
 
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
@@ -1113,6 +1143,20 @@ public class PatientDetailActivity extends AppCompatActivity {
             numberRelation.setText(numberRelationS);
             String helplineInfoS = switch_hi_helplineInfo(patient_new.getCaste());
             helplineInfo.setText(helplineInfoS);
+            String calledHelplineS = switch_hi_called_helpline_edit(patient_new.getCalled_helpline());
+            calledHelpline.setText(calledHelplineS);
+            String subscriptionConsent = switch_hi_whatsapp_edit(patient_new.getSubscription_consent());
+            subscrConsent.setText(subscriptionConsent);
+            String mhhIssue = switch_hi_whatsapp_edit(patient_new.getMhh_issue());
+            if(mhhIssue.equalsIgnoreCase("नहीं"))
+                mhhIssueTV.setText(mhhIssue);
+            else
+                mhhIssueTV.setText("हाँ, " + mhhIssue);
+            String maritalStatus = switch_hi_whatsapp_edit(patient_new.getMarital_status());
+            if(maritalStatus.equalsIgnoreCase("नहीं"))
+                maritalStatusTV.setText(maritalStatus);
+            else
+                maritalStatusTV.setText("हाँ, " + maritalStatus);
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             String callerRelationS = switch_mr_callerRelation(patient_new.getSdw());
             callerRelation.setText(callerRelationS);
@@ -1120,10 +1164,34 @@ public class PatientDetailActivity extends AppCompatActivity {
             numberRelation.setText(numberRelationS);
             String helplineInfoS = switch_mr_helplineInfo(patient_new.getCaste());
             helplineInfo.setText(helplineInfoS);
+            String calledHelplineS = switch_mr_called_helpline_edit(patient_new.getCalled_helpline());
+            calledHelpline.setText(calledHelplineS);
+            String subscriptionConsent = switch_mr_whatsapp_edit(patient_new.getSubscription_consent());
+            subscrConsent.setText(subscriptionConsent);
+            String mhhIssue = switch_mr_whatsapp_edit(patient_new.getMhh_issue());
+            if(mhhIssue.equalsIgnoreCase("नाही"))
+                mhhIssueTV.setText(mhhIssue);
+            else
+                mhhIssueTV.setText("होय, " + mhhIssue);
+            String maritalStatus = switch_mr_whatsapp_edit(patient_new.getMarital_status());
+            if(maritalStatus.equalsIgnoreCase("नाही"))
+                maritalStatusTV.setText(maritalStatus);
+            else
+                maritalStatusTV.setText("होय, " + maritalStatus);
         } else {
             callerRelation.setText(patient_new.getSdw());
             helplineInfo.setText(patient_new.getCaste());
             numberRelation.setText(patient_new.getEconomic_status());
+            calledHelpline.setText(patient_new.getCalled_helpline());
+            subscrConsent.setText(patient_new.getSubscription_consent());
+            if(patient_new.getMhh_issue().equalsIgnoreCase("No"))
+                mhhIssueTV.setText(patient_new.getMhh_issue());
+            else
+                mhhIssueTV.setText("Yes, " + patient_new.getMhh_issue());
+            if(patient_new.getMarital_status().equalsIgnoreCase("No"))
+                maritalStatusTV.setText(patient_new.getMarital_status());
+            else
+                maritalStatusTV.setText("Yes, " + patient_new.getMarital_status());
         }
 
         //english = en

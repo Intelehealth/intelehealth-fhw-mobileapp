@@ -194,7 +194,6 @@ public final class StringUtils {
             val = switch_hi_en_occupation(val);
             val = switch_hi_en_bankaccount(val);
             val = switch_hi_en_mobile(val);
-            val = switch_hi_en_whatsapp(val);
             val = switch_hi_en_sourcewater(val);
             val = switch_hi_en_watersafe(val);
             val = switch_hi_en_wateravail(val);
@@ -474,12 +473,65 @@ public final class StringUtils {
             case "नहीं":
                 val = "No";
                 break;
+            case "सदस्यता ले रखी":
+                val = "Already Subscribed";
+                break;
             default:
                 return val;
         }
         return val;
     }
 
+    public static String switch_mr_en_whatsapp(String val) {
+        switch (val) {
+            case "होय":
+                val = "Yes";
+                break;
+            case "नाही":
+                val = "No";
+                break;
+            case "आधीच सदस्यता घेतली आहे":
+                val = "Already Subscribed";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_whatsapp_edit(String val) {
+        switch (val) {
+            case "Yes":
+                val = "हाँ";
+                break;
+            case "No":
+                val = "नहीं";
+                break;
+            case "Already Subscribed":
+                val = "सदस्यता ले रखी";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_whatsapp_edit(String val) {
+        switch (val) {
+            case "Yes":
+                val = "होय";
+                break;
+            case "No":
+                val = "नाही";
+                break;
+            case "Already Subscribed":
+                val = "आधीच सदस्यता घेतली आहे";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_hi_education(String val) {
         switch (val) {
@@ -859,14 +911,20 @@ public final class StringUtils {
             case "Self":
                 val = "रोगी स्वयं";
                 break;
+            case "Husband/Wife":
+                val = "पति /पत्नी";
+                break;
             case "Community Champion":
                 val = "सामुदायिक चैंपियन";
                 break;
             case "Friends":
                 val = "मित्र";
                 break;
-            case "Relatives":
-                val = "रिश्तेदार";
+            case "Male Relative":
+                val = "पुरुष रिश्तेदार";
+                break;
+            case "Female Relative":
+                val = "महिला रिश्तेदार";
                 break;
             case "Neighbour":
                 val = "पड़ोसी";
@@ -884,14 +942,20 @@ public final class StringUtils {
             case "रोगी स्वयं":
                 val = "Self";
                 break;
+            case "पति /पत्नी":
+                val = "Husband/Wife";
+                break;
             case "सामुदायिक चैंपियन":
                 val = "Community Champion";
                 break;
             case "मित्र":
                 val = "Friends";
                 break;
-            case "रिश्तेदार":
-                val = "Relatives";
+            case "पुरुष रिश्तेदार":
+                val = "Male Relative";
+                break;
+            case "महिला रिश्तेदार":
+                val = "Female Relative";
                 break;
             case "पड़ोसी":
                 val = "Neighbour";
@@ -910,14 +974,20 @@ public final class StringUtils {
             case "Self":
                 val = "रुग्ण स्वतः";
                 break;
+            case "Husband/Wife":
+                val = "नवरा /बायको";
+                break;
             case "Community Champion":
                 val = "समुदाय विजेता";
                 break;
             case "Friends":
                 val = "मित्रांनो";
                 break;
-            case "Relatives":
-                val = "नातेवाईक";
+            case "Male Relative":
+                val = "पुरुष नातेवाईक";
+                break;
+            case "Female Relative":
+                val = "स्त्री नातेवाईक";
                 break;
             case "Neighbour":
                 val = "शेजारी";
@@ -935,14 +1005,20 @@ public final class StringUtils {
             case "रुग्ण स्वतः":
                 val = "Self";
                 break;
+            case "नवरा /बायको":
+                val = "Husband/Wife";
+                break;
             case "समुदाय विजेता":
                 val = "Community Champion";
                 break;
             case "मित्रांनो":
                 val = "Friends";
                 break;
-            case "नातेवाईक":
-                val = "Relatives";
+            case "पुरुष नातेवाईक":
+                val = "Male Relative";
+                break;
+            case "स्त्री नातेवाईक":
+                val = "Female Relative";
                 break;
             case "शेजारी":
                 val = "Neighbour";
@@ -1260,13 +1336,57 @@ public final class StringUtils {
     }
 
 
-    public static String switch_hi_whatsapp_edit(String val) {
+
+
+    public static String switch_hi_en_called_helpline(String val) {
         switch (val) {
-            case "Yes":
-                val = "हाँ";
+            case "हाँ, मौके पर":
+                val = "Yes, On the Spot";
+                break;
+            case "नहीं":
+                val = "No";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_en_called_helpline(String val) {
+        switch (val) {
+            case "होय, ऑन द स्पॉट":
+                val = "Yes, On the Spot";
+                break;
+            case "नाही":
+                val = "No";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_hi_called_helpline_edit(String val) {
+        switch (val) {
+            case "Yes, On the Spot":
+                val = "हाँ, मौके पर";
                 break;
             case "No":
                 val = "नहीं";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_mr_called_helpline_edit(String val) {
+        switch (val) {
+            case "Yes, On the Spot":
+                val = "होय, ऑन द स्पॉट";
+                break;
+            case "No":
+                val = "नाही";
                 break;
             default:
                 return val;

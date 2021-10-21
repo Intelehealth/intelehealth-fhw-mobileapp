@@ -276,9 +276,11 @@
     <string-array name="number_relation_en">
         <item>Select</item>
         <item>Self</item>
+        <item>Husband/Wife</item>
         <item>Community Champion</item>
         <item>Friends</item>
-        <item>Relatives</item>
+        <item>Male Relative</item>
+        <item>Female Relative</item>
         <item>Neighbour</item>
         <item>Others</item>
     </string-array>
@@ -286,9 +288,11 @@
     <string-array name="number_relation_hi">
         <item>चुनिये</item>
         <item>रोगी स्वयं</item>
+        <item>पति /पत्नी</item>
         <item>सामुदायिक चैंपियन</item>
         <item>मित्र</item>
-        <item>रिश्तेदार</item>
+        <item>पुरुष रिश्तेदार</item>
+        <item>महिला रिश्तेदार</item>
         <item>पड़ोसी</item>
         <item>अन्य</item>
     </string-array>
@@ -296,9 +300,11 @@
     <string-array name="number_relation_mr">
         <item>निवडा</item>
         <item>रुग्ण स्वतः</item>
+        <item>नवरा /बायको</item>
         <item>समुदाय विजेता</item>
         <item>मित्रांनो</item>
-        <item>नातेवाईक</item>
+        <item>पुरुष नातेवाईक</item>
+        <item>स्त्री नातेवाईक</item>
         <item>शेजारी</item>
         <item>इतर</item>
     </string-array>
@@ -306,9 +312,11 @@
     <string-array name="number_relation_ta">
         <item>Select</item>
         <item>Self</item>
+        <item>Husband/Wife</item>
         <item>Community Champion</item>
         <item>Friends</item>
-        <item>Relatives</item>
+        <item>Male Relative</item>
+        <item>Female Relative</item>
         <item>Neighbour</item>
         <item>Others</item>
     </string-array>
@@ -316,9 +324,11 @@
     <string-array name="number_relation_kn">
         <item>Select</item>
         <item>Self</item>
+        <item>Husband/Wife</item>
         <item>Community Champion</item>
         <item>Friends</item>
-        <item>Relatives</item>
+        <item>Male Relative</item>
+        <item>Female Relative</item>
         <item>Neighbour</item>
         <item>Others</item>
     </string-array>
@@ -400,6 +410,67 @@
     <string-array name="yes_no">
         <item>Select</item>
         <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="yes_no_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="yes_no_hi">
+        <item>चुनिये</item>
+        <item>हाँ</item>
+        <item>नहीं</item>
+    </string-array>
+
+    <string-array name="yes_no_mr">
+        <item>निवडा</item>
+        <item>होय</item>
+        <item>नाही</item>
+    </string-array>
+
+    <string-array name="yes_no_ta">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="yes_no_kn">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    //values for "called helpline" spinner
+    <string-array name="called_helpline_en">
+        <item>Select</item>
+        <item>Yes, On the Spot</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="called_helpline_hi">
+        <item>चुनिये</item>
+        <item>हाँ, मौके पर</item>
+        <item>नहीं</item>
+    </string-array>
+
+    <string-array name="called_helpline_mr">
+        <item>निवडा</item>
+        <item>होय, ऑन द स्पॉट</item>
+        <item>नाही</item>
+    </string-array>
+
+    <string-array name="called_helpline_ta">
+        <item>Select</item>
+        <item>Yes, On the Spot</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="called_helpline_kn">
+        <item>Select</item>
+        <item>Yes, On the Spot</item>
         <item>No</item>
     </string-array>
 

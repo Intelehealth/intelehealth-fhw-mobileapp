@@ -761,4 +761,21 @@
     <string name="sms_sent">एसएमएस भेजा गया!</string>
     <string name="sms_failed">एसएमएस भेजना विफल! बाद में पुन: प्रयास करें।</string>
     <string name="hint_resolution_given">दिया गया संकल्प दर्ज करें</string>
+
+    //New Registration Changes
+    <string name="identification_screen_prompt_cc_name">सामुदायिक चैंपियन का नाम*</string>
+    <string name="MHH_air_SRH_issue">क्या आपको एमएचएच एयर एसआरएच से संबंधित कोई समस्या है?*</string>
+    <string name="agent_information">एजेंट की जानकारी</string>
+    <string name="subscription_information">सदस्यता की जानकारी</string>
+    <string name="called_helpline">क्या आपने हेल्पलाइन पर कॉल किया?*</string>
+    <string name="married">क्या आप शादीशुदा हैं?*</string>
+    <string name="spouse_phone_number">जीवनसाथी का फोन नंबर*</string>
+    <string name="enter_issue">समस्या क्या है?*</string>
+    <string name="subscription_consent">क्या आप ऑडियो कहानियों की सदस्यता लेना चाहते हैं?</string>
+    <string name="already_subscribed">सदस्यता ले रखी</string>
+    <string name="subsc_status">सदस्यता स्थिति</string>
+    <string name="patient_called_helpline">हेल्पलाइन पर कॉल करा</string>
+    <string name="marital_status">वैवाहिक स्थिति</string>
+    <string name="mhh_issue">एमएचएच एयर एसआरएच संबंधित समस्या</string>
+    <string name="identification_screen_dialog_error_subscription">सदस्यता सहमति नहीं दी गई है</string>
 </resources>
