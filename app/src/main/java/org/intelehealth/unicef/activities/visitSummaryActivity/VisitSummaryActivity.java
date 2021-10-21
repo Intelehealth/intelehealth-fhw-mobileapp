@@ -2072,7 +2072,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
@@ -2140,7 +2148,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:50pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
@@ -2177,7 +2185,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:50pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"
@@ -2424,7 +2432,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
@@ -2488,7 +2504,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:50pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                                     doctorDetailStr +
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
                                     "</div>"
@@ -2525,7 +2541,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
                                     "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:50pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
                                     doctorDetailStr +
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
                                     "</div>"

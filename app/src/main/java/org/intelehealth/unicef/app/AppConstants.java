@@ -115,7 +115,5 @@ public class AppConstants {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF;
 
     }
-
-
 }
 
