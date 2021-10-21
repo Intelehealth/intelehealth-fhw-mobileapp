@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1012,6 +1013,7 @@ public class Node implements Serializable {
                         Calendar cal = Calendar.getInstance();
                         cal.setTimeInMillis(0);
                         cal.set(year, monthOfYear, dayOfMonth);
+                        Log.v("main", "date: "+ year + ":" + monthOfYear + ":" + dayOfMonth);
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
@@ -1021,7 +1023,7 @@ public class Node implements Serializable {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
                             if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
-                                String pregnancy_week = pregnancy_calculator(dateString);
+                                String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
                                 node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
                             }
                             else {
@@ -1754,13 +1756,14 @@ private static String ml_en(String unit) {
                         cal.setTimeInMillis(0);
                         cal.set(year, monthOfYear, dayOfMonth);
                         Date date = cal.getTime();
+                        Log.v("main", "date: "+ year + ":" + monthOfYear + ":" + dayOfMonth);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
                             if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
-                                String pregnancy_week = pregnancy_calculator(dateString);
+                                String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
                                 node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
                             }
                             else {
@@ -1780,10 +1783,37 @@ private static String ml_en(String unit) {
         datePickerDialog.show();
     }
 
-    private static String pregnancy_calculator(String dateString) {
+    private static String pregnancy_calculator(int day, int month, int year) {
         String pregnancyTime = "";
+        //user entered date
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        Date userDate = calendar.getTime();
+        String user_date = simpleDateFormat.format(calendar.getTime()); // 21/10/2021
 
-        return "2 week";
+        //todays date
+        Calendar today = Calendar.getInstance();
+        Date todayDate = today.getTime();
+        String todays_date = simpleDateFormat.format(todayDate);
+        Log.v("date", "stringdate: "+ user_date + " " + todays_date);
+
+        long different = todayDate.getTime() - userDate.getTime();
+        Log.v("date", "today::: "+ todayDate.getTime() + " : "+ userDate.getTime());
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        Log.v("date", "time::: "+ elapsedDays);
+
+        //divide number of days difference with 7 to get no of weeks
+        long weeks = elapsedDays / 7;
+        Log.v("date", "weeks::: "+ weeks);
+
+        return weeks + " weeks";
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
