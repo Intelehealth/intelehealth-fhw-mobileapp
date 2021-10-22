@@ -778,4 +778,6 @@
     <string name="marital_status">वैवाहिक स्थिति</string>
     <string name="mhh_issue">एमएचएच एयर एसआरएच संबंधित समस्या</string>
     <string name="identification_screen_dialog_error_subscription">सदस्यता सहमति नहीं दी गई है</string>
+    <string name="spouse_phone_number_pd">जीवनसाथी का फोन नंबर</string>
+
 </resources>

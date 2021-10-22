@@ -767,6 +767,7 @@
     <string name="marital_status">Marital Status</string>
     <string name="mhh_issue">MHH air SRH related issue</string>
     <string name="identification_screen_dialog_error_subscription">Subscription Consent is not given</string>
+    <string name="spouse_phone_number_pd">Spouse\'s Phone Number</string>
 
 
 </resources>

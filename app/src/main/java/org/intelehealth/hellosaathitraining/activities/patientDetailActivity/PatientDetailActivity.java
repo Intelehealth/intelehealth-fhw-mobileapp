@@ -176,7 +176,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     TextView phoneView, addPhoneView;
     String privacy_value_selected;
-    TableRow additionalPhoneNumTR;
+    TableRow additionalPhoneNumTR, spousePhoneNumTR;
     ImageView ivPrescription;
     private String hasPrescription = "";
     Context context;
@@ -234,6 +234,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         width = metrics.widthPixels;
         height = metrics.heightPixels;
         additionalPhoneNumTR = findViewById(R.id.additionalNumberTableRow);
+        spousePhoneNumTR = findViewById(R.id.tableRow_spouse_number);
         subscription1 = findViewById(R.id.cardView_subscription);
         subscription2 = findViewById(R.id.cardView_subscription2);
 
@@ -672,6 +673,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 data.bucketsubscribedto = selectedBucket.bucketId;
                 data.slotselected = selectedSubscriptionTime.toString();
                 data.subscribedby = sessionManager.getProviderID();
+                data.apptype = "cc";
                 data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language.getSelectedItemPosition()];
                 apiInterface.subscribe(urlModifiers.getSubscriptionUrl(), subscriptionAuthHeader, data).enqueue(new Callback<SubscriptionStatus>() {
                     @Override
@@ -836,6 +838,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 data.bucketsubscribedto = selectedBucket2.bucketId;
                 data.slotselected = selectedSubscriptionTime2.toString();
                 data.subscribedby = sessionManager.getProviderID();
+                data.apptype = "cc";
                 data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language2.getSelectedItemPosition()];
                 apiInterface.subscribe(urlModifiers.getSubscriptionUrl(), subscriptionAuthHeader, data).enqueue(new Callback<SubscriptionStatus>() {
                     @Override
@@ -1113,7 +1116,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView subscrConsent = findViewById(R.id.textView_subscStatus);
         TextView mhhIssueTV = findViewById(R.id.textView_mhh_issue);
         TextView maritalStatusTV = findViewById(R.id.textView_marital_status);
-
+        TextView spousePhoneNum = findViewById(R.id.textView_spouse_number);
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
         ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
@@ -1356,12 +1359,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             if(mhhIssue.equalsIgnoreCase("नहीं"))
                 mhhIssueTV.setText(mhhIssue);
             else
-                mhhIssueTV.setText("हाँ, " + mhhIssue);
+                mhhIssueTV.setText("हाँ " + mhhIssue);
             String maritalStatus = switch_hi_whatsapp_edit(patient_new.getMarital_status());
             if(maritalStatus.equalsIgnoreCase("नहीं"))
                 maritalStatusTV.setText(maritalStatus);
-            else
-                maritalStatusTV.setText("हाँ, " + maritalStatus);
+            else {
+                maritalStatusTV.setText("हाँ");
+                spousePhoneNumTR.setVisibility(View.VISIBLE);
+                spousePhoneNum.setText(patient_new.getMarital_status());
+            }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
             String callerRelationS = switch_mr_callerRelation(patient_new.getSdw());
             callerRelation.setText(callerRelationS);
@@ -1377,12 +1383,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             if(mhhIssue.equalsIgnoreCase("नाही"))
                 mhhIssueTV.setText(mhhIssue);
             else
-                mhhIssueTV.setText("होय, " + mhhIssue);
+                mhhIssueTV.setText("होय " + mhhIssue);
             String maritalStatus = switch_mr_whatsapp_edit(patient_new.getMarital_status());
             if(maritalStatus.equalsIgnoreCase("नाही"))
                 maritalStatusTV.setText(maritalStatus);
-            else
-                maritalStatusTV.setText("होय, " + maritalStatus);
+            else {
+                maritalStatusTV.setText("होय");
+                spousePhoneNumTR.setVisibility(View.VISIBLE);
+                spousePhoneNum.setText(patient_new.getMarital_status());
+            }
         } else {
             callerRelation.setText(patient_new.getSdw());
             helplineInfo.setText(patient_new.getCaste());
@@ -1392,11 +1401,15 @@ public class PatientDetailActivity extends AppCompatActivity {
             if(patient_new.getMhh_issue().equalsIgnoreCase("No"))
                 mhhIssueTV.setText(patient_new.getMhh_issue());
             else
-                mhhIssueTV.setText("Yes, " + patient_new.getMhh_issue());
+                mhhIssueTV.setText("Yes " + patient_new.getMhh_issue());
             if(patient_new.getMarital_status().equalsIgnoreCase("No"))
                 maritalStatusTV.setText(patient_new.getMarital_status());
-            else
-                maritalStatusTV.setText("Yes, " + patient_new.getMarital_status());
+            else {
+                maritalStatusTV.setText("Yes");
+                spousePhoneNumTR.setVisibility(View.VISIBLE);
+                spousePhoneNum.setText(patient_new.getMarital_status());
+
+            }
         }
 
         //english = en

@@ -25,4 +25,8 @@ public class SubscriptionData {
     @SerializedName("language")
     @Expose
     public String language;
+
+    @SerializedName("apptype")
+    @Expose
+    public String apptype;
 }

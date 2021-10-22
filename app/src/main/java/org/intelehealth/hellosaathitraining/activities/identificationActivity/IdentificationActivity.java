@@ -2173,18 +2173,34 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
             case R.id.identification_gender_male:
-                if (checked)
+                if (checked) {
                     mGender = "M";
+                    mSubscrAlready.setEnabled(true);
+                    mSubscrNo.setEnabled(true);
+                    mSubscrYes.setEnabled(true);
+                }
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.identification_gender_female:
-                if (checked)
+                if (checked) {
                     mGender = "F";
+                    mSubscrAlready.setEnabled(true);
+                    mSubscrNo.setEnabled(true);
+                    mSubscrYes.setEnabled(true);
+                }
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.identification_gender_other:
                 if (checked)
+                {
                     mGender = "Other";
+                    mSubscrNo.setChecked(true);
+                    subscriptionConsent = "No";
+                    mSubscrAlready.setEnabled(false);
+                    mSubscrNo.setEnabled(false);
+                    mSubscrYes.setEnabled(false);
+
+                }
                 Log.v(TAG, "gender:" + mGender);
                 break;
             case R.id.subsc_yes:

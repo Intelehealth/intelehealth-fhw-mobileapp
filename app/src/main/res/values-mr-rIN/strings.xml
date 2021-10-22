@@ -739,5 +739,7 @@
         <string name="marital_status"> वैवाहिक स्थिती</string>
         <string name="mhh_issue">MHH एअर SRH संबंधित समस्या</string>
         <string name="identification_screen_dialog_error_subscription">सदस्यता संमती दिली जात नाही</string>
+        <string name="spouse_phone_number_pd"> जोडीदाराचा फोन नंबर</string>
+
 
 </resources>
