@@ -446,14 +446,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
+            Log.v("main", "v: "+ encounterVitals + " a: "+encounterUuidAdultIntial + " aaa: "+EncounterAdultInitial_LatestVisit);
+
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
             patientName = intent.getStringExtra("name");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             isPastVisit = intent.getBooleanExtra("pastVisit", false);
-//            hasPrescription = intent.getStringExtra("hasPrescription");
-
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
             physicalExams.clear();
@@ -640,7 +640,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-        String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+       // String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -660,12 +660,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
 
-        if (special_value != null) {
+      /*  if (special_value != null) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
         } else {
 
-        }
+        }*/
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -737,12 +737,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
 
-        additionalDocumentImagesDownload();
+       // additionalDocumentImagesDownload();
 
         //image download for physcialExamination documents
         physcialExaminationDownloadText.setPaintFlags(p.getColor());
         physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-        physcialExaminationImagesDownload();
+      //  physcialExaminationImagesDownload();
 
 
         downloadButton.setEnabled(false);
@@ -758,9 +758,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             button_resolution.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
-            String visitIDorderBy = "startdate";
+            /*String visitIDorderBy = "startdate";
             String visitIDSelection = "uuid = ?";
             String[] visitIDArgs = {visitUuid};
+
             final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
             if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
                 visitIDCursor.moveToFirst();
@@ -770,7 +771,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitUUID != null && !visitUUID.isEmpty()) {
                 addDownloadButton();
 
-            }
+            }*/
 
         }
         flag.setOnClickListener(new View.OnClickListener() {
@@ -1637,33 +1638,33 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         doQuery();
 
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String emergencyUuid = "";
-        try {
-            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
-        //visit is uploaded to server checking in this case the checkbox will be disabled...
-        if (!isSynedFlag.equalsIgnoreCase("0")) {
-            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
-                //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
-                flag.setChecked(true);
-                flag.setEnabled(false);
-            } else {
-                flag.setChecked(false);
-                flag.setEnabled(false);
-            }
-        } else {
-            //to set the checkbox as checked in offline mode so that i can be modified later...
-            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
-                //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
-                flag.setChecked(true);
-            } else {
-                flag.setChecked(false);
-            }
-        }
+//        EncounterDAO encounterDAO = new EncounterDAO();
+//        String emergencyUuid = "";
+//        try {
+//            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+//        } catch (DAOException e) {
+//            FirebaseCrashlytics.getInstance().recordException(e);
+//        }
+//
+//        //visit is uploaded to server checking in this case the checkbox will be disabled...
+//        if (!isSynedFlag.equalsIgnoreCase("0")) {
+//            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+//                //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
+//                flag.setChecked(true);
+//                flag.setEnabled(false);
+//            } else {
+//                flag.setChecked(false);
+//                flag.setEnabled(false);
+//            }
+//        } else {
+//            //to set the checkbox as checked in offline mode so that i can be modified later...
+//            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
+//                //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
+//                flag.setChecked(true);
+//            } else {
+//                flag.setChecked(false);
+//            }
+//        }
 
         button_resolution.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3522,8 +3523,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(sql);
         }
 
-        downloadPrescriptionDefault();
-        downloadDoctorDetails();
+//        downloadPrescriptionDefault();
+//        downloadDoctorDetails();
     }
 
     /**
@@ -4017,8 +4018,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 downloadDoctorDetails();
             }
 
-            additionalDocumentImagesDownload();
-            physcialExaminationImagesDownload();
+          //  additionalDocumentImagesDownload();
+          //  physcialExaminationImagesDownload();
 
         } catch (DAOException e) {
             e.printStackTrace();
@@ -4030,7 +4031,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ?";
         String[] encounterIDArgs = {visitUuid};
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs,
+                null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
                 if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
@@ -4237,8 +4239,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss").format(Calendar.getInstance().getTime()));
-            downloadPrescriptionDefault();
-            downloadDoctorDetails();
+//            downloadPrescriptionDefault();
+//            downloadDoctorDetails();
         }
     }
 

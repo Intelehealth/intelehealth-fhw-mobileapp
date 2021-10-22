@@ -185,6 +185,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     float float_ageYear_Month;
     private boolean isMedicalAdvice;
     private boolean MedicalAdvice = false;
+    private String global_encounterAdultIntialslocal = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -316,23 +317,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             positive.setTextColor(getResources().getColor(R.color.colorPrimary));
             //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         }
-
-        textview_showallvisits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
-                /*intentTag = intent.getStringExtra("tag");
-                intentTag1 = intent.getStringExtra("intentTag1");
-                intentTag2 = intent.getStringExtra("intentTag2");*/
-
-                intent.putExtra("patientUuid", patientUuid);
-                intent.putExtra("patientName", patientName);
-                intent.putExtra("hasPrescription", hasPrescription);
-                intent.putExtra("MedicalAdvice", MedicalAdvice);
-
-                startActivity(intent);
-            }
-        });
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1107,6 +1091,26 @@ public class PatientDetailActivity extends AppCompatActivity {
            // pastVisits(patientUuid);
         }
 
+        textview_showallvisits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+                /*intentTag = intent.getStringExtra("tag");
+                intentTag1 = intent.getStringExtra("intentTag1");
+                intentTag2 = intent.getStringExtra("intentTag2");*/
+
+                intent.putExtra("patientUuid", patientUuid);
+                intent.putExtra("name", patientName);
+                intent.putExtra("hasPrescription", hasPrescription);
+                intent.putExtra("MedicalAdvice", MedicalAdvice);
+
+//                intent.putExtra("encounterUuidVitals", encounterVitalslocal);
+                intent.putExtra("encounterUuidAdultIntial", global_encounterAdultIntialslocal);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+
+                startActivity(intent);
+            }
+        });
 
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1197,7 +1201,8 @@ public class PatientDetailActivity extends AppCompatActivity {
      * @param datetime variable of type String.
      * @return void
      */
-    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue, String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
+    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue,
+                                String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
 
         final Boolean past_visit;
         final TextView textView = new TextView(this);
@@ -1319,7 +1324,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                 int position = (Integer) v.getTag();
                 Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
-
+                global_encounterAdultIntialslocal = encounterAdultIntialslocal;
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
                 visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
@@ -1328,6 +1333,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);
+                Log.v("main", "v: "+ encounterVitals + " a: "+encounterAdultIntialslocal + " aaa: "+encounterAdultIntials);
                 visitSummary.putExtra("pastVisit", past_visit);
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     visitSummary.putExtra("hasPrescription", "true");
