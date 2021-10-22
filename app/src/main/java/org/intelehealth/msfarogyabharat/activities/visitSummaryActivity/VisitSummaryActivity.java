@@ -677,7 +677,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (previsitCursor.moveToLast() && previsitCursor != null) {
                 do {
                     //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
-                    complaintList_adapter.add(previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value")));
+                    complaintList_adapter.add(Html.fromHtml(previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"))).toString());
                 }
                 while (previsitCursor.moveToPrevious());
 
