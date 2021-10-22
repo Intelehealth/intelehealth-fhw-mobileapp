@@ -640,11 +640,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDSelection = "patientuuid = ?";
         String[] visitIDArgs = {patientUuid};
         Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+        if (visitIDCursor != null && visitIDCursor.moveToLast()) {
             do {
                 visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
                 visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
-            } while (visitIDCursor.moveToNext());
+            } while (visitIDCursor.moveToPrevious());
         }
         if (visitIDCursor != null) {
             visitIDCursor.close();
@@ -674,12 +674,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] previsitArgs = {encounterAdultInit, UuidDictionary.CURRENT_COMPLAINT};
             String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
             Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-            if (previsitCursor.moveToLast() && previsitCursor != null) {
+            if (previsitCursor.moveToFirst() && previsitCursor != null) {
                 do {
                     //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
                     complaintList_adapter.add(Html.fromHtml(previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"))).toString());
                 }
-                while (previsitCursor.moveToPrevious());
+                while (previsitCursor.moveToNext());
 
             }
             previsitCursor.close();
@@ -691,12 +691,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String[] previsitColumms_phy = {"value", " conceptuuid", "encounteruuid"};
             Cursor previsitCursor_phy = db.query("tbl_obs", previsitColumms_phy, previsitSelection_phy, previsitArgs_phy,
                     null, null, null);
-            if (previsitCursor_phy.moveToLast() && previsitCursor_phy != null) {
+            if (previsitCursor_phy.moveToFirst() && previsitCursor_phy != null) {
                 do {
                     //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
-                    physexamList_adapter.add(Html.fromHtml(previsitCursor_phy.getString(previsitCursor_phy.getColumnIndexOrThrow("value"))).toString());
+                    physexamList_adapter.add(Html.fromHtml(previsitCursor_phy.getString
+                            (previsitCursor_phy.getColumnIndexOrThrow("value"))).toString());
                 }
-                while (previsitCursor_phy.moveToPrevious());
+                while (previsitCursor_phy.moveToNext());
 
             }
             previsitCursor_phy.close();
