@@ -254,7 +254,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     MenuItem internetCheck = null;
     MenuItem endVisit_click = null;
 
-    private RecyclerView mAdditionalDocsRecyclerView;
+    private RecyclerView mAdditionalDocsRecyclerView, recyclerview_visitsummary;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
 
     private RecyclerView mPhysicalExamsRecyclerView;
@@ -509,8 +509,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         context1 = VisitSummaryActivity.this;
 //we can remove by data binding
         button_resolution = findViewById(R.id.button_resolution);
+
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
+        recyclerview_visitsummary = findViewById(R.id.recyclerview_visitsummary);
 
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
         prescriptionCard = findViewById(R.id.cardView_rx);
