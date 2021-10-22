@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.msfarogyabharat.R;
 
+import java.util.List;
+
 /**
  * Created By: Prajwal Waingankar on 22-Oct-21
  * Github: prajwalmw
@@ -17,6 +19,13 @@ import org.intelehealth.msfarogyabharat.R;
  */
 
 public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapter.VisitSummaryViewHolder> {
+    List<String> complaintList;
+    List<String> visitUuidList;
+
+    public VisitSummaryAdapter(List<String> visitUuidList, List<String> complaintList) {
+        this.visitUuidList = visitUuidList;
+        this.complaintList = complaintList;
+    }
 
     @Override
     public VisitSummaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,12 +37,13 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
 
     @Override
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
-
+        String complaint = complaintList.get(position);
+        holder.textView_content_complaint.setText(complaint);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return visitUuidList.size();
     }
 
     public class VisitSummaryViewHolder extends RecyclerView.ViewHolder {

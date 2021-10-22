@@ -288,6 +288,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isRespiratory = false;
     String appLanguage;
     View button_resolution;
+    private List<String> visitUuidList;
+    private List<String> complaintList_adapter, physexamList_adapter;
+    private VisitSummaryAdapter visitsum_adapter;
+    private LinearLayoutManager visitsum_layoutmanager;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -528,6 +532,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
 
+        complaintList_adapter = new ArrayList<>();
+        physexamList_adapter = new ArrayList<>();
+
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -626,8 +633,66 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
-
         ivPrescription = findViewById(R.id.iv_prescription);
+
+        //get all visits from patientuuid
+        visitUuidList = new ArrayList<>();
+        String visitIDSelection = "patientuuid = ?";
+        String[] visitIDArgs = {patientUuid};
+        Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+            do {
+                visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
+            } while (visitIDCursor.moveToNext());
+        }
+        if (visitIDCursor != null) {
+            visitIDCursor.close();
+        }
+
+        //getEncounters - start
+        EncounterDAO encounterDAO = new EncounterDAO();
+        for (String v_uuid : visitUuidList) {
+            String encounterAdultInit = "";
+            String encounterIDSelection = "visituuid = ?";
+
+            String[] encounterIDArgs = {v_uuid};
+
+            Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+            if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                do {
+                    if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                        encounterAdultInit = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    }
+
+                } while (encounterCursor.moveToNext());
+            }
+            encounterCursor.close();
+
+            //obs - start
+            String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+            String[] previsitArgs = {encounterAdultInit, UuidDictionary.CURRENT_COMPLAINT};
+            String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+            Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+            if (previsitCursor.moveToLast() && previsitCursor != null) {
+                do {
+                    //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
+                    complaintList_adapter.add(previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value")));
+                }
+                while (previsitCursor.moveToPrevious());
+
+            }
+            //obs - end
+        }
+        //getEncounters - end
+
+        //get all visits - end
+        visitsum_adapter = new VisitSummaryAdapter(visitUuidList, complaintList_adapter);
+        visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
+        recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
+        recyclerview_visitsummary.setAdapter(visitsum_adapter);
+
+
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
