@@ -17,7 +17,7 @@ public class CallRTCNotifyReceiver extends BroadcastReceiver {
         Log.v(TAG, "onReceive");
         Intent in = new Intent(context, HomeActivity.class);
         in.putExtras(intent.getExtras());
-        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK /*| Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP*/);
+        in.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(in);
     }
 }

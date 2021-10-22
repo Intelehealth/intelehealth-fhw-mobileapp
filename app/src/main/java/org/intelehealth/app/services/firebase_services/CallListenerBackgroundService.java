@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
@@ -48,6 +47,15 @@ public class CallListenerBackgroundService extends Service {
         return instance != null;
     }
 
+    public static CallListenerBackgroundService getInstance() {
+        return instance;
+    }
+
+    public void stopForegroundService() {
+        stopForeground(true);
+        stopSelf();
+    }
+
     public CallListenerBackgroundService() {
     }
 
@@ -64,6 +72,7 @@ public class CallListenerBackgroundService extends Service {
         super.onDestroy();
         Log.v(TAG, "onDestroy");
         instance = null;
+        stopForeground(true);
         Intent intent = new Intent(CallListenerBackgroundService.this, RestartServiceReceiver.class);
         intent.setAction("org.intelehealth.app.RTC_SERVICE_START");
         sendBroadcast(intent);
@@ -130,7 +139,7 @@ public class CallListenerBackgroundService extends Service {
                     bundle.putString("timestamp", String.valueOf(value.get("timestamp")));
                     bundle.putString("actionType", "VIDEO_CALL");
 
-                    boolean isOldNotification = false;
+                    boolean isOldNotification = true;
                     if (value.containsKey("timestamp")) {
                         String timestamp = String.valueOf(value.get("timestamp"));
 
@@ -146,11 +155,12 @@ public class CallListenerBackgroundService extends Service {
                                 if (ourDate != null) {
                                     seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
                                 }
-                                Log.v(TAG, "Current time - " + new Date());
+                                //stopForeground(true);
+                                //stopSelf();
                                 Log.v(TAG, "Notification time - " + ourDate);
                                 Log.v(TAG, "seconds - " + seconds);
-                                if (seconds >= 10) {
-                                    isOldNotification = true;
+                                if (seconds <= 10) {
+                                    isOldNotification = false;
                                 }
                             } catch (ParseException e) {
                                 e.printStackTrace();

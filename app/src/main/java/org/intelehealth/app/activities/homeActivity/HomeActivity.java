@@ -2,7 +2,6 @@ package org.intelehealth.app.activities.homeActivity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -12,11 +11,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -25,7 +22,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -37,8 +33,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -86,7 +80,6 @@ import org.intelehealth.apprtc.data.Manager;
 import org.intelehealth.apprtc.utils.FirebaseUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.ParsePosition;
@@ -315,6 +308,7 @@ public class HomeActivity extends AppCompatActivity {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
+            requestPermission();
         }
         /*sessionManager.setMigration(true);
 
@@ -1059,6 +1053,13 @@ public class HomeActivity extends AppCompatActivity {
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
     private void requestPermission() {
+        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            //CallListenerBackgroundService.getInstance().stopForegroundService();
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -1068,20 +1069,13 @@ public class HomeActivity extends AppCompatActivity {
                 //Permission Granted-System will work
             }
         }
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(this, serviceIntent);
-        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(this, serviceIntent);
-        }
+
     }
 
     @Override
