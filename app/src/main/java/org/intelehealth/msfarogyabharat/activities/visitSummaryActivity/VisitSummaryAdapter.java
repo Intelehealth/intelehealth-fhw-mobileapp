@@ -21,10 +21,12 @@ import java.util.List;
 public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapter.VisitSummaryViewHolder> {
     List<String> complaintList;
     List<String> visitUuidList;
+    List<String> physexamList;
 
-    public VisitSummaryAdapter(List<String> visitUuidList, List<String> complaintList) {
+    public VisitSummaryAdapter(List<String> visitUuidList, List<String> complaintList, List<String> physexamList) {
         this.visitUuidList = visitUuidList;
         this.complaintList = complaintList;
+        this.physexamList = physexamList;
     }
 
     @Override
@@ -38,7 +40,9 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     @Override
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
         String complaint = complaintList.get(position);
+        String physexam = physexamList.get(position);
         holder.textView_content_complaint.setText(complaint);
+        holder.textView_content_physexam.setText(physexam);
     }
 
     @Override

@@ -669,7 +669,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             encounterCursor.close();
 
-            //obs - start
+            //complaint obs - start
             String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
             String[] previsitArgs = {encounterAdultInit, UuidDictionary.CURRENT_COMPLAINT};
             String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
@@ -682,12 +682,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 while (previsitCursor.moveToPrevious());
 
             }
-            //obs - end
+            previsitCursor.close();
+            //complaint obs - end
+
+            //physexam obs - start
+            String previsitSelection_phy = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+            String[] previsitArgs_phy = {encounterAdultInit, UuidDictionary.PHYSICAL_EXAMINATION};
+            String[] previsitColumms_phy = {"value", " conceptuuid", "encounteruuid"};
+            Cursor previsitCursor_phy = db.query("tbl_obs", previsitColumms_phy, previsitSelection_phy, previsitArgs_phy,
+                    null, null, null);
+            if (previsitCursor_phy.moveToLast() && previsitCursor_phy != null) {
+                do {
+                    //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
+                    physexamList_adapter.add(Html.fromHtml(previsitCursor_phy.getString(previsitCursor_phy.getColumnIndexOrThrow("value"))).toString());
+                }
+                while (previsitCursor_phy.moveToPrevious());
+
+            }
+            previsitCursor_phy.close();
+            //physexam obs - end
+
         }
         //getEncounters - end
 
         //get all visits - end
-        visitsum_adapter = new VisitSummaryAdapter(visitUuidList, complaintList_adapter);
+        visitsum_adapter = new VisitSummaryAdapter(visitUuidList, complaintList_adapter, physexamList_adapter);
         visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
         recyclerview_visitsummary.setAdapter(visitsum_adapter);
