@@ -153,7 +153,9 @@
             android:id="@+id/recyclerview_visitsummary"
             android:layout_marginTop="@dimen/padding_card"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/recyclerview_visitsummary"
+            tools:itemCount="3" />
 
         <LinearLayout
             android:orientation="vertical"
