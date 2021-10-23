@@ -246,6 +246,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
+    List<String> encounterAdultInitList = new ArrayList<>();
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -273,6 +274,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String encounterVitals;
     //  Boolean isreturningWhatsapp = true;
     String encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
+    String encounterAdultInit = "";
 
     ProgressBar mProgressBar;
     TextView mProgressText;
@@ -660,7 +662,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //getEncounters - start
         EncounterDAO encounterDAO = new EncounterDAO();
         for (String v_uuid : visitUuidList) {
-            String encounterAdultInit = "";
             String encounterIDSelection = "visituuid = ?";
 
             String[] encounterIDArgs = {v_uuid};
@@ -668,8 +669,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
             if (encounterCursor != null && encounterCursor.moveToFirst()) {
                 do {
-                    if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase
+                            (encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
                         encounterAdultInit = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        encounterAdultInitList.add(encounterAdultInit);
                     }
 
                 } while (encounterCursor.moveToNext());
@@ -1697,7 +1700,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 addDocs.putExtra("patientUuid", patientUuid);
                 addDocs.putExtra("visitUuid", visitUuid);
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
-                addDocs.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInit);
+               // addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInitList);
                 startActivity(addDocs);
             }
         });
@@ -2301,6 +2305,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+/*
     private void physcialExaminationImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
@@ -2322,18 +2327,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
     }
+*/
 
     private void additionalDocumentImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+            List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterAdultInitList, UuidDictionary.COMPLEX_IMAGE_AD);
             if (obsUuidList.size() == 0) {
                 additionalImageDownloadText.setVisibility(View.GONE); //This means the visit is a new one...
             } else {
                 additionalImageDownloadText.setVisibility(View.VISIBLE); //This means the app is fresh installed...
             }
 
-            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid, encounterUuidAdultIntial);
+            List<String> imageList = imagesDAO.get_tbl_additional_doc(patientUuid, encounterAdultInitList);
 
             for (String images : imageList) {
                 if (imagesDAO.isLocalImageUuidExists(images))
@@ -2345,6 +2351,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
+
         additionalImageDownloadText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3901,7 +3908,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ArrayList<String> fileNameList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
         try {
-            fileNameList = imagesDAO.getFilename(patientUuid, encounterUuidAdultIntial);
+            fileNameList = imagesDAO.getFilename(patientUuid, encounterAdultInitList);
             for (String file_imagename : fileNameList) {
                 String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                 if (new File(filename).exists()) {

@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.intelehealth.msfarogyabharat.utilities.Base64Utils;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
+import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.ObsPushDTO;
@@ -357,14 +358,37 @@ public class ImagesDAO {
         return isUpdated;
     }
 
-    public ArrayList getFilename(String patientUuid, String encounterAdultIntials) throws DAOException {
+    public ArrayList getFilename_additionalDoc_specificVisit(String patientUuid, String encounterAdultInit) throws DAOException {
         Logger.logD(TAG, "patient uuid for image " + patientUuid);
         ArrayList<String> uuidList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
             Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
-                    new String[]{patientUuid, encounterAdultIntials, "TRUE", "0"});
+                    new String[]{patientUuid, encounterAdultInit, "TRUE", "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return uuidList;
+    }
+
+    public ArrayList getFilename(String patientUuid, List<String> encounterAdultInitList) throws DAOException {
+        Logger.logD(TAG, "patient uuid for image " + patientUuid);
+        ArrayList<String> uuidList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND encounterId in ('" + StringUtils.convertUsingStringBuilder(encounterAdultInitList) + "') AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
@@ -448,12 +472,12 @@ public class ImagesDAO {
         return imagesList;
     }
 
-    public List<String> isImageListObsExists(String encounterUuid, String conceptUuid) throws DAOException {
+    public List<String> isImageListObsExists(List<String> encounterUuid, String conceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{encounterUuid, conceptUuid, "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid in ('" + StringUtils.convertUsingStringBuilder(encounterUuid) + "') AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{conceptUuid, "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
@@ -502,14 +526,14 @@ public class ImagesDAO {
         sqLiteDatabase.endTransaction();
     }
 
-    public List<String> get_tbl_additional_doc(String patientUuid, String encounterAdultInitials) throws DAOException {
+    public List<String> get_tbl_additional_doc(String patientUuid, List<String> encounterAdultInitials) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
 
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
-                    new String[]{patientUuid, encounterAdultInitials, "TRUE", "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc WHERE patientId = ? AND encounterId in ('" + StringUtils.convertUsingStringBuilder(encounterAdultInitials) + "') AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));

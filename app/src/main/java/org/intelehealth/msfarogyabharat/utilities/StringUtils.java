@@ -2029,6 +2029,7 @@ public final class StringUtils {
         for (String name : names) {
             namesStr = namesStr.length() > 0 ? namesStr.append("','").append(name) : namesStr.append(name);
         }
+        Log.v("main", "filter_names: "+ namesStr.toString());
         return namesStr.toString();
     }
 
