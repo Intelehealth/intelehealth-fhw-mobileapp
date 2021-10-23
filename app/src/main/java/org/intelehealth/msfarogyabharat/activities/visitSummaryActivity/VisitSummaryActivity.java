@@ -654,7 +654,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         //To show the most recent data on top - reverse the arraylist
-        Collections.reverse(visitUuidList);
+       // Collections.reverse(visitUuidList);
         //end
 
         //getEncounters - start
@@ -714,7 +714,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //getEncounters - end
 
         //get all visits - end
-        visitsum_adapter = new VisitSummaryAdapter(visitUuidList, complaintList_adapter, physexamList_adapter);
+        visitsum_adapter = new VisitSummaryAdapter(getApplicationContext(), visitUuidList, complaintList_adapter, physexamList_adapter);
         visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
         recyclerview_visitsummary.setAdapter(visitsum_adapter);

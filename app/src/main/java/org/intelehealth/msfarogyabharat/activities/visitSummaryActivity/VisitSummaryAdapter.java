@@ -1,8 +1,11 @@
 package org.intelehealth.msfarogyabharat.activities.visitSummaryActivity;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,11 +23,13 @@ import java.util.List;
  */
 
 public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapter.VisitSummaryViewHolder> {
+    Context context;
     List<String> complaintList;
     List<String> visitUuidList;
     List<String> physexamList;
 
-    public VisitSummaryAdapter(List<String> visitUuidList, List<String> complaintList, List<String> physexamList) {
+    public VisitSummaryAdapter(Context context, List<String> visitUuidList, List<String> complaintList, List<String> physexamList) {
+        this.context = context;
         this.visitUuidList = visitUuidList;
         this.complaintList = complaintList;
         this.physexamList = physexamList;
@@ -65,13 +70,22 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
             textView_content_physexam = itemView.findViewById(R.id.textView_content_physexam);
             linearlayout_body = itemView.findViewById(R.id.linearlayout_body);
 
+            Animation slide_down = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+
+            Animation slide_up = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+
+// Start animation
+           // linear_layout.startAnimation(slide_down);
+
             textView_caseTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(linearlayout_body.getVisibility() == View.VISIBLE) {
+                        linearlayout_body.startAnimation(slide_up);
                         linearlayout_body.setVisibility(View.GONE);
                     }
                     else {
+                        linearlayout_body.startAnimation(slide_down);
                         linearlayout_body.setVisibility(View.VISIBLE);
                     }
 
