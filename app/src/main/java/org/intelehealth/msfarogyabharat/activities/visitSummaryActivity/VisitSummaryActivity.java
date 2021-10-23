@@ -830,8 +830,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         additionalImageDownloadText.setPaintFlags(p.getColor());
         additionalImageDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
 
-
-       // additionalDocumentImagesDownload();
+        additionalDocumentImagesDownload();
 
         //image download for physcialExamination documents
         physcialExaminationDownloadText.setPaintFlags(p.getColor());
@@ -4119,7 +4118,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 downloadDoctorDetails();
             }
 
-          //  additionalDocumentImagesDownload();
+            additionalDocumentImagesDownload();
           //  physcialExaminationImagesDownload();
 
         } catch (DAOException e) {
