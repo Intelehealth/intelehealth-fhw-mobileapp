@@ -89,6 +89,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -380,6 +381,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 //meera
+              //  downloaded = true;
                 if (downloaded) {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
@@ -447,6 +449,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
+            Log.v("visituuid", "vuid: "+ visitUuid);
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
@@ -640,15 +643,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String visitIDSelection = "patientuuid = ?";
         String[] visitIDArgs = {patientUuid};
         Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-        if (visitIDCursor != null && visitIDCursor.moveToLast()) {
+        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
             do {
                 visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
                 visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
-            } while (visitIDCursor.moveToPrevious());
+            } while (visitIDCursor.moveToNext());
         }
         if (visitIDCursor != null) {
             visitIDCursor.close();
         }
+
+        //To show the most recent data on top - reverse the arraylist
+        Collections.reverse(visitUuidList);
+        //end
 
         //getEncounters - start
         EncounterDAO encounterDAO = new EncounterDAO();
@@ -845,20 +852,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
             button_resolution.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
-            /*String visitIDorderBy = "startdate";
-            String visitIDSelection = "uuid = ?";
-            String[] visitIDArgs = {visitUuid};
+            String visitIDorderBy = "startdate";
+            String visitIDSelection__ = "uuid = ?";
+            String[] visitIDArgs__ = {visitUuid};
 
-            final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
-            if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
-                visitIDCursor.moveToFirst();
-                visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            final Cursor visitIDCursor__ = db.query("tbl_visit", null, visitIDSelection__, visitIDArgs__,
+                    null, null, visitIDorderBy);
+
+            if (visitIDCursor__ != null && visitIDCursor__.moveToFirst() && visitIDCursor__.getCount() > 0) {
+                visitIDCursor__.moveToFirst();
+                visitUUID = visitIDCursor__.getString(visitIDCursor__.getColumnIndexOrThrow("uuid"));
+                Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
             }
-            if (visitIDCursor != null) visitIDCursor.close();
+            if (visitIDCursor__ != null) visitIDCursor__.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
-                addDownloadButton();
+              //  addDownloadButton();
 
-            }*/
+            }
 
         }
         flag.setOnClickListener(new View.OnClickListener() {
@@ -979,7 +989,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                if (speciality_spinner.getSelectedItemPosition() != 0) {
+             //   if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
@@ -1057,11 +1067,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     }
 
                     if (visitUUID == null || visitUUID.isEmpty()) {
+                        Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
                         String visitIDSelection = "uuid = ?";
                         String[] visitIDArgs = {visitUuid};
                         final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
                         if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                             visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                            Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
                         }
                         if (visitIDCursor != null)
                             visitIDCursor.close();
@@ -1107,7 +1119,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } else {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
-                } else {
+              //  }
+                /*else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
                     if (t != null) {
                         t.setError(getResources().getString(R.string.please_select_specialization));
@@ -1131,7 +1144,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-                }
+                }*/
 
             }
         });
@@ -3610,7 +3623,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(sql);
         }
 
-//        downloadPrescriptionDefault();
+        downloadPrescriptionDefault();
 //        downloadDoctorDetails();
     }
 
@@ -4098,6 +4111,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (uploaded) {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
+                        Log.v("visituuid", "download_vuuid: "+visitUuid);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
@@ -4326,7 +4340,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Logger.logD(TAG, "Download prescription happen" + new SimpleDateFormat("yyyy MM dd_HH mm ss").format(Calendar.getInstance().getTime()));
-//            downloadPrescriptionDefault();
+            downloadPrescriptionDefault();
 //            downloadDoctorDetails();
         }
     }
