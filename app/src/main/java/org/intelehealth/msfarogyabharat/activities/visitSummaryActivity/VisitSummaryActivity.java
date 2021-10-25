@@ -1156,7 +1156,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+            complaintView.setText(Html.fromHtml(complaint.getValue("hi")));
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
@@ -1287,7 +1287,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                    complaintText.setText(Html.fromHtml(complaint.getValue("hi")));
                 }
                 complaintText.setEnabled(false);
 
@@ -1311,8 +1311,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 complaint.setValue(input.replace("\n", "<br>"));
 //                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+//                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue("hi")));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -322,6 +324,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             }
 
             String complaintString = currentNode.generateLanguage();
+            String complaintStringHindi = currentNode.generateLanguage("hi");
 
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
@@ -331,6 +334,12 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+
+                String insertionHindi = Node.bullet_arrow + "<b>" + currentNode.getDisplay_hindi() + "</b>" + ": " + Node.next_line + complaintStringHindi + " ";
+                Map<String, String> complaintData = new HashMap<>();
+                complaintData.put("en", insertion);
+                complaintData.put("hi", insertionHindi);
+                insertion = new Gson().toJson(complaintData);
             } else {
                 String complaint = currentNode.getText();
                 if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
