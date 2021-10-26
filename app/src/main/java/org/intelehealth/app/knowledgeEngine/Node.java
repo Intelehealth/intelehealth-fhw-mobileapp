@@ -71,8 +71,6 @@ public class Node implements Serializable {
     private String display_oriya;
     private String display_cebuno;
     private String display_hindi;
-    //---------kuldeep-------------------
-    //private String display_tamil;
 
     private String language;
     private String choiceType;
@@ -85,8 +83,6 @@ public class Node implements Serializable {
     private String pop_up;
     private String pop_up_hi;
     private String pop_up_or;
-    //--------------kuldeep---------------------
-    //private String pop_up_ta;
 
     private String gender;
     private String min_age;
@@ -643,11 +639,21 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (node.getLanguage().contains("_")) {
-                    node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
-                } else {
-                    node.addLanguage(dialogEditText.getText().toString());
-                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
                 }
                 node.setSelected(true);
                 adapter.notifyDataSetChanged();
@@ -657,10 +663,30 @@ public class Node implements Serializable {
         textInput.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                if(!dialogEditText.getText().toString().equalsIgnoreCase("")) {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
+                    } else {
+                        node.addLanguage(dialogEditText.getText().toString());
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                else {
+                    if (node.getLanguage().contains("_")) {
+                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
+                    } else {
+                        node.addLanguage("Question not answered");
+                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
+                    }
+                }
+                // node.setSelected(true);
+                adapter.notifyDataSetChanged();
                 dialog.cancel();
             }
         });
         AlertDialog dialog = textInput.show();
+        dialog.setCanceledOnTouchOutside(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 

@@ -3265,6 +3265,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("caste")) {
                     patient.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                if (name.equalsIgnoreCase("Health Center")) {
+                    patient.setDistrict(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }

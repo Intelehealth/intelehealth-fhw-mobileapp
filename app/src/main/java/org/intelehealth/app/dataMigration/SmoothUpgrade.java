@@ -160,11 +160,19 @@ public class SmoothUpgrade {
                     patientDTO.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
                     patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     patientDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+
                     patientAttributesDTO = new PatientAttributesDTO();
                     patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                     patientAttributesDTO.setPatientuuid(uuid);
                     patientAttributesDTO.setPersonAttributeTypeUuid("5a889d96-0c84-4a04-88dc-59a6e37db2d3");
                     patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("caste"))));
+                    patientAttributesDTOList.add(patientAttributesDTO);
+
+                    patientAttributesDTO = new PatientAttributesDTO();
+                    patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                    patientAttributesDTO.setPatientuuid(uuid);
+                    patientAttributesDTO.setPersonAttributeTypeUuid("8d872150-c2cc-11de-8d13-0010c6dffd0f");
+                    patientAttributesDTO.setValue(StringUtils.getValue(cursor.getString(cursor.getColumnIndexOrThrow("health_district"))));
                     patientAttributesDTOList.add(patientAttributesDTO);
 
                     patientAttributesDTO = new PatientAttributesDTO();
@@ -321,7 +329,6 @@ public class SmoothUpgrade {
         }
         return ObsDTO;
     }
-
 
     private String convertConcepttoUuid(String conceptid) {
         String key = "";

@@ -39,6 +39,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -170,6 +171,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
         if (hasLicense) {
             File base_dir = new File(getFilesDir().getAbsolutePath() + File.separator + AppConstants.JSON_FOLDER);
             File[] files = base_dir.listFiles();
+            Arrays.sort(files);
             for (File file : files) {
                 try {
                     currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));

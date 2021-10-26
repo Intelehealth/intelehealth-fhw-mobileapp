@@ -452,6 +452,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("caste")) {
                     patient_new.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                if (name.equalsIgnoreCase("Health District")) {
+                    patient_new.setDistrict(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient_new.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -667,22 +672,29 @@ public class PatientDetailActivity extends AppCompatActivity {
             city_village = "";
         }
 
+        String district;
+        if (patient_new.getDistrict() != null) {
+            district = patient_new.getDistrict().trim();
+        } else {
+            district = "";
+        }
+
         if (patient_new.getPostal_code() != null) {
             String addrFinalLine;
             if (!patient_new.getPostal_code().equalsIgnoreCase("")) {
-                addrFinalLine = String.format("%s, %s, %s, %s",
-                        city_village, patient_new.getState_province(),
+                addrFinalLine = String.format("%s, %s, %s, %s, %s",
+                        city_village,district, patient_new.getState_province(),
                         patient_new.getPostal_code(), patient_new.getCountry());
             } else {
-                addrFinalLine = String.format("%s, %s, %s",
-                        city_village, patient_new.getState_province(),
+                addrFinalLine = String.format("%s, %s, %s, %s",
+                        city_village, district, patient_new.getState_province(),
                         patient_new.getCountry());
             }
             addrFinalView.setText(addrFinalLine);
         }
         else {
-            String addrFinalLine = String.format("%s, %s, %s",
-                    city_village, patient_new.getState_province(),
+            String addrFinalLine = String.format("%s, %s, %s, %s",
+                    city_village, district, patient_new.getState_province(),
                     patient_new.getCountry());
             addrFinalView.setText(addrFinalLine);
         }

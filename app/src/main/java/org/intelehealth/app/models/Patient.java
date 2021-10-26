@@ -12,6 +12,9 @@ public class Patient {
     private String address2;
     private String city_village;
     private String state_province;
+
+    private String district;
+
     private String postal_code;
     private String country; // ISO 3166-1 alpha-2
     private String gender;
@@ -109,6 +112,14 @@ public class Patient {
 
     public void setState_province(String state_province) {
         this.state_province = state_province;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district= district;
     }
 
     public String getPostal_code() {

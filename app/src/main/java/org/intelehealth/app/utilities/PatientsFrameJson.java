@@ -94,7 +94,6 @@ public class PatientsFrameJson {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
 
-
                 person.setNames(nameList);
                 person.setAddresses(addressList);
                 person.setAttributes(attributeList);

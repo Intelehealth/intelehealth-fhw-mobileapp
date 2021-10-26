@@ -41,6 +41,11 @@ public class PatientDTO {
     @SerializedName("stateprovince")
     @Expose
     private String stateprovince;
+
+    @SerializedName("district")
+    @Expose
+    private String district;
+
     @SerializedName("postalcode")
     @Expose
     private String postalcode;
@@ -154,6 +159,14 @@ public class PatientDTO {
 
     public void setStateprovince(String stateprovince) {
         this.stateprovince = stateprovince;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getPostalcode() {

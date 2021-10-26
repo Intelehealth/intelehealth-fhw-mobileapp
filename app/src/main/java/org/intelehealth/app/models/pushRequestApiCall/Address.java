@@ -18,6 +18,7 @@ public class Address {
     @SerializedName("stateProvince")
     @Expose
     private String stateProvince;
+
     @SerializedName("country")
     @Expose
     private String country;

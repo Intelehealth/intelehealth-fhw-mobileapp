@@ -45,10 +45,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.intelehealth.app.activities.setupActivity.LocationArrayAdapter;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -143,8 +146,12 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mOccupation;
     EditText countryText;
     EditText stateText;
+    EditText districtText;
+    EditText villageText;
     EditText casteText;
     Spinner mCountry;
+    Spinner mDistrict;
+    Spinner mVillage;
     Spinner mState;
     EditText economicText;
     EditText educationText;
@@ -173,7 +180,7 @@ public class IdentificationActivity extends AppCompatActivity {
     //random value assigned to check while editing. If user didnt updated the dob and just clicked on fab
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
-
+    List<String> list_state, list_district, list_village;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,6 +255,10 @@ public class IdentificationActivity extends AppCompatActivity {
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
+        districtText = findViewById(R.id.identification_district);
+        mDistrict = findViewById(R.id.spinner_district);
+        villageText = findViewById(R.id.identification_village);
+        mVillage = findViewById(R.id.spinner_village);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
         mRelationship = findViewById(R.id.identification_relationship);
@@ -337,6 +348,7 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mAddress2.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mCity")) {
                 mCity.setVisibility(View.VISIBLE);
             } else {
@@ -348,6 +360,7 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 countryStateLayout.setVisibility(View.GONE);
             }
+
             if (obj.getBoolean("mPostal")) {
                 mPostal.setVisibility(View.VISIBLE);
             } else {
@@ -425,7 +438,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         Resources res = getResources();
 
-        String countryStr="countries_"+ sessionManager.getAppLanguage();
+        String countryStr="countries_en"/*+ sessionManager.getAppLanguage()*/;
         //int countryVal=R.array.countries_en;
         int countryVal=res.getIdentifier(countryStr, "array", getApplicationContext().getPackageName());
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
@@ -594,6 +607,9 @@ public class IdentificationActivity extends AppCompatActivity {
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
 
+        JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+
+
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -604,7 +620,41 @@ public class IdentificationActivity extends AppCompatActivity {
 
                     if (country.matches("India")) {
 
-                        String stateStr="states_india_"+ sessionManager.getAppLanguage();
+
+                        try {
+                            if(json!=null) {
+                                JSONArray stateJsonArray = json.getJSONArray("states");
+
+                                list_state = new ArrayList<>();
+                                if(stateJsonArray!=null){
+                                    list_state.add("Select State");
+                                    for (int j=0;j<stateJsonArray.length();j++){
+                                        list_state.add(stateJsonArray.getJSONObject(j).getString("state"));
+                                    }
+
+                                    ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(IdentificationActivity.this, R.layout.custom_spinner, list_state);
+                                    mState.setAdapter(stateAdapter);
+                                }else{
+                                    list_state.add("Select State");
+                                }
+                                // setting state according database when user clicks edit details
+                                if (patientID_edit != null) {
+                                    //mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                                    int pos = list_state.indexOf(String.valueOf(patient1.getState_province()));
+                                    mState.setSelection(pos);
+                                } else {
+                                    int pos = list_state.indexOf(state);
+                                    mState.setSelection(pos);
+                                    //mState.setSelection(stateAdapter.getPosition(state));
+                                }
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+
+                       //----------------state list visible using array class-------------------
+                       /* String stateStr="states_india_"+ sessionManager.getAppLanguage();
                         int stateVal=res.getIdentifier(stateStr, "array", getApplicationContext().getPackageName());
                         //R.array.states_india
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -620,7 +670,7 @@ public class IdentificationActivity extends AppCompatActivity {
                             int pos = Arrays.asList(stateArray).indexOf(state);
                             mState.setSelection(pos);
                             //mState.setSelection(stateAdapter.getPosition(state));
-                        }
+                        }*/
 
                     } else if (country.matches("United States")) {
                         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
@@ -657,10 +707,54 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String[] stateArray = getResources().getStringArray(R.array.states_india_en);
+
+                try {
+                    if(json!=null) {
+                        JSONArray stateJsonArray = json.getJSONArray("states");
+                        list_district = new ArrayList<>();
+                        if(stateJsonArray!=null){
+                            list_district.add("Select District");
+                            for (int j=0;j<stateJsonArray.length();j++){
+                                if(stateJsonArray.getJSONObject(j).getString("state").equalsIgnoreCase(mState.getSelectedItem().toString()))
+                                {
+                                    JSONArray districtJsonArray = stateJsonArray.getJSONObject(j).getJSONArray("districts");
+                                    for(int k=0;k<districtJsonArray.length();k++){
+                                        list_district.add(districtJsonArray.getJSONObject(k).getString("name"));
+                                    }
+                                    break;
+                                }
+                            }
+
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, R.layout.custom_spinner, list_district);
+                            mDistrict.setAdapter(districtAdapter);
+                        }else{
+                            list_district.add("Select District");
+                        }
+                        // setting state according database when user clicks edit details
+                        if (patientID_edit != null) {
+                            //mDistrict.setSelection(districtAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                            int pos = list_district.indexOf(String.valueOf(patient1.getDistrict()));
+                            if(pos>=0) {
+                                mDistrict.setSelection(pos);
+                            }else{
+                                mDistrict.setSelection(0);
+                            }
+                        } else {
+                            //int pos = list_district.indexOf(district);
+                            mDistrict.setSelection(0);
+                            //mState.setSelection(stateAdapter.getPosition(state));
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+               /* String[] stateArray = getResources().getStringArray(R.array.states_india_en);
                 String state = stateArray[position];
                 //String state = parent.getItemAtPosition(position).toString();
                 if (state.matches("Odisha")) {
@@ -676,7 +770,83 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCity.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
                 } else {
                     mCity.setAdapter(null);
+                }*/
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        list_village=new ArrayList<String>();
+        list_village.add("Select Village");
+        ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, R.layout.custom_spinner, list_village);
+        mVillage.setAdapter(districtAdapter);
+
+        mDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                districtText.setError(null);
+                try {
+                    if(json!=null) {
+                        JSONArray stateJsonArray = json.getJSONArray("states");
+                        list_village = new ArrayList<>();
+                        if(stateJsonArray!=null){
+                            list_village.add("Select Village");
+                            for (int j=0;j<stateJsonArray.length();j++){
+                                if(stateJsonArray.getJSONObject(j).getString("state").equalsIgnoreCase(mState.getSelectedItem().toString()))
+                                {
+                                    JSONArray districtJsonArray = stateJsonArray.getJSONObject(j).getJSONArray("districts");
+                                    for (int k=0;k<districtJsonArray.length();k++){
+                                        if(districtJsonArray.getJSONObject(k).getString("name").equalsIgnoreCase(mDistrict.getSelectedItem().toString()))
+                                        {
+                                            JSONArray villageJsonArray = districtJsonArray.getJSONObject(k).getJSONArray("village");
+                                            for(int m=0;m<villageJsonArray.length();m++){
+                                                list_village.add(villageJsonArray.getString(m));
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, R.layout.custom_spinner, list_village);
+                            mVillage.setAdapter(districtAdapter);
+                        }else{
+                            list_village.add("Select Village");
+                        }
+                        // setting state according database when user clicks edit details
+                        if (patientID_edit != null) {
+                            //mVillage.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                            int pos = list_village.indexOf(String.valueOf(patient1.getCity_village()));
+                            if(pos>=0) {
+                                mVillage.setSelection(pos);
+                            }else{
+                                mVillage.setSelection(0);
+                            }
+                        } else {
+                            //int pos = list_district.indexOf(village);
+                            mVillage.setSelection(0);
+                            //mState.setSelection(stateAdapter.getPosition(state));
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        mVillage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                villageText.setError(null);
             }
 
             @Override
@@ -1109,6 +1279,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (name.equalsIgnoreCase("caste")) {
                     patient1.setCaste(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+
+                if (name.equalsIgnoreCase("Health District")) {
+                    patient1.setDistrict(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patient1.setPhone_number(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -1280,8 +1455,10 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                /*&& villageText.getText().toString().equals("")*//*!mCity.getText().toString().equals("")*/ &&
+                !countryText.getText().toString().equals("") && !stateText.getText().toString().equals("")
+                /*&& !districtText.getText().toString().equals("")*/ && !mDOB.getText().toString().equals("") &&
+                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1302,9 +1479,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
+            /*if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -1325,10 +1502,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
-
-
-            Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
-            return;
+                Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
+                return;
         }
 
         if (mCountry.getSelectedItemPosition() == 0) {
@@ -1349,6 +1524,25 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             stateText.setError(null);
         }
+
+        if (mDistrict.getSelectedItemPosition() == 0) {
+            districtText.setError(getString(R.string.error_field_required));
+            focusView = districtText;
+            cancel = true;
+            return;
+        } else {
+            districtText.setError(null);
+        }
+
+        if (mVillage.getSelectedItemPosition() == 0) {
+            villageText.setError(getString(R.string.error_field_required));
+            focusView = villageText;
+            cancel = true;
+            return;
+        } else {
+            villageText.setError(null);
+        }
+
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -1381,7 +1575,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+
+            //patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
 
             String[] countryArray = getResources().getStringArray(R.array.countries_en);
@@ -1389,17 +1584,24 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setCountry(StringUtils.getValue(countryArray[con_pos]));
             //patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
 
-
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
 
             String[] stateArray = getResources().getStringArray(R.array.states_india_en);
             int state_pos = mState.getSelectedItemPosition();
            // mState.setSelection(pos);
-            patientdto.setStateprovince(StringUtils.getValue(stateArray[state_pos]));
+            //patientdto.setStateprovince(StringUtils.getValue(stateArray[state_pos]));
+            patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
 
-            //patientdto.setStateprovince(StringUtils.getValue(mState.getSelectedItem().toString()));
+            //patientdto.setDistrictprovince(mDistrict.getSelectedItem().toString());
+            patientdto.setCityvillage(mVillage.getSelectedItem().toString());
 
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Health District"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
+            patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1407,7 +1609,6 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
             patientAttributesDTOList.add(patientAttributesDTO);
-
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -1618,8 +1819,10 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                /*&& !villageText.getText().toString().equals("")*//*!mCity.getText().toString().equals("")*/
+                && !countryText.getText().toString().equals("") && !stateText.getText().toString().equals("")
+                /*&& !districtText.getText().toString().equals("")*/ && !mDOB.getText().toString().equals("")
+                && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -1640,9 +1843,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
+            /*if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -1678,7 +1881,6 @@ public class IdentificationActivity extends AppCompatActivity {
             countryText.setError(null);
         }
 
-
         if (mState.getSelectedItemPosition() == 0) {
             stateText.setError(getString(R.string.error_field_required));
             focusView = stateText;
@@ -1687,6 +1889,25 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             stateText.setError(null);
         }
+
+        if (mDistrict.getSelectedItemPosition() == 0) {
+            districtText.setError(getString(R.string.error_field_required));
+            focusView = districtText;
+            cancel = true;
+            return;
+        } else {
+            districtText.setError(null);
+        }
+
+        if (mVillage.getSelectedItemPosition() == 0) {
+            villageText.setError(getString(R.string.error_field_required));
+            focusView = villageText;
+            cancel = true;
+            return;
+        } else {
+            villageText.setError(null);
+        }
+
         if (cancel) {
             focusView.requestFocus();
         } else {
@@ -1723,17 +1944,29 @@ public class IdentificationActivity extends AppCompatActivity {
            // patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(mDOB.getText().toString())));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+
+           // patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCity_village(mVillage.getSelectedItem().toString());
+
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);
 //                patientdto.setEconomic(StringUtils.getValue(m));
-            patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
+            patientdto.setState_province(StringUtils.getValue(mState.getSelectedItem().toString()));
+            //patientdto.setDistrict_province(StringUtils.getValue(patientdto.getDistrict_province()));
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
             patientAttributesDTO.setValue(StringUtils.getProvided(mCaste));
+            patientAttributesDTOList.add(patientAttributesDTO);
+
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(uuid);
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Health District"));
+            patientAttributesDTO.setValue(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1849,5 +2082,25 @@ public class IdentificationActivity extends AppCompatActivity {
 
     }
 
+    public JSONObject loadJsonObjectFromAsset(String assetName) {
+        try {
+            String json = loadStringFromAsset(assetName);
+            if (json != null)
+                return new JSONObject(json);
+        } catch (Exception e) {
+            Log.e("JsonUtils", e.toString());
+        }
+
+        return null;
+    }
+
+    private String loadStringFromAsset(String assetName) throws Exception {
+        InputStream is = getApplicationContext().getAssets().open(assetName);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        return new String(buffer, "UTF-8");
+    }
 
 }

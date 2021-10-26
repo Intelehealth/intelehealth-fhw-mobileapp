@@ -96,6 +96,8 @@
     <string name="identification_screen_prompt_economic_status" translatable="false">Economic status</string>
     <string name="identification_screen_prompt_education" translatable="false">Education level</string>
     <string name="identification_screen_prompt_country" translatable="false">Country *</string>
+    <string name="identification_screen_prompt_district">District *</string>
+    <string name="identification_screen_prompt_village">Village *</string>
     <string name="identification_screen_prompt_postal_code" translatable="false">Postal code</string>
     <string name="identification_screen_prompt_relationship" translatable="false">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation" translatable="false">Occupation</string>

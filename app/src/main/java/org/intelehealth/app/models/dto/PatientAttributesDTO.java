@@ -19,7 +19,6 @@ public class PatientAttributesDTO {
     @Expose
     private String patientuuid;
 
-
     public String getUuid() {
         return uuid;
     }

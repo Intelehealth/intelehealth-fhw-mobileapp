@@ -345,7 +345,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 for (String associatedComplaint : selectedAssociatedComplaintsList) {
                     if (!complaints.contains(associatedComplaint)) {
                         complaints.add(associatedComplaint);
-                        String fileLocation = "Engines/" + associatedComplaint + ".json";
+                        String fileLocation = "engines/" + associatedComplaint + ".json";
                         JSONObject currentFile = FileUtils.encodeJSON(this, fileLocation);
                         Node currentNode = new Node(currentFile);
                         complaintsNodes.add(currentNode);
