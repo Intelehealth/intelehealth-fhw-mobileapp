@@ -110,4 +110,12 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl()+ "/openmrs/ws/rest/v1/encounter";
         return BASE_URL;
     }
+
+    public String getIvrCall_ResponseUrl(String receiver, String todayDate) {
+        String api_key = "A4f98feaafc067dd6d8d5223762e9ad44";
+
+        return String.format("https://api-voice.kaleyra.com/v1/?method=dial.c2cstatus&api_key=%s&callto=%s&format=json&fromdate=%s",
+                api_key, receiver, todayDate);
+    }
+
 }

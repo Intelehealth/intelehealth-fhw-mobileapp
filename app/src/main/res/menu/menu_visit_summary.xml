@@ -14,6 +14,12 @@
     </item>
 
     <item
+        android:id="@+id/summary_addNewCase"
+        android:orderInCategory="300"
+        android:title="@string/new_patient"
+        app:showAsAction="never">
+
+    </item>  <item
         android:id="@+id/summary_endVisit"
         android:orderInCategory="300"
         android:title="@string/action_end_visit"

@@ -4,6 +4,7 @@ package org.intelehealth.msfarogyabharat.networkApiCalls;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.Resolution;
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
+import org.intelehealth.msfarogyabharat.models.IVR_Call_Models.Call_Details_Response;
 import org.intelehealth.msfarogyabharat.models.Location;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.AddImageDownloadResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Image_Push_Body;
@@ -142,4 +143,9 @@ public interface ApiInterface {
     Call<ResponseBody> GIVE_RESOLUTION_API_CALL_OBSERVABLE(@Url String url,
                                                            @Header("Authorization") String authHeader,
                                                            @Body Resolution body);
+
+
+    @GET
+    Observable<Call_Details_Response> IVR_CALL_RESPONSE(@Url String url);
+
 }

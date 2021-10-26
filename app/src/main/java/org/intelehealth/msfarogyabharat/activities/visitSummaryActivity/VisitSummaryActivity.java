@@ -42,11 +42,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -60,6 +62,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -79,11 +82,15 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -254,7 +261,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     MenuItem internetCheck = null;
     MenuItem endVisit_click = null;
 
-    private RecyclerView mAdditionalDocsRecyclerView;
+    private RecyclerView mAdditionalDocsRecyclerView,mAdditional_All_documents;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
 
     private RecyclerView mPhysicalExamsRecyclerView;
@@ -288,6 +295,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isRespiratory = false;
     String appLanguage;
     View button_resolution;
+    List<String> districtList;
+    AutoCompleteTextView autocompleteState, autocompleteDistrict;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -355,6 +364,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.summary_addNewCase: {
+//                NavUtils.navigateUpFromSameTask(this);
+                Intent i = new Intent(this, PrivacyNotice_Activity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                return true;
+            }
             case R.id.summary_home: {
 //                NavUtils.navigateUpFromSameTask(this);
                 Intent i = new Intent(this, HomeActivity.class);
@@ -510,6 +526,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //we can remove by data binding
         button_resolution = findViewById(R.id.button_resolution);
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
+        mAdditional_All_documents = findViewById(R.id.recy_additional_All_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
@@ -525,6 +542,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+
+        autocompleteState = findViewById(R.id.autocomplete_state);
+        autocompleteDistrict = findViewById(R.id.autocomplete_district);
+        autocompleteDistrict.setEnabled(false);
+        districtList = new ArrayList<>();
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -666,6 +688,71 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
         }
+
+        String[] countries = getResources().getStringArray(R.array.states_india);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        autocompleteState.setAdapter(adapter);
+
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteDistrict.setText("");
+            autocompleteDistrict.setEnabled(false);
+        }
+
+        autocompleteState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+
+        autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedState = parent.getItemAtPosition(position).toString();
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
+                    autocompleteDistrict.setText("");
+                    autocompleteDistrict.setEnabled(false);
+                } else
+                    autocompleteDistrict.setEnabled(true);
+                districtList.clear();
+                try {
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(selectedState)) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+                                String district = districtArray.getJSONObject(j).getString("name");
+                                districtList.add(district);
+                            }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(VisitSummaryActivity.this, android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
+                            break;
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1728,6 +1815,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+
+//This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita
+
+    public JSONObject loadJsonObjectFromAsset(String assetName) {
+        try {
+            String json = loadStringFromAsset(assetName);
+            if (json != null)
+                return new JSONObject(json);
+        } catch (Exception e) {
+            Log.e("JsonUtils", e.toString());
+        }
+
+        return null;
+    }
+
+    private String loadStringFromAsset(String assetName) throws Exception {
+        InputStream is = getApplicationContext().getAssets().open(assetName);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        return new String(buffer, "UTF-8");
+    }
+
+
     private String sms_prescription() {
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name()))
                 ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
@@ -2093,7 +2205,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     * @param uuid the visit uuid of the patient visit records is passed to the function.
+
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
 
@@ -3799,24 +3911,55 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileNameList = new ArrayList<String>();
+        ArrayList<String> mAllfileNameList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
+        ArrayList<File> mAllfileList = new ArrayList<File>();
         try {
             fileNameList = imagesDAO.getFilename(patientUuid, encounterUuidAdultIntial);
             for (String file_imagename : fileNameList) {
                 String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                 if (new File(filename).exists()) {
-                    fileList.add(new File(filename));
+                fileList.add(new File(filename));
                 }
             }
             HorizontalAdapter horizontalAdapter = new HorizontalAdapter(fileList, this);
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter); //TODO: here on VS screen we show the images based on image names.
+            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+
+            mAdditional_All_documents.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditional_All_documents.setAdapter(horizontalAdapter); //TODO: here on VS screen we show the images based on image names.
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
+
+        try {
+            mAllfileNameList = imagesDAO.getAllFilename(patientUuid, encounterUuidAdultIntial);
+            for (String file_imagename : mAllfileNameList) {
+                String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
+                if (new File(filename).exists()) {
+                    mAllfileList.add(new File(filename));
+                }
+            }
+            HorizontalAdapter horizontalAdapterForAll = new HorizontalAdapter(mAllfileList, this);
+//            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
+//            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapterForAll); //TODO: here on VS screen we show the images based on image names.
+//            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+
+            mAdditional_All_documents.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditional_All_documents.setAdapter(horizontalAdapterForAll); //TODO: here on VS screen we show the images based on image names.
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        } catch (Exception file) {
+            Logger.logD(TAG, file.getMessage());
+        }
+
     }
 
     @Override

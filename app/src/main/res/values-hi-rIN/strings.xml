@@ -14,6 +14,7 @@
     <string name="generic_coming_soon">जल्द आ रहा है .....</string>
     <string name="action_print">छाप</string>
     <string name="action_sms">एसएमएस/सन्देश </string>
+    <string name="call_recordings">कॉल रिकॉर्डिंग</string>
     <string name="action_home">घर</string>
     <string name="action_settings">समायोजन</string>
     <string name="generic_warning">चेतावनी!!</string>
@@ -814,4 +815,6 @@
     <string name="not_applicable">लागू नहीं</string>
     <string name="safe_abortion_consent">यदि कॉल करने वाले का प्रश्न सुरक्षित गर्भपात के संबंध में है, तो पूछें कि क्या गर्भवती व्यक्ति उपलब्ध होने पर फोन पर आ सकता है। यदि गर्भवती व्यक्ति फोन पर नहीं आ सकता है, तो उन्हें बाद में कॉल करने के लिए कहें। आगे बढ़ने से पहले सुनिश्चित करें कि कॉल करने वाला व्यक्ति गर्भवती है। क्या आपने पुष्टि की है?</string>
     <string name="invalid_filename">फ़ाइल का नाम मान्य नहीं है</string>
+    <string name="something_wrong_refresh_again">कुछ गलत हो गया। कृपया फिर से रिफ्रेश करें</string>
+
 </resources>

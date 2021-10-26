@@ -363,8 +363,35 @@ public class ImagesDAO {
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
+//            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND sync = ? AND voided = ?",
+//                    new String[]{patientUuid, "TRUE", "0"});
             Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
                     new String[]{patientUuid, encounterAdultIntials, "TRUE", "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            localdb.endTransaction();
+
+        }
+        return uuidList;
+    }
+
+    public ArrayList getAllFilename(String patientUuid, String encounterAdultIntials) throws DAOException {
+        Logger.logD(TAG, "patient uuid for image " + patientUuid);
+        ArrayList<String> uuidList = new ArrayList<>();
+        SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
+//            Cursor idCursorOld = localdb.rawQuery("SELECT imageName FROM tbl_additional_doc where patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
+//                    new String[]{patientUuid, encounterAdultIntials, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     uuidList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("imageName")));
