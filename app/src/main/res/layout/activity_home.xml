@@ -335,9 +335,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_imageview_closed_visits"
-                            android:text="@string/closed_visits_HomeScreen"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
+                            android:includeFontPadding="false"
+                            android:text="@string/closed_visits_HomeScreen"
                             android:textSize="26sp" />
 
                         <TextView
@@ -390,9 +390,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_imageview_completed_visits"
-                            android:text="@string/completed_visits_HomeScreen"
-                            android:includeFontPadding="false"
                             android:fontFamily="@font/lato_medium"
+                            android:includeFontPadding="false"
+                            android:text="@string/completed_visits_HomeScreen"
                             android:textSize="26sp" />
 
                         <TextView

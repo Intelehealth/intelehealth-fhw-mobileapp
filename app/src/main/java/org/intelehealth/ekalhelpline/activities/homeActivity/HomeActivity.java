@@ -136,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge,
-            tvTodayVisitsBadge, tvActiveVisitsBadge, followUp_textView,
+            tvTodayVisitsBadge, tvActiveVisitsBadge, followUp_textView, closedVisitsTV, completedVisitsTV,
             tvClosedVisitsBadge, tvCompletedVisitsBadge;
 
     //for auto update app
@@ -216,6 +216,12 @@ public class HomeActivity extends AppCompatActivity {
 
         followUp_textView = findViewById(R.id.tvFollowUp);
         followUp_textView.setText(R.string.title_follow_up);
+
+        closedVisitsTV = findViewById(R.id.clsoedvisits_textview);
+        closedVisitsTV.setText(R.string.closed_visits_HomeScreen);
+
+        completedVisitsTV = findViewById(R.id.completedvisits_textview);
+        completedVisitsTV.setText(R.string.completed_visits_HomeScreen);
 
         tvFollowUpBadge = findViewById(R.id.tvFollowUpBadge);
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
