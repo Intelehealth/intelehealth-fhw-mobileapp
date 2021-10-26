@@ -1775,9 +1775,16 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        Log.d("colon", "colon: " + comp);
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                        Log.d("colon", "colon_visitvalue: " + visitValue);
+                                        try {
+                                            Log.d("colon", "colon: " + comp);
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                            Log.d("colon", "colon_visitvalue: " + visitValue);
+                                        }
+                                        catch (StringIndexOutOfBoundsException e)
+                                        {
+                                            System.out.println("String Index is out of bounds");
+                                        }
+
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
