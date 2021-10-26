@@ -226,7 +226,6 @@ public class SearchPatientActivity extends AppCompatActivity {
                 displaySingleSelectionDialog();    //function call
             case R.id.action_search:
 
-
             default:
                 return super.onOptionsItemSelected(item);
         }
