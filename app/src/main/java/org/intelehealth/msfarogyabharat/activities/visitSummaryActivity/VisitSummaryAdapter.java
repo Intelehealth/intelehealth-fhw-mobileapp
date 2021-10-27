@@ -28,7 +28,8 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     List<String> visitUuidList;
     List<String> physexamList;
 
-    public VisitSummaryAdapter(Context context, List<String> visitUuidList, List<String> complaintList, List<String> physexamList) {
+    public VisitSummaryAdapter(Context context, List<String> visitUuidList,
+                               List<String> complaintList, List<String> physexamList) {
         this.context = context;
         this.visitUuidList = visitUuidList;
         this.complaintList = complaintList;

@@ -295,6 +295,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private List<String> complaintList_adapter, physexamList_adapter;
     private VisitSummaryAdapter visitsum_adapter;
     private LinearLayoutManager visitsum_layoutmanager;
+    private String latestVisitUuid;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -451,6 +452,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
+            latestVisitUuid = intent.getStringExtra("latest_VisitUuid");
             Log.v("visituuid", "vuid: "+ visitUuid);
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
@@ -843,7 +845,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
-        if (isPastVisit) {
+
+        if (isPastVisit) { //For past visit checking we hide the edit section.
             editVitals.setVisibility(View.GONE);
             editComplaint.setVisibility(View.GONE);
             editPhysical.setVisibility(View.GONE);
@@ -1780,7 +1783,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (visitUUID == null || visitUUID.isEmpty()) {
                     String visitIDorderBy = "startdate";
                     String visitIDSelection = "uuid = ?";
-                    String[] visitIDArgs = {visitUuid};
+                    String[] visitIDArgs = {latestVisitUuid}; //so that it fetches only the latest last visit everytime.
                     final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, visitIDorderBy);
                     if (visitIDCursor != null && visitIDCursor.moveToFirst() && visitIDCursor.getCount() > 0) {
                         visitIDCursor.moveToFirst();
@@ -1790,7 +1793,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 boolean synced = false;
                 Cursor idCursor = db.rawQuery("select v.sync from tbl_visit as v where v.uuid = ?",
-                        new String[]{visitUuid});
+                        new String[]{latestVisitUuid});
 
                 if (idCursor.getCount() != 0) {
                     while (idCursor.moveToNext()) {
@@ -1805,24 +1808,29 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (visitUUID != null && !visitUUID.isEmpty() && synced) {
                     Intent intent1 = new Intent(VisitSummaryActivity.this, ResolutionActivity.class);
                     intent1.putExtra("patientUuid", patientUuid);
-                    intent1.putExtra("visitUuid", visitUuid);
+                    intent1.putExtra("visitUuid", latestVisitUuid);
                     intent1.putExtra("encounterUuidVitals", encounterVitals);
                     intent1.putExtra("edit_PatHist", "edit_PatHist");
-                    intent1.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                    intent1.putExtra("encounterUuidAdultIntial", encounterAdultInit); //latest visit uuid
                     intent1.putExtra("name", patientName);
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent1.putExtra("tag", "edit");
-                    if (complaintView.getText().toString().contains(":")) {
-                        String substring = complaintView.getText().toString().substring(0, complaintView.getText().toString().indexOf(":"));
-                        boolean value = substring.toLowerCase().contains("violence") || complaintView.getText().toString().toLowerCase().contains("हिंसा");
+
+                    if (complaintList_adapter.get(complaintList_adapter.size()-1).contains(":")) {
+                        String substring = complaintList_adapter.get(complaintList_adapter.size()-1)
+                                .substring(0, complaintList_adapter.get(complaintList_adapter.size()-1).indexOf(":"));
+                        boolean value = substring.toLowerCase().contains("violence") ||
+                                complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().contains("हिंसा");
                         intent1.putExtra("resolutionViolence", value);
                     } else {
-                        boolean value = complaintView.getText().toString().toLowerCase().contains("violence") || complaintView.getText().toString().toLowerCase().contains("हिंसा");
+                        boolean value = complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().contains("violence")
+                                || complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().contains("हिंसा");
                         intent1.putExtra("resolutionViolence", value);
                     }
                     startActivity(intent1);
                 } else {
-                    Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder,
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -4291,13 +4299,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
         if(complaintView != null) {
-            String i = complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "");
-            Log.v("main", "v: "+i);
-            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("domesticviolence-follow-up:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("domesticviolence-caseclosed:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-follow-up:") ||
+           // String i = complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "");
+            String i = complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().replaceAll("\\s+", "");
+            Log.v("main", "vi: "+i);
+            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:") ||
                     complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-querybyrelativesorothers:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-caseclosed:")) {
+                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:")) {
                 flag = true;
             }
             else {

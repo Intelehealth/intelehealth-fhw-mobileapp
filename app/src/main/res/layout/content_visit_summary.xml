@@ -1430,7 +1430,8 @@
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -1441,7 +1442,6 @@
 
             <RelativeLayout
                 android:id="@+id/button_resolution"
-                android:visibility="gone"
                 tools:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

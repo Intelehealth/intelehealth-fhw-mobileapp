@@ -186,6 +186,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private boolean isMedicalAdvice;
     private boolean MedicalAdvice = false;
     private String global_encounterAdultIntialslocal = "";
+    private String visituID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1091,6 +1092,18 @@ public class PatientDetailActivity extends AppCompatActivity {
            // pastVisits(patientUuid);
         }
 
+        String visitIDSelection = "patientuuid = ?";
+        String[] visitIDArgs = {patientUuid};
+        Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+            do {
+                visituID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            } while (visitIDCursor.moveToNext());
+        }
+        if (visitIDCursor != null) {
+            visitIDCursor.close();
+        }
+
         textview_showallvisits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1103,6 +1116,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent.putExtra("name", patientName);
                 intent.putExtra("hasPrescription", hasPrescription);
                 intent.putExtra("MedicalAdvice", MedicalAdvice);
+                intent.putExtra("latest_VisitUuid", visituID);
 
 //                intent.putExtra("encounterUuidVitals", encounterVitalslocal);
                 intent.putExtra("encounterUuidAdultIntial", global_encounterAdultIntialslocal);
