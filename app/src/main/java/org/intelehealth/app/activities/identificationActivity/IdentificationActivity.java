@@ -830,7 +830,12 @@ public class IdentificationActivity extends AppCompatActivity {
                                     if (list_village.size() == 2) {
                                         mVillage.setSelection(1);
                                     } else {
-                                        mVillage.setSelection(0);
+                                        if(patient1.getCity_village().length()!=0)
+                                        {
+                                            mVillage.setSelection(list_village.size()-1);
+                                        }else {
+                                            mVillage.setSelection(0);
+                                        }
                                     }
                                 }
                             } else {
@@ -846,7 +851,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     }else{
                         list_village = new ArrayList<>();
                         list_village.add("Select Village");
-                        list_village.add("Other");
+                        //list_village.add("Other");
                         mCity.setText("");
                         ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, R.layout.custom_spinner, list_village);
                         mVillage.setAdapter(districtAdapter);
