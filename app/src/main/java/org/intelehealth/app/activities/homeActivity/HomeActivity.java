@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.homeActivity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -57,6 +58,7 @@ import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
+import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -89,6 +91,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -108,12 +111,12 @@ public class HomeActivity extends AppCompatActivity {
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
-    private ProgressDialog mSyncProgressDialog;
+    private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog;
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
 
-    TextView lastSyncTextView;
+    TextView lastSyncTextView, locationSetupTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
@@ -168,6 +171,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
+        locationSetupTextView = findViewById(R.id.locationTV);
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -267,7 +271,7 @@ public class HomeActivity extends AppCompatActivity {
         ivSync = findViewById(R.id.iv_sync);
 
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-
+        locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 ////            lastSyncAgo.setText(CalculateAgoTime());
@@ -690,10 +694,94 @@ public class HomeActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
                 return true;
+
+            case R.id.restAppOption:
+
+                MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
+                resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
+                resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        showResetProgressbar();
+                        deleteCache(getApplicationContext());
+                    }
+                });
+                resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+                AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
+                resetAlertDialog.show();
+                Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+                resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void showResetProgressbar() {
+        mRefreshProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mRefreshProgressDialog.setTitle(R.string.resetting_app_dialog);
+        mRefreshProgressDialog.setCancelable(false);
+        mRefreshProgressDialog.setProgress(i);
+        mRefreshProgressDialog.show();
+    }
+
+    public void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            boolean success = deleteDir(dir);
+            if(success){
+                clearAppData();
+            }
+        } catch (Exception e) { e.printStackTrace();}
+    }
+
+    public boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+    private void clearAppData() {
+        try {
+            // clearing app data
+            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+                mRefreshProgressDialog.dismiss();
+                ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+            } else {
+                String packageName = getApplicationContext().getPackageName();
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec("pm clear "+packageName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    private void startSetupActivity() {
+//        mRefreshProgressDialog.dismiss();
+//        Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+//        Intent intent = new Intent(HomeActivity.this, SetupActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//        finish();
+//    }
 
     /**
      * This method starts intent to another activity to change settings
@@ -1013,6 +1101,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
+
+
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {

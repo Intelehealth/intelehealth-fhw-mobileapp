@@ -438,6 +438,11 @@
     <string name="patient_image_download_notifi">ସରାଗୀଙ୍କ ଛବିର୍ାଉନସଲାଡ</string>
     <string name="image_upload_failed">ଛବିଅପସଲାଡ୍ ବଫି ଳ</string>
     <string name="sure_to_logout">ଲଗ୍ ଆଉଟ୍ କରିସବ ସବାଲିନଶ୍ଚିିତ କ?</string>
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="reset_app">Reset App</string>
+    <string name="location_setup">Setup Location - </string>
     <string name="lastsync_normal">ସଶର୍ ସମକାଳୀନକରଣ</string>
     <string name="image_download_complete_notifi">ଙ୍କ ଛବିର୍ାଉନସଲାଡ୍ ସମ୍ପୂର୍ଣ୍ଡସହାଇଛି।</string>
     <string name="visit_data_upload">"ପରିଦଶଡନ ତଥ୍ୟ ଅପସଲାଡ୍ "</string>

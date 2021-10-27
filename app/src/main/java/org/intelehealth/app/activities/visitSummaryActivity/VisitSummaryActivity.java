@@ -294,28 +294,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isRespiratory = false;
     String appLanguage;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_visit_summary, menu);
-        MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
-
-        internetCheck = menu.findItem(R.id.internet_icon);
-        MenuItemCompat.getActionView(internetCheck);
-
-        isNetworkAvailable(this);
-        sessionManager = new SessionManager(this);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        mCHWname = findViewById(R.id.chw_details);
-        mCHWname.setText(sessionManager.getChwname()); //session manager provider
-        //Added Prescription Title from config.Json dynamically through sharedPreferences
-        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
-        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
-
-        if (isPastVisit) menuItem.setVisible(false);
-        return super.onCreateOptionsMenu(menu);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_visit_summary, menu);
+//        MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
+//
+//        internetCheck = menu.findItem(R.id.internet_icon);
+//        MenuItemCompat.getActionView(internetCheck);
+//
+//        isNetworkAvailable(this);
+//        sessionManager = new SessionManager(this);
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//
+//        mCHWname = findViewById(R.id.chw_details);
+//        mCHWname.setText(sessionManager.getChwname()); //session manager provider
+//        //Added Prescription Title from config.Json dynamically through sharedPreferences
+//        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
+//        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
+//
+//        if (isPastVisit) menuItem.setVisible(false);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
         @Override
@@ -355,37 +355,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.summary_home: {
-//                NavUtils.navigateUpFromSameTask(this);
-                Intent i = new Intent(this, HomeActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
-                return true;
-            }
-            case R.id.summary_print: {
-                try {
-                    doWebViewPrint_Button();
-                } catch (ParseException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-                return true;
-            }
-            case R.id.summary_sms: {
-                //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
-                return true;
-            }
-            case R.id.summary_endVisit: {
-                onEndVisit();
-                return true;
-            }
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.summary_home: {
+////                NavUtils.navigateUpFromSameTask(this);
+//                Intent i = new Intent(this, HomeActivity.class);
+//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(i);
+//                return true;
+//            }
+//            case R.id.summary_print: {
+//                try {
+//                    doWebViewPrint_Button();
+//                } catch (ParseException e) {
+//                    FirebaseCrashlytics.getInstance().recordException(e);
+//                }
+//                return true;
+//            }
+//            case R.id.summary_sms: {
+//                //     VisitSummaryActivityPermissionsDispatcher.sendSMSWithCheck(this);
+//                return true;
+//            }
+//            case R.id.summary_endVisit: {
+//                onEndVisit();
+//                return true;
+//            }
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     private void onEndVisit() {
         //meera
@@ -427,6 +427,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
+    /* For HIH, only home option was required as the menu option, thus removing the old menu option and adding only home menu
+    icon in the menu*/
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the options menu from XML
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.detail_home:
+                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
