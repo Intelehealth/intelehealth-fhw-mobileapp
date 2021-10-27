@@ -499,6 +499,10 @@
     <string name="image_upload_failed">छवी डालना असफल</string>
     <string name="sure_to_exit">क्या आप निसंदेह बाहर निकलना चाहते है?</string>
     <string name="sure_to_logout">क्या आप लॉग आउट करना चाहते हैं?</string>
+    <string name="app_reset_toast">ऐप रीसेट हो गया!</string>
+    <string name="sure_to_reset_app">क्या आप ऐप रीसेट करना चाहते हैं?</string>
+    <string name="resetting_app_dialog">ऐप रीसेट हो रही है</string>
+    <string name="reset_app">ऐप रीसेट करें</string>
     <string name="lastsync_normal">आखिरी सिंक</string>
     <string name="update_patient_identification">मरीज डालना</string>
     <string name="are_you_want_go_back">क्या आप वाकई वापस जाना चाहते हैं?</string>
@@ -532,7 +536,7 @@
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
     <string name="last_synced">आखरी समन्वित- </string>
-    <string name="location_setup">Setup Location - </string>
+    <string name="location_setup">सेटअप स्थान -</string>
     <string name="today_visits">आज की विज़िट्स</string>
     <string name="active_visits">आक्टिव विज़िट्स</string>
     <string name="day">दिन</string>

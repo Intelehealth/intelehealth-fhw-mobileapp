@@ -372,9 +372,14 @@
     <string name="image_upload_failed">படப் பதிவேற்றம் தோல்வியுற்றது</string>
     <string name="sure_to_exit">நிச்சயமாக நீங்கள் வெளியேற வேண்டுமா?</string>
     <string name="sure_to_logout">நீங்கள் நிச்சயமாக வெளியேற விரும்புகிறீர்களா?</string>
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="reset_app">Reset App</string>
+    <string name="location_setup">Setup Location - </string>
     <string name="lastsync_normal">கடைசியாகப் புதுப்பிக்கப்பட்ட நேரம்</string>
     <string name="update_patient_identification">நோயாளியைப் புதுப்பிக்கவும்</string>
-    <string name="are_you_want_go_back">நீங்கள் திரும்பிச் செல்ல விரும்புகிறீர்களா?</string>
+    <string name="are_you_want_go_back">நீங்கள்set திரும்பிச் செல்ல விரும்புகிறீர்களா?</string>
     <string name="error">பிழை</string>
     <string name="patient_data_upload">நோயாளி தரவு பதிவேற்றம்</string>
     <string name="patient_image_download_notifi">நோயாளி படப் பதிவிறக்கம்</string>
@@ -405,7 +410,6 @@
     <string name="no_protocols_found">நெறிமுறைகள் எதுவும் கிடைக்கவில்லை</string>
     <string name="unable_to_get_proper_response">நெறிமுறைகளைப் பதிவிறக்குவதில் சிக்கல் ஏற்பட்டது, தயவுசெய்து கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
     <string name="last_synced">கடைசியாகப் புதுப்பிக்கப்பட்டது -</string>
-    <string name="location_setup">Setup Location - </string>
     <string name="today_visits">இன்றைய வருகைகள்</string>
     <string name="active_visits">செயலில் உள்ள வருகைகள்</string>
     <string name="day">நாள்</string>

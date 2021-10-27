@@ -481,6 +481,7 @@
     <string name="server_url">Server url</string>
     <string name="sync">Refresh</string>
     <string name="update_protocols">Update Protocols</string>
+    <string name="reset_app">Reset App</string>
     <string name="end_all_visit">End All Visit</string>
     <string name="filter_by_creator">Filter by creator</string>
     <string name="planet_name">Planet Name</string>
@@ -501,6 +502,9 @@
     <string name="image_upload_failed">ImageUpload failed</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
     <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
