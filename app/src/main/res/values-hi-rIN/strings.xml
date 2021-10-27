@@ -532,6 +532,7 @@
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
     <string name="last_synced">आखरी समन्वित- </string>
+    <string name="location_setup">Setup Location - </string>
     <string name="today_visits">आज की विज़िट्स</string>
     <string name="active_visits">आक्टिव विज़िट्स</string>
     <string name="day">दिन</string>

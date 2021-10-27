@@ -342,6 +342,7 @@
     <string name="protocols_downloaded_successfully">ପ୍ରୋଟୋକଲ୍ ସଫଳତାର ସହ ଡାଉନଲୋଡ୍ ହେଲା!</string>
     <string name="no_protocols_found">କୌଣସି ପ୍ରୋଟୋକଲ୍ ମିଳିଲା ନାହିଁ</string>
     <string name="last_synced">ଶେଷ ସମକାଳୀନକରଣ - </string>
+    <string name="location_setup">Setup Location - </string>
     <string name="day">ଦିନ</string>
     <string name="hour">ଘଣ୍ଟା</string>
     <string name="minute">ମିନିଟ୍</string>

@@ -405,6 +405,7 @@
     <string name="no_protocols_found">நெறிமுறைகள் எதுவும் கிடைக்கவில்லை</string>
     <string name="unable_to_get_proper_response">நெறிமுறைகளைப் பதிவிறக்குவதில் சிக்கல் ஏற்பட்டது, தயவுசெய்து கணினி நிர்வாகியைத் தொடர்பு கொள்ளவும்</string>
     <string name="last_synced">கடைசியாகப் புதுப்பிக்கப்பட்டது -</string>
+    <string name="location_setup">Setup Location - </string>
     <string name="today_visits">இன்றைய வருகைகள்</string>
     <string name="active_visits">செயலில் உள்ள வருகைகள்</string>
     <string name="day">நாள்</string>

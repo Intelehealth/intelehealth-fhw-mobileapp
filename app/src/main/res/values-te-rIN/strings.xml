@@ -369,6 +369,7 @@
     <string name="no_protocols_found">" ప్రోటోకాల్‌లు కనుగొనబడలేదు"</string>
     <string name="unable_to_get_proper_response">" ప్రోటోకాల్‌లను డౌన్‌లోడ్ చేయడంలో సమస్య ఉంది, దయచేసి సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి"</string>
     <string name="last_synced">" చివరి రిఫ్రెష్ -"</string>
+    <string name="location_setup">Setup Location - </string>
     <string name="today_visits">" నేటి సందర్శనలు"</string>
     <string name="active_visits">" క్రియాశీల సందర్శనలు"</string>
     <string name="successfully_synced">" విజయవంతంగా రిఫ్రెష్ చేయబడింది"</string>
