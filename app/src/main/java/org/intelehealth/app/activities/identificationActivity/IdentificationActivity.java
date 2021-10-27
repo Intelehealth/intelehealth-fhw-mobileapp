@@ -1600,7 +1600,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Health District"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mDistrict));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -1966,7 +1966,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Health District"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
+            patientAttributesDTO.setValue(StringUtils.getProvided(mDistrict));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -2010,9 +2010,8 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ProfileImageTimestamp"));
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
-
             //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")){
+            /*if (sessionManager.getHouseholdUuid().equals("")){
 
                 String HouseHold_UUID = UUID.randomUUID().toString();
                 sessionManager.setHouseholdUuid(HouseHold_UUID);
@@ -2034,7 +2033,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         (patientsDAO.getUuidForAttribute("householdID"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
-            }
+            }*/
 //          patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTOList.add(patientAttributesDTO);
