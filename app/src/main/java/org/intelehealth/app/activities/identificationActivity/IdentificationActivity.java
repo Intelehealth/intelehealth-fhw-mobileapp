@@ -58,6 +58,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -790,7 +791,6 @@ public class IdentificationActivity extends AppCompatActivity {
                             JSONArray stateJsonArray = json.getJSONArray("states");
                             list_village = new ArrayList<>();
                             if (stateJsonArray != null) {
-                                list_village.add("Select Village");
                                 for (int j = 0; j < stateJsonArray.length(); j++) {
                                     if (stateJsonArray.getJSONObject(j).getString("state").equalsIgnoreCase(mState.getSelectedItem().toString())) {
                                         JSONArray districtJsonArray = stateJsonArray.getJSONObject(j).getJSONArray("districts");
@@ -813,6 +813,8 @@ public class IdentificationActivity extends AppCompatActivity {
                                         break;
                                     }
                                 }
+                                Collections.sort(list_village);
+                                list_village.add(0,"Select Village");
                                 list_village.add("Other");
                                 ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, R.layout.custom_spinner, list_village);
                                 mVillage.setAdapter(districtAdapter);
@@ -830,7 +832,8 @@ public class IdentificationActivity extends AppCompatActivity {
                                     if (list_village.size() == 2) {
                                         mVillage.setSelection(1);
                                     } else {
-                                        if(patient1.getCity_village().length()!=0)
+                                        if(patient1.getCity_village().length()!=0 && mState.getSelectedItem().toString().equalsIgnoreCase(patient1.getState_province()) &&
+                                                mDistrict.getSelectedItem().toString().equalsIgnoreCase(patient1.getDistrict()))
                                         {
                                             mVillage.setSelection(list_village.size()-1);
                                         }else {
