@@ -571,14 +571,14 @@ public class ImagesDAO {
     }
 
 
-    public List<String> get_obsId_tbl_additional_doc(String patientUuid, String encounterUuid) throws DAOException {
+    public List<String> get_obsId_tbl_additional_doc(String patientUuid, List<String> encounterUuidList) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
 
         try {
-            Cursor idCursor = localdb.rawQuery("SELECT obsId FROM tbl_additional_doc WHERE patientId = ? AND encounterId = ? AND sync = ? AND voided = ?",
-                    new String[]{patientUuid, encounterUuid, "TRUE", "0"});
+            Cursor idCursor = localdb.rawQuery("SELECT obsId FROM tbl_additional_doc WHERE patientId = ? AND encounterId in ('" + StringUtils.convertUsingStringBuilder(encounterUuidList) + "') AND sync = ? AND voided = ?",
+                    new String[]{patientUuid, "TRUE", "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
                     imagesList.add(idCursor.getString(idCursor.getColumnIndexOrThrow("obsId")));

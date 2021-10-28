@@ -1704,6 +1704,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 addDocs.putExtra("visitUuid", visitUuid);
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
                 addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInit);
+                addDocs.putStringArrayListExtra("encounterAdultInitList", (ArrayList<String>) encounterAdultInitList);
                // addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInitList);
                 startActivity(addDocs);
             }
