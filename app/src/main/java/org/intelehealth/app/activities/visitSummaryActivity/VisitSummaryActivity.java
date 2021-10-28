@@ -529,6 +529,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.fab);
         mCHWname = findViewById(R.id.chw_details);
         mCHWname.setText(sessionManager.getChwname());
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //Added Prescription Title from config.Json dynamically through sharedPreferences
+        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
+        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
