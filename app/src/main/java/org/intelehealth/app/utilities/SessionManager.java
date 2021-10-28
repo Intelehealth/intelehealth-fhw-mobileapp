@@ -51,6 +51,7 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
+    private static final String COMPLAINT = "complaint_";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -429,6 +430,15 @@ public class SessionManager {
         editor.commit();
     }
 
+    public Set<String> getSelectedComplaint(String patientUUid) {
+        return pref.getStringSet(COMPLAINT + patientUUid, null);
+    }
+
+    public void setSelectedComplaint(String patientUuid, Set<String> selectedExams) {
+        editor.putStringSet(COMPLAINT + patientUuid, selectedExams);
+        editor.commit();
+    }
+
     public Set<String> getVisitSummary(String patientUUid) {
 
         return pref.getStringSet(EXAM + patientUUid, null);
@@ -437,7 +447,6 @@ public class SessionManager {
     public void setVisitSummary(String patientUuid, Set<String> selectedExams) {
         editor.putStringSet(EXAM + patientUuid, selectedExams);
         editor.commit();
-
     }
 
     public void removeVisitSummary(String patientUuid, String visitUuid) {
