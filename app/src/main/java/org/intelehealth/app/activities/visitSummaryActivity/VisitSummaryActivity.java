@@ -527,6 +527,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         FloatingActionButton fab = findViewById(R.id.fab);
+        mCHWname = findViewById(R.id.chw_details);
+        mCHWname.setText(sessionManager.getChwname());
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
