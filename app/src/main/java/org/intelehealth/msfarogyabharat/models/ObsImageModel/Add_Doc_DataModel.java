@@ -9,11 +9,13 @@ package org.intelehealth.msfarogyabharat.models.ObsImageModel;
 public class Add_Doc_DataModel {
     private String obsuuid;
     private String filename;
+    private String encounteruuid;
 
 
-    public Add_Doc_DataModel(String obsuuid, String filename) {
+    public Add_Doc_DataModel(String obsuuid, String filename, String encounteruuid) {
         this.obsuuid = obsuuid;
         this.filename = filename;
+        this.encounteruuid = encounteruuid;
     }
 
     public String getObsuuid() {
@@ -30,5 +32,13 @@ public class Add_Doc_DataModel {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public String getEncounteruuid() {
+        return encounteruuid;
+    }
+
+    public void setEncounteruuid(String encounteruuid) {
+        this.encounteruuid = encounteruuid;
     }
 }

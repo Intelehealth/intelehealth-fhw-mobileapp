@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.intelehealth.msfarogyabharat.models.Add_Doc_ObsEnc_Model;
+import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Doc_DataModel;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
+import org.intelehealth.msfarogyabharat.utilities.StringUtils;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
@@ -241,10 +244,10 @@ public class ObsDAO {
 
 
 
-    public List<String> getImageStrings(String conceptuuid, String encounterUuidAdultIntials) {
+    public List<String> getImageStrings(String conceptuuid, List<String> encounterUuidAdultIntialsList) {
         List<String> rawStrings = new ArrayList<>();
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_obs where conceptuuid = ? AND encounteruuid = ? AND voided='0'", new String[]{conceptuuid, encounterUuidAdultIntials});
+        Cursor idCursor = db.rawQuery("SELECT uuid, encounteruuid FROM tbl_obs where conceptuuid = ? AND encounteruuid in ('" + StringUtils.convertUsingStringBuilder(encounterUuidAdultIntialsList) + "') AND voided='0'", new String[]{conceptuuid});
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 rawStrings.add(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));

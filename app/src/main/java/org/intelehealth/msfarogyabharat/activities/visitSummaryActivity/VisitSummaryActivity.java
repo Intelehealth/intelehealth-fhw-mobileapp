@@ -2341,7 +2341,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void additionalDocumentImagesDownload() {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterAdultInitList, UuidDictionary.COMPLEX_IMAGE_AD);
+            List<String> obsUuidList = imagesDAO.isImageListObsExists(encounterAdultInitList,
+                    UuidDictionary.COMPLEX_IMAGE_AD);
             if (obsUuidList.size() == 0) {
                 additionalImageDownloadText.setVisibility(View.GONE); //This means the visit is a new one...
             } else {
@@ -2400,7 +2401,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         intent.putExtra("patientUuid", patientUuid);
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("encounterUuidVitals", encounterVitals);
-        intent.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        intent.putStringArrayListExtra("encounterUuidAdultIntialList", (ArrayList<String>) encounterAdultInitList);
         intent.putExtra("ImageType", imageType);
         intent.putExtra("patientUuid", patientUuid);
         startService(intent);
