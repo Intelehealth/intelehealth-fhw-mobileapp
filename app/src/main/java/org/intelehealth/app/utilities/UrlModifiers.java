@@ -65,10 +65,11 @@ public class UrlModifiers {
     /**
      * @return BASE_URL which returns the partial url for whatsapp prescription share feature.
      */
+    //https://tlm.digitalhih.net/intelehealth/index.html#/prescription/c9a1d0d3-5261-477a-8ff9-cf6726e9a782/10R06-1: Sample link for HIH
     public String setwhatsappPresciptionUrl() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String BASE_URL = "https://" + sessionManager.getServerUrl() +
-                "/preApi/index.jsp?v=";
+                "/intelehealth/index.html%23/prescription/";
         return BASE_URL;
     }
 

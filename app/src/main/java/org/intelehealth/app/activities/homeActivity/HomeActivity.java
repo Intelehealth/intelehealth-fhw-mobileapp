@@ -1008,6 +1008,11 @@ public class HomeActivity extends AppCompatActivity {
         if (physicalExam.exists()) {
             physicalExam.delete();
         }
+        File physicalExam2 = new File(context.getFilesDir().getAbsolutePath() + "/physExam_2.json");
+        Log.e(TAG, "physExam.json=" + physicalExam2.exists());
+        if (physicalExam2.exists()) {
+            physicalExam2.delete();
+        }
         File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
         Log.e(TAG, "famHist.json=" + familyHistory.exists());
         if (familyHistory.exists()) {
