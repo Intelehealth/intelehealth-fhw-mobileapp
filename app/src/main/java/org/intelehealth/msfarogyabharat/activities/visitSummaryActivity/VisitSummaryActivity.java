@@ -1162,7 +1162,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
-            physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+            physFindingsView.setText(Html.fromHtml(phyExam.getValue("hi")));
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -1419,8 +1419,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (phyExam.getValue() != null) {
-                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
-                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue("hi")));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue("hi")));
                                 }
                                 updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
