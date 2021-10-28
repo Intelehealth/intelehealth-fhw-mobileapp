@@ -125,7 +125,7 @@ public class DownloadService extends IntentService {
                             dataModels.add(new Add_Doc_DataModel
                                     (addImageDownloadResponse.getData().get(0).getObsId(),
                                             addImageDownloadResponse.getData().get(0).getImageName(),
-                                            addImageDownloadResponse.getData().get(0).getEncounteruuid())); // getEncounterUuid of that images as well and pass here.....
+                                            addImageDownloadResponse.getData().get(0).getEncounteruuid()));
 
                             if(finalImageObsList.size() == dataModels.size()) {
 
@@ -142,10 +142,9 @@ public class DownloadService extends IntentService {
                                                 @Override
                                                 public void onNext(ResponseBody responseBody) {
                                                     try {
-                                                        //TODO: fetch the encounteruuid from the datamodel class from above and pass as a parameter
                                                         downloadFile(responseBody, dataModels.get(finalJ).getFilename(),
                                                                 dataModels.get(finalJ).getObsuuid(),
-                                                                dataModels.get(finalJ).getEncounteruuid());
+                                                                dataModels.get(finalJ).getEncounteruid());
 
                                                         Log.v(TAG, dataModels.get(finalJ).getFilename() + ":" + dataModels.get(finalJ).getObsuuid());
 
@@ -197,8 +196,7 @@ public class DownloadService extends IntentService {
 
     }*/
 
-    private void downloadFile(ResponseBody body, String image_filename, String obsUuid, String encounteruuid) throws IOException {
-        //TODO: add 3rd parameter as encounteruuid
+    private void downloadFile(ResponseBody body, String image_filename, String obsUuid, String encounterid) throws IOException {
         String imagepath = image_filename + ".jpg";
         int count;
         byte[] data = new byte[1024 * 4];
@@ -240,11 +238,7 @@ public class DownloadService extends IntentService {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             imagesDAO.updateObs(obsUuid);
-
-            String encounterAdultIntials = "";
-            //fetch encoutneruuid from parameter in here so that we can insert and on first sync can downlaod the images...
-            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, encounteruuid,
-                    obsUuid, image_filename, "0", "TRUE");
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, encounterid, obsUuid, image_filename, "0", "TRUE");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
