@@ -386,6 +386,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
+                    Set<String> selectedComplaints = new LinkedHashSet<>(complaints);
+                    sessionManager.setSelectedComplaint(patientUuid, selectedComplaints);
 
                     startActivity(intent);
                 } else {
@@ -405,6 +407,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("tag", intentTag);
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
+                    Set<String> selectedComplaints = new LinkedHashSet<>(complaints);
+                    sessionManager.setSelectedComplaint(patientUuid, selectedComplaints);
 
                     startActivity(intent);
                 }
