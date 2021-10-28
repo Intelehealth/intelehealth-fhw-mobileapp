@@ -1,22 +1,41 @@
 package org.intelehealth.msfarogyabharat.activities.visitSummaryActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.msfarogyabharat.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
+import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
+import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
+import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -26,23 +45,27 @@ import java.util.List;
  */
 
 public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapter.VisitSummaryViewHolder> {
-    Context context;
+    Context context, visitsumContext;
     List<String> complaintList;
     List<String> visitUuidList;
     List<String> physexamList;
     boolean allVisitsEnded = false;
     String currentvisituuid;
     String complaint, physexam, visitid;
+    Add_Doc_Adapter_DataModel model;
+    File obsImgdir = new File(AppConstants.IMAGE_PATH);
 
-    public VisitSummaryAdapter(Context context, List<String> visitUuidList,
+    public VisitSummaryAdapter(Context context, Context visitsumContext, List<String> visitUuidList,
                                List<String> complaintList, List<String> physexamList,
-                               boolean allVisitsEnded, String currentvisituuid) {
+                               boolean allVisitsEnded, String currentvisituuid, Add_Doc_Adapter_DataModel model) {
         this.context = context;
+        this.visitsumContext = visitsumContext;
         this.visitUuidList = visitUuidList;
         this.complaintList = complaintList;
         this.physexamList = physexamList;
         this.allVisitsEnded = allVisitsEnded;
         this.currentvisituuid = currentvisituuid;
+        this.model = model;
         Log.v("main","allvisitsended: "+ this.allVisitsEnded);
     }
 
@@ -121,6 +144,128 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
                     }
                 }
             });
+
+            VisitSummaryActivity summaryActivity = new VisitSummaryActivity();
+            // Edit of Complaints
+            imagebutton_edit_complaint.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(visitsumContext);
+                    complaintDialog.setTitle(context.getResources().getString(R.string.visit_summary_complaint));
+                  //  final LayoutInflater inflater = getLayoutInflater();
+                    final LayoutInflater inflater = LayoutInflater.from(visitsumContext);
+                    View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
+                    complaintDialog.setView(convertView);
+
+                    final TextView complaintText = convertView.findViewById(R.id.textView_entry);
+                    if (complaintList.get(getAdapterPosition()) != null) {
+                        complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+                    }
+                    complaintText.setEnabled(false);
+
+                    complaintDialog.setPositiveButton(context.getResources().getString(R.string.generic_manual_entry),
+                            new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(visitsumContext);
+                            textInput.setTitle(context.getResources().getString(R.string.question_text_input));
+                            final EditText dialogEditText = new EditText(visitsumContext);
+                            if (complaintList.get(getAdapterPosition()) != null) {
+                                dialogEditText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+                            } else {
+                                dialogEditText.setText("");
+                            }
+                            textInput.setView(dialogEditText);
+                            textInput.setPositiveButton(context.getResources().getString(R.string.generic_ok),
+                                    new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String input = dialogEditText.getText().toString();
+                                    input = summaryActivity.applyBoldTag(input);
+                                   // complaint.setValue(input.replace("\n", "<br>"));
+                                    complaintList.add(getAdapterPosition(), input.replace("\n", "<br>"));
+//                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
+                                    if (complaintList.get(getAdapterPosition()) != null) {
+                                        complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+                                        textView_content_complaint.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+                                    }
+                                    summaryActivity.updateDatabase(complaintList.get(getAdapterPosition()), UuidDictionary.CURRENT_COMPLAINT);
+                                    dialog.dismiss();
+                                }
+                            });
+                            textInput.setNeutralButton(context.getResources().getString(R.string.generic_cancel),
+                                    new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog alertDialog = textInput.show();
+                            IntelehealthApplication.setAlertDialogCustomTheme(visitsumContext, alertDialog);
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    complaintDialog.setNegativeButton(context.getResources().getString(R.string.generic_erase_redo),
+                            new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            //Deleting the old image in physcial examination
+                            if (obsImgdir.exists()) {
+                                ImagesDAO imagesDAO = new ImagesDAO();
+
+                                try {
+                                    List<String> imageList = imagesDAO.getImages(model.getEncounteruid(), UuidDictionary.COMPLEX_IMAGE_PE);
+                                    for (String obsImageUuid : imageList) {
+                                        String imageName = obsImageUuid + ".jpg";
+                                        new File(obsImgdir, imageName).deleteOnExit();
+                                    }
+                                    imagesDAO.deleteConceptImages(model.getEncounteruid(), UuidDictionary.COMPLEX_IMAGE_PE);
+                                } catch (DAOException e1) {
+                                    FirebaseCrashlytics.getInstance().recordException(e1);
+                                }
+                            }
+
+                            Intent intent1 = new Intent(visitsumContext, ComplaintNodeActivity.class);
+                            intent1.putExtra("patientUuid", model.getPatientuuid());
+                            intent1.putExtra("visitUuid", model.getVisituuid());
+                            intent1.putExtra("encounterUuidAdultIntial", model.getEncounteruid());
+                            intent1.putExtra("name", model.getPatientname());
+                            intent1.putExtra("float_ageYear_Month", model.getFloat_ageYear_Month());
+                            intent1.putExtra("tag", "edit");
+                            visitsumContext.startActivity(intent1);
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    complaintDialog.setNeutralButton(context.getResources().getString(R.string.generic_cancel),
+                            new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    //complaintDialog.show();
+                    AlertDialog alertDialog = complaintDialog.create();
+                    alertDialog.show();
+                    Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    pb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                    nb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+                    Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
+                    neutralb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    neutralb.setTypeface(ResourcesCompat.getFont(visitsumContext, R.font.lato_bold));
+
+                    IntelehealthApplication.setAlertDialogCustomTheme(visitsumContext, alertDialog);
+                }
+            });
+
+            //end
 
         }
     }

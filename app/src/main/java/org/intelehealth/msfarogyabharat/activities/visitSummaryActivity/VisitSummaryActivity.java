@@ -80,6 +80,7 @@ import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
+import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -801,8 +802,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //getEncounters - end
 
         //get all visits - end
-        visitsum_adapter = new VisitSummaryAdapter(getApplicationContext(), visitUuidList,
-                complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid);
+        Add_Doc_Adapter_DataModel model = new Add_Doc_Adapter_DataModel(encounterAdultInit, patientUuid, visitUuid,
+                patientName, float_ageYear_Month);
+        visitsum_adapter = new VisitSummaryAdapter(context, context1, visitUuidList,
+                complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid, model);
         visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
         recyclerview_visitsummary.setAdapter(visitsum_adapter);
@@ -3902,15 +3905,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
      * @param conceptID variable of type int
      */
 
-    private void updateDatabase(String string, String conceptID) {
+    public void updateDatabase(String string, String conceptID) {
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
             obsDTO.setConceptuuid(String.valueOf(conceptID));
-            obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+//          obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+            obsDTO.setEncounteruuid(encounterAdultInit); //latest visit encounter.
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
-            obsDTO.setUuid(obsDAO.getObsuuid(encounterUuidAdultIntial, String.valueOf(conceptID)));
+            obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultInit, String.valueOf(conceptID)));
 
             obsDAO.updateObs(obsDTO);
 
@@ -3921,8 +3925,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         EncounterDAO encounterDAO = new EncounterDAO();
         try {
-            encounterDAO.updateEncounterSync("false", encounterUuidAdultIntial);
-            encounterDAO.updateEncounterModifiedDate(encounterUuidAdultIntial);
+            encounterDAO.updateEncounterSync("false", encounterAdultInit);
+            encounterDAO.updateEncounterModifiedDate(encounterAdultInit);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -4428,7 +4432,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
-    private String applyBoldTag(String input) {
+    public String applyBoldTag(String input) {
         String result = input;
         if (input == null)
             return null;

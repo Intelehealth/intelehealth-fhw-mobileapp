@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.intelehealth.msfarogyabharat.models.Add_Doc_ObsEnc_Model;
-import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Doc_DataModel;
 import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.StringUtils;
