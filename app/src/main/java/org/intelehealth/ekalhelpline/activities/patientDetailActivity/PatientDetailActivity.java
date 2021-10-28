@@ -2037,7 +2037,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .subscribe(new DisposableSingleObserver<String>() {
                     @Override
                     public void onSuccess(@NonNull String s) {
-                        showAlert(R.string.calling_patient);
+                        if(!PatientDetailActivity.this.isFinishing())
+                            showAlert(R.string.calling_patient);
                         ivr_isInititated = true;
                       //  calling.setEnabled(true); //once api hit and response = enable the button...
                       /*  new Handler().postDelayed(new Runnable() {
@@ -2051,7 +2052,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                        // calling.setEnabled(true);
-                        showAlert(R.string.error_calling_patient);
+                        if(!PatientDetailActivity.this.isFinishing())
+                            showAlert(R.string.error_calling_patient);
                     }
                 });
     }
