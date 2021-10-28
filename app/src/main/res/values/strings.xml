@@ -51,7 +51,7 @@
     <string name="error_invalid_password" translatable="false">This password is too short</string>
     <string name="error_incorrect_password" translatable="false">please check username and password entered</string>
     <string name="error_field_required" translatable="false">This field is required</string>
-    <string name="error_network" translatable="false">Network Error</string>
+    <string name="error_network" translatable="false">Network Error!</string>
     <string name="error_location_not_selected" translatable="false">Please select a value form the location dropdown</string>
     <string name="error_location_not_fetched" translatable="false">Unable to fetch locations</string>
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
@@ -508,7 +508,7 @@
     <string name="lastsync_normal">Last Refresh</string>
     <string name="update_patient_identification">Update Patient</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
-    <string name="error">Error</string>
+    <string name="error">Error!</string>
     <string name="patient_data_upload">Patient Data Upload</string>
     <string name="patient_image_download_notifi">Patient Image Download</string>
     <string name="image_download_complete_notifi">\'s Image Download complete.</string>
@@ -674,4 +674,9 @@
     <string name="select_mode_text">Select Mode</string>
     <string name="please_select_mode_msg">Please select Case Mode</string>
     <string name="notification_title">Realtime sync is ON!</string>
+
+    //Reset App functionality
+    <string name="sync_failed">Sync Failed! Please try again later.</string>
+    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
+    <string name="app_sync">Syncing App..</string>
 </resources>

@@ -51,7 +51,7 @@
     <string name="error_invalid_password" translatable="false">यह पासवर्ड बहुत छोटा है</string>
     <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
     <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
-    <string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
+    <string name="error_network" translatable="false">नेटवर्क त्रुटि!</string>
     <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन मान का चयन करें</string>
     <string name="error_location_not_fetched" translatable="false">स्थानों को लाने में असमर्थ</string>
     <string name="permission_rationale" translatable="false">ईमेल पूर्णता प्रदान करने के लिए संपर्क अनुमतियों की आवश्यकता होती है।
@@ -506,7 +506,7 @@
     <string name="lastsync_normal">आखिरी सिंक</string>
     <string name="update_patient_identification">मरीज डालना</string>
     <string name="are_you_want_go_back">क्या आप वाकई वापस जाना चाहते हैं?</string>
-    <string name="error">भूल</string>
+    <string name="error">त्रुटि!</string>
     <string name="patient_data_upload">मरीज डेटा अपलोड</string>
     <string name="patient_image_download_notifi">मरीज छवी डाउनलोड</string>
     <string name="image_download_complete_notifi">छवी डाउनलोड पूरा हुआ</string>
@@ -669,4 +669,9 @@
     <string name="select_mode_text">चुने मोड</string>
     <string name="please_select_mode_msg">कृपया केस मोड चुने</string>
     <string name="notification_title">Realtime sync is ON!</string>
+
+    //Reset App functionality
+    <string name="sync_failed">ऐप सिंक विफल! बाद में पुन: प्रयास करें।</string>
+    <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
+    <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
 </resources>

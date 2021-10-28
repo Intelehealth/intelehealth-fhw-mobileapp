@@ -69,6 +69,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -111,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
-    private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog;
+    private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
@@ -162,6 +163,11 @@ public class HomeActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
+        mResetSyncDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mResetSyncDialog.setTitle(R.string.app_sync);
+        mResetSyncDialog.setCancelable(false);
+        mResetSyncDialog.setProgress(i);
+
         //reMyreceive = new Myreceiver();
         //filter = new IntentFilter("lasysync");
 
@@ -697,29 +703,62 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.restAppOption:
 
-                MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
-                resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
-                resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        showResetProgressbar();
-                        deleteCache(getApplicationContext());
+                if((isNetworkConnected()))
+                {
+                    mResetSyncDialog.show();
+                    boolean isSynced = syncUtils.syncForeground("home");
+                    if(isSynced)
+                    {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() { //Do something after 100ms
+                                showResetConfirmationDialog();
+                            }
+                        }, 3000);
                     }
-                });
-                resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
-                AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
-                resetAlertDialog.show();
-                Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
-                resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
-                return true;
+                    else
+                    {
+                        mResetSyncDialog.dismiss();
+                        DialogUtils dialogUtils = new DialogUtils();
+                        dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                    }
+                    return true;
+                }
+                else
+                {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+                }
+
+
 
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void showResetConfirmationDialog() {
+        mResetSyncDialog.dismiss();
+        MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
+        resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showResetProgressbar();
+                deleteCache(getApplicationContext());
+            }
+        });
+        resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
+        resetAlertDialog.show();
+        Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
+    }
+
 
     private void showResetProgressbar() {
         mRefreshProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
@@ -774,14 +813,6 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-//    private void startSetupActivity() {
-//        mRefreshProgressDialog.dismiss();
-//        Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
-//        Intent intent = new Intent(HomeActivity.this, SetupActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
-//        finish();
-//    }
 
     /**
      * This method starts intent to another activity to change settings
