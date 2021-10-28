@@ -296,6 +296,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private VisitSummaryAdapter visitsum_adapter;
     private LinearLayoutManager visitsum_layoutmanager;
     private String latestVisitUuid;
+    private boolean allVisitsEnded = false;
+    private boolean hide_endvisit = false;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -316,7 +318,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
         prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
 
-        if (isPastVisit) menuItem.setVisible(false);
+      //  if (isPastVisit) menuItem.setVisible(false);
+        if(hide_endvisit) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -525,6 +528,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
         recyclerview_visitsummary = findViewById(R.id.recyclerview_visitsummary);
 
+        editVitals = findViewById(R.id.imagebutton_edit_vitals);
+        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
+        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
+        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
+        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
+        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
+        uploadButton = findViewById(R.id.button_upload);
+        downloadButton = findViewById(R.id.button_download);
+        //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
+        onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
+        //additionalDocumentsDownlaod.setVisibility(View.GONE);
+        physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
+        onExaminationDownload.setVisibility(View.GONE);
+        //image download for additional documents
+        additionalImageDownloadText = findViewById(R.id.additional_documents_download);
+
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
         prescriptionCard = findViewById(R.id.cardView_rx);
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
@@ -657,6 +676,69 @@ public class VisitSummaryActivity extends AppCompatActivity {
             visitIDCursor.close();
         }
 
+        if (isPastVisit) { //For past visit checking we hide the edit section.
+         /*   editVitals.setVisibility(View.GONE);
+            editComplaint.setVisibility(View.GONE);
+            editPhysical.setVisibility(View.GONE);
+            editFamHist.setVisibility(View.GONE);
+            editMedHist.setVisibility(View.GONE);
+            editAddDocs.setVisibility(View.GONE);
+            uploadButton.setVisibility(View.GONE);
+            button_resolution.setVisibility(View.GONE);
+            invalidateOptionsMenu();*/
+
+            //check if any active visit then show the edit fields.
+            Cursor cursor = db.rawQuery("Select uuid from tbl_visit where enddate is NULL AND patientuuid = ?",
+                    new String[]{patientUuid});
+            try {
+                if(cursor != null && cursor.moveToFirst()) {
+                    do {
+                        //do nothing
+                    }
+                    while (cursor.moveToNext());
+                }
+                else {
+                    //as movetoFirst() will return False since there is no data this means no visit is Active (all are Ended).
+                    editVitals.setVisibility(View.GONE);
+                    editComplaint.setVisibility(View.GONE);
+                    editPhysical.setVisibility(View.GONE);
+                    editFamHist.setVisibility(View.GONE);
+                    editMedHist.setVisibility(View.GONE);
+                    editAddDocs.setVisibility(View.GONE);
+                    uploadButton.setVisibility(View.GONE);
+                    button_resolution.setVisibility(View.GONE);
+                    allVisitsEnded = true;
+                    invalidateOptionsMenu();
+                    hide_endvisit = true;
+                }
+            }
+            catch (SQLException e) {
+
+            }
+            if(cursor != null) {
+                cursor.close();
+            }
+            //end
+        } else {
+            String visitIDorderBy = "startdate";
+            String visitIDSelection__ = "uuid = ?";
+            String[] visitIDArgs__ = {visitUuid};
+
+            final Cursor visitIDCursor__ = db.query("tbl_visit", null, visitIDSelection__, visitIDArgs__,
+                    null, null, visitIDorderBy);
+
+            if (visitIDCursor__ != null && visitIDCursor__.moveToFirst() && visitIDCursor__.getCount() > 0) {
+                visitIDCursor__.moveToFirst();
+                visitUUID = visitIDCursor__.getString(visitIDCursor__.getColumnIndexOrThrow("uuid"));
+                Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
+            }
+            if (visitIDCursor__ != null) visitIDCursor__.close();
+            if (visitUUID != null && !visitUUID.isEmpty()) {
+                //  addDownloadButton();
+
+            }
+        }
+
         //To show the most recent data on top - reverse the arraylist
        // Collections.reverse(visitUuidList);
         //end
@@ -719,7 +801,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //getEncounters - end
 
         //get all visits - end
-        visitsum_adapter = new VisitSummaryAdapter(getApplicationContext(), visitUuidList, complaintList_adapter, physexamList_adapter);
+        visitsum_adapter = new VisitSummaryAdapter(getApplicationContext(), visitUuidList,
+                complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid);
         visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
         recyclerview_visitsummary.setAdapter(visitsum_adapter);
@@ -811,25 +894,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        editVitals = findViewById(R.id.imagebutton_edit_vitals);
-        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
-        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
-        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
-        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
-        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-        uploadButton = findViewById(R.id.button_upload);
-        downloadButton = findViewById(R.id.button_download);
-
-        //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
-        onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
-
-        //additionalDocumentsDownlaod.setVisibility(View.GONE);
-
-        physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
-        onExaminationDownload.setVisibility(View.GONE);
-
-        //image download for additional documents
-        additionalImageDownloadText = findViewById(R.id.additional_documents_download);
         Paint p = new Paint();
         p.setColor(Color.BLUE);
         additionalImageDownloadText.setPaintFlags(p.getColor());
@@ -846,36 +910,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         downloadButton.setEnabled(false);
         downloadButton.setVisibility(View.GONE);
 
-        if (isPastVisit) { //For past visit checking we hide the edit section.
-            editVitals.setVisibility(View.GONE);
-            editComplaint.setVisibility(View.GONE);
-            editPhysical.setVisibility(View.GONE);
-            editFamHist.setVisibility(View.GONE);
-            editMedHist.setVisibility(View.GONE);
-            editAddDocs.setVisibility(View.GONE);
-            uploadButton.setVisibility(View.GONE);
-            button_resolution.setVisibility(View.GONE);
-            invalidateOptionsMenu();
-        } else {
-            String visitIDorderBy = "startdate";
-            String visitIDSelection__ = "uuid = ?";
-            String[] visitIDArgs__ = {visitUuid};
-
-            final Cursor visitIDCursor__ = db.query("tbl_visit", null, visitIDSelection__, visitIDArgs__,
-                    null, null, visitIDorderBy);
-
-            if (visitIDCursor__ != null && visitIDCursor__.moveToFirst() && visitIDCursor__.getCount() > 0) {
-                visitIDCursor__.moveToFirst();
-                visitUUID = visitIDCursor__.getString(visitIDCursor__.getColumnIndexOrThrow("uuid"));
-                Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
-            }
-            if (visitIDCursor__ != null) visitIDCursor__.close();
-            if (visitUUID != null && !visitUUID.isEmpty()) {
-              //  addDownloadButton();
-
-            }
-
-        }
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -993,7 +1027,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
              //   if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;

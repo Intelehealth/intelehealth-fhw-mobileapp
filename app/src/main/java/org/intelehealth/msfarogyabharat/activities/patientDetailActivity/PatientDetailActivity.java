@@ -1117,6 +1117,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 intent.putExtra("hasPrescription", hasPrescription);
                 intent.putExtra("MedicalAdvice", MedicalAdvice);
                 intent.putExtra("latest_VisitUuid", visituID);
+                intent.putExtra("pastVisit", true);
 
 //                intent.putExtra("encounterUuidVitals", encounterVitalslocal);
                 intent.putExtra("encounterUuidAdultIntial", global_encounterAdultIntialslocal);

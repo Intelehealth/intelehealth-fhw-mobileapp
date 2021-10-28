@@ -1,13 +1,16 @@
 package org.intelehealth.msfarogyabharat.activities.visitSummaryActivity;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,13 +30,20 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     List<String> complaintList;
     List<String> visitUuidList;
     List<String> physexamList;
+    boolean allVisitsEnded = false;
+    String currentvisituuid;
+    String complaint, physexam, visitid;
 
     public VisitSummaryAdapter(Context context, List<String> visitUuidList,
-                               List<String> complaintList, List<String> physexamList) {
+                               List<String> complaintList, List<String> physexamList,
+                               boolean allVisitsEnded, String currentvisituuid) {
         this.context = context;
         this.visitUuidList = visitUuidList;
         this.complaintList = complaintList;
         this.physexamList = physexamList;
+        this.allVisitsEnded = allVisitsEnded;
+        this.currentvisituuid = currentvisituuid;
+        Log.v("main","allvisitsended: "+ this.allVisitsEnded);
     }
 
     @Override
@@ -46,9 +56,8 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
 
     @Override
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
-        String complaint = complaintList.get(position);
-        String physexam = physexamList.get(position);
-      //  String visits = visitUuidList.get(position);
+        complaint = complaintList.get(position);
+        physexam = physexamList.get(position);
 
         holder.textView_caseTitle.setText("Case " + (position + 1));
         holder.textView_content_complaint.setText(complaint);
@@ -62,6 +71,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
 
     public class VisitSummaryViewHolder extends RecyclerView.ViewHolder {
         TextView textView_caseTitle, textView_content_complaint, textView_content_physexam;
+        ImageButton imagebutton_edit_complaint, imagebutton_edit_physexam;
         LinearLayout linearlayout_body;
 
         public VisitSummaryViewHolder(View itemView) {
@@ -69,14 +79,12 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
             textView_caseTitle = itemView.findViewById(R.id.textView_caseTitle);
             textView_content_complaint = itemView.findViewById(R.id.textView_content_complaint);
             textView_content_physexam = itemView.findViewById(R.id.textView_content_physexam);
+            imagebutton_edit_complaint = itemView.findViewById(R.id.imagebutton_edit_complaint);
+            imagebutton_edit_physexam = itemView.findViewById(R.id.imagebutton_edit_physexam);
             linearlayout_body = itemView.findViewById(R.id.linearlayout_body);
 
             Animation slide_down = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-
             Animation slide_up = AnimationUtils.loadAnimation(context, R.anim.slide_up);
-
-// Start animation
-           // linear_layout.startAnimation(slide_down);
 
             textView_caseTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -90,9 +98,30 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
                         linearlayout_body.setVisibility(View.VISIBLE);
                     }
 
-
+                    //edit icons visibility handled.
+                    //is all visits are Ended for a patient then hide the edit pencil icon too.
+                    if(allVisitsEnded) {
+                        imagebutton_edit_complaint.setVisibility(View.GONE);
+                        imagebutton_edit_physexam.setVisibility(View.GONE);
+                    }
+                    else {
+                        //any one visit is ended i.e. the latest visit is Active so show edit for only that visit ie. the last visit.
+                        visitid = visitUuidList.get(getAdapterPosition());
+                        if(visitid.equalsIgnoreCase(currentvisituuid) && !allVisitsEnded) {
+                            Log.v("main", "position: "+ getAdapterPosition() + ":");
+                            // Toast.makeText(context, "good", Toast.LENGTH_SHORT).show();
+                            imagebutton_edit_complaint.setVisibility(View.VISIBLE);
+                            imagebutton_edit_physexam.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            // Toast.makeText(context, "bad", Toast.LENGTH_SHORT).show();
+                            imagebutton_edit_complaint.setVisibility(View.GONE);
+                            imagebutton_edit_physexam.setVisibility(View.GONE);
+                        }
+                    }
                 }
             });
+
         }
     }
 }

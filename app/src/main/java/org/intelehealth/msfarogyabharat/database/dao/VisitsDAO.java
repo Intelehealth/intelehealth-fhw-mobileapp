@@ -325,7 +325,7 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-       // db.close(); //crash issue
+       // db.close(); //crash issue : do not close db until all operations are done
         return visitDTOList;
     }
 
