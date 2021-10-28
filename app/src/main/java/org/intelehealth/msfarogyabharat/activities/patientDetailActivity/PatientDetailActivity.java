@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -319,6 +320,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         }
 
+        // to handle the ui of button when visit is Active or Ended...
+        newVisitBtnChanges();
+
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -483,6 +487,53 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void newVisitBtnChanges() {
+        //new visit - start
+        //check if any active visit then show the edit fields.
+        Cursor cursor = db.rawQuery("Select uuid from tbl_visit where enddate is NULL AND patientuuid = ?",
+                new String[]{patientUuid});
+        try {
+            if(cursor != null && cursor.moveToFirst()) {
+                do {
+                    //do nothing
+                    if (newVisit.isEnabled()) {
+                        newVisit.setEnabled(false);
+                        newAdvice.setEnabled(false);
+                    }
+                    if (newVisit.isClickable()) {
+                        newVisit.setClickable(false);
+                        newAdvice.setClickable(false);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            newVisit.setBackgroundColor
+                                    (getColor(R.color.divider));
+                            newVisit.setTextColor(getColor(R.color.white));
+                            newAdvice.setBackgroundColor(getColor(R.color.divider));
+                            newAdvice.setTextColor(getColor(R.color.white));
+                        } else {
+                            newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+                            newVisit.setTextColor(getResources().getColor(R.color.white));
+                            newAdvice.setBackgroundColor(getResources().getColor(R.color.divider));
+                            newAdvice.setTextColor(getResources().getColor(R.color.white));
+                        }
+                    }
+                }
+                while (cursor.moveToNext());
+            }
+            else {
+                //as movetoFirst() will return False since there is no data this means no visit is Active (all are Ended).
+            }
+        }
+        catch (SQLException e) {
+
+        }
+        if(cursor != null) {
+            cursor.close();
+        }
+        //end
+        //new visit - end
     }
 
 //    private void sendWelcomeSms(String phoneNumber) {
@@ -1221,7 +1272,8 @@ public class PatientDetailActivity extends AppCompatActivity {
 
         final Boolean past_visit;
         final TextView textView = new TextView(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
 
 //        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
         final String visitString = String.format(getString(R.string.seen_on)+" (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));

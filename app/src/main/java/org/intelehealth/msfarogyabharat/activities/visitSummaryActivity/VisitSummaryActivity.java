@@ -4338,15 +4338,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
+        String complaintData = complaintList_adapter.get(complaintList_adapter.size()-1);
         if(complaintView != null) {
-           // String i = complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "");
-            String i = complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().replaceAll("\\s+", "");
+            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
             Log.v("main", "vi: "+i);
-            if(complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("safeabortion-querybyrelativesorothers:") ||
-                    complaintView.getText().toString().toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:")) {
+            if(complaintData.toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("safeabortion-querybyrelativesorothers:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:")) {
                 flag = true;
             }
             else {
@@ -4354,11 +4354,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
         return flag;
-
-       /* if (complaintView != null) {
-            return !complaintView.getText().toString().contains("Domestic Violence:");
-        }
-        return false;*/
     }
 
     private void isNetworkAvailable(Context context) {
