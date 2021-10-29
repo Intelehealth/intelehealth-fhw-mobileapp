@@ -104,7 +104,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                         fileList.add(new File(filename));
                     }
                 }
-            } catch (DAOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             rowListItem = new ArrayList<>();
