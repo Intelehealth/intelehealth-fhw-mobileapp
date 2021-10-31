@@ -1947,7 +1947,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-        String mComplaint = complaint.getValue();
+       // String mComplaint = complaint.getValue();
+        String mComplaint = complaintList_adapter.get(complaintList_adapter.size()-1);
 
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -2574,7 +2575,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-        String mComplaint = complaint.getValue();
+       // String mComplaint = complaint.getValue();
+        String mComplaint = complaintList_adapter.get(complaintList_adapter.size()-1);
 
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -2764,7 +2766,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate,
                             /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
-                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*/ (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            (!TextUtils.isEmpty(mBMI)) ? mBMI : "",*/ (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "",
+                            (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             /*pat_hist, fam_hist,*/ mComplaint, resolution, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2919,7 +2922,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-        String mComplaint = complaint.getValue();
+       // String mComplaint = complaint.getValue();
+        String mComplaint = complaintList_adapter.get(complaintList_adapter.size()-1);
 
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
