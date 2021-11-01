@@ -1,21 +1,33 @@
 package org.intelehealth.msfarogyabharat.activities.splash_activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import java.util.List;
 import java.util.Locale;
 
+import org.intelehealth.msfarogyabharat.BuildConfig;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.IntroActivity.IntroActivity;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
@@ -30,6 +42,8 @@ public class SplashActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
 //    ProgressDialog TempDialog;
     int i = 5;
+
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +64,56 @@ public class SplashActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        checkPerm();
+        FirebaseApp.initializeApp(this);
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+//        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+//        mFirebaseRemoteConfig.activate();
+//        mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Boolean> task) {
+//                if (task.isSuccessful() && !isFinishing()) {
+//                    long force_update_version_code = mFirebaseRemoteConfig.getLong("force_update_version_code");
+//                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
+//                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
+//                        alertDialogBuilder.setMessage(getString(R.string.complaint_required));
+//                        alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                try {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+//                                } catch (android.content.ActivityNotFoundException anfe) {
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+//                                }
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//                        });
+//                        alertDialogBuilder.show();
+//                    } else {
+//                        checkPerm();
+//                    }
+//                }
+//                else {
+//                    checkPerm();
+//                }
+//            }
+//        });
+
+//        mFirebaseRemoteConfig.activate();
+        mFirebaseRemoteConfig.fetch(0).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    mFirebaseRemoteConfig.activate();
+                    long force_update_version_code = mFirebaseRemoteConfig.getLong("force_update_version_code");
+                    System.out.println(force_update_version_code);
+                }
+            }
+        });
     }
 
     private void checkPerm() {
