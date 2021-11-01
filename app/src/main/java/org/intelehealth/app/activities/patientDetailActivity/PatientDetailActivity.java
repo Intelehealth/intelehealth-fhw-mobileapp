@@ -704,11 +704,11 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        economic_statusView.setText(patient_new.getEconomic_status());
 //        casteView.setText(patient_new.getCaste());
 //
-        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+        if (patient_new.getEducation_level()!= null && patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             education_statusView.setText("नहीं दिया गया");
         }
-        else if(patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+        else if(patient_new.getEducation_level()!= null && patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             education_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
         }
@@ -724,11 +724,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         }
             // education_statusView.setText(patient_new.getEducation_level());
-            if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+            if (patient_new.getEconomic_status()!= null && patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 economic_statusView.setText("नहीं दिया गया");
             }
-            else if(patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+            else if(patient_new.getEconomic_status()!= null && patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
                     sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 economic_statusView.setText("ଦିଅ ଯାଇ ନାହିଁ");
             }
@@ -748,11 +748,11 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // economic_statusView.setText(patient_new.getEconomic_status());
             }
 
-        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+        if (patient_new.getCaste()!= null && patient_new.getCaste().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             casteView.setText("नहीं दिया गया");
         }
-        else if(patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+        else if(patient_new.getCaste()!= null && patient_new.getCaste().equalsIgnoreCase("Not provided") &&
                 sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
             casteView.setText("ଦିଅ ଯାଇ ନାହିଁ");
         }
