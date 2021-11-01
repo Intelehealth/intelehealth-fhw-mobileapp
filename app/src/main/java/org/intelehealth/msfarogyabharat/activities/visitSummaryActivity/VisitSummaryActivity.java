@@ -573,10 +573,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
 
-                                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                        Intent intent1 = new Intent(Intent.ACTION_VIEW,
                                                 Uri.fromParts("sms", phoneNumber, null))
-                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
-
+                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString());
+                                        if (intent1.resolveActivity(getPackageManager()) != null)
+                                            startActivity(intent1);
 
                                     } else {
                                         Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
