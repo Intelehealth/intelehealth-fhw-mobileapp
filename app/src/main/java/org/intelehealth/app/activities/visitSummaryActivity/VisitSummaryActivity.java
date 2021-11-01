@@ -141,7 +141,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private WebView mWebView;
     private LinearLayout mLayout;
 
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mBlood, mSugar, mHemoglobin;
     String speciality_selected = "";
     String casemode_selected = "";
 
@@ -179,6 +179,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO bpDias = new ObsDTO();
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
+    ObsDTO hemoglobin = new ObsDTO();
+    ObsDTO sugar = new ObsDTO();
+    ObsDTO blood = new ObsDTO();
     ObsDTO resp = new ObsDTO();
 
     String diagnosisReturned = "";
@@ -206,7 +209,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView pulseView;
     TextView bpView;
     TextView tempView;
-    TextView spO2View;
+    TextView spO2View, hemoglobinView, bloodView, sugarView;
     TextView bmiView;
     TextView complaintView;
     TextView famHistView;
@@ -1157,6 +1160,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
         spO2View = findViewById(R.id.textView_pulseox_value);
+        hemoglobinView = findViewById(R.id.textView_hemoglobin_value);
+        bloodView = findViewById(R.id.textView_blood_value);
+        sugarView = findViewById(R.id.textView_sugar_value);
+
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
         bmiView = findViewById(R.id.textView_bmi_value);
@@ -1212,6 +1219,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //    Respiratory added by mahiti dev team
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
+
+        hemoglobinView.setText(hemoglobin.getValue());
+        bloodView.setText(blood.getValue());
+        sugarView.setText(sugar.getValue());
+
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
         if (famHistory.getValue() != null)
@@ -2044,6 +2056,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+
+        mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "");
+        mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
+        mSugar = "Sugar: " + (!TextUtils.isEmpty(sugar.getValue()) ? sugar.getValue() : "");
+
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -2268,6 +2285,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2305,6 +2323,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -2409,6 +2428,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
+
+        mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "");
+        mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
+        mSugar = "Sugar Level: " + (!TextUtils.isEmpty(sugar.getValue()) ? sugar.getValue() : "");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -2616,6 +2639,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2653,6 +2677,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -3452,6 +3477,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 spO2.setValue(value);
                 break;
             }
+            case UuidDictionary.HEMOGLOBIN: //Hemoglobin
+            {
+                hemoglobin.setValue(value);
+                break;
+            }
+
+            case UuidDictionary.SUGARLEVEL: //Sugar
+            {
+                sugar.setValue(value);
+                break;
+            }
+
+            case UuidDictionary.BLOODGROUP: //Sugar
+            {
+                blood.setValue(value);
+                break;
+            }
+
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = diagnosisReturned + ",\n" + value;
@@ -4154,6 +4197,4 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         visitCursor.close();
     }
-
-
 }

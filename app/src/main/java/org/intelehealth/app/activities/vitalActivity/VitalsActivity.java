@@ -19,7 +19,10 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +67,10 @@ public class VitalsActivity extends AppCompatActivity {
 
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp;
+    EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
+            mHemoglobin,mSugar;
+    Spinner mBlood_Spinner;
+    ArrayAdapter<CharSequence> bloodAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +103,6 @@ public class VitalsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
@@ -117,6 +122,24 @@ public class VitalsActivity extends AppCompatActivity {
 
         mBMI.setEnabled(false);
 
+        mHemoglobin= findViewById(R.id.table_hemoglobin);
+        mSugar= findViewById(R.id.table_sugar_level);
+        mBlood_Spinner= findViewById(R.id.spinner_blood_grp);
+        bloodAdapter = ArrayAdapter.createFromResource(this, R.array.blood_group, R.layout.blood_group_spinner);
+        mBlood_Spinner.setAdapter(bloodAdapter);
+        mBlood_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position==0){
+                    ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.medium_gray));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         //Check for license key and load the correct config file
         try {
@@ -262,7 +285,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-
         mSpo2.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -376,7 +398,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-
         mPulse.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -464,6 +485,64 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
+        mHemoglobin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEMOGLOBIN) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEMOGLOBIN)) {
+                        mHemoglobin.setError(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                    } else {
+                        mHemoglobin.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (mHemoglobin.getText().toString().startsWith(".")) {
+                    mHemoglobin.setText("");
+                } else {
+
+                }
+            }
+        });
+
+        mSugar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
+                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
+                        mSugar.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                    } else {
+                        mSugar.setError(null);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (mSugar.getText().toString().startsWith(".")) {
+                    mSugar.setText("");
+                } else {
+
+                }
+            }
+        });
+
         FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
@@ -513,8 +592,6 @@ public class VitalsActivity extends AppCompatActivity {
             mBMI.getText().clear();
         }
     }
-
-
 
     public void loadPrevious() {
 
@@ -568,6 +645,19 @@ public class VitalsActivity extends AppCompatActivity {
             case UuidDictionary.SPO2: //SpO2
                 mSpo2.setText(value);
                 break;
+
+            case UuidDictionary.HEMOGLOBIN: //Hgb
+                mHemoglobin.setText(value);
+                break;
+
+            case UuidDictionary.SUGARLEVEL: //sugar
+                mSugar.setText(value);
+                break;
+
+            case UuidDictionary.BLOODGROUP: //blood
+                mBlood_Spinner.setSelection(bloodAdapter.getPosition(value));
+                break;
+
             default:
                 break;
 
@@ -607,6 +697,8 @@ public class VitalsActivity extends AppCompatActivity {
         values.add(mTemperature);
         values.add(mResp);
         values.add(mSpo2);
+        values.add(mHemoglobin);
+        values.add(mSugar);
 
         // Check to see if values were inputted.
         for (int i = 0; i < values.size(); i++) {
@@ -742,10 +834,10 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else {
+            } else if (i == 7){
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
-                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0.0"))) {
+                if (abc1 != null && !abc1.isEmpty() && (!abc1.equals("0"))) {
                     if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SPO2)) ||
                             (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SPO2))) {
                         et.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
@@ -759,7 +851,49 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
+            }else if (i == 8){
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty()) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_HEMOGLOBIN)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_HEMOGLOBIN))) {
+                        et.setError(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }else if (i == 9) {
+                EditText et = values.get(i);
+                String abc1 = et.getText().toString().trim();
+                if (abc1 != null && !abc1.isEmpty()) {
+                    if ((Double.parseDouble(abc1) > Double.parseDouble(AppConstants.MAXIMUM_SUGAR)) ||
+                            (Double.parseDouble(abc1) < Double.parseDouble(AppConstants.MINIMUM_SUGAR))) {
+                        et.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                        focusView = et;
+                        cancel = true;
+                        break;
+                    } else {
+                        cancel = false;
+                    }
+                } else {
+                    cancel = false;
+                }
+            }else{
+                cancel = false;
             }
+        }
+
+        if(mBlood_Spinner.getSelectedItemPosition()==0){
+            Toast.makeText(VitalsActivity.this,getResources().getString(R.string.blood_error), Toast.LENGTH_LONG).show();
+            focusView = mBlood_Spinner;
+            cancel = true;
+        } else {
+            cancel = false;
         }
 
         if (cancel) {
@@ -804,6 +938,17 @@ public class VitalsActivity extends AppCompatActivity {
                     results.setSpo2((mSpo2.getText().toString()));
                 }
 
+                if (mHemoglobin.getText() != null) {
+                    results.setHsb((mHemoglobin.getText().toString()));
+                }
+
+                if (mSugar.getText() != null) {
+                    results.setSugar((mSugar.getText().toString()));
+                }
+
+                if (mBlood_Spinner.getSelectedItemPosition() != 0) {
+                    results.setBlood((mBlood_Spinner.getSelectedItem().toString()));
+                }
 
             } catch (NumberFormatException e) {
                 Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -891,6 +1036,34 @@ public class VitalsActivity extends AppCompatActivity {
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
 
                 obsDAO.updateObs(obsDTO);
+
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getHsb());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.HEMOGLOBIN));
+
+                obsDAO.updateObs(obsDTO);
+
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.BLOODGROUP);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getBlood());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.BLOODGROUP));
+
+                obsDAO.updateObs(obsDTO);
+
+                obsDTO = new ObsDTO();
+                obsDTO.setConceptuuid(UuidDictionary.SUGARLEVEL);
+                obsDTO.setEncounteruuid(encounterVitals);
+                obsDTO.setCreator(sessionManager.getCreatorID());
+                obsDTO.setValue(results.getSugar());
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SUGARLEVEL));
+
+                obsDAO.updateObs(obsDTO);
+
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1018,6 +1191,43 @@ public class VitalsActivity extends AppCompatActivity {
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getHsb());
+
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.BLOODGROUP);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getBlood());
+
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
+            obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.SUGARLEVEL);
+            obsDTO.setEncounteruuid(encounterVitals);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(results.getSugar());
+
+            try {
+                obsDAO.insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
 
             intent.putExtra("patientUuid", patientUuid);

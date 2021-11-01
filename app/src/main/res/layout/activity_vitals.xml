@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
+                android:paddingBottom="70dp"
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
@@ -313,7 +314,6 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:id="@+id/tinput_f"
@@ -335,9 +335,76 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:id="@+id/tinput_bldgrp"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textSize="16sp"
+                                android:text="@string/blood_grp"/>
+
+                            <Spinner
+                                android:id="@+id/spinner_blood_grp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".9"/>
+                            </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:id="@+id/tinput_hemoglobin"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_hemoglobin"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/table_hemoglobin"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:id="@+id/tinput_sugar_lvl"
+                            android:imeOptions="actionUnspecified"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/table_sugar_level"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/table_sugar_level"
+                                android:imeOptions="actionUnspecified"
+                                android:includeFontPadding="false"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:tag="@string/tag_optional"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
 
             </LinearLayout>
         </ScrollView>

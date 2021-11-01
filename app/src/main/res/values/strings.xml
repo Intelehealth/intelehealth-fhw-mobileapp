@@ -157,6 +157,9 @@
     <string name="table_bpdia" translatable="false">BP Dia</string>
     <string name="table_temp" translatable="false">Temperature (C)</string>
     <string name="table_spo2" translatable="false">SpO2 (%)</string>
+    <string name="table_hemoglobin" translatable="false">Hemoglobin</string>
+    <string name="table_bld_grp" translatable="false">Blood Group</string>
+    <string name="table_sugar_level" translatable="false">Sugar Level</string>
 
     //Patient Search Screen
     <string name="search_hint" translatable="false">Type to search patient by name…</string>
@@ -679,4 +682,12 @@
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
+
+    <string name="blood_grp">Blood Group: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
+    <string name="visit_summary_sugar" translatable="false">Sugar Level</string>
+    <string name="visit_summary_blood" translatable="false">Blood Group</string>
+    <string name="hemoglobin_error" translatable="false">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="sugar_error" translatable="false">Sugar Level should be in between %1$s and %2$s</string>
+    <string name="blood_error" translatable="false">Please select blood group</string>
 </resources>

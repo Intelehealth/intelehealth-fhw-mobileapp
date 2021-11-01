@@ -563,4 +563,16 @@
         <item>Select Village</item>
     </string-array>
 
+    <string-array name="blood_group">
+        <item>Please Select</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>O+</item>
+        <item>O-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+    </string-array>
+
 </resources>

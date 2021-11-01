@@ -11,6 +11,9 @@ public class VitalsObject {
     private String pulse;
     private String temperature;
     private String spo2;
+    private String hsb;
+    private String blood;
+    private String sugar;
     private String resp;
 
     public String getPatientUuid() {
@@ -83,6 +86,30 @@ public class VitalsObject {
 
     public void setSpo2(String spo2) {
         this.spo2 = spo2;
+    }
+
+    public String getHsb() {
+        return hsb;
+    }
+
+    public void setHsb(String hsb) {
+        this.hsb = hsb;
+    }
+
+    public String getBlood() {
+        return blood;
+    }
+
+    public void setBlood(String blood) {
+        this.blood = blood;
+    }
+
+    public String getSugar() {
+        return sugar;
+    }
+
+    public void setSugar(String sugar) {
+        this.sugar = sugar;
     }
 
     public String getResp() {
