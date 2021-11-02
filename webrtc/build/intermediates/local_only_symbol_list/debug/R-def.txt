@@ -183,7 +183,6 @@ menu chat_menu
 string action_loopback
 string action_settings
 string add_favorite_description
-string app_name
 string audio_off_lbl
 string audio_on_lbl
 string audio_on_off_button
