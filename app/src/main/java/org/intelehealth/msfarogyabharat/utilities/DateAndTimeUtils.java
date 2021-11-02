@@ -230,8 +230,10 @@ public class DateAndTimeUtils {
             }
         }
 
-
-        return targetFormat.format(date);
+        if (date != null)
+            return targetFormat.format(date);
+        else
+            return "";
     }
 
     public static String getFormatedDateOfBirthAsView(String oldformatteddate) {
