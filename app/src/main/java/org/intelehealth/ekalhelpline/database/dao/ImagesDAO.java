@@ -376,8 +376,8 @@ public class ImagesDAO {
     public List<String> isImageListObsExists(String encounterUuid, String conceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        localdb.beginTransaction();
         try {
+            localdb.beginTransaction();
             Cursor idCursor = localdb.rawQuery("SELECT uuid FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE order by modified_date", new String[]{encounterUuid, conceptUuid, "0"});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
