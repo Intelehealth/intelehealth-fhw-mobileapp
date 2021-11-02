@@ -2431,7 +2431,6 @@ string abc_toolbar_collapse_description
 string action_loopback
 string action_settings
 string add_favorite_description
-string app_name
 string appbar_scrolling_view_behavior
 string audio_off_lbl
 string audio_on_lbl

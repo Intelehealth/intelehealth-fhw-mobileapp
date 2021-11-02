@@ -2430,7 +2430,6 @@ int string abc_toolbar_collapse_description 0x0
 int string action_loopback 0x0
 int string action_settings 0x0
 int string add_favorite_description 0x0
-int string app_name 0x0
 int string appbar_scrolling_view_behavior 0x0
 int string audio_off_lbl 0x0
 int string audio_on_lbl 0x0

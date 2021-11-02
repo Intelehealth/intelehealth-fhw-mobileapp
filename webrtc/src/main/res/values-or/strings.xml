@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Int-Health V-Call</string>
+<!--    <string name="app_name" translatable="false">Int-Health V-Call</string>-->
     <string name="settings_name" translatable="false">ସେଟିଂସମୂହ</string>
     <string name="disconnect_call">କଲ୍ ବିଚ୍ଛିନ୍ନ କରନ୍ତୁ |</string>
     <string name="room_description">

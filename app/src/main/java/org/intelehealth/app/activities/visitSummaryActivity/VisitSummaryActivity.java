@@ -527,6 +527,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         FloatingActionButton fab = findViewById(R.id.fab);
+        mCHWname = findViewById(R.id.chw_details);
+        mCHWname.setText(sessionManager.getChwname());
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //Added Prescription Title from config.Json dynamically through sharedPreferences
+        prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
+        prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -613,7 +621,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
                     };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid)+"/"+idView.getText().toString();
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
@@ -631,16 +639,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         String phoneNumber = "+91" + editText.getText().toString();
-                                        String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
-                                                + whatsapp_url + getString(R.string.and_enter_your_patient_id) + idView.getText().toString();
+                                        String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + " "
+                                                + whatsapp_url;
 
-                                        // Toast.makeText(context, R.string.whatsapp_presc_toast, Toast.LENGTH_LONG).show();
                                         startActivity(new Intent(Intent.ACTION_VIEW,
                                                 Uri.parse(
                                                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                                                 phoneNumber, whatsappMessage))));
-
-                                        // isreturningWhatsapp = true;
 
                                     } else {
                                         Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
@@ -3989,10 +3994,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (downloadPrescriptionService != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
         }
+
+        //In onStop() it will check and unregister the receiver...
+        //This is done in onStop as we are registering them in onStart()
         if (receiver != null) {
-            unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            receiver = null;
         }
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+
+        isReceiverRegistered = false;
+
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
