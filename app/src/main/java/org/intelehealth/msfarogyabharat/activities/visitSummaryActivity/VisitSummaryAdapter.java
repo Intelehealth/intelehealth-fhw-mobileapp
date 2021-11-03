@@ -91,7 +91,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
 
     @Override
     public int getItemCount() {
-        return visitUuidList.size();
+        return complaintList.size();
     }
 
     public class VisitSummaryViewHolder extends RecyclerView.ViewHolder {

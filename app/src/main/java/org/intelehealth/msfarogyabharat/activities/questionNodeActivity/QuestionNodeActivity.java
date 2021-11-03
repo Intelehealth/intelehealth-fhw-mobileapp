@@ -313,7 +313,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     }
                 }
                 Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
-                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
+                        question.isExcludedFromMultiChoice() && question.isSelected())) {
                     for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                         Node childNode = rootNode.getOptionsList().get(i);
                         if (!childNode.getId().equals(question.getId())) {

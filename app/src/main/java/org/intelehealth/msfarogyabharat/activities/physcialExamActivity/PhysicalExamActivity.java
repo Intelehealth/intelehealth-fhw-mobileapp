@@ -376,7 +376,8 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
                 Node childNode = rootNode.getOptionsList().get(i);
                 if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
-                    physicalExamMap.getExamNode(physExamPos).getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    physicalExamMap.getExamNode(physExamPos).getOption(groupPosition)
+                            .getOptionsList().get(i).setUnselected();
                 }
             }
         }

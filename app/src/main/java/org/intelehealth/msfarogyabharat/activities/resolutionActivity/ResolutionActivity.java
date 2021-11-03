@@ -347,6 +347,30 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             adapter.notifyDataSetChanged();
         }
 
+        // single/multiple choice questions - start
+        Node options = patientHistoryMap.getOption(groupPosition);
+        if(options.isMultiChoice() && !clickedNode.isExcludedFromMultiChoice()) {
+            for (int i = 0; i < options.getOptionsList().size(); i++) {
+                Node childnode = options.getOptionsList().get(i);
+                if(childnode.isSelected() && childnode.isExcludedFromMultiChoice()) {
+                    patientHistoryMap.getOption(groupPosition).getOption(i).setUnselected();
+                }
+            }
+        }
+
+        if(!options.isMultiChoice() || (options.isMultiChoice() &&
+                clickedNode.isExcludedFromMultiChoice() && clickedNode.isSelected())) {
+
+            for (int i = 0; i < options.getOptionsList().size(); i++) {
+                Node childnode = options.getOptionsList().get(i);
+                if(!childnode.getId().equals(clickedNode.getId())) {
+                    patientHistoryMap.getOption(groupPosition).getOption(i).setUnselected();
+                }
+            }
+        }
+        adapter.notifyDataSetChanged();
+        //end
+
         //Nodes and the expandable list act funny, so if anything is clicked, a lot of stuff needs to be updated.
         if (patientHistoryMap.getOption(groupPosition).anySubSelected()) {
             patientHistoryMap.getOption(groupPosition).setSelected(true);
@@ -354,6 +378,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             patientHistoryMap.getOption(groupPosition).setUnselected();
         }
         adapter.notifyDataSetChanged();
+        //end
 
         if (clickedNode.isSelected()) {
             if (clickedNode.getInputType() != null) {
