@@ -43,8 +43,6 @@ public class SplashActivity extends AppCompatActivity {
 //    ProgressDialog TempDialog;
     int i = 5;
 
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,53 +62,46 @@ public class SplashActivity extends AppCompatActivity {
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
 
-        FirebaseApp.initializeApp(this);
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(0)
-                .build();
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
-//        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
-//        mFirebaseRemoteConfig.activate();
-//        mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Boolean> task) {
-//                if (task.isSuccessful() && !isFinishing()) {
-//                    long force_update_version_code = mFirebaseRemoteConfig.getLong("force_update_version_code");
-//                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
-//                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
-//                        alertDialogBuilder.setMessage(getString(R.string.complaint_required));
-//                        alertDialogBuilder.setNeutralButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                try {
-//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-//                                } catch (android.content.ActivityNotFoundException anfe) {
-//                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
-//                                }
-//                                dialog.dismiss();
-//                                finish();
-//                            }
-//                        });
-//                        alertDialogBuilder.show();
-//                    } else {
-//                        checkPerm();
-//                    }
-//                }
-//                else {
-//                    checkPerm();
-//                }
-//            }
-//        });
 
-//        mFirebaseRemoteConfig.activate();
-        mFirebaseRemoteConfig.fetch(0).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+        initFirebaseRemoteConfig();
+    }
+
+    private void initFirebaseRemoteConfig() {
+        FirebaseApp.initializeApp(this);
+        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                    .setMinimumFetchIntervalInSeconds(0)
+                    .build();
+            instance.setConfigSettingsAsync(configSettings);
+
+        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    mFirebaseRemoteConfig.activate();
-                    long force_update_version_code = mFirebaseRemoteConfig.getLong("force_update_version_code");
-                    System.out.println(force_update_version_code);
+            public void onComplete(@NonNull Task<Boolean> task) {
+                if (task.isSuccessful() && !isFinishing()) {
+                    long force_update_version_code = instance.getLong("force_update_version_code");
+                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
+                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
+                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                                }
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                        alertDialogBuilder.show();
+                    } else {
+                        checkPerm();
+                    }
+                }
+                else {
+                    checkPerm();
                 }
             }
         });
