@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -15,8 +16,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
@@ -55,7 +62,48 @@ public class SplashActivity extends AppCompatActivity {
         }
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
-        checkPerm();
+        initFirebaseRemoteConfig();
+    }
+
+    private void initFirebaseRemoteConfig() {
+        FirebaseApp.initializeApp(this);
+        FirebaseRemoteConfig instance = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(0)
+                .build();
+        instance.setConfigSettingsAsync(configSettings);
+
+        instance.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
+            @Override
+            public void onComplete(@NonNull Task<Boolean> task) {
+                if (task.isSuccessful() && !isFinishing()) {
+                    long force_update_version_code = instance.getLong("force_update_version_code");
+                    if (force_update_version_code > BuildConfig.VERSION_CODE) {
+                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(SplashActivity.this);
+                        alertDialogBuilder.setMessage(getString(R.string.warning_app_update));
+                        alertDialogBuilder.setCancelable(false);
+                        alertDialogBuilder.setPositiveButton(getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                                } catch (android.content.ActivityNotFoundException anfe) {
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                                }
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                        alertDialogBuilder.show();
+                    } else {
+                        checkPerm();
+                    }
+                }
+                else {
+                    checkPerm();
+                }
+            }
+        });
     }
 
     private void checkPerm() {

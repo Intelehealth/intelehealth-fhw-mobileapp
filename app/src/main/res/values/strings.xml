@@ -669,4 +669,5 @@
     <string name="select_mode_text">Select Mode</string>
     <string name="please_select_mode_msg">Please select Case Mode</string>
     <string name="notification_title">Realtime sync is ON!</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>
