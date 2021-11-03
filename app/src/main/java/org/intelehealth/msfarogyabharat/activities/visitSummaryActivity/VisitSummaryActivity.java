@@ -565,12 +565,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*try {
+                    doWebViewPrint_Button();*/
 
-                try {
-                    doWebViewPrint_Button();
-                } catch (ParseException e) {
+                    // redirect to web browser for prescription
+                Intent intent1 = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://training.vikalpindia.org/intelehealth/index.html#/"));
+                startActivity(intent1);
+
+/*                } catch (ParseException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
 
