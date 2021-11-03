@@ -1823,6 +1823,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(latestVisitUuid == null || latestVisitUuid.isEmpty())
+                    latestVisitUuid = visitUuid;
+
                 if (visitUUID == null || visitUUID.isEmpty()) {
                     String visitIDorderBy = "startdate";
                     String visitIDSelection = "uuid = ?";

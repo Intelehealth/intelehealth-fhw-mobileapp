@@ -98,6 +98,8 @@ public class Node implements Serializable {
     private String min_age;
     private String max_age;
     private String pregnancy_date;
+    private boolean isMultiChoice = false;
+    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
 
     //for Associated Complaints and medical history only
@@ -160,7 +162,11 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
-            //this.id = jsonNode.getString("id");
+            this.id = jsonNode.getString("id");
+
+            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+
+            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
 
             this.text = jsonNode.getString("text");
 
@@ -350,7 +356,9 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
-        //this.id = source.id;
+        this.id = source.id;
+        this.isMultiChoice = source.isMultiChoice;
+        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.text = source.text;
         this.display = source.display;
         this.display_gujarati = source.display_gujarati;
@@ -2532,6 +2540,20 @@ private static String ml_en(String unit) {
             imagePathList.add(imagePath);
 
         }
+    }
+
+    public boolean isMultiChoice() {
+        return isMultiChoice;
+    }
+    public void setMultiChoice(boolean multiChoice) {
+        isMultiChoice = multiChoice;
+    }
+
+    public boolean isExcludedFromMultiChoice() {
+        return isExcludedFromMultiChoice;
+    }
+    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
+        isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {
