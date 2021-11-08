@@ -1,179 +1,209 @@
 package org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.DatePicker;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.intelehealth.msfarogyabharat.R;
-import org.intelehealth.msfarogyabharat.models.IVR_Call_Models.Call_Details_Response;
-import org.intelehealth.msfarogyabharat.utilities.SessionManager;
-import org.intelehealth.msfarogyabharat.widget.materialprogressbar.CustomProgressDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import org.intelehealth.msfarogyabharat.R;
+import org.intelehealth.msfarogyabharat.app.AppConstants;
+import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
+import org.intelehealth.msfarogyabharat.utilities.Logger;
+import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
+import org.intelehealth.msfarogyabharat.utilities.SessionManager;
+import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MissCallResponseActivity extends AppCompatActivity {
-    Context context;
-    SessionManager sessionManager;
-    RecyclerView recyclerView;
-    MissCallResponse_Adapter adapter;
-    Call_Details_Response response;
-    TextView total_count_textview;
-    CustomProgressDialog customProgressDialog;
-    String todayDate_string;
+        RecyclerView recyclerView;
+        SessionManager sessionManager = null;
+        TextView msg;
+        private String TAG = MissCallResponseActivity.class.getSimpleName();
+
+        public static void start(Context context) {
+            Intent starter = new Intent(context, MissCallResponseActivity.class);
+            context.startActivity(starter);
+        }
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_recordings);
+            Toolbar toolbar = findViewById(R.id.toolbar);
+
+            setSupportActionBar(toolbar);
+            toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+            toolbar.setTitleTextColor(Color.WHITE);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            // Get the intent, verify the action and get the query
+            sessionManager = new SessionManager(this);
+            String language = sessionManager.getAppLanguage();
+            //In case of crash still the app should hold the current lang fix.
+            if (!language.equalsIgnoreCase("")) {
+                Locale locale = new Locale(language);
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            }
+            sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ivrcall_response);
-        setTitle(getResources().getString(R.string.Daily_Performance_Activity_Title));
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        context = MissCallResponseActivity.this;
-        sessionManager = new SessionManager(context);
-        customProgressDialog = new CustomProgressDialog(context);
+            msg = findViewById(R.id.textviewmessage);
+            recyclerView = findViewById(R.id.recycle);
+            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(reLayoutManager);
 
-        Log.v("main", "provider_no: " + sessionManager.getProviderPhoneno());
+            UrlModifiers urlModifiers = new UrlModifiers();
+            ApiInterface apiInterface = AppConstants.apiInterface;
 
-        recyclerView = findViewById(R.id.ivr_response_recyclerview);
-        total_count_textview = findViewById(R.id.total_count_textview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+            String encoded = "Basic bnVyc2UxOk51cnNlMTIz";
+            apiInterface.getRecordings(urlModifiers.getRecordingListUrl()).enqueue(new Callback<RecordingResponse>() {
+                @Override
+                public void onResponse(Call<RecordingResponse> call, Response<RecordingResponse> response) {
+                    if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+                        List<Recording> recordingList = new ArrayList<>();
+                        for (Recording recording : response.body().data) {
+                            if (!TextUtils.isEmpty(recording.RecordingURL)) {
+                                recordingList.add(recording);
 
-        SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-        Calendar today = Calendar.getInstance();
-        Date todayDate = today.getTime();
-        todayDate_string = todaydateFormat.format(todayDate);
-//        getIVR_Call_Response(sessionManager.getProviderPhoneno(), todayDate_string);
+                            }
+                        }
+                        if (recordingList.size() > 0) {
+                            msg.setVisibility(View.GONE);
+                        } else {
+                            //All followups done
+                            msg.setText(R.string.no_records_found);
+                        }
 
+                        recyclerView.setAdapter(new RecordingsAdapter(recordingList, new RecordingsAdapter.OnClickingItemListner() {
+                            @Override
+                            public void mCallAgain(int pos) {
+//todo
+                                updatetheCaller(recordingList.get(pos).Caller);
+                            }
+                        },MissCallResponseActivity.this));
+                    } else {
+                        msg.setText(R.string.no_records_found);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<RecordingResponse> call, Throwable t) {
+                    System.out.println(t);
+                }
+            });
+        }
+
+        @Override
+        protected void onDestroy() {
+            super.onDestroy();
+            recyclerView.clearOnScrollListeners();
+        }
+    private void updatetheCaller(String phoneNumber) {
+
+        UpdateRecordingCallerBodyModel   updateRecordingCallerBody = new UpdateRecordingCallerBodyModel();
+        updateRecordingCallerBody.setCallid(phoneNumber);
+
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String url = urlModifiers.getUpdateRecording();
+
+        Call<UpdatedCallerResponce> UpdateCallerCall = AppConstants.apiInterface.getUpdateRecording(url,updateRecordingCallerBody);
+
+        UpdateCallerCall.enqueue(new Callback<UpdatedCallerResponce>() {
+            @Override
+            public void onResponse(Call<UpdatedCallerResponce> call, Response<UpdatedCallerResponce> response) {
+//                Log.v("main", "hash: "+hash);
+                showAlert(R.string.calling_patient);
+            }
+            @Override
+            public void onFailure(Call<UpdatedCallerResponce> call, Throwable t) {
+                t.printStackTrace();
+                Log.v("main", "failure: " + t.getLocalizedMessage());
+            }
+        });
     }
 
-//    private void getIVR_Call_Response(String providerNo, String fromDate) {
+    void showAlert(int messageRes) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(messageRes);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+//    public void callPatientViaIVR(String caller) {
 //        if (!NetworkConnection.isOnline(this)) {
-//            customProgressDialog.dismiss();
-//            Toast.makeText(context, R.string.no_network, Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
 //            return;
 //        }
 //
-//        customProgressDialog.show();
-//        response = new Call_Details_Response();
-//        ApiClient.changeApiBaseUrl("https://api-voice.kaleyra.com");
+//        String receiver = caller;
+//        if (TextUtils.isEmpty(receiver))
+//            return;
 //        UrlModifiers urlModifiers = new UrlModifiers();
-//
-//        String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, fromDate);
-//        Logger.logD("main", "ivr call response url" + url);
-//        Observable<Call_Details_Response> patientIvrCall_response =
-//                ApiClient.createService(ApiInterface.class).IVR_CALL_RESPONSE(url);
-//        patientIvrCall_response
-//                .subscribeOn(Schedulers.io())
+//        String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
+//        String url = urlModifiers.getIvrCallUrl(caller, receiver);
+//        Logger.logD(TAG, "ivr call url" + url);
+//        Single<String> patientIvrCall = AppConstants.ivrApiInterface.CALL_PATIENT_IVR(url);
+//        patientIvrCall.subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Observer<Call_Details_Response>() {
+//                .subscribe(new DisposableSingleObserver<String>() {
 //                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Call_Details_Response call_details_response) {
-//                        response = call_details_response;
-//                        total_count_textview.setText(getResources().getString(R.string.total_calls) + call_details_response.getData().size());
-//                        adapter = new MissCallResponse_Adapter(context, response);
-//
-//                        if (response.getData() != null) {
-//                            customProgressDialog.dismiss();
-//                            recyclerView.setAdapter(adapter);
-//                        } else {
-//                            customProgressDialog.dismiss();
-//                            Toast.makeText(context, getResources().getString(R.string.something_wrong_refresh_again), Toast.LENGTH_SHORT).show();
-//                        }
-//
-//                        Log.v("main", "call_ivr_response: " + call_details_response);
-//
+//                    public void onSuccess(@NonNull String s) {
+//                       showAlert (R.string.calling_patient);
 //                    }
 //
 //                    @Override
 //                    public void onError(Throwable e) {
-//                        customProgressDialog.dismiss();
-//                        Log.v("main", "call_ivr_response_error: " + e.getLocalizedMessage());
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        customProgressDialog.dismiss();
-//                        Log.v("main", "call_ivr_response_onComplete(): ");
+//                        showAlert(R.string.error_calling_patient);
 //                    }
 //                });
-//
 //    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_sync, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-
-            case R.id.action_sync:
-//                getIVR_Call_Response(sessionManager.getProviderPhoneno(), todayDate_string);
-                return true;
-
-//            case R.id.action_calendar:
-//                getCalendarPicker();
-//                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void getCalendarPicker() {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int month = calendar.get(Calendar.MONTH);
-        int year = calendar.get(Calendar.YEAR);
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                String date_string = "";
-                SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, month, dayOfMonth);
-                date_string = todaydateFormat.format(calendar.getTime());
-
-//                getIVR_Call_Response(sessionManager.getProviderPhoneno(), date_string);
-            }
-        }, year, month, day);
-
-        datePickerDialog.show();
-
-        Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        Button negativeButton = datePickerDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-
-        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-    }
 
 }

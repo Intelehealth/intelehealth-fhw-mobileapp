@@ -822,4 +822,5 @@
     <string name="invalid_filename">File name is not valid</string>
     <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
 
+    <string name="no_records_found">No records found</string>
 </resources>

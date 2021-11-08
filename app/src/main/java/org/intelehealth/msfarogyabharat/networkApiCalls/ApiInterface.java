@@ -1,10 +1,12 @@
 package org.intelehealth.msfarogyabharat.networkApiCalls;
 
 
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.RecordingResponse;
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.UpdateRecordingCallerBodyModel;
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.UpdatedCallerResponce;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.Resolution;
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
-import org.intelehealth.msfarogyabharat.models.IVR_Call_Models.Call_Details_Response;
 import org.intelehealth.msfarogyabharat.models.Location;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.AddImageDownloadResponse;
 import org.intelehealth.msfarogyabharat.models.ObsImageModel.Add_Image_Push_Body;
@@ -146,6 +148,10 @@ public interface ApiInterface {
 
 
     @GET
-    Observable<Call_Details_Response> IVR_CALL_RESPONSE(@Url String url);
+    Call<RecordingResponse> getRecordings(@Url String url);
+
+    @POST
+    Call<UpdatedCallerResponce> getUpdateRecording(@Url String url,@Body UpdateRecordingCallerBodyModel data);
 
 }
+

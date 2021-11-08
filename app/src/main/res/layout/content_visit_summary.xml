@@ -1339,7 +1339,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1">
+                            android:layout_weight="1.1">
 
                             <AutoCompleteTextView
                                 android:id="@+id/autocomplete_state"
@@ -1358,7 +1358,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1">
+                            android:layout_weight="1.1">
 
                             <AutoCompleteTextView
                                 android:id="@+id/autocomplete_district"
@@ -1377,22 +1377,31 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
-                            android:layout_weight="1">
+                            android:layout_weight=".8">
 
-                            <EditText
-                                android:id="@+id/editText_landmark"
-                                android:layout_width="fill_parent"
+<!--                            <EditText-->
+<!--                                android:id="@+id/editText_landmark"-->
+<!--                                android:layout_width="fill_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:completionThreshold="1"-->
+<!--                                android:hint="@string/landmark"-->
+<!--                                android:imeOptions="actionDone|flagNoExtractUi"-->
+<!--                                android:inputType="textAutoComplete"-->
+<!--                                android:maxLength="45"-->
+<!--                                android:maxLines="1"-->
+<!--                                android:editable="false"-->
+<!--                                android:text=""-->
+<!--                                android:singleLine="true" />-->
+
+                            <org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.MultiSelectionSpinner
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:completionThreshold="1"
-                                android:hint="@string/landmark"
-                                android:imeOptions="actionDone|flagNoExtractUi"
-                                android:inputType="textAutoComplete"
-                                android:maxLength="45"
-                                android:maxLines="1"
-                                android:text=""
-                                android:singleLine="true" />
+                                android:id="@+id/mFacilitySelection"/>
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
                     </LinearLayout>
 
