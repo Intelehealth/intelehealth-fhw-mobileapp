@@ -582,7 +582,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onStop();
         try {
             unregisterReceiver(syncBroadcastReceiver);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
