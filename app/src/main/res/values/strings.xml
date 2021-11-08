@@ -811,4 +811,7 @@
     <string name="not_applicable">Not applicable</string>
     <string name="safe_abortion_consent">If the caller\'s query is regarding safe abortion, Ask if the pregnant person can come to the phone if available. If the pregnant person cannot come to the phone, ask for them to call back later. Make sure the person on the call is the pregnant person before proceeding further. Have you confirmed?</string>
     <string name="invalid_filename">File name is not valid</string>
+    <string name="show_all_visits_text">Show All Visits</string>
+    <string name="no_previous_visits">No previous visits</string>
+    <string name="case_visitsummary">\"Case \"</string>
 </resources>

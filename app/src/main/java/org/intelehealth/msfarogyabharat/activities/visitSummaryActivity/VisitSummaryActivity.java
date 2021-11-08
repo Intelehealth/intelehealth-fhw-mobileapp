@@ -4354,11 +4354,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if(complaintView != null) {
             String i = complaintData.toLowerCase().replaceAll("\\s+", "");
             Log.v("main", "vi: "+i);
-            if(complaintData.toLowerCase().replaceAll("\\s+", "").contains("follow-up-domesticviolence:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("caseclosed-domesticviolence:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("follow-up-safeabortion:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("safeabortion-querybyrelativesorothers:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("caseclosed-safeabortion:")) {
+            if(complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
                 flag = true;
             }
             else {

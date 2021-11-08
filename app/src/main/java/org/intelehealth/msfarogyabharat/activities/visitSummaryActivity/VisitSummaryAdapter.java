@@ -84,7 +84,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
         complaint = complaintList.get(position);
         physexam = physexamList.get(position);
 
-        holder.textView_caseTitle.setText("Case " + (position + 1));
+        holder.textView_caseTitle.setText(context.getString(R.string.case_visitsummary) + (position + 1));
         holder.textView_content_complaint.setText(complaint);
         holder.textView_content_physexam.setText(physexam);
     }

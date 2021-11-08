@@ -1155,26 +1155,36 @@ public class PatientDetailActivity extends AppCompatActivity {
             visitIDCursor.close();
         }
 
+        if(visituID == null)
+            textview_showallvisits.setTextColor(getResources().getColor(R.color.font_black_3));
+        else
+            textview_showallvisits.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
         textview_showallvisits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+                if(visituID != null) {
+                    Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
                 /*intentTag = intent.getStringExtra("tag");
                 intentTag1 = intent.getStringExtra("intentTag1");
                 intentTag2 = intent.getStringExtra("intentTag2");*/
 
-                intent.putExtra("patientUuid", patientUuid);
-                intent.putExtra("name", patientName);
-                intent.putExtra("hasPrescription", hasPrescription);
-                intent.putExtra("MedicalAdvice", MedicalAdvice);
-                intent.putExtra("latest_VisitUuid", visituID);
-                intent.putExtra("pastVisit", true);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("hasPrescription", hasPrescription);
+                    intent.putExtra("MedicalAdvice", MedicalAdvice);
+                    intent.putExtra("latest_VisitUuid", visituID);
+                    intent.putExtra("pastVisit", true);
 
 //                intent.putExtra("encounterUuidVitals", encounterVitalslocal);
-                intent.putExtra("encounterUuidAdultIntial", global_encounterAdultIntialslocal);
-                intent.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+                    intent.putExtra("encounterUuidAdultIntial", global_encounterAdultIntialslocal);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(context, getResources().getString(R.string.no_previous_visits), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

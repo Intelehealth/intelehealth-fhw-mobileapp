@@ -699,6 +699,9 @@
         <string name="husband_phone_number">Husband Phone number</string>
         <string name="what_address_is_the_survivor_currently_residing_at">What address is the survivor currently residing at?</string>
         <string name="with_whom_is_the_survivor_living">With whom is the survivor living?</string>
+    <string name="show_all_visits_text">Show All Visits</string>
+        <string name="no_previous_visits">No previous visits</string>
+        <string name="case_visitsummary">\"Case \"</string>
 
 
 </resources>
