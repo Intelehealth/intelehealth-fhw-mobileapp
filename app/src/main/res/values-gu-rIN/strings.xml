@@ -702,6 +702,7 @@
     <string name="show_all_visits_text">Show All Visits</string>
         <string name="no_previous_visits">No previous visits</string>
         <string name="case_visitsummary">\"Case \"</string>
+    <string name="please_select_an_option">Please select an option</string>
 
 
 </resources>

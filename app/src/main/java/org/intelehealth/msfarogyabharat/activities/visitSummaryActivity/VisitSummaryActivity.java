@@ -68,6 +68,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -184,6 +185,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String doctorName = "";
     String additionalReturned = "";
     String followUpDate = "";
+    int shareSelectedOption = 2;
 
     ImageButton editVitals;
     ImageButton editComplaint;
@@ -299,6 +301,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private String latestVisitUuid;
     private boolean allVisitsEnded = false;
     private boolean hide_endvisit = false;
+    String shareoptionsarray[] = {"Whatsapp", "Email"};
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -585,9 +588,31 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 if (button_resolution.getVisibility() == View.GONE) {
 
-
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
-                    EditText editText = new EditText(VisitSummaryActivity.this);
+                    LayoutInflater inflater = VisitSummaryActivity.this.getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.sharelayout, null);
+
+//                    EditText editText = new EditText(VisitSummaryActivity.this);
+//                    editText.setInputType(InputType.TYPE_CLASS_PHONE);
+//                    InputFilter inputFilter = new InputFilter() {
+//                        @Override
+//                        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+//                            return null;
+//                        }
+//                    };
+
+//                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
+//                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
+
+//                    editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
+//                    editText.setText(patient.getPhone_number());
+//                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
+//                            (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                   // editText.setLayoutParams(layoutParams);
+                  //  alertDialog.setView(editText);
+
+                    alertDialog.setView(dialogView);
+                    EditText editText = dialogView.findViewById(R.id.editTextmobileno);
                     editText.setInputType(InputType.TYPE_CLASS_PHONE);
                     InputFilter inputFilter = new InputFilter() {
                         @Override
@@ -596,35 +621,63 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
                     };
 
-//                    String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-//                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid);
-
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
                     editText.setText(patient.getPhone_number());
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
-                            (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    editText.setLayoutParams(layoutParams);
-                    alertDialog.setView(editText);
-                    String htmlDoc = sms_prescription();
 
-                    //AlertDialog alertDialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle).create();
+                    RadioButton whatsappradio = dialogView.findViewById(R.id.whatsappradio);
+                    RadioButton emailradio = dialogView.findViewById(R.id.emailradio);
+
+                    whatsappradio.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onRadioButtonClicked(view);
+                        }
+                    });
+
+                    emailradio.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            onRadioButtonClicked(view);
+                        }
+                    });
+
+                    String htmlDoc = sms_prescription();
+                    alertDialog.setTitle("Share Prescription");
                     alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+
                     alertDialog.setPositiveButton(getResources().getString(R.string.share),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                        String phoneNumber = "+91" + editText.getText().toString();
+                                        Log.v("main", "sharedoption: "+ shareSelectedOption);
+                                        if(shareSelectedOption != 2) {
+                                            String phoneNumber = "+91" + editText.getText().toString();
+                                            /*startActivity(new Intent(Intent.ACTION_VIEW,
+                                                    Uri.fromParts("sms", phoneNumber, null))
+                                                    .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));*/
 
-                                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                                Uri.fromParts("sms", phoneNumber, null))
-                                                .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));
-
+                                            //Add code for Whatsapp and Email here
+                                            if(shareSelectedOption == 0) {
+                                                //Whatsapp...
+                                                Toast.makeText(context, "Whatsapp", Toast.LENGTH_SHORT).show();
+                                                shareSelectedOption = 2;
+                                            }
+                                            else if(shareSelectedOption == 1) {
+                                                //Email...
+                                                Toast.makeText(context, "Email", Toast.LENGTH_SHORT).show();
+                                                shareSelectedOption = 2;
+                                            }
+                                            //end
+                                        }
+                                        else {
+                                            Toast.makeText(context, getResources().getString(R.string.please_select_an_option),
+                                                Toast.LENGTH_SHORT).show();
+                                        }
 
                                     } else {
                                         Toast.makeText(context, getResources().getString(R.string.please_enter_mobile_number),
                                                 Toast.LENGTH_SHORT).show();
-
                                     }
 
                                 }
@@ -4454,6 +4507,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
             result = String.format("<b>%s</b>", input);
         }
         return result;
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch (view.getId()) {
+            case R.id.whatsappradio:
+                if (checked)
+                    shareSelectedOption = 0;
+                break;
+            case R.id.emailradio:
+                if (checked)
+                    shareSelectedOption = 1;
+                break;
+        }
     }
 
 }
