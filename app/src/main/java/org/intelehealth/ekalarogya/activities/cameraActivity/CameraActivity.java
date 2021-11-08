@@ -350,7 +350,8 @@ public class CameraActivity extends AppCompatActivity {
 
     void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
         Log.d(TAG, "bindPreview ");
-        Preview preview = new Preview.Builder()
+        try {
+            Preview preview = new Preview.Builder()
                 .build();
 
         CameraSelector cameraSelector = new CameraSelector.Builder()
@@ -378,8 +379,7 @@ public class CameraActivity extends AppCompatActivity {
 
         preview.setSurfaceProvider(mPreviewView.createSurfaceProvider());
         cameraProvider.unbindAll();
-        mCamera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis, imageCapture);
-
+            mCamera = cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageAnalysis, imageCapture);
 
         if (mFab != null) {
             mFab.setOnClickListener(new View.OnClickListener() {
@@ -390,7 +390,7 @@ public class CameraActivity extends AppCompatActivity {
                         mImageName = "IMG";
                     }
 
-                    final String filePath = (mFilePath == null ? AppConstants.IMAGE_PATH : mFilePath+"/") + mImageName + ".jpg";
+                    final String filePath = (mFilePath == null ? AppConstants.IMAGE_PATH : mFilePath + "/") + mImageName + ".jpg";
 
 
                     File file = new File(filePath);
@@ -417,7 +417,9 @@ public class CameraActivity extends AppCompatActivity {
                 }
             });
         }
-
+    }
+        catch(Exception e)
+        { e.printStackTrace(); }
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
