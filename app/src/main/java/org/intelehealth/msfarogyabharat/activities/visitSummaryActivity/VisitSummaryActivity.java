@@ -272,7 +272,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String mFileName = "config.json";
     public static String prescription1;
     public static String prescription2;
-    SessionManager sessionManager, sessionManager1;
+    SessionManager sessionManager, sessionManager1, sessionManager2;
     String encounterUuid;
     String encounterVitals;
     //  Boolean isreturningWhatsapp = true;
@@ -439,7 +439,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
-        sessionManager1 = new SessionManager(this);
+        sessionManager1 = new SessionManager(VisitSummaryActivity.this);
 //        String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
 //        if (!language.equalsIgnoreCase("")) {

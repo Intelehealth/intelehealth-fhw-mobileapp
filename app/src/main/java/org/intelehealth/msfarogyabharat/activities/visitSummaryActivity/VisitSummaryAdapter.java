@@ -31,8 +31,12 @@ import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.Complai
 import org.intelehealth.msfarogyabharat.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
 import org.intelehealth.msfarogyabharat.database.dao.ImagesDAO;
+import org.intelehealth.msfarogyabharat.database.dao.ObsDAO;
 import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
+import org.intelehealth.msfarogyabharat.models.dto.ObsDTO;
+import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
 
@@ -56,6 +60,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     Add_Doc_Adapter_DataModel model;
     File obsImgdir = new File(AppConstants.IMAGE_PATH);
     VisitSummaryActivity summaryActivity = new VisitSummaryActivity();
+    SessionManager sessionManager;
 
     public VisitSummaryAdapter(Context context, Context visitsumContext, List<String> visitUuidList,
                                List<String> complaintList, List<String> physexamList,
@@ -91,7 +96,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
 
     @Override
     public int getItemCount() {
-        return complaintList.size();
+        return visitUuidList.size();
     }
 
     public class VisitSummaryViewHolder extends RecyclerView.ViewHolder {
@@ -190,7 +195,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
                                         complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
                                         textView_content_complaint.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
                                     }
-                                    summaryActivity.updateDatabase(complaintList.get(getAdapterPosition()), UuidDictionary.CURRENT_COMPLAINT);
+                                    updateDatabase(complaintList.get(getAdapterPosition()), UuidDictionary.CURRENT_COMPLAINT);
                                     dialog.dismiss();
                                 }
                             });
@@ -306,7 +311,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
                                         physicalText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
                                         textView_content_physexam.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
                                     }
-                                    summaryActivity.updateDatabase(physexamList.get(getAdapterPosition()), UuidDictionary.PHYSICAL_EXAMINATION);
+                                    updateDatabase(physexamList.get(getAdapterPosition()), UuidDictionary.PHYSICAL_EXAMINATION);
                                     dialog.dismiss();
                                 }
                             });
@@ -381,4 +386,34 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
             //Edit Physical - End
         }
     }
+
+    public void updateDatabase(String string, String conceptID) {
+        sessionManager = new SessionManager(context);
+        ObsDTO obsDTO = new ObsDTO();
+        ObsDAO obsDAO = new ObsDAO();
+        try {
+            obsDTO.setConceptuuid(String.valueOf(conceptID));
+//          obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+            obsDTO.setEncounteruuid(model.getEncounteruid()); //latest visit encounter.
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(string);
+            obsDTO.setUuid(obsDAO.getObsuuid(model.getEncounteruid(), String.valueOf(conceptID)));
+
+            obsDAO.updateObs(obsDTO);
+
+
+        } catch (DAOException dao) {
+            FirebaseCrashlytics.getInstance().recordException(dao);
+        }
+
+        EncounterDAO encounterDAO = new EncounterDAO();
+        try {
+            encounterDAO.updateEncounterSync("false", model.getEncounteruid());
+            encounterDAO.updateEncounterModifiedDate(model.getEncounteruid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+
 }
