@@ -660,12 +660,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                             //Add code for Whatsapp and Email here
                                             if(shareSelectedOption == 0) {
                                                 //Whatsapp...
-                                                Toast.makeText(context, "Whatsapp", Toast.LENGTH_SHORT).show();
+                                                String phoneNumberWithCountryCode = "+91" + editText.getText().toString();
+                                                shareWhatsapp(phoneNumberWithCountryCode);
                                                 shareSelectedOption = 2;
                                             }
                                             else if(shareSelectedOption == 1) {
                                                 //Email...
-                                                Toast.makeText(context, "Email", Toast.LENGTH_SHORT).show();
+                                                shareEmail();
                                                 shareSelectedOption = 2;
                                             }
                                             //end
@@ -1937,6 +1938,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (isFollowUpOrClosed()) {
             button_resolution.setVisibility(View.GONE);
         }
+    }
+
+    private void shareEmail() {
+        String to = "prajwalwaingankar@gmail.com";
+        String subject= "Share Presc";
+        String body="https://training.vikalpindia.org/intelehealth/index.html#/";
+        String mailTo = "mailto:" + to +
+                "?&subject=" + Uri.encode(subject) +
+                "&body=" + Uri.encode(body);
+        Intent emailIntent = new Intent(Intent.ACTION_VIEW);
+        emailIntent.setData(Uri.parse(mailTo));
+        startActivity(emailIntent);
+    }
+
+    private void shareWhatsapp(String phoneNumberWithCountryCode) {
+        String message = "https://training.vikalpindia.org/intelehealth/index.html#/";
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse(
+                        String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                phoneNumberWithCountryCode, message))));
     }
 
     private String sms_prescription() {
