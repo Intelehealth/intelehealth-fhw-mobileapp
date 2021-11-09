@@ -794,4 +794,5 @@
     <string name="closed_visits_HomeScreen">Closed Visits</string>
     <string name="Completed_Visits">Completed Visits</string>
     <string name="Closed_Visits">Closed Visits</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>
