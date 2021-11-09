@@ -257,7 +257,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
-String mState, mDistrict,mFacility;
+String mState, mDistrict,mFacilityValue;
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     NetworkChangeReceiver receiver;
@@ -287,7 +287,7 @@ String mState, mDistrict,mFacility;
 
     ProgressBar mProgressBar;
     TextView mProgressText;
-
+TextView txtViewFacility;
     ImageButton additionalDocumentsDownlaod;
     ImageButton onExaminationDownload;
 
@@ -551,6 +551,7 @@ String mState, mDistrict,mFacility;
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
 
+        txtViewFacility = findViewById(R.id.txtViewFacility);
         autocompleteState = findViewById(R.id.autocomplete_state);
         autocompleteDistrict = findViewById(R.id.autocomplete_district);
         editText_landmark = findViewById(R.id.editText_landmark);
@@ -559,10 +560,13 @@ String mState, mDistrict,mFacility;
         districtList = new ArrayList<>();
         mFacilityList = new ArrayList<>();
         mFacilityList.add(new Item(getString(R.string.select),false));
+
+        mFacilitySelection.setVisibility(View.GONE);
+        txtViewFacility.setVisibility(View.VISIBLE);
+
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 try {
                     doWebViewPrint_Button();
                 } catch (ParseException e) {
@@ -742,10 +746,17 @@ String mState, mDistrict,mFacility;
                 if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
+                    mFacilitySelection.setEnabled(false);
                     mFacilitySelection.setClickable(false);
                     mFacilityList.clear();
+                    txtViewFacility.setVisibility(View.VISIBLE);
+                    mFacilitySelection.setVisibility(View.GONE);
                 } else
                     autocompleteDistrict.setEnabled(true);
+
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
+                mFacilitySelection.setEnabled(false);
                 mFacilityList.clear();
                 districtList.clear();
                 try {
@@ -783,10 +794,14 @@ String mState, mDistrict,mFacility;
                     mFacilityList.clear();
 //                    editText_landmark.setEnabled(false);
                     mFacilitySelection.setClickable(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    txtViewFacility.setVisibility(View.VISIBLE);
 
                 } else
-
-                    mFacilitySelection.setClickable(true);
+                    txtViewFacility.setVisibility(View.GONE);
+                mFacilitySelection.setVisibility(View.VISIBLE);
+                mFacilitySelection.setEnabled(true);
                 mFacilityList.clear();
                 try {
                     mFacilityArray=new JSONArray();
@@ -833,10 +848,11 @@ String mState, mDistrict,mFacility;
                 }
                 else{
                         mFacilityList.clear();
-                        mFacilityList.add(new Item("",false));
-                        mFacilitySelection.setItems(mFacilityList);
+                        txtViewFacility.setVisibility(View.VISIBLE);
+                        txtViewFacility.setText("-");
+                        mFacilitySelection.setVisibility(View.GONE);
 
-//                    mFacilitySelection.setVisibility(View.GONE);
+//                      mFacilitySelection.setVisibility(View.GONE);
                 }
 
                 } catch (JSONException e) {
@@ -845,15 +861,9 @@ String mState, mDistrict,mFacility;
             }
         });
         //todo
-//if(mFacilitySelection.getSelectedItems().toString().isEmpty()){
-//
-//}
-//else{
-////    mFacilitySelection.getSelectedItemsAsString();
-//    String s = mFacilitySelection.getSelectedItemsAsString();
-//    Log.e("getSelected", s);
-//       Log.d("RIT,","R "+ mFacilitySelection.getSelectedItems().toString());
-//}
+
+
+
 
 //        editText_landmark.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -3736,13 +3746,16 @@ String mState, mDistrict,mFacility;
 //Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
                 if(facilityText==null){
                 }else{
-                String[] arrayString = facilityText.split(",");
+                String[] arrayString = facilityText.split(",",3);
+
 
                     autocompleteState.setText(""+arrayString[0]);
+                    mState=arrayString[0];
                     autocompleteDistrict.setText(""+arrayString[1]);
-
-//                Log.d("arr","aar"+);
-//                Log.d("arr","aar1"+arrayString[1]);
+                    mDistrict=arrayString[1];
+                    txtViewFacility.setText(""+arrayString[arrayString.length-1]);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    mFacilityValue=arrayString[arrayString.length-1];
                 }
 
                 medHistory = medHistory.replace("\"", "");
@@ -3755,7 +3768,7 @@ String mState, mDistrict,mFacility;
         } catch (CursorIndexOutOfBoundsException e) {
             autocompleteState.setText("");
             autocompleteDistrict.setText("");
-
+            txtViewFacility.setText("");
             // if facility  does not exist
         }
 //vitals display code
@@ -4608,14 +4621,21 @@ String mState, mDistrict,mFacility;
     }
     private void uploadFacility() {
 
-Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e"+encounterUuidAdultIntial);
+//Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e"+encounterUuidAdultIntial);
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         List<ObsDTO> obsDTOList = new ArrayList<>();
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
         obsDTO.setEncounteruuid(encounterUuidAdultIntial);
-        obsDTO.setValue(""+mState+", "+mDistrict);
+        //todo
+
+        if(mFacilitySelection.getVisibility()==View.VISIBLE){
+            mFacilityValue=mFacilitySelection.getSelectedItemsAsString();
+        }else{
+           mFacilityValue= txtViewFacility.getText().toString();
+        }
+        obsDTO.setValue(""+mState+", "+mDistrict+", "+mFacilityValue);
         obsDTO.setConceptuuid(UuidDictionary.Facility);
         obsDTOList.add(obsDTO);
 

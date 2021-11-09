@@ -20,6 +20,7 @@ public class MultiSelectionSpinner extends androidx.appcompat.widget.AppCompatSp
         boolean[] selection = null;
         ArrayAdapter adapter;
 
+
 public MultiSelectionSpinner(Context context) {
         super(context);
 
@@ -68,7 +69,9 @@ public void onClick(DialogInterface arg0, int arg1)
         // Do nothing
 
 
-//                Toast.makeText(getContext(), "hbcj  =="+getSelectedItemsAsString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "1  =="+getSelectedItemsAsString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "hbcj  22=="+getSelectedItems().size(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "hbcj  33=="+getSelectedItems().size(), Toast.LENGTH_SHORT).show();
         }
         });
 
@@ -150,7 +153,7 @@ public ArrayList<Item> getSelectedItems() {
                                         sb.append(", ");
                                 }
                                 foundOne = true;
-                                sb.append(items.get(i));
+                                sb.append(items.get(i).getName());
                         }
                 }
                 return sb.toString();

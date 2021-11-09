@@ -818,4 +818,5 @@
     <string name="something_wrong_refresh_again">कुछ गलत हो गया। कृपया फिर से रिफ्रेश करें</string>
 
     <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
+    <string name="textViewHintFacility">Facility</string>
 </resources>
