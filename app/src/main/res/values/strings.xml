@@ -667,4 +667,5 @@
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
     <string name="loading_more">Loading more...</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>
