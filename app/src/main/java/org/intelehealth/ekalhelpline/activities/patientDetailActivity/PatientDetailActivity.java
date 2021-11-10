@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -2038,8 +2039,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .subscribe(new DisposableSingleObserver<String>() {
                     @Override
                     public void onSuccess(@NonNull String s) {
-                        if(!PatientDetailActivity.this.isFinishing())
+                        if(!((Activity) context).isFinishing())
                             showAlert(R.string.calling_patient);
+
                         ivr_isInititated = true;
                       //  calling.setEnabled(true); //once api hit and response = enable the button...
                       /*  new Handler().postDelayed(new Runnable() {
@@ -2053,7 +2055,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                        // calling.setEnabled(true);
-                        if(!PatientDetailActivity.this.isFinishing())
+                        if(!((Activity) context).isFinishing())
                             showAlert(R.string.error_calling_patient);
                     }
                 });
@@ -2133,7 +2135,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     void showAlert(int messageRes) {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
         alertDialogBuilder.setMessage(messageRes);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -2143,7 +2145,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
     }
 
     @Override
