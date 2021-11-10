@@ -1404,6 +1404,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //If TLD Query as Reason for Call (Chief Complaint) then set TLD Query as autoselected value for Spinner...
         if(complaintView.getText().toString().contains("TLD Query")) {
             speciality_spinner.setSelection(stringArrayAdapter.getPosition("TLD Query"));
+            speciality_spinner.setEnabled(false);
         }
 
         if (special_value != null && !special_value.equalsIgnoreCase("EMPTY")) {
