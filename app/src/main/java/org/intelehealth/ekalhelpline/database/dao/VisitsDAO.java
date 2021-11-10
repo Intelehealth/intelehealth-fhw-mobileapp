@@ -325,7 +325,7 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+       // db.close(); //as sqlite uses same db object everytime almost so closing it is not a good point as it leads to crashes.
         return visitDTOList;
     }
 
