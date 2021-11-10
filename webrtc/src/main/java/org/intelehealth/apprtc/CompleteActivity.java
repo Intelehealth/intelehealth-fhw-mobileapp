@@ -223,7 +223,7 @@ public class CompleteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (socket != null)
                     socket.emit("bye");
-                //disconnectAll();
+                disconnectAll();
 
             }
         });

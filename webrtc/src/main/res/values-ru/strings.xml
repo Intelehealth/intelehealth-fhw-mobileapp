@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Int-Health V-Call</string>
+    <!--<string name="app_name" translatable="false">Int-Health V-Call</string>-->
 
     <string name="video_on_lbl">Видео включено!</string>
     <string name="video_off_lbl">Видео выключено!</string>

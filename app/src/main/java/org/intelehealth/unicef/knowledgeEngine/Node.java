@@ -635,6 +635,10 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(dialogEditText.getText().toString().isEmpty()){
+                    dialog.dismiss();
+                    return;
+                }
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                 } else {
@@ -1233,6 +1237,10 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if(dialogEditText.getText().toString().isEmpty()){
+                    dialog.dismiss();
+                    return;
+                }
                 if (node.getLanguage().contains("_")) {
                     node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
                 } else {

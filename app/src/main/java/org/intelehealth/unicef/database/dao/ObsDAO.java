@@ -5,21 +5,21 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.models.dto.ObsDTO;
+import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.UuidDictionary;
+import org.intelehealth.unicef.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import org.intelehealth.unicef.utilities.Logger;
-import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.unicef.utilities.UuidDictionary;
-import org.intelehealth.unicef.app.AppConstants;
-import org.intelehealth.unicef.app.IntelehealthApplication;
-import org.intelehealth.unicef.models.dto.ObsDTO;
-import org.intelehealth.unicef.utilities.exception.DAOException;
 
 public class ObsDAO {
 
@@ -242,12 +242,13 @@ public class ObsDAO {
 
         return obsuuid;
     }
+
     public void deleteByEncounterUud(String encounterUuid) throws DAOException {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
-            db.delete("tbl_obs","encounteruuid = ?",new String[] {encounterUuid});
+            db.delete("tbl_obs", "encounteruuid = ?", new String[]{encounterUuid});
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -255,6 +256,32 @@ public class ObsDAO {
         } finally {
             db.endTransaction();
         }
+    }
+
+    public String getObsValue(String encounterUuid, String conceptUuid) throws DAOException {
+        String obsuuid = null;
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor obsCursoursor = db.rawQuery("Select value from tbl_obs where conceptuuid=? and encounteruuid=? and voided='0' order by created_date,obsservermodifieddate desc limit 1 ", new String[]{conceptUuid, encounterUuid});
+        try {
+            if (obsCursoursor.getCount() != 0) {
+                while (obsCursoursor.moveToNext()) {
+                    obsuuid = obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value"));
+                    Log.v("value", obsuuid);
+                }
+
+            }
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql);
+        } finally {
+            obsCursoursor.close();
+        }
+        assert obsuuid != null;
+        if (obsuuid.contains("<b>") && obsuuid.contains("</b>")) {
+            obsuuid = obsuuid.substring(obsuuid.indexOf("<b>") + 3, obsuuid.indexOf("</b>"));
+        }
+
+        return obsuuid;
     }
 
 }

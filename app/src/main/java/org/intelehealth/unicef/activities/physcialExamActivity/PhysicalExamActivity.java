@@ -111,6 +111,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     QuestionsAdapter adapter;
     String mgender;
     ScrollingPagerIndicator recyclerViewIndicator;
+    private String mSelectedComplainName = "";
 
 
     @Override
@@ -165,12 +166,26 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
+            Log.d(TAG, TAG+" - selectedExams - "+selectedExams);
+            Log.d(TAG, TAG+" - encounterAdultIntials - "+encounterAdultIntials);
+            ObsDAO obsDAO = new ObsDAO();
+            try {
+                mSelectedComplainName = obsDAO.getObsValue(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT);
+                Log.v(TAG, "mSelectedComplainName - "+mSelectedComplainName);
+                if(mSelectedComplainName.equals("Screening Pediatric HIV") || mSelectedComplainName.equals("Скрининг на ВИЧ у детей") ||
+                        mSelectedComplainName.equals("Screening for cerebral palsy") || mSelectedComplainName.equals("Скрининг детского церебрального паралича") ){
+                    mFileName = "physExam1.json";
+
+                }
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
             selectedExamsList.clear();
             if (selectedExams != null)
                 selectedExamsList.addAll(selectedExams);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
-
+        Log.v(TAG, "mFileName - "+mFileName);
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);

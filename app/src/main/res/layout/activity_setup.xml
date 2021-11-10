@@ -82,7 +82,7 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:hint="@string/enter_url"
                                 android:inputType="textUri"
-                                android:text="uniceftraining.intelehealth.org"
+                                android:text=""
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 

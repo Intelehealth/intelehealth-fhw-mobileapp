@@ -74,6 +74,7 @@ import org.intelehealth.unicef.models.DownloadMindMapRes;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.services.firebase_services.CallListenerBackgroundService;
+import org.intelehealth.unicef.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.DownloadMindMaps;
 import org.intelehealth.unicef.utilities.FileUtils;
@@ -251,6 +252,7 @@ public class HomeActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         mActiveVitCountTextView = findViewById(R.id.active_visit_count);
         mTodayVisitCountTextView = findViewById(R.id.today_visit_count);
+        DeviceInfoUtils.saveDeviceInfo(this);
 
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -258,7 +260,7 @@ public class HomeActivity extends AppCompatActivity {
             Locale.setDefault(locale);
             Configuration config = new Configuration();
             config.locale = locale;
-            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+            getBaseContext().getResources().updateConfiguration(config,     getBaseContext().getResources().getDisplayMetrics());
         }
         catchFCMMessageData();
         setTitle(R.string.title_activity_login);
@@ -409,6 +411,8 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            saveToken();
+            requestPermission();
         }
         /*sessionManager.setMigration(true);
 
@@ -418,7 +422,7 @@ public class HomeActivity extends AppCompatActivity {
 
         showProgressbar();
 
-        requestPermission();
+        //requestPermission();
     }
 
     //function for handling the video library feature...
@@ -1081,6 +1085,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void hideSyncProgressBar(boolean isSuccess) {
+        saveToken();
+        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
@@ -1136,6 +1142,11 @@ public class HomeActivity extends AppCompatActivity {
     private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
 
     private void requestPermission() {
+        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            //CallListenerBackgroundService.getInstance().stopForegroundService();
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -1145,10 +1156,7 @@ public class HomeActivity extends AppCompatActivity {
                 //Permission Granted-System will work
             }
         }
-        if (!CallListenerBackgroundService.isInstanceCreated()) {
-            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
-            ContextCompat.startForegroundService(this, serviceIntent);
-        }
+
     }
 
     @Override
@@ -1173,10 +1181,12 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onAttachedToWindow();
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
+
     public Context setLocale(Context context) {
         SessionManager sessionManager = new SessionManager(context);
         String appLanguage = sessionManager.getAppLanguage();

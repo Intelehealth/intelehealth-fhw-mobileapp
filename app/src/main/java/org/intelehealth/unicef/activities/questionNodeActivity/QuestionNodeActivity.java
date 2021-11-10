@@ -391,6 +391,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("tag", intentTag);
 
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
+                    Log.d(TAG, TAG+" - selectedExams - "+selectedExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
                     startActivityForResult(intent, INTENT_FOR_PHY_EXAM);

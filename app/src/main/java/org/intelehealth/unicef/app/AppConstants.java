@@ -104,6 +104,7 @@ public class AppConstants {
 
     public static final String FIREBASE_REAL_TIME_DB_BASE_URL = "https://intelehealth-unicef-default-rtdb.asia-southeast1.firebasedatabase.app/";
     public static final String FIREBASE_REAL_TIME_DB_BASE_REF = "rtc_notify/";
+    public static final String FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE = "device_info/";
 
 
     public static String getFirebaseRTDBUrl() {
@@ -113,6 +114,9 @@ public class AppConstants {
 
     public static String getFirebaseRTDBRootRef() {
         return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF;
+
+    }public static String getFirebaseRTDBRootRefForDeviceInfo() {
+        return new SessionManager(IntelehealthApplication.getAppContext()).getServerUrl().replaceAll("\\.","_")+"/"+FIREBASE_REAL_TIME_DB_BASE_REF_SAVE_DEVICE;
 
     }
 }

@@ -8,7 +8,13 @@ public abstract class NetworkChangeListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
-        onNetworkChange(NetworkConnection.getConnectivityStatusString(context));
+        switch (intent.getAction()) {
+            case "android.net.conn.CONNECTIVITY_CHANGE":
+            case "android.net.wifi.WIFI_STATE_CHANGED":
+                onNetworkChange(NetworkConnection.getConnectivityStatusString(context));
+                break;
+        }
+
     }
 
     protected abstract void onNetworkChange(String[] status);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Телемед КГ</string>
+    <string name="app_name" translatable="false">Телемед KG</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Далее</string>
@@ -107,10 +107,10 @@
     <string name="identification_screen_required_fields" translatable="false">Пожалуйста, введите необходимые поля</string>
     <string name="identification_screen_error_dob" translatable="false">Введите действительную дату рождения</string>
     <string name="identification_screen_error_age" translatable="false">Введите действительный возраст</string>
-    <string name="identification_screen_text_years" translatable="false"> годы </string>
-    <string name="identification_screen_text_months" translatable="false"> месяцы</string>
+    <string name="identification_screen_text_years" translatable="false"> лет/годы(-а) </string>
+    <string name="identification_screen_text_months" translatable="false"> месяцы(-а)</string>
     <string name="identification_screen_picker_years" translatable="false">лет</string>
-    <string name="identification_screen_picker_months" translatable="false">месяцы</string>
+    <string name="identification_screen_picker_months" translatable="false">месяцы(-а)</string>
 
     //Active Patients Screen
     <string name="title_activity_active_patient" translatable="false">Активные посещения</string>
@@ -148,13 +148,13 @@
     <string name="table_hw" translatable="false">Измерения тела</string>
     <string name="table_height" translatable="false">Рост (см)</string>
     <string name="table_weight" translatable="false">Вес (кг)</string>
-    <string name="table_bmi" translatable="false">BMI </string>
+    <string name="table_bmi" translatable="false">ИМТ </string>
     <string name="table_pulse" translatable="false">Пульс (уд/мин)</string>
     <string name="table_bp" translatable="false">Жизненные показатели</string>
-    <string name="table_bpsys" translatable="false">Системы АД</string>
-    <string name="table_bpdia" translatable="false">АД Диа</string>
+    <string name="table_bpsys" translatable="false">Cистолическое АД</string>
+    <string name="table_bpdia" translatable="false">Диастолическое АД</string>
     <string name="table_temp" translatable="false">Температура (C)</string>
-    <string name="table_spo2" translatable="false">SpO2 (%)</string>
+    <string name="table_spo2" translatable="false">Сатурация SpO2 (%)</string>
 
     //Patient Search Screen
     <string name="search_hint" translatable="false">Введите для поиска пациента по имени...</string>
@@ -169,7 +169,7 @@
     <string name="title_activity_physical_exam" translatable="false">Физический осмотр</string>
     <string name="title_activity_patient_summary" translatable="false">Краткое описание визита</string>
     <string name="visit_summary_temperature" translatable="false">Температура(C)</string>
-    <string name="visit_summary_pulseox" translatable="false">SpO2 (%)</string>
+    <string name="visit_summary_pulseox" translatable="false">Сатурация SpO2 (%)</string>
     <string name="visit_summary_hw_on_duty" translatable="false">Дежурный медработник</string>
     <string name="visit_summary_vitals_heading" translatable="false">Показатели</string>
     <string name="visit_summary_height_heading" translatable="false">Рост (см)</string>
@@ -193,7 +193,7 @@
     <string name="visit_summary_heading_id" translatable="false">ID</string>
     <string name="visit_summary_button_download" translatable="false">Скачать</string>
     <string name="visit_summary_button_upload" translatable="false">Загрузить</string>
-    <string name="name_button_download" translatable="false">button_download</string>
+    <string name="name_button_download" translatable="false">Кнопка_скачивания</string>
     <string name="visit_summary_follow_up_date" translatable="false">Дата последующего наблюдения</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Напомните пациенту дату последующего наблюдения: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Пожалуйста, сначала загрузите информацию, прежде чем пытаться завершить визит.</string>
@@ -216,7 +216,7 @@
     <string name="header_patient_history" translatable="false">История болезни</string>
     <string name="header_family_history" translatable="false">Семейный анамнез</string>
     <string name="string_no_hist" translatable="false">Нет истории болезни</string>
-    <string name="row_patient_id" translatable="false">Идентификатор пациента</string>
+    <string name="row_patient_id" translatable="false">Идентификатор(ID) пациента</string>
     <string name="row_dob" translatable="false">Дата рождения</string>
     <string name="row_age" translatable="false">Возраст</string>
     <string name="row_gender">Пол</string>
@@ -231,8 +231,7 @@
     <string name="pref_header_general" translatable="false">Общие</string>
 
     <string name="pref_title_social_recommendations" translatable="false">Включить социальные рекомендации</string>
-    <string name="pref_description_social_recommendations" translatable="false">Рекомендации для людей, с которыми можно связаться на основе вашего сообщения
-         история
+    <string name="pref_description_social_recommendations" translatable="false">Рекомендации для людей, с которыми можно связаться на основе истории ваших сообщений
     </string>
 
     <string name="pref_title_display_name" translatable="false">Отображаемое имя</string>
@@ -240,7 +239,7 @@
 
 
     <!-- Example settings for Data & syncBackground -->
-    <string name="pref_header_data_sync" translatable="false">Данные &amp; Обновить</string>
+    <string name="pref_header_data_sync" translatable="false">Обновить данные</string>
 
     <string name="pref_title_server_url" translatable="false">URL-адрес сервера</string>
     <string name="pref_title_id_prefix" translatable="false">Префикс местоположения</string>
@@ -281,7 +280,7 @@
     <string name="switch_camera" translatable="false">Переключить камеру</string>
     <string name="flash_auto" translatable="false">Вспышка авто</string>
     <string name="flash_off" translatable="false">Вспышка выключена</string>
-    <string name="flash_on" translatable="false">Мигать</string>
+    <string name="flash_on" translatable="false">Вспышка включена</string>
 
     //SEND SMS Permissions
     <string name="permission_sms_rationale" translatable="false">Для отправки SMS необходимо разрешение на SMS.</string>
@@ -292,7 +291,7 @@
     <string name="button_delete" translatable="false">Удалить</string>
 
     //Camera Dialog
-    <string name="camera_dialog_default" translatable="false">Пожалуйста, нажимайте на документ фото только при хорошем освещении. Если фотография документа нечеткая, сделайте снимок еще раз.</string>
+    <string name="camera_dialog_default" translatable="false">Пожалуйста, нажмите на фотографию документа только при хорошем освещении. Если фотография документа нечеткая, сделайте снимок еще раз.</string>
 
     <!--Offline Login Errors-->
     <string name="offline_credentials_unavailable" translatable="false">Вход в систему в автономном режиме недоступен.</string>
@@ -394,7 +393,7 @@
     <string name="local_backup_failed" translatable="false">Локальное резервное копирование недоступно</string>
     <string name="local_backup_restore" translatable="false">Восстановление из локальной резервной копии</string>
 
-    <string name="cloud_restore_header" translatable="false">Восстановить облако форм</string>
+    <string name="cloud_restore_header" translatable="false">Восстановить из облачного хранилища</string>
     <string name="restore_data" translatable="false">Восстановление данных</string>
     <string name="error_existing_data" translatable="false">База данных содержит данные, восстановить невозможно!</string>
     <string name="cloud_download_data" translatable="false">Скачивание базы данных из облака</string>
@@ -443,7 +442,7 @@
     <string name="privacy_toast">Пожалуйста, выберите параметр</string>
     <string name="temperature_f">Температура (F)</string>
     <string name="sync_now">Обновить сейчас</string>
-    <string name="lastsync">lastsync</string>
+    <string name="lastsync">последняя_синхронизация</string>
     <string name="enter_password">Введите пароль</string>
     <string name="enter_username">Введите ваше имя пользователя</string>
     <string name="patient_denies">Пациент отрицает</string>
@@ -453,8 +452,8 @@
     <string name="enter_server_url">Введите URL-адрес сервера</string>
     <string name="enter_license_key"><b>Введите лицензионный ключ</b></string>
     <string name="invalid_url">Неверный URL</string>
-    <string name="years">годы</string>
-    <string name="months">месяцы</string>
+    <string name="years">лет/годы(-а)</string>
+    <string name="months">месяцы(-а)</string>
     <string name="please_wait_till_sync_is_completed">Пожалуйста, подождите до завершения обновления</string>
     <string name="patient_name">Имя пациента</string>
     <string name="son_daughter_wife_of">Сын/дочь/жена</string>
@@ -471,11 +470,11 @@
     <string name="choose_a_location_to_login">Выберите место для входа</string>
     <string name="choose_an_option_for_protocols">Выберите вариант протоколов</string>
     <string name="please_enter_your_username_and_password">Пожалуйста, введите имя пользователя и пароль</string>
-    <string name="android_id">Android Идентификатор:</string>
-    <string name="respiratory_rate">Скорость дыхания</string>
+    <string name="android_id">Андроид ID:</string>
+    <string name="respiratory_rate">Частота Дыхания</string>
     <string name="click_to_download_the_images">Нажмите, чтобы загрузить изображения</string>
     <string name="doctor">Подробная информация о враче</string>
-    <string name="health_worker">Медицинский работник</string>
+    <string name="health_worker">Семейный врач</string>
     <string name="priority">Приоритет</string>
     <string name="server_url">URL-ссылка сервера</string>
     <string name="sync">Обновить</string>
@@ -506,7 +505,7 @@
     <string name="error">Ошибка</string>
     <string name="patient_data_upload">Загрузка данных пациента</string>
     <string name="patient_image_download_notifi">Загрузка изображения пациента</string>
-    <string name="image_download_complete_notifi">\'s Image Download complete.</string>
+    <string name="image_download_complete_notifi">\'s Загрузка картинки завершена.</string>
     <string name="no_prior_visits">Нет предыдущих посещений.</string>
     <string name="end_visit_notif">Конец визита</string>
     <string name="visit_ended_notif">Визит окончен</string>
@@ -515,12 +514,12 @@
     <string name="visit_data_upload">Загрузка данных о посещении</string>
     <string name="uploading_visit_data_notif">Загрузка данных о посещении</string>
     <string name="uploaded_visit_data_notif">Uploaded visit data</string>
-    <string name="failed_to_upload">failed to Uploaded</string>
+    <string name="failed_to_upload">Ошибка при загрузке</string>
     <string name="upload_completed">Загрузка завершена</string>
     <string name="check_your_connectivity">Проверьте подключение</string>
-    <string name="download_from_doctor">Загрузка от врача</string>
-    <string name="prescription_downloaded">Загружен рецепт</string>
-    <string name="downloading_prescription">Загрузка рецепта</string>
+    <string name="download_from_doctor">Врач загрузил</string>
+    <string name="prescription_downloaded">Рецепт загружен</string>
+    <string name="downloading_prescription">Рецепт загружается</string>
     <string name="visit_data_failed">Не удалось получить данные о визите</string>
     <string name="patient_data_failed">Ошибка данных пациента</string>
     <string name="privacy_notice_title">Уведомление о конфиденциальности</string>
@@ -539,7 +538,7 @@
     <string name="day">день</string>
     <string name="hour">час</string>
     <string name="minute">минута</string>
-    <string name="s">с</string>
+    <string name="s">сек</string>
     <string name="ago">назад</string>
     <string name="successfully_synced">Успешно обновлено</string>
     <string name="failed_synced"><![CDATA[Не удалось обновить, проверьте подключение к Интернету]]></string>
@@ -556,8 +555,8 @@
     <string name="new_update_available">Доступно новое обновление</string>
     <string name="update_app_note">Доступна новая версия с новыми функциями, пожалуйста, обновите приложение.</string>
     <string name="update">Обновить</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Телемед КГ - ПРИЛОЖЕНИЕ. Чтобы загрузить рецепт, нажмите здесь "</string>
-    <string name="and_enter_your_patient_id">" и введите свой идентификатор пациента - "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Телемед KG. Чтобы загрузить рецепт, нажмите здесь "</string>
+    <string name="and_enter_your_patient_id">" и введите свой идентификатор(ID) пациента - "</string>
 
 
     <!--New Ayu Related Changes-->
@@ -585,18 +584,18 @@
     <string name="age_11_years_5_months">Возраст: 11 лет, 5 месяцев</string>
     <string name="active_defaultTag">Активный</string>
     <string name="since_when_have_you_had_this_symptom">С какого времени у вас появился этот симптом?</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Здравствуйте, \n\n Я Аю, цифровой помощник по здоровью. Давайте начнем!</string>
-    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Здравствуйте, \n\n Я Аю, цифровой помощник по здоровью. Давайте начнем!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started">Здравствуйте, \n\n Я Айя, цифровой помощник по здоровью. Давайте начнем!</string>
+    <string name="hello_n_n_i_m_ayu_a_digital_health_assistant_let_s_get_started_normal_Screen">Здравствуйте, \n\n Я Айя, цифровой помощник по здоровью. Давайте начнем!</string>
     <string name="hello_my_name_is">"Привет меня зовут  "</string>
-    <string name="i_need_assistance">" and I need some assistance."</string>
+    <string name="i_need_assistance">" и мне требуется помощь."</string>
     <string name="economic_values_missing">Экономические показатели отсутствуют</string>
     <string name="education_values_missing">Отсутствуют показатели образования</string>
-    <string name="intelehealth_a_telemedicine_platform">Телемед КГ - ПРИЛОЖЕНИЕ - это приложение телемедицины, которое соединяет медицинских работников в сельских и отдаленных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
+    <string name="intelehealth_a_telemedicine_platform">Телемед KG - Приложение - это приложение по телемедицине, которое объединяет медицинских работников труднодоступных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
 <!--    <string name="intelehealth_name">Intelehealth</string>-->
     <string name="intelehealth_name">Телемед КГ - ПРИЛОЖЕНИЕ</string>
-    <string name="Ayu_name">Аю</string>
+    <string name="Ayu_name">Айя</string>
     <string name="close_button">Закрыть</string>
-    <string name="active_tag_patientDetail">" Active"</string>
+    <string name="active_tag_patientDetail">"Активен"</string>
     <string name="associated_symptoms_patientDetail">Сопутствующие симптомы</string>
     <string name="device_ID">Идентификатор устройства: </string>
     <string name="enter_valid_license_url">Введите действительный URL-адрес лицензии</string>
@@ -613,7 +612,7 @@
     <string name="dr_phone_number">Телефонный номер: </string>
     <string name="dr_email">Электронное письмо: </string>
     <string name="_visit_summary"> Итоги посещения</string>
-    <string name="patient_id_">Идентификатор пациента: </string>
+    <string name="patient_id_">Идентификатор(ID) пациента: </string>
     <string name="patient_name_title">Имя пациента: </string>
     <string name="patient_DOB">Дата рождения пациента: </string>
     <string name="error_non_decimal_no_added">Ошибка: введено недесятичное число.</string>
@@ -626,7 +625,7 @@
     <string name="enter_mobile_number_to_share_prescription">Введите номер мобильного телефона, на который вы хотите поделиться рецептом.</string>
     <string name="share">Поделиться</string>
     <string name="please_enter_mobile_number">Пожалуйста, введите номер мобильного телефона</string>
-    <string name="download_prescription_first_before_sharing">Сначала скачайте рецепт, прежде чем делиться им</string>
+    <string name="download_prescription_first_before_sharing">Сначала скачайте рецепт, прежде чем поделиться им</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* Я (медицинский работник) подтверждаю, что я прочитал уведомление о конфиденциальности и даю согласие пациенту.</string>
     <string name="enter_10_digits">Введите 10 цифр</string>
     <string name="enter_9_digits">Введите 9 цифр</string>
@@ -643,8 +642,8 @@
     <string name="Hours">Часы</string>
     <string name="Days">Дни</string>
     <string name="Weeks">Недели</string>
-    <string name="Months">Месяцы</string>
-    <string name="Years">Годы</string>
+    <string name="Months">месяцы(-а)</string>
+    <string name="Years">лет/годы(-а)</string>
     <string name="per_Hour">в час</string>
     <string name="per_Day">в день</string>
     <string name="per_Week">В неделю</string>
@@ -667,8 +666,8 @@
     <string name="additional_doc_image_picker_title">Добавить дополнительный документ!</string>
     <string name="something_went_wrong">Что-то пошло не так. Обратитесь в службу поддержки</string>
 
-    <string name="saving_captured_image">Сохранение захваченного изображения ...</string>
-    <string name="alert_message_for_discard_visit">Новое начатое посещение не будет сохранено!</string>
+    <string name="saving_captured_image">Сохранение изображения ...</string>
+    <string name="alert_message_for_discard_visit">Новое посещение не будет сохранено!</string>
 
     //Language Screen
     <string name="choose_lang_title">Выберите свой язык</string>
@@ -714,8 +713,7 @@
     <string name="prescription_temp_c">Температура (C) : </string>
     <string name="prescription_temp_f">Температура (F) : </string>
     <string name="intro_text_1">
-        Приложение «Телемедицина» делает доступными консультации врачей-специалистов для сельского населения, обращающегося в организации здравоохранения.  Помогает избавить пациентов от необходимости путешествовать за много миль для получения медицинской помощи.
-        \n\n
-        Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении.
-    </string>
+        "Приложение «Телемедицина» делает доступными консультации врачей-специалистов для сельского населения, обращающегося в организации здравоохранения. Помогает избавить пациентов от необходимости путешествовать за много миль для получения медицинской помощи.
+ \n\n
+ Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
 </resources>
