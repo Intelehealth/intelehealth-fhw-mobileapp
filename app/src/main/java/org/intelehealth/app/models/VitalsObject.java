@@ -13,7 +13,9 @@ public class VitalsObject {
     private String spo2;
     private String hsb;
     private String blood;
-    private String sugar;
+    private String sugarrandom;
+    private String sugarfasting;
+    private String sugaraftermeal;
     private String resp;
 
     public String getPatientUuid() {
@@ -104,12 +106,28 @@ public class VitalsObject {
         this.blood = blood;
     }
 
-    public String getSugar() {
-        return sugar;
+    public String getSugarrandom() {
+        return sugarrandom;
     }
 
-    public void setSugar(String sugar) {
-        this.sugar = sugar;
+    public void setSugarrandom(String sugarrandom) {
+        this.sugarrandom = sugarrandom;
+    }
+
+    public String getSugarfasting() {
+        return sugarfasting;
+    }
+
+    public void setSugarfasting(String sugarfasting) {
+        this.sugarfasting = sugarfasting;
+    }
+
+    public String getSugaraftermeal() {
+        return sugaraftermeal;
+    }
+
+    public void setSugaraftermeal(String sugaraftermeal) {
+        this.sugaraftermeal = sugaraftermeal;
     }
 
     public String getResp() {

@@ -41,8 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:paddingBottom="70dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="70dp">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -134,7 +134,6 @@
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -231,8 +230,8 @@
                         </TableLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_spo"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -252,8 +251,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_bpm"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -273,8 +272,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_rr"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -294,8 +293,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_c"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -315,8 +314,8 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_f"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -336,32 +335,33 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_bldgrp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:textSize="16sp"
-                                android:text="@string/blood_grp"/>
 
-                            <Spinner
-                                android:id="@+id/spinner_blood_grp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".9"/>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/blood_grp"
+                                    android:textSize="16sp" />
+
+                                <Spinner
+                                    android:id="@+id/spinner_blood_grp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight=".9" />
                             </LinearLayout>
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_hemoglobin"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <EditText
@@ -381,10 +381,10 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
                             android:id="@+id/tinput_sugar_lvl"
-                            android:imeOptions="actionUnspecified"
-                            android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionUnspecified">
 
                             <EditText
                                 android:id="@+id/table_sugar_level"
@@ -402,9 +402,70 @@
 
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:stretchColumns="0,2">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/table_sugar_fasting"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:focusable="true"
+                                        android:focusableInTouchMode="true"
+                                        android:fontFamily="@font/lato_regular"
+                                        android:hint="@string/table_sugar_fasting"
+                                        android:imeOptions="actionUnspecified"
+                                        android:includeFontPadding="false"
+                                        android:inputType="numberDecimal"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:tag="@string/tag_optional"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <TextView
+                                    android:layout_width="22dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center_vertical|center_horizontal"
+                                    android:text="/"
+                                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <EditText
+                                        android:id="@+id/table_sugar_aftermeal"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:focusable="true"
+                                        android:focusableInTouchMode="true"
+                                        android:fontFamily="@font/lato_regular"
+                                        android:hint="@string/table_sugar_aftermeal"
+                                        android:imeOptions="actionUnspecified"
+                                        android:includeFontPadding="false"
+                                        android:inputType="numberDecimal"
+                                        android:maxLines="1"
+                                        android:singleLine="true"
+                                        android:tag="@string/tag_optional"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </TableRow>
+                        </TableLayout>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
-
 
             </LinearLayout>
         </ScrollView>

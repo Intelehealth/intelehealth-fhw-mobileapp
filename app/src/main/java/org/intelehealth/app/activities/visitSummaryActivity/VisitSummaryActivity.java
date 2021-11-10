@@ -141,7 +141,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private WebView mWebView;
     private LinearLayout mLayout;
 
-    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mBlood, mSugar, mHemoglobin;
+    String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mBlood, mSugarRandom, mHemoglobin,
+            mSugarFasting, mSugarAfterMeal;
     String speciality_selected = "";
     String casemode_selected = "";
 
@@ -180,7 +181,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ObsDTO temperature = new ObsDTO();
     ObsDTO spO2 = new ObsDTO();
     ObsDTO hemoglobin = new ObsDTO();
-    ObsDTO sugar = new ObsDTO();
+    ObsDTO sugarrandom = new ObsDTO();
+    ObsDTO sugarfasting = new ObsDTO();
+    ObsDTO sugaraftermeal = new ObsDTO();
     ObsDTO blood = new ObsDTO();
     ObsDTO resp = new ObsDTO();
 
@@ -209,7 +212,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView pulseView;
     TextView bpView;
     TextView tempView;
-    TextView spO2View, hemoglobinView, bloodView, sugarView;
+    TextView spO2View, hemoglobinView, bloodView, sugarRandomView,sugarFastAndMealView;
     TextView bmiView;
     TextView complaintView;
     TextView famHistView;
@@ -521,7 +524,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -692,6 +694,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+
+        mCHWname = findViewById(R.id.chw_details);
+        mCHWname.setText(sessionManager.getChwname());
 
         ivPrescription = findViewById(R.id.iv_prescription);
 
@@ -1162,7 +1167,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         spO2View = findViewById(R.id.textView_pulseox_value);
         hemoglobinView = findViewById(R.id.textView_hemoglobin_value);
         bloodView = findViewById(R.id.textView_blood_value);
-        sugarView = findViewById(R.id.textView_sugar_value);
+        sugarRandomView = findViewById(R.id.textView_sugarrandom_value);
+        sugarFastAndMealView = findViewById(R.id.textView_sugarfastandmeal_value);
 
         respiratory = findViewById(R.id.textView_respiratory_value);
         respiratoryText = findViewById(R.id.textView_respiratory);
@@ -1221,8 +1227,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         spO2View.setText(spO2.getValue());
 
         hemoglobinView.setText(hemoglobin.getValue());
-        bloodView.setText(blood.getValue());
-        sugarView.setText(sugar.getValue());
+        String bloodStr="blood_group_"+ sessionManager.getAppLanguage();
+        int bloodGrpArray=getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
+        String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
+        int pos=0;
+        for(int i=0;i<blood_Array.length;i++){
+            if(blood_Array[i].equalsIgnoreCase(blood.getValue())){
+                pos=i;
+                break;
+            }
+        }
+        bloodView.setText(getResources().getStringArray(bloodGrpArray)[pos]);
+
+        sugarRandomView.setText(sugarrandom.getValue());
+        sugarFastAndMealView.setText(sugarfasting.getValue()+" | "+sugaraftermeal.getValue());
 
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
@@ -2059,7 +2077,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "");
         mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
-        mSugar = "Sugar: " + (!TextUtils.isEmpty(sugar.getValue()) ? sugar.getValue() : "");
+        mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
+        mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
+        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "");
 
         String mComplaint = complaint.getValue();
 
@@ -2261,7 +2281,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s " +
+                                    "| %s | %s | %s | %s | %s</p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -2285,7 +2306,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2299,7 +2321,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s | " +
+                                    "%s | %s | %s | %s | %s</p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -2323,7 +2346,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -2431,7 +2455,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         mHemoglobin = "HGB: " + (!TextUtils.isEmpty(hemoglobin.getValue()) ? hemoglobin.getValue() : "");
         mBlood = "Blood Group: " + (!TextUtils.isEmpty(blood.getValue()) ? blood.getValue() : "");
-        mSugar = "Sugar Level: " + (!TextUtils.isEmpty(sugar.getValue()) ? sugar.getValue() : "");
+        mSugarRandom = "Sugar Level (Random): " + (!TextUtils.isEmpty(sugarrandom.getValue()) ? sugarrandom.getValue() : "");
+        mSugarFasting = "Sugar Level (Fasting): " + (!TextUtils.isEmpty(sugarfasting.getValue()) ? sugarfasting.getValue() : "");
+        mSugarAfterMeal = "Sugar Level (After Meal): " + (!TextUtils.isEmpty(sugaraftermeal.getValue()) ? sugaraftermeal.getValue() : "");
         String mComplaint = complaint.getValue();
 
         //Show only the headers of the complaints in the printed prescription
@@ -2615,7 +2641,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s " +
+                                    "| %s | %s | %s | %s | %s</p><br>" +
                                    /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -2639,7 +2666,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
@@ -2653,7 +2681,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" +
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" +
                                     "<p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p>" +
-                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+                                    "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s " +
+                                    " | %s | %s | %s | %s | %s</p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -2677,7 +2706,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "</div>"
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
-                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugar)) ? mSugar : "",
+                            (!TextUtils.isEmpty(mHemoglobin)) ? mHemoglobin : "",(!TextUtils.isEmpty(mBlood)) ? mBlood : "",(!TextUtils.isEmpty(mSugarRandom)) ? mSugarRandom : "",
+                            (!TextUtils.isEmpty(mSugarFasting)) ? mSugarFasting : "",(!TextUtils.isEmpty(mSugarAfterMeal)) ? mSugarAfterMeal : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         }
@@ -3483,13 +3513,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
 
-            case UuidDictionary.SUGARLEVEL: //Sugar
+            case UuidDictionary.SUGARLEVELRANDOM: //Sugar random
             {
-                sugar.setValue(value);
+                sugarrandom.setValue(value);
                 break;
             }
 
-            case UuidDictionary.BLOODGROUP: //Sugar
+            case UuidDictionary.SUGARLEVELFASTING: //Sugar fasting
+            {
+                sugarfasting.setValue(value);
+                break;
+            }
+
+            case UuidDictionary.SUGARLEVELAFTERMEAL: //Sugar after meal
+            {
+                sugaraftermeal.setValue(value);
+                break;
+            }
+
+            case UuidDictionary.BLOODGROUP: //blood
             {
                 blood.setValue(value);
                 break;
