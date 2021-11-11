@@ -272,6 +272,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // sessionManager = new SessionManager(this);
 
         mCCName = findViewById(R.id.identification_cc_name);
+        mCCName.setEnabled(false);
         mCCName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Name}); //maxlength 25
         if(!sessionManager.getChwname().isEmpty() && !sessionManager.getChwname().equalsIgnoreCase("") && sessionManager.getChwname()!=null)
             mCCName.setText(sessionManager.getChwname());
