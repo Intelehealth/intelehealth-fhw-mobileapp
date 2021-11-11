@@ -1354,7 +1354,7 @@ public final class StringUtils {
 
     public static String switch_hi_en_called_helpline(String val) {
         switch (val) {
-            case "हाँ, मौके पर":
+            case "हाँ, तभी के तभी":
                 val = "Yes, On the Spot";
                 break;
             case "नहीं":
@@ -1383,7 +1383,7 @@ public final class StringUtils {
     public static String switch_hi_called_helpline_edit(String val) {
         switch (val) {
             case "Yes, On the Spot":
-                val = "हाँ, मौके पर";
+                val = "हाँ, तभी के तभी";
                 break;
             case "No":
                 val = "नहीं";
