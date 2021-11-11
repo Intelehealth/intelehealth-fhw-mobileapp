@@ -805,4 +805,6 @@
     <string name="closed_visits_HomeScreen">बंद विज़िट</string>
     <string name="Completed_Visits">पूर्ण विज़िट</string>
     <string name="Closed_Visits">बंद विज़िट</string>
+    <string name="subscription_error">सदस्यता लेने में विफल!\nकृपया बाद में पुन: प्रयास करें।</string>
+
 </resources>
