@@ -589,14 +589,14 @@
 
     <string-array name="blood_group_hi">
         <item>कृपया चुनें</item>
-        <item>ए+</item>
-        <item>ए-</item>
-        <item>बी+</item>
-        <item>बी-</item>
-        <item>एबी+</item>
-        <item>एबी-</item>
-        <item>ओ+</item>
-        <item>ओ-</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
     </string-array>
 
 </resources>
