@@ -145,7 +145,7 @@
 
     //Table Exam Screen
     <string name="title_activity_vitals" translatable="false">Показатели</string>
-    <string name="table_hw" translatable="false">Измерения тела</string>
+    <string name="table_hw" translatable="false">Параметры тела</string>
     <string name="table_height" translatable="false">Рост (см)</string>
     <string name="table_weight" translatable="false">Вес (кг)</string>
     <string name="table_bmi" translatable="false">ИМТ </string>
