@@ -62,8 +62,8 @@
 
     //Home Screen (after login)
     <string name="title_home_screen">Home</string>
-    <string name="button_new_pt">New Patient</string>
-    <string name="button_find_pt">Find Patient</string>
+    <string name="button_new_pt">New Member</string>
+    <string name="button_find_pt">Find Member</string>
     <string name="button_diagnostic_tests">Diagnostic Tests</string>
     <string name="button_active_pt">Active Patients</string>
     <string name="menu_option_sync">Refresh Data</string>
@@ -73,7 +73,7 @@
 
 
     //Identification Screen
-    <string name="title_activity_identification">Add New Patient</string>
+    <string name="title_activity_identification">Add New Member</string>
     <string name="identification_screen_prompt_first_name">First name *</string>
     <string name="identification_screen_prompt_middle_name">Middle name</string>
     <string name="identification_screen_prompt_last_name">Last name</string>
@@ -99,7 +99,7 @@
     <string name="identification_screen_prompt_postal_code">Postal code</string>
     <string name="identification_screen_prompt_relationship">Son/Daughter/Wife of</string>
     <string name="identification_screen_prompt_occupation">Occupation</string>
-    <string name="identification_screen_snack_patient_created">Patient created! Uploading to server.</string>
+    <string name="identification_screen_snack_patient_created">Member created! Uploading to server.</string>
     <string name="identification_screen_error_data_fields">Error: data fields are not formatted correctly</string>
     <string name="identification_screen_dialog_age">Please enter age in years</string>
     <string name="identification_screen_dialog_error_dob">Date of birth is set for date after today</string>
@@ -159,7 +159,7 @@
     <string name="table_spo">SpO2 (%)</string>
 
     //Patient Search Screen
-    <string name="search_hint">Type to search patient by name…</string>
+    <string name="search_hint">Type to search member by name…</string>
     <string name="action_search">Search</string>
     <string name="alert_none_found">Please check username and pasword entered</string>
 
@@ -209,16 +209,16 @@
 
 
     //Patient Detail Screen
-    <string name="header_patient_detail">Patient information</string>
+    <string name="header_patient_detail">Member\'s information</string>
     <string name="button_history">Patient History</string>
-    <string name="title_activity_patient_detail">Patient Detail</string>
+    <string name="title_activity_patient_detail">Member Detail</string>
     <string name="header_medical_history">History</string>
     <string name="button_new_visit">Start new visit</string>
     <string name="header_previous_visits">Previous visits</string>
     <string name="header_patient_history">Medical history</string>
     <string name="header_family_history">Family history</string>
     <string name="string_no_hist">No history of illness</string>
-    <string name="row_patient_id">Patient ID</string>
+    <string name="row_patient_id">Member ID</string>
     <string name="row_dob">DOB</string>
     <string name="row_age">Age</string>
     <string name="row_address">Address</string>
@@ -331,8 +331,8 @@
     <string name="hide_text">HIDE</string>
     <string name="show_text">SHOW</string>
 
-    <string name="new_patient">New Patient</string>
-    <string name="find_patient">Find Patients</string>
+    <string name="new_patient">New Member</string>
+    <string name="find_patient">Find Members</string>
     <string name="video_library">Video Library</string>
 
     <string name="error_no_sd">This feature is only available to devices with SD cards.</string>
@@ -344,8 +344,8 @@
     <string name="success_offline_login">Offline Login Successful</string>
     <string name="invalidate_offline_login">Offline Login Invalidated</string>
 
-    <string name="patient_upload_error">Patient has not been uploaded</string>
-    <string name="patient_not_registered">Patient not registered</string>
+    <string name="patient_upload_error">Member has not been uploaded</string>
+    <string name="patient_not_registered">Member not registered</string>
 
     <string name="action_sync_all">Refresh Data</string>
 
@@ -454,7 +454,7 @@
     <string name="years">years</string>
     <string name="months">months</string>
     <string name="please_wait_till_sync_is_completed">Please wait till refresh is completed</string>
-    <string name="patient_name">Patient name</string>
+    <string name="patient_name">Member name</string>
     <string name="son_daughter_wife_of">Son/Daughter/Wife of</string>
     <string name="occupation">Occupation</string>
     <string name="economic_status">Economic status</string>
@@ -499,7 +499,7 @@
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to Logout?</string>
     <string name="lastsync_normal">Last Refresh</string>
-    <string name="update_patient_identification">Update Patient</string>
+    <string name="update_patient_identification">Update Member</string>
     <string name="are_you_want_go_back">Are you sure you want to go back ?</string>
     <string name="error">Error</string>
     <string name="patient_data_upload">Patient Data Upload</string>
@@ -549,7 +549,7 @@
 
     <string name="end_visit_msg">Are you sure you want to end the visit?</string>
     <string name="prescription_not_downloaded_check_internet">Prescription not downloaded, check internet connection</string>
-    <string name="privacy_reject_toast">You cannot register a patient without consent</string>
+    <string name="privacy_reject_toast">You cannot register a member without consent</string>
     <string name="not_answered">Not answered</string>
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
@@ -589,7 +589,7 @@
     <string name="i_need_assistance">" and I need some assistance."</string>
     <string name="economic_values_missing">Economic values are missing</string>
     <string name="education_values_missing">Education values are missing</string>
-    <string name="intelehealth_a_telemedicine_platform">Hello Saathi (Community Champions) is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their patients.</string>
+    <string name="intelehealth_a_telemedicine_platform">Hello Saathi (Community Champions) is a telemedicine application that connects health workers in rural and remote areas with remote doctors so they can provide high quality health services for their members.</string>
     <string name="intelehealth_name">Hello Saathi (Community Champions)</string>
     <string name="Ayu_name">Ayu</string>
     <string name="close_button">Close</string>
@@ -610,8 +610,8 @@
     <string name="dr_phone_number">Phone Number: </string>
     <string name="dr_email">Email: </string>
     <string name="_visit_summary"> Visit Summary</string>
-    <string name="patient_id_">Patient Id: </string>
-    <string name="patient_name_title">Patient Name: </string>
+    <string name="patient_id_">Member Id: </string>
+    <string name="patient_name_title">Member Name: </string>
     <string name="patient_DOB">Patient DOB: </string>
     <string name="error_non_decimal_no_added">Error: non-decimal number entered.</string>
     <string name="download_protocols">Downloading Protocols</string>
@@ -624,7 +624,7 @@
     <string name="share">Share</string>
     <string name="please_enter_mobile_number">Please enter a mobile number</string>
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
-    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Swasthya Saathi) confirm that I have read out the privacy notice and consent to the patient.</string>
+    <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Swasthya Saathi) confirm that I have read out the privacy notice and consent to the member.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
