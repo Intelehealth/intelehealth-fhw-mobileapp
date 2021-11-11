@@ -382,7 +382,7 @@ public class ImagesDAO {
         return uuidList;
     }
 
-    public ArrayList getAllFilename(String patientUuid, String encounterAdultIntials) throws DAOException {
+    public ArrayList getAllFilename(String patientUuid) throws DAOException {
         Logger.logD(TAG, "patient uuid for image " + patientUuid);
         ArrayList<String> uuidList = new ArrayList<>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();

@@ -68,11 +68,7 @@ public void onClick(DialogInterface arg0, int arg1)
         {
         // Do nothing
 
-
-                Toast.makeText(getContext(), "1  =="+getSelectedItemsAsString(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getContext(), "hbcj  22=="+getSelectedItems().size(), Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getContext(), "hbcj  33=="+getSelectedItems().size(), Toast.LENGTH_SHORT).show();
-        }
+    }
         });
 
 

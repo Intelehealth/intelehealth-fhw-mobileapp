@@ -1105,7 +1105,7 @@ TextView txtViewFacility;
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                uploadFacility();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                 if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
@@ -1260,7 +1260,7 @@ TextView txtViewFacility;
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }
-                uploadFacility();
+
 
             }
         });
@@ -3739,7 +3739,7 @@ TextView txtViewFacility;
             medHistCursor.moveToLast();
             String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
             patHistory.setValue(facilityText);
-
+//todo single textutill
             if (facilityText != null || !facilityText.isEmpty()) {
 
                 medHistory = patHistory.getValue();
@@ -4114,7 +4114,7 @@ TextView txtViewFacility;
         }
 
         try {
-            mAllfileNameList = imagesDAO.getAllFilename(patientUuid, encounterUuidAdultIntial);
+            mAllfileNameList = imagesDAO.getAllFilename(patientUuid);
             for (String file_imagename : mAllfileNameList) {
                 String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                 if (new File(filename).exists()) {
@@ -4621,7 +4621,7 @@ TextView txtViewFacility;
     }
     private void uploadFacility() {
 
-//Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e"+encounterUuidAdultIntial);
+Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e...."+encounterUuidAdultIntial);
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         List<ObsDTO> obsDTOList = new ArrayList<>();
