@@ -1361,7 +1361,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             else
                 mhhIssueTV.setText("हाँ " + mhhIssue);
             String maritalStatus = switch_hi_whatsapp_edit(patient_new.getMarital_status());
-            if(maritalStatus.equalsIgnoreCase("नहीं"))
+            if(maritalStatus.equalsIgnoreCase("नहीं") || maritalStatus.equalsIgnoreCase("हाँ"))
                 maritalStatusTV.setText(maritalStatus);
             else {
                 maritalStatusTV.setText("हाँ");
@@ -1385,7 +1385,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             else
                 mhhIssueTV.setText("होय " + mhhIssue);
             String maritalStatus = switch_mr_whatsapp_edit(patient_new.getMarital_status());
-            if(maritalStatus.equalsIgnoreCase("नाही"))
+            if(maritalStatus.equalsIgnoreCase("नाही") || maritalStatus.equalsIgnoreCase("होय"))
                 maritalStatusTV.setText(maritalStatus);
             else {
                 maritalStatusTV.setText("होय");
@@ -1402,7 +1402,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 mhhIssueTV.setText(patient_new.getMhh_issue());
             else
                 mhhIssueTV.setText("Yes " + patient_new.getMhh_issue());
-            if(patient_new.getMarital_status().equalsIgnoreCase("No"))
+            if(patient_new.getMarital_status().equalsIgnoreCase("No")  || patient_new.getMarital_status().equalsIgnoreCase("Yes"))
                 maritalStatusTV.setText(patient_new.getMarital_status());
             else {
                 maritalStatusTV.setText("Yes");
