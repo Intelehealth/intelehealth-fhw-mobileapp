@@ -2676,15 +2676,16 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (callerRelationSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)callerRelationSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = callerRelationSpinner;
-            cancel = true;
-            return;
-        }
+        //Not required as visibility is GONE
+//        if (callerRelationSpinner.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView)callerRelationSpinner.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = callerRelationSpinner;
+//            cancel = true;
+//            return;
+//        }
 
         if (preferredLangSpinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView)preferredLangSpinner.getSelectedView();
@@ -2726,15 +2727,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = helplineInfoSpinner;
-            cancel = true;
-            return;
-        }
+        //Not required as visibility is GONE
+//        if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = helplineInfoSpinner;
+//            cancel = true;
+//            return;
+//        }
 
         if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
         {
@@ -3720,15 +3722,16 @@ public class IdentificationActivity extends AppCompatActivity {
             autocompleteDistrict.setError(null);
         }
 
-        if (callerRelationSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)callerRelationSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = callerRelationSpinner;
-            cancel = true;
-            return;
-        }
+        //Not required as visibility is GONE
+//        if (callerRelationSpinner.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView)callerRelationSpinner.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = callerRelationSpinner;
+//            cancel = true;
+//            return;
+//        }
 
         if (preferredLangSpinner.getSelectedItemPosition() == 0) {
             TextView errorText = (TextView)preferredLangSpinner.getSelectedView();
@@ -3770,15 +3773,16 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = helplineInfoSpinner;
-            cancel = true;
-            return;
-        }
+        //Not required as visibility is GONE
+//        if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
+//            TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
+//            errorText.setError("");
+//            errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//            focusView = helplineInfoSpinner;
+//            cancel = true;
+//            return;
+//        }
 
         if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
         {

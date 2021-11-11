@@ -974,21 +974,25 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
+                            android:visibility="gone"
                             android:text="@string/calling_on_behalf"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
+                            android:visibility="gone"
                             android:layout_height="10dp" />
 
                         <Spinner
                             android:id="@+id/relationship_spinner"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="wrap_content" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="gone"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
                             android:background="?android:attr/listDivider" />
@@ -997,16 +1001,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
+                            android:visibility="gone"
                             android:text="@string/know_about_helpline"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
                             android:layout_width="10dp"
+                            android:visibility="gone"
                             android:layout_height="10dp" />
 
                         <Spinner
                             android:id="@+id/spinner_helpline_knowledge"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="wrap_content" />
 
                         <EditText
@@ -1015,12 +1022,12 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/identification_screen_checkbox_other"
                             android:textSize="@dimen/card_content_sub_text_size"
-                            android:visibility="gone"
-                            tools:visibility="visible"/>
+                            android:visibility="gone" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="1dp"
+                            android:visibility="gone"
                             android:layout_marginTop="5dp"
                             android:layout_marginBottom="10dp"
                             android:background="?android:attr/listDivider" />
