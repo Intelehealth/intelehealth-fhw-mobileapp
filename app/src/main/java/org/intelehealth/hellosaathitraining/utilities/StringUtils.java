@@ -932,7 +932,7 @@ public final class StringUtils {
                 val = "सामुदायिक चैंपियन";
                 break;
             case "Friends":
-                val = "मित्र";
+                val = "मित्र/सहेली";
                 break;
             case "Male Relative":
                 val = "पुरुष रिश्तेदार";
@@ -962,7 +962,7 @@ public final class StringUtils {
             case "सामुदायिक चैंपियन":
                 val = "Community Champion";
                 break;
-            case "मित्र":
+            case "मित्र/सहेली":
                 val = "Friends";
                 break;
             case "पुरुष रिश्तेदार":
