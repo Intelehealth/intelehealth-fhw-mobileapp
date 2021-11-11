@@ -1407,6 +1407,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
             speciality_spinner.setEnabled(false);
         }
 
+        if(!complaintView.getText().toString().contains("TLD Query")) {
+            stringArrayAdapter.remove("TLD Query");
+            stringArrayAdapter.notifyDataSetChanged();
+//            speciality_spinner.setSelection(stringArrayAdapter.getPosition("TLD Query"));
+//            speciality_spinner.setEnabled(false);
+        }
+
         if (special_value != null && !special_value.equalsIgnoreCase("EMPTY")) {
             int spinner_position = stringArrayAdapter.getPosition(special_value);
             speciality_spinner.setSelection(spinner_position);
