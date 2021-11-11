@@ -753,7 +753,7 @@
 
     //New Registration Changes
     <string name="identification_screen_prompt_cc_name">Community Champion\'s name *</string>
-    <string name="MHH_air_SRH_issue">Do you have any MHH air SRH related Issue?*</string>
+    <string name="MHH_air_SRH_issue">Do you have any Menstrual Health and Sexual Reproductive Health Issues?*</string>
     <string name="agent_information">Agent Information</string>
     <string name="subscription_information">Subscription Information</string>
     <string name="called_helpline">Did you call the helpline?*</string>
@@ -765,7 +765,7 @@
     <string name="subsc_status">Subscription Consent</string>
     <string name="patient_called_helpline">Called Helpline</string>
     <string name="marital_status">Marital Status</string>
-    <string name="mhh_issue">MHH air SRH related issue</string>
+    <string name="mhh_issue">MHH or SRH related issue</string>
     <string name="identification_screen_dialog_error_subscription">Subscription Consent is not given</string>
     <string name="spouse_phone_number_pd">Spouse\'s Phone Number</string>
     <string name="mobile_number_search">"Mobile number: "</string>
