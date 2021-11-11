@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="CMakeSettings">
-    <configurations>
-      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
-    </configurations>
-  </component>
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/intele_4Nov_2021/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.20416666666666666" />
-        <entry key="..\:/intele_4Nov_2021/Android-Mobile-Client/app/src/main/res/layout/sharelayout.xml" value="0.25" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_home.xml" value="0.10235507246376811" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/activity_patient_detail.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/dialog_1_number_picker.xml" value="0.24003623188405798" />
+        <entry key="..\:/Users/NISHITA GOYAL/Desktop/AndroidStudio/Android-Mobile-Client/app/src/main/res/layout/dialog_2_numbers_picker.xml" value="0.24003623188405798" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
   </component>
 </project>

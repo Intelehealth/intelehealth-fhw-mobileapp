@@ -46,8 +46,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.MissCallResponseActivity;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
-import org.intelehealth.msfarogyabharat.models.TodayPatientModel;
 import org.intelehealth.msfarogyabharat.utilities.ConfigUtils;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
@@ -439,6 +439,11 @@ public class HomeActivity extends AppCompatActivity {
 //                return true;
             case R.id.settingsOption:
                 settings();
+                return true;
+                case R.id.recordingsOption:
+                    Intent intent = new Intent(HomeActivity.this, MissCallResponseActivity.class);
+                    startActivity(intent);
+
                 return true;
             case R.id.updateProtocolsOption: {
 

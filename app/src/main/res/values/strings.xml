@@ -15,6 +15,7 @@
     <string name="action_print">Print</string>
     <string name="action_sms">Sms</string>
     <string name="action_home">Home</string>
+    <string name="call_recordings">Call Recordings</string>
     <string name="action_settings">Settings</string>
     <string name="generic_warning">Warning!</string>
     <string name="generic_update">Update</string>
@@ -409,6 +410,7 @@
     <string name="cloud_download_data">Downloading database from cloud</string>
 
     <string name="force_restore_header">Restoring data from cloud(Forced)</string>
+    <string name="Daily_Performance_Activity_Title">Daily Performance Report</string>
 
     <string name="database_upload">Database Upload</string>
     <string name="database_uploading">Database Uploading</string>
@@ -723,6 +725,13 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
 
     <string name="text_medical_advice">New Medical Advice</string>
+
+
+    <string name="total_calls">"Total Calls: "</string>
+    <string name="call_to">"Call To: "</string>
+    <string name="status">"Status: "</string>
+
+
 <!--    <string name="text_new_visit">New Doctor Visit</string>-->
     <string name="text_new_visit">New Case</string>
     <string name="text_new_advice">New Medical Advice</string>
@@ -815,4 +824,8 @@
     <string name="no_previous_visits">No previous visits</string>
     <string name="case_visitsummary">"Case "</string>
     <string name="please_select_an_option">Please select an option</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+
+    <string name="no_records_found">No records found</string>
+    <string name="textViewHintFacility">Facility</string>
 </resources>

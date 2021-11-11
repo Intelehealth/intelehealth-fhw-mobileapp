@@ -14,6 +14,7 @@
     <string name="generic_coming_soon">जल्द आ रहा है .....</string>
     <string name="action_print">छाप</string>
     <string name="action_sms">एसएमएस/सन्देश </string>
+    <string name="call_recordings">कॉल रिकॉर्डिंग</string>
     <string name="action_home">घर</string>
     <string name="action_settings">समायोजन</string>
     <string name="generic_warning">चेतावनी!!</string>
@@ -818,4 +819,8 @@
     <string name="no_previous_visits">कोई पिछली विज़िट नहीं</string>
     <string name="case_visitsummary">"केस "</string>
     <string name="please_select_an_option">Please select an option</string>
+    <string name="something_wrong_refresh_again">कुछ गलत हो गया। कृपया फिर से रिफ्रेश करें</string>
+
+    <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
+    <string name="textViewHintFacility">Facility</string>
 </resources>

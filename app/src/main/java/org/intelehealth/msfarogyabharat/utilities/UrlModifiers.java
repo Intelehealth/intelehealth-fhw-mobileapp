@@ -110,4 +110,14 @@ public class UrlModifiers {
         String BASE_URL = "https://" + sessionManager.getServerUrl()+ "/openmrs/ws/rest/v1/encounter";
         return BASE_URL;
     }
+
+    public String getRecordingListUrl() {
+        return String.format("https://helpline.vikalpindia.org/getrecordings");
+//        return String.format("https://" + sessionManager.getServerUrl() + "/getrecordings");
+    }
+    public String getUpdateRecording() {
+//        https://helpline.vikalpindia.org/updaterecordings
+        return String.format("https://helpline.vikalpindia.org/updaterecordings");
+//        return String.format("https://" + sessionManager.getServerUrl() + "/getrecordings");
+    }
 }

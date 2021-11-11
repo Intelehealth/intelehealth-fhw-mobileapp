@@ -42,11 +42,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -60,6 +62,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -80,12 +83,20 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
+import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
 import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
+import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
+import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.Item;
+import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.MultiSelectionSpinner;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -97,6 +108,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
@@ -161,7 +173,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private float float_ageYear_Month;
 
     Spinner speciality_spinner;
-
+    JSONArray mFacilityArray =new JSONArray();
     SQLiteDatabase db;
 
     Patient patient = new Patient();
@@ -249,6 +261,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
+String mState, mDistrict,mFacilityValue;
     List<String> encounterAdultInitList = new ArrayList<>();
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
@@ -260,6 +273,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     MenuItem endVisit_click = null;
 
     private RecyclerView mAdditionalDocsRecyclerView, recyclerview_visitsummary;
+    private RecyclerView mAdditional_All_documents;
     private RecyclerView.LayoutManager mAdditionalDocsLayoutManager;
 
     private RecyclerView mPhysicalExamsRecyclerView;
@@ -281,7 +295,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     ProgressBar mProgressBar;
     TextView mProgressText;
-
+TextView txtViewFacility;
     ImageButton additionalDocumentsDownlaod;
     ImageButton onExaminationDownload;
 
@@ -302,6 +316,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean allVisitsEnded = false;
     private boolean hide_endvisit = false;
     String shareoptionsarray[] = {"Whatsapp", "Email"};
+    List<String> districtList;
+    ArrayList<Item> mFacilityList;
+    AutoCompleteTextView autocompleteState, autocompleteDistrict;
+    EditText editText_landmark;
+    MultiSelectionSpinner mFacilitySelection;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -370,6 +389,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.summary_addNewCase: {
+//                NavUtils.navigateUpFromSameTask(this);
+                Intent i = new Intent(this, PrivacyNotice_Activity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                return true;
+            }
             case R.id.summary_home: {
 //                NavUtils.navigateUpFromSameTask(this);
                 Intent i = new Intent(this, HomeActivity.class);
@@ -529,6 +555,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         button_resolution = findViewById(R.id.button_resolution);
 
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
+        mAdditional_All_documents = findViewById(R.id.recy_additional_All_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
         recyclerview_visitsummary = findViewById(R.id.recyclerview_visitsummary);
 
@@ -562,6 +589,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
 
+        txtViewFacility = findViewById(R.id.txtViewFacility);
+        autocompleteState = findViewById(R.id.autocomplete_state);
+        autocompleteDistrict = findViewById(R.id.autocomplete_district);
+        editText_landmark = findViewById(R.id.editText_landmark);
+        mFacilitySelection = (MultiSelectionSpinner) findViewById(R.id.mFacilitySelection);
+        autocompleteDistrict.setEnabled(false);
+        districtList = new ArrayList<>();
+        mFacilityList = new ArrayList<>();
+        mFacilityList.add(new Item(getString(R.string.select),false));
+
+        mFacilitySelection.setVisibility(View.GONE);
+        txtViewFacility.setVisibility(View.VISIBLE);
+
         complaintList_adapter = new ArrayList<>();
         physexamList_adapter = new ArrayList<>();
 
@@ -577,6 +617,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startActivity(intent1);
 
 /*                } catch (ParseException e) {
+                try {
+                    doWebViewPrint_Button();
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }*/
             }
@@ -911,6 +954,185 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }*/
 
+        String[] countries = getResources().getStringArray(R.array.states_india);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        autocompleteState.setAdapter(adapter);
+
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteDistrict.setText("");
+            autocompleteDistrict.setEnabled(false);
+        }
+
+        autocompleteState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+
+
+        mFacilitySelection.setItems(mFacilityList);
+        autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedState = parent.getItemAtPosition(position).toString();
+                mState=parent.getItemAtPosition(position).toString();
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
+                    autocompleteDistrict.setText("");
+                    autocompleteDistrict.setEnabled(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setClickable(false);
+                    mFacilityList.clear();
+                    txtViewFacility.setVisibility(View.VISIBLE);
+                    mFacilitySelection.setVisibility(View.GONE);
+                } else
+                    autocompleteDistrict.setEnabled(true);
+
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
+                mFacilitySelection.setEnabled(false);
+                mFacilityList.clear();
+                districtList.clear();
+                try {
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(selectedState)) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+                                String district = districtArray.getJSONObject(j).getString("name");
+//                              mFacilityArray=districtArray.getJSONObject(j).getJSONArray("tahasil");
+                                districtList.add(district);
+                            }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(VisitSummaryActivity.this, android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
+                            break;
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        autocompleteDistrict.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedDistrict = parent.getItemAtPosition(position).toString();
+               mDistrict= parent.getItemAtPosition(position).toString();
+                if (selectedDistrict.equalsIgnoreCase("") || autocompleteState.getText().equals("")) {
+
+                    mFacilityList.clear();
+//                    editText_landmark.setEnabled(false);
+                    mFacilitySelection.setClickable(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    txtViewFacility.setVisibility(View.VISIBLE);
+
+                } else
+                    txtViewFacility.setVisibility(View.GONE);
+                mFacilitySelection.setVisibility(View.VISIBLE);
+                mFacilitySelection.setEnabled(true);
+                mFacilityList.clear();
+                try {
+                    mFacilityArray=new JSONArray();
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(autocompleteState.getText().toString())) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+
+                                String district = districtArray.getJSONObject(j).getString("name");
+
+                                if (district.equalsIgnoreCase(selectedDistrict)) {
+                                    Log.d("jgkfdjg", "selectedDistrict" + mFacilityArray);
+
+                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("tahasil");
+
+                                    for (int k = 0; k < mFacilityArray.length(); k++) {
+
+                                        mFacilityList.add(new Item(mFacilityArray.getString(k),false));
+
+                                    }
+                                    break;
+
+                                }
+
+
+                            }
+//                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(VisitSummaryActivity.this, android.R.layout.simple_list_item_1, districtList);
+//                            autocompleteDistrict.setAdapter(districtAdapter);
+                            break;
+                        }
+
+                    }
+                    if(mFacilityArray.length()!=0 && mFacilityList!=null&& mFacilityList.size()!=0){
+
+
+
+
+                    mFacilitySelection.setItems(mFacilityList);
+
+                }
+                else{
+                        mFacilityList.clear();
+                        txtViewFacility.setVisibility(View.VISIBLE);
+                        txtViewFacility.setText("-");
+                        mFacilitySelection.setVisibility(View.GONE);
+
+//                      mFacilitySelection.setVisibility(View.GONE);
+                }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        //todo
+
+
+
+
+//        editText_landmark.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(mFacilityArray.length()!=0 && mFacilityList!=null&& mFacilityList.size()!=0){
+////OpenDialogForMultiple();
+//
+//                    mFacilitySelection.setVisibility(View.VISIBLE);
+//                    mFacilitySelection.setItems(mFacilityList);
+////                    ArrayList<Item> selectedItems = mFacilitySelection.getSelectedItems();
+//
+//                    Log.d("fggf","jhcjds"+mFacilityList.size());
+//                }
+//                else{
+//                    mFacilitySelection.setVisibility(View.GONE);
+//                }
+//            }
+//        });
+
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -1091,6 +1313,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
              //   if (speciality_spinner.getSelectedItemPosition() != 0) {
+                uploadFacility();
+                isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
@@ -1246,6 +1471,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }*/
+
 
             }
         });
@@ -1960,6 +2186,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 phoneNumberWithCountryCode, message))));
     }
 
+    private void OpenDialogForMultiple() {
+
+    }
+
+
+//This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita
+
+    public JSONObject loadJsonObjectFromAsset(String assetName) {
+        try {
+            String json = loadStringFromAsset(assetName);
+            if (json != null)
+                return new JSONObject(json);
+        } catch (Exception e) {
+            Log.e("JsonUtils", e.toString());
+        }
+
+        return null;
+    }
+
+    private String loadStringFromAsset(String assetName) throws Exception {
+        InputStream is = getApplicationContext().getAssets().open(assetName);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        return new String(buffer, "UTF-8");
+    }
+
+
     private String sms_prescription() {
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name()))
                 ? patient.getMiddle_name() : "") + " " + patient.getLast_name();
@@ -2326,7 +2581,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
 
@@ -3723,6 +3977,49 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
+
+        // facility section.
+        try {
+            String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+
+            String[] FacilityHistArgs = {encounterUuidAdultIntial, UuidDictionary.Facility};
+
+            Cursor medHistCursor = db.query("tbl_obs", columns,FacilityHistSelection , FacilityHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+            String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+            patHistory.setValue(facilityText);
+//todo single textutill
+            if (facilityText != null || !facilityText.isEmpty()) {
+
+                medHistory = patHistory.getValue();
+//Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
+                if(facilityText==null){
+                }else{
+                String[] arrayString = facilityText.split(",",3);
+
+
+                    autocompleteState.setText(""+arrayString[0]);
+                    mState=arrayString[0];
+                    autocompleteDistrict.setText(""+arrayString[1]);
+                    mDistrict=arrayString[1];
+                    txtViewFacility.setText(""+arrayString[arrayString.length-1]);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    mFacilityValue=arrayString[arrayString.length-1];
+                }
+
+                medHistory = medHistory.replace("\"", "");
+                medHistory = medHistory.replace("\n", "");
+                do {
+                    medHistory = medHistory.replace("  ", "");
+                } while (medHistory.contains("  "));
+            }
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            autocompleteState.setText("");
+            autocompleteDistrict.setText("");
+            txtViewFacility.setText("");
+            // if facility  does not exist
+        }
 //vitals display code
         String visitSelection = "encounteruuid = ? AND voided!='1'";
         String[] visitArgs = {encounterVitals};
@@ -4040,7 +4337,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileNameList = new ArrayList<String>();
+        ArrayList<String> mAllfileNameList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
+        ArrayList<File> mAllfileList = new ArrayList<File>();
         try {
             fileNameList = imagesDAO.getFilename(patientUuid, encounterAdultInitList);
             for (String file_imagename : fileNameList) {
@@ -4053,11 +4352,41 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
             mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
             mAdditionalDocsRecyclerView.setAdapter(horizontalAdapter); //TODO: here on VS screen we show the images based on image names.
+            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+
+            mAdditional_All_documents.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditional_All_documents.setAdapter(horizontalAdapter); //TODO: here on VS screen we show the images based on image names.
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         } catch (Exception file) {
             Logger.logD(TAG, file.getMessage());
         }
+
+        try {
+            mAllfileNameList = imagesDAO.getAllFilename(patientUuid);
+            for (String file_imagename : mAllfileNameList) {
+                String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
+                if (new File(filename).exists()) {
+                    mAllfileList.add(new File(filename));
+                }
+            }
+            HorizontalAdapter horizontalAdapterForAll = new HorizontalAdapter(mAllfileList, this);
+//            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+//            mAdditionalDocsRecyclerView.setLayoutManager(mAdditionalDocsLayoutManager);
+//            mAdditionalDocsRecyclerView.setAdapter(horizontalAdapterForAll); //TODO: here on VS screen we show the images based on image names.
+//            mAdditionalDocsLayoutManager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.HORIZONTAL, false);
+
+            mAdditional_All_documents.setLayoutManager(mAdditionalDocsLayoutManager);
+            mAdditional_All_documents.setAdapter(horizontalAdapterForAll); //TODO: here on VS screen we show the images based on image names.
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        } catch (Exception file) {
+            Logger.logD(TAG, file.getMessage());
+        }
+        ArrayList<Item> selectedItems = mFacilitySelection.getSelectedItems();
+        Log.d("hchj","hc"+selectedItems.size());
     }
 
     @Override
@@ -4072,6 +4401,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadPrescriptionService = null;
         }
         isReceiverRegistered = false;
+
+
     }
 
     public class NetworkChangeReceiver extends BroadcastReceiver {
@@ -4529,19 +4860,57 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         return result;
     }
+    public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
-    public void onRadioButtonClicked(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-        switch (view.getId()) {
-            case R.id.whatsappradio:
-                if (checked)
-                    shareSelectedOption = 0;
-                break;
-            case R.id.emailradio:
-                if (checked)
-                    shareSelectedOption = 1;
-                break;
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
+    }
+    private void uploadFacility() {
+
+Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e...."+encounterUuidAdultIntial);
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+        //todo
+
+        if(mFacilitySelection.getVisibility()==View.VISIBLE){
+            mFacilityValue=mFacilitySelection.getSelectedItemsAsString();
+        }else{
+           mFacilityValue= txtViewFacility.getText().toString();
         }
+        obsDTO.setValue(""+mState+", "+mDistrict+", "+mFacilityValue);
+        obsDTO.setConceptuuid(UuidDictionary.Facility);
+        obsDTOList.add(obsDTO);
+
+
+
+        try {
+            obsDAO.insertObsToDb(obsDTOList);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+//      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
+
     }
 
+        public void onRadioButtonClicked(View view) {
+            boolean checked = ((RadioButton) view).isChecked();
+            switch (view.getId()) {
+                case R.id.whatsappradio:
+                    if (checked)
+                        shareSelectedOption = 0;
+                    break;
+                case R.id.emailradio:
+                    if (checked)
+                        shareSelectedOption = 1;
+                    break;
+            }
+        }
 }
