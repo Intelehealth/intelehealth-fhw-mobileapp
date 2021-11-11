@@ -175,11 +175,11 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-//    EditText stateText;
+    //    EditText stateText;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText casteText;
     Spinner mCountry;
-//    Spinner mState;
+    //    Spinner mState;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -209,8 +209,9 @@ public class IdentificationActivity extends AppCompatActivity {
     MaterialCheckBox familyhead_checkbox, time_water_checkbox, hectars_land_checkbox;
     EditText time_water_editText, hectars_land_editText, no_of_member_edittext, no_of_staying_members_edittext,
             occupation_edittext, watersafe_edittext, toiletfacility_edittext;
-    CardView cardview_household;
-    ArrayAdapter<CharSequence>  adapter_curosityResolution, occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
+    CardView cardview_household, others_cardView;
+    LinearLayout others_linearLayout;
+    ArrayAdapter<CharSequence> adapter_curosityResolution, occupation_adapt, bankaccount_adapt, mobile_adapt, whatsapp_adapt,
             sourcewater_adapt, watersafe_adapt, availa_adapt, toiletfacility_adapt, structure_adapt;
     String occupation_edittext_value = "", watersafe_edittext_value = "", toilet_edittext_value = "";
     int dob_indexValue = 15;
@@ -218,7 +219,8 @@ public class IdentificationActivity extends AppCompatActivity {
     //in that case, the edit() will get the dob_indexValue as 15 and we  will check if the
     //dob_indexValue == 15 then just get the mDOB editText value and add in the db.
     private static final String EXTRA_MEDICAL_ADVICE = "EXTRA_MEDICAL_ADVICE";
-    private boolean isMedicalAdvice;;
+    private boolean isMedicalAdvice;
+    ;
     private CheckBox chb_agree_privacy, cbVaccineGuide, cbCovidConcern, cbManagingBreathlessness,
             cbManageVoiceIssue, cbManageEating, cbDealProblems, cbMentalHealth, cbExercises, cbOthers;
     private TextView txt_privacy;
@@ -231,7 +233,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText otherHelplineInfoET;
     String helplineInfo = "", curosityInfo = "";
     String callerPrefLanguage = "";
-    ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter , numberRelationAdapter;
+    ArrayAdapter<CharSequence> callerRelationAdapter, helplineKnowledgeAdapter, prefLangAdapter, numberRelationAdapter;
 
 
     public static void start(Context context, boolean medicalAdvice) {
@@ -284,7 +286,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mDOB = findViewById(R.id.identification_birth_date_text_view);
         mPhoneNum = findViewById(R.id.identification_phone_number);
         mAddPhoneNum = findViewById(R.id.identification_secondary_phone_number);
-
+        others_cardView = findViewById(R.id.cardview3);
+        others_linearLayout = findViewById(R.id.linearLayout3);
      /*   mPhoneNum.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -339,7 +342,7 @@ public class IdentificationActivity extends AppCompatActivity {
         economicLayout = findViewById(R.id.identification_txtleconomic);
         educationLayout = findViewById(R.id.identification_txtleducation);
         countryStateLayout = findViewById(R.id.identification_llcountry_state);
-      //  mImageView = findViewById(R.id.imageview_id_picture);
+        //  mImageView = findViewById(R.id.imageview_id_picture);
 
 
         callerRelationSpinner = findViewById(R.id.relationship_spinner);
@@ -374,7 +377,7 @@ public class IdentificationActivity extends AppCompatActivity {
         no_of_staying_members_edittext = findViewById(R.id.no_of_staying_members_edittext);*/
 
         //Cardview
-       // cardview_household = findViewById(R.id.cardview_household);
+        // cardview_household = findViewById(R.id.cardview_household);
 
 //Initialize the local database to store patient information
 
@@ -584,7 +587,7 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 PrivacyNotice_Activity.start(IdentificationActivity.this, true);
-              //  startActivity(intent);
+                //  startActivity(intent);
             }
         });
         if (!TextUtils.isEmpty(patientID_edit)) {
@@ -616,8 +619,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             prefLangAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             preferredLangSpinner.setAdapter(prefLangAdapter);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
 
@@ -631,8 +633,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             callerRelationSpinner.setAdapter(callerRelationAdapter);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
 
@@ -646,8 +647,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             callerRelationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             numberRelationSpinner.setAdapter(numberRelationAdapter);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
 
@@ -661,8 +661,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             helplineKnowledgeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             helplineInfoSpinner.setAdapter(helplineKnowledgeAdapter);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.logE("Identification", "#648", e);
         }
 
@@ -707,7 +706,7 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
 
-        if(isMedicalAdvice) {
+        if (isMedicalAdvice) {
             try { // curosity resolution Spinner
                 String curosityLanguage = "curosityResolution_array_" + sessionManager.getAppLanguage();
                 int curosity = res.getIdentifier(curosityLanguage, "array", getApplicationContext().getPackageName());
@@ -741,7 +740,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //        occupation_adapt = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
 //                getResources().getStringArray(R.array.occupation_spinner));
 
-        if(isMedicalAdvice) {
+        if (isMedicalAdvice) {
             //curosity start
             spinner_curosityResolution.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -756,6 +755,14 @@ public class IdentificationActivity extends AppCompatActivity {
                         curosity_textinputlayout.setVisibility(View.GONE);
                         et_medical_advice_additional.setText("");
                         et_medical_advice_additional.setError(null);
+                    }
+
+                    if (selected_curosityOption.equalsIgnoreCase("Different Language") ||
+                            selected_curosityOption.equalsIgnoreCase("अलग भाषा") ||
+                            selected_curosityOption.equalsIgnoreCase("Different Gender") ||
+                            selected_curosityOption.equalsIgnoreCase("भिन्न लिंग")) {
+                        others_linearLayout.setVisibility(View.GONE);
+                        others_cardView.setVisibility(View.GONE);
                     }
                 }
 
@@ -1142,8 +1149,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (mGenderOther.isChecked())
                     mGenderOther.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else if (patient1.getGender().equals("Other")) {
+            } else if (patient1.getGender().equals("Other")) {
                 mGenderOther.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
@@ -1160,7 +1166,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (mGenderM.isChecked()) {
             mGender = "M";
         } else if (mGenderF.isChecked()) {
-            mGender = "F"; } else {
+            mGender = "F";
+        } else {
             mGender = "Other";
         }
         if (patientID_edit != null) {
@@ -1168,37 +1175,28 @@ public class IdentificationActivity extends AppCompatActivity {
             // setting country according database
             mCountry.setSelection(countryAdapter.getPosition(String.valueOf(patient1.getCountry())));
 
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-            {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String helplineInfo = switch_hi_helplineInfo(patient1.getCaste());
-                if(helplineKnowledgeAdapter.getPosition(helplineInfo)==-1) {
+                if (helplineKnowledgeAdapter.getPosition(helplineInfo) == -1) {
                     helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition("अन्य"));
                     otherHelplineInfoET.setText(patient1.getCaste());
-                }
-                else
-                {
+                } else {
                     helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition(helplineInfo));
                 }
-            } else if(sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-            {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String helplineInfo = switch_mr_helplineInfo(patient1.getCaste());
-                if(helplineKnowledgeAdapter.getPosition(helplineInfo)==-1) {
+                if (helplineKnowledgeAdapter.getPosition(helplineInfo) == -1) {
                     helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition("इतर"));
                     otherHelplineInfoET.setText(patient1.getCaste());
-                }
-                else
-                {
+                } else {
                     helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition(helplineInfo));
                 }
-            } else
-            {
-                if(helplineKnowledgeAdapter.getPosition(patient1.getCaste())==-1)
-                {
+            } else {
+                if (helplineKnowledgeAdapter.getPosition(patient1.getCaste()) == -1) {
                     helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition("Other"));
                     otherHelplineInfoET.setText(patient1.getCaste());
-                }
-                else {
-                        helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
+                } else {
+                    helplineInfoSpinner.setSelection(helplineKnowledgeAdapter.getPosition(patient1.getCaste()));
                 }
             }
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -1208,17 +1206,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 numberRelationSpinner.setSelection(numberRelationAdapter.getPosition(numberInfo));
                 String callerLang = switch_hi_caller_language(patient1.getPreferred_language());
                 preferredLangSpinner.setSelection(prefLangAdapter.getPosition(callerLang));
-            }
-            else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String callerInfo = switch_mr_callerRelation(patient1.getSdw());
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(callerInfo));
                 String numberInfo = switch_mr_numberRelation(patient1.getEconomic_status());
                 numberRelationSpinner.setSelection(numberRelationAdapter.getPosition(numberInfo));
                 String callerLang = switch_mr_caller_language(patient1.getPreferred_language());
                 preferredLangSpinner.setSelection(prefLangAdapter.getPosition(callerLang));
-            }
-            else
-            {
+            } else {
                 numberRelationSpinner.setSelection(numberRelationAdapter.getPosition(patient1.getEconomic_status()));
                 callerRelationSpinner.setSelection(callerRelationAdapter.getPosition(patient1.getSdw()));
                 preferredLangSpinner.setSelection(prefLangAdapter.getPosition(patient1.getPreferred_language()));
@@ -1473,8 +1468,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         autocompleteState.setAdapter(adapter);
 
-        if(autocompleteState.getText().toString().equals(""))
-        {
+        if (autocompleteState.getText().toString().equals("")) {
             autocompleteDistrict.setText("");
             autocompleteDistrict.setEnabled(false);
         }
@@ -1483,13 +1477,10 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedHelplineOption = parent.getItemAtPosition(position).toString();
-                if(selectedHelplineOption.equalsIgnoreCase("Other") || selectedHelplineOption.equalsIgnoreCase("अन्य") || selectedHelplineOption.equalsIgnoreCase("इतर") )
-                {
+                if (selectedHelplineOption.equalsIgnoreCase("Other") || selectedHelplineOption.equalsIgnoreCase("अन्य") || selectedHelplineOption.equalsIgnoreCase("इतर")) {
                     otherHelplineInfoET.setVisibility(View.VISIBLE);
                     otherHelplineInfoET.setFocusable(true);
-                }
-                else
-                {
+                } else {
                     otherHelplineInfoET.setText("");
                     otherHelplineInfoET.setVisibility(View.GONE);
                 }
@@ -1525,23 +1516,20 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedState = parent.getItemAtPosition(position).toString();
-                if(selectedState.equalsIgnoreCase("")|| autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State"))
-                {
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
-                }
-                else
-                autocompleteDistrict.setEnabled(true);
+                } else
+                    autocompleteDistrict.setEnabled(true);
                 districtList.clear();
                 try {
                     JSONArray stateArray = json.getJSONArray("states");
-                    for(int i = 0; i< stateArray.length(); i++){
+                    for (int i = 0; i < stateArray.length(); i++) {
                         String state = stateArray.getJSONObject(i).getString("state");
-                        if(state.equalsIgnoreCase(selectedState))
-                        {
+                        if (state.equalsIgnoreCase(selectedState)) {
                             JSONObject districtObj = stateArray.getJSONObject(i);
                             JSONArray districtArray = districtObj.getJSONArray("districts");
-                            for(int j = 0; j< districtArray.length(); j++) {
+                            for (int j = 0; j < districtArray.length(); j++) {
                                 String district = districtArray.getJSONObject(j).getString("name");
                                 districtList.add(district);
                             }
@@ -1550,8 +1538,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
                         autocompleteDistrict.setAdapter(districtAdapter);
                     }
-                }
-                catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -1562,6 +1549,7 @@ public class IdentificationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 autocompleteDistrict.setFocusable(false);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -1906,8 +1894,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
 
-            InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(),0);
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(fab.getWindowToken(), 0);
         });
 
 /*
@@ -2043,7 +2031,7 @@ public class IdentificationActivity extends AppCompatActivity {
         String[] patientArgs = {str};
         String[] patientColumns = {"uuid", "first_name", "middle_name", "last_name",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
-                "postal_code", "country", "phone_number", "secondary_phone_number","preferred_language", "gender", "sdw", "occupation", "patient_photo",
+                "postal_code", "country", "phone_number", "secondary_phone_number", "preferred_language", "gender", "sdw", "occupation", "patient_photo",
                 "economic_status", "education_status", "caste"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
@@ -2350,7 +2338,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 */
 
-        if (!mFirstName.getText().toString().equals("")  &&  !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
+        if (!mFirstName.getText().toString().equals("") && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("")
                 && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderOther.isChecked())) {
 
@@ -2427,59 +2415,59 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
 
-        if (callerRelationSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)callerRelationSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = callerRelationSpinner;
-            cancel = true;
-            return;
-        }
-
-        if (preferredLangSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)preferredLangSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = preferredLangSpinner;
-            cancel = true;
-            return;
-        }
-
-        if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = helplineInfoSpinner;
-            cancel = true;
-            return;
-        }
-
-        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
-                helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
-                helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
-        {
-            if(otherHelplineInfoET.getText().toString().equalsIgnoreCase(""))
-            {
-                otherHelplineInfoET.setError(getString(R.string.error_field_required));
-                focusView = otherHelplineInfoET;
+        if (others_cardView.getVisibility() == View.VISIBLE) {
+            if (callerRelationSpinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) callerRelationSpinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = callerRelationSpinner;
                 cancel = true;
                 return;
-            } else {
-                otherHelplineInfoET.setError(null);
             }
-        }
 
-        if (numberRelationSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)numberRelationSpinner.getSelectedView();
-            errorText.setError("");
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-            focusView = numberRelationSpinner;
-            cancel = true;
-            return;
+            if (preferredLangSpinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) preferredLangSpinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = preferredLangSpinner;
+                cancel = true;
+                return;
+            }
+
+            if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) helplineInfoSpinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = helplineInfoSpinner;
+                cancel = true;
+                return;
+            }
+
+            if (helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+                    helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
+                    helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर")) {
+                if (otherHelplineInfoET.getText().toString().equalsIgnoreCase("")) {
+                    otherHelplineInfoET.setError(getString(R.string.error_field_required));
+                    focusView = otherHelplineInfoET;
+                    cancel = true;
+                    return;
+                } else {
+                    otherHelplineInfoET.setError(null);
+                }
+            }
+
+            if (numberRelationSpinner.getSelectedItemPosition() == 0) {
+                TextView errorText = (TextView) numberRelationSpinner.getSelectedView();
+                errorText.setError("");
+                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+                focusView = numberRelationSpinner;
+                cancel = true;
+                return;
+            }
         }
 
         if (autocompleteState.getText().toString().equalsIgnoreCase("")) {
@@ -2501,7 +2489,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //curosity resolution validation - start
-        if(isMedicalAdvice) {
+        if (isMedicalAdvice) {
             if (spinner_curosityResolution.getSelectedItemPosition() == 0) {
                 TextView errorText = (TextView) spinner_curosityResolution.getSelectedView();
                 errorText.setError("");
@@ -2757,7 +2745,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //curosity - start
-            if(isMedicalAdvice) {
+            if (isMedicalAdvice) {
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     if (spinner_curosityResolution.getSelectedItem().toString().equalsIgnoreCase("अन्य"))
                         curosityInfo = et_medical_advice_additional.getText().toString();
@@ -2772,16 +2760,16 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             //curosity - end
 
-            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
+            if (helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") ||
                     helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") ||
                     helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
                 helplineInfo = otherHelplineInfoET.getText().toString();
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();
 
-            if(sessionManager.getAppLanguage().equals("hi"))
+            if (sessionManager.getAppLanguage().equals("hi"))
                 callerPrefLanguage = switch_hi_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
-            else if(sessionManager.getAppLanguage().equals("mr"))
+            else if (sessionManager.getAppLanguage().equals("mr"))
                 callerPrefLanguage = switch_mr_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
             else
                 callerPrefLanguage = preferredLangSpinner.getSelectedItem().toString();
@@ -3159,8 +3147,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     //if from medical advise option then create medical advice visit first(automatically)
                     createMedicalAdviceVisit();
                     medicalboolean = true;
-                }
-                else {
+                } else {
                     SyncDAO syncDAO = new SyncDAO();
                     ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                     boolean push = syncDAO.pushDataApi();
@@ -3170,8 +3157,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 Logger.logD(TAG, "inserted");
                 Intent i = new Intent(getApplication(), PatientDetailActivity.class);
                 i.putExtra("patientUuid", uuid);
-                i.putExtra("patientName", patientdto.getFirstname() + " " +((!TextUtils.isEmpty(patientdto.getLastname()))
-                            ? patientdto.getLastname() : ""));
+                i.putExtra("patientName", patientdto.getFirstname() + " " + ((!TextUtils.isEmpty(patientdto.getLastname()))
+                        ? patientdto.getLastname() : ""));
                 i.putExtra("tag", "newPatient");
                 i.putExtra("privacy", privacy_value);
                 i.putExtra("hasPrescription", "false");
@@ -3389,7 +3376,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (callerRelationSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)callerRelationSpinner.getSelectedView();
+            TextView errorText = (TextView) callerRelationSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3399,7 +3386,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (preferredLangSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)preferredLangSpinner.getSelectedView();
+            TextView errorText = (TextView) preferredLangSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3409,7 +3396,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (helplineInfoSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)helplineInfoSpinner.getSelectedView();
+            TextView errorText = (TextView) helplineInfoSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3418,10 +3405,8 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
-        if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
-        {
-            if(otherHelplineInfoET.getText().toString().equalsIgnoreCase(""))
-            {
+        if (helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर")) {
+            if (otherHelplineInfoET.getText().toString().equalsIgnoreCase("")) {
                 otherHelplineInfoET.setError(getString(R.string.error_field_required));
                 focusView = otherHelplineInfoET;
                 cancel = true;
@@ -3432,7 +3417,7 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         if (numberRelationSpinner.getSelectedItemPosition() == 0) {
-            TextView errorText = (TextView)numberRelationSpinner.getSelectedView();
+            TextView errorText = (TextView) numberRelationSpinner.getSelectedView();
             errorText.setError("");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
@@ -3668,14 +3653,14 @@ public class IdentificationActivity extends AppCompatActivity {
                         (StringUtils.getValue(dob_value)));
             }
 
-            if(helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
+            if (helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("Other") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("अन्य") || helplineInfoSpinner.getSelectedItem().toString().equalsIgnoreCase("इतर"))
                 helplineInfo = otherHelplineInfoET.getText().toString();
             else
                 helplineInfo = helplineInfoSpinner.getSelectedItem().toString();
 
-            if(sessionManager.getAppLanguage().equals("hi"))
+            if (sessionManager.getAppLanguage().equals("hi"))
                 callerPrefLanguage = switch_hi_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
-            else if(sessionManager.getAppLanguage().equals("mr"))
+            else if (sessionManager.getAppLanguage().equals("mr"))
                 callerPrefLanguage = switch_mr_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
             else
                 callerPrefLanguage = preferredLangSpinner.getSelectedItem().toString();
@@ -4032,7 +4017,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                    i.putExtra("patientName", patientdto.getFirst_name());
 //                else
                 i.putExtra("patientName", patientdto.getFirst_name() + " " + ((!TextUtils.isEmpty(patientdto.getLast_name()))
-                            ? patientdto.getLast_name() : ""));
+                        ? patientdto.getLast_name() : ""));
                 i.putExtra("tag", "newPatient");
                 i.putExtra("hasPrescription", "false");
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -4053,7 +4038,7 @@ public class IdentificationActivity extends AppCompatActivity {
         today.set(Calendar.MILLISECOND, 0);
         Date todayDate = today.getTime();
         String endDate = startFormat.format(todayDate);
-        today.add(Calendar.MILLISECOND, (int) - TimeUnit.MINUTES.toMillis(5));
+        today.add(Calendar.MILLISECOND, (int) -TimeUnit.MINUTES.toMillis(5));
         String startDate = startFormat.format(today.getTime());
 
         //create & save visit visitUuid & encounter in the DB
@@ -4084,7 +4069,7 @@ public class IdentificationActivity extends AppCompatActivity {
         visitDTO.setUuid(visitUuid);
         visitDTO.setPatientuuid(this.uuid);
         visitDTO.setStartdate(startDate);
-       // visitDTO.setEnddate(endDate);
+        // visitDTO.setEnddate(endDate);
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
@@ -4126,13 +4111,12 @@ public class IdentificationActivity extends AppCompatActivity {
             insertion = insertion.concat(Node.next_line + String.format("%s: %s", cbOthers.getText(), et_medical_advice_extra.getText()));
 
         //adding of data...
-        if(curosity_textinputlayout.getVisibility() == View.VISIBLE) {
+        if (curosity_textinputlayout.getVisibility() == View.VISIBLE) {
             if (!TextUtils.isEmpty(et_medical_advice_additional.getText().toString())) {
                 insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info),
                         curosityInfo));
             }
-        }
-        else {
+        } else {
             insertion = insertion.concat(Node.next_line + String.format("%s: %s", getString(R.string.txt_additional_info),
                     curosityInfo));
         }
@@ -4151,8 +4135,8 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
         try {
             speciality_attributes.insertVisitAttributes(visitUuid, AppConstants.CURIOSITY_RES);
-           // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
-           // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
+            // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");
+            // speciality_attributes.insertVisitAttributes(uuid, "General Physician");
         } catch (DAOException e) {
             e.printStackTrace();
         }
@@ -4164,7 +4148,7 @@ public class IdentificationActivity extends AppCompatActivity {
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             visitsDAO.updateVisitEnddate(visitUuid, endTime);
-           // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, R.string.text_patient_and_advice_created, Toast.LENGTH_SHORT).show();
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -4173,7 +4157,6 @@ public class IdentificationActivity extends AppCompatActivity {
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
 
     }
-
 
 
     //This method is used to load data from json, we use this to populate district and tehsil spinners: By Nishita
@@ -4203,16 +4186,16 @@ public class IdentificationActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
         }
-        return super.dispatchTouchEvent( event );
+        return super.dispatchTouchEvent(event);
     }
 }
