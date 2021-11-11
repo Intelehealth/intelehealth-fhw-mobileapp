@@ -51,7 +51,8 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
         if (patinet != null) {
 
             String age = DateAndTimeUtils.getAgeInYearMonth(patinet.getDate_of_birth(), context);
-            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+            String body = context.getString(R.string.identification_screen_prompt_age) + " " + age + "\n"
+                    + context.getString(R.string.mobile_number_search) + patinet.getPhone_number();
 
             if (patinet.getOpenmrs_id() != null)
                 holder.headTextView.setText(patinet.getFirst_name() + " " + patinet.getLast_name()
