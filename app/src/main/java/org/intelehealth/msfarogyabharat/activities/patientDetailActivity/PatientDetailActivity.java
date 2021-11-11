@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -176,6 +177,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     RecyclerView rvFamilyMember;
     TextView tvNoFamilyMember;
     TextView phoneView;
+    TextView textview_showallvisits;
     String privacy_value_selected;
 
     ImageView ivPrescription;
@@ -184,6 +186,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     float float_ageYear_Month;
     private boolean isMedicalAdvice;
     private boolean MedicalAdvice = false;
+    private String global_encounterAdultIntialslocal = "";
+    private String visituID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,6 +214,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        textview_showallvisits = findViewById(R.id.textview_showallvisits);
         newAdvice = findViewById(R.id.btn_new_advice);
 //        rvFamilyMember = findViewById(R.id.rv_familymember);
 //        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
@@ -225,11 +230,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             hasPrescription = intent.getStringExtra("hasPrescription");
             MedicalAdvice = intent.getBooleanExtra("MedicalAdvice", false);
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
-//            String phoneNumber = intent.getStringExtra("phoneNumber");
-//            if (!TextUtils.isEmpty(phoneNumber)) {
-//                sendWelcomeSms(phoneNumber);
-//            }
-
             intentTag = intent.getStringExtra("tag");
             intentTag1 = intent.getStringExtra("intentTag1");
             intentTag2 = intent.getStringExtra("intentTag2");
@@ -320,6 +320,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             //  positive.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         }
 
+        // to handle the ui of button when visit is Active or Ended...
+        newVisitBtnChanges();
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -485,6 +487,53 @@ public class PatientDetailActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    private void newVisitBtnChanges() {
+        //new visit - start
+        //check if any active visit then show the edit fields.
+        Cursor cursor = db.rawQuery("Select uuid from tbl_visit where enddate is NULL AND patientuuid = ?",
+                new String[]{patientUuid});
+        try {
+            if(cursor != null && cursor.moveToFirst()) {
+                do {
+                    //do nothing
+                    if (newVisit.isEnabled()) {
+                        newVisit.setEnabled(false);
+                        newAdvice.setEnabled(false);
+                    }
+                    if (newVisit.isClickable()) {
+                        newVisit.setClickable(false);
+                        newAdvice.setClickable(false);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            newVisit.setBackgroundColor
+                                    (getColor(R.color.divider));
+                            newVisit.setTextColor(getColor(R.color.white));
+                            newAdvice.setBackgroundColor(getColor(R.color.divider));
+                            newAdvice.setTextColor(getColor(R.color.white));
+                        } else {
+                            newVisit.setBackgroundColor(getResources().getColor(R.color.divider));
+                            newVisit.setTextColor(getResources().getColor(R.color.white));
+                            newAdvice.setBackgroundColor(getResources().getColor(R.color.divider));
+                            newAdvice.setTextColor(getResources().getColor(R.color.white));
+                        }
+                    }
+                }
+                while (cursor.moveToNext());
+            }
+            else {
+                //as movetoFirst() will return False since there is no data this means no visit is Active (all are Ended).
+            }
+        }
+        catch (SQLException e) {
+
+        }
+        if(cursor != null) {
+            cursor.close();
+        }
+        //end
+        //new visit - end
     }
 
 //    private void sendWelcomeSms(String phoneNumber) {
@@ -1052,6 +1101,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             CardView histCardView = findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
         } else {
+            // no use here looping...
             visitUuidList = new ArrayList<>();
             String visitIDSelection = "patientuuid = ?";
             String[] visitIDArgs = {patientUuid};
@@ -1059,12 +1109,13 @@ public class PatientDetailActivity extends AppCompatActivity {
             if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                 do {
                     visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-                    visitUuidList.add(visitUuid);
+                    visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
                 } while (visitIDCursor.moveToNext());
             }
             if (visitIDCursor != null) {
                 visitIDCursor.close();
             }
+            //no use...for loop...
             for (String visituuid : visitUuidList) {
                 Logger.logD(TAG, visituuid);
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -1089,8 +1140,54 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
             familyHistory(famHistView, patientUuid, encounterAdultIntials);
             pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
-            pastVisits(patientUuid);
+           // pastVisits(patientUuid);
         }
+
+        String visitIDSelection = "patientuuid = ?";
+        String[] visitIDArgs = {patientUuid};
+        Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+            do {
+                visituID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+            } while (visitIDCursor.moveToNext());
+        }
+        if (visitIDCursor != null) {
+            visitIDCursor.close();
+        }
+
+        if(visituID == null)
+            textview_showallvisits.setTextColor(getResources().getColor(R.color.font_black_3));
+        else
+            textview_showallvisits.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        textview_showallvisits.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(visituID != null) {
+                    Intent intent = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
+                /*intentTag = intent.getStringExtra("tag");
+                intentTag1 = intent.getStringExtra("intentTag1");
+                intentTag2 = intent.getStringExtra("intentTag2");*/
+
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("hasPrescription", hasPrescription);
+                    intent.putExtra("MedicalAdvice", MedicalAdvice);
+                    intent.putExtra("latest_VisitUuid", visituID);
+                    intent.putExtra("pastVisit", true);
+
+//                intent.putExtra("encounterUuidVitals", encounterVitalslocal);
+                    intent.putExtra("encounterUuidAdultIntial", global_encounterAdultIntialslocal);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(context, getResources().getString(R.string.no_previous_visits), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         whatsapp_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -1180,11 +1277,13 @@ public class PatientDetailActivity extends AppCompatActivity {
      * @param datetime variable of type String.
      * @return void
      */
-    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue, String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
+    private void createOldVisit(final String datetime, String visit_id, String end_datetime, String visitValue,
+                                String encounterVitalslocal, String encounterAdultIntialslocal) throws ParseException {
 
         final Boolean past_visit;
         final TextView textView = new TextView(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
 
 //        final String visitString = String.format("Seen on (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
         final String visitString = String.format(getString(R.string.seen_on)+" (%s)", DateAndTimeUtils.SimpleDatetoLongDate(datetime));
@@ -1302,7 +1401,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                 int position = (Integer) v.getTag();
                 Intent visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
-
+                global_encounterAdultIntialslocal = encounterAdultIntialslocal;
                 visitSummary.putExtra("visitUuid", visit_id);
                 visitSummary.putExtra("patientUuid", patientUuid);
                 visitSummary.putExtra("encounterUuidVitals", encounterVitalslocal);
@@ -1311,6 +1410,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 visitSummary.putExtra("name", patientName);
                 visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
                 visitSummary.putExtra("tag", intentTag);
+                Log.v("main", "v: "+ encounterVitals + " a: "+encounterAdultIntialslocal + " aaa: "+encounterAdultIntials);
                 visitSummary.putExtra("pastVisit", past_visit);
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     visitSummary.putExtra("hasPrescription", "true");

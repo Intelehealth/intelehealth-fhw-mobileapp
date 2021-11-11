@@ -59,7 +59,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
     private AdditionalDocumentAdapter recyclerViewAdapter;
     SessionManager sessionManager = null;
     String m_finalImageName;
-
+    private List<String> encounterAdultInitList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +97,13 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             visitUuid = intent.getStringExtra("visitUuid");
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            encounterAdultInitList = intent.getExtras().getStringArrayList("encounterAdultInitList");
 
             ImagesDAO imagesDAO = new ImagesDAO();
             ArrayList<String> fileNameList = new ArrayList<String>();
             ArrayList<File> fileList = new ArrayList<File>();
             try {
-                fileNameList = imagesDAO.getFilename(patientUuid, encounterAdultIntials); //TODO:
+                fileNameList = imagesDAO.getFilename(patientUuid, encounterAdultInitList); //TODO:
                 for (String file_imagename : fileNameList) {
                     String filename = AppConstants.IMAGE_PATH + file_imagename + ".jpg";
                     if (new File(filename).exists()) {
@@ -123,7 +124,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH, patientUuid);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultInitList, rowListItem, AppConstants.IMAGE_PATH, patientUuid);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }

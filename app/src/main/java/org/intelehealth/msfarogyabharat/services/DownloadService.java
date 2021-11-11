@@ -47,7 +47,7 @@ public class DownloadService extends IntentService {
     UrlModifiers urlModifiers = new UrlModifiers();
     ObsDAO obsDAO = new ObsDAO();
     SessionManager sessionManager = null;
-    private String encounterAdultIntials;
+    private List<String> encounterAdultIntialsList = new ArrayList<>();
     private int totalFileSize;
     public String baseDir = "";
     public String ImageType = "";
@@ -67,7 +67,7 @@ public class DownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
-            encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
+            encounterAdultIntialsList = intent.getExtras().getStringArrayList("encounterUuidAdultIntialList");
             ImageType = intent.getStringExtra("ImageType");
             patientUuid = intent.getStringExtra("patientUuid");
         }
@@ -90,7 +90,7 @@ public class DownloadService extends IntentService {
 
         List<String> imageObsList = new ArrayList<>();
         ImagesDAO imagesDAO = new ImagesDAO();
-        imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntials);
+        imageObsList = obsDAO.getImageStrings(ImageType, encounterAdultIntialsList); //gets the obs image uuid for the images of additional doc.
 
         if (imageObsList.size() == 0) {
             //do something...
@@ -100,6 +100,7 @@ public class DownloadService extends IntentService {
             Log.v(TAG, "image_list: "+imageObsList.get(i)); //image list
             String downloadurl = "";
             downloadurl = urlModifiers.obsImageFilenameDownlaodUrl(patientUuid, imageObsList.get(i));
+
 
             responseObservable =
                     AppConstants.apiInterface.OBS_IMAGE_FILENAME_DOWNLOAD(downloadurl,
@@ -123,7 +124,8 @@ public class DownloadService extends IntentService {
 
                             dataModels.add(new Add_Doc_DataModel
                                     (addImageDownloadResponse.getData().get(0).getObsId(),
-                                            addImageDownloadResponse.getData().get(0).getImageName()));
+                                            addImageDownloadResponse.getData().get(0).getImageName(),
+                                            addImageDownloadResponse.getData().get(0).getEncounteruuid()));
 
                             if(finalImageObsList.size() == dataModels.size()) {
 
@@ -140,7 +142,10 @@ public class DownloadService extends IntentService {
                                                 @Override
                                                 public void onNext(ResponseBody responseBody) {
                                                     try {
-                                                        downloadFile(responseBody, dataModels.get(finalJ).getFilename(), dataModels.get(finalJ).getObsuuid());
+                                                        downloadFile(responseBody, dataModels.get(finalJ).getFilename(),
+                                                                dataModels.get(finalJ).getObsuuid(),
+                                                                dataModels.get(finalJ).getEncounteruid());
+
                                                         Log.v(TAG, dataModels.get(finalJ).getFilename() + ":" + dataModels.get(finalJ).getObsuuid());
 
                                                     } catch (IOException e) {
@@ -191,7 +196,7 @@ public class DownloadService extends IntentService {
 
     }*/
 
-    private void downloadFile(ResponseBody body, String image_filename, String obsUuid) throws IOException {
+    private void downloadFile(ResponseBody body, String image_filename, String obsUuid, String encounterid) throws IOException {
         String imagepath = image_filename + ".jpg";
         int count;
         byte[] data = new byte[1024 * 4];
@@ -233,7 +238,7 @@ public class DownloadService extends IntentService {
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             imagesDAO.updateObs(obsUuid);
-            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, encounterAdultIntials, obsUuid, image_filename, "0", "TRUE");
+            imagesDAO.insertInto_tbl_additional_doc(UUID.randomUUID().toString(), patientUuid, encounterid, obsUuid, image_filename, "0", "TRUE");
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

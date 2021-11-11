@@ -15,6 +15,14 @@ public class Datum {
     @Expose
     private String imageName;
 
+    @SerializedName("obsId")
+    @Expose
+    private String obsId;
+
+    @SerializedName("encounteruuid")
+    @Expose
+    private String encounteruuid;
+
     public String getObsId() {
         return obsId;
     }
@@ -23,15 +31,19 @@ public class Datum {
         this.obsId = obsId;
     }
 
-    @SerializedName("obsId")
-    @Expose
-    private String obsId;
-
     public String getImageName() {
         return imageName;
     }
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public String getEncounteruuid() {
+        return encounteruuid;
+    }
+
+    public void setEncounteruuid(String encounteruuid) {
+        this.encounteruuid = encounteruuid;
     }
 }

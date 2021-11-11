@@ -47,7 +47,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     int screen_height;
     int screen_width;
-String mEncounterVisitUUID;
+    private List<String> mEncounterVisitUUID;
     private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
     private String filePath;
@@ -55,7 +55,7 @@ String mEncounterVisitUUID;
     private String patientUuid;
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, String mEncounterUUID, List<DocumentObject> documentList, String filePath, String patientUuid) {
+    public AdditionalDocumentAdapter(Context context, List<String> mEncounterUUID, List<DocumentObject> documentList, String filePath, String patientUuid) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -175,7 +175,8 @@ String mEncounterVisitUUID;
                                 }
 
                                 @Override
-                                public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target, boolean b, boolean b1) {
+                                public boolean onResourceReady(GlideDrawable glideDrawable, File file, Target<GlideDrawable> target,
+                                                               boolean b, boolean b1) {
                                     if (progressBar != null) {
                                         progressBar.setVisibility(View.GONE);
                                     }
