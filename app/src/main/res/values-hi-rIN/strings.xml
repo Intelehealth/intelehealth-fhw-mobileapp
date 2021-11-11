@@ -772,7 +772,7 @@
     <string name="spouse_phone_number">जीवनसाथी का फोन नंबर*</string>
     <string name="enter_issue">समस्या क्या है?*</string>
     <string name="subscription_consent">क्या आप ऑडियो कहानियों की सदस्यता लेना चाहते हैं?</string>
-    <string name="already_subscribed">सदस्यता ले रखी</string>
+    <string name="already_subscribed">पहले से सदस्यता ले रखी है</string>
     <string name="subsc_status">सदस्यता सहमति</string>
     <string name="patient_called_helpline">हेल्पलाइन पर कॉल करा</string>
     <string name="marital_status">वैवाहिक स्थिति</string>
