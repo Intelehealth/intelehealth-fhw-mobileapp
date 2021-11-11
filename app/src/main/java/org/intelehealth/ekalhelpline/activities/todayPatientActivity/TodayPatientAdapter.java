@@ -85,7 +85,9 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 //        int age = DateAndTimeUtils.getAge(todayPatientModel.getDate_of_birth());
         String age = DateAndTimeUtils.getAgeInYearMonth(todayPatientModel.getDate_of_birth(), context);
         String dob = DateAndTimeUtils.SimpleDatetoLongDate(todayPatientModel.getDate_of_birth());
-        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
+        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age+ "\n"
+                + context.getString(R.string.mobile_number_search) + todayPatientModel.getPhone_number();
+
 
         if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
