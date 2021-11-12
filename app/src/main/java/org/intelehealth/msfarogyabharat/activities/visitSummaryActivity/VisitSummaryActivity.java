@@ -1393,13 +1393,13 @@ TextView txtViewFacility;
                     }
 
                     if (visitUUID == null || visitUUID.isEmpty()) {
-                        Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
+                        Log.v("visituuid", "visituuid: " + visitUUID + "\n");
                         String visitIDSelection = "uuid = ?";
                         String[] visitIDArgs = {visitUuid};
                         final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
                         if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
                             visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-                            Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
+                            Log.v("visituuid", "visituuid: " + visitUUID + "\n");
                         }
                         if (visitIDCursor != null)
                             visitIDCursor.close();
@@ -1445,7 +1445,7 @@ TextView txtViewFacility;
                     } else {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
-              //  }
+                    //  }
                 /*else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
                     if (t != null) {
@@ -1471,7 +1471,7 @@ TextView txtViewFacility;
                     positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                 }*/
-
+                }
 
             }
         });
