@@ -321,7 +321,8 @@ TextView txtViewFacility;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText editText_landmark;
     MultiSelectionSpinner mFacilitySelection;
-    public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
+//    public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
+    public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
