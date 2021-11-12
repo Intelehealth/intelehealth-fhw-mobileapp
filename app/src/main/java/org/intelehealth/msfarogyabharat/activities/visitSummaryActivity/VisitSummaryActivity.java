@@ -983,7 +983,7 @@ TextView txtViewFacility;
 
             }
         });
-        JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
+        JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
 
 
         mFacilitySelection.setItems(mFacilityList);
@@ -993,12 +993,11 @@ TextView txtViewFacility;
 
                 String selectedState = parent.getItemAtPosition(position).toString();
                 mState=parent.getItemAtPosition(position).toString();
-                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
+                if (selectedState.equalsIgnoreCase("") && autocompleteState.getText().equals("") && selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
-                    mFacilitySelection.setEnabled(false);
-                    mFacilitySelection.setClickable(false);
                     mFacilityList.clear();
+                    txtViewFacility.setText("");
                     txtViewFacility.setVisibility(View.VISIBLE);
                     mFacilitySelection.setVisibility(View.GONE);
                 } else
@@ -1039,7 +1038,7 @@ TextView txtViewFacility;
 
                 String selectedDistrict = parent.getItemAtPosition(position).toString();
                mDistrict= parent.getItemAtPosition(position).toString();
-                if (selectedDistrict.equalsIgnoreCase("") || autocompleteState.getText().equals("")) {
+                if (selectedDistrict.equalsIgnoreCase("") && autocompleteState.getText().equals("") && mDistrict.isEmpty()) {
 
                     mFacilityList.clear();
 //                    editText_landmark.setEnabled(false);
@@ -1047,6 +1046,7 @@ TextView txtViewFacility;
                     mFacilitySelection.setEnabled(false);
                     mFacilitySelection.setVisibility(View.GONE);
                     txtViewFacility.setVisibility(View.VISIBLE);
+                    txtViewFacility.setText("");
 
                 } else
                     txtViewFacility.setVisibility(View.GONE);
@@ -1069,7 +1069,7 @@ TextView txtViewFacility;
                                 if (district.equalsIgnoreCase(selectedDistrict)) {
                                     Log.d("jgkfdjg", "selectedDistrict" + mFacilityArray);
 
-                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("tahasil");
+                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("facility");
 
                                     for (int k = 0; k < mFacilityArray.length(); k++) {
 
