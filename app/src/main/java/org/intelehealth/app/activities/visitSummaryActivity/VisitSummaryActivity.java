@@ -1237,9 +1237,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
             }
         }
-        bloodView.setText(getResources().getStringArray(bloodGrpArray)[pos]);
+        if(pos!=0) {
+            bloodView.setText(getResources().getStringArray(bloodGrpArray)[pos]);
+        }
 
         sugarRandomView.setText(sugarrandom.getValue());
+        if(sugarfasting.getValue().length()!=0 || sugaraftermeal.getValue().length()!=0)
         sugarFastAndMealView.setText(sugarfasting.getValue()+" | "+sugaraftermeal.getValue());
 
         if (complaint.getValue() != null)
@@ -2601,6 +2604,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+            }else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
         }
         String font_face = "<style>" +

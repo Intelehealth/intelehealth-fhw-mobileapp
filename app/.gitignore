@@ -2,6 +2,7 @@
 *.json
 .gradle
 /assets
+/assets/fonts
 salt.env
 .idea/misc.xml
 /local.properties
