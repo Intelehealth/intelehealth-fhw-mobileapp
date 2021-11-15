@@ -321,6 +321,8 @@ TextView txtViewFacility;
     AutoCompleteTextView autocompleteState, autocompleteDistrict;
     EditText editText_landmark;
     MultiSelectionSpinner mFacilitySelection;
+//    public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
+    public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -613,7 +615,8 @@ TextView txtViewFacility;
 
                     // redirect to web browser for prescription
                 Intent intent1 = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://training.vikalpindia.org/intelehealth/index.html#/"));
+                        Uri.parse(prescriptionUrl + patientUuid));
+                Log.v("main", "prescurl: " +prescriptionUrl + patientUuid);
                 startActivity(intent1);
 
 /*                } catch (ParseException e) {
@@ -2167,9 +2170,10 @@ TextView txtViewFacility;
     }
 
     private void shareEmail() {
-        String to = "prajwalwaingankar@gmail.com";
-        String subject= "Share Presc";
-        String body="https://training.vikalpindia.org/intelehealth/index.html#/";
+        String to = "prajwal@intelehealth.org";
+        String subject = "Prescription";
+        String body = prescriptionUrl + patientUuid; //www.training.vikalpindia.org/#/prescription/patientId
+        Log.v("main", "prescurl: " +body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
@@ -2179,7 +2183,8 @@ TextView txtViewFacility;
     }
 
     private void shareWhatsapp(String phoneNumberWithCountryCode) {
-        String message = "https://training.vikalpindia.org/intelehealth/index.html#/";
+        String message = prescriptionUrl + patientUuid;
+        Log.v("main", "prescurl: " +message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
