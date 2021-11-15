@@ -53,6 +53,10 @@ public class AppConstants {
     public static final String MINIMUM_SPO2 = "1";
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
+    public static final String MAXIMUM_HEMOGLOBIN = "20";
+    public static final String MINIMUM_HEMOGLOBIN = "1";
+    public static final String MAXIMUM_SUGAR = "600";
+    public static final String MINIMUM_SUGAR = "10";
 
     //functions constants
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper = new InteleHealthDatabaseHelper(IntelehealthApplication.getAppContext());
