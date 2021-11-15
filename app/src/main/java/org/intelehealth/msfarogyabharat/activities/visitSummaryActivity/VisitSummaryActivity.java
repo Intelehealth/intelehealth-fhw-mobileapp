@@ -603,7 +603,7 @@ TextView txtViewFacility;
 
         mFacilitySelection.setVisibility(View.GONE);
         txtViewFacility.setVisibility(View.VISIBLE);
-
+        txtViewFacility.setHint(R.string.textViewHintFacility);
         complaintList_adapter = new ArrayList<>();
         physexamList_adapter = new ArrayList<>();
 

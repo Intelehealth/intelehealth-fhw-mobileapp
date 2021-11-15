@@ -43,12 +43,18 @@ public void onClick(DialogInterface dialog, int which, boolean isChecked) {
         selection[which] = isChecked;
 
         adapter.clear();
-        adapter.add(buildSelectedItemString());
+
+        if(!buildSelectedItemString().isEmpty()){
+                adapter.add(buildSelectedItemString());
+        }else{
+                adapter.add(R.string.textViewHintFacility);
+        }
         } else {
         throw new IllegalArgumentException(
         "Argument 'which' is out of bounds.");
         }
         }
+
 
 @Override
 public boolean performClick() {
@@ -87,7 +93,8 @@ public void setItems(ArrayList<Item> items) {
         this.items = items;
         selection = new boolean[this.items.size()];
         adapter.clear();
-        adapter.add("");
+//        adapter.add("");
+        adapter.add(R.string.textViewHintFacility);
         Arrays.fill(selection, false);
         }
 
