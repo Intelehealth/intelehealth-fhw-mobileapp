@@ -1247,8 +1247,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         sugarRandomView.setText(sugarrandom.getValue());
-        if(sugarfasting.getValue().length()!=0 || sugaraftermeal.getValue().length()!=0)
-        sugarFastAndMealView.setText(sugarfasting.getValue()+" | "+sugaraftermeal.getValue());
+        if(sugarfasting.getValue()!=null || sugaraftermeal.getValue()!=null) {
+            sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
+        }else{
+            System.out.println("error====="+"");
+        }
 
         if (complaint.getValue() != null)
             complaintView.setText(Html.fromHtml(complaint.getValue()));
