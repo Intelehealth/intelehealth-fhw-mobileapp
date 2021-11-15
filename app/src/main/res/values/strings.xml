@@ -694,4 +694,5 @@
     <string name="table_hemoglobin" translatable="false">Hemoglobin</string>
     <string name="table_bld_grp" translatable="false">Blood Group</string>
     <string name="table_sugar_level" translatable="false">Sugar Level -mg/dL(Random)</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>
