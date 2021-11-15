@@ -599,7 +599,7 @@ TextView txtViewFacility;
         autocompleteDistrict.setEnabled(false);
         districtList = new ArrayList<>();
         mFacilityList = new ArrayList<>();
-        mFacilityList.add(new Item(getString(R.string.select),false));
+//        mFacilityList.add(new Item(getString(R.string.select),false));
 
         mFacilitySelection.setVisibility(View.GONE);
         txtViewFacility.setVisibility(View.VISIBLE);
@@ -966,6 +966,8 @@ TextView txtViewFacility;
         if (autocompleteState.getText().toString().equals("")) {
             autocompleteDistrict.setText("");
             autocompleteDistrict.setEnabled(false);
+            txtViewFacility.setVisibility(View.VISIBLE);
+            mFacilitySelection.setVisibility(View.GONE);
         }
 
         autocompleteState.addTextChangedListener(new TextWatcher() {
@@ -973,12 +975,17 @@ TextView txtViewFacility;
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 autocompleteDistrict.setEnabled(false);
                 autocompleteDistrict.setText("");
+
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 autocompleteDistrict.setEnabled(false);
                 autocompleteDistrict.setText("");
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
             }
 
             @Override
@@ -1314,7 +1321,7 @@ TextView txtViewFacility;
             @Override
             public void onClick(View view) {
 
-                isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+//                isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
              //   if (speciality_spinner.getSelectedItemPosition() != 0) {
                 uploadFacility();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
