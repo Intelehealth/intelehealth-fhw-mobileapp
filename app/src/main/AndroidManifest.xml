@@ -40,6 +40,9 @@
         android:usesCleartextTraffic="true">
         <activity android:name="org.intelehealth.msfarogyabharat.activities.medicaladvice.MedicalAdviceExistingPatientsActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.MissCallResponseActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"

@@ -73,6 +73,7 @@
     <string name="button_active_pt">आक्टिव केस</string>
     <string name="menu_option_sync">सिंक डेटा</string>
     <string name="menu_option_settings">सेट्टिंग्स</string>
+    <string name="call_recordings">मिस्ड कॉल रिकॉर्डिंग</string>
     <string name="menu_option_end_of_day">दिन के अंत मे</string>
     <string name="menu_option_logout">लॉग आउट</string>
 
