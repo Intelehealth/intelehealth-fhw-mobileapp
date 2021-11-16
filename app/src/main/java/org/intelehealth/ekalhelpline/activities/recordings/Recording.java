@@ -15,4 +15,8 @@ public class Recording {
     @SerializedName("language")
     @Expose
     public String language;
+
+    @SerializedName("Time")
+    @Expose
+    public String time;
 }

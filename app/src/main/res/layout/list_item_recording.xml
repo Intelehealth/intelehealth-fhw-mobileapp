@@ -38,12 +38,23 @@
                 android:id="@+id/list_item_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/list_item_head"
+                android:layout_marginTop="4dp"
                 android:fontFamily="@font/lato_bold"
                 android:includeFontPadding="false"
-                android:layout_below="@id/list_item_head"
-                tools:text="Hindi"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                tools:text="Hindi" />
+
+            <TextView
+                android:id="@+id/list_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list_item_body"
                 android:layout_marginTop="4dp"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:fontFamily="@font/lato_bold"
+                android:includeFontPadding="false"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:text="22-09-2021 09:03:18" />
 
             <ImageView
                 android:layout_alignParentEnd="true"

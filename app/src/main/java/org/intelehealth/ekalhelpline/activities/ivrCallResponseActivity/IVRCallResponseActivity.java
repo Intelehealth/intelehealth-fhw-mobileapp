@@ -91,7 +91,6 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         response = new Call_Details_Response();
         ApiClient.changeApiBaseUrl("https://api-voice.kaleyra.com");
         UrlModifiers urlModifiers = new UrlModifiers();
-
         String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, fromDate);
         Logger.logD("main", "ivr call response url" + url);
         Observable<Call_Details_Response> patientIvrCall_response =
