@@ -1871,7 +1871,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // am i speaking edit
-            if (patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
+            if (patient1.getAmSpeaking() != null && patient1.getAmSpeaking().equalsIgnoreCase("Not provided"))
                 am_i_speaking_spinner.setSelection(0);
             else {
                 /*String value = patient1.getAmSpeaking();
