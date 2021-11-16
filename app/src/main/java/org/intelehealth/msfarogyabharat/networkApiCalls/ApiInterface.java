@@ -1,6 +1,9 @@
 package org.intelehealth.msfarogyabharat.networkApiCalls;
 
 
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.RecordingResponse;
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.UpdateRecordingCallerBodyModel;
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.UpdatedCallerResponce;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.Resolution;
 import org.intelehealth.msfarogyabharat.models.CheckAppUpdateRes;
 import org.intelehealth.msfarogyabharat.models.DownloadMindMapRes;
@@ -142,4 +145,10 @@ public interface ApiInterface {
     Call<ResponseBody> GIVE_RESOLUTION_API_CALL_OBSERVABLE(@Url String url,
                                                            @Header("Authorization") String authHeader,
                                                            @Body Resolution body);
+
+    @GET
+    Call<RecordingResponse> getRecordings(@Url String url);
+
+    @POST
+    Call<UpdatedCallerResponce> getUpdateRecording(@Url String url, @Body UpdateRecordingCallerBodyModel data);
 }

@@ -124,6 +124,8 @@ public class ImagesPushDAO {
 
             Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.
                     OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
+            Log.v("main", "obsurl" + url);
+            Log.v("main", "obsdata: "+ p.toString());
 
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -148,6 +150,7 @@ public class ImagesPushDAO {
                             Add_Image_Push_Body add_image_push_body = new Add_Image_Push_Body();
                             add_image_push_body.setPatientId(p.getPerson());
                             add_image_push_body.setObsId(p.getUuid());
+                            add_image_push_body.setEncounteruuid(p.getEncounter());
                             add_image_push_body.setImageName(p.getValue());
 
                             Log.v("main", "image file model" + gson.toJson(add_image_push_body));

@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import com.google.gson.Gson;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -238,6 +239,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
+            //code added to handle multiple and single option selection: By Nishita Dated: 30/09/2021
+         /*   Node rootNode = currentNode.getOption(groupPosition);
+            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+
+                    }
+                }
+            }
+            Log.v(TAG, "rootNode - "+new Gson().toJson(rootNode));
+            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (!childNode.getId().equals(question.getId())) {
+                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    }
+                }
+            }
+            adapter.notifyDataSetChanged();*/
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -278,6 +300,30 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
             }
+
+            if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+                //code added to handle multiple and single option selection.
+                Node rootNode = currentNode.getOption(groupPosition);
+                if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+                Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+                if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() &&
+                        question.isExcludedFromMultiChoice() && question.isSelected())) {
+                    for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                        Node childNode = rootNode.getOptionsList().get(i);
+                        if (!childNode.getId().equals(question.getId())) {
+                            currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                        }
+                    }
+                }
+            }
+          //  adapter.notifyDataSetChanged();
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {

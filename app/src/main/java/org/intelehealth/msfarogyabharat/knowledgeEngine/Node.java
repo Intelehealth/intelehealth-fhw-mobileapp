@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,6 +97,9 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
+    private String pregnancy_date;
+    private boolean isMultiChoice = false;
+    private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
 
 
     //for Associated Complaints and medical history only
@@ -158,7 +162,11 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
-            //this.id = jsonNode.getString("id");
+            this.id = jsonNode.getString("id");
+
+            this.isMultiChoice = jsonNode.optBoolean("multi-choice");
+
+            this.isExcludedFromMultiChoice = jsonNode.optBoolean("exclude-from-multi-choice");
 
             this.text = jsonNode.getString("text");
 
@@ -167,6 +175,8 @@ public class Node implements Serializable {
             this.min_age = jsonNode.optString("age_min");
 
             this.max_age = jsonNode.optString("age_max");
+
+            this.pregnancy_date = jsonNode.optString("pregnancy_date");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -346,7 +356,9 @@ public class Node implements Serializable {
      * @param source source knowledgeEngine to copy into a new knowledgeEngine. Will always default as unselected.
      */
     public Node(Node source) {
-        //this.id = source.id;
+        this.id = source.id;
+        this.isMultiChoice = source.isMultiChoice;
+        this.isExcludedFromMultiChoice = source.isExcludedFromMultiChoice;
         this.text = source.text;
         this.display = source.display;
         this.display_gujarati = source.display_gujarati;
@@ -364,6 +376,7 @@ public class Node implements Serializable {
         this.gender = source.gender;
         this.min_age = source.min_age;
         this.max_age = source.max_age;
+        this.pregnancy_date = source.pregnancy_date;
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
@@ -1008,6 +1021,7 @@ public class Node implements Serializable {
                         Calendar cal = Calendar.getInstance();
                         cal.setTimeInMillis(0);
                         cal.set(year, monthOfYear, dayOfMonth);
+                        Log.v("main", "date: "+ year + ":" + monthOfYear + ":" + dayOfMonth);
                         Date date = cal.getTime();
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
@@ -1016,7 +1030,14 @@ public class Node implements Serializable {
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
-                            node.addLanguage(" " + dateString);
+                            if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
+                                String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
+                                node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
+                            }
+                            else {
+                                node.addLanguage(" " + dateString);
+                            }
+                            
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
@@ -1743,12 +1764,20 @@ private static String ml_en(String unit) {
                         cal.setTimeInMillis(0);
                         cal.set(year, monthOfYear, dayOfMonth);
                         Date date = cal.getTime();
+                        Log.v("main", "date: "+ year + ":" + monthOfYear + ":" + dayOfMonth);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MMM/yyyy", Locale.ENGLISH);
                         String dateString = simpleDateFormat.format(date);
                         if (node.getLanguage().contains("_")) {
                             node.setLanguage(node.getLanguage().replace("_", dateString));
                         } else {
-                            node.addLanguage(" " + dateString);
+                            if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
+                                String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
+                                node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
+                            }
+                            else {
+                                node.addLanguage(" " + dateString);
+                            }
+
                             node.setText(node.getLanguage());
                             //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                         }
@@ -1760,6 +1789,39 @@ private static String ml_en(String unit) {
         datePickerDialog.setTitle(R.string.question_date_picker);
         //datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
+    }
+
+    private static String pregnancy_calculator(int day, int month, int year) {
+        String pregnancyTime = "";
+        //user entered date
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        Date userDate = calendar.getTime();
+        String user_date = simpleDateFormat.format(calendar.getTime()); // 21/10/2021
+
+        //todays date
+        Calendar today = Calendar.getInstance();
+        Date todayDate = today.getTime();
+        String todays_date = simpleDateFormat.format(todayDate);
+        Log.v("date", "stringdate: "+ user_date + " " + todays_date);
+
+        long different = todayDate.getTime() - userDate.getTime();
+        Log.v("date", "today::: "+ todayDate.getTime() + " : "+ userDate.getTime());
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long elapsedDays = different / daysInMilli;
+        Log.v("date", "time::: "+ elapsedDays);
+
+        //divide number of days difference with 7 to get no of weeks
+        long weeks = elapsedDays / 7;
+        Log.v("date", "weeks::: "+ weeks);
+
+        return weeks + " weeks";
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {
@@ -2406,6 +2468,14 @@ private static String ml_en(String unit) {
         this.max_age = max_age;
     }
 
+    public String getPregnancy_date() {
+        return pregnancy_date;
+    }
+
+    public void setPregnancy_date(String pregnancy_date) {
+        this.pregnancy_date = pregnancy_date;
+    }
+
     public boolean isRequired() {
         return required;
     }
@@ -2470,6 +2540,20 @@ private static String ml_en(String unit) {
             imagePathList.add(imagePath);
 
         }
+    }
+
+    public boolean isMultiChoice() {
+        return isMultiChoice;
+    }
+    public void setMultiChoice(boolean multiChoice) {
+        isMultiChoice = multiChoice;
+    }
+
+    public boolean isExcludedFromMultiChoice() {
+        return isExcludedFromMultiChoice;
+    }
+    public void setExcludedFromMultiChoice(boolean excludedFromMultiChoice) {
+        isExcludedFromMultiChoice = excludedFromMultiChoice;
     }
 
     private String generateAssociatedSymptomsOrHistory(Node associatedSymptomNode) {

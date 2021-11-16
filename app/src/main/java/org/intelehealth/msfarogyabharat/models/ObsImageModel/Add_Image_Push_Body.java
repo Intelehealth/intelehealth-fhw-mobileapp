@@ -18,6 +18,9 @@ public class Add_Image_Push_Body {
     @SerializedName("imageName")
     @Expose
     private String imageName;
+    @SerializedName("encounteruuid")
+    @Expose
+    private String encounteruuid;
 
     public String getPatientId() {
         return patientId;
@@ -41,5 +44,13 @@ public class Add_Image_Push_Body {
 
     public void setImageName(String imageName) {
         this.imageName = imageName;
+    }
+
+    public String getEncounteruuid() {
+        return encounteruuid;
+    }
+
+    public void setEncounteruuid(String encounteruuid) {
+        this.encounteruuid = encounteruuid;
     }
 }
