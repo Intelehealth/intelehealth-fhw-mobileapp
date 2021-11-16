@@ -111,6 +111,7 @@ import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_caller_language;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_caller_language_edit;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_en_called_helpline;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_en_whatsapp;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_helplineInfo;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_numberRelation;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_hi_whatsapp_edit;
@@ -119,6 +120,7 @@ import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_caller_language;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_caller_language_edit;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_en_called_helpline;
+import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_en_whatsapp;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_helplineInfo;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_numberRelation;
 import static org.intelehealth.hellosaathitraining.utilities.StringUtils.switch_mr_whatsapp_edit;
@@ -527,8 +529,8 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
         //setting the fields when user clicks edit details
-        if (patient1.getChw_name() != null && !patient1.getChw_name().isEmpty() && !patient1.getChw_name().equalsIgnoreCase(""))
-            mCCName.setText(patient1.getChw_name());
+//        if (patient1.getChw_name() != null && !patient1.getChw_name().isEmpty() && !patient1.getChw_name().equalsIgnoreCase(""))
+//            mCCName.setText(patient1.getChw_name());
 
         mFirstName.setText(patient1.getFirst_name());
         mMiddleName.setText(patient1.getMiddle_name());
@@ -1232,15 +1234,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (marriedInfoAdapter.getPosition(maritalStatus) == -1) {
                     married_spinner.setSelection(marriedInfoAdapter.getPosition("हाँ"));
                     spousePhoneNumET.setText(patient1.getMarital_status());
-                }
-                else
-                {
-                    if(patient1.getMarital_status().equalsIgnoreCase("Yes"))
-                    {
+                } else {
+                    if (patient1.getMarital_status().equalsIgnoreCase("Yes")) {
                         married_spinner.setSelection(marriedInfoAdapter.getPosition(maritalStatus));
                         spousePhoneNumET.setText("");
-                    }
-                    else
+                    } else
                         married_spinner.setSelection(marriedInfoAdapter.getPosition(maritalStatus));
                 }
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
@@ -1262,15 +1260,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (marriedInfoAdapter.getPosition(maritalStatus) == -1) {
                     married_spinner.setSelection(marriedInfoAdapter.getPosition("होय"));
                     spousePhoneNumET.setText(patient1.getMarital_status());
-                }
-                else
-                {
-                    if(patient1.getMarital_status().equalsIgnoreCase("Yes"))
-                    {
+                } else {
+                    if (patient1.getMarital_status().equalsIgnoreCase("Yes")) {
                         married_spinner.setSelection(marriedInfoAdapter.getPosition(maritalStatus));
                         spousePhoneNumET.setText("");
-                    }
-                    else
+                    } else
                         married_spinner.setSelection(marriedInfoAdapter.getPosition(maritalStatus));
                 }
             } else {
@@ -1290,12 +1284,10 @@ public class IdentificationActivity extends AppCompatActivity {
                     married_spinner.setSelection(marriedInfoAdapter.getPosition("Yes"));
                     spousePhoneNumET.setText(patient1.getMarital_status());
                 } else {
-                    if(patient1.getMarital_status().equalsIgnoreCase("Yes"))
-                    {
+                    if (patient1.getMarital_status().equalsIgnoreCase("Yes")) {
                         married_spinner.setSelection(marriedInfoAdapter.getPosition(patient1.getMarital_status()));
                         spousePhoneNumET.setText("");
-                    }
-                    else
+                    } else
                         married_spinner.setSelection(marriedInfoAdapter.getPosition(patient1.getMarital_status()));
 
                 }
@@ -3009,19 +3001,17 @@ public class IdentificationActivity extends AppCompatActivity {
             if (mhh_issue_spinner.getSelectedItem().toString().equalsIgnoreCase("Yes") || mhh_issue_spinner.getSelectedItem().toString().equalsIgnoreCase("हाँ") || mhh_issue_spinner.getSelectedItem().toString().equalsIgnoreCase("होय"))
                 mhhIssue = mhhIssueET.getText().toString();
             else
-                mhhIssue = mhh_issue_spinner.getSelectedItem().toString();
+                mhhIssue = "No";
 
 
-            if (married_spinner.getSelectedItem().toString().equalsIgnoreCase("Yes") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("हाँ") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("होय"))
-            {
-                if(spousePhoneNumET!=null && !spousePhoneNumET.getText().toString().isEmpty())
-                maritalStatus = spousePhoneNumET.getText().toString();
-                else
-                    maritalStatus = married_spinner.getSelectedItem().toString();
-            }
-            else
-                maritalStatus = married_spinner.getSelectedItem().toString();
-
+            if (married_spinner.getSelectedItem().toString().equalsIgnoreCase("Yes") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("हाँ") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("होय")) {
+                if (spousePhoneNumET != null && !spousePhoneNumET.getText().toString().isEmpty())
+                    maritalStatus = spousePhoneNumET.getText().toString();
+                else {
+                    maritalStatus = "Yes";
+                }
+            } else
+                maritalStatus = "No";
 
             if (sessionManager.getAppLanguage().equals("hi")) {
                 callerPrefLanguage = switch_hi_caller_language_edit(preferredLangSpinner.getSelectedItem().toString());
@@ -3048,14 +3038,14 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CHW Name"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mCCName.getText().toString()));
+            patientAttributesDTO.setValue("CC- " +StringUtils.getValue(mCCName.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste"));
-            patientAttributesDTO.setValue(StringUtils.getValue1(helplineInfo));
+            patientAttributesDTO.setValue("Select"); //StringUtils.getValue1(helplineInfo) : because this spinner has been removed
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -3112,7 +3102,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue1(callerRelationSpinner.getSelectedItem().toString()));
+            patientAttributesDTO.setValue("Select"); //StringUtils.getValue1(callerRelationSpinner.getSelectedItem().toString()) : becuase this spinner is not required.
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();
@@ -4044,17 +4034,17 @@ public class IdentificationActivity extends AppCompatActivity {
             if (mhh_issue_spinner.getSelectedItem().toString().equalsIgnoreCase("Yes") || mhh_issue_spinner.getSelectedItem().toString().equalsIgnoreCase("हाँ") || mhh_issue_spinner.getSelectedItem().toString().equalsIgnoreCase("होय"))
                 mhhIssue = mhhIssueET.getText().toString();
             else
-                mhhIssue = mhh_issue_spinner.getSelectedItem().toString();
+                mhhIssue = "No";
 
-            if (married_spinner.getSelectedItem().toString().equalsIgnoreCase("Yes") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("हाँ") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("होय"))
-            {
-                if(spousePhoneNumET!=null && !spousePhoneNumET.getText().toString().isEmpty())
+            if (married_spinner.getSelectedItem().toString().equalsIgnoreCase("Yes") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("हाँ") || married_spinner.getSelectedItem().toString().equalsIgnoreCase("होय")) {
+                if (spousePhoneNumET != null && !spousePhoneNumET.getText().toString().isEmpty())
                     maritalStatus = spousePhoneNumET.getText().toString();
                 else
-                    maritalStatus = married_spinner.getSelectedItem().toString();
-            }
-            else
-                maritalStatus = married_spinner.getSelectedItem().toString();
+                {
+                    maritalStatus = "Yes";
+                }
+            } else
+                maritalStatus = "No";
 
 
             if (sessionManager.getAppLanguage().equals("hi")) {
@@ -4082,7 +4072,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CHW Name"));
-            patientAttributesDTO.setValue(StringUtils.getValue(mCCName.getText().toString()));
+            patientAttributesDTO.setValue("CC- " +StringUtils.getValue(mCCName.getText().toString()));
             patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -4091,7 +4081,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste"));
-            patientAttributesDTO.setValue(StringUtils.getValue1(helplineInfo));
+            patientAttributesDTO.setValue("Select"); //StringUtils.getValue1(helplineInfo): because this spinner has been removed
             patientAttributesDTOList.add(patientAttributesDTO);
 
             patientAttributesDTO = new PatientAttributesDTO();
@@ -4147,7 +4137,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Son/wife/daughter"));
-            patientAttributesDTO.setValue(StringUtils.getValue1(callerRelationSpinner.getSelectedItem().toString()));
+            patientAttributesDTO.setValue("Select"); //StringUtils.getValue1(callerRelationSpinner.getSelectedItem().toString())
             patientAttributesDTOList.add(patientAttributesDTO);
 
 //            patientAttributesDTO = new PatientAttributesDTO();

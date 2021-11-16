@@ -309,6 +309,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                     model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                    model.setChw_name(StringUtils.mobileNumberEmpty(ChwName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
 
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
@@ -486,6 +487,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.setChw_name(StringUtils.mobileNumberEmpty(ChwName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -512,6 +514,8 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setUuid(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+                            model.setChw_name(StringUtils.mobileNumberEmpty(ChwName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))));
+
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -548,6 +552,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                            model.setChw_name(StringUtils.mobileNumberEmpty(ChwName(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
                             modelListwihtoutQuery.add(model);
 
                         } while (cursor.moveToNext());
@@ -602,6 +607,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                             model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                             model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                             model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
+                            model.setChw_name(StringUtils.mobileNumberEmpty(ChwName(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
                             modelList.add(model);
 
                         } while (cursor.moveToNext());
@@ -649,6 +655,27 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         return phone;
     }
+
+    private String ChwName(String patientuuid) throws DAOException {
+        String chw_name = null;
+        Cursor idCursor = db.rawQuery("SELECT value  FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='3e114fc0-d073-496a-b5fc-fce35bede93d' ", new String[]{patientuuid});
+        try {
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+
+                    chw_name = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
+
+                }
+            }
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+        }
+        idCursor.close();
+
+        return chw_name;
+    }
+
+
 
     @Override
     protected void onStop() {

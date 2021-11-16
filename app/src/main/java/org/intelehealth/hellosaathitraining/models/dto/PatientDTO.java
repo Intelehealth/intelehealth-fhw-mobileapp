@@ -62,7 +62,9 @@ public class PatientDTO {
     @SerializedName("gender")
     @Expose
     private String gender;
-
+    @SerializedName("chw_name")
+    @Expose
+    private String chw_name;
 
     private String patientPhoto;
 
@@ -248,5 +250,13 @@ public class PatientDTO {
 
     public void setPreferredlanguage(String preferredlanguage) {
         this.preferredlanguage = preferredlanguage;
+    }
+
+    public String getChw_name() {
+        return chw_name;
+    }
+
+    public void setChw_name(String chw_name) {
+        this.chw_name = chw_name;
     }
 }

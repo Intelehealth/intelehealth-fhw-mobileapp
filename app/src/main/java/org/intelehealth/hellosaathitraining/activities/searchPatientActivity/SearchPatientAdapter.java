@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -69,19 +70,25 @@ public class SearchPatientAdapter extends RecyclerView.Adapter<SearchPatientAdap
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("search adapter", "patientuuid" + patinet.getUuid());
-                String patientStatus = "returning";
-                Intent intent = new Intent(context, PatientDetailActivity.class);
-                intent.putExtra("patientUuid", patinet.getUuid());
-                if(patinet.getLastname()==null)
-                    intent.putExtra("patientName", patinet.getFirstname());
+                if(patinet.getChw_name()!=null && patinet.getChw_name().contains("CC-")) {
+                    Log.d("search adapter", "patientuuid" + patinet.getUuid());
+                    String patientStatus = "returning";
+                    Intent intent = new Intent(context, PatientDetailActivity.class);
+                    intent.putExtra("patientUuid", patinet.getUuid());
+                    if (patinet.getLastname() == null)
+                        intent.putExtra("patientName", patinet.getFirstname());
+                    else
+                        intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
+                    intent.putExtra("status", patientStatus);
+                    intent.putExtra("tag", "search");
+                    intent.putExtra("hasPrescription", "false");
+                    intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
+                    context.startActivity(intent);
+                }
                 else
-                    intent.putExtra("patientName", patinet.getFirstname() + "" + patinet.getLastname());
-                intent.putExtra("status", patientStatus);
-                intent.putExtra("tag", "search");
-                intent.putExtra("hasPrescription", "false");
-                intent.putExtra(PatientDetailActivity.EXTRA_SHOW_MEDICAL_ADVICE, true);
-                context.startActivity(intent);
+                {
+                    Toast.makeText(context,"This patient cannot be accessed as is created by agent.",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
