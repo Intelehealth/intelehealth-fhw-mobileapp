@@ -15,6 +15,7 @@
     <string name="action_print">Print</string>
     <string name="action_sms">Sms</string>
     <string name="action_home">Home</string>
+    <string name="call_recordings">Missed Call Recordings</string>
     <string name="action_settings">Settings</string>
     <string name="generic_warning">Warning!</string>
     <string name="generic_update">Update</string>
@@ -815,4 +816,8 @@
     <string name="no_previous_visits">No previous visits</string>
     <string name="case_visitsummary">"Case "</string>
     <string name="please_select_an_option">Please select an option</string>
+    <string name="something_wrong_refresh_again">Something Went Wrong. Please Refresh again</string>
+
+    <string name="no_records_found">No records found</string>
+    <string name="textViewHintFacility">Select Facility</string>
 </resources>

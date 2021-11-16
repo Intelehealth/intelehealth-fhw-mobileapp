@@ -42,11 +42,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.telephony.SmsManager;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -60,6 +62,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -80,12 +83,17 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
 import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
+import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.Item;
+import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.MultiSelectionSpinner;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -97,6 +105,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.additionalDocumentsActivity.AdditionalDocumentsActivity;
@@ -304,6 +313,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String shareoptionsarray[] = {"Whatsapp", "Email"};
     public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
 
+
+    List<String> districtList;
+    ArrayList<Item> mFacilityList;
+    TextView txtViewFacility;
+    AutoCompleteTextView autocompleteState, autocompleteDistrict;
+    EditText editText_landmark;
+    MultiSelectionSpinner mFacilitySelection;
+
+    String mState, mDistrict,mFacilityValue;
+    JSONArray mFacilityArray =new JSONArray();
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -371,6 +390,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.summary_addNewCase: {
+//                NavUtils.navigateUpFromSameTask(this);
+                Intent i = new Intent(this, PrivacyNotice_Activity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+                return true;
+            }
             case R.id.summary_home: {
 //                NavUtils.navigateUpFromSameTask(this);
                 Intent i = new Intent(this, HomeActivity.class);
@@ -722,6 +748,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
+         txtViewFacility = findViewById(R.id.txtViewFacility);
+        autocompleteState = findViewById(R.id.autocomplete_state);
+        autocompleteDistrict = findViewById(R.id.autocomplete_district);
+        editText_landmark = findViewById(R.id.editText_landmark);
+        mFacilitySelection = (MultiSelectionSpinner) findViewById(R.id.mFacilitySelection);
+        autocompleteDistrict.setEnabled(false);
+        districtList = new ArrayList<>();
+        mFacilityList = new ArrayList<>();
+        mFacilityList.add(new Item(getString(R.string.select),false));
+
+        mFacilitySelection.setVisibility(View.GONE);
+        txtViewFacility.setVisibility(View.VISIBLE);
+
 
         //get all visits from patientuuid
         visitUuidList = new ArrayList<>();
@@ -913,6 +952,162 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }*/
 
+        String[] countries = getResources().getStringArray(R.array.states_india);
+        // Create the adapter and set it to the AutoCompleteTextView
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
+        autocompleteState.setAdapter(adapter);
+
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteDistrict.setText("");
+            autocompleteDistrict.setEnabled(false);
+        }
+
+        autocompleteState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
+
+        mFacilitySelection.setItems(mFacilityList);
+        autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedState = parent.getItemAtPosition(position).toString();
+                mState=parent.getItemAtPosition(position).toString();
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
+                    autocompleteDistrict.setText("");
+                    autocompleteDistrict.setEnabled(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setClickable(false);
+                    mFacilityList.clear();
+                    txtViewFacility.setVisibility(View.VISIBLE);
+                    mFacilitySelection.setVisibility(View.GONE);
+                } else
+                    autocompleteDistrict.setEnabled(true);
+
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
+                mFacilitySelection.setEnabled(false);
+                mFacilityList.clear();
+                districtList.clear();
+                try {
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(selectedState)) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+                                String district = districtArray.getJSONObject(j).getString("name");
+//                              mFacilityArray=districtArray.getJSONObject(j).getJSONArray("facility");
+                                districtList.add(district);
+                            }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(VisitSummaryActivity.this, android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
+                            break;
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        autocompleteDistrict.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedDistrict = parent.getItemAtPosition(position).toString();
+                mDistrict= parent.getItemAtPosition(position).toString();
+                if (selectedDistrict.equalsIgnoreCase("") || autocompleteState.getText().equals("")) {
+
+                    mFacilityList.clear();
+//                    editText_landmark.setEnabled(false);
+                    mFacilitySelection.setClickable(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    txtViewFacility.setVisibility(View.VISIBLE);
+
+                } else
+                    txtViewFacility.setVisibility(View.GONE);
+                mFacilitySelection.setVisibility(View.VISIBLE);
+                mFacilitySelection.setEnabled(true);
+                mFacilityList.clear();
+                try {
+                    mFacilityArray=new JSONArray();
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(autocompleteState.getText().toString())) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+
+                                String district = districtArray.getJSONObject(j).getString("name");
+
+                                if (district.equalsIgnoreCase(selectedDistrict)) {
+                                    Log.d("jgkfdjg", "selectedDistrict" + mFacilityArray);
+
+                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("facility");
+
+                                    for (int k = 0; k < mFacilityArray.length(); k++) {
+
+                                        mFacilityList.add(new Item(mFacilityArray.getString(k),false));
+
+                                    }
+                                    break;
+
+                                }
+
+
+                            }
+//                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(VisitSummaryActivity.this, android.R.layout.simple_list_item_1, districtList);
+//                            autocompleteDistrict.setAdapter(districtAdapter);
+                            break;
+                        }
+
+                    }
+                    if(mFacilityArray.length()!=0 && mFacilityList!=null&& mFacilityList.size()!=0){
+
+
+
+
+                        mFacilitySelection.setItems(mFacilityList);
+
+                    }
+                    else{
+                        mFacilityList.clear();
+                        txtViewFacility.setVisibility(View.VISIBLE);
+                        txtViewFacility.setText("-");
+                        mFacilitySelection.setVisibility(View.GONE);
+
+//                      mFacilitySelection.setVisibility(View.GONE);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         speciality_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -1090,7 +1285,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         uploadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                uploadFacility();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
              //   if (speciality_spinner.getSelectedItemPosition() != 0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
@@ -1963,6 +2158,26 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                 phoneNumberWithCountryCode, message))));
     }
+    public JSONObject loadJsonObjectFromAsset(String assetName) {
+        try {
+            String json = loadStringFromAsset(assetName);
+            if (json != null)
+                return new JSONObject(json);
+        } catch (Exception e) {
+            Log.e("JsonUtils", e.toString());
+        }
+
+        return null;
+    }
+
+    private String loadStringFromAsset(String assetName) throws Exception {
+        InputStream is = getApplicationContext().getAssets().open(assetName);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        return new String(buffer, "UTF-8");
+    }
 
     private String sms_prescription() {
         String mPatientName = patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name()))
@@ -2330,7 +2545,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-     * @param uuid the visit uuid of the patient visit records is passed to the function.
+//     * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
 
@@ -3727,6 +3942,49 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } catch (CursorIndexOutOfBoundsException e) {
             patHistory.setValue(""); // if medical history does not exist
         }
+
+
+        try {
+            String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+
+            String[] FacilityHistArgs = {encounterUuidAdultIntial, UuidDictionary.Facility};
+
+            Cursor medHistCursor = db.query("tbl_obs", columns,FacilityHistSelection , FacilityHistArgs, null, null, null);
+            medHistCursor.moveToLast();
+            String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+//            patHistory.setValue(facilityText);
+//todo single textutill
+            if (!TextUtils.isEmpty(facilityText)) {
+
+//                medHistory = patHistory.getValue();
+//Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
+                if(facilityText==null){
+                }else{
+                    String[] arrayString = facilityText.split(",",3);
+
+
+                    autocompleteState.setText(""+arrayString[0]);
+                    mState=arrayString[0];
+                    autocompleteDistrict.setText(""+arrayString[1]);
+                    mDistrict=arrayString[1];
+                    txtViewFacility.setText(""+arrayString[arrayString.length-1]);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    mFacilityValue=arrayString[arrayString.length-1];
+                }
+
+//                medHistory = medHistory.replace("\"", "");
+//                medHistory = medHistory.replace("\n", "");
+//                do {
+//                    medHistory = medHistory.replace("  ", "");
+//                } while (medHistory.contains("  "));
+            }
+            medHistCursor.close();
+        } catch (CursorIndexOutOfBoundsException e) {
+            autocompleteState.setText("");
+            autocompleteDistrict.setText("");
+            txtViewFacility.setText("");
+            // if facility  does not exist
+        }
 //vitals display code
         String visitSelection = "encounteruuid = ? AND voided!='1'";
         String[] visitArgs = {encounterVitals};
@@ -4546,6 +4804,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     shareSelectedOption = 1;
                 break;
         }
+    }
+    private void uploadFacility() {
+
+        Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e...."+encounterUuidAdultIntial);
+        ObsDAO obsDAO = new ObsDAO();
+        ObsDTO obsDTO = new ObsDTO();
+        List<ObsDTO> obsDTOList = new ArrayList<>();
+        obsDTO = new ObsDTO();
+        obsDTO.setUuid(UUID.randomUUID().toString());
+        obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+        //todo
+
+        if(mFacilitySelection.getVisibility()==View.VISIBLE){
+            mFacilityValue=mFacilitySelection.getSelectedItemsAsString();
+        }else{
+            mFacilityValue= txtViewFacility.getText().toString();
+        }
+        obsDTO.setValue(""+mState+", "+mDistrict+", "+mFacilityValue);
+        obsDTO.setConceptuuid(UuidDictionary.Facility);
+        obsDTOList.add(obsDTO);
+
+
+
+        try {
+            obsDAO.insertObsToDb(obsDTOList);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+//      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
+
     }
 
 }
