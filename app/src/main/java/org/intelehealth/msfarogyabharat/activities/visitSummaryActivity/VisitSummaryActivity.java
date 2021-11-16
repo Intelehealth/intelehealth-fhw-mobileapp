@@ -94,6 +94,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -311,8 +312,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean allVisitsEnded = false;
     private boolean hide_endvisit = false;
     String shareoptionsarray[] = {"Whatsapp", "Email"};
-    public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
-
+    public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
+    URLEncoder urlEncoder;
 
     List<String> districtList;
     ArrayList<Item> mFacilityList;
@@ -598,7 +599,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 /*try {
                     doWebViewPrint_Button();*/
 
-                    // redirect to web browser for prescription
+                // redirect to web browser for prescription
                 Intent intent1 = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(prescriptionUrl + patientUuid));
                 Log.v("main", "prescurl: " +prescriptionUrl + patientUuid);
@@ -2138,9 +2139,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void shareEmail() {
-        String to = "prajwal@intelehealth.org";
-        String subject = "Prescription";
-        String body = prescriptionUrl + patientUuid; //www.training.vikalpindia.org/#/prescription/patientId
+        String to = "";
+        String subject = "E-Prescription";
+        String body = prescriptionUrl + patientUuid; //https://training.vikalpindia.org/intelehealth/index.html#/prescription/patientId
         Log.v("main", "prescurl: " +body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
@@ -2151,13 +2152,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void shareWhatsapp(String phoneNumberWithCountryCode) {
-        String message = prescriptionUrl + patientUuid;
+        //Whatsapp is not accepting special characters # so need to encode it.
+        String url = "";
+        url = URLEncoder.encode(prescriptionUrl);
+        String message = url + patientUuid;
         Log.v("main", "prescurl: " +message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                 phoneNumberWithCountryCode, message))));
     }
+    
     public JSONObject loadJsonObjectFromAsset(String assetName) {
         try {
             String json = loadStringFromAsset(assetName);
