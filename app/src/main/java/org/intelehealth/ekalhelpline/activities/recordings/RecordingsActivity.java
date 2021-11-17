@@ -153,7 +153,7 @@ public class RecordingsActivity extends AppCompatActivity {
                 getRecordings(sessionManager.getProviderPhoneno(), date_string);
             }
         }, year, month, day);
-
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         datePickerDialog.show();
 
         Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);

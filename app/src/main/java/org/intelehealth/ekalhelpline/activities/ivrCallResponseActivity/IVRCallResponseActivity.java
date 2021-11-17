@@ -183,7 +183,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                 getIVR_Call_Response(sessionManager.getProviderPhoneno(), date_string);
             }
         }, year, month, day);
-
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         datePickerDialog.show();
 
         Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);
