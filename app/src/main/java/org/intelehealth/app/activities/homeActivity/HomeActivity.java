@@ -53,6 +53,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
@@ -72,6 +73,7 @@ import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.FollowUpNotificationWorker;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
@@ -123,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6, c7;
     private String key = null;
     private String licenseUrl = null;
 
@@ -137,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, follow_up_textview;
     private ObjectAnimator syncAnimator;
 
     @Override
@@ -187,6 +189,7 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7 = findViewById(R.id.cardview_follow_up);
 
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatients_textview);
@@ -206,6 +209,9 @@ public class HomeActivity extends AppCompatActivity {
 
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
+
+        follow_up_textview = findViewById(R.id.follow_up_textview);
+        follow_up_textview.setText(getString(R.string.title_follow_up));
 
         //String myString = null;
         //myString.length();
@@ -274,6 +280,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+        c7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFollowUpClick(view);
+            }
+        });
+
         ivSync = findViewById(R.id.iv_sync);
 
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
@@ -327,6 +341,8 @@ public class HomeActivity extends AppCompatActivity {
         }*/
 
         showProgressbar();
+        FollowUpNotificationWorker.schedule();
+
     }
 
     private void saveToken() {
@@ -384,6 +400,11 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void onFollowUpClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
+        startActivity(intent);
     }
 
     //function for handling the video library feature...
