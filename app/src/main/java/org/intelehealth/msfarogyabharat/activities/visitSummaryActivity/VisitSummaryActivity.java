@@ -671,7 +671,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     });
 
                     String htmlDoc = sms_prescription();
-                    alertDialog.setTitle("Share Prescription");
+                    alertDialog.setTitle(R.string.share_prescription);
                     alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
 
                     alertDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
