@@ -674,6 +674,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     alertDialog.setTitle("Share Prescription");
                     alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
 
+                    alertDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            shareSelectedOption = 2; //to remvoe the selected value from the cache memory of the variable.
+                        }
+                    });
+
                     alertDialog.setPositiveButton(getResources().getString(R.string.share),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -713,8 +720,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 }
                             });
                     AlertDialog dialog = alertDialog.show();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
                     Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
                 } else {
