@@ -28,6 +28,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.RecordingsAdapter;
 import org.intelehealth.msfarogyabharat.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
@@ -61,10 +62,11 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     File obsImgdir = new File(AppConstants.IMAGE_PATH);
     VisitSummaryActivity summaryActivity = new VisitSummaryActivity();
     SessionManager sessionManager;
+OnVisitItemClickListner onClickingIteListner;
 
     public VisitSummaryAdapter(Context context, Context visitsumContext, List<String> visitUuidList,
                                List<String> complaintList, List<String> physexamList,
-                               boolean allVisitsEnded, String currentvisituuid, Add_Doc_Adapter_DataModel model) {
+                               boolean allVisitsEnded, String currentvisituuid, Add_Doc_Adapter_DataModel model,OnVisitItemClickListner listner) {
         this.context = context;
         this.visitsumContext = visitsumContext;
         this.visitUuidList = visitUuidList;
@@ -73,6 +75,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
         this.allVisitsEnded = allVisitsEnded;
         this.currentvisituuid = currentvisituuid;
         this.model = model;
+        onClickingIteListner=listner;
         Log.v("main","allvisitsended: "+ this.allVisitsEnded);
     }
 
@@ -119,6 +122,7 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
             textView_caseTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    onClickingIteListner.mItemClicking(getAdapterPosition());
                     if(linearlayout_body.getVisibility() == View.VISIBLE) {
                         linearlayout_body.startAnimation(slide_up);
                         linearlayout_body.setVisibility(View.GONE);
@@ -416,4 +420,8 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     }
 
 
+   interface OnVisitItemClickListner{
+
+    void mItemClicking(int pos);
+}
 }

@@ -1284,7 +1284,8 @@
             android:layout_marginTop="10dp"
             app:cardCornerRadius="5dp"
             android:layout_marginHorizontal="5dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"

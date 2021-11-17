@@ -81,6 +81,7 @@ import android.widget.Toast;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
@@ -94,6 +95,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -321,8 +323,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     EditText editText_landmark;
     MultiSelectionSpinner mFacilitySelection;
 
-    String mState, mDistrict,mFacilityValue;
-    JSONArray mFacilityArray =new JSONArray();
+    String mState, mDistrict, mFacilityValue;
+    JSONArray mFacilityArray = new JSONArray();
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -342,8 +345,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
         prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
 
-      //  if (isPastVisit) menuItem.setVisible(false);
-        if(hide_endvisit) menuItem.setVisible(false);
+        //  if (isPastVisit) menuItem.setVisible(false);
+        if (hide_endvisit) menuItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -418,7 +421,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 //meera
-              //  downloaded = true;
+                //  downloaded = true;
                 if (downloaded) {
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
 
@@ -487,11 +490,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             latestVisitUuid = intent.getStringExtra("latest_VisitUuid");
-            Log.v("visituuid", "vuid: "+ visitUuid);
+            Log.v("visituuid", "vuid: " + visitUuid);
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
             EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-            Log.v("main", "v: "+ encounterVitals + " a: "+encounterUuidAdultIntial + " aaa: "+EncounterAdultInitial_LatestVisit);
+            Log.v("main", "v: " + encounterVitals + " a: " + encounterUuidAdultIntial + " aaa: " + EncounterAdultInitial_LatestVisit);
 
             mSharedPreference = this.getSharedPreferences(
                     "visit_summary", Context.MODE_PRIVATE);
@@ -598,10 +601,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 /*try {
                     doWebViewPrint_Button();*/
 
-                    // redirect to web browser for prescription
+                // redirect to web browser for prescription
                 Intent intent1 = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(prescriptionUrl + patientUuid));
-                Log.v("main", "prescurl: " +prescriptionUrl + patientUuid);
+                Log.v("main", "prescurl: " + prescriptionUrl + patientUuid);
                 startActivity(intent1);
 
 /*                } catch (ParseException e) {
@@ -636,8 +639,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                    editText.setText(patient.getPhone_number());
 //                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams
 //                            (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                   // editText.setLayoutParams(layoutParams);
-                  //  alertDialog.setView(editText);
+                    // editText.setLayoutParams(layoutParams);
+                    //  alertDialog.setView(editText);
 
                     alertDialog.setView(dialogView);
                     EditText editText = dialogView.findViewById(R.id.editTextmobileno);
@@ -678,30 +681,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
-                                        Log.v("main", "sharedoption: "+ shareSelectedOption);
-                                        if(shareSelectedOption != 2) {
+                                        Log.v("main", "sharedoption: " + shareSelectedOption);
+                                        if (shareSelectedOption != 2) {
                                             String phoneNumber = "+91" + editText.getText().toString();
                                             /*startActivity(new Intent(Intent.ACTION_VIEW,
                                                     Uri.fromParts("sms", phoneNumber, null))
                                                     .putExtra("sms_body", Html.fromHtml(htmlDoc).toString()));*/
 
                                             //Add code for Whatsapp and Email here
-                                            if(shareSelectedOption == 0) {
+                                            if (shareSelectedOption == 0) {
                                                 //Whatsapp...
                                                 String phoneNumberWithCountryCode = "+91" + editText.getText().toString();
                                                 shareWhatsapp(phoneNumberWithCountryCode);
                                                 shareSelectedOption = 2;
-                                            }
-                                            else if(shareSelectedOption == 1) {
+                                            } else if (shareSelectedOption == 1) {
                                                 //Email...
                                                 shareEmail();
                                                 shareSelectedOption = 2;
                                             }
                                             //end
-                                        }
-                                        else {
+                                        } else {
                                             Toast.makeText(context, getResources().getString(R.string.please_select_an_option),
-                                                Toast.LENGTH_SHORT).show();
+                                                    Toast.LENGTH_SHORT).show();
                                         }
 
                                     } else {
@@ -748,7 +749,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
-         txtViewFacility = findViewById(R.id.txtViewFacility);
+        txtViewFacility = findViewById(R.id.txtViewFacility);
         autocompleteState = findViewById(R.id.autocomplete_state);
         autocompleteDistrict = findViewById(R.id.autocomplete_district);
         editText_landmark = findViewById(R.id.editText_landmark);
@@ -756,7 +757,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         autocompleteDistrict.setEnabled(false);
         districtList = new ArrayList<>();
         mFacilityList = new ArrayList<>();
-        mFacilityList.add(new Item(getString(R.string.select),false));
+        mFacilityList.add(new Item(getString(R.string.select), false));
 
         mFacilitySelection.setVisibility(View.GONE);
         txtViewFacility.setVisibility(View.VISIBLE);
@@ -792,13 +793,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Cursor cursor = db.rawQuery("Select uuid from tbl_visit where enddate is NULL AND patientuuid = ?",
                     new String[]{patientUuid});
             try {
-                if(cursor != null && cursor.moveToFirst()) {
+                if (cursor != null && cursor.moveToFirst()) {
                     do {
                         //do nothing
                     }
                     while (cursor.moveToNext());
-                }
-                else {
+                } else {
                     //as movetoFirst() will return False since there is no data this means no visit is Active (all are Ended).
                     editVitals.setVisibility(View.GONE);
                     editComplaint.setVisibility(View.GONE);
@@ -812,11 +812,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     invalidateOptionsMenu();
                     hide_endvisit = true;
                 }
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
 
             }
-            if(cursor != null) {
+            if (cursor != null) {
                 cursor.close();
             }
             //end
@@ -831,7 +830,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor__ != null && visitIDCursor__.moveToFirst() && visitIDCursor__.getCount() > 0) {
                 visitIDCursor__.moveToFirst();
                 visitUUID = visitIDCursor__.getString(visitIDCursor__.getColumnIndexOrThrow("uuid"));
-                Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
+                Log.v("visituuid", "visituuid: " + visitUUID + "\n");
             }
             if (visitIDCursor__ != null) visitIDCursor__.close();
             if (visitUUID != null && !visitUUID.isEmpty()) {
@@ -841,7 +840,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         //To show the most recent data on top - reverse the arraylist
-       // Collections.reverse(visitUuidList);
+        // Collections.reverse(visitUuidList);
         //end
 
         //getEncounters - start
@@ -905,11 +904,50 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Add_Doc_Adapter_DataModel model = new Add_Doc_Adapter_DataModel(encounterAdultInit, patientUuid, visitUuid,
                 patientName, float_ageYear_Month);
         visitsum_adapter = new VisitSummaryAdapter(context, context1, visitUuidList,
-                complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid, model);
+                complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid, model, new VisitSummaryAdapter.OnVisitItemClickListner() {
+            @Override
+            public void mItemClicking(int pos) {
+                String[] columns = {"value", " conceptuuid"};
+                try {
+
+                    String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+
+                    String[] FacilityHistArgs = {encounterAdultInitList.get(pos), UuidDictionary.Facility};
+                    Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
+                    medHistCursor.moveToLast();
+                    String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+//            patHistory.setValue(facilityText);
+//todo single textutill
+                    if (!TextUtils.isEmpty(facilityText)) {
+
+//                medHistory = patHistory.getValue();
+//Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
+                        if (facilityText == null) {
+                        } else {
+                            String[] arrayString = facilityText.split(",", 3);
+
+
+                            autocompleteState.setText("" + arrayString[0]);
+                            mState = arrayString[0];
+                            autocompleteDistrict.setText("" + arrayString[1]);
+                            mDistrict = arrayString[1];
+                            txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
+                            mFacilitySelection.setVisibility(View.GONE);
+                            mFacilityValue = arrayString[arrayString.length - 1];
+                        }
+                    }
+                    medHistCursor.close();
+                } catch (CursorIndexOutOfBoundsException e) {
+                    autocompleteState.setText("");
+                    autocompleteDistrict.setText("");
+                    txtViewFacility.setText("");
+                    // if facility  does not exist
+                }
+            }
+        });
         visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
         recyclerview_visitsummary.setAdapter(visitsum_adapter);
-
 
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
@@ -925,7 +963,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         List<String> items = providerAttributeLIstDAO.getAllValues();
         Log.d("specc", "spec: " + visitUuid);
-       // String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
+        // String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringArrayAdapter;
 
@@ -951,9 +989,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
         }*/
+        JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
+//        JsonArray Country=new JsonArray();
+                String[] countries = getResources().getStringArray(R.array.states_india);
+//        try{
+//
+//            JSONArray stateArray = json.getJSONArray("states");
+//            for (int i= 0; i < stateArray.length(); i++) {
+//                String StateList = stateArray.getJSONObject(i).getString("state");
+////                              mFacilityArray=districtArray.getJSONObject(j).getJSONArray("facility");
+//                Country.add(StateList);
+//            }}catch (Exception e){}
 
-        String[] countries = getResources().getStringArray(R.array.states_india);
         // Create the adapter and set it to the AutoCompleteTextView
+
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         autocompleteState.setAdapter(adapter);
@@ -968,12 +1017,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 autocompleteDistrict.setEnabled(false);
                 autocompleteDistrict.setText("");
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 autocompleteDistrict.setEnabled(false);
                 autocompleteDistrict.setText("");
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
             }
 
             @Override
@@ -981,7 +1038,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
         });
-        JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
+
+
 
         mFacilitySelection.setItems(mFacilityList);
         autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -989,7 +1047,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedState = parent.getItemAtPosition(position).toString();
-                mState=parent.getItemAtPosition(position).toString();
+                mState = parent.getItemAtPosition(position).toString();
                 if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") || selectedState.equalsIgnoreCase("Select State")) {
                     autocompleteDistrict.setText("");
                     autocompleteDistrict.setEnabled(false);
@@ -1029,13 +1087,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
             }
         });
+        autocompleteDistrict.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         autocompleteDistrict.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedDistrict = parent.getItemAtPosition(position).toString();
-                mDistrict= parent.getItemAtPosition(position).toString();
+                mDistrict = parent.getItemAtPosition(position).toString();
                 if (selectedDistrict.equalsIgnoreCase("") || autocompleteState.getText().equals("")) {
 
                     mFacilityList.clear();
@@ -1051,7 +1130,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 mFacilitySelection.setEnabled(true);
                 mFacilityList.clear();
                 try {
-                    mFacilityArray=new JSONArray();
+                    mFacilityArray = new JSONArray();
                     JSONArray stateArray = json.getJSONArray("states");
                     for (int i = 0; i < stateArray.length(); i++) {
                         String state = stateArray.getJSONObject(i).getString("state");
@@ -1070,7 +1149,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     for (int k = 0; k < mFacilityArray.length(); k++) {
 
-                                        mFacilityList.add(new Item(mFacilityArray.getString(k),false));
+                                        mFacilityList.add(new Item(mFacilityArray.getString(k), false));
 
                                     }
                                     break;
@@ -1085,15 +1164,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         }
 
                     }
-                    if(mFacilityArray.length()!=0 && mFacilityList!=null&& mFacilityList.size()!=0){
-
-
+                    if (mFacilityArray.length() != 0 && mFacilityList != null && mFacilityList.size() != 0) {
 
 
                         mFacilitySelection.setItems(mFacilityList);
 
-                    }
-                    else{
+                    } else {
                         mFacilityList.clear();
                         txtViewFacility.setVisibility(View.VISIBLE);
                         txtViewFacility.setText("-");
@@ -1163,7 +1239,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //image download for physcialExamination documents
         physcialExaminationDownloadText.setPaintFlags(p.getColor());
         physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-      //  physcialExaminationImagesDownload();
+        //  physcialExaminationImagesDownload();
 
 
         downloadButton.setEnabled(false);
@@ -1287,50 +1363,50 @@ public class VisitSummaryActivity extends AppCompatActivity {
             public void onClick(View view) {
                 uploadFacility();
                 isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
-             //   if (speciality_spinner.getSelectedItemPosition() != 0) {
-                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
-                    boolean isUpdateVisitDone = false;
-                    try {
+                //   if (speciality_spinner.getSelectedItemPosition() != 0) {
+                VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                boolean isUpdateVisitDone = false;
+                try {
 
-                        if (!isVisitSpecialityExists) {
-                            isUpdateVisitDone = speciality_attributes
-                                    .insertVisitAttributes(visitUuid, speciality_selected);
-                        }
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                    if (!isVisitSpecialityExists) {
+                        isUpdateVisitDone = speciality_attributes
+                                .insertVisitAttributes(visitUuid, speciality_selected);
                     }
+                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                }
 
-                    if (isVisitSpecialityExists)
-                        speciality_spinner.setEnabled(false);
+                if (isVisitSpecialityExists)
+                    speciality_spinner.setEnabled(false);
 
-                    VisitAttributeListDAO visit_state_attributes = new VisitAttributeListDAO();
-                    boolean isUpdateVisitState = false;
-                    try {
-                        if (!isVisitSpecialityExists) {
-                            isUpdateVisitState = visit_state_attributes.insertVisitAttributesState(visitUuid, "" + sessionManager.getStateName());
-                        }
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                VisitAttributeListDAO visit_state_attributes = new VisitAttributeListDAO();
+                boolean isUpdateVisitState = false;
+                try {
+                    if (!isVisitSpecialityExists) {
+                        isUpdateVisitState = visit_state_attributes.insertVisitAttributesState(visitUuid, "" + sessionManager.getStateName());
                     }
+                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                    Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                }
 
-                    if (flag.isChecked()) {
-                        try {
-                            EncounterDAO encounterDAO = new EncounterDAO();
-                            encounterDAO.setEmergency(visitUuid, true);
+                if (flag.isChecked()) {
+                    try {
+                        EncounterDAO encounterDAO = new EncounterDAO();
+                        encounterDAO.setEmergency(visitUuid, true);
 
-                            //here disable the checkbox...
-                            flag.setEnabled(false);
-
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                        }
-                    } else {
-                        //here if checkbox is not selected still disable the checkbox...
+                        //here disable the checkbox...
                         flag.setEnabled(false);
+
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+                } else {
+                    //here if checkbox is not selected still disable the checkbox...
+                    flag.setEnabled(false);
 
                    /* try {
                         EncounterDAO encounterDAO = new EncounterDAO();
@@ -1342,82 +1418,82 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }*/
+                }
+
+
+                if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                    String patientSelection = "uuid = ?";
+                    String[] patientArgs = {String.valueOf(patient.getUuid())};
+                    String table = "tbl_patient";
+                    String[] columnsToReturn = {"openmrs_id"};
+                    final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+
+                    if (idCursor.moveToFirst()) {
+                        do {
+                            patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                        } while (idCursor.moveToNext());
                     }
+                    idCursor.close();
+                }
 
+                if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                }
 
-                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                        String patientSelection = "uuid = ?";
-                        String[] patientArgs = {String.valueOf(patient.getUuid())};
-                        String table = "tbl_patient";
-                        String[] columnsToReturn = {"openmrs_id"};
-                        final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
-
-
-                        if (idCursor.moveToFirst()) {
-                            do {
-                                patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
-                            } while (idCursor.moveToNext());
-                        }
-                        idCursor.close();
+                if (visitUUID == null || visitUUID.isEmpty()) {
+                    Log.v("visituuid", "visituuid: " + visitUUID + "\n");
+                    String visitIDSelection = "uuid = ?";
+                    String[] visitIDArgs = {visitUuid};
+                    final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+                    if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                        visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                        Log.v("visituuid", "visituuid: " + visitUUID + "\n");
                     }
+                    if (visitIDCursor != null)
+                        visitIDCursor.close();
+                }
 
-                    if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
-                    }
+                if (!flag.isChecked()) {
+                    //
+                }
 
-                    if (visitUUID == null || visitUUID.isEmpty()) {
-                        Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
-                        String visitIDSelection = "uuid = ?";
-                        String[] visitIDArgs = {visitUuid};
-                        final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
-                        if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
-                            visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
-                            Log.v("visituuid", "visituuid: "+ visitUUID + "\n");
-                        }
-                        if (visitIDCursor != null)
-                            visitIDCursor.close();
-                    }
+                if (NetworkConnection.isOnline(getApplication())) {
+                    Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
-                    if (!flag.isChecked()) {
-                        //
-                    }
+                    SyncDAO syncDAO = new SyncDAO();
 
-                    if (NetworkConnection.isOnline(getApplication())) {
-                        Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
-
-                        SyncDAO syncDAO = new SyncDAO();
-
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 //                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
-                                //Do something after 100ms
-                                SyncUtils syncUtils = new SyncUtils();
-                                boolean isSynced = syncUtils.syncForeground("visitSummary");
-                                if (isSynced) {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
-                                    //
-                                    showVisitID();
-                                    Log.d("visitUUID", "showVisitID: " + visitUUID);
-                                    isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
-                                    if (isVisitSpecialityExists)
-                                        speciality_spinner.setEnabled(false);
+                            //Do something after 100ms
+                            SyncUtils syncUtils = new SyncUtils();
+                            boolean isSynced = syncUtils.syncForeground("visitSummary");
+                            if (isSynced) {
+                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_upload), getResources().getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                //
+                                showVisitID();
+                                Log.d("visitUUID", "showVisitID: " + visitUUID);
+                                isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                                if (isVisitSpecialityExists)
+                                    speciality_spinner.setEnabled(false);
 
-                                } else {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                            } else {
+                                AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
-                                }
-                                uploaded = true;
-                                if (isFollowUpOrClosed() && isSynced) { //only when the sync is successful then only end the visit
-                                    //this fixes the bug of visit not ending even when ended if the flow was done quickly my the user
-                                    endVisit();
-                                }
                             }
-                        }, 4000);
-                    } else {
-                        AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
-                    }
-              //  }
+                            uploaded = true;
+                            if (isFollowUpOrClosed() && isSynced) { //only when the sync is successful then only end the visit
+                                //this fixes the bug of visit not ending even when ended if the flow was done quickly my the user
+                                endVisit();
+                            }
+                        }
+                    }, 4000);
+                } else {
+                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getResources().getString(R.string.visit_data_failed), getResources().getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                }
+                //  }
                 /*else {
                     TextView t = (TextView) speciality_spinner.getSelectedView();
                     if (t != null) {
@@ -1998,7 +2074,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 addDocs.putExtra("encounterUuidVitals", encounterVitals);
                 addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInit);
                 addDocs.putStringArrayListExtra("encounterAdultInitList", (ArrayList<String>) encounterAdultInitList);
-               // addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInitList);
+                // addDocs.putExtra("encounterUuidAdultIntial", encounterAdultInitList);
                 startActivity(addDocs);
             }
         });
@@ -2074,7 +2150,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(latestVisitUuid == null || latestVisitUuid.isEmpty())
+                uploadFacility();
+                if (latestVisitUuid == null || latestVisitUuid.isEmpty())
                     latestVisitUuid = visitUuid;
 
                 if (visitUUID == null || visitUUID.isEmpty()) {
@@ -2113,15 +2190,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent1.putExtra("tag", "edit");
 
-                    if (complaintList_adapter.get(complaintList_adapter.size()-1).contains(":")) {
-                        String substring = complaintList_adapter.get(complaintList_adapter.size()-1)
-                                .substring(0, complaintList_adapter.get(complaintList_adapter.size()-1).indexOf(":"));
+                    if (complaintList_adapter.get(complaintList_adapter.size() - 1).contains(":")) {
+                        String substring = complaintList_adapter.get(complaintList_adapter.size() - 1)
+                                .substring(0, complaintList_adapter.get(complaintList_adapter.size() - 1).indexOf(":"));
                         boolean value = substring.toLowerCase().contains("violence") ||
-                                complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().contains("हिंसा");
+                                complaintList_adapter.get(complaintList_adapter.size() - 1).toLowerCase().contains("हिंसा");
                         intent1.putExtra("resolutionViolence", value);
                     } else {
-                        boolean value = complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().contains("violence")
-                                || complaintList_adapter.get(complaintList_adapter.size()-1).toLowerCase().contains("हिंसा");
+                        boolean value = complaintList_adapter.get(complaintList_adapter.size() - 1).toLowerCase().contains("violence")
+                                || complaintList_adapter.get(complaintList_adapter.size() - 1).toLowerCase().contains("हिंसा");
                         intent1.putExtra("resolutionViolence", value);
                     }
                     startActivity(intent1);
@@ -2141,7 +2218,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String to = "prajwal@intelehealth.org";
         String subject = "Prescription";
         String body = prescriptionUrl + patientUuid; //www.training.vikalpindia.org/#/prescription/patientId
-        Log.v("main", "prescurl: " +body);
+        Log.v("main", "prescurl: " + body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
@@ -2152,12 +2229,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void shareWhatsapp(String phoneNumberWithCountryCode) {
         String message = prescriptionUrl + patientUuid;
-        Log.v("main", "prescurl: " +message);
+        Log.v("main", "prescurl: " + message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                 phoneNumberWithCountryCode, message))));
     }
+
     public JSONObject loadJsonObjectFromAsset(String assetName) {
         try {
             String json = loadStringFromAsset(assetName);
@@ -2248,8 +2326,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-       // String mComplaint = complaint.getValue();
-        String mComplaint = complaintList_adapter.get(complaintList_adapter.size()-1);
+        // String mComplaint = complaint.getValue();
+        String mComplaint = complaintList_adapter.get(complaintList_adapter.size() - 1);
 
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -2545,7 +2623,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     /**
-//     * @param uuid the visit uuid of the patient visit records is passed to the function.
+     * //     * @param uuid the visit uuid of the patient visit records is passed to the function.
+     *
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
      */
 
@@ -2876,8 +2955,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-       // String mComplaint = complaint.getValue();
-        String mComplaint = complaintList_adapter.get(complaintList_adapter.size()-1);
+        // String mComplaint = complaint.getValue();
+        String mComplaint = complaintList_adapter.get(complaintList_adapter.size() - 1);
 
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -3223,8 +3302,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         mresp = resp.getValue();
         mSPO2 = "SpO2(%): " + (!TextUtils.isEmpty(spO2.getValue()) ? spO2.getValue() : "");
-       // String mComplaint = complaint.getValue();
-        String mComplaint = complaintList_adapter.get(complaintList_adapter.size()-1);
+        // String mComplaint = complaint.getValue();
+        String mComplaint = complaintList_adapter.get(complaintList_adapter.size() - 1);
 
         //Show only the headers of the complaints in the printed prescription
         String[] complaints = StringUtils.split(mComplaint, Node.bullet_arrow);
@@ -3945,11 +4024,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
         try {
+
             String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] FacilityHistArgs = {encounterUuidAdultIntial, UuidDictionary.Facility};
-
-            Cursor medHistCursor = db.query("tbl_obs", columns,FacilityHistSelection , FacilityHistArgs, null, null, null);
+            String[] FacilityHistArgs = {encounterAdultInitList.get(0), UuidDictionary.Facility};
+            Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
             medHistCursor.moveToLast();
             String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
 //            patHistory.setValue(facilityText);
@@ -3958,18 +4037,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //                medHistory = patHistory.getValue();
 //Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
-                if(facilityText==null){
-                }else{
-                    String[] arrayString = facilityText.split(",",3);
+                if (facilityText == null) {
+                } else {
+                    String[] arrayString = facilityText.split(",", 3);
 
 
-                    autocompleteState.setText(""+arrayString[0]);
-                    mState=arrayString[0];
-                    autocompleteDistrict.setText(""+arrayString[1]);
-                    mDistrict=arrayString[1];
-                    txtViewFacility.setText(""+arrayString[arrayString.length-1]);
+                    autocompleteState.setText("" + arrayString[0]);
+                    mState = arrayString[0];
+                    autocompleteDistrict.setText("" + arrayString[1]);
+                    mDistrict = arrayString[1];
+                    txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
                     mFacilitySelection.setVisibility(View.GONE);
-                    mFacilityValue=arrayString[arrayString.length-1];
+                    mFacilityValue = arrayString[arrayString.length - 1];
                 }
 
 //                medHistory = medHistory.replace("\"", "");
@@ -4513,7 +4592,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (uploaded) {
                     try {
                         downloaded = visitsDAO.isUpdatedDownloadColumn(visitUuid, true);
-                        Log.v("visituuid", "download_vuuid: "+visitUuid);
+                        Log.v("visituuid", "download_vuuid: " + visitUuid);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
@@ -4522,7 +4601,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
 
             additionalDocumentImagesDownload();
-          //  physcialExaminationImagesDownload();
+            //  physcialExaminationImagesDownload();
 
         } catch (DAOException e) {
             e.printStackTrace();
@@ -4686,18 +4765,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
-        String complaintData = complaintList_adapter.get(complaintList_adapter.size()-1);
-        if(complaintView != null) {
+        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+        if (complaintView != null) {
             String i = complaintData.toLowerCase().replaceAll("\\s+", "");
-            Log.v("main", "vi: "+i);
-            if(complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
+            Log.v("main", "vi: " + i);
+            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
                 flag = true;
-            }
-            else {
+            } else {
                 flag = false;
             }
         }
@@ -4805,26 +4883,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 break;
         }
     }
-    private void uploadFacility() {
 
-        Log.d("jf","jff====== ff55495e-bd92-4b2f-a21c-94c5720a938e...."+encounterUuidAdultIntial);
+    private void uploadFacility() {
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
         List<ObsDTO> obsDTOList = new ArrayList<>();
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
-        obsDTO.setEncounteruuid(encounterUuidAdultIntial);
+        obsDTO.setEncounteruuid(EncounterAdultInitial_LatestVisit);
         //todo
 
-        if(mFacilitySelection.getVisibility()==View.VISIBLE){
-            mFacilityValue=mFacilitySelection.getSelectedItemsAsString();
-        }else{
-            mFacilityValue= txtViewFacility.getText().toString();
+        if (mFacilitySelection.getVisibility() == View.VISIBLE) {
+            mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
+        } else {
+            mFacilityValue = txtViewFacility.getText().toString();
         }
-        obsDTO.setValue(""+mState+", "+mDistrict+", "+mFacilityValue);
+        obsDTO.setValue("" + mState + ", " + mDistrict + ", " + mFacilityValue);
         obsDTO.setConceptuuid(UuidDictionary.Facility);
         obsDTOList.add(obsDTO);
-
 
 
         try {
