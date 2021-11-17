@@ -939,6 +939,15 @@ public class IdentificationActivity extends AppCompatActivity {
                         radioYes.setChecked(false);
                 }
             }
+            else {
+                //on edit if no data was present that means that age was less than 18 when registring a patient. So, if null then hide then question and not show that question...
+                framelayout_vaccine_question.setVisibility(View.GONE);
+                framelayout_vaccination.setVisibility(View.GONE);
+//                int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+//                spinner_vaccination.setSelection(spinner_position);
+                radioYes.setChecked(false);
+                radioNo.setChecked(false);
+            }
             //vacciantion - end
 
         }
