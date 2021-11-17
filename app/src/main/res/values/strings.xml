@@ -820,4 +820,8 @@
 
     <string name="no_records_found">No records found</string>
     <string name="textViewHintFacility">Select Facility</string>
+    <string name="select_option_to_share_prescription">Select option to share prescription</string>
+    <string name="whatsapp">Whatsapp</string>
+    <string name="email">Email</string>
+    <string name="share_prescription">Share Prescription</string>
 </resources>

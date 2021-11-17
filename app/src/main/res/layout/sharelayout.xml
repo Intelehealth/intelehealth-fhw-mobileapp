@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:hint="Enter mobile number"/>
+        android:hint= "@string/enter_phone_number"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select option to share prescription"
+            android:text="@string/select_option_to_share_prescription"
             android:layout_marginBottom="10dp"
             android:textSize="16sp"/>
 
@@ -39,14 +39,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Whatsapp"/>
+            android:text="@string/whatsapp"/>
 
         <RadioButton
             android:id="@+id/emailradio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Email"/>
+            android:text="@string/email"/>
 
     </RadioGroup>
     </LinearLayout>

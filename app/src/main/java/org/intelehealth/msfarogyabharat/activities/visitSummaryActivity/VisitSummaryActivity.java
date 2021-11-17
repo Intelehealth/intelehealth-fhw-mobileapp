@@ -95,7 +95,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Array;
+import java.net.URLEncoder;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -313,8 +313,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean allVisitsEnded = false;
     private boolean hide_endvisit = false;
     String shareoptionsarray[] = {"Whatsapp", "Email"};
-    public static final String prescriptionUrl = "https://www.training.vikalpindia.org/#/prescription/";
-
+    public static final String prescriptionUrl = "https://training.vikalpindia.org/intelehealth/index.html#/prescription/";
+    URLEncoder urlEncoder;
 
     List<String> districtList;
     ArrayList<Item> mFacilityList;
@@ -673,8 +673,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     });
 
                     String htmlDoc = sms_prescription();
-                    alertDialog.setTitle("Share Prescription");
+                    alertDialog.setTitle(R.string.share_prescription);
                     alertDialog.setMessage(getResources().getString(R.string.enter_mobile_number_to_share_prescription));
+
+                    alertDialog.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            shareSelectedOption = 2; //to remvoe the selected value from the cache memory of the variable.
+                        }
+                    });
 
                     alertDialog.setPositiveButton(getResources().getString(R.string.share),
                             new DialogInterface.OnClickListener() {
@@ -713,8 +720,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 }
                             });
                     AlertDialog dialog = alertDialog.show();
+                    dialog.setCancelable(false);
+                    dialog.setCanceledOnTouchOutside(false);
                     Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                    Button negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
                     positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
+                    negativeButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));
                     //alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                     IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
                 } else {
@@ -2215,10 +2226,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void shareEmail() {
-        String to = "prajwal@intelehealth.org";
-        String subject = "Prescription";
-        String body = prescriptionUrl + patientUuid; //www.training.vikalpindia.org/#/prescription/patientId
-        Log.v("main", "prescurl: " + body);
+        String to = "";
+        String subject = "E-Prescription";
+        String body = prescriptionUrl + patientUuid; //https://training.vikalpindia.org/intelehealth/index.html#/prescription/patientId
+        Log.v("main", "prescurl: " +body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
@@ -2228,14 +2239,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void shareWhatsapp(String phoneNumberWithCountryCode) {
-        String message = prescriptionUrl + patientUuid;
-        Log.v("main", "prescurl: " + message);
+        //Whatsapp is not accepting special characters # so need to encode it.
+        String url = "";
+        url = URLEncoder.encode(prescriptionUrl);
+        String message = url + patientUuid;
+        Log.v("main", "prescurl: " +message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                 phoneNumberWithCountryCode, message))));
     }
-
+    
     public JSONObject loadJsonObjectFromAsset(String assetName) {
         try {
             String json = loadStringFromAsset(assetName);
