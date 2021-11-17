@@ -685,4 +685,20 @@
     <string name="title_follow_reminder">Follow up visit reminder</string>
     <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
     <string name="due_on">Due Date:</string>
+
+    <string name="blood_grp">Blood Group: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
+    <string name="visit_summary_sugar" translatable="false">Sugar Level (Random)</string>
+    <string name="visit_summary_sugarfast" translatable="false">Sugar Level (Fasting/After Meal)</string>
+    <string name="visit_summary_blood" translatable="false">Blood Group</string>
+    <string name="hemoglobin_error" translatable="false">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="sugar_error" translatable="false">Sugar Level should be in between %1$s and %2$s</string>
+    <string name="blood_error" translatable="false">Please select blood group</string>
+    <string name="table_sugar_fasting" translatable="false">Sugar(Fasting)</string>
+    <string name="table_sugar_aftermeal" translatable="false">Sugar(AfterMeal)</string>
+
+    <string name="table_hemoglobin" translatable="false">Hemoglobin</string>
+    <string name="table_bld_grp" translatable="false">Blood Group</string>
+    <string name="table_sugar_level" translatable="false">Sugar Level -mg/dL(Random)</string>
+    <string name="warning_app_update">Please update the app to the latest version.</string>
 </resources>

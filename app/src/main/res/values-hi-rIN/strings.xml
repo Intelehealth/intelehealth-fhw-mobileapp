@@ -680,4 +680,19 @@
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
     <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
     <string name="due_on">नियत तारीख:</string>
+
+    <string name="blood_grp">रक्त वर्ग: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
+    <string name="visit_summary_sugar" translatable="false">शुगर लेवल (रैंडम)</string>
+    <string name="visit_summary_sugarfast" translatable="false">शुगर लेवल (उपवास/भोजन के बाद)</string>
+    <string name="visit_summary_blood" translatable="false">रक्त वर्ग</string>
+    <string name="hemoglobin_error" translatable="false">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="sugar_error" translatable="false">शुगर लेवल का स्तर %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="blood_error" translatable="false">कृपया रक्त वर्ग चुनें</string>
+    <string name="table_sugar_fasting" translatable="false">शुगर(उपवास)</string>
+    <string name="table_sugar_aftermeal" translatable="false">शुगर(भोजन के बाद)</string>
+
+    <string name="table_hemoglobin" translatable="false">हीमोग्लोबिन</string>
+    <string name="table_bld_grp" translatable="false">रक्त वर्ग</string>
+    <string name="table_sugar_level" translatable="false">शुगर लेवल-मिलीग्राम/डीएल (रैंडम)</string>
 </resources>
