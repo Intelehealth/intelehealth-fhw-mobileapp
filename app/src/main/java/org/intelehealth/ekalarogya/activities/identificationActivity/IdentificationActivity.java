@@ -914,30 +914,30 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             //vacciantion...
-            if(!patient1.getVaccination().equalsIgnoreCase("No")) {
-                if(patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
-                    framelayout_vaccine_question.setVisibility(View.GONE);
-                    framelayout_vaccination.setVisibility(View.GONE);
-                    int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
-                    spinner_vaccination.setSelection(spinner_position);
-                    radioYes.setChecked(false);
-                    radioNo.setChecked(false);
-                }
-                else {
-                    framelayout_vaccination.setVisibility(View.VISIBLE);
-                    int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
-                    spinner_vaccination.setSelection(spinner_position);
-                    radioYes.setChecked(true);
-                    if (radioNo.isChecked())
+            if(patient1.getVaccination() != null) {
+                if (!patient1.getVaccination().equalsIgnoreCase("No")) {
+                    if (patient1.getVaccination().equalsIgnoreCase("Age less than 18 years")) {
+                        framelayout_vaccine_question.setVisibility(View.GONE);
+                        framelayout_vaccination.setVisibility(View.GONE);
+                        int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                        spinner_vaccination.setSelection(spinner_position);
+                        radioYes.setChecked(false);
                         radioNo.setChecked(false);
+                    } else {
+                        framelayout_vaccination.setVisibility(View.VISIBLE);
+                        int spinner_position = vaccination_adapt.getPosition(patient1.getVaccination());
+                        spinner_vaccination.setSelection(spinner_position);
+                        radioYes.setChecked(true);
+                        if (radioNo.isChecked())
+                            radioNo.setChecked(false);
+                    }
+                } else {
+                    framelayout_vaccination.setVisibility(View.GONE);
+                    spinner_vaccination.setSelection(0);
+                    radioNo.setChecked(true);
+                    if (radioYes.isChecked())
+                        radioYes.setChecked(false);
                 }
-            }
-            else {
-                framelayout_vaccination.setVisibility(View.GONE);
-                spinner_vaccination.setSelection(0);
-                radioNo.setChecked(true);
-                if (radioYes.isChecked())
-                    radioYes.setChecked(false);
             }
             //vacciantion - end
 
