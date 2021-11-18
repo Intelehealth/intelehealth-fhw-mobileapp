@@ -882,7 +882,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (previsitCursor.moveToFirst() && previsitCursor != null) {
                 do {
                     //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
-                    complaintList_adapter.add(Html.fromHtml(previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"))).toString());
+                    String value = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(value);
+                    value = obsDTO.getValue(sessionManager.getAppLanguage());
+                    complaintList_adapter.add(Html.fromHtml(value).toString());
                 }
                 while (previsitCursor.moveToNext());
 
@@ -899,8 +903,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (previsitCursor_phy.moveToFirst() && previsitCursor_phy != null) {
                 do {
                     //here we will get multiple values so add each in Arraylist and then send to RecyclerAdapter
-                    physexamList_adapter.add(Html.fromHtml(previsitCursor_phy.getString
-                            (previsitCursor_phy.getColumnIndexOrThrow("value"))).toString());
+                    String value = previsitCursor_phy.getString
+                            (previsitCursor_phy.getColumnIndexOrThrow("value"));
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(value);
+                    value = obsDTO.getValue(sessionManager.getAppLanguage());
+                    physexamList_adapter.add(Html.fromHtml(value).toString());
                 }
                 while (previsitCursor_phy.moveToNext());
 

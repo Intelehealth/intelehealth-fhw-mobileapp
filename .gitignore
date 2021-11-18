@@ -21,3 +21,4 @@ salt.env
 /webrtc/build/.transforms/
 /app/release/
 /app/src/main/assets/fonts/Almondita-mLZJP.ttf
+/webrtc/build/
