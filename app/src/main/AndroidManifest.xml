@@ -276,7 +276,7 @@
         </service>
 
         <receiver
-            android:name=".utilities.NetworkChangeListener"
+            android:name="org.intelehealth.unicef.utilities.NetworkChangeListener"
             android:exported="false"
             android:label="NetworkChangeReceiver">
             <intent-filter>

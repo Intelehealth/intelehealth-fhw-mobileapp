@@ -8,9 +8,9 @@ android {
         applicationId "org.intelehealth.unicef"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 10
+        versionCode 13
         buildToolsVersion('29.0.2')
-        versionName "1.8"
+        versionName "1.8.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
@@ -133,7 +133,7 @@ dependencies {
     // Declare the dependency for the Realtime Database library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-database'
-
+    implementation 'com.google.firebase:firebase-config'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
 
