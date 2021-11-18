@@ -171,13 +171,39 @@ public final class StringUtils {
             val = switch_kn_caste(val);
             val = switch_kn_economic(val);
             val = switch_kn_education(val);
+        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            val = switch_ru_caste(val);
+            val = switch_ru_economic(val);
+            val = switch_ru_education(val);
         }
 
         return val;
     }
 
 
-    public static String switch_kn_education_edit(String val) {
+    public static String switch_ru_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "Безграмотный";
+                break;
+            case "Primary":
+                val = "Начальный";
+                break;
+            case "Secondary":
+                val = "Вторичный";
+                break;
+            case "Higher Secondary":
+                val = "Высшее среднее";
+                break;
+            case "Graduation & Higher":
+                val = "Выпускной и высшее";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+  public static String switch_kn_education_edit(String val) {
         switch (val) {
             case "Illiterate":
                 val = "ಅಶಿಕ್ಷಿತ";
@@ -216,6 +242,33 @@ public final class StringUtils {
                 val = "Higher Secondary";
                 break;
             case "ಪದವಿ ಮತ್ತು ಹೆಚ್ಚಿನ":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+
+
+
+public static String switch_ru_education(String val) {
+        switch (val) {
+            case "Безграмотный":
+                val = "Illiterate";
+                break;
+            case "Начальный":
+                val = "Primary";
+                break;
+            case "Вторичный":
+                val = "Secondary";
+                break;
+            case "Высшее среднее":
+                val = "Higher Secondary";
+                break;
+            case "Выпускной и высшее":
                 val = "Graduation & Higher";
                 break;
             default:
@@ -537,6 +590,20 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_ru_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "APL";
+                break;
+            case "BPL":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_or_economic(String val) {
         switch (val) {
             case "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ":
@@ -678,6 +745,19 @@ public final class StringUtils {
     }
 
 
+    public static String switch_ru_economic(String val) {
+        switch (val) {
+            case "APL":
+                val = "APL";
+                break;
+            case "BPL":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
     public static String switch_kn_economic(String val) {
         switch (val) {
             case "ಬಡತನ ರೇಖೆಯ ಮೇಲೆ":
@@ -844,6 +924,51 @@ public final class StringUtils {
         return val;
     }
 
+    public static String switch_ru_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "Общий";
+                break;
+            case "OBC":
+                val = "OBC";
+                break;
+            case "SC":
+                val = "SC";
+                break;
+            case "ST":
+                val = "ST";
+                break;
+            case "others":
+                val = "другие";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_ru_caste(String val) {
+        switch (val) {
+            case "Общий":
+                val = "General";
+                break;
+            case "OBC":
+                val = "OBC";
+                break;
+            case "SC":
+                val = "SC";
+                break;
+            case "ST":
+                val = "ST";
+                break;
+            case "другие":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
 
     public static String switch_kn_caste(String val) {
         switch (val) {
@@ -1251,6 +1376,23 @@ public final class StringUtils {
 
         return mdob_text;
     }
+    public static String en__ru_dob(String dob) { //English dob is replaced to Odiya text.
+        String mdob_text = dob
+                .replace("January", "Январь")
+                .replace("February", "Февраль")
+                .replace("March", "Март")
+                .replace("April", "апреля")
+                .replace("May", "Май")
+                .replace("June", "июнь")
+                .replace("July", "июль")
+                .replace("August", "август")
+                .replace("September", "сентябрь")
+                .replace("October", "Октябрь")
+                .replace("November", "Ноябрь")
+                .replace("December", "Декабрь");
+
+        return mdob_text;
+    }
 
     public static String hi_or__en_month(int month_index) {
         String dob_string = "";
@@ -1417,6 +1559,24 @@ public final class StringUtils {
                     .replace("ಡಿಸೆಂಬರ್", "December");
             return dob;
         }
+       else if (locale.equalsIgnoreCase("ru")) {
+            String dob = dobString
+                    //Russian
+                    .replace("Январь", "January")
+                    .replace("Февраль", "February")
+                    .replace("Март", "March")
+                    .replace("апреля", "April")
+                    .replace("Май", "May")
+                    .replace("июнь", "June")
+                    .replace("июль", "July")
+                    .replace("август", "August")
+                    .replace("сентябрь", "September")
+                    .replace("Октябрь", "October")
+                    .replace("Ноябрь", "November")
+                    .replace("Декабрь", "December");
+            return dob;
+        }
+
         else {
             return dobString;
         }

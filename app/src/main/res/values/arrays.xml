@@ -10,6 +10,7 @@
         <item>Kannada</item>
         <item>Assamese</item>
         <item>Malyalam</item>
+        <item>Russian</item>
         <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -22,6 +23,7 @@
         <item>kn</item>
         <item>as</item>
         <item>ml</item>
+        <item>ru</item>
         <!--        <item>cb</item>-->
     </string-array>
 
@@ -146,6 +148,14 @@
         <item>ബിരുദവും ഉന്നതവും</item>
     </string-array>
 
+    <string-array name="education_ru">
+        <item>Выберите Образование</item>
+        <item>Неграмотный</item>
+        <item>Первичный</item>
+        <item>Необязательно</item>
+        <item>Среднее образование</item>
+        <item>Окончание и высшее</item>
+    </string-array>
     <string-array name="education_kn">
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
         <item>ಅಶಿಕ್ಷಿತ</item>
@@ -226,6 +236,15 @@
         <item>ಇತರ</item>
     </string-array>
 
+    <string-array name="caste_ru">
+        <item>Выбирать</item>
+        <item>Общие</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>другие</item>
+    </string-array>
+
     <string-array name="economic_en">
         <item>Select</item>
         <item>APL</item>
@@ -277,6 +296,11 @@
         <item>ಆಯ್ಕೆಮಾಡಿ</item>
         <item>ಬಡತನ ರೇಖೆಯ ಮೇಲೆ</item>
         <item>ಬಡತನ ರೇಖೆಯ ಕೆಳಗೆ</item>
+
+    </string-array><string-array name="economic_ru">
+        <item>Выбирать</item>
+        <item>APL</item>
+        <item>BPL</item>
     </string-array>
 
     <string-array name="states_india">

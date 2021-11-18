@@ -89,6 +89,7 @@ import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
 import static org.intelehealth.app.utilities.StringUtils.getValue;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
@@ -112,6 +113,9 @@ import static org.intelehealth.app.utilities.StringUtils.switch_or_education_edi
 
 import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.app.utilities.StringUtils.switch_ru_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ru_economic_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education;
@@ -564,6 +568,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String education = switch_kn_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String education = switch_ru_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else {
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(patient1.getEducation_level()) : 0);
                 }
@@ -601,6 +608,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String economic = switch_kn_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String economic = switch_ru_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
@@ -632,6 +642,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String caste = switch_kn_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String caste = switch_ru_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
@@ -896,6 +909,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
                     mDOB.setText(dob_text);
+                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
+                    mDOB.setText(dob_text);
                 } else {
                     mDOB.setText(dobString);
                 }
@@ -956,6 +972,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                 String dob_text = en__kn_dob(dob); //to show text of English into kannada...
+                mDOB.setText(dob_text);
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                String dob_text = en__ru_dob(dob); //to show text of English into kannada...
                 mDOB.setText(dob_text);
             } else {
                 mDOB.setText(dob);
@@ -1090,6 +1109,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDOB.setText(dob_text);
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
+                        mDOB.setText(dob_text);
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                        String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
                     } else {
                         mDOB.setText(dobString);
