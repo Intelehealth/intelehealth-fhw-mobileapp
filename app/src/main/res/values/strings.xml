@@ -770,4 +770,9 @@
     <string name="spouse_phone_number_pd">Spouse\'s Phone Number</string>
     <string name="mobile_number_search">"Mobile number: "</string>
 
+    //Daily Performance
+    <string name="total_reg">Number of new members registered -</string>
+    <string name="total_sub">Number of subscriptions made -</string>
+    <string name="total_called_helpline">Number of members called the helpline -</string>
+
 </resources>

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
@@ -46,6 +47,11 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.hellosaathitraining.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.hellosaathitraining.activities.ivrCallResponseActivity.IVRCallResponseActivity;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.RegistrationResponse;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.Registrations;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.SubscriptionResponse;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.Subscriptions;
+import org.intelehealth.hellosaathitraining.utilities.UrlModifiers;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -53,6 +59,7 @@ import java.io.File;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -86,6 +93,9 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Home Screen
@@ -121,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, totalRegTV, totalSubsTV, totalCallsTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,9 +172,11 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
-
+        totalCallsTV = findViewById(R.id.total_calls);
+        totalRegTV = findViewById(R.id.total_reg);
+        totalSubsTV = findViewById(R.id.total_subs);
         //card textview referrenced to fix bug of localization not working in some cases...
-
+        getDailyPerformance(getTodayDate(), sessionManager.getChwname());
         newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);
 
@@ -320,6 +332,66 @@ public class HomeActivity extends AppCompatActivity {
 
 
         showProgressbar();
+    }
+
+    private String getTodayDate() {
+        Calendar calendar = Calendar.getInstance();
+        String date_string = "";
+        SimpleDateFormat todaydateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        date_string = todaydateFormat.format(calendar.getTime());
+        return  date_string;
+    }
+
+    private void getDailyPerformance(String today_date, String chwname) {
+        if (!NetworkConnection.isOnline(this)) {
+            totalRegTV.setText(getString(R.string.total_reg) + " NA");
+            totalSubsTV.setText(getString(R.string.total_sub) + " NA");
+            totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+            return;
+        }
+
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+        String encoded = "Basic " + sessionManager.getEncoded();
+        apiInterface.getRegistrationNum(urlModifiers.getRegistrationNumUrl(chwname), encoded).enqueue(new Callback<RegistrationResponse>() {
+            @Override
+            public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
+                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+                    for (Registrations registrations : response.body().data) {
+                            if(!TextUtils.isEmpty(registrations.registered_date) && registrations.registered_date.equals(today_date))
+                                totalRegTV.setText(getString(R.string.total_reg) + " " + registrations.total_count);
+                    }
+                } else {
+                    totalRegTV.setText(getString(R.string.total_reg) + " NA");
+                }
+            }
+            @Override
+            public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                System.out.println(t);
+            }
+        });
+
+        apiInterface.getSubscriptionNum(urlModifiers.getSubscriptionNumUrl(chwname), encoded).enqueue(new Callback<SubscriptionResponse>() {
+            @Override
+            public void onResponse(Call<SubscriptionResponse> call, Response<SubscriptionResponse> response) {
+                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+                    for (Subscriptions subscriptions : response.body().data) {
+                        if(!TextUtils.isEmpty(subscriptions.subscribed_date) && subscriptions.subscribed_date.equals(today_date)) {
+                            totalSubsTV.setText(getString(R.string.total_sub) + " " + subscriptions.total_count);
+                            return;
+                        }
+                    }
+                } else {
+                    totalSubsTV.setText(getString(R.string.total_sub) + " NA");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubscriptionResponse> call, Throwable t) {
+                System.out.println(t);
+            }
+        });
+
     }
 
     //function for handling the video library feature...

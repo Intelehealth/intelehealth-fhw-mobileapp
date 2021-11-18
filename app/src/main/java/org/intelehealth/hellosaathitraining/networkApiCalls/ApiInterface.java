@@ -13,6 +13,8 @@ import org.intelehealth.hellosaathitraining.models.PrescriptionUrl;
 import org.intelehealth.hellosaathitraining.models.Results;
 import org.intelehealth.hellosaathitraining.models.SubscriptionData;
 import org.intelehealth.hellosaathitraining.models.SubscriptionStatus;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.RegistrationResponse;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.SubscriptionResponse;
 import org.intelehealth.hellosaathitraining.models.dto.ResponseDTO;
 import org.intelehealth.hellosaathitraining.models.loginModel.LoginModel;
 import org.intelehealth.hellosaathitraining.models.loginProviderModel.LoginProviderModel;
@@ -144,6 +146,14 @@ public interface ApiInterface {
 
     @POST
     Call<PrescriptionUrl> getPrescriptionShortUrl(@Url String url, @Body PrescriptionBody data);
+
+    @GET
+    Call<RegistrationResponse> getRegistrationNum(@Url String url,
+                                             @Header("Authorization") String authHeader);
+
+    @GET
+    Call<SubscriptionResponse> getSubscriptionNum(@Url String url,
+                                             @Header("Authorization") String authHeader);
 
 }
 

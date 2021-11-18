@@ -127,5 +127,15 @@ public class UrlModifiers {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         String BASE_URL = "https://" + sessionManager.getServerUrl() +
                 ":3004/api/mindmap/shortLink";
-        return BASE_URL; }
+        return BASE_URL;
+    }
+
+    public String getSubscriptionNumUrl(String chwname) {
+        return "https://" + sessionManager.getServerUrl() + "/subscriptions/" + chwname;
+    }
+
+    public String getRegistrationNumUrl(String chwname) {
+        return "https://" + sessionManager.getServerUrl() + "/registrations/" + chwname;
+    }
+
 }
