@@ -47,6 +47,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.hellosaathitraining.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.hellosaathitraining.activities.ivrCallResponseActivity.IVRCallResponseActivity;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.CallNumResponse;
+import org.intelehealth.hellosaathitraining.models.dailyPerformance.CallNums;
 import org.intelehealth.hellosaathitraining.models.dailyPerformance.RegistrationResponse;
 import org.intelehealth.hellosaathitraining.models.dailyPerformance.Registrations;
 import org.intelehealth.hellosaathitraining.models.dailyPerformance.SubscriptionResponse;
@@ -132,6 +134,8 @@ public class HomeActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview, totalRegTV, totalSubsTV, totalCallsTV;
+    boolean check = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +180,7 @@ public class HomeActivity extends AppCompatActivity {
         totalRegTV = findViewById(R.id.total_reg);
         totalSubsTV = findViewById(R.id.total_subs);
         //card textview referrenced to fix bug of localization not working in some cases...
-        getDailyPerformance(getTodayDate(), sessionManager.getChwname());
+        getDailyPerformance(getTodayDate(), sessionManager.getChwname(),sessionManager.getProviderPhoneno());
         newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);
 
@@ -342,7 +346,7 @@ public class HomeActivity extends AppCompatActivity {
         return  date_string;
     }
 
-    private void getDailyPerformance(String today_date, String chwname) {
+    private void getDailyPerformance(String today_date, String chwName, String chwNum) {
         if (!NetworkConnection.isOnline(this)) {
             totalRegTV.setText(getString(R.string.total_reg) + " NA");
             totalSubsTV.setText(getString(R.string.total_sub) + " NA");
@@ -353,13 +357,19 @@ public class HomeActivity extends AppCompatActivity {
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
         String encoded = "Basic " + sessionManager.getEncoded();
-        apiInterface.getRegistrationNum(urlModifiers.getRegistrationNumUrl(chwname), encoded).enqueue(new Callback<RegistrationResponse>() {
+        check = false;
+        apiInterface.getRegistrationNum(urlModifiers.getRegistrationNumUrl(chwName), encoded).enqueue(new Callback<RegistrationResponse>() {
             @Override
             public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
                 if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
                     for (Registrations registrations : response.body().data) {
-                            if(!TextUtils.isEmpty(registrations.registered_date) && registrations.registered_date.equals(today_date))
+                            if(!TextUtils.isEmpty(registrations.registered_date) && registrations.registered_date.equals(today_date)) {
                                 totalRegTV.setText(getString(R.string.total_reg) + " " + registrations.total_count);
+                                check = true;
+                                return;
+                            }
+                            if(check == false)
+                                totalRegTV.setText(getString(R.string.total_reg) + " NA");
                     }
                 } else {
                     totalRegTV.setText(getString(R.string.total_reg) + " NA");
@@ -371,15 +381,19 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        apiInterface.getSubscriptionNum(urlModifiers.getSubscriptionNumUrl(chwname), encoded).enqueue(new Callback<SubscriptionResponse>() {
+        check = false;
+        apiInterface.getSubscriptionNum(urlModifiers.getSubscriptionNumUrl(chwName), encoded).enqueue(new Callback<SubscriptionResponse>() {
             @Override
             public void onResponse(Call<SubscriptionResponse> call, Response<SubscriptionResponse> response) {
                 if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
                     for (Subscriptions subscriptions : response.body().data) {
                         if(!TextUtils.isEmpty(subscriptions.subscribed_date) && subscriptions.subscribed_date.equals(today_date)) {
                             totalSubsTV.setText(getString(R.string.total_sub) + " " + subscriptions.total_count);
+                            check = true;
                             return;
                         }
+                        if(check == false)
+                            totalSubsTV.setText(getString(R.string.total_sub) + " NA");
                     }
                 } else {
                     totalSubsTV.setText(getString(R.string.total_sub) + " NA");
@@ -392,6 +406,29 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        check = false;
+        apiInterface.getCallsNum(urlModifiers.getCallNumUrl(chwNum), encoded).enqueue(new Callback<CallNumResponse>() {
+            @Override
+            public void onResponse(Call<CallNumResponse> call, Response<CallNumResponse> response) {
+                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+                    for (CallNums callNums : response.body().data) {
+                        if(!TextUtils.isEmpty(callNums.called_date) && callNums.called_date.equals(today_date)) {
+                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " " + callNums.total_count);
+                            check = true;
+                            return;
+                        }
+                        if(check == false)
+                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+                    }
+                } else {
+                    totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+                }
+            }
+            @Override
+            public void onFailure(Call<CallNumResponse> call, Throwable t) {
+                System.out.println(t);
+            }
+        });
     }
 
     //function for handling the video library feature...

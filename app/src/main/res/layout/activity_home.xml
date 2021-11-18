@@ -299,10 +299,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:layout_toEndOf="@+id/iv_whatsapp_helpline"
-                                android:text="@string/Whatsapp_Help_Cardview"
-                                android:includeFontPadding="false"
                                 android:fontFamily="@font/lato_medium"
-                                android:textSize="26sp"/>
+                                android:includeFontPadding="false"
+                                android:text="@string/Whatsapp_Help_Cardview"
+                                android:textSize="26sp" />
 
                             <!-- Icon Credits:- <a target="_blank" href="https://icons8.com/icons/set/whatsapp">WhatsApp icon</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>-->
 
@@ -398,20 +398,20 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="10dp"
                     android:background="@drawable/button_layerlist">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_regular"
-                            android:text="Daily Performance"
+                            android:text="@string/daily_performance"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp" />
 
@@ -430,7 +430,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:id="@+id/total_reg"
-                        android:text="Number of new members registered - 8"
+                        android:text="@string/total_reg"
                         android:textColor="@color/black"
                         android:layout_marginVertical="5dp"
                         android:textSize="14sp" />
@@ -440,7 +440,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:id="@+id/total_subs"
-                        android:text="Number of subscriptions made - 5"
+                        android:text="@string/total_sub"
                         android:layout_marginVertical="5dp"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
@@ -450,7 +450,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/lato_regular"
                         android:id="@+id/total_calls"
-                        android:text="Number of members called the helpline - 6"
+                        android:text="@string/total_called_helpline"
                         android:layout_marginVertical="5dp"
                         android:textColor="@color/black"
                         android:textSize="14sp" />

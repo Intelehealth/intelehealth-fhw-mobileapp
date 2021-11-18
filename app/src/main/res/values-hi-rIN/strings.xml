@@ -781,4 +781,9 @@
     <string name="spouse_phone_number_pd">जीवनसाथी का फोन नंबर</string>
     <string name="mobile_number_search">"मोबाइल नंबर: "</string>
 
+    //Daily Performance
+    <string name="total_reg">पंजीकृत नए सदस्यों की संख्या -</string>
+    <string name="total_sub">नए सदस्यताओं की संख्या -</string>
+    <string name="total_called_helpline">हेल्पलाइन पर कॉल करने वाले सदस्यों की संख्या -</string>
+    <string name="daily_performance">दैनिक प्रदर्शन</string>
 </resources>

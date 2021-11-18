@@ -774,5 +774,6 @@
     <string name="total_reg">Number of new members registered -</string>
     <string name="total_sub">Number of subscriptions made -</string>
     <string name="total_called_helpline">Number of members called the helpline -</string>
+    <string name="daily_performance">Daily Performance</string>
 
 </resources>

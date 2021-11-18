@@ -130,12 +130,16 @@ public class UrlModifiers {
         return BASE_URL;
     }
 
-    public String getSubscriptionNumUrl(String chwname) {
-        return "https://" + sessionManager.getServerUrl() + "/subscriptions/" + chwname;
+    public String getSubscriptionNumUrl(String chwName) {
+        return "https://" + sessionManager.getServerUrl() + "/subscriptions/" + chwName;
     }
 
-    public String getRegistrationNumUrl(String chwname) {
-        return "https://" + sessionManager.getServerUrl() + "/registrations/" + chwname;
+    public String getRegistrationNumUrl(String chwName) {
+        return "https://" + sessionManager.getServerUrl() + "/registrations/" + chwName;
+    }
+
+    public String getCallNumUrl(String chwNum) {
+        return "https://" + sessionManager.getServerUrl() + "/calls/" + chwNum;
     }
 
 }
