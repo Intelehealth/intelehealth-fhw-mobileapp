@@ -731,6 +731,7 @@
     <string name="audio_stories_subscription">Audio Stories Subscription</string>
     <string name="stored_successfully">Stored Successfully</string>
     <string name="total_calls">"Total Calls: "</string>
+    <string name="total_subs">"Total Subscriptions: "</string>
     <string name="call_to">"Call To: "</string>
     <string name="status">"Status: "</string>
     <string name="reason">"Reason: "</string>
