@@ -704,6 +704,183 @@ public class Node implements Serializable {
         }
     }
 
+    public String findDisplay(String language) {
+        switch (language) {
+            case "en": {
+
+                if (display != null && display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
+                }
+
+            }
+
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: mr ");
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "gu": {
+                //Log.i(TAG, "findDisplay: gu");
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: gu ");
+                    return display_gujarati;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "or": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_oriya != null && !display_oriya.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+            }
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+//            case "cb": {
+//                //Log.i(TAG, "findDisplay: cb");
+//                if (display_cebuno != null && !display_cebuno.isEmpty()) {
+//                    //Log.i(TAG, "findDisplay: cb ");
+//                    return display_cebuno;
+//                } else {
+//                    if (display == null || display.isEmpty()) {
+//                        //Log.i(TAG, "findDisplay: eng/o txt");
+//                        return text;
+//                    } else {
+//                        //Log.i(TAG, "findDisplay: eng/o dis");
+//                        return display;
+//                    }
+//                }
+//            }
+            case "hi": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+
+            }
+
+            //Assamese language support...
+            case "as": {
+                if (display_assamese != null && !display_assamese.isEmpty()) {
+                    return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Tamil language support...
+            case "ta": {
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    return display_tamil;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Telugu language support...
+            case "te": {
+                if (display_telugu != null && !display_telugu.isEmpty()) {
+                    return display_telugu;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+            //Bengali language support...
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            default: {
+                {
+                    if (display != null && display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+        }
+    }
+
     public String getPositiveCondition() {
         return positiveCondition;
     }
@@ -934,6 +1111,88 @@ public class Node implements Serializable {
                                 raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage()) + next_line;
                             } else {
                                 raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage()) + next_line;
+                            }
+                            Log.e("FinalText= ", raw);
+
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")) ||
+                            (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                        if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+    public String generateLanguage(String language) {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
+                            (associatedTest.trim().equals("H/o specific illness")) ||
+                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("এইচ/অ নিৰ্দিষ্ট ৰোগ")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                                (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                                (associatedTest.trim().equals("संबंधित लक्षणे"))
+                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                            if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                                raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                raw = raw.substring(6);
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                raw = raw + bullet + " " + node_opt.formLanguage(language) + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage(language)) + next_line;
+                            } else {
+                                if (language.equalsIgnoreCase("hi"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else
+                                    raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
                             }
                             Log.e("FinalText= ", raw);
 
@@ -2226,6 +2485,92 @@ private static String ml_en(String unit) {
                 }
             }
         }
+        return mLanguage;
+    }
+
+    public String formLanguage(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (language.equalsIgnoreCase("hi"))
+                        test = mOptions.get(i).getDisplay_hindi();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).getDisplay_hindi());
+                                    else
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).findDisplay(language));
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
         return mLanguage;
     }
 

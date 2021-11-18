@@ -57,6 +57,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.msfarogyabharat.activities.complaintNodeActivity.ComplaintNodeActivity;
+import org.intelehealth.msfarogyabharat.models.dto.ObsDTO;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1621,6 +1622,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                         medHistCursor.close();
                     }
 
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(medHistValue);
+                    medHistValue = obsDTO.getValue(sessionManager.getAppLanguage());
                     Log.v(TAG, medHistValue);
                     if (medHistValue != null && !medHistValue.equals("")) {
                         medHistView.setText(Html.fromHtml(medHistValue));
@@ -1680,6 +1684,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (previsitCursor.moveToLast() && previsitCursor != null) {
 
                         String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        ObsDTO obsDTO = new ObsDTO();
+                        obsDTO.setValue(visitValue);
+                        visitValue = obsDTO.getValue(sessionManager.getAppLanguage());
                         if (visitValue != null && !visitValue.isEmpty()) {
 
                             visitValue = visitValue.replace("?<b>", Node.bullet_arrow);

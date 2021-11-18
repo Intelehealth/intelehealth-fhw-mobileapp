@@ -1642,13 +1642,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         respiratory.setText(resp.getValue());
         spO2View.setText(spO2.getValue());
         if (complaint.getValue() != null)
-            complaintView.setText(Html.fromHtml(complaint.getValue()));
+            complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
         if (famHistory.getValue() != null)
             famHistView.setText(Html.fromHtml(famHistory.getValue()));
         if (patHistory.getValue() != null)
             patHistView.setText(Html.fromHtml(patHistory.getValue()));
         if (phyExam.getValue() != null)
-            physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+            physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
 
 
         editVitals.setOnClickListener(new View.OnClickListener() {
@@ -1773,7 +1773,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                 if (complaint.getValue() != null) {
-                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                    complaintText.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                 }
                 complaintText.setEnabled(false);
 
@@ -1797,8 +1797,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 complaint.setValue(input.replace("\n", "<br>"));
 //                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (complaint.getValue() != null) {
-                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
-                                    complaintView.setText(Html.fromHtml(complaint.getValue()));
+//                                    complaintText.setText(Html.fromHtml(complaint.getValue()));
+                                    complaintView.setText(Html.fromHtml(complaint.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(complaint.getValue(), UuidDictionary.CURRENT_COMPLAINT);
                                 dialog.dismiss();
@@ -1905,8 +1905,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                 phyExam.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                 if (phyExam.getValue() != null) {
-                                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
-                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
+                                    physicalText.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
+                                    physFindingsView.setText(Html.fromHtml(phyExam.getValue(sessionManager.getAppLanguage())));
                                 }
                                 updateDatabase(phyExam.getValue(), UuidDictionary.PHYSICAL_EXAMINATION);
                                 dialog.dismiss();
