@@ -761,8 +761,6 @@
     <string name="Other">Other</string>
     <string name="tld_query_answered_tag">TLD QUERY ANSWERED</string>
     <string name="tld_query_asked_tag">TLD QUERY ASKED</string>
-    <string name="tld_closed_comment">TLD Closed</string>
-    <string name="tld_resolved_comment">TLD Resolved</string>
     <string name="mobile_number_search">"Mobile number: "</string>
     <string name="no_records_found">No records found</string>
     <string name="call_recordings">Call Recordings</string>
@@ -796,4 +794,18 @@
     <string name="Completed_Visits">Completed Visits</string>
     <string name="Closed_Visits">Closed Visits</string>
     <string name="subscription_error">Failed to subscribe!\nPlease try again later.</string>
+
+    //Patient Survey Spinner
+    <string name="issue_resolved">Issue is resolved</string>
+    <string name="other_concern">Caller had other concern</string>
+    <string name="unable_follow_up">Unable to follow-up as caller was unreachable</string>
+    <string name="others">Others</string>
+    <string name="tld_closed_comment">TLD Closed</string>
+    <string name="tld_resolved_comment">TLD Resolved</string>
+    <string name="doctor_closed_comment">Doctor Resolution Closed</string>
+    <string name="doctor_resolved_comment">Doctor Resolution Resolved</string>
+    <string name="reason_for_resolved">Select the reason for marking the visit as resolved</string>
+    <string name="additional_comments">Additional Comments (if any)</string>
+
+
 </resources>

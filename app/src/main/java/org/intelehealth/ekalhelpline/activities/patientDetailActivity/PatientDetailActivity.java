@@ -952,6 +952,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("name", patientName);
         intent.putExtra("tag", "medicalAdvice");
+        intent.putExtra("visitType","curiosityResolution");
         intent.putExtra("followUpDate", " ");
         startActivity(intent);
     }

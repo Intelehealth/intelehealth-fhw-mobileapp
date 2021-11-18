@@ -668,38 +668,29 @@ public final class StringUtils {
             case "चयन करें":
                 val = "Select";
                 break;
-            case "ठीक हो गए":
-                val = "Recovered";
+            case "समस्या का समाधान हो गया":
+                val = "Issue is resolved";
                 break;
-            case "रेफ़र कर दिया गया है":
-                val = "Referred";
+            case "कॉलर को दूसरी समस्या थी":
+                val = "Caller had other concern";
                 break;
-            case "मृत्यु हो गई है":
-                val = "Died";
+            case "फॉलो-अप करने में असमर्थ क्योंकि कॉलर पहुंच योग्य नहीं था":
+                val = "Unable to follow-up as caller was unreachable";
                 break;
-            case "फॉलो अप करना रह गया":
-                val = "Loss to Follow up";
+            case "डॉक्टर संकल्प बंद":
+                val = "Doctor Resolution Closed";
                 break;
-            case "फ़ॉलो अप के लिए मना कर रहे है":
-                val = "Refusing Follow up";
-                break;
-            case "अनुपलब्ध":
-                val = "Not Applicable";
+            case "डॉक्टर संकल्प हल":
+                val = "Doctor Resolution Resolved";
                 break;
             case "अन्य":
-                val = "Other";
+                val = "Others";
                 break;
             case "टीएलडी बंद":
                 val = "TLD Closed";
                 break;
             case "टीएलडी समाधान":
                 val = "TLD Resolved";
-                break;
-            case "डॉक्टर का दौरा बंद":
-                val = "Doctor Visit Closed";
-                break;
-            case "कॉल ड्रॉप/कॉल डिस्टर्ब":
-                val = "Calls Dropped/Calls Disturbed";
                 break;
             default:
                 return val;

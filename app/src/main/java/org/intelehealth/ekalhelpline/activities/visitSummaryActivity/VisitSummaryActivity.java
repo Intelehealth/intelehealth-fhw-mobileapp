@@ -237,7 +237,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String filePathPhyExam;
     File obsImgdir;
     String special_value = "";
-
+    String visitType = " ";
     NotificationManager mNotificationManager;
     NotificationCompat.Builder mBuilder;
 
@@ -1179,8 +1179,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }*/
                     }
-
-
                     if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                         String patientSelection = "uuid = ?";
                         String[] patientArgs = {String.valueOf(patient.getUuid())};
@@ -1196,7 +1194,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                         idCursor.close();
                     }
-
                     if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
                     }
 
@@ -1233,7 +1230,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                                     if (isVisitSpecialityExists) {
                                         String speciality = speciality_spinner.getSelectedItem().toString();
-                                        showExitDialog(speciality);
+                                        if(complaintView.getText().toString().contains("Follow-Up Visit"))
+                                            visitType = "follow-up";
+                                        else
+                                            visitType = speciality;
+                                        showExitDialog(speciality,visitType);
                                         speciality_spinner.setEnabled(false);
                                         tilAgentResolution.setEnabled(false);
                                     }
@@ -1385,7 +1386,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (phyExam.getValue() != null)
             physFindingsView.setText(Html.fromHtml(phyExam.getValue()));
 
-     /*   ArrayAdapter<String> stringArrayAdapter;
+     /* ArrayAdapter<String> stringArrayAdapter;
         if (items != null) {
             items.add(0, "Select Specialization");
             stringArrayAdapter =
@@ -1933,7 +1934,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    private void showExitDialog(String speciality) {
+    private void showExitDialog(String speciality, String visitType) {
         uploadButton.setEnabled(false);
         if(NetworkConnection.isOnline(getApplication()) && speciality.equalsIgnoreCase("Agent Resolution"))
         {
@@ -1952,6 +1953,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             intent.putExtra("state", state);
                             intent.putExtra("name", patientName);
                             intent.putExtra("tag", intentTag);
+                            intent.putExtra("visitType",visitType);
                             intent.putExtra("followUpDate", " ");
                             startActivity(intent);
                         }
@@ -3700,6 +3702,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitIDCursor != null) visitIDCursor.close();
         }
         if (visitUUID != null && !visitUUID.isEmpty()) {
+                String speciality = speciality_spinner.getSelectedItem().toString();
+                if(complaintView.getText().toString().contains("Follow-Up Visit"))
+                    visitType = "follow-up";
+                else
+                    visitType = speciality;
             if (followUpDate != null && !followUpDate.isEmpty()) {
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                 followUpAlert.setMessage(getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
@@ -3714,6 +3721,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         intent.putExtra("state", state);
                         intent.putExtra("name", patientName);
                         intent.putExtra("tag", intentTag);
+                        intent.putExtra("visitType",visitType);
                         intent.putExtra("followUpDate", followUpDate);
                         startActivity(intent);
                     }
@@ -3728,6 +3736,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 intent.putExtra("state", state);
                 intent.putExtra("name", patientName);
                 intent.putExtra("tag", intentTag);
+                intent.putExtra("visitType",visitType);
                 intent.putExtra("followUpDate", " ");
                 startActivity(intent);
             }
