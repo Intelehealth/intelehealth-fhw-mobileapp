@@ -308,6 +308,7 @@ public class HomeActivity extends AppCompatActivity {
 //                AppConstants.notificationUtils.showNotifications(getString(R.string.sync), getString(R.string.syncInProgress), 1, context);
 
                 if (isNetworkConnected()) {
+                    getDailyPerformance(getTodayDate(), sessionManager.getChwname(),sessionManager.getProviderPhoneno());
                     Toast.makeText(context, getString(R.string.syncInProgress), Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
@@ -356,7 +357,7 @@ public class HomeActivity extends AppCompatActivity {
 
         UrlModifiers urlModifiers = new UrlModifiers();
         ApiInterface apiInterface = AppConstants.apiInterface;
-        String encoded = "Basic " + sessionManager.getEncoded();
+        String encoded = "Basic bnVyc2UxOk51cnNlMTIz";
         check = false;
         apiInterface.getRegistrationNum(urlModifiers.getRegistrationNumUrl(chwName), encoded).enqueue(new Callback<RegistrationResponse>() {
             @Override
