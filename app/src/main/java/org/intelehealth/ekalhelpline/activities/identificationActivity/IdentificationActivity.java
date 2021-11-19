@@ -764,6 +764,11 @@ public class IdentificationActivity extends AppCompatActivity {
                         others_linearLayout.setVisibility(View.GONE);
                         others_cardView.setVisibility(View.GONE);
                     }
+                    else
+                    {
+                        others_linearLayout.setVisibility(View.VISIBLE);
+                        others_cardView.setVisibility(View.VISIBLE);
+                    }
                 }
 
 
