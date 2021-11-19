@@ -35,12 +35,15 @@ import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.ActivePatientModel;
+import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.Logger;
@@ -245,35 +248,38 @@ public class ActivePatientActivity extends AppCompatActivity {
 
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
                     if (hasPrescription) {
-                        alertDialogBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.end_visit_msg));
-                        alertDialogBuilder.setNegativeButton(ActivePatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        });
+
                         String finalFollowupdate = followupdate;
                         String finalEncounterVitalslocal = encounterVitalslocal;
                         String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-                        alertDialogBuilder.setPositiveButton(ActivePatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+
+                        MaterialAlertDialogBuilder alertBuilder = new MaterialAlertDialogBuilder(ActivePatientActivity.this);
+
+                        alertBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.medicine_provide_flag));
+                        alertBuilder.setNegativeButton(ActivePatientActivity.this.getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                displayEndVisitConfirmationDialog(alertDialogBuilder, finalFollowupdate,
+                                        finalEncounterVitalslocal, finalEncounterAdultIntialslocal,
+                                        activePatientModel, visitUuid, "false");
+
+                            }
+                        });
+
+                        alertBuilder.setPositiveButton(ActivePatientActivity.this.getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
-                                VisitUtils.endVisit(ActivePatientActivity.this,
-                                        visitUuid,
-                                        activePatientModel.getPatientuuid(),
-                                        finalFollowupdate,
-                                        finalEncounterVitalslocal,
-                                        finalEncounterAdultIntialslocal,
-                                        null,
-                                        String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
-                                        ""
-                                );
+                                displayEndVisitConfirmationDialog(alertDialogBuilder, finalFollowupdate,
+                                        finalEncounterVitalslocal, finalEncounterAdultIntialslocal,
+                                        activePatientModel, visitUuid,"true");
+
                             }
                         });
-                        AlertDialog alertDialog = alertDialogBuilder.show();
+                        AlertDialog alertDialog1 = alertBuilder.show();
                         //alertDialog.show();
-                        IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog);
+                        IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog1);
 
                     } else {
                         alertDialogBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.error_no_data));
@@ -290,6 +296,51 @@ public class ActivePatientActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void displayEndVisitConfirmationDialog(MaterialAlertDialogBuilder alertDialogBuilder,
+                                                  String followupdate, String encounterVitalslocal, String encounterAdultIntialslocal, ActivePatientModel activePatientModel,
+                                                  String visitUuid, String medicineProvider ){
+        alertDialogBuilder.setMessage(ActivePatientActivity.this.getResources().getString(R.string.end_visit_msg));
+        alertDialogBuilder.setNegativeButton(ActivePatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        String finalFollowupdate = followupdate;
+        String finalEncounterVitalslocal = encounterVitalslocal;
+        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+        alertDialogBuilder.setPositiveButton(ActivePatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                boolean isUpdateVisitMedicineProviderDone = false;
+                try {
+                    VisitAttributeListDAO medicine_provider_attributes = new VisitAttributeListDAO();
+                    isUpdateVisitMedicineProviderDone=medicine_provider_attributes.insertVisitMedicineProviderAttributes(visitUuid, medicineProvider);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if(isUpdateVisitMedicineProviderDone) {
+                    VisitUtils.endVisit(ActivePatientActivity.this,
+                            visitUuid,
+                            activePatientModel.getPatientuuid(),
+                            finalFollowupdate,
+                            finalEncounterVitalslocal,
+                            finalEncounterAdultIntialslocal,
+                            null,
+                            String.format("%s %s", activePatientModel.getFirst_name(), activePatientModel.getLast_name()),
+                            ""
+                    );
+                }
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(ActivePatientActivity.this, alertDialog);
+
     }
 
     @Override

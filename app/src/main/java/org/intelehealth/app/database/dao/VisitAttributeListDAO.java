@@ -243,4 +243,45 @@ public class VisitAttributeListDAO {
         Log.d("isInserted", "isInserted: "+isInserted);
         return isInserted;
     }
+
+    //----------------insert for medicine provider flag---------------------
+    public boolean insertVisitMedicineProviderAttributes(String visitUuid, String medicine_provider_flag) throws
+            DAOException {
+        boolean isInserted = false;
+
+        Log.d("SPINNER", "SPINNER_Selected_visituuid_logs: "+ visitUuid);
+        Log.d("SPINNER", "SPINNER_Selected_value_logs: "+ medicine_provider_flag);
+
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try
+        {
+            values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
+            values.put("visit_uuid", visitUuid);
+            values.put("value", medicine_provider_flag);
+            values.put("visit_attribute_type_uuid", "1751add0-836b-4163-a153-add19f6bda1a");
+            values.put("voided", "0");
+            values.put("sync", "0");
+
+            long count = db.insertWithOnConflict("tbl_visit_attribute", null,
+                    values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            if(count != -1)
+                isInserted = true;
+
+            db.setTransactionSuccessful();
+        }
+        catch (SQLException e)
+        {
+            isInserted = false;
+            throw new DAOException(e.getMessage(), e);
+        }
+        finally {
+            db.endTransaction();
+        }
+
+        Log.d("isInserted", "isInserted: "+isInserted);
+        return isInserted;
+    }
 }

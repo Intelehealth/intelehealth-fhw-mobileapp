@@ -40,6 +40,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.TodayPatientModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
@@ -251,35 +252,38 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
         if (hasPrescription) {
-            alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.end_visit_msg));
-            alertDialogBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            });
+
             String finalFollowupdate = followupdate;
             String finalEncounterVitalslocal = encounterVitalslocal;
             String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
-            alertDialogBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+
+            MaterialAlertDialogBuilder alertBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
+
+            alertBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.medicine_provide_flag));
+            alertBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    displayEndVisitConfirmationDialog(alertDialogBuilder, finalFollowupdate,
+                                finalEncounterVitalslocal, finalEncounterAdultIntialslocal,
+                                todayPatientModel, visitUuid, "false");
+
+                }
+            });
+
+            alertBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    VisitUtils.endVisit(TodayPatientActivity.this,
-                            visitUuid,
-                            todayPatientModel.getPatientuuid(),
-                            finalFollowupdate,
-                            finalEncounterVitalslocal,
-                            finalEncounterAdultIntialslocal,
-                            null,
-                            String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
-                            ""
-                    );
+                    displayEndVisitConfirmationDialog(alertDialogBuilder, finalFollowupdate,
+                                finalEncounterVitalslocal, finalEncounterAdultIntialslocal,
+                                todayPatientModel, visitUuid,"true");
+
                 }
             });
-            AlertDialog alertDialog = alertDialogBuilder.show();
+            AlertDialog alertDialog1 = alertBuilder.show();
             //alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+            IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog1);
 
         } else {
             alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.error_no_data));
@@ -293,6 +297,51 @@ public class TodayPatientActivity extends AppCompatActivity {
             //alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
         }
+    }
+
+    public void displayEndVisitConfirmationDialog(MaterialAlertDialogBuilder alertDialogBuilder,
+                                                  String followupdate, String encounterVitalslocal, String encounterAdultIntialslocal, TodayPatientModel todayPatientModel,
+                                                  String visitUuid, String medicineProvider ){
+        alertDialogBuilder.setMessage(TodayPatientActivity.this.getResources().getString(R.string.end_visit_msg));
+        alertDialogBuilder.setNegativeButton(TodayPatientActivity.this.getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        String finalFollowupdate = followupdate;
+        String finalEncounterVitalslocal = encounterVitalslocal;
+        String finalEncounterAdultIntialslocal = encounterAdultIntialslocal;
+        alertDialogBuilder.setPositiveButton(TodayPatientActivity.this.getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                boolean isUpdateVisitMedicineProviderDone = false;
+                try {
+                    VisitAttributeListDAO medicine_provider_attributes = new VisitAttributeListDAO();
+                    isUpdateVisitMedicineProviderDone=medicine_provider_attributes.insertVisitMedicineProviderAttributes(visitUuid, medicineProvider);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                if(isUpdateVisitMedicineProviderDone) {
+                    VisitUtils.endVisit(TodayPatientActivity.this,
+                            visitUuid,
+                            todayPatientModel.getPatientuuid(),
+                            finalFollowupdate,
+                            finalEncounterVitalslocal,
+                            finalEncounterAdultIntialslocal,
+                            null,
+                            String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
+                            ""
+                    );
+                }
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(TodayPatientActivity.this, alertDialog);
+
     }
 
     @Override
