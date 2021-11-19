@@ -373,11 +373,12 @@ public class HomeActivity extends AppCompatActivity {
                                 totalRegTV.setText(getString(R.string.total_reg) + " 0");
                     }
                 } else {
-                    totalRegTV.setText(getString(R.string.total_reg) + " NA");
+                    totalRegTV.setText(getString(R.string.total_reg) + " 0");
                 }
             }
             @Override
             public void onFailure(Call<RegistrationResponse> call, Throwable t) {
+                totalRegTV.setText(getString(R.string.total_reg) + " NA");
                 System.out.println(t);
             }
         });
@@ -397,12 +398,13 @@ public class HomeActivity extends AppCompatActivity {
                             totalSubsTV.setText(getString(R.string.total_sub) + " 0");
                     }
                 } else {
-                    totalSubsTV.setText(getString(R.string.total_sub) + " NA");
+                    totalSubsTV.setText(getString(R.string.total_sub) + " 0");
                 }
             }
 
             @Override
             public void onFailure(Call<SubscriptionResponse> call, Throwable t) {
+                totalSubsTV.setText(getString(R.string.total_sub) + " NA");
                 System.out.println(t);
             }
         });
@@ -419,7 +421,7 @@ public class HomeActivity extends AppCompatActivity {
                             return;
                         }
                         if(check == false)
-                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
                     }
                 } else {
                     totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
@@ -427,6 +429,7 @@ public class HomeActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<CallNumResponse> call, Throwable t) {
+                totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
                 System.out.println(t);
             }
         });
