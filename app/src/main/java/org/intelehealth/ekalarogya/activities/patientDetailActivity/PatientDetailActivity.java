@@ -514,11 +514,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
 
             //Display the fields on the Add Patient screen as per the config file
-            if (obj.getBoolean("casteLayout")) {
+            /*if (obj.getBoolean("casteLayout")) {
                 casteRow.setVisibility(View.VISIBLE);
             } else {
                 casteRow.setVisibility(View.GONE);
-            }
+            }*/
             if (obj.getBoolean("educationLayout")) {
                 educationRow.setVisibility(View.VISIBLE);
             } else {
