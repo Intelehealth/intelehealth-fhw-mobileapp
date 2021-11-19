@@ -235,6 +235,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.followuppatients.FollowUpPatientActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="@string/title_follow_up"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--        <service-->
         <!--            android:name=".services.OnClearFromRecentService"-->
         <!--            android:stopWithTask="false" />-->
@@ -265,10 +271,10 @@
             </intent-filter>
         </receiver>
 
-        <provider
-            android:name="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:authorities="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider"
-            android:exported="false" />
+<!--        <provider-->
+<!--            android:name="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:authorities="org.intelehealth.app.activities.searchPatientActivity.SearchSuggestionProvider"-->
+<!--            android:exported="false" />-->
 
         <service android:name="org.intelehealth.app.services.DownloadService" />
         <service android:name="org.intelehealth.app.services.MyIntentService" />
