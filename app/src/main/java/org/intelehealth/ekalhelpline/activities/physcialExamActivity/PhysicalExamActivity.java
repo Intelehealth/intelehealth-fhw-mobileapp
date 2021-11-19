@@ -192,7 +192,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
                     JSONObject currentFile = null;
                     currentFile = new JSONObject(FileUtils.readFileRoot(mFileName, this));
                     physicalExamMap = new PhysicalExam(currentFile, selectedExamsList);
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             } else {

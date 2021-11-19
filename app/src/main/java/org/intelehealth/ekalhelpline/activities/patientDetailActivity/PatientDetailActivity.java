@@ -1,5 +1,6 @@
 package org.intelehealth.ekalhelpline.activities.patientDetailActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -2024,9 +2025,17 @@ public class PatientDetailActivity extends AppCompatActivity {
                             if (complaints != null) {
                                 for (String comp : complaints) {
                                     if (!comp.trim().isEmpty()) {
-                                        Log.d("colon", "colon: " + comp);
-                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                        Log.d("colon", "colon_visitvalue: " + visitValue);
+                                        if(comp.contains(colon)) {
+                                            try {
+                                                Log.d("colon", "colon: " + comp);
+                                                visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                                Log.d("colon", "colon_visitvalue: " + visitValue);
+                                            } catch (StringIndexOutOfBoundsException e) {
+                                                System.out.println("String Index is out of bounds");
+                                            }
+                                        }
+                                        else
+                                            visitValue = visitValue + Node.bullet_arrow + comp;
                                     }
                                 }
                                 if (!visitValue.isEmpty()) {
@@ -2279,7 +2288,9 @@ public class PatientDetailActivity extends AppCompatActivity {
                 .subscribe(new DisposableSingleObserver<String>() {
                     @Override
                     public void onSuccess(@NonNull String s) {
-                        showAlert(R.string.calling_patient);
+                        if(!((Activity) context).isFinishing())
+                            showAlert(R.string.calling_patient);
+
                         ivr_isInititated = true;
                       //  calling.setEnabled(true); //once api hit and response = enable the button...
                       /*  new Handler().postDelayed(new Runnable() {
@@ -2293,7 +2304,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                        // calling.setEnabled(true);
-                        showAlert(R.string.error_calling_patient);
+                        if(!((Activity) context).isFinishing())
+                            showAlert(R.string.error_calling_patient);
                     }
                 });
     }
@@ -2372,7 +2384,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     void showAlert(int messageRes) {
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
         alertDialogBuilder.setMessage(messageRes);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
@@ -2382,7 +2394,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+        IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
     }
 
     public String warnFollowUp( SQLiteDatabase sqLiteDatabase, String[] cols)
