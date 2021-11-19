@@ -369,7 +369,7 @@ public class HomeActivity extends AppCompatActivity {
                                 return;
                             }
                             if(check == false)
-                                totalRegTV.setText(getString(R.string.total_reg) + " NA");
+                                totalRegTV.setText(getString(R.string.total_reg) + " 0");
                     }
                 } else {
                     totalRegTV.setText(getString(R.string.total_reg) + " NA");
@@ -393,7 +393,7 @@ public class HomeActivity extends AppCompatActivity {
                             return;
                         }
                         if(check == false)
-                            totalSubsTV.setText(getString(R.string.total_sub) + " NA");
+                            totalSubsTV.setText(getString(R.string.total_sub) + " 0");
                     }
                 } else {
                     totalSubsTV.setText(getString(R.string.total_sub) + " NA");
@@ -421,7 +421,7 @@ public class HomeActivity extends AppCompatActivity {
                             totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
                     }
                 } else {
-                    totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+                    totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
                 }
             }
             @Override
