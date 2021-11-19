@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.os.LocaleList;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -94,6 +96,11 @@ public class PatientSurveyActivity extends AppCompatActivity {
     TextView schedule_TV;
     String followUpDate = " ";
     DatePickerDialog datePicker;
+    String visitType = " ";
+    CardView noteSpinnerCV;
+    TextView noteSpinnerTV;
+    LinearLayout additionalComLL;
+    EditText additionalCommET;
 
     @Override
     public void onBackPressed() {
@@ -110,6 +117,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             patientName = intent.getStringExtra("name");
             intentTag = intent.getStringExtra("tag");
             followUpDate = intent.getStringExtra("followUpDate");
+            visitType = intent.getStringExtra("visitType");
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_survey);
@@ -122,7 +130,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
         }
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
-
+        noteSpinnerCV = findViewById(R.id.noteSpinnerCV);
+        noteSpinnerTV = findViewById(R.id.textView4);
+        additionalComLL = findViewById(R.id.additionalCommLL);
+        additionalCommET = findViewById(R.id.additionalCommET);
         notesSpinner = findViewById(R.id.noteSpinner);
         patientNoteList = getPatientNoteList();
         patientNoteAdapter = new ArrayAdapter<>(PatientSurveyActivity.this, android.R.layout.simple_spinner_dropdown_item, patientNoteList);
@@ -138,11 +149,27 @@ public class PatientSurveyActivity extends AppCompatActivity {
         ratingBar = findViewById(R.id.ratingBar);
         schedule_TV = findViewById(R.id.schedule_textView);
 
+
+        if(visitType.equals("curiosityResolution"))
+        {
+            mComments.setVisibility(View.GONE);
+            schedule_TV.setVisibility(View.GONE);
+            notesSpinner.setVisibility(View.GONE);
+            noteSpinnerCV.setVisibility(View.GONE);
+            noteSpinnerTV.setVisibility(View.GONE);
+            additionalComLL.setVisibility(View.VISIBLE);
+        }
+
         if(!followUpDate.equalsIgnoreCase(" "))
         {
             schedule_TV.setVisibility(View.VISIBLE);
             schedule_TV.setEnabled(false);
             schedule_TV.setText(getString(R.string.follow_up_already_scheduled) + " " + followUpDate);
+        }
+
+        if(visitType.equalsIgnoreCase("Agent Resolution") || visitType.equalsIgnoreCase("follow-up"))
+        {
+            schedule_TV.setVisibility(View.VISIBLE);
         }
 
         // initialising the layout
@@ -179,21 +206,27 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     else
                         mComments.setVisibility(View.GONE);
 
-                    if(notesSpinner.getSelectedItem().equals(getString(R.string.schedule_follow_up)))
-                        schedule_TV.setVisibility(View.VISIBLE);
-                    else
+                    if(notesSpinner.getSelectedItem().equals("टीएलडी बंद")){
                         schedule_TV.setVisibility(View.GONE);
+                        followUpDate = " ";
+                    }
+                    else
+                        schedule_TV.setVisibility(View.VISIBLE);
+
                 }
                 else {
-                    if(notesSpinner.getSelectedItem().equals("Other"))
+                    if(notesSpinner.getSelectedItem().equals("Others"))
                         mComments.setVisibility(View.VISIBLE);
                     else
                         mComments.setVisibility(View.GONE);
 
-                    if(notesSpinner.getSelectedItem().equals(getString(R.string.schedule_follow_up)))
-                        schedule_TV.setVisibility(View.VISIBLE);
+                    if(notesSpinner.getSelectedItem().equals("TLD Closed")) {
+                        schedule_TV.setVisibility(View.GONE);
+                        followUpDate = " ";
+                    }
                     else
-                        schedule_TV.setVisibility(View.GONE);                }
+                        schedule_TV.setVisibility(View.VISIBLE);
+                }
 
             }
 
@@ -230,7 +263,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 //validation for no spinner value selected...
-                if(notesSpinner.getSelectedItem().toString().equalsIgnoreCase("Select")) {
+                if(notesSpinner.getVisibility() == View.VISIBLE && notesSpinner.getSelectedItem().toString().equalsIgnoreCase("Select")) {
                     Toast.makeText(PatientSurveyActivity.this,
                             getResources().getString(R.string.select_reason_toast), Toast.LENGTH_LONG).show();
                     return;
@@ -249,11 +282,6 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     mComments.setError(null);
                 }
 
-                if(schedule_TV.getVisibility() == View.VISIBLE &&
-                        (followUpDate.equalsIgnoreCase(" ")) ||followUpDate.equalsIgnoreCase("")) {
-                    Toast.makeText(PatientSurveyActivity.this,getResources().getString(R.string.select_follow_up_date),Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if(sessionManager.getAppLanguage().equals("hi")) {
                     noteText = switch_hi_endFollowUp_edit(notesSpinner.getSelectedItem().toString());
                 }
@@ -261,11 +289,21 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     noteText = notesSpinner.getSelectedItem().toString();
                 }
 
-                if(noteText.equalsIgnoreCase("Other")) {
-                    noteText = "Other: " + mComments.getText().toString();
+                if(noteText.equalsIgnoreCase("Others")) {
+                    noteText = "Others: " + mComments.getText().toString();
                 }
                 else {
                     // do nothing
+                }
+
+
+                if(additionalComLL.getVisibility() == View.VISIBLE &&
+                        additionalCommET.getText().toString().equalsIgnoreCase("")) {
+                    noteText = "No Additional Comments";
+                }
+                else if(additionalComLL.getVisibility() == View.VISIBLE &&
+                        !additionalCommET.getText().toString().equalsIgnoreCase("")) {
+                    noteText = additionalCommET.getText().toString();
                 }
 
                 rating = String.valueOf(ratingBar.getRating());
@@ -276,7 +314,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     uploadSurvey();
                     endVisit();
                 }
-                else if(noteText.equalsIgnoreCase("Select"))
+                else if(notesSpinner.getVisibility()== View.VISIBLE && noteText.equalsIgnoreCase("Select"))
                     Toast.makeText(PatientSurveyActivity.this,
                             getResources().getString(R.string.select_reason_toast),Toast.LENGTH_LONG).show();
             }
@@ -290,30 +328,26 @@ public class PatientSurveyActivity extends AppCompatActivity {
         });
     }
 
-//    private void updateLabel() {
-//        String myFormat = "dd-MM-yyyy"; //In which you need put here
-//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
-//        schedule_TV.setText("Follow-Up Scheduled On: " + sdf.format(calendar.getTime()));
-//        followUpDate = sdf.format(calendar.getTime());
-//    }
-
     private ArrayList<String> getPatientNoteList()
     {
         ArrayList<String> notes = new ArrayList<>();
         notes.add(getString(R.string.select));
-        notes.add(getString(R.string.spinner_recovered));
-        notes.add(getString(R.string.spinner_referred));
-        notes.add(getString(R.string.spinner_died));
-        if(!intentTag.equalsIgnoreCase("medicalAdvice"))
-        notes.add(getString(R.string.schedule_follow_up));
-        notes.add(getString(R.string.spinner_loss_followUp));
-        notes.add(getString(R.string.spinner_refuse_followUp));
-        notes.add(getString(R.string.spinner_not_applicable));
-        notes.add(getString(R.string.Other));
-        notes.add(getString(R.string.tld_closed_comment));
-        notes.add(getString(R.string.tld_resolved_comment));
-        notes.add(getString(R.string.doctor_visit_closed));
-        notes.add(getString(R.string.call_dropped_disturbed));
+        if(visitType.equals("follow-up")|| visitType.equals("Agent Resolution"))
+        {
+            notes.add(getString(R.string.issue_resolved));
+            notes.add(getString(R.string.other_concern));
+            notes.add(getString(R.string.unable_follow_up));
+            notes.add(getString(R.string.others));
+        }
+        else if(visitType.equals("TLD Query"))
+        {
+            notes.add(getString(R.string.tld_resolved_comment));
+            notes.add(getString(R.string.tld_closed_comment));
+        }
+        else{
+            notes.add(getString(R.string.doctor_resolved_comment));
+            notes.add(getString(R.string.doctor_closed_comment));
+        }
         return notes;
     }
     private void resetScale() {

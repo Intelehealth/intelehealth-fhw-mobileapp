@@ -716,6 +716,7 @@
     <string name="select_phone_num">फ़ोन नंबर चुनें</string>
     <string name="stored_successfully">सफलतापूर्वक स्टोर हो गया है</string>
     <string name="total_calls">टोटल कॉल</string>
+    <string name="total_subs">टोटल सदस्यता</string>
     <string name="call_to">कॉल कर रहे हैं</string>
     <string name="status">स्टेटस</string>
     <string name="something_wrong_refresh_again">कुछ गलत हो गया। कृपया फिर से रिफ्रेश करें</string>
@@ -764,8 +765,6 @@
     <string name="Other">अन्य</string>
     <string name="tld_query_answered_tag">टीएलडी प्रश्न का उत्तर दिया गया</string>
     <string name="tld_query_asked_tag">टीएलडी क्वेरी पूछी गई</string>
-    <string name="tld_closed_comment">टीएलडी बंद</string>
-    <string name="tld_resolved_comment">टीएलडी समाधान</string>
     <string name="mobile_number_search">"मोबाइल नंबर: "</string>
     <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
 
@@ -805,4 +804,17 @@
     <string name="closed_visits_HomeScreen">बंद विज़िट</string>
     <string name="Completed_Visits">पूर्ण विज़िट</string>
     <string name="Closed_Visits">बंद विज़िट</string>
+    <string name="subscription_error">सदस्यता लेने में विफल!\nकृपया बाद में पुन: प्रयास करें।</string>
+
+    //Patient Survey Spinner
+    <string name="issue_resolved">समस्या का समाधान हो गया</string>
+    <string name="other_concern">कॉलर को दूसरी समस्या थी</string>
+    <string name="unable_follow_up">फॉलो-अप करने में असमर्थ क्योंकि कॉलर पहुंच योग्य नहीं था</string>
+    <string name="others">अन्य</string>
+    <string name="tld_closed_comment">टीएलडी बंद</string>
+    <string name="tld_resolved_comment">टीएलडी समाधान</string>
+    <string name="doctor_closed_comment">डॉक्टर संकल्प बंद</string>
+    <string name="doctor_resolved_comment">डॉक्टर संकल्प हल</string>
+    <string name="reason_for_resolved">विज़िट को समाधान के रूप में चिह्नित करने का कारण चुनें</string>
+    <string name="additional_comments">अतिरिक्त टिप्पणियाँ (यदि कोई हो)</string>
 </resources>

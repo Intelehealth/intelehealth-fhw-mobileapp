@@ -15,6 +15,7 @@ import org.intelehealth.ekalhelpline.models.PrescriptionUrl;
 import org.intelehealth.ekalhelpline.models.Results;
 import org.intelehealth.ekalhelpline.models.SubscriptionData;
 import org.intelehealth.ekalhelpline.models.SubscriptionStatus;
+import org.intelehealth.ekalhelpline.models.dailyPerformance.SubscriptionsResponse;
 import org.intelehealth.ekalhelpline.models.dto.ResponseDTO;
 import org.intelehealth.ekalhelpline.models.loginModel.LoginModel;
 import org.intelehealth.ekalhelpline.models.loginProviderModel.LoginProviderModel;
@@ -150,5 +151,9 @@ public interface ApiInterface {
     @GET
     Call<RecordingResponse> getRecordings(@Url String url,
                                           @Header("Authorization") String authHeader);
+
+    @GET
+    Call<SubscriptionsResponse> getSubscriptionNum(@Url String url,
+                                                   @Header("Authorization") String authHeader);
 }
 

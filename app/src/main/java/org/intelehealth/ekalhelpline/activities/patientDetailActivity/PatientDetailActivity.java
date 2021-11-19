@@ -726,17 +726,18 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<SubscriptionStatus> call, Response<SubscriptionStatus> response) {
                         SubscriptionStatus body = response.body();
-                        String message = body.data;
                         if (body != null) {
+                            String message = body.data;
                             updateSubscriptionUI(false, 0);
-                            if(sessionManager.getAppLanguage().equals("hi"))
-                                message = switch_hi_subs_response(body.data) ;
+                            if (sessionManager.getAppLanguage().equals("hi"))
+                                message = switch_hi_subs_response(body.data);
                             else
                                 message = body.data;
                             new AlertDialog.Builder(context).setMessage(message).setPositiveButton(R.string.generic_ok, null).show();
-                        }
-                    }
+                        } else
+                            new AlertDialog.Builder(context).setMessage(getString(R.string.subscription_error)).setPositiveButton(R.string.generic_ok, null).show();
 
+                    }
                     @Override
                     public void onFailure(Call<SubscriptionStatus> call, Throwable t) {
                         new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
@@ -890,8 +891,8 @@ public class PatientDetailActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<SubscriptionStatus> call, Response<SubscriptionStatus> response) {
                         SubscriptionStatus body = response.body();
-                        String message = body.data;
                         if (body != null) {
+                            String message = body.data;
                             updateSubscriptionUI(false, 1);
                             if(sessionManager.getAppLanguage().equals("hi"))
                                 message = switch_hi_subs_response(body.data) ;
@@ -951,6 +952,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         intent.putExtra("visitUuid", visitUuid);
         intent.putExtra("name", patientName);
         intent.putExtra("tag", "medicalAdvice");
+        intent.putExtra("visitType","curiosityResolution");
         intent.putExtra("followUpDate", " ");
         startActivity(intent);
     }

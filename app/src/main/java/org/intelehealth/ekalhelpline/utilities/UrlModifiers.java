@@ -137,4 +137,8 @@ public class UrlModifiers {
     public String getRecordingListUrl(String number) {
         return String.format("https://" + sessionManager.getServerUrl() + "/recordings/%s", number);
     }
+
+    public String getSubscriptionNumUrl(String chwName) {
+        return String.format("https://" + sessionManager.getServerUrl() + "/subscriptions/%s", chwName);
+    }
 }

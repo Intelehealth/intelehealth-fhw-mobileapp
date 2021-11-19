@@ -1,5 +1,7 @@
 package org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity;
 
+import static org.intelehealth.ekalhelpline.app.AppConstants.apiInterface;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +29,8 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.homeActivity.HomeActivity;
 import org.intelehealth.ekalhelpline.models.IVR_Call_Models.Call_Details_Response;
+import org.intelehealth.ekalhelpline.models.dailyPerformance.Subscriptions;
+import org.intelehealth.ekalhelpline.models.dailyPerformance.SubscriptionsResponse;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiClient;
 import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
 import org.intelehealth.ekalhelpline.utilities.Logger;
@@ -44,6 +49,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class IVRCallResponseActivity extends AppCompatActivity {
     Context context;
@@ -51,9 +59,10 @@ public class IVRCallResponseActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     IVRCallResponse_Adapter adapter;
     Call_Details_Response response;
-    TextView total_count_textview;
+    TextView total_count_textview,totalSubsTV;
     CustomProgressDialog customProgressDialog;
-    String todayDate_string;
+    String todayDate_string, todayDateSubs;
+    boolean check = false;
 
 
     @Override
@@ -70,17 +79,20 @@ public class IVRCallResponseActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.ivr_response_recyclerview);
         total_count_textview = findViewById(R.id.total_count_textview);
+        totalSubsTV = findViewById(R.id.total_subs_count_textview);
         recyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
 
         SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
+        SimpleDateFormat todaydateFormatSubs = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Calendar today = Calendar.getInstance();
         Date todayDate = today.getTime();
         todayDate_string = todaydateFormat.format(todayDate);
-        getIVR_Call_Response(sessionManager.getProviderPhoneno(), todayDate_string);
+        todayDateSubs = todaydateFormatSubs.format(todayDate);
+        getIVR_Call_Response(sessionManager.getProviderPhoneno(), sessionManager.getChwname(), todayDate_string, todayDateSubs);
 
     }
 
-    private void getIVR_Call_Response(String providerNo, String fromDate) {
+    private void getIVR_Call_Response(String providerNo, String chwName, String fromDate, String todayDateSubs) {
         if (!NetworkConnection.isOnline(this)) {
             customProgressDialog.dismiss();
             Toast.makeText(context, R.string.no_network, Toast.LENGTH_LONG).show();
@@ -91,7 +103,6 @@ public class IVRCallResponseActivity extends AppCompatActivity {
         response = new Call_Details_Response();
         ApiClient.changeApiBaseUrl("https://api-voice.kaleyra.com");
         UrlModifiers urlModifiers = new UrlModifiers();
-
         String url = urlModifiers.getIvrCall_ResponseUrl(providerNo, fromDate);
         Logger.logD("main", "ivr call response url" + url);
         Observable<Call_Details_Response> patientIvrCall_response =
@@ -104,7 +115,6 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                     public void onSubscribe(Disposable d) {
 
                     }
-
                     @Override
                     public void onNext(Call_Details_Response call_details_response) {
                         response = call_details_response;
@@ -120,7 +130,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                         }
 
                         Log.v("main", "call_ivr_response: " + call_details_response);
-
+                        
                     }
 
                     @Override
@@ -136,6 +146,30 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                     }
                 });
 
+        String encoded = "Basic " + sessionManager.getEncoded();
+        apiInterface.getSubscriptionNum(urlModifiers.getSubscriptionNumUrl(chwName), encoded).enqueue(new Callback<SubscriptionsResponse>() {
+            @Override
+            public void onResponse(Call<SubscriptionsResponse> call, Response<SubscriptionsResponse> response) {
+                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+                    for (Subscriptions subscriptions : response.body().data) {
+                        if(!TextUtils.isEmpty(subscriptions.subscribed_date) && subscriptions.subscribed_date.equals(todayDateSubs)) {
+                            totalSubsTV.setText(getString(R.string.total_subs) + " " + subscriptions.total_count);
+                            check = true;
+                            return;
+                        }
+                        if(check == false)
+                            totalSubsTV.setText(getString(R.string.total_subs) + " 0");
+                    }
+                } else {
+                    totalSubsTV.setText(getString(R.string.total_subs) + " NA");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubscriptionsResponse> call, Throwable t) {
+                System.out.println(t);
+            }
+        });
     }
 
     @Override
@@ -153,7 +187,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_sync:
-                getIVR_Call_Response(sessionManager.getProviderPhoneno(), todayDate_string);
+                getIVR_Call_Response(sessionManager.getProviderPhoneno(),sessionManager.getChwname(), todayDate_string, todayDateSubs);
                 return true;
 
             case R.id.action_calendar:
@@ -175,16 +209,17 @@ public class IVRCallResponseActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 String date_string = "";
+                String date_string_subs = "";
                 SimpleDateFormat todaydateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH);
-
+                SimpleDateFormat todaydateFormatSubs = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, dayOfMonth);
                 date_string = todaydateFormat.format(calendar.getTime());
-
-                getIVR_Call_Response(sessionManager.getProviderPhoneno(), date_string);
+                date_string_subs = todaydateFormatSubs.format(calendar.getTime());
+                getIVR_Call_Response(sessionManager.getProviderPhoneno(), sessionManager.getChwname(), date_string,date_string_subs);
             }
         }, year, month, day);
-
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         datePickerDialog.show();
 
         Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);

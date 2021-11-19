@@ -14,15 +14,32 @@
         app:cardCornerRadius="3dp"
         app:cardElevation="4dp">
 
-        <TextView
-            android:id="@+id/total_count_textview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="15dp"
-            android:text="@string/total_calls"
-            android:textAlignment="center"
-            android:textColor="@color/font_black_1"
-            android:textSize="24sp" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/total_count_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:text="@string/total_calls"
+                android:textAlignment="center"
+                android:textColor="@color/font_black_1"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/total_subs_count_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="15dp"
+                android:text="@string/total_subs"
+                android:textAlignment="center"
+                android:textColor="@color/font_black_1"
+                android:textSize="24sp" />
+
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

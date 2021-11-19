@@ -51,6 +51,13 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
             else {
                 holder.bodyTextView.setVisibility(View.GONE);
             }
+            if (!TextUtils.isEmpty(recording.time)) {
+                holder.timeTextView.setText(recording.time);
+                holder.timeTextView.setVisibility(View.VISIBLE);
+            }
+            else {
+                holder.timeTextView.setVisibility(View.GONE);
+            }
         }
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,13 +79,14 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
 
     class Myholder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
-        private TextView headTextView, bodyTextView;
+        private TextView headTextView, bodyTextView, timeTextView;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             linearLayout = itemView.findViewById(R.id.searchlinear);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
+            timeTextView = itemView.findViewById(R.id.list_item_time);
         }
     }
 
