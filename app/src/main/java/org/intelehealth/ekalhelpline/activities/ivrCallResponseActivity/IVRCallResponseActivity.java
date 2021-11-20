@@ -157,11 +157,13 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                             check = true;
                             return;
                         }
+                        else
+                            check = false;
                         if(check == false)
                             totalSubsTV.setText(getString(R.string.total_subs) + " 0");
                     }
                 } else {
-                    totalSubsTV.setText(getString(R.string.total_subs) + " NA");
+                    totalSubsTV.setText(getString(R.string.total_subs) + " 0");
                 }
             }
 
