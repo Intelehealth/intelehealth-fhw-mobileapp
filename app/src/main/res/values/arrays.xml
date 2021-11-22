@@ -365,8 +365,10 @@
         <item>Small scale farmer/farm worker</item>
         <item>Unemployed</item>
         <item>Housewife</item>
+        <item>Student</item>
+        <item>Under 5 child</item>
         <item>Other skills (driver,mason etc)</item>
-        <item>[Describe]</item>
+<!--        <item>[Describe]</item>-->
     </string-array>
 
 <!--    Hindi Occupation-->
@@ -385,8 +387,10 @@
         <item>छोटे किसान/ दुसरे के खेत में काम करने वाले</item>
         <item>बेरोजगार</item>
         <item>ग्रहिणी</item>
+        <item>विद्यार्थी</item>
+        <item>5 साल से कम उम्र के बच्चे</item>
         <item>अन्य कुशलता (ड्राईवर,राज मिस्त्री)</item>
-        <item>वर्णन करे</item>
+<!--        <item>वर्णन करे</item>-->
     </string-array>
 
     <string-array name="bank_account_spinner_en">
