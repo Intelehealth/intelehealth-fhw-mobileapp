@@ -70,7 +70,7 @@ public class SplashActivity extends AppCompatActivity {
         // refresh the fcm token
         TokenRefreshUtils.refreshToken(this);
 
-        checkPerm();
+        //checkPerm();
         initFirebaseRemoteConfig();
     }
 
