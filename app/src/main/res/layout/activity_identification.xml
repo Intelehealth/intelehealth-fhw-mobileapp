@@ -680,13 +680,14 @@
 -->
 
 
-                        <Space
+                        <!--<Space
                             android:layout_width="20dp"
-                            android:layout_height="10dp" />
+                            android:layout_height="10dp"/>-->
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/identification_txtlcaste"
                             android:layout_width="match_parent"
+                            android:visibility="gone"
                             android:layout_height="wrap_content">
 
                             <LinearLayout
