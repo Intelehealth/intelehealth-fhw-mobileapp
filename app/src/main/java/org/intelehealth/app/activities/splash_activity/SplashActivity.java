@@ -104,7 +104,8 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         });
                         alertDialogBuilder.show();
-                    } else {
+                    }
+                    else {
                         checkPerm();
                     }
                 }
