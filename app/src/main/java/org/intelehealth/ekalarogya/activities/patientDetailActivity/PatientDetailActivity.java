@@ -347,6 +347,11 @@ public class PatientDetailActivity extends AppCompatActivity {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        //here the householduuid was not added to sessionmanager() so the issue of error...
+        sessionManager.setHouseholdUuid(houseHoldValue);
+        //end...
+
+
         if (!houseHoldValue.equalsIgnoreCase("")) {
             //Fetch all patient UUID from houseHoldValue
             try {
