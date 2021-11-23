@@ -603,7 +603,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                 // redirect to web browser for prescription
                 Intent intent1 = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse(prescriptionUrl + patientUuid));
+                        Uri.parse(prescriptionUrl + patientUuid + "/" + sessionManager.getAppLanguage()));
                 Log.v("main", "prescurl: " + prescriptionUrl + patientUuid);
                 startActivity(intent1);
 
@@ -2250,7 +2250,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //Whatsapp is not accepting special characters # so need to encode it.
         String url = "";
         url = URLEncoder.encode(prescriptionUrl);
-        String message = url + patientUuid;
+        String message = url + patientUuid + "/" + sessionManager.getAppLanguage();
         Log.v("main", "prescurl: " +message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
