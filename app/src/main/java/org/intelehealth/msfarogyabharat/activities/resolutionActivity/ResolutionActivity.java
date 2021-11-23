@@ -66,8 +66,10 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.UUID;
 
 import okhttp3.ResponseBody;
@@ -105,7 +107,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
     private static final String TAG = ResolutionActivity.class.getSimpleName();
     Node patientHistoryMap;
-    String patientHistory;
+//    String patientHistory;
     String phistory = "";
 
     boolean flag = false;
@@ -422,13 +424,20 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
                 if (intentTag != null && intentTag.equals("edit")) {
                     if (patientHistoryMap.anySubSelected()) {
-                        patientHistory = patientHistoryMap.generateLanguage();
+                        String patientHistory = patientHistoryMap.generateLanguage();
                         updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
                     }
                 } else {
 
                     //  if(patientHistoryMap.anySubSelected()){
-                    patientHistory = patientHistoryMap.generateLanguage();
+                    String patientHistory = patientHistoryMap.generateLanguage();
+                    String patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                        patientHistoryHindi = s;
+                    Map<String, String> patientHistoryMap = new HashMap<>();
+                    patientHistoryMap.put("en", patientHistory);
+                    patientHistoryMap.put("hi", patientHistoryHindi);
+                    String patientHistoryJson = new Gson().toJson(patientHistoryMap);
 
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + patientHistory; // only PMH updated
@@ -440,7 +449,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                         // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                     } else  // new patient, directly insert into database
                     {
-                        insertDb(patientHistory);
+                        insertDb(patientHistoryJson);
                     }
                 }
             }
