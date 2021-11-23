@@ -37,98 +37,101 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MissCallResponseActivity extends AppCompatActivity {
-        RecyclerView recyclerView;
-        SessionManager sessionManager = null;
-        TextView msg;
-        private String TAG = MissCallResponseActivity.class.getSimpleName();
+    RecyclerView recyclerView;
+    SessionManager sessionManager = null;
+    TextView msg;
+    private String TAG = MissCallResponseActivity.class.getSimpleName();
 
-        public static void start(Context context) {
-            Intent starter = new Intent(context, MissCallResponseActivity.class);
-            context.startActivity(starter);
-        }
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MissCallResponseActivity.class);
+        context.startActivity(starter);
+    }
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_recordings);
-            Toolbar toolbar = findViewById(R.id.toolbar);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recordings);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
-            setSupportActionBar(toolbar);
-            toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
-            toolbar.setTitleTextColor(Color.WHITE);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            // Get the intent, verify the action and get the query
-            sessionManager = new SessionManager(this);
-            String language = sessionManager.getAppLanguage();
-            //In case of crash still the app should hold the current lang fix.
-            if (!language.equalsIgnoreCase("")) {
-                Locale locale = new Locale(language);
-                Locale.setDefault(locale);
-                Configuration config = new Configuration();
-                config.locale = locale;
-                getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        setSupportActionBar(toolbar);
+        toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
-            sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        // Get the intent, verify the action and get the query
+        sessionManager = new SessionManager(this);
+        String language = sessionManager.getAppLanguage();
+        //In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        }
+        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
 
-            msg = findViewById(R.id.textviewmessage);
-            recyclerView = findViewById(R.id.recycle);
-            LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-            recyclerView.setLayoutManager(reLayoutManager);
+        msg = findViewById(R.id.textviewmessage);
+        recyclerView = findViewById(R.id.recycle);
+        LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(reLayoutManager);
 
-            UrlModifiers urlModifiers = new UrlModifiers();
-            ApiInterface apiInterface = AppConstants.apiInterface;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
 
-            String encoded = "Basic bnVyc2UxOk51cnNlMTIz";
-            apiInterface.getRecordings(urlModifiers.getRecordingListUrl()).enqueue(new Callback<RecordingResponse>() {
-                @Override
-                public void onResponse(Call<RecordingResponse> call, Response<RecordingResponse> response) {
-                    if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
-                        List<Recording> recordingList = new ArrayList<>();
-                        for (Recording recording : response.body().data) {
-                            if (!TextUtils.isEmpty(recording.RecordingURL)) {
-                                recordingList.add(recording);
+        String encoded = "Basic bnVyc2UxOk51cnNlMTIz";
+        apiInterface.getRecordings(urlModifiers.getRecordingListUrl()).enqueue(new Callback<RecordingResponse>() {
+            @Override
+            public void onResponse(Call<RecordingResponse> call, Response<RecordingResponse> response) {
 
-                            }
+                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+
+                    List<Recording> recordingList = new ArrayList<>();
+                    for (Recording recording : response.body().data) {
+                        if (!TextUtils.isEmpty(recording.RecordingURL)) {
+                            recordingList.add(recording);
+
                         }
-                        if (recordingList.size() > 0) {
-                            msg.setVisibility(View.GONE);
-                        } else {
-                            //All followups done
-                            msg.setText(R.string.no_records_found);
-                        }
-
-                        recyclerView.setAdapter(new RecordingsAdapter(recordingList, new RecordingsAdapter.OnClickingItemListner() {
-                            @Override
-                            public void mCallAgain(int pos) {
-//todo
-                                updatetheCaller(recordingList.get(pos).Caller);
-                            }
-                        }, MissCallResponseActivity.this));
+                    }
+                    if (recordingList.size() > 0) {
+                        msg.setVisibility(View.GONE);
                     } else {
+                        //All followups done
+
                         msg.setText(R.string.no_records_found);
                     }
-                }
 
-                @Override
-                public void onFailure(Call<RecordingResponse> call, Throwable t) {
-                    System.out.println(t);
+                    recyclerView.setAdapter(new RecordingsAdapter(recordingList, new RecordingsAdapter.OnClickingItemListner() {
+                        @Override
+                        public void mCallAgain(int pos) {
+//todo
+                            updatetheCaller(recordingList.get(pos).Caller);
+                        }
+                    }, MissCallResponseActivity.this));
+                } else {
+                    msg.setText(R.string.no_records_found);
                 }
-            });
-        }
+            }
 
-        @Override
-        protected void onDestroy() {
-            super.onDestroy();
-            recyclerView.clearOnScrollListeners();
-        }
+            @Override
+            public void onFailure(Call<RecordingResponse> call, Throwable t) {
+                System.out.println(t);
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        recyclerView.clearOnScrollListeners();
+    }
     private void updatetheCaller(String phoneNumber) {
 
         UpdateRecordingCallerBodyModel updateRecordingCallerBody = new UpdateRecordingCallerBodyModel();

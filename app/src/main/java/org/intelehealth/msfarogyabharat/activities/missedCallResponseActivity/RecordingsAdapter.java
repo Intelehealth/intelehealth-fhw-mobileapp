@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,15 +42,15 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
         final Recording recording = patients.get(position);
         if (recording != null) {
             holder.headTextView.setText(recording.Caller);
-            if (!TextUtils.isEmpty(recording.id)) {
-                holder.bodyTextView.setText(recording.id);
+            if (!TextUtils.isEmpty(recording.dateofcall)) {
+                holder.bodyTextView.setText(recording.dateofcall);
                 holder.bodyTextView.setVisibility(View.VISIBLE);
             }
             else {
                 holder.bodyTextView.setVisibility(View.GONE);
             }
         }
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+        holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (NetworkConnection.isOnline(context) && recording != null) {
@@ -58,13 +59,14 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
                     Toast.makeText(context, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
                 }
             }
-        });   holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+        });
+        holder.callUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (NetworkConnection.isOnline(context) && recording != null) {
                   onClickingIteListner.mCallAgain(position);
                 } else {
-                    Toast.makeText(context, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
+                  Toast.makeText(context, R.string.please_connect_to_internet, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -79,11 +81,14 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.My
     class Myholder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
         private TextView headTextView, bodyTextView;
+        ImageView callUpdate,play;
 
         public Myholder(View itemView) {
             super(itemView);
             headTextView = itemView.findViewById(R.id.list_item_head);
             linearLayout = itemView.findViewById(R.id.searchlinear);
+            callUpdate = itemView.findViewById(R.id.callUpdate);
+            play = itemView.findViewById(R.id.play);
             bodyTextView = itemView.findViewById(R.id.list_item_body);
         }
     }

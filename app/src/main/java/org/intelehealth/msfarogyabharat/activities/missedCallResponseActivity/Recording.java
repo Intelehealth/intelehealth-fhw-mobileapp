@@ -4,11 +4,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Recording {
-    @SerializedName("RecordingURL")
+
+    @SerializedName("recordingurl")
     @Expose
     public String RecordingURL;
 
-    @SerializedName("Caller")
+    @SerializedName("caller")
     @Expose
     public String Caller;
 
