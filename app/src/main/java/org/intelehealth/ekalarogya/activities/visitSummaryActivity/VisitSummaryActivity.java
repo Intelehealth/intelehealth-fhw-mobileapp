@@ -717,7 +717,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         flag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flag.isChecked()) {
+                if (flag.isChecked()) {
                     MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
                     alertdialogBuilder.setMessage(getResources().getString(R.string.emergency_confirmation));
                     alertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
@@ -757,8 +757,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
                     IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
-                }
-                else {
+                } else {
                     try {
                         EncounterDAO encounterDAO = new EncounterDAO();
                         encounterDAO.setEmergency(visitUuid, false);
@@ -871,8 +870,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
                     }
-                }
-                else {
+                } else {
                     //here if checkbox is not selected still disable the checkbox...
                     flag.setEnabled(false);
 
@@ -1552,24 +1550,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         //visit is uploaded to server checking in this case the checkbox will be disabled...
-        if(!isSynedFlag.equalsIgnoreCase("0")) {
+        if (!isSynedFlag.equalsIgnoreCase("0")) {
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
                 //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
                 flag.setChecked(true);
                 flag.setEnabled(false);
-            }
-            else {
+            } else {
                 flag.setChecked(false);
                 flag.setEnabled(false);
             }
-        }
-        else{
+        } else {
             //to set the checkbox as checked in offline mode so that i can be modified later...
             if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
                 //i.e the visit is a priority visit since getEmergencyEncounters() checks for voided = 0 i.e. priority...
                 flag.setChecked(true);
+            } else {
+                flag.setChecked(false);
             }
-            else { flag.setChecked(false); }
         }
     }
 
@@ -2531,6 +2528,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             @Override
                             public void success(String path) {
                             }
+
                             @Override
                             public void onFailure() {
                             }
@@ -2543,6 +2541,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 @Override
                                 public void success(String path) {
                                 }
+
                                 @Override
                                 public void onFailure() {
                                 }
@@ -3102,13 +3101,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private void parseDoctorDetails(String dbValue) {
         Gson gson = new Gson();
-      //  dbValue = dbValue.replace("{", "");
+        //  dbValue = dbValue.replace("{", "");
         try {
             objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
             Log.e(TAG, "TEST DB: " + dbValue);
             Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Toast.makeText(context, getResources().getString(R.string.something_went_wrong),
                     Toast.LENGTH_SHORT).show();
