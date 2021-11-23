@@ -180,6 +180,7 @@ public class ComplaintNodeActivity extends AppCompatActivity {
                     currentFile = new JSONObject(FileUtils.readFile(file.getName(), this));
                 } catch (JSONException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
+                    finish();
                 }
                 if (currentFile != null) {
                     Log.i(TAG, currentFile.toString());

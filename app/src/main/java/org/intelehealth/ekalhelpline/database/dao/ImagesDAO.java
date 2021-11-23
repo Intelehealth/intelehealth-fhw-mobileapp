@@ -6,20 +6,19 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.ekalhelpline.app.AppConstants;
+import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.ekalhelpline.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.ekalhelpline.utilities.Base64Utils;
+import org.intelehealth.ekalhelpline.utilities.Logger;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
+import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.intelehealth.ekalhelpline.utilities.Base64Utils;
-import org.intelehealth.ekalhelpline.utilities.Logger;
-import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
-import org.intelehealth.ekalhelpline.app.AppConstants;
-import org.intelehealth.ekalhelpline.models.ObsImageModel.ObsPushDTO;
-import org.intelehealth.ekalhelpline.models.patientImageModelRequest.PatientProfile;
-import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 public class ImagesDAO {
     public String TAG = ImagesDAO.class.getSimpleName();
@@ -385,8 +384,11 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
+        }catch (IllegalStateException e) {
+            e.printStackTrace();
         } finally {
             localdb.endTransaction();
         }
@@ -404,7 +406,6 @@ public class ImagesDAO {
         }
         return isLocalImageExists;
     }
-
 
 
 }
