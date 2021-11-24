@@ -1,6 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Intelehealth\MobileApp-HII-Sprint1\webrtc\src\main\assets"/><source path="C:\Intelehealth\MobileApp-HII-Sprint1\webrtc\build\intermediates\shader_assets\debug\out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Intelehealth\MobileApp-HII-Sprint1\webrtc\src\debug\assets"/></dataSet></merger>
-=======
 <merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\assets"/><source path="D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\build\intermediates\shader_assets\debug\out"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\debug\assets"/></dataSet></merger>
->>>>>>> Hand-In-Hand-Sprint1-HIH-63

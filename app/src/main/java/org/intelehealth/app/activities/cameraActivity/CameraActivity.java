@@ -309,13 +309,11 @@ public class CameraActivity extends AppCompatActivity {
         mCameraView = findViewById(R.id.camera_surface_CameraView);
         mFab = findViewById(R.id.take_picture);
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
-
         }
 
         if (mCameraView != null) mCameraView.addCallback(mCallback);
@@ -324,7 +322,12 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (mCameraView != null) {
-                        mCameraView.takePicture();
+                        try {
+                            Thread.sleep(500);
+                            mCameraView.takePicture();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
