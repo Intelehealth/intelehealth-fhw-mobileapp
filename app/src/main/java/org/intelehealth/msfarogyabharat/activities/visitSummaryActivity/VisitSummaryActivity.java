@@ -4912,13 +4912,17 @@ public class VisitSummaryActivity extends AppCompatActivity {
         List<ObsDTO> obsDTOList = new ArrayList<>();
         obsDTO = new ObsDTO();
         obsDTO.setUuid(UUID.randomUUID().toString());
-        obsDTO.setEncounteruuid(EncounterAdultInitial_LatestVisit);
+        obsDTO.setEncounteruuid(encounterAdultInitList.get(encounterAdultInitList.size()-1));
         //todo
 
-        if (mFacilitySelection.getVisibility() == View.VISIBLE) {
+           if (mFacilitySelection.getVisibility() == View.VISIBLE) {
             mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
         } else {
-            mFacilityValue = txtViewFacility.getText().toString();
+            if(TextUtils.isEmpty(txtViewFacility.getText().toString())){
+                mFacilityValue=mFacilityValue;
+            }else{
+                mFacilityValue = txtViewFacility.getText().toString();
+            }
         }
         obsDTO.setValue("" + mState + ", " + mDistrict + ", " + mFacilityValue);
         obsDTO.setConceptuuid(UuidDictionary.Facility);

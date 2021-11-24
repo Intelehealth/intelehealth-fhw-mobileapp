@@ -1379,7 +1379,7 @@
                             android:hint="@string/textViewHintFacility"
 android:layout_marginLeft="5dp"
                             android:inputType="textAutoComplete"
-                            android:maxLength="45"
+                           android:maxHeight="300dp"
                             android:maxLines="1"
                             android:layout_marginTop="5dp"
 
