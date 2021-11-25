@@ -351,7 +351,7 @@ public class HomeActivity extends AppCompatActivity {
         if (!NetworkConnection.isOnline(this)) {
             totalRegTV.setText(getString(R.string.total_reg) + " NA");
             totalSubsTV.setText(getString(R.string.total_sub) + " NA");
-            totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+//            totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
             return;
         }
 
@@ -409,30 +409,31 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        check = false;
-        apiInterface.getCallsNum(urlModifiers.getCallNumUrl(chwNum), encoded).enqueue(new Callback<CallNumResponse>() {
-            @Override
-            public void onResponse(Call<CallNumResponse> call, Response<CallNumResponse> response) {
-                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
-                    for (CallNums callNums : response.body().data) {
-                        if(!TextUtils.isEmpty(callNums.called_date) && callNums.called_date.equals(today_date)) {
-                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " " + callNums.total_count);
-                            check = true;
-                            return;
-                        }
-                        if(check == false)
-                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
-                    }
-                } else {
-                    totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
-                }
-            }
-            @Override
-            public void onFailure(Call<CallNumResponse> call, Throwable t) {
-                totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
-                System.out.println(t);
-            }
-        });
+        //total calls record not required for now: Nishita Goyal
+//        check = false;
+//        apiInterface.getCallsNum(urlModifiers.getCallNumUrl(chwNum), encoded).enqueue(new Callback<CallNumResponse>() {
+//            @Override
+//            public void onResponse(Call<CallNumResponse> call, Response<CallNumResponse> response) {
+//                if (response.body() != null && response.body().data != null && response.body().data.size() > 0) {
+//                    for (CallNums callNums : response.body().data) {
+//                        if(!TextUtils.isEmpty(callNums.called_date) && callNums.called_date.equals(today_date)) {
+//                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " " + callNums.total_count);
+//                            check = true;
+//                            return;
+//                        }
+//                        if(check == false)
+//                            totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
+//                    }
+//                } else {
+//                    totalCallsTV.setText(getString(R.string.total_called_helpline) + " 0");
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<CallNumResponse> call, Throwable t) {
+//                totalCallsTV.setText(getString(R.string.total_called_helpline) + " NA");
+//                System.out.println(t);
+//            }
+//        });
     }
 
     //function for handling the video library feature...
