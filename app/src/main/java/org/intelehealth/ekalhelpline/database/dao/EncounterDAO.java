@@ -4,11 +4,20 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.util.Log;
-
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+
+import org.intelehealth.ekalhelpline.app.AppConstants;
+import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
+import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
+import org.intelehealth.ekalhelpline.models.dto.ObsDTO;
+import org.intelehealth.ekalhelpline.utilities.Logger;
+import org.intelehealth.ekalhelpline.utilities.SessionManager;
+import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
+import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,15 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-
-import org.intelehealth.ekalhelpline.utilities.Logger;
-import org.intelehealth.ekalhelpline.utilities.SessionManager;
-import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
-import org.intelehealth.ekalhelpline.app.AppConstants;
-import org.intelehealth.ekalhelpline.app.IntelehealthApplication;
-import org.intelehealth.ekalhelpline.models.dto.EncounterDTO;
-import org.intelehealth.ekalhelpline.models.dto.ObsDTO;
-import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 
 public class EncounterDAO {
 
@@ -65,7 +65,7 @@ public class EncounterDAO {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            Log.d("VALUES:","VALUES: "+values);
+            Log.d("VALUES:", "VALUES: " + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -127,7 +127,7 @@ public class EncounterDAO {
         //Distinct keyword is used to remove all duplicate records.
         Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
-        Log.d("RAINBOW: ","RAINBOW: "+idCursor.getCount());
+        Log.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterDTO = new EncounterDTO();
@@ -135,9 +135,9 @@ public class EncounterDAO {
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
-                Log.d("ENCO","ENCO_PROV: "+idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                Log.d("ENCO", "ENCO_PROV: " + idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
-                Log.d("ENCO","ENCO_TIME: "+idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                Log.d("ENCO", "ENCO_TIME: " + idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
                 encounterDTOList.add(encounterDTO);
@@ -148,7 +148,7 @@ public class EncounterDAO {
         db.endTransaction();
 
         Gson gson = new Gson();
-        Log.d("ENC_GSON: ","ENC_GSON: "+gson.toJson(encounterDTOList));
+        Log.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
@@ -250,7 +250,7 @@ public class EncounterDAO {
             encounterDTO.setEncounterTime(thisDate);
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO","DTOdao: "+ encounterDTO.getProvideruuid());
+            Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 
             encounterDAO.createEncountersToDB(encounterDTO);
 
@@ -312,10 +312,9 @@ public class EncounterDAO {
             db.endTransaction();
         }
 */
-        Log.d("uuid", "uuid: "+uuid);
+        Log.d("uuid", "uuid: " + uuid);
         return uuid;
     }
-
 
 
     public boolean updateEncounterModifiedDate(String encounterUuid) throws DAOException {

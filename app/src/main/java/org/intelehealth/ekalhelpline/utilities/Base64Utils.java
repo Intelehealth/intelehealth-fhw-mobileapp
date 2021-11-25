@@ -4,13 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import org.intelehealth.ekalhelpline.app.AppConstants;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
-
-import org.intelehealth.ekalhelpline.app.AppConstants;
 
 public class Base64Utils {
     private String TAG = Base64Utils.class.getSimpleName();
@@ -28,14 +27,12 @@ public class Base64Utils {
         String encodeString = "";
         try {
             bmp = BitmapFactory.decodeFile(path);
-            baos = new ByteArrayOutputStream();
-
-            if(bmp != null) {
+            if (bmp != null) {
+                baos = new ByteArrayOutputStream();
                 bmp.compress(Bitmap.CompressFormat.JPEG, AppConstants.IMAGE_JPG_QUALITY, baos);
                 baat = baos.toByteArray();
                 encodeString = Base64.encodeToString(baat, Base64.DEFAULT);
             }
-
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
