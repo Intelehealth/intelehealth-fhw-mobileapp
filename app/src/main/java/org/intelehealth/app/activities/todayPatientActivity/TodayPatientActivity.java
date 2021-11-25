@@ -159,32 +159,35 @@ public class TodayPatientActivity extends AppCompatActivity {
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    try {
-                        TodayPatientModel model = new TodayPatientModel(
-                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
-                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        todayPatientList.add(model
-                        );
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
-                } while (cursor.moveToNext());
+        try {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            TodayPatientModel model = new TodayPatientModel(
+                                    cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                            model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                            todayPatientList.add(model
+                            );
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor.moveToNext());
+                }
             }
-        }
-        if (cursor != null) {
+        }catch (SQLException s) {
+            s.printStackTrace();
+        }finally {
             cursor.close();
         }
 
@@ -219,35 +222,46 @@ public class TodayPatientActivity extends AppCompatActivity {
         String[] encounterIDArgs = {visitUuid};
         EncounterDAO encounterDAO = new EncounterDAO();
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-            do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
+       try {
+           if (encounterCursor != null && encounterCursor.moveToFirst()) {
+               do {
+                   if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                       encounterVitalslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                   }
+                   if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                       encounterAdultIntialslocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                   }
 
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
+                   if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                       visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                   }
 
-            } while (encounterCursor.moveToNext());
+               } while (encounterCursor.moveToNext());
+           }
+       }catch (SQLException s) {
+            s.printStackTrace();
+        }finally {
+           encounterCursor.close();
         }
-        encounterCursor.close();
 
         String[] visitArgs = {visitnote, UuidDictionary.FOLLOW_UP_VISIT};
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? AND conceptuuid = ? and voided!='1' ";
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
+
+        try {
+            if (visitCursor.moveToFirst()) {
+                do {
 //                            String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                followupdate = dbValue;
-            } while (visitCursor.moveToNext());
+                    String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+                    followupdate = dbValue;
+                } while (visitCursor.moveToNext());
+            }
+        }catch (SQLException s) {
+            s.printStackTrace();
+        }finally {
+            visitCursor.close();
         }
-        visitCursor.close();
 
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(TodayPatientActivity.this);
         if (hasPrescription) {
@@ -396,32 +410,35 @@ public class TodayPatientActivity extends AppCompatActivity {
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    try {
-                        TodayPatientModel model = new TodayPatientModel(
-                                cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")));
-                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        todayPatientList.add(model
-                        );
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
-                } while (cursor.moveToNext());
+        try {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            TodayPatientModel model = new TodayPatientModel(
+                                    cursor.getString(cursor.getColumnIndexOrThrow("uuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("enddate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                            model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                            todayPatientList.add(model
+                            );
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor.moveToNext());
+                }
             }
-        }
-        if (cursor != null) {
+        }catch (SQLException s) {
+           s.printStackTrace();
+        }finally {
             cursor.close();
         }
 
@@ -457,20 +474,23 @@ public class TodayPatientActivity extends AppCompatActivity {
 
         final Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    boolean result = endVisit(
-                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
-                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
-                    );
-                    if (!result) failedUploads++;
-                } while (cursor.moveToNext());
+        try {
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        boolean result = endVisit(
+                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
+                                        cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
+                        );
+                        if (!result) failedUploads++;
+                    } while (cursor.moveToNext());
+                }
             }
-        }
-        if (cursor != null) {
+        }catch (SQLException s) {
+           s.printStackTrace();
+        }finally {
             cursor.close();
         }
 
@@ -513,8 +533,9 @@ public class TodayPatientActivity extends AppCompatActivity {
             }
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
+        }finally {
+            idCursor.close();
         }
-        idCursor.close();
 
         return phone;
     }

@@ -8,6 +8,7 @@
 8    <uses-sdk
 9        android:minSdkVersion="19"
 <<<<<<< HEAD
+<<<<<<< HEAD
 9-->C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\AndroidManifest.xml
 10        android:targetSdkVersion="30" />
 10-->C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\AndroidManifest.xml
@@ -75,6 +76,9 @@
 37-->C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\AndroidManifest.xml:32:13-60
 =======
 9-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+=======
+9-->D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
+>>>>>>> HIH-79-Crashlytics-Fix
 10        android:targetSdkVersion="30" />
 10-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml
 11
@@ -138,8 +142,12 @@
 36            android:screenOrientation="portrait"
 36-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:31:13-49
 37            android:windowSoftInputMode="stateAlwaysHidden" />
+<<<<<<< HEAD
 37-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:13-60
 >>>>>>> Hand-In-Hand-Sprint1
+=======
+37-->D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:32:13-60
+>>>>>>> HIH-79-Crashlytics-Fix
 38        <!--
 39          <activity
 40              android:name="com.shivam.androidwebrtc.app_rtc_sample.main.AppRTCMainActivity"
@@ -165,6 +173,7 @@
 60        -->
 61        <activity
 <<<<<<< HEAD
+<<<<<<< HEAD
 61-->C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\AndroidManifest.xml:56:9-60:59
 62            android:name="org.intelehealth.apprtc.CompleteActivity"
 62-->C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\AndroidManifest.xml:57:13-68
@@ -176,6 +185,9 @@
 65-->C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\AndroidManifest.xml:60:13-56
 =======
 61-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-60:59
+=======
+61-->D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:56:9-60:59
+>>>>>>> HIH-79-Crashlytics-Fix
 62            android:name="org.intelehealth.apprtc.CompleteActivity"
 62-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:57:13-68
 63            android:screenOrientation="portrait"
@@ -183,8 +195,12 @@
 64            android:showOnLockScreen="true"
 64-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:59:13-44
 65            android:theme="@style/AppTheme.NoActionBar" />
+<<<<<<< HEAD
 65-->C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:60:13-56
 >>>>>>> Hand-In-Hand-Sprint1
+=======
+65-->D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\AndroidManifest.xml:60:13-56
+>>>>>>> HIH-79-Crashlytics-Fix
 66    </application>
 67
 68</manifest>
