@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -113,6 +114,7 @@ public class MissCallResponseActivity extends AppCompatActivity {
                         public void mCallAgain(int pos) {
 //todo
                             updatetheCaller(recordingList.get(pos).Caller);
+
                         }
                     }, MissCallResponseActivity.this));
                 } else {
@@ -150,7 +152,8 @@ public class MissCallResponseActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UpdatedCallerResponce> call, Response<UpdatedCallerResponce> response) {
 //                Log.v("main", "hash: "+hash);
-                showAlert(R.string.calling_patient);
+                showAlert(getString(R.string.calling_patient),phoneNumber);
+
             }
             @Override
             public void onFailure(Call<UpdatedCallerResponce> call, Throwable t) {
@@ -159,13 +162,41 @@ public class MissCallResponseActivity extends AppCompatActivity {
             }
         });
     }
+    public  void mCalling(String ph)
+    {
 
-    void showAlert(int messageRes) {
+        Toast.makeText(this, "clicked", Toast.LENGTH_LONG)
+                .show();
+
+
+        Uri u = Uri.parse("tel:" +ph);
+
+        // Create the intent and set the data for the
+        // intent as the phone number.
+        Intent i = new Intent(Intent.ACTION_DIAL, u);
+
+        try
+        {
+            // Launch the Phone app's dialer with a phone
+            // number to dial a call.
+            startActivity(i);
+        }
+        catch (SecurityException s)
+        {
+            // show() method display the toast with
+            // exception message.
+            Toast.makeText(this, "An error occurred", Toast.LENGTH_LONG)
+                    .show();
+        }
+    }
+    void showAlert(String messageRes,String phoneNo) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        alertDialogBuilder.setMessage(messageRes);
+        alertDialogBuilder.setMessage(messageRes+""+phoneNo);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                mCalling(phoneNo);
                 dialog.dismiss();
             }
         });

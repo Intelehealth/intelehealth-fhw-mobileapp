@@ -1311,12 +1311,12 @@
                     android:paddingBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginHorizontal="10dp"
-                    android:weightSum="3.8">
+                    >
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1.5">
+                        android:layout_height="wrap_content"
+                       >
 
                         <AutoCompleteTextView
                             android:id="@+id/autocomplete_state"
@@ -1334,8 +1334,8 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1.5">
+                        android:layout_height="wrap_content"
+                        >
 
                         <AutoCompleteTextView
                             android:id="@+id/autocomplete_district"
@@ -1353,34 +1353,16 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight=".8"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-                        <!--                            <EditText-->
-                        <!--                                android:id="@+id/editText_landmark"-->
-                        <!--                                android:layout_width="fill_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:completionThreshold="1"-->
-                        <!--                                android:hint="@string/landmark"-->
-                        <!--                                android:imeOptions="actionDone|flagNoExtractUi"-->
-                        <!--                                android:inputType="textAutoComplete"-->
-                        <!--                                android:maxLength="45"-->
-                        <!--                                android:maxLines="1"-->
-                        <!--                                android:editable="false"-->
-                        <!--                                android:text=""-->
-                        <!--                                android:singleLine="true" />-->
 
                         <TextView
                             android:id="@+id/txtViewFacility"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:completionThreshold="1"
                             android:hint="@string/textViewHintFacility"
-android:layout_marginLeft="5dp"
-                            android:inputType="textAutoComplete"
-                           android:maxHeight="300dp"
-                            android:maxLines="1"
+                            android:layout_marginLeft="5dp"
+                            android:singleLine="false"
                             android:layout_marginTop="5dp"
 
                             />
@@ -1389,8 +1371,6 @@ android:layout_marginLeft="5dp"
                             android:id="@+id/mFacilitySelection"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
-
                             />
 
                     </LinearLayout>

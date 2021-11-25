@@ -323,7 +323,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     EditText editText_landmark;
     MultiSelectionSpinner mFacilitySelection;
 
-    String mState, mDistrict, mFacilityValue;
+    String mState ="", mDistrict="", mFacilityValue="";
     JSONArray mFacilityArray = new JSONArray();
 
     @Override
@@ -950,9 +950,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             mState = arrayString[0];
                             autocompleteDistrict.setText("" + arrayString[1]);
                             mDistrict = arrayString[1];
-                            txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
+//                            txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
                             mFacilitySelection.setVisibility(View.GONE);
-                            mFacilityValue = arrayString[arrayString.length - 1];
+                            mFacilityValue=arrayString[arrayString.length - 1];
+//                            String facilityWithPipe=arrayString[arrayString.length - 1].replaceAll("\\|","\n");
+//                            mFacilityValue = facilityWithPipe;
+                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|","\n"));
+
                         }
                     }
                     medHistCursor.close();
@@ -1050,6 +1054,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 txtViewFacility.setText("");
                 txtViewFacility.setHint(getString(R.string.textViewHintFacility));
                 mFacilitySelection.setVisibility(View.GONE);
+                mState="";
+                mDistrict="";
+                mFacilityValue="";
             }
 
             @Override
@@ -1121,6 +1128,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 txtViewFacility.setText("");
                 txtViewFacility.setHint(getString(R.string.textViewHintFacility));
                 mFacilitySelection.setVisibility(View.GONE);
+                mDistrict="";
+                mFacilityValue="";
             }
 
             @Override
@@ -4068,9 +4077,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     mState = arrayString[0];
                     autocompleteDistrict.setText("" + arrayString[1]);
                     mDistrict = arrayString[1];
-                    txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
+//                    txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
                     mFacilitySelection.setVisibility(View.GONE);
                     mFacilityValue = arrayString[arrayString.length - 1];
+//                    String facilityWithPipe=arrayString[arrayString.length - 1].replaceAll("\\|","\n");
+//                    mFacilityValue = facilityWithPipe;
+                    txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|","\n"));
                 }
 
 //                medHistory = medHistory.replace("\"", "");

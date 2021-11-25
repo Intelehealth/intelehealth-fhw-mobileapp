@@ -24,7 +24,8 @@ public MultiSelectionSpinner(Context context) {
         super(context);
 
         adapter = new ArrayAdapter(context,
-        android.R.layout.simple_spinner_item);
+        R.layout.multiline_spiner);
+//        android.R.layout.simple_spinner_item);
         super.setAdapter(adapter);
         }
 
@@ -32,7 +33,7 @@ public MultiSelectionSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         adapter = new ArrayAdapter(context,
-        android.R.layout.simple_spinner_item);
+        R.layout.multiline_spiner);
         super.setAdapter(adapter);
         }
 
@@ -117,6 +118,7 @@ public void setItems(ArrayList<Item> items) {
         if(!buildSelectedItemString().isEmpty()){
         adapter.add(buildSelectedItemString());}
         else{
+
                 adapter.add(getResources().getString(R.string.textViewHintFacility));
         }
         }
@@ -128,7 +130,7 @@ private String buildSelectedItemString() {
         for (int i = 0; i < items.size(); ++i) {
         if (selection[i]) {
         if (foundOne) {
-        sb.append(", ");
+        sb.append("\n");
         }
 
         foundOne = true;
@@ -159,7 +161,7 @@ public ArrayList<Item> getSelectedItems() {
                 for (int i = 0; i < items.size(); ++i) {
                         if (selection[i]) {
                                 if (foundOne) {
-                                        sb.append(", ");
+                                        sb.append("| ");
                                 }
                                 foundOne = true;
                                 sb.append(items.get(i).getName());
