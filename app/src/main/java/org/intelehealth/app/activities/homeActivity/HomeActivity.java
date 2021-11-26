@@ -21,6 +21,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -28,6 +30,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
 import android.widget.Button;
@@ -40,6 +44,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
@@ -58,6 +63,8 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
+import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
@@ -74,6 +81,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,6 +89,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -128,6 +137,101 @@ public class HomeActivity extends AppCompatActivity {
             activeVisits_textview, videoLibrary_textview, help_textview;
     private ObjectAnimator syncAnimator;
 
+    private void saveToken() {
+        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
+        // save fcm reg. token for chat (Video)
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.v(TAG, "onNewIntent");
+        catchFCMMessageData();
+    }
+    private void catchFCMMessageData() {
+        // get the chat notification click info
+        if (getIntent().getExtras() != null) {
+            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
+            Bundle remoteMessage = getIntent().getExtras();
+            try {
+                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
+                    //Log.d(TAG, "actionType : TEXT_CHAT");
+                    String fromUUId = remoteMessage.getString("toUser");
+                    String toUUId = remoteMessage.getString("fromUser");
+                    String patientUUid = remoteMessage.getString("patientId");
+                    String visitUUID = remoteMessage.getString("visitId");
+                    String patientName = remoteMessage.getString("patientName");
+                    JSONObject connectionInfoObject = new JSONObject();
+                    connectionInfoObject.put("fromUUID", fromUUId);
+                    connectionInfoObject.put("toUUID", toUUId);
+                    connectionInfoObject.put("patientUUID", patientUUid);
+
+                    Intent intent = new Intent(ACTION_NAME);
+                    intent.putExtra("visit_uuid", visitUUID);
+                    intent.putExtra("connection_info", connectionInfoObject.toString());
+                    intent.setComponent(new ComponentName("org.intelehealth.unicef", "org.intelehealth.unicef.utilities.RTCMessageReceiver"));
+                    getApplicationContext().sendBroadcast(intent);
+
+                    Intent chatIntent = new Intent(this, ChatActivity.class);
+                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    chatIntent.putExtra("patientName", patientName);
+                    chatIntent.putExtra("visitUuid", visitUUID);
+                    chatIntent.putExtra("patientUuid", patientUUid);
+                    chatIntent.putExtra("fromUuid", fromUUId);
+                    chatIntent.putExtra("toUuid", toUUId);
+                    startActivity(chatIntent);
+
+                } else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
+                    //Log.d(TAG, "actionType : VIDEO_CALL");
+                    Intent in = new Intent(this, CompleteActivity.class);
+                    String roomId = remoteMessage.getString("roomId");
+                    String doctorName = remoteMessage.getString("doctorName");
+                    String nurseId = remoteMessage.getString("nurseId");
+                    boolean isOldNotification = false;
+                    if (remoteMessage.containsKey("timestamp")) {
+                        String timestamp = remoteMessage.getString("timestamp");
+
+                        Date date = new Date();
+                        if (timestamp != null) {
+                            date.setTime(Long.parseLong(timestamp));
+                            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); //this format changeable
+                            dateFormatter.setTimeZone(TimeZone.getDefault());
+
+                            try {
+                                Date ourDate = dateFormatter.parse(dateFormatter.format(date));
+                                long seconds = 0;
+                                if (ourDate != null) {
+                                    seconds = Math.abs(new Date().getTime() - ourDate.getTime()) / 1000;
+                                }
+                                Log.v(TAG, "Current time - " + new Date());
+                                Log.v(TAG, "Notification time - " + ourDate);
+                                Log.v(TAG, "seconds - " + seconds);
+                                if (seconds >= 10) {
+                                    isOldNotification = true;
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+
+                    in.putExtra("roomId", roomId);
+                    in.putExtra("isInComingRequest", true);
+                    in.putExtra("doctorname", doctorName);
+                    in.putExtra("nurseId", nurseId);
+
+                    int callState = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getCallState();
+                    if (callState == TelephonyManager.CALL_STATE_IDLE && !isOldNotification) {
+                        startActivity(in);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,7 +241,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-
+        DeviceInfoUtils.saveDeviceInfo(this);
 
         catchFCMMessageData();
         String language = sessionManager.getAppLanguage();
@@ -298,6 +402,7 @@ public class HomeActivity extends AppCompatActivity {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
             saveToken();
+            requestPermission();
         }
         /*sessionManager.setMigration(true);
 
@@ -308,62 +413,7 @@ public class HomeActivity extends AppCompatActivity {
         showProgressbar();
     }
 
-    private void saveToken() {
-        Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
-        // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
-    }
 
-    private void catchFCMMessageData() {
-        // get the chat notification click info
-        if (getIntent().getExtras() != null) {
-            //Logger.logV(TAG, " getIntent - " + getIntent().getExtras().getString("actionType"));
-            Bundle remoteMessage = getIntent().getExtras();
-            try {
-                if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("TEXT_CHAT")) {
-                    //Log.d(TAG, "actionType : TEXT_CHAT");
-                    String fromUUId = remoteMessage.getString("toUser");
-                    String toUUId = remoteMessage.getString("fromUser");
-                    String patientUUid = remoteMessage.getString("patientId");
-                    String visitUUID = remoteMessage.getString("visitId");
-                    String patientName = remoteMessage.getString("patientName");
-                    JSONObject connectionInfoObject = new JSONObject();
-                    connectionInfoObject.put("fromUUID", fromUUId);
-                    connectionInfoObject.put("toUUID", toUUId);
-                    connectionInfoObject.put("patientUUID", patientUUid);
-
-                    Intent intent = new Intent(ACTION_NAME);
-                    intent.putExtra("visit_uuid", visitUUID);
-                    intent.putExtra("connection_info", connectionInfoObject.toString());
-                    intent.setComponent(new ComponentName("org.intelehealth.app", "org.intelehealth.app.utilities.RTCMessageReceiver"));
-                    getApplicationContext().sendBroadcast(intent);
-
-                    Intent chatIntent = new Intent(this, ChatActivity.class);
-                    chatIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    chatIntent.putExtra("patientName", patientName);
-                    chatIntent.putExtra("visitUuid", visitUUID);
-                    chatIntent.putExtra("patientUuid", patientUUid);
-                    chatIntent.putExtra("fromUuid", fromUUId);
-                    chatIntent.putExtra("toUuid", toUUId);
-                    startActivity(chatIntent);
-
-                } /*else if (remoteMessage.containsKey("actionType") && remoteMessage.getString("actionType").equals("VIDEO_CALL")) {
-                    //Log.d(TAG, "actionType : VIDEO_CALL");
-                    Intent in = new Intent(this, CompleteActivity.class);
-                    String roomId = remoteMessage.getString("roomId");
-                    String doctorName = remoteMessage.getString("doctorName");
-                    String nurseId = remoteMessage.getString("nurseId");
-                    in.putExtra("roomId", roomId);
-                    in.putExtra("isInComingRequest", true);
-                    in.putExtra("doctorname", doctorName);
-                    in.putExtra("nurseId", nurseId);
-                    startActivity(in);
-                }*/
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     //function for handling the video library feature...
     private void videoLibrary() {
@@ -1013,6 +1063,8 @@ public class HomeActivity extends AppCompatActivity {
     };
 
     private void hideSyncProgressBar(boolean isSuccess) {
+        saveToken();
+        requestPermission();
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
         if (mSyncProgressDialog != null && mSyncProgressDialog.isShowing()) {
             mSyncProgressDialog.dismiss();
@@ -1032,5 +1084,48 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private static final int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 10021;
+
+    private void requestPermission() {
+        Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            //CallListenerBackgroundService.getInstance().stopForegroundService();
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + this.getPackageName()));
+                startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+            } else {
+                //Permission Granted-System will work
+            }
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
+        if (!CallListenerBackgroundService.isInstanceCreated()) {
+            Intent serviceIntent = new Intent(this, CallListenerBackgroundService.class);
+            ContextCompat.startForegroundService(this, serviceIntent);
+        }
+    }
+
+    @Override
+    public void onAttachedToWindow() {
+        Window window = getWindow();
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+        );
+
+        super.onAttachedToWindow();
     }
 }
