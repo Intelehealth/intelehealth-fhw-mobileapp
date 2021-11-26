@@ -204,6 +204,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ImageButton editFamHist;
     ImageButton editMedHist;
     ImageButton editAddDocs;
+    ImageButton imagebutton_edit_editFacility;
 
     FrameLayout frameLayout_doctor;
     TextView nameView;
@@ -323,7 +324,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     EditText editText_landmark;
     MultiSelectionSpinner mFacilitySelection;
 
-    String mState ="", mDistrict="", mFacilityValue="";
+    String mState = "", mDistrict = "", mFacilityValue = "";
     JSONArray mFacilityArray = new JSONArray();
 
     @Override
@@ -761,6 +762,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
         ivPrescription = findViewById(R.id.iv_prescription);
         txtViewFacility = findViewById(R.id.txtViewFacility);
+        imagebutton_edit_editFacility = findViewById(R.id.imagebutton_edit_editFacility);
         autocompleteState = findViewById(R.id.autocomplete_state);
         autocompleteDistrict = findViewById(R.id.autocomplete_district);
         editText_landmark = findViewById(R.id.editText_landmark);
@@ -822,6 +824,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     allVisitsEnded = true;
                     invalidateOptionsMenu();
                     hide_endvisit = true;
+                    imagebutton_edit_editFacility.setVisibility(View.GONE);
                 }
             } catch (SQLException e) {
 
@@ -935,12 +938,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
                     medHistCursor.moveToLast();
                     String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-//            patHistory.setValue(facilityText);
 //todo single textutill
                     if (!TextUtils.isEmpty(facilityText)) {
-
-//                medHistory = patHistory.getValue();
-//Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
                         if (facilityText == null) {
                         } else {
                             String[] arrayString = facilityText.split(",", 3);
@@ -950,12 +949,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             mState = arrayString[0];
                             autocompleteDistrict.setText("" + arrayString[1]);
                             mDistrict = arrayString[1];
-//                            txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
+//                          txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
                             mFacilitySelection.setVisibility(View.GONE);
-                            mFacilityValue=arrayString[arrayString.length - 1];
-//                            String facilityWithPipe=arrayString[arrayString.length - 1].replaceAll("\\|","\n");
-//                            mFacilityValue = facilityWithPipe;
-                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|","\n"));
+                            mFacilityValue = arrayString[arrayString.length - 1];
+                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n"));
 
                         }
                     }
@@ -1014,7 +1011,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }*/
         JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
 //        JsonArray Country=new JsonArray();
-                String[] countries = getResources().getStringArray(R.array.states_india);
+        String[] countries = getResources().getStringArray(R.array.states_india);
 //        try{
 //
 //            JSONArray stateArray = json.getJSONArray("states");
@@ -1054,9 +1051,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 txtViewFacility.setText("");
                 txtViewFacility.setHint(getString(R.string.textViewHintFacility));
                 mFacilitySelection.setVisibility(View.GONE);
-                mState="";
-                mDistrict="";
-                mFacilityValue="";
+                mState = "";
+                mDistrict = "";
+                mFacilityValue = "";
             }
 
             @Override
@@ -1064,7 +1061,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
         });
-
 
 
         mFacilitySelection.setItems(mFacilityList);
@@ -1128,8 +1124,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 txtViewFacility.setText("");
                 txtViewFacility.setHint(getString(R.string.textViewHintFacility));
                 mFacilitySelection.setVisibility(View.GONE);
-                mDistrict="";
-                mFacilityValue="";
+                mDistrict = "";
+                mFacilityValue = "";
             }
 
             @Override
@@ -2106,6 +2102,18 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 startActivity(addDocs);
             }
         });
+//        if(imagebutton_edit_editFacility.getVisibility()==View.VISIBLE){
+//
+//            autocompleteState.setEnabled(true);
+//            autocompleteDistrict.setEnabled(true);
+//            mFacilitySelection.setEnabled(true);
+//        }
+//        else{
+//            autocompleteState.setEnabled(false);
+//            autocompleteDistrict.setEnabled(false);
+//            mFacilitySelection.setEnabled(false);
+//        }
+
 
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2246,7 +2254,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String to = "";
         String subject = "E-Prescription";
         String body = prescriptionUrl + patientUuid; //https://training.vikalpindia.org/intelehealth/index.html#/prescription/patientId
-        Log.v("main", "prescurl: " +body);
+        Log.v("main", "prescurl: " + body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
                 "&body=" + Uri.encode(body);
@@ -2260,13 +2268,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String url = "";
         url = URLEncoder.encode(prescriptionUrl);
         String message = url + patientUuid + "/" + sessionManager.getAppLanguage();
-        Log.v("main", "prescurl: " +message);
+        Log.v("main", "prescurl: " + message);
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse(
                         String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                                 phoneNumberWithCountryCode, message))));
     }
-    
+
     public JSONObject loadJsonObjectFromAsset(String assetName) {
         try {
             String json = loadStringFromAsset(assetName);
@@ -4077,12 +4085,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     mState = arrayString[0];
                     autocompleteDistrict.setText("" + arrayString[1]);
                     mDistrict = arrayString[1];
-//                    txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
                     mFacilitySelection.setVisibility(View.GONE);
                     mFacilityValue = arrayString[arrayString.length - 1];
-//                    String facilityWithPipe=arrayString[arrayString.length - 1].replaceAll("\\|","\n");
-//                    mFacilityValue = facilityWithPipe;
-                    txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|","\n"));
+                    txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n"));
                 }
 
 //                medHistory = medHistory.replace("\"", "");
@@ -4919,36 +4924,79 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void uploadFacility() {
-        ObsDAO obsDAO = new ObsDAO();
-        ObsDTO obsDTO = new ObsDTO();
-        List<ObsDTO> obsDTOList = new ArrayList<>();
-        obsDTO = new ObsDTO();
-        obsDTO.setUuid(UUID.randomUUID().toString());
-        obsDTO.setEncounteruuid(encounterAdultInitList.get(encounterAdultInitList.size()-1));
-        //todo
+        if (checkFacilityPresentOrNot(encounterAdultInitList.get(encounterAdultInitList.size() - 1), UuidDictionary.Facility)) {
+            ObsDTO obsDTO = new ObsDTO();
+            ObsDAO obsDAO = new ObsDAO();
+            try {
+                obsDTO.setConceptuuid(UuidDictionary.Facility);
+                obsDTO.setEncounteruuid(encounterAdultInitList.get(encounterAdultInitList.size() - 1)); //latest visit encounter.
+                obsDTO.setCreator(sessionManager.getCreatorID());
 
-           if (mFacilitySelection.getVisibility() == View.VISIBLE) {
-            mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
+                if (mFacilitySelection.getVisibility() == View.VISIBLE) {
+                    mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
+                } else {
+                    mFacilityValue = mFacilityValue;
+                }
+
+                obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
+
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultInitList.get(encounterAdultInitList.size() - 1), UuidDictionary.Facility));
+
+                obsDAO.updateObs(obsDTO);
+
+
+            } catch (DAOException dao) {
+                FirebaseCrashlytics.getInstance().recordException(dao);
+            }
+
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("false", encounterAdultInitList.get(encounterAdultInitList.size() - 1));
+                encounterDAO.updateEncounterModifiedDate(encounterAdultInitList.get(encounterAdultInitList.size() - 1));
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         } else {
-            if(TextUtils.isEmpty(txtViewFacility.getText().toString())){
-                mFacilityValue=mFacilityValue;
-            }else{
-                mFacilityValue = txtViewFacility.getText().toString();
+            ObsDAO obsDAO = new ObsDAO();
+            ObsDTO obsDTO = new ObsDTO();
+            List<ObsDTO> obsDTOList = new ArrayList<>();
+            obsDTO = new ObsDTO();
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterAdultInitList.get(encounterAdultInitList.size() - 1));
+
+            if (mFacilitySelection.getVisibility() == View.VISIBLE) {
+                mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
+            } else {
+                mFacilityValue = mFacilityValue;
+            }
+            obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
+            obsDTO.setConceptuuid(UuidDictionary.Facility);
+            obsDTOList.add(obsDTO);
+            try {
+                obsDAO.insertObsToDb(obsDTOList);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
-        obsDTO.setValue("" + mState + ", " + mDistrict + ", " + mFacilityValue);
-        obsDTO.setConceptuuid(UuidDictionary.Facility);
-        obsDTOList.add(obsDTO);
-
-
-        try {
-            obsDAO.insertObsToDb(obsDTOList);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
-
-//      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
-
     }
-
+/**
+ * check need to update or insert.
+ * */
+    boolean checkFacilityPresentOrNot(String encounterId, String conceptId) {
+        boolean valueCount = false;
+        Cursor cursorFacility = db.rawQuery("select uuid from tbl_obs where encounteruuid= ? and conceptuuid= ?", new String[]{encounterId, conceptId});
+        try {
+            if (cursorFacility.getCount() != 0) {
+                valueCount = true;
+            } else {
+                valueCount = false;
+            }
+        } catch (SQLException e) {
+        }
+        if (cursorFacility != null) {
+            cursorFacility.close();
+        }
+        return valueCount;
+    }
 }
