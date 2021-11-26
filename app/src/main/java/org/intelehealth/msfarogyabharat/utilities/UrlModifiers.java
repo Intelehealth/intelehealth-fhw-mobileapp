@@ -91,7 +91,8 @@ public class UrlModifiers {
     }
 
     public String getIvrCallUrl(String caller, String receiver) {
-        String api_key = "Ad999102331cd1308668e72c0f60cffdc";
+//        String api_key = "Ad999102331cd1308668e72c0f60cffdc";
+        String api_key = "Ab15a42ee55dd6e1217b8e60ec82e3c9e";
         return String.format("https://api-voice.kaleyra.com/v1/?api_key=%s&method=dial.click2call&caller=%s&receiver=%s", api_key, caller, receiver);
     }
 

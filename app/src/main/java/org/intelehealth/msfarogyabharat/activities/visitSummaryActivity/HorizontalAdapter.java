@@ -73,7 +73,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
             Glide.with(context)
                     .load(list.get(position))
                     .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .thumbnail(0.1f)
                     .into(holder.imageView);
             //Works only if width & height is set in dp

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +26,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.networkApiCalls.ApiInterface;
+import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.intelehealth.msfarogyabharat.utilities.NetworkConnection;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
@@ -33,6 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,7 +119,8 @@ public class MissCallResponseActivity extends AppCompatActivity {
                         @Override
                         public void mCallAgain(int pos) {
 //todo
-                            updatetheCaller(recordingList.get(pos).Caller);
+//                            updatetheCaller(recordingList.get(pos).Caller);
+                            callPatientViaIVR(recordingList.get(pos).Caller);
 
                         }
                     }, MissCallResponseActivity.this));
@@ -134,6 +141,7 @@ public class MissCallResponseActivity extends AppCompatActivity {
         super.onDestroy();
         recyclerView.clearOnScrollListeners();
     }
+
     private void updatetheCaller(String phoneNumber) {
 
         UpdateRecordingCallerBodyModel updateRecordingCallerBody = new UpdateRecordingCallerBodyModel();
@@ -152,7 +160,7 @@ public class MissCallResponseActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UpdatedCallerResponce> call, Response<UpdatedCallerResponce> response) {
 //                Log.v("main", "hash: "+hash);
-                showAlert(getString(R.string.calling_patient),phoneNumber);
+//                showAlert(getString(R.string.calling_patient),phoneNumber);
 
             }
             @Override
@@ -162,33 +170,63 @@ public class MissCallResponseActivity extends AppCompatActivity {
             }
         });
     }
-    public  void mCalling(String ph)
-    {
 
-        Toast.makeText(this, "clicked", Toast.LENGTH_LONG)
-                .show();
-
-
-        Uri u = Uri.parse("tel:" +ph);
-
-        // Create the intent and set the data for the
-        // intent as the phone number.
-        Intent i = new Intent(Intent.ACTION_DIAL, u);
-
-        try
-        {
-            // Launch the Phone app's dialer with a phone
-            // number to dial a call.
-            startActivity(i);
+    public void callPatientViaIVR(String receiver) {
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
+            return;
         }
-        catch (SecurityException s)
-        {
-            // show() method display the toast with
-            // exception message.
-            Toast.makeText(this, "An error occurred", Toast.LENGTH_LONG)
-                    .show();
-        }
+
+        if (TextUtils.isEmpty(receiver))
+            return;
+        UrlModifiers urlModifiers = new UrlModifiers();
+        String caller = sessionManager.getProviderPhoneno(); //fetches the provider mobile no who has logged in the app...
+        String url = urlModifiers.getIvrCallUrl(caller, receiver);
+        Logger.logD(TAG, "ivr call url" + url);
+        Single<String> patientIvrCall = AppConstants.ivrApiInterface.CALL_PATIENT_IVR(url);
+        patientIvrCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<String>() {
+                    @Override
+                    public void onSuccess(@NonNull String s) {
+                        showAlert(getString(R.string.calling_patient), receiver);
+                        updatetheCaller(receiver);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showAlert(getString(R.string.error_calling_patient), receiver);
+                    }
+                });
     }
+
+//    public  void mCalling(String ph)
+//    {
+//
+//        Toast.makeText(this, "clicked", Toast.LENGTH_LONG)
+//                .show();
+//
+//
+//        Uri u = Uri.parse("tel:" +ph);
+//
+//        // Create the intent and set the data for the
+//        // intent as the phone number.
+//        Intent i = new Intent(Intent.ACTION_DIAL, u);
+//
+//        try
+//        {
+//            // Launch the Phone app's dialer with a phone
+//            // number to dial a call.
+//            startActivity(i);
+//        }
+//        catch (SecurityException s)
+//        {
+//            // show() method display the toast with
+//            // exception message.
+//            Toast.makeText(this, "An error occurred", Toast.LENGTH_LONG)
+//                    .show();
+//        }
+//    }
     void showAlert(String messageRes,String phoneNo) {
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         alertDialogBuilder.setMessage(messageRes+""+phoneNo);
@@ -196,7 +234,7 @@ public class MissCallResponseActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                mCalling(phoneNo);
+//                mCalling(phoneNo);
                 dialog.dismiss();
             }
         });

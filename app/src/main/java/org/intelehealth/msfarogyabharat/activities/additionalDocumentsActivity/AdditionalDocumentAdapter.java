@@ -95,7 +95,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
         Glide.with(context)
                 .load(image)
                 .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .thumbnail(0.1f)
                 .into(holder.getDocumentPhotoImageView());
 
