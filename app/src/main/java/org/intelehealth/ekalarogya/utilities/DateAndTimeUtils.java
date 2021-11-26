@@ -219,7 +219,6 @@ public class DateAndTimeUtils {
             }
         }
 
-
         return targetFormat.format(date);
     }
 
