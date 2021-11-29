@@ -6,11 +6,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +24,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +48,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
@@ -57,12 +65,15 @@ import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 import org.intelehealth.msfarogyabharat.utilities.UrlModifiers;
 import org.intelehealth.msfarogyabharat.utilities.UuidDictionary;
 import org.intelehealth.msfarogyabharat.utilities.exception.DAOException;
+import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.Item;
+import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.MultiSelectionSpinner;
 import org.intelehealth.msfarogyabharat.utilities.pageindicator.ScrollingPagerIndicator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -119,6 +130,14 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
     QuestionsAdapter adapter;
     ScrollingPagerIndicator recyclerViewIndicator;
     String new_result;
+    AutoCompleteTextView autocompleteState, autocompleteDistrict;
+    MultiSelectionSpinner mFacilitySelection;
+    JSONArray mFacilityArray = new JSONArray();
+    List<String> districtList;
+    ArrayList<Item> mFacilityList;
+    TextView txtViewFacility;
+    String mState = "", mDistrict = "", mFacilityValue = "";
+    JSONObject json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,8 +155,6 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
         localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         filePath = new File(AppConstants.IMAGE_PATH);
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        e = sharedPreferences.edit();
 
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -228,9 +245,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-
         }
-
 
         setTitle(getString(R.string.give_resolution));
         setTitle(getTitle() + ": " + patientName);
@@ -402,67 +417,317 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
 
 
     private void fabClick() {
-        //If nothing is selected, there is nothing to put into the database.
 
-        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        String s = patientHistoryMap.generateLanguageResolution();
-        alertDialogBuilder.setMessage(Html.fromHtml(phistory + s));
-        alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+        //facility - start
+        MaterialAlertDialogBuilder dialogBuilder = new MaterialAlertDialogBuilder(ResolutionActivity.this);
+        View convertView = LayoutInflater.from(ResolutionActivity.this).inflate(R.layout.facility_resolution, null);
+        dialogBuilder.setView(convertView);
+
+        //views defining...
+        txtViewFacility = convertView.findViewById(R.id.txtViewFacility);
+        autocompleteState = convertView.findViewById(R.id.autocomplete_state);
+        autocompleteDistrict = convertView.findViewById(R.id.autocomplete_district);
+        mFacilitySelection = convertView.findViewById(R.id.mFacilitySelection);
+        autocompleteDistrict.setEnabled(false);
+        districtList = new ArrayList<>();
+        mFacilityList = new ArrayList<>();
+        mFacilityList.add(new Item(getString(R.string.select), false));
+
+        String[] countries = getResources().getStringArray(R.array.states_india);
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(ResolutionActivity.this, android.R.layout.simple_list_item_1, countries);
+        autocompleteState.setAdapter(adapter);
+
+        if (autocompleteState.getText().toString().equals("")) {
+            autocompleteDistrict.setText("");
+            autocompleteDistrict.setEnabled(false);
+        }
+
+        //state
+        autocompleteState.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
+            }
 
-                List<String> imagePathList = patientHistoryMap.getImagePathList();
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                autocompleteDistrict.setEnabled(false);
+                autocompleteDistrict.setText("");
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
+                mState = "";
+                mDistrict = "";
+                mFacilityValue = "";
+            }
 
-                if (imagePathList != null) {
-                    for (String imagePath : imagePathList) {
-                        updateImageDatabase(imagePath);
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mFacilitySelection.setItems(mFacilityList);
+
+
+        autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedState = parent.getItemAtPosition(position).toString();
+                mState = parent.getItemAtPosition(position).toString();
+                if (selectedState.equalsIgnoreCase("") || autocompleteState.getText().equals("") ||
+                        selectedState.equalsIgnoreCase("Select State")) {
+                    autocompleteDistrict.setText("");
+                    autocompleteDistrict.setEnabled(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setClickable(false);
+                    mFacilityList.clear();
+                    txtViewFacility.setVisibility(View.VISIBLE);
+                    mFacilitySelection.setVisibility(View.GONE);
+                } else
+                    autocompleteDistrict.setEnabled(true);
+
+                txtViewFacility.setVisibility(View.VISIBLE);
+                mFacilitySelection.setVisibility(View.GONE);
+                mFacilitySelection.setEnabled(false);
+                mFacilityList.clear();
+                districtList.clear();
+                try {
+                    json = loadJsonObjectFromAsset("state_district_facility.json");
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(selectedState)) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+                                String district = districtArray.getJSONObject(j).getString("name");
+//                              mFacilityArray=districtArray.getJSONObject(j).getJSONArray("facility");
+                                districtList.add(district);
+                            }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(ResolutionActivity.this,
+                                    android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
+                            break;
+                        }
+
                     }
-                }
-
-
-                if (intentTag != null && intentTag.equals("edit")) {
-                    if (patientHistoryMap.anySubSelected()) {
-                        String patientHistory = patientHistoryMap.generateLanguage();
-                        updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
-                    }
-                } else {
-
-                    //  if(patientHistoryMap.anySubSelected()){
-                    String patientHistory = patientHistoryMap.generateLanguage();
-                    String patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-                        patientHistoryHindi = s;
-                    Map<String, String> patientHistoryMap = new HashMap<>();
-                    patientHistoryMap.put("en", patientHistory);
-                    patientHistoryMap.put("hi", patientHistoryHindi);
-                    String patientHistoryJson = new Gson().toJson(patientHistoryMap);
-
-                    if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                        phistory = phistory + patientHistory; // only PMH updated
-                        sessionManager.setReturning(true);
-
-
-                        insertDb(phistory);
-
-                        // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
-                    } else  // new patient, directly insert into database
-                    {
-                        insertDb(patientHistoryJson);
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
-        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+        //state
+
+        //district
+        autocompleteDistrict.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                txtViewFacility.setVisibility(View.VISIBLE);
+                txtViewFacility.setText("");
+                txtViewFacility.setHint(getString(R.string.textViewHintFacility));
+                mFacilitySelection.setVisibility(View.GONE);
+                mDistrict = "";
+                mFacilityValue = "";
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
-        AlertDialog alertDialog = alertDialogBuilder.show();
-        //alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+        autocompleteDistrict.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selectedDistrict = parent.getItemAtPosition(position).toString();
+                mDistrict = parent.getItemAtPosition(position).toString();
+
+                if (selectedDistrict.equalsIgnoreCase("") || autocompleteState.getText().equals("")) {
+                    mFacilityList.clear();
+                    mFacilitySelection.setClickable(false);
+                    mFacilitySelection.setEnabled(false);
+                    mFacilitySelection.setVisibility(View.GONE);
+                    txtViewFacility.setVisibility(View.VISIBLE);
+                } else
+                    txtViewFacility.setVisibility(View.GONE);
+                mFacilitySelection.setVisibility(View.VISIBLE);
+                mFacilitySelection.setEnabled(true);
+                mFacilityList.clear();
+                try {
+                    mFacilityArray = new JSONArray();
+                    JSONArray stateArray = json.getJSONArray("states");
+                    for (int i = 0; i < stateArray.length(); i++) {
+                        String state = stateArray.getJSONObject(i).getString("state");
+                        if (state.equalsIgnoreCase(autocompleteState.getText().toString())) {
+                            JSONObject districtObj = stateArray.getJSONObject(i);
+
+                            JSONArray districtArray = districtObj.getJSONArray("districts");
+                            for (int j = 0; j < districtArray.length(); j++) {
+                                String district = districtArray.getJSONObject(j).getString("name");
+
+                                if (district.equalsIgnoreCase(selectedDistrict)) {
+                                    Log.d("jgkfdjg", "selectedDistrict" + mFacilityArray);
+                                    mFacilityArray = districtArray.getJSONObject(j).getJSONArray("facility");
+
+                                    for (int k = 0; k < mFacilityArray.length(); k++) {
+                                        mFacilityList.add(new Item(mFacilityArray.getString(k), false));
+                                    }
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                    if (mFacilityArray.length() != 0 && mFacilityList != null && mFacilityList.size() != 0) {
+                        mFacilitySelection.setItems(mFacilityList);
+
+                    } else {
+                        mFacilityList.clear();
+                        txtViewFacility.setVisibility(View.VISIBLE);
+                        txtViewFacility.setText("-");
+                        mFacilitySelection.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        //district end...
+
+
+        dialogBuilder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                //facility data insert - start
+
+
+                //insertion
+                /*try {
+                    String[] columns = {"value", " conceptuuid"};
+                    String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
+                    String[] FacilityHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.Facility};
+                    Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs,
+                            null, null, null);
+
+                    medHistCursor.moveToLast();
+                    String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+
+                    if (!TextUtils.isEmpty(facilityText)) {
+
+                        if (facilityText == null) {
+                        }
+                        else {
+                            String[] arrayString = facilityText.split(",", 3);
+                            autocompleteState.setText("" + arrayString[0]);
+                            mState = arrayString[0];
+                            autocompleteDistrict.setText("" + arrayString[1]);
+                            mDistrict = arrayString[1];
+                            mFacilitySelection.setVisibility(View.GONE);
+                            mFacilityValue = arrayString[arrayString.length - 1];
+                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n"));
+                        }
+                    }
+                    medHistCursor.close();
+
+                } catch (CursorIndexOutOfBoundsException e) {
+                    autocompleteState.setText("");
+                    autocompleteDistrict.setText("");
+                    txtViewFacility.setText("");
+                }*/
+                //insertion
+                //facility data insert - end
+
+                //resolution data insert - start...
+                //If nothing is selected, there is nothing to put into the database.
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(ResolutionActivity.this);
+                //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
+                String s = patientHistoryMap.generateLanguageResolution();
+                alertDialogBuilder.setMessage(Html.fromHtml(phistory + s));
+                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        List<String> imagePathList = patientHistoryMap.getImagePathList();
+
+                        if (imagePathList != null) {
+                            for (String imagePath : imagePathList) {
+                                updateImageDatabase(imagePath);
+                            }
+                        }
+
+                        if (intentTag != null && intentTag.equals("edit")) {
+                            if (patientHistoryMap.anySubSelected()) {
+                                String patientHistory = patientHistoryMap.generateLanguage();
+                                updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+                            }
+                        } else {
+
+                            //  if(patientHistoryMap.anySubSelected()){
+                            String patientHistory = patientHistoryMap.generateLanguage();
+                            String patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+                            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                                patientHistoryHindi = s;
+                            Map<String, String> patientHistoryMap = new HashMap<>();
+                            patientHistoryMap.put("en", patientHistory);
+                            patientHistoryMap.put("hi", patientHistoryHindi);
+                            String patientHistoryJson = new Gson().toJson(patientHistoryMap);
+
+                            if (flag == true) { // only if OK clicked, collect this new info (old patient)
+                                phistory = phistory + patientHistory; // only PMH updated
+                                sessionManager.setReturning(true);
+
+                                uploadFacility();
+                                insertDb(phistory);
+
+                                // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                            } else  // new patient, directly insert into database
+                            {
+                                uploadFacility();
+                                insertDb(patientHistoryJson); //new patient...
+                            }
+                        }
+                    }
+                });
+                alertDialogBuilder.setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.show();
+                //alertDialog.show();
+                IntelehealthApplication.setAlertDialogCustomTheme(ResolutionActivity.this, alertDialog);
+                //resolution data insert - end
+            }
+        });
+
+
+        //dialog creation...
+        AlertDialog alertDialogfacility = dialogBuilder.create();
+        alertDialogfacility.show();
+        alertDialogfacility.setCancelable(false);
+        alertDialogfacility.setCanceledOnTouchOutside(false);
+        IntelehealthApplication.setAlertDialogCustomTheme(ResolutionActivity.this, alertDialogfacility);
+
+        //facility - end
     }
 
 
@@ -473,6 +738,11 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
      * @return long
      */
     public boolean insertDb(String value) {
+
+        //facility start
+
+        //facility end
+
         //create encounter
         SimpleDateFormat startFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         Calendar today = Calendar.getInstance();
@@ -504,7 +774,8 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             body.put("obs", obsArr);
 
             Resolution resolution = new Gson().fromJson(body.toString(), Resolution.class);
-            AppConstants.apiInterface.GIVE_RESOLUTION_API_CALL_OBSERVABLE(url, "Basic " + encoded, resolution).enqueue(new Callback<ResponseBody>() {
+            AppConstants.apiInterface.GIVE_RESOLUTION_API_CALL_OBSERVABLE(url, "Basic " + encoded, resolution)
+                    .enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_LONG).show();
@@ -676,5 +947,103 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
         db.close();
         return result;
     }
+
+    private void uploadFacility() {
+        if (checkFacilityPresentOrNot(encounterAdultIntials, UuidDictionary.Facility)) {
+            ObsDTO obsDTO = new ObsDTO();
+            ObsDAO obsDAO = new ObsDAO();
+            try {
+                obsDTO.setConceptuuid(UuidDictionary.Facility);
+                obsDTO.setEncounteruuid(encounterAdultIntials); //latest visit encounter.
+                obsDTO.setCreator(sessionManager.getCreatorID());
+
+                if (mFacilitySelection.getVisibility() == View.VISIBLE) {
+                    mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
+                } else {
+                    mFacilityValue = mFacilityValue;
+                }
+
+                obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
+                obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.Facility));
+                obsDAO.updateObs(obsDTO);
+
+
+            } catch (DAOException dao) {
+                FirebaseCrashlytics.getInstance().recordException(dao);
+            }
+
+            EncounterDAO encounterDAO = new EncounterDAO();
+            try {
+                encounterDAO.updateEncounterSync("false", encounterAdultIntials);
+                encounterDAO.updateEncounterModifiedDate(encounterAdultIntials);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        } else {
+            ObsDAO obsDAO = new ObsDAO();
+            ObsDTO obsDTO = new ObsDTO();
+            List<ObsDTO> obsDTOList = new ArrayList<>();
+            obsDTO = new ObsDTO();
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+
+            if (mFacilitySelection.getVisibility() == View.VISIBLE) {
+                mFacilityValue = mFacilitySelection.getSelectedItemsAsString();
+            } else {
+                mFacilityValue = mFacilityValue;
+            }
+            obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
+            obsDTO.setConceptuuid(UuidDictionary.Facility);
+            obsDTOList.add(obsDTO);
+            try {
+                obsDAO.insertObsToDb(obsDTOList);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
+
+    public JSONObject loadJsonObjectFromAsset(String assetName) {
+        try {
+            String json = loadStringFromAsset(assetName);
+            if (json != null)
+                return new JSONObject(json);
+        } catch (Exception e) {
+            Log.e("JsonUtils", e.toString());
+        }
+
+        return null;
+    }
+
+    private String loadStringFromAsset(String assetName) throws Exception {
+        InputStream is = getApplicationContext().getAssets().open(assetName);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+        return new String(buffer, "UTF-8");
+    }
+
+    public boolean checkFacilityPresentOrNot(String encounterId, String conceptId) {
+        Log.v("main", "encounter: "+ encounterId);
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        boolean valueCount = false;
+        Cursor cursorFacility = db.rawQuery("select uuid from tbl_obs where encounteruuid= ? and conceptuuid= ?",
+                new String[]{encounterId, conceptId});
+        try {
+            if (cursorFacility.getCount() > 0) {
+                valueCount = true;
+            } else {
+                valueCount = false;
+            }
+        } catch (SQLException e) {
+        }
+        if (cursorFacility != null) {
+            cursorFacility.close();
+        }
+        return valueCount;
+    }
+
 }
 

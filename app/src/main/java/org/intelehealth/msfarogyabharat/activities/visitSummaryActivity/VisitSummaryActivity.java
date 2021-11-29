@@ -247,7 +247,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
-    CardView card_print, card_share;
+    CardView card_print, card_share, cardviewFacility;
 
 
     TextView diagnosisTextView;
@@ -592,6 +592,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        cardviewFacility = findViewById(R.id.cardviewFacility);
 
         complaintList_adapter = new ArrayList<>();
         physexamList_adapter = new ArrayList<>();
@@ -925,6 +926,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //get all visits - end
         Add_Doc_Adapter_DataModel model = new Add_Doc_Adapter_DataModel(encounterAdultInit, patientUuid, visitUuid,
                 patientName, float_ageYear_Month);
+
         visitsum_adapter = new VisitSummaryAdapter(context, context1, visitUuidList,
                 complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid, model, new VisitSummaryAdapter.OnVisitItemClickListner() {
             @Override
@@ -935,7 +937,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
                     String[] FacilityHistArgs = {encounterAdultInitList.get(pos), UuidDictionary.Facility};
-                    Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
+                    Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs,
+                            null, null, null);
                     medHistCursor.moveToLast();
                     String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
 //todo single textutill
@@ -1009,6 +1012,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         } else {
 
         }*/
+
         JSONObject json = loadJsonObjectFromAsset("state_district_facility.json");
 //        JsonArray Country=new JsonArray();
         String[] countries = getResources().getStringArray(R.array.states_india);
@@ -1061,9 +1065,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
         });
-
-
         mFacilitySelection.setItems(mFacilityList);
+
         autocompleteState.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -4067,7 +4070,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
             String[] FacilityHistArgs = {encounterAdultInitList.get(0), UuidDictionary.Facility};
-            Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
+            Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs,
+                    null, null, null);
             medHistCursor.moveToLast();
             String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
 //            patHistory.setValue(facilityText);
@@ -4103,6 +4107,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             txtViewFacility.setText("");
             // if facility  does not exist
         }
+
 //vitals display code
         String visitSelection = "encounteruuid = ? AND voided!='1'";
         String[] visitArgs = {encounterVitals};
@@ -4814,8 +4819,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
                 flag = true;
+                cardviewFacility.setVisibility(View.VISIBLE);
             } else {
                 flag = false;
+                cardviewFacility.setVisibility(View.GONE);
             }
         }
         return flag;
@@ -4939,9 +4946,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
 
                 obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
-
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultInitList.get(encounterAdultInitList.size() - 1), UuidDictionary.Facility));
-
                 obsDAO.updateObs(obsDTO);
 
 
@@ -4983,9 +4988,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 /**
  * check need to update or insert.
  * */
-    boolean checkFacilityPresentOrNot(String encounterId, String conceptId) {
+    public boolean checkFacilityPresentOrNot(String encounterId, String conceptId) {
         boolean valueCount = false;
-        Cursor cursorFacility = db.rawQuery("select uuid from tbl_obs where encounteruuid= ? and conceptuuid= ?", new String[]{encounterId, conceptId});
+        Cursor cursorFacility = db.rawQuery("select uuid from tbl_obs where encounteruuid= ? and conceptuuid= ?",
+                new String[]{encounterId, conceptId});
         try {
             if (cursorFacility.getCount() != 0) {
                 valueCount = true;
