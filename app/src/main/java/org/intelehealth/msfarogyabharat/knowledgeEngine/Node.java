@@ -431,6 +431,15 @@ public class Node implements Serializable {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 node.getOption(position).toggleSelected();
                 adapter.notifyDataSetChanged();
+                Node currentNode = node.getOption(position);
+                if (node.optionsList != null && !node.optionsList.isEmpty() && !node.isMultiChoice) {
+                    for (int i = 0; i < node.optionsList.size(); i++) {
+                        Node innerNode = node.optionsList.get(i);
+                        innerNode.setUnselected();
+                    }
+                    currentNode.setSelected(true);
+                }
+
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
                 }
