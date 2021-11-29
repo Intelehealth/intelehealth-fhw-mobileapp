@@ -502,14 +502,16 @@ public class PatientsDAO {
                     patientDTOList.add(patientDTO);
                 }
             }
+            db.setTransactionSuccessful(); //need to set transaction successful for the db object to know that the task is completed...
             idCursor.close();
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         } finally {
             db.endTransaction();
-
         }
 
         return patientDTOList;
@@ -537,8 +539,6 @@ public class PatientsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
         return isUpdated;
     }
@@ -622,7 +622,6 @@ public class PatientsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", false);
             db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
-
             db.setTransactionSuccessful();
             isInserted = true;
             Log.v("main", "pat_attribute tbl updated: " + isInserted + "\n");
