@@ -958,8 +958,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             else
                 patientName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
         }
-
-//        setTitle(patientName);
+        //        setTitle(patientName);
         patinetName.setText(patientName);
         try {
             profileImage = imagesDAO.getPatientProfileChangeTime(patientUuid);
@@ -1122,19 +1121,31 @@ public class PatientDetailActivity extends AppCompatActivity {
 //        numberRelation.setText(patient_new.getEconomic_status());
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            String callerRelationS = switch_hi_callerRelation(patient_new.getSdw());
-            callerRelation.setText(callerRelationS);
-            String numberRelationS = switch_hi_numberRelation(patient_new.getEconomic_status());
-            numberRelation.setText(numberRelationS);
-            String helplineInfoS = switch_hi_helplineInfo(patient_new.getCaste());
-            helplineInfo.setText(helplineInfoS);
+            if(patient_new.getSdw()!=null) {
+                String callerRelationS = switch_hi_callerRelation(patient_new.getSdw());
+                callerRelation.setText(callerRelationS);
+            }
+            if(patient_new.getEconomic_status()!=null) {
+                String numberRelationS = switch_hi_numberRelation(patient_new.getEconomic_status());
+                numberRelation.setText(numberRelationS);
+            }
+            if(patient_new.getCaste()!=null) {
+                String helplineInfoS = switch_hi_helplineInfo(patient_new.getCaste());
+                helplineInfo.setText(helplineInfoS);
+            }
         } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-            String callerRelationS = switch_mr_callerRelation(patient_new.getSdw());
-            callerRelation.setText(callerRelationS);
-            String numberRelationS = switch_mr_numberRelation(patient_new.getEconomic_status());
-            numberRelation.setText(numberRelationS);
-            String helplineInfoS = switch_mr_helplineInfo(patient_new.getCaste());
-            helplineInfo.setText(helplineInfoS);
+            if(patient_new.getSdw()!=null) {
+                String callerRelationS = switch_mr_callerRelation(patient_new.getSdw());
+                callerRelation.setText(callerRelationS);
+            }
+            if(patient_new.getEconomic_status()!=null) {
+                String numberRelationS = switch_mr_numberRelation(patient_new.getEconomic_status());
+                numberRelation.setText(numberRelationS);
+            }
+            if(patient_new.getCaste()!=null) {
+                String helplineInfoS = switch_mr_helplineInfo(patient_new.getCaste());
+                helplineInfo.setText(helplineInfoS);
+            }
         } else {
             callerRelation.setText(patient_new.getSdw());
             helplineInfo.setText(patient_new.getCaste());
