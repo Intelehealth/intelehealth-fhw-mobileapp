@@ -971,7 +971,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitsum_layoutmanager = new LinearLayoutManager(VisitSummaryActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerview_visitsummary.setLayoutManager(visitsum_layoutmanager);
         recyclerview_visitsummary.setAdapter(visitsum_adapter);
-
+//
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
@@ -4809,20 +4809,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
-        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
-        if (complaintView != null) {
-            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
-            Log.v("main", "vi: " + i);
-            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
-                flag = true;
-                cardviewFacility.setVisibility(View.VISIBLE);
-            } else {
-                flag = false;
-                cardviewFacility.setVisibility(View.GONE);
+        if(complaintList_adapter.size() > 0) {
+            String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+            if (complaintView != null) {
+                String i = complaintData.toLowerCase().replaceAll("\\s+", "");
+                Log.v("main", "vi: " + i);
+                if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
+                        complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
+                    flag = true;
+                    cardviewFacility.setVisibility(View.VISIBLE);
+                } else {
+                    flag = false;
+                    cardviewFacility.setVisibility(View.GONE);
+                }
             }
         }
         return flag;

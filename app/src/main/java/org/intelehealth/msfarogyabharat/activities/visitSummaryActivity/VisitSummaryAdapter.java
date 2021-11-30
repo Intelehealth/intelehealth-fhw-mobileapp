@@ -89,8 +89,15 @@ OnVisitItemClickListner onClickingIteListner;
 
     @Override
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
-        complaint = complaintList.get(position);
-        physexam = physexamList.get(position);
+        if(complaintList.size() > 0)
+            complaint = complaintList.get(position);
+        else
+            complaint = visitsumContext.getString(R.string.something_went_wrong);
+
+        if(physexamList.size() > 0)
+            physexam = physexamList.get(position);
+        else
+            physexam = visitsumContext.getString(R.string.something_went_wrong);
 
         holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1));
         holder.textView_content_complaint.setText(complaint);
@@ -168,9 +175,13 @@ OnVisitItemClickListner onClickingIteListner;
                     complaintDialog.setView(convertView);
 
                     final TextView complaintText = convertView.findViewById(R.id.textView_entry);
-                    if (complaintList.get(getAdapterPosition()) != null) {
+                    if (complaintList.size() > 0 && complaintList.get(getAdapterPosition()) != null) {
                         complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
                     }
+                    else {
+                        complaintText.setText(visitsumContext.getString(R.string.something_went_wrong));
+                    }
+
                     complaintText.setEnabled(false);
 
                     complaintDialog.setPositiveButton(context.getResources().getString(R.string.generic_manual_entry),
@@ -181,7 +192,12 @@ OnVisitItemClickListner onClickingIteListner;
                             textInput.setTitle(context.getResources().getString(R.string.question_text_input));
                             final EditText dialogEditText = new EditText(visitsumContext);
                             if (complaintList.get(getAdapterPosition()) != null) {
-                                dialogEditText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+
+                                if(complaintList.size() > 0)
+                                    dialogEditText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+                                else
+                                    dialogEditText.setText(visitsumContext.getString(R.string.something_went_wrong));
+
                             } else {
                                 dialogEditText.setText("");
                             }
@@ -192,7 +208,7 @@ OnVisitItemClickListner onClickingIteListner;
                                 public void onClick(DialogInterface dialog, int which) {
                                     String input = dialogEditText.getText().toString();
                                     input = summaryActivity.applyBoldTag(input);
-                                   // complaint.setValue(input.replace("\n", "<br>"));
+
                                     complaintList.add(getAdapterPosition(), input.replace("\n", "<br>"));
 //                                complaint.setValue(dialogEditText.getText().toString().replace("\n", "<br>"));
                                     if (complaintList.get(getAdapterPosition()) != null) {
@@ -288,9 +304,12 @@ OnVisitItemClickListner onClickingIteListner;
 
                     final TextView physicalText = convertView.findViewById(R.id.textView_entry);
                     if (physexamList.get(getAdapterPosition()) != null)
-                        physicalText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
-                    physicalText.setEnabled(false);
+                        if(physexamList.size() > 0)
+                            physicalText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
+                        else
+                            physicalText.setText(visitsumContext.getString(R.string.something_went_wrong));
 
+                    physicalText.setEnabled(false);
                     physicalDialog.setPositiveButton(context.getResources().getString(R.string.generic_manual_entry),
                             new DialogInterface.OnClickListener() {
                         @Override
@@ -299,9 +318,14 @@ OnVisitItemClickListner onClickingIteListner;
                             textInput.setTitle(context.getResources().getString(R.string.question_text_input));
                             final EditText dialogEditText = new EditText(visitsumContext);
                             if (physexamList.get(getAdapterPosition()) != null)
-                                dialogEditText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
+                                if(physexamList.size() > 0)
+                                    dialogEditText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
+                                else
+                                    dialogEditText.setText(visitsumContext.getString(R.string.something_went_wrong));
+
                             else
                                 dialogEditText.setText("");
+
                             textInput.setView(dialogEditText);
                             textInput.setPositiveButton(context.getResources().getString(R.string.generic_ok),
                                     new DialogInterface.OnClickListener() {
