@@ -617,42 +617,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 //facility data insert - start
-
-
-                //insertion
-                /*try {
-                    String[] columns = {"value", " conceptuuid"};
-                    String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
-                    String[] FacilityHistArgs = {EncounterAdultInitial_LatestVisit, UuidDictionary.Facility};
-                    Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs,
-                            null, null, null);
-
-                    medHistCursor.moveToLast();
-                    String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
-
-                    if (!TextUtils.isEmpty(facilityText)) {
-
-                        if (facilityText == null) {
-                        }
-                        else {
-                            String[] arrayString = facilityText.split(",", 3);
-                            autocompleteState.setText("" + arrayString[0]);
-                            mState = arrayString[0];
-                            autocompleteDistrict.setText("" + arrayString[1]);
-                            mDistrict = arrayString[1];
-                            mFacilitySelection.setVisibility(View.GONE);
-                            mFacilityValue = arrayString[arrayString.length - 1];
-                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n"));
-                        }
-                    }
-                    medHistCursor.close();
-
-                } catch (CursorIndexOutOfBoundsException e) {
-                    autocompleteState.setText("");
-                    autocompleteDistrict.setText("");
-                    txtViewFacility.setText("");
-                }*/
-                //insertion
+                uploadFacility();
                 //facility data insert - end
 
                 //resolution data insert - start...
@@ -694,13 +659,13 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                                 phistory = phistory + patientHistory; // only PMH updated
                                 sessionManager.setReturning(true);
 
-                                uploadFacility();
+                               // uploadFacility();
                                 insertDb(phistory);
 
                                 // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
                             } else  // new patient, directly insert into database
                             {
-                                uploadFacility();
+
                                 insertDb(patientHistoryJson); //new patient...
                             }
                         }
