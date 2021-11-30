@@ -432,17 +432,18 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                     //  if(patientHistoryMap.anySubSelected()){
                     String patientHistory = patientHistoryMap.generateLanguage();
                     String patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                         patientHistoryHindi = s;
+
                     Map<String, String> patientHistoryMap = new HashMap<>();
                     patientHistoryMap.put("en", patientHistory);
                     patientHistoryMap.put("hi", patientHistoryHindi);
                     String patientHistoryJson = new Gson().toJson(patientHistoryMap);
 
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                        phistory = phistory + patientHistory; // only PMH updated
+                        phistory = phistory + patientHistoryJson; // only PMH updated
                         sessionManager.setReturning(true);
-
 
                         insertDb(phistory);
 

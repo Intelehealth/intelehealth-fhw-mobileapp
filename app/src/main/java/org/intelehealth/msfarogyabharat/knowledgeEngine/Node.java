@@ -2516,9 +2516,13 @@ private static String ml_en(String unit) {
                             // stringsList.add(test);
                             if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
                                     .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+
                                 if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
                                     //This means chip is selected as answer...
-                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
                                 }
                                 else {
                                     stringsList.add(mOptions.get(i).getLanguage());
