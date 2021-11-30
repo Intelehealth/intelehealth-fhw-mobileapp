@@ -626,7 +626,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                 //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
                 String s = patientHistoryMap.generateLanguageResolution();
                 alertDialogBuilder.setMessage(Html.fromHtml(phistory + s));
-                alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -671,7 +671,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                         }
                     }
                 });
-                alertDialogBuilder.setNegativeButton(getResources().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
