@@ -15,6 +15,7 @@
         <item
             android:id="@+id/recordingsOption"
             android:orderInCategory="100"
+            android:visible="false"
             android:title="@string/call_recordings" />
         <!--<item-->
         <!--android:id="@+id/endOfDayOption"-->

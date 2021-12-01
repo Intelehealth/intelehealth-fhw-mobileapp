@@ -331,7 +331,7 @@
     <string name="error_no_data">Please download first before attempting to end the case.</string>
 <!--    <string name="error_no_data">Please download first before attempting to end the visit.</string>-->
     <string name="error_phone_number">Phone number can\'t be empty</string>
-    <string name="action_end_visit">End Cases</string>
+    <string name="action_end_visit">End Case</string>
 
     <string name="error_sms">SMS failed, please try again later!</string>
     <string name="sms_success">SMS Sent!</string>
@@ -576,6 +576,7 @@
     <string name="visitID">Case ID</string>
 
     <string name="end_visit_msg">Are you sure you want to end the case?</string>
+    <string name="create_visit_msg">Are you sure you want to create a new case?</string>
 <!--    <string name="end_visit_msg">Are you sure you want to end the visit?</string>-->
     <string name="prescription_not_downloaded_check_internet">Case Detail not downloaded, check internet connection</string>
     <string name="privacy_reject_toast">You cannot register without consent</string>
