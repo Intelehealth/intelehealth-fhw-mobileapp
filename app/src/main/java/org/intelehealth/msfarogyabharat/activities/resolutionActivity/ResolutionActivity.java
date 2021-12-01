@@ -520,7 +520,9 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                     intent.putExtra("name", patientName);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
-                    startActivity(intent);
+                   // startActivity(intent);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
 
                 @Override
