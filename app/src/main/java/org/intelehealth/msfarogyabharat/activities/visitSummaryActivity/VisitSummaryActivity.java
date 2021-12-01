@@ -1508,7 +1508,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                             }
                             uploaded = true;
-                            if (isFollowUpOrClosed() && isSynced) { //only when the sync is successful then only end the visit
+                            if (/*isFollowUpOrClosed()*/ isCaseClosed() && isSynced) { //only when the sync is successful then only end the visit
                                 //this fixes the bug of visit not ending even when ended if the flow was done quickly my the user
                                 endVisit();
                             }
@@ -4820,6 +4820,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         return flag;
     }
+
+    private boolean isCaseClosed() {
+        boolean flag = false;
+        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+        if (complaintView != null) {
+            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
+            Log.v("main", "vi: " + i);
+
+            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;
