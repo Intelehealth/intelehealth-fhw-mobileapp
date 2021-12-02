@@ -777,8 +777,8 @@
     <string name="select_reason_of_complaint">Select Reason of Complaint</string>
     <string name="safe_abortion_specific">Safe abortion specific</string>
     <string name="domestic_violence_specific">Domestic violence specific</string>
-    <string name="do_you_work_or_do_you_have_a_paid_job">Do you work or do you have a paid job?</string>
-    <string name="how_would_you_describe_your_location">How would you describe your location?</string>
+    <string name="do_you_work_or_do_you_have_a_paid_job">Do you work or do you have a paid job?*</string>
+    <string name="how_would_you_describe_your_location">How would you describe your location?*</string>
     <string name="who_referred_the_case">Who referred the case?</string>
     <string name="am_i_speaking_with_the_survivor_or_am_i_speaking_with_someone_who_is_calling_on_behalf_of_the_survivor">Am I speaking with the survivor or am I speaking with someone who is calling on behalf of the survivor?</string>
     <string name="what_is_a_good_phone_number_to_reach_the_survivor">What is a good phone number to reach the survivor?</string>
