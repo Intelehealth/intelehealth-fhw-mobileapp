@@ -5297,9 +5297,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
-//            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
-            String maritualstatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(maritualstatusInfo), R.array.helpline_knowledge, R.array.education_spinner_hi);
+
+            //            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+            String maritualstatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(maritualstatusInfo), R.array.marital_spinner_en, R.array.marital_spinner_hi);
             patientAttributesDTO.setValue(maritualstatusInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Occupation Spinner_1
@@ -5327,7 +5329,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            String have_children_spinnerJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getProvidedOthers(have_children_spinner), R.array.spinner_children_en, R.array.spinner_children_hi);
+            patientAttributesDTO.setValue(have_children_spinnerJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. no of children
@@ -7212,7 +7218,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
-            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+            String maritualstatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(maritualstatusInfo), R.array.marital_spinner_en, R.array.marital_spinner_hi);
+            patientAttributesDTO.setValue(maritualstatusInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Occupation Spinner_1
@@ -7240,7 +7250,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Children Status"));
-            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(have_children_spinner)); //TODO: add switch case for each spinner adapter values...
+            String have_children_spinnerJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getProvidedOthers(have_children_spinner), R.array.spinner_children_en, R.array.spinner_children_hi);
+            patientAttributesDTO.setValue(have_children_spinnerJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. no of children

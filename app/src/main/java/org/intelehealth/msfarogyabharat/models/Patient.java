@@ -105,7 +105,8 @@ public class Patient {
     }
 
     public String getChildren() {
-        return children;
+//        return children;
+        return StringUtils.getValueForAppLanguage(children);
     }
 
     public void setChildren(String children) {
