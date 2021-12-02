@@ -2300,7 +2300,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void shareEmail() {
         String to = "";
         String subject = "E-Prescription";
-        String body = prescriptionUrl + patientUuid; //https://training.vikalpindia.org/intelehealth/index.html#/prescription/patientId
+        String body = prescriptionUrl + patientUuid + "/" + sessionManager.getAppLanguage();
+        //https://training.vikalpindia.org/intelehealth/index.html#/prescription/patientId/en
         Log.v("main", "prescurl: " + body);
         String mailTo = "mailto:" + to +
                 "?&subject=" + Uri.encode(subject) +
