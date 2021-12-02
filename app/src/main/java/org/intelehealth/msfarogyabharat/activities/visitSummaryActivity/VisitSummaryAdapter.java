@@ -89,12 +89,12 @@ OnVisitItemClickListner onClickingIteListner;
 
     @Override
     public void onBindViewHolder(VisitSummaryAdapter.VisitSummaryViewHolder holder, int position) {
-        if(complaintList.size() > 0)
+        if(complaintList.size() > 0 && position != complaintList.size())
             complaint = complaintList.get(position);
         else
             complaint = visitsumContext.getString(R.string.something_went_wrong);
 
-        if(physexamList.size() > 0)
+        if(physexamList.size() > 0 && position != physexamList.size())
             physexam = physexamList.get(position);
         else
             physexam = visitsumContext.getString(R.string.something_went_wrong);
@@ -175,7 +175,7 @@ OnVisitItemClickListner onClickingIteListner;
                     complaintDialog.setView(convertView);
 
                     final TextView complaintText = convertView.findViewById(R.id.textView_entry);
-                    if (complaintList.size() > 0 && complaintList.get(getAdapterPosition()) != null) {
+                    if (complaintList.size() > 0 && getAdapterPosition() != complaintList.size() && complaintList != null) {
                         complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
                     }
                     else {
@@ -192,7 +192,7 @@ OnVisitItemClickListner onClickingIteListner;
                             textInput.setTitle(context.getResources().getString(R.string.question_text_input));
                             final EditText dialogEditText = new EditText(visitsumContext);
 
-                            if (complaintList.get(getAdapterPosition()) != null) {
+                            if (complaintList != null && getAdapterPosition() != complaintList.size()) {
                                 if(complaintList.size() > 0)
                                     dialogEditText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
                                 else
@@ -303,8 +303,8 @@ OnVisitItemClickListner onClickingIteListner;
                     physicalDialog.setView(convertView);
 
                     final TextView physicalText = convertView.findViewById(R.id.textView_entry);
-                    if (physexamList.get(getAdapterPosition()) != null)
-                        if(physexamList.size() > 0)
+                    if (physexamList != null)
+                        if(physexamList.size() > 0 && getAdapterPosition() != physexamList.size())
                             physicalText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
                         else
                             physicalText.setText(visitsumContext.getString(R.string.something_went_wrong));
@@ -318,7 +318,7 @@ OnVisitItemClickListner onClickingIteListner;
                             final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(visitsumContext);
                             textInput.setTitle(context.getResources().getString(R.string.question_text_input));
                             final EditText dialogEditText = new EditText(visitsumContext);
-                            if (physexamList.get(getAdapterPosition()) != null)
+                            if (physexamList != null && getAdapterPosition() != physexamList.size())
                                 if(physexamList.size() > 0)
                                     dialogEditText.setText(Html.fromHtml(physexamList.get(getAdapterPosition())));
                                 else
