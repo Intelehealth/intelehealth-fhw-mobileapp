@@ -302,6 +302,46 @@
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_missedCallRecordings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/iv_missedCallRecording"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="TODO"
+                            android:tint="@color/font_black_welcome"
+                            app:srcCompat="@drawable/ic_baseline_call_24" />
+
+                        <TextView
+                            android:id="@+id/textView_missedCall_recording"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_missedCallRecording"                         android:text="@string/active_visits"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
+                            android:textSize="26sp" />
+
+
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_video_libraby"

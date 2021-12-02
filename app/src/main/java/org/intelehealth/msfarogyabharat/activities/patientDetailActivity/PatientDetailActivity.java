@@ -327,57 +327,84 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mAlertCreateVisitConformation();
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-                SimpleDateFormat followUpFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
-                Date todayDate = new Date();
-                String today = followUpFormat.format(todayDate);
-                Date followUpDate = new Date();
-                Date currentDateFU = new Date();
-
-                InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
-                SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-
-                String[] cols = {"value"};
-                String visitFollowUpDate = warnFollowUp(sqLiteDatabase,cols);
-                if(!visitFollowUpDate.equalsIgnoreCase("") || !visitFollowUpDate.isEmpty())
-                {
-                    try {
-                    followUpDate = followUpFormat.parse(visitFollowUpDate);
-                    currentDateFU = followUpFormat.parse(today);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                if(followUpDate.compareTo(currentDateFU)>0 || followUpDate.compareTo(currentDateFU)==0)
-                {
-                    MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
-                    followUpAlert.setMessage(getString(R.string.pending_follow_up) +  "\n" + getString(R.string.still_continue));
-                    followUpAlert.setPositiveButton(getResources().getString(R.string.continue_button), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            newVisitStart(sqLiteDatabase,cols);
-                        }
-                    });
-                    followUpAlert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    AlertDialog alertDialog = followUpAlert.create();
-                    alertDialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
-//                    Toast.makeText(PatientDetailActivity.this,"Follow Up Date greater.",Toast.LENGTH_LONG).show();
-                }
-                }
-                else
-                {
-                    newVisitStart(sqLiteDatabase,cols);
-
-                }
-
     }
 
+         private void   mAlertCreateVisitConformation(){
+             MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+             alertDialogBuilder.setMessage(getResources().getString(R.string.create_visit_msg));
+             alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialogInterface, int i) {
+                     dialogInterface.dismiss();
+                 }
+             });
+             alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                     dialog.dismiss();
+                     visitProcessStart();
+                 }
+             });
+             AlertDialog alertDialog = alertDialogBuilder.show();
+             //alertDialog.show();
+             IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
+
+         }
+
+         private void visitProcessStart(){
+             SimpleDateFormat followUpFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+             Date todayDate = new Date();
+             String today = followUpFormat.format(todayDate);
+             Date followUpDate = new Date();
+             Date currentDateFU = new Date();
+
+             InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
+             SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+             String[] cols = {"value"};
+             String visitFollowUpDate = warnFollowUp(sqLiteDatabase,cols);
+             if(!visitFollowUpDate.equalsIgnoreCase("") || !visitFollowUpDate.isEmpty())
+             {
+                 try {
+                     followUpDate = followUpFormat.parse(visitFollowUpDate);
+                     currentDateFU = followUpFormat.parse(today);
+                 } catch (ParseException e) {
+                     e.printStackTrace();
+                 }
+                 if(followUpDate.compareTo(currentDateFU)>0 || followUpDate.compareTo(currentDateFU)==0)
+                 {
+                     MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+                     followUpAlert.setMessage(getString(R.string.pending_follow_up) +  "\n" + getString(R.string.still_continue));
+                     followUpAlert.setPositiveButton(getResources().getString(R.string.continue_button), new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialogInterface, int i) {
+                             newVisitStart(sqLiteDatabase,cols);
+                         }
+                     });
+                     followUpAlert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                         @Override
+                         public void onClick(DialogInterface dialogInterface, int i) {
+                             dialogInterface.dismiss();
+                         }
+                     });
+                     AlertDialog alertDialog = followUpAlert.create();
+                     alertDialog.show();
+                     IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
+//                    Toast.makeText(PatientDetailActivity.this,"Follow Up Date greater.",Toast.LENGTH_LONG).show();
+                 }
+             }
+             else
+             {
+                 newVisitStart(sqLiteDatabase,cols);
+
+             }
+         }
     private void newVisitStart(SQLiteDatabase sqLiteDatabase, String[] cols) {
 
         String CREATOR_ID = sessionManager.getCreatorID();
@@ -1101,7 +1128,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         if (visitUuid != null && !visitUuid.isEmpty()) {
             CardView histCardView = findViewById(R.id.cardView_history);
             histCardView.setVisibility(View.GONE);
-        } else {
+        }
+        else {
             // no use here looping...
             visitUuidList = new ArrayList<>();
             String visitIDSelection = "patientuuid = ?";
@@ -1175,6 +1203,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     intent.putExtra("hasPrescription", hasPrescription);
                     intent.putExtra("MedicalAdvice", MedicalAdvice);
                     intent.putExtra("latest_VisitUuid", visituID);
+                    intent.putExtra("privacy_value_selected", privacy_value_selected);
                     intent.putExtra("pastVisit", true);
 
 //                intent.putExtra("encounterUuidVitals", encounterVitalslocal);

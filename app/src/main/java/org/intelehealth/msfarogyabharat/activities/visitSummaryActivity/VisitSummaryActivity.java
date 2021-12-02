@@ -30,6 +30,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -84,9 +85,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import org.apache.commons.lang3.StringUtils;
-import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.msfarogyabharat.activities.resolutionActivity.ResolutionActivity;
+import org.intelehealth.msfarogyabharat.database.InteleHealthDatabaseHelper;
 import org.intelehealth.msfarogyabharat.models.Add_Doc_Adapter_DataModel;
+import org.intelehealth.msfarogyabharat.models.dto.EncounterDTO;
+import org.intelehealth.msfarogyabharat.models.dto.VisitDTO;
+import org.intelehealth.msfarogyabharat.models.pushRequestApiCall.Visit;
 import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.Item;
 import org.intelehealth.msfarogyabharat.utilities.multipleSelectionSpinner.MultiSelectionSpinner;
 import org.json.JSONArray;
@@ -263,6 +267,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isReceiverRegistered = false;
     List<String> encounterAdultInitList = new ArrayList<>();
 
+
+    //for new visit case allow......
+
+    private String encounterAdultIntialsForNew = "";
+    String privacy_value_selected="";
+    EncounterDTO encounterDTO = new EncounterDTO();
+    private boolean returning;
+
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
     NetworkChangeReceiver receiver;
@@ -287,6 +299,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     SessionManager sessionManager, sessionManager1, sessionManager2;
     String encounterUuid;
     String encounterVitals;
+
     //  Boolean isreturningWhatsapp = true;
     String encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     String encounterAdultInit = "";
@@ -332,6 +345,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_visit_summary, menu);
         MenuItem menuItem = menu.findItem(R.id.summary_endVisit);
+        MenuItem menuItemNewVisit = menu.findItem(R.id.summary_addNewCase);
 
         internetCheck = menu.findItem(R.id.internet_icon);
         MenuItemCompat.getActionView(internetCheck);
@@ -347,7 +361,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
 
         //  if (isPastVisit) menuItem.setVisible(false);
-        if (hide_endvisit) menuItem.setVisible(false);
+        if (hide_endvisit) {
+            menuItem.setVisible(false);
+            menuItemNewVisit.setVisible(true);
+        } else {
+            menuItemNewVisit.setVisible(false);
+
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -395,10 +415,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.summary_addNewCase: {
-//                NavUtils.navigateUpFromSameTask(this);
-                Intent i = new Intent(this, PrivacyNotice_Activity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                mAlertCreateVisitConformation();
                 return true;
             }
             case R.id.summary_home: {
@@ -491,6 +508,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             latestVisitUuid = intent.getStringExtra("latest_VisitUuid");
+            //for new case .......
+            privacy_value_selected = intent.getStringExtra("privacy_value_selected");
             Log.v("visituuid", "vuid: " + visitUuid);
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
@@ -941,7 +960,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //todo single textutill
                     if (!TextUtils.isEmpty(facilityText)) {
                         if (facilityText == null) {
-                        } else {
+                        } else if(facilityText.equalsIgnoreCase("-")) {
+                            autocompleteState.setText("");
+                            autocompleteDistrict.setText("");
+                            txtViewFacility.setText("");
+                            mFacilityValue="";
+                        }
+
+                        else {
                             String[] arrayString = facilityText.split(",", 3);
 
 
@@ -952,7 +978,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                          txtViewFacility.setText("" + arrayString[arrayString.length - 1]);
                             mFacilitySelection.setVisibility(View.GONE);
                             mFacilityValue = arrayString[arrayString.length - 1];
-                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n"));
+                            txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n\n"));
 
                         }
                     }
@@ -961,6 +987,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     autocompleteState.setText("");
                     autocompleteDistrict.setText("");
                     txtViewFacility.setText("");
+
                     // if facility  does not exist
                 }
             }
@@ -1508,7 +1535,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                             }
                             uploaded = true;
-                            if (isFollowUpOrClosed() && isSynced) { //only when the sync is successful then only end the visit
+                            if (/*isFollowUpOrClosed()*/ isCaseClosed() && isSynced) { //only when the sync is successful then only end the visit
                                 //this fixes the bug of visit not ending even when ended if the flow was done quickly my the user
                                 endVisit();
                             }
@@ -2237,7 +2264,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 || complaintList_adapter.get(complaintList_adapter.size() - 1).toLowerCase().contains("हिंसा");
                         intent1.putExtra("resolutionViolence", value);
                     }
-                    startActivity(intent1);
+
+                    startActivityForResult(intent1, 100);
                 } else {
                     Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder,
                             Toast.LENGTH_SHORT).show();
@@ -2247,6 +2275,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (isFollowUpOrClosed()) {
             button_resolution.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 100 && resultCode == RESULT_OK) {
+            button_resolution.setEnabled(false);
+            button_resolution.setBackgroundColor(getResources().getColor(R.color.font_black_4));
         }
     }
 
@@ -4066,7 +4104,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             String FacilityHistSelection = "encounteruuid = ? AND conceptuuid = ?";
 
-            String[] FacilityHistArgs = {encounterAdultInitList.get(0), UuidDictionary.Facility};
+            String[] FacilityHistArgs = {encounterAdultInitList.get(encounterAdultInitList.size() - 1), UuidDictionary.Facility};
             Cursor medHistCursor = db.query("tbl_obs", columns, FacilityHistSelection, FacilityHistArgs, null, null, null);
             medHistCursor.moveToLast();
             String facilityText = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
@@ -4077,7 +4115,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                medHistory = patHistory.getValue();
 //Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
                 if (facilityText == null) {
-                } else {
+                }else if(facilityText.equalsIgnoreCase("-")){
+                    autocompleteState.setText("");
+                    autocompleteDistrict.setText("");
+                    txtViewFacility.setText("");
+                    mFacilityValue="";
+                }
+                else {
                     String[] arrayString = facilityText.split(",", 3);
 
 
@@ -4087,7 +4131,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     mDistrict = arrayString[1];
                     mFacilitySelection.setVisibility(View.GONE);
                     mFacilityValue = arrayString[arrayString.length - 1];
-                    txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n"));
+                    txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n\n"));
                 }
 
 //                medHistory = medHistory.replace("\"", "");
@@ -4804,6 +4848,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
+
+        if(complaintList_adapter.size() > 0) {
         String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
         if (complaintView != null) {
             String i = complaintData.toLowerCase().replaceAll("\\s+", "");
@@ -4818,8 +4864,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 flag = false;
             }
         }
+        }
         return flag;
     }
+
+    private boolean isCaseClosed() {
+        boolean flag = false;
+        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+        if (complaintView != null) {
+            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
+            Log.v("main", "vi: " + i);
+
+            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;
@@ -4938,7 +5003,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     mFacilityValue = mFacilityValue;
                 }
 
-                obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
+                String finalFacility = "";
+                if (!TextUtils.isEmpty(mFacilityValue) && !mFacilityValue.equalsIgnoreCase("") ) {
+                    finalFacility = mState + "," + mDistrict + "," + mFacilityValue;
+
+                } else {
+                    finalFacility = "-";
+                }
+
+                obsDTO.setValue(finalFacility);
 
                 obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultInitList.get(encounterAdultInitList.size() - 1), UuidDictionary.Facility));
 
@@ -4970,7 +5043,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 mFacilityValue = mFacilityValue;
             }
-            obsDTO.setValue("" + mState + "," + mDistrict + "," + mFacilityValue);
+
+            String finalFacility = "";
+            if (!TextUtils.isEmpty(mFacilityValue) && !mFacilityValue.equalsIgnoreCase("")) {
+                finalFacility = mState + "," + mDistrict + "," + mFacilityValue;
+
+            } else {
+                finalFacility = "";
+            }
+            obsDTO.setValue(finalFacility);
             obsDTO.setConceptuuid(UuidDictionary.Facility);
             obsDTOList.add(obsDTO);
             try {
@@ -4980,9 +5061,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         }
     }
-/**
- * check need to update or insert.
- * */
+
+    /**
+     * check need to update or insert.
+     */
     boolean checkFacilityPresentOrNot(String encounterId, String conceptId) {
         boolean valueCount = false;
         Cursor cursorFacility = db.rawQuery("select uuid from tbl_obs where encounteruuid= ? and conceptuuid= ?", new String[]{encounterId, conceptId});
@@ -4999,4 +5081,369 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         return valueCount;
     }
+
+    private void mAlertCreateVisitConformation() {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.create_visit_msg));
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                visitProcessStart();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+
+    }
+
+    private void visitProcessStart() {
+        SimpleDateFormat followUpFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String today = followUpFormat.format(todayDate);
+        Date followUpDate = new Date();
+        Date currentDateFU = new Date();
+
+        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(VisitSummaryActivity.this);
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        String[] cols = {"value"};
+//        String visitFollowUpDate = warnFollowUp(sqLiteDatabase,cols);
+//        if(!visitFollowUpDate.equalsIgnoreCase("") || !visitFollowUpDate.isEmpty())
+//        {
+//            try {
+//                followUpDate = followUpFormat.parse(visitFollowUpDate);
+//                currentDateFU = followUpFormat.parse(today);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//            if(followUpDate.compareTo(currentDateFU)>0 || followUpDate.compareTo(currentDateFU)==0)
+//            {
+//                MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+//                followUpAlert.setMessage(getString(R.string.pending_follow_up) +  "\n" + getString(R.string.still_continue));
+//                followUpAlert.setPositiveButton(getResources().getString(R.string.continue_button), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        newVisitStart(sqLiteDatabase,cols);
+//                    }
+//                });
+//                followUpAlert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                });
+//                AlertDialog alertDialog = followUpAlert.create();
+//                alertDialog.show();
+//                IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
+////                    Toast.makeText(PatientDetailActivity.this,"Follow Up Date greater.",Toast.LENGTH_LONG).show();
+//            }
+//        }
+//        else
+//        {
+            newVisitStart(sqLiteDatabase,cols);
+
+//        }
+
+    }
+
+    private void newVisitStart(SQLiteDatabase sqLiteDatabase, String[] cols) {
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+// for getuuid`````````````````````
+
+        if (visitUuid != null && !visitUuid.isEmpty()) {
+//            CardView histCardView = findViewById(R.id.cardView_history);
+//            histCardView.setVisibility(View.GONE);
+        }
+        else {
+            // no use here looping...
+            visitUuidList = new ArrayList<>();
+            String visitIDSelection = "patientuuid = ?";
+            String[] visitIDArgs = {patientUuid};
+            Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+            if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                do {
+                    visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                    visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
+                } while (visitIDCursor.moveToNext());
+            }
+            if (visitIDCursor != null) {
+                visitIDCursor.close();
+            }
+            //no use...for loop...
+            for (String visituuid : visitUuidList) {
+                Logger.logD(TAG, visituuid);
+                EncounterDAO encounterDAO1 = new EncounterDAO();
+                String encounterIDSelection = "visituuid = ?";
+                String[] encounterIDArgs = {visituuid};
+
+                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+                        if (encounterDAO1.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterVitals = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (encounterDAO1.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterAdultIntialsForNew = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (encounterDAO1.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+//                            encounterVisitNote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                    } while (encounterCursor.moveToNext());
+                }
+                encounterCursor.close();
+            }
+            familyHistory(famHistView, patientUuid, encounterAdultIntialsForNew);
+            pastMedicalHistory(famHistView, patientUuid, encounterAdultIntialsForNew);
+            // pastVisits(patientUuid);
+        }
+
+
+
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterAdultIntialsForNew, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+//                phistory = phistory + cursor.getString(0);
+
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+
+        Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                new String[]{encounterAdultIntialsForNew, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
+                null, null, null);
+        if (cursor1.moveToFirst()) {
+            // rows present
+            do {
+//                fhistory = fhistory + cursor1.getString(0);
+            }
+            while (cursor1.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor1.close();
+
+        // Will display data for patient as it is present in database
+        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+        Intent intent2 = new Intent(VisitSummaryActivity.this, ComplaintNodeActivity.class);
+//        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        intent2.putExtra("patientUuid", patientUuid);
+
+        VisitDTO visitDTO = new VisitDTO();
+
+        visitDTO.setUuid(uuid);
+        visitDTO.setPatientuuid(patientUuid);
+        visitDTO.setStartdate(thisDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // visitUuid = String.valueOf(visitLong);
+//                localdb.close();
+        intent2.putExtra("patientUuid", patientUuid);
+        intent2.putExtra("visitUuid", uuid);
+//        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntialsForNew);
+        intent2.putExtra("name", patientName);
+        intent2.putExtra("tag", "new");
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
+
+    }
+    public void familyHistory(TextView famHistView, String patientuuid,
+                              String EncounterAdultInitials_LatestVisit) {
+        //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String visitSelection = "patientuuid = ?";
+        String[] visitArgs = {patientuuid};
+        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+
+//        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
+        if (visitCursor.getCount() < 1) {
+//            neverSeen();
+        } else {
+
+            if (visitCursor.moveToLast() && visitCursor != null) {
+                do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String[] encounterIDArgs = {visit_id};
+
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    if (encounterCursor != null) {
+                        encounterCursor.close();
+                    }
+                    String famHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
+                    String[] famHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_FAMILY_HISTORY_BLURB};
+                    String[] famHistColumns = {"value", " conceptuuid"};
+                    Cursor famHistCursor = db.query("tbl_obs", famHistColumns, famHistSelection, famHistArgs, null, null, null);
+                    famHistCursor.moveToLast();
+                    String famHistValue;
+
+                    try {
+                        famHistValue = famHistCursor.getString(famHistCursor.getColumnIndexOrThrow("value"));
+                    } catch (Exception e) {
+                        famHistValue = "";
+                    } finally {
+                        famHistCursor.close();
+                    }
+
+                    if (famHistValue != null && !famHistValue.equals("")) {
+                        famHistView.setText(Html.fromHtml(famHistValue));
+                    } else {
+                        famHistView.setText(getString(R.string.string_no_hist));
+                    }
+
+                } while (visitCursor.moveToPrevious());
+            }
+            visitCursor.close();
+        }
+
+    }
+
+    public void pastMedicalHistory(TextView medHistView, String patientuuid,
+                                   String EncounterAdultInitials_LatestVisit) {
+        //String visitSelection = "patientuuid = ? AND enddate IS NULL OR enddate = ''";
+        String visitSelection = "patientuuid = ?";
+        String[] visitArgs = {patientuuid};
+        String[] visitColumns = {"uuid, startdate", "enddate"};
+        String visitOrderBy = "startdate";
+        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+
+//        previousVisitsList = findViewById(R.id.linearLayout_previous_visits);
+        if (visitCursor.getCount() < 1) {
+//            neverSeen();
+        } else {
+
+            if (visitCursor.moveToLast() && visitCursor != null) {
+                do {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    String date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("startdate"));
+                    String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                    String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
+
+                    String[] encounterIDArgs = {visit_id};
+
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    if (encounterCursor != null) {
+                        encounterCursor.close();
+                    }
+                    String medHistSelection = "encounteruuid = ? AND conceptuuid = ? And voided!='1'";
+                    String[] medHistArgs = {EncounterAdultInitials_LatestVisit, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB};
+                    String[] medHistColumms = {"value", " conceptuuid"};
+                    Cursor medHistCursor = db.query("tbl_obs", medHistColumms, medHistSelection, medHistArgs, null, null, null);
+                    medHistCursor.moveToLast();
+
+                    String medHistValue;
+
+                    try {
+                        medHistValue = medHistCursor.getString(medHistCursor.getColumnIndexOrThrow("value"));
+                    } catch (Exception e) {
+                        medHistValue = "";
+                    } finally {
+                        medHistCursor.close();
+                    }
+
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setValue(medHistValue);
+                    medHistValue = obsDTO.getValue(sessionManager.getAppLanguage());
+                    Log.v(TAG, medHistValue);
+//                    if (medHistValue != null && !medHistValue.equals("")) {
+////                        medHistView.setText(Html.fromHtml(medHistValue));
+//                    } else {
+//                        medHistView.setText(getString(R.string.string_no_hist));
+//                    }
+                } while (visitCursor.moveToPrevious());
+            }
+            visitCursor.close();
+        }
+    }
+
 }

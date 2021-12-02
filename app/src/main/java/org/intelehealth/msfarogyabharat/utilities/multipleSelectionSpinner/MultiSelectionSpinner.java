@@ -161,7 +161,7 @@ public ArrayList<Item> getSelectedItems() {
                 for (int i = 0; i < items.size(); ++i) {
                         if (selection[i]) {
                                 if (foundOne) {
-                                        sb.append("| ");
+                                        sb.append("|");
                                 }
                                 foundOne = true;
                                 sb.append(items.get(i).getName());

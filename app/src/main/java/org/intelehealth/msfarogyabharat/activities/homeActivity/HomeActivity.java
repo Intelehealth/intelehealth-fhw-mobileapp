@@ -48,7 +48,6 @@ import org.intelehealth.msfarogyabharat.activities.followuppatients.FollowUpPati
 import org.intelehealth.msfarogyabharat.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.msfarogyabharat.activities.missedCallResponseActivity.MissCallResponseActivity;
 import org.intelehealth.msfarogyabharat.activities.privacyNoticeActivity.PrivacyNotice_Activity;
-import org.intelehealth.msfarogyabharat.models.TodayPatientModel;
 import org.intelehealth.msfarogyabharat.utilities.ConfigUtils;
 import org.intelehealth.msfarogyabharat.utilities.FollowUpNotificationWorker;
 import org.json.JSONException;
@@ -112,7 +111,7 @@ public class HomeActivity extends AppCompatActivity {
 
     SyncUtils syncUtils = new SyncUtils();
    // CardView c1, c2, c3, c4, c5, c6;
-   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6;
+   CardView c1_doctor, c1_medadvice, c2, c3, c4, c5, c6,c7;
     private String key = null;
     private String licenseUrl = null;
 
@@ -125,7 +124,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, newPatient_textview1, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, missedCallRecordings,videoLibrary_textview, help_textview, tvFollowUpBadge, tvTodayVisitsBadge, tvActiveVisitsBadge;
 
 
     @Override
@@ -169,6 +168,7 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7 = findViewById(R.id.cardview_missedCallRecordings);
 
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatient_textview);
@@ -186,6 +186,9 @@ public class HomeActivity extends AppCompatActivity {
         activeVisits_textview = findViewById(R.id.activeVisits_textview);
         activeVisits_textview.setText(R.string.active_visits);
 
+        missedCallRecordings = findViewById(R.id.textView_missedCall_recording);
+        missedCallRecordings.setText(R.string.call_recordings);
+
         videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
         videoLibrary_textview.setText(R.string.video_library);
 
@@ -194,7 +197,15 @@ public class HomeActivity extends AppCompatActivity {
 
         // manualSyncButton.setText(R.string.sync_now);
         manualSyncButton.setText(R.string.refresh);
+c7.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View view) {
+                              Intent intent = new Intent(HomeActivity.this, MissCallResponseActivity.class);
+                              startActivity(intent);
 
+                          }
+                      }
+);
         //Help section of watsapp...
         c6.setOnClickListener(new View.OnClickListener() {
             @Override

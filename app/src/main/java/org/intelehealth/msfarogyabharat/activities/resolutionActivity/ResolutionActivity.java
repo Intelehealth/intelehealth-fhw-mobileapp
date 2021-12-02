@@ -41,6 +41,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
@@ -432,17 +433,18 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                     //  if(patientHistoryMap.anySubSelected()){
                     String patientHistory = patientHistoryMap.generateLanguage();
                     String patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                         patientHistoryHindi = s;
+
                     Map<String, String> patientHistoryMap = new HashMap<>();
                     patientHistoryMap.put("en", patientHistory);
                     patientHistoryMap.put("hi", patientHistoryHindi);
                     String patientHistoryJson = new Gson().toJson(patientHistoryMap);
 
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                        phistory = phistory + patientHistory; // only PMH updated
+                        phistory = phistory + patientHistoryJson; // only PMH updated
                         sessionManager.setReturning(true);
-
 
                         insertDb(phistory);
 
@@ -508,7 +510,20 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_LONG).show();
-                    endVisit();
+                  //  endVisit(); IVH-100
+                    Intent intent = new Intent(ResolutionActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent.putExtra("tag", intentTag);
+                   // startActivity(intent);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
 
                 @Override

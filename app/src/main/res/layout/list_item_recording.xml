@@ -45,6 +45,17 @@
                 android:textSize="12dp"
                 android:layout_marginTop="4dp"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+   <TextView
+                android:id="@+id/list_item_seen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato_bold"
+                android:includeFontPadding="false"
+                android:layout_below="@id/list_item_body"
+
+                android:textSize="12dp"
+                android:layout_marginTop="4dp"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <ImageView
                 android:id="@+id/play"
