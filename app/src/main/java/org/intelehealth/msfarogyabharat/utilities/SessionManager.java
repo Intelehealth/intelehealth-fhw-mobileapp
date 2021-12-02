@@ -52,6 +52,7 @@ public class SessionManager {
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
     private static final String PROVIDER_PHONENO = "PROVIDER_PHONENO";
+    private static final String FACILITY_RESOLUTION = "FACILITY_RESOLUTION";
 
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -475,5 +476,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getFacilityResolution() {
+        return pref.getString(FACILITY_RESOLUTION, "");
+    }
 
+    public void setFacilityResolution(String visitUuid) {
+        editor.putString(FACILITY_RESOLUTION, visitUuid);
+        editor.commit();
+    }
 }

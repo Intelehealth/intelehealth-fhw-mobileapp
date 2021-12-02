@@ -615,6 +615,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
         complaintList_adapter = new ArrayList<>();
         physexamList_adapter = new ArrayList<>();
 
+        String a = sessionManager1.getFacilityResolution();
+        if(sessionManager1.getFacilityResolution().equalsIgnoreCase(latestVisitUuid)) {
+            button_resolution.setVisibility(View.GONE);
+        }
+        else {
+            button_resolution.setVisibility(View.VISIBLE);
+        }
+
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2283,8 +2291,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == 100 && resultCode == RESULT_OK) {
-            button_resolution.setEnabled(false);
-            button_resolution.setBackgroundColor(getResources().getColor(R.color.font_black_4));
+            /*button_resolution.setEnabled(false);
+            button_resolution.setBackgroundColor(getResources().getColor(R.color.font_black_4));*/
+            button_resolution.setVisibility(View.GONE);
         }
     }
 

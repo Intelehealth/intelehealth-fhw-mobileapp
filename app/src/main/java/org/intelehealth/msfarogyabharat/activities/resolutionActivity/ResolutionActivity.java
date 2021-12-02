@@ -521,6 +521,7 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                     intent.putExtra("name", patientName);
                     intent.putExtra("float_ageYear_Month", float_ageYear_Month);
                     intent.putExtra("tag", intentTag);
+                    sessionManager.setFacilityResolution(visitUuid);
                    // startActivity(intent);
                     setResult(RESULT_OK, intent);
                     finish();
