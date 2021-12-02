@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.util.Log;
 
 
@@ -290,7 +291,7 @@ public class PatientsDAO {
                 while (cursor.moveToNext()) {
                     FamilyMemberRes familyMemberRes = new FamilyMemberRes();
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name"))+ " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                     listPatientNames.add(familyMemberRes);
 //                  middle_name = cursor.getString(cursor.getColumnIndexOrThrow("middle_name"));
                 }
@@ -318,8 +319,7 @@ public class PatientsDAO {
                     name = cursor.getString(cursor.getColumnIndex("name"));
                     cursor.moveToNext();
                 }
-            }
-            else if(cursor.getCount() == 0 &&
+            } else if (cursor.getCount() == 0 &&
                     attributeuuid.equalsIgnoreCase("1c718819-345c-4368-aad6-d69b4c267db7")) {
                 name = "Education Level";
             }
@@ -393,15 +393,14 @@ public class PatientsDAO {
         String attributeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
-        Log.d("count", "count: "+cursor.getCount());
+        Log.d("count", "count: " + cursor.getCount());
         //cursor.getcount() = -1 if the column doesnt exists...
         //0 if the row is not present...
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 attributeUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
             }
-        }
-        else if(cursor.getCount() == 0 && attr.equalsIgnoreCase("Education Level")) {
+        } else if (cursor.getCount() == 0 && attr.equalsIgnoreCase("Education Level")) {
             attributeUuid = "1c718819-345c-4368-aad6-d69b4c267db7";
         }
 
@@ -431,11 +430,13 @@ public class PatientsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
-        Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
-        IntelehealthApplication.getAppContext().startService(intent);
+        try {
+            Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
+            IntelehealthApplication.getAppContext().startService(intent);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         return isUpdated;
     }
 
