@@ -4848,6 +4848,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     private boolean isFollowUpOrClosed() {
         boolean flag = false;
+
+        if(complaintList_adapter.size() > 0) {
         String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
         if (complaintView != null) {
             String i = complaintData.toLowerCase().replaceAll("\\s+", "");
@@ -4861,6 +4863,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else {
                 flag = false;
             }
+        }
         }
         return flag;
     }
