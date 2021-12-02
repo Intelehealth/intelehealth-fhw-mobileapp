@@ -36,7 +36,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     private static Context mContext;
     private static String androidId;
     private Activity currentActivity;
-    SessionManager sessionManager;
+    public static SessionManager sessionManager;
     public static Context getAppContext() {
         return mContext;
     }
