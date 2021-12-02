@@ -414,6 +414,12 @@ public final class StringUtils {
             case "ग्रहिणी":
                 val = "Housewife";
                 break;
+            case "विद्यार्थी":
+                val = "Student";
+                break;
+            case "5 साल से कम उम्र के बच्चे":
+                val = "Under 5 child";
+                break;
             case "अन्य कुशलता (ड्राईवर,राज मिस्त्री)":
                 val = "Other skills (driver,mason etc)";
                 break;
@@ -781,6 +787,12 @@ public final class StringUtils {
                 break;
             case "Housewife":
                 val = "ग्रहिणी";
+                break;
+            case "Student":
+                val = "विद्यार्थी";
+                break;
+            case "Under 5 child":
+                val = "5 साल से कम उम्र के बच्चे";
                 break;
             case "Other skills (driver,mason etc)":
                 val = "अन्य कुशलता (ड्राईवर,राज मिस्त्री)";

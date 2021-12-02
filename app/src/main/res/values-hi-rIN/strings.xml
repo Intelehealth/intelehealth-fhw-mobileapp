@@ -6,7 +6,7 @@
     <string name="hint_required">अपेक्षित</string>
     <string name="hint_optional">ऐच्छिक</string>
     <string name="tag_optional">ऐच्छिक</string>
-    <string name="generic_ok" >ठीक</string>
+    <string name="generic_ok">ठीक</string>
     <string name="generic_cancel">रद्द करना</string>
     <string name="generic_yes">हाँ</string>
     <string name="generic_no">नहीं</string>
@@ -557,7 +557,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >आपकी विज़िट का कारण क्या है?</string>
+    <string name="what_is_the_reason_for_your_visit">आपकी विज़िट का कारण क्या है?</string>
     <string name="swipe_down_to_return">अगले/ पिछले के लिए निचे स्वाइप करें</string>
     <string name="swipe_up">अगले के लिए ऊपर स्वाइप करें</string>
     <string name="swipe_down">पिछले के लिए निचे स्वाइप करें</string>
@@ -671,6 +671,8 @@
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
     <string name="have_you_taken_a_covid_vaccine">1. क्या आपको कोविड का टिका लगा है?</string>
     <string name="select_option_vaccination_dialog">टीकाकरण के लिए विकल्प चुनें</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"हैलो, इंटेलीहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें "</string>
+    <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें - "</string>
 
 
 </resources>
