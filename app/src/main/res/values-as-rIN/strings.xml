@@ -519,7 +519,7 @@
     <string name="what_is_your_gender">What is your gender?</string>
     <string name="landmark">Landmark*</string>
     <string name="education">Education</string>
-    <string name="what_is_the_current_marital_status">What is the current marital status?</string>
+    <string name="what_is_the_current_marital_status">What is the current marital status?*</string>
     <string name="income_monthly">Income (Monthly)</string>
     <string name="occupation_title">Occupation</string>
     <string name="husband_s_income_monthly">Husband\'s Income (Monthly)</string>
