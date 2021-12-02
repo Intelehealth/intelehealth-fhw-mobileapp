@@ -620,7 +620,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             button_resolution.setVisibility(View.GONE);
         }
         else {
-            button_resolution.setVisibility(View.VISIBLE);
+           // button_resolution.setVisibility(View.VISIBLE);
         }
 
         card_print.setOnClickListener(new View.OnClickListener() {
@@ -4864,10 +4864,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String i = complaintData.toLowerCase().replaceAll("\\s+", "");
             Log.v("main", "vi: " + i);
             if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("b.domesticviolence-follow-up:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-फ़ॉलो-अप:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-केसबंद:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("e.safeabortion-follow-up:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-फ़ॉलो-अप:") ||
                     complaintData.toLowerCase().replaceAll("\\s+", "").contains("f.safeabortion-querybyrelativesorothers:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-रिश्तेदारोंयाअन्यलोगोंद्वारापूछताछ:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-केसबंद:")) {
                 flag = true;
             } else {
                 flag = false;
@@ -4885,7 +4890,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
             Log.v("main", "vi: " + i);
 
             if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
-                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("घरेलूहिंसा-केसबंद:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("सुरक्षितगर्भपात-केसबंद:")) {
                 flag = true;
             } else {
                 flag = false;
