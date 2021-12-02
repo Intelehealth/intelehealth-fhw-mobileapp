@@ -134,7 +134,8 @@ public class Patient {
     }
 
     public String getContact_type() {
-        return contact_type;
+//        return contact_type;
+        return StringUtils.getValueForAppLanguage(contact_type);
     }
 
     public void setContact_type(String contact_type) {
@@ -151,7 +152,8 @@ public class Patient {
     }
 
     public String getJob() {
-        return job;
+//        return job;
+        return StringUtils.getValueForAppLanguage(job);
     }
 
     public void setJob(String job) {
@@ -159,7 +161,8 @@ public class Patient {
     }
 
     public String getDescribe_location() {
-        return describe_location;
+//        return describe_location;
+        return StringUtils.getValueForAppLanguage(describe_location);
     }
 
     public void setDescribe_location(String describe_location) {
@@ -209,7 +212,8 @@ public class Patient {
     }
 
     public String getType_marriage() {
-        return type_marriage;
+//        return type_marriage;
+        return StringUtils.getValueForAppLanguage(type_marriage);
     }
 
     public void setType_marriage(String type_marriage) {
