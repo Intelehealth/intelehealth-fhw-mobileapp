@@ -149,7 +149,7 @@ public class PatientsDAO {
             values.put("address2", patientDTO.getAddress2());
             values.put("country", patientDTO.getCountry());
             values.put("date_of_birth", patientDTO.getDate_of_birth());
-            values.put("gender", patientDTO.getGender());
+            values.put("gender", patientDTO.getGenderJson());
             values.put("postal_code", patientDTO.getPostal_code());
             values.put("city_village", patientDTO.getCity_village());
             values.put("state_province", patientDTO.getState_province());
@@ -342,7 +342,7 @@ public class PatientsDAO {
                 values.put("uuid", patientAttributesDTOS.get(i).getUuid());
                 values.put("person_attribute_type_uuid", patientAttributesDTOS.get(i).getPersonAttributeTypeUuid());
                 values.put("patientuuid", patientAttributesDTOS.get(i).getPatientuuid());
-                values.put("value", patientAttributesDTOS.get(i).getValue());
+                values.put("value", patientAttributesDTOS.get(i).getValueJson());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
                 values.put("sync", false);
                 db.insertWithOnConflict("tbl_patient_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);

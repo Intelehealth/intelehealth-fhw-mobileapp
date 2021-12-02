@@ -5097,7 +5097,9 @@ todo not mandatory
             patientdto.setMiddlename(StringUtils.getValue(mMiddleName.getText().toString()));
             patientdto.setLastname(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhonenumber(StringUtils.getValue(mPhoneNum.getText().toString()));
-            patientdto.setGender(StringUtils.getValue(genderInfo));
+            String genderValue = getValue(genderInfo);
+            String genderValueJson = arrayValueInJson(this, sessionManager.getAppLanguage(), genderValue, R.array.gender_en, R.array.gender_hi);
+            patientdto.setGender(genderValueJson);
 
             // String dob = StringUtils.hi_or__en(mDOB.getText().toString(), month_index);
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -5151,6 +5153,10 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
+//            patientAttributesDTO.setValue(helplineInfo);
+            String helplineInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), helplineInfo, R.array.helpline_knowledge_en, R.array.helpline_knowledge_hi);
+            patientAttributesDTO.setValue(helplineInfoJson);
+
             patientAttributesDTO.setValue(helplineInfo);
 //            patientAttributesDTO.setValue(StringUtils.getValue(mHelplineKnowledge.getSelectedItem().toString()));
 //            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mHelplineKnowledge));
@@ -5279,7 +5285,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
-            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
+            String educationInfoValue = StringUtils.getValue(educationInfo);
+            String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_spinner_en, R.array.education_spinner_hi);
+            patientAttributesDTO.setValue(educationInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Marital Status
@@ -5287,7 +5297,9 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Maritual Status"));
-            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(maritualstatusInfo)); //TODO: add switch case for each spinner adapter values...
+            String maritualstatusInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(maritualstatusInfo), R.array.helpline_knowledge, R.array.education_spinner_hi);
+            patientAttributesDTO.setValue(maritualstatusInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Occupation Spinner_1
@@ -5295,7 +5307,9 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
+            String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(occupationInfo), R.array.occupation_spinner_selection_en, R.array.occupation_spinner_selection_hi);
+            patientAttributesDTO.setValue(occupationInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. husband occupation
@@ -5303,7 +5317,9 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
+            String husbandoccupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(husbandoccupationInfo), R.array.husband_occupation_en, R.array.husband_occupation_hi);
+            patientAttributesDTO.setValue(husbandoccupationInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Children
@@ -5327,7 +5343,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
-            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
+            String casteInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(casteInfo), R.array.caste_selection_en, R.array.caste_selection_hi);
+            patientAttributesDTO.setValue(casteInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. contact type
@@ -5343,7 +5363,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
-            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
+            String wherediduInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(wherediduInfo), R.array.spinner_where_did_u_en, R.array.spinner_where_did_u_hi);
+            patientAttributesDTO.setValue(wherediduInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - complaint selection
@@ -5368,7 +5392,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Case reffered by"));
-            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
+            String referredbyInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(referredbyInfo), R.array.spinner_dv_referred_en, R.array.spinner_dv_referred_hi);
+            patientAttributesDTO.setValue(referredbyInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. am i speaking
@@ -5376,7 +5404,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Am speaking with survivor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
+            String amiSpeakingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(amiSpeakingInfo), R.array.spinner_dv_speaking_with_en, R.array.spinner_dv_speaking_with_hi);
+            patientAttributesDTO.setValue(amiSpeakingInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. was ever married
@@ -5400,7 +5432,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor currently address"));
-            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
+            String currentAddressInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(currentAddressInfo), R.array.spinner_current_address_en, R.array.spinner_current_address_hi);
+            patientAttributesDTO.setValue(currentAddressInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. with whom living
@@ -5408,7 +5444,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor living with"));
-            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
+            String withwhomLivingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(withwhomLivingInfo), R.array.spinner_with_whom_living_en, R.array.spinner_with_whom_living_hi);
+            patientAttributesDTO.setValue(withwhomLivingInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
 
@@ -6942,7 +6982,9 @@ todo not mandatory
             patientdto.setLast_name(StringUtils.getValue(mLastName.getText().toString()));
             patientdto.setPhone_number(StringUtils.getValue(mPhoneNum.getText().toString()));
             // patientdto.setGender(StringUtils.getValue(mGender));
-            patientdto.setGender(StringUtils.getValue(genderInfo));
+            String genderValue = getValue(genderInfo);
+            String genderValueJson = arrayValueInJson(this, sessionManager.getAppLanguage(), genderValue, R.array.gender_en, R.array.gender_hi);
+            patientdto.setGender(StringUtils.getValue(genderValueJson));
 
             //String dob = StringUtils.hi_or__en(mDOB.getText().toString());
             String[] dob_array = mDOB.getText().toString().split(" ");
@@ -6993,7 +7035,10 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("caste"));
-            patientAttributesDTO.setValue(helplineInfo);
+//            patientAttributesDTO.setValue(helplineInfo);
+            String helplineInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), helplineInfo, R.array.helpline_knowledge_en, R.array.helpline_knowledge_hi);
+            patientAttributesDTO.setValue(helplineInfoJson);
+
 //            patientAttributesDTO.setValue(StringUtils.getProvidedOthers(mHelplineKnowledge));
 
             patientAttributesDTOList.add(patientAttributesDTO);
@@ -7137,7 +7182,10 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Education"));
-            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(educationInfo)); //TODO: add switch case for each spinner adapter values...
+            String educationInfoValue = StringUtils.getValue(educationInfo);
+            String educationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), educationInfoValue, R.array.education_spinner_en, R.array.education_spinner_hi);
+            patientAttributesDTO.setValue(educationInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Marital Status
@@ -7153,7 +7201,9 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(occupationInfo)); //TODO: add switch case for each spinner adapter values...
+            String occupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(occupationInfo), R.array.occupation_spinner_selection_en, R.array.occupation_spinner_selection_hi);
+            patientAttributesDTO.setValue(occupationInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. husband occupation
@@ -7161,7 +7211,9 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Husband Occupation"));
-            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(husbandoccupationInfo)); //TODO: add switch case for each spinner adapter values...
+            String husbandoccupationInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(husbandoccupationInfo), R.array.husband_occupation_en, R.array.husband_occupation_hi);
+            patientAttributesDTO.setValue(husbandoccupationInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. Children
@@ -7186,7 +7238,9 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Caste Value"));
-            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
+//            patientAttributesDTO.setValue(StringUtils.getValue(casteInfo)); //TODO: add switch case for each spinner adapter values...
+            String casteInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(casteInfo), R.array.caste_selection_en, R.array.caste_selection_hi);
+            patientAttributesDTO.setValue(casteInfoJson); //TODO: add switch case for each spinner adapter values...
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. contact type
@@ -7202,7 +7256,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Got Helpline Number From"));
-            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(wherediduInfo)); //TODO: add switch case for each spinner adapter values...
+            String wherediduInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(wherediduInfo), R.array.spinner_where_did_u_en, R.array.spinner_where_did_u_hi);
+            patientAttributesDTO.setValue(wherediduInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //start - complaint selection
@@ -7227,7 +7285,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Case reffered by"));
-            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(referredbyInfo)); //TODO: add switch case for each spinner adapter values...
+            String referredbyInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(referredbyInfo), R.array.spinner_dv_referred_en, R.array.spinner_dv_referred_hi);
+            patientAttributesDTO.setValue(referredbyInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. am i speaking
@@ -7235,7 +7297,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Am speaking with survivor"));
-            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(amiSpeakingInfo)); //TODO: add switch case for each spinner adapter values...
+            String amiSpeakingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(amiSpeakingInfo), R.array.spinner_dv_speaking_with_en, R.array.spinner_dv_speaking_with_hi);
+            patientAttributesDTO.setValue(amiSpeakingInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. was ever married
@@ -7259,7 +7325,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor currently address"));
-            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(currentAddressInfo)); //TODO: add switch case for each spinner adapter values...
+            String currentAddressInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(currentAddressInfo), R.array.spinner_current_address_en, R.array.spinner_current_address_hi);
+            patientAttributesDTO.setValue(currentAddressInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //1. with whom living
@@ -7267,7 +7337,11 @@ todo not mandatory
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
             patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("Survivor living with"));
-            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
+
+//            patientAttributesDTO.setValue(StringUtils.getValue(withwhomLivingInfo)); //TODO: add switch case for each spinner adapter values...
+            String withwhomLivingInfoJson = arrayValueInJson(this, sessionManager.getAppLanguage(), StringUtils.getValue(withwhomLivingInfo), R.array.spinner_with_whom_living_en, R.array.spinner_with_whom_living_hi);
+            patientAttributesDTO.setValue(withwhomLivingInfoJson); //TODO: add switch case for each spinner adapter values...
+
             patientAttributesDTOList.add(patientAttributesDTO);
 
             //end - complaint selection
