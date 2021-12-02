@@ -30,6 +30,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -1534,7 +1535,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                             }
                             uploaded = true;
-                            if (isFollowUpOrClosed() && isSynced) { //only when the sync is successful then only end the visit
+                            if (/*isFollowUpOrClosed()*/ isCaseClosed() && isSynced) { //only when the sync is successful then only end the visit
                                 //this fixes the bug of visit not ending even when ended if the flow was done quickly my the user
                                 endVisit();
                             }
@@ -2263,7 +2264,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 || complaintList_adapter.get(complaintList_adapter.size() - 1).toLowerCase().contains("हिंसा");
                         intent1.putExtra("resolutionViolence", value);
                     }
-                    startActivity(intent1);
+
+                    startActivityForResult(intent1, 100);
                 } else {
                     Toast.makeText(VisitSummaryActivity.this, R.string.resolution_upload_reminder,
                             Toast.LENGTH_SHORT).show();
@@ -2273,6 +2275,16 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         if (isFollowUpOrClosed()) {
             button_resolution.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 100 && resultCode == RESULT_OK) {
+            button_resolution.setEnabled(false);
+            button_resolution.setBackgroundColor(getResources().getColor(R.color.font_black_4));
         }
     }
 
@@ -4852,6 +4864,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         return flag;
     }
+
+    private boolean isCaseClosed() {
+        boolean flag = false;
+        String complaintData = complaintList_adapter.get(complaintList_adapter.size() - 1);
+        if (complaintView != null) {
+            String i = complaintData.toLowerCase().replaceAll("\\s+", "");
+            Log.v("main", "vi: " + i);
+
+            if (complaintData.toLowerCase().replaceAll("\\s+", "").contains("c.domesticviolence-caseclosed:") ||
+                    complaintData.toLowerCase().replaceAll("\\s+", "").contains("g.safeabortion-caseclosed:")) {
+                flag = true;
+            } else {
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
 
     private void isNetworkAvailable(Context context) {
         int flag = 0;

@@ -41,6 +41,7 @@ import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.activities.familyHistoryActivity.FamilyHistoryActivity;
 import org.intelehealth.msfarogyabharat.activities.homeActivity.HomeActivity;
 import org.intelehealth.msfarogyabharat.activities.questionNodeActivity.QuestionsAdapter;
+import org.intelehealth.msfarogyabharat.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.msfarogyabharat.app.AppConstants;
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
 import org.intelehealth.msfarogyabharat.database.dao.EncounterDAO;
@@ -508,7 +509,20 @@ public class ResolutionActivity extends AppCompatActivity implements QuestionsAd
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Toast.makeText(ResolutionActivity.this, R.string.give_resolution_success, Toast.LENGTH_LONG).show();
-                    endVisit();
+                  //  endVisit(); IVH-100
+                    Intent intent = new Intent(ResolutionActivity.this, VisitSummaryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent.putExtra("tag", intentTag);
+                   // startActivity(intent);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 }
 
                 @Override
