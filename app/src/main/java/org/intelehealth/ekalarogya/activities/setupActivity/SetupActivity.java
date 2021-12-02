@@ -56,6 +56,7 @@ import java.util.Map;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
+import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.intelehealth.ekalarogya.models.DownloadMindMapRes;
 import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
@@ -63,7 +64,7 @@ import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.ekalarogya.models.statewise_location.ChildLocation;
 import org.intelehealth.ekalarogya.models.statewise_location.District_Sanch_Village;
 import org.intelehealth.ekalarogya.models.statewise_location.Result;
-import org.intelehealth.ekalarogya.models.statewise_location.State;
+import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiClient;
 import org.intelehealth.ekalarogya.networkApiCalls.ApiInterface;
 import org.intelehealth.ekalarogya.utilities.AdminPassword;
@@ -75,9 +76,11 @@ import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.StringEncryption;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.intelehealth.ekalarogya.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.ekalarogya.activities.homeActivity.HomeActivity;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -241,13 +244,21 @@ public class SetupActivity extends AppCompatActivity {
                     // user didn't typed for 1.5 seconds, do whatever you want
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                            String BASE_URL = "https://testing.intelehealth.org" /* mUrlField.getText().toString()*/ + ":3004/api/openmrs/";
+                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
+                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                            else
+                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                        }
+
+                        /*if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
                             String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
                                 value = getLocationFromServer(BASE_URL); //state wise locations...
                             else
                                 Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
-                        }
+                        }*/
                     }
                 }
             };
@@ -258,7 +269,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
-                String state_uuid = "";
+                /*String state_uuid = "";
 
                 selectedState = spinner_state.getSelectedItem().toString();
 
@@ -299,7 +310,7 @@ public class SetupActivity extends AppCompatActivity {
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "state");
                     }
-                }
+                }*/
 
             }
 
@@ -314,7 +325,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
-                String district_uuid = "";
+                /*String district_uuid = "";
 
                 if (district_count == 0) {
                     if (value && parent.getSelectedItemPosition() > 0) {
@@ -353,7 +364,7 @@ public class SetupActivity extends AppCompatActivity {
                         }
                         value = getLocationFromServer_District(base_url, district_uuid, "district");
                     }
-                }
+                }*/
             }
 
             @Override
@@ -367,7 +378,7 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //sanch wise locations...
-                String sanch_uuid = "";
+                /*String sanch_uuid = "";
 
                 if (sanch_count == 0) {
                     if (value && parent.getSelectedItemPosition() > 0) {
@@ -407,7 +418,7 @@ public class SetupActivity extends AppCompatActivity {
                         value = getLocationFromServer_District(base_url, sanch_uuid, "sanch");
                     }
 
-                }
+                }*/
             }
 
             @Override
@@ -422,7 +433,7 @@ public class SetupActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //village wise locations...
 
-                if (village_count == 0) {
+               /* if (village_count == 0) {
                     if (value && parent.getSelectedItemPosition() > 0) {
                         for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
                             String list = entry.getValue();
@@ -451,7 +462,7 @@ public class SetupActivity extends AppCompatActivity {
 //                    Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
 //                    mUrlField.getText().clear();
                     empty_spinner("village");
-                }
+                }*/
             }
 
             @Override
@@ -823,7 +834,46 @@ public class SetupActivity extends AppCompatActivity {
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
 
         try {
-            Observable<State> stateObservable = apiService.STATE_OBSERVABLE();
+            Observable<Setup_LocationModel> locationObservable = apiService.SETUP_LOCATIONOBSERVABLE();
+            locationObservable
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableObserver<Setup_LocationModel>() {
+                        @Override
+                        public void onNext(@NonNull Setup_LocationModel location) {
+                            if (location.getStates() != null) {
+                                try {
+                                    NewLocationDao newLocationDao = new NewLocationDao();
+                                    newLocationDao.insertSetupLocations(location);
+                                    customProgressDialog.dismiss();
+                                    value = true;
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
+                                    customProgressDialog.dismiss();
+                                    value = false;
+                                }
+                            } else {
+                                customProgressDialog.dismiss();
+                                value = false;
+                                isLocationFetched = false;
+                                Toast.makeText(SetupActivity.this, "Unable to fetch State", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull Throwable e) {
+                            value = false;
+                            Toast.makeText(SetupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            customProgressDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onComplete() {
+                            value = true;
+                            customProgressDialog.dismiss();
+                        }
+                    });
+            /*Observable<State> stateObservable = apiService.STATE_OBSERVABLE();
             stateObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -868,7 +918,7 @@ public class SetupActivity extends AppCompatActivity {
                             value = true;
                             customProgressDialog.dismiss();
                         }
-                    });
+                    });*/
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             mUrlField.setError(getString(R.string.url_invalid));

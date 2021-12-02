@@ -12,7 +12,6 @@ import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 
 public class LocationDAO {
 
-
     long createdRecordsCount = 0;
 
     public boolean insertLocations(List<LocationDTO> locationDTOS) throws DAOException {

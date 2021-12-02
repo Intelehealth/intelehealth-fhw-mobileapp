@@ -154,6 +154,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "uuid TEXT  PRIMARY KEY," +
             "name TEXT" +
             ")";
+
     public static final String CREATE_IMAGE_RECORDS = "CREATE TABLE IF NOT EXISTS tbl_image_records(" +
             "uuid TEXT PRIMARY KEY," +
             "patientuuid TEXT," +
@@ -166,6 +167,22 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false' " +
             ")";
 
+    public static final String CREATE_LOCATION_NEW= "CREATE TABLE IF NOT EXISTS tbl_location_new(" +
+            "location_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "name TEXT," +
+            "country TEXT," +
+            "state TEXT," +
+            "district TEXT," +
+            "tehsil TEXT," +
+            "village TEXT," +
+            "latitude TEXT," +
+            "longitude TEXT," +
+            "parent_location integer(11)," +
+            "locationuuid TEXT," +
+            "modified_date TEXT," +
+            "voided TEXT DEFAULT '0'," +
+            "sync TEXT DEFAULT 'false' " +
+            ")";
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -229,6 +246,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USER_CREDENTIALS);
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
+        db.execSQL(CREATE_LOCATION_NEW);
         uuidInsert(db);
         database = db;
 
