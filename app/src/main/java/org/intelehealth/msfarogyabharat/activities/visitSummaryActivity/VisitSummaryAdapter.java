@@ -77,6 +77,7 @@ OnVisitItemClickListner onClickingIteListner;
         this.currentvisituuid = currentvisituuid;
         this.model = model;
         onClickingIteListner=listner;
+        sessionManager = new SessionManager(context);
         Log.v("main","allvisitsended: "+ this.allVisitsEnded);
     }
 
@@ -105,6 +106,19 @@ OnVisitItemClickListner onClickingIteListner;
                     + " : " + visitStartDatesList.get(position));
         else
             holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1));
+
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+         if(complaint.contains(", Pregnancy Week: ")) {
+             complaint = complaint.replace("Pregnancy Week", "गर्भावस्था सप्ताह");
+         }
+         if(complaint.contains(" weeks")) {
+             complaint = complaint.replace("weeks", "हफ़्ते");
+         }
+            holder.textView_content_complaint.setText(complaint);
+        }
+        else {
+            holder.textView_content_complaint.setText(complaint);
+        }
 
         holder.textView_content_complaint.setText(complaint);
         holder.textView_content_physexam.setText(physexam);
@@ -182,7 +196,21 @@ OnVisitItemClickListner onClickingIteListner;
 
                     final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                     if (complaintList.size() > 0 && getAdapterPosition() != complaintList.size() && complaintList != null) {
-                        complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+
+                        String complaintData = "";
+                        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            if(complaintList.get(getAdapterPosition()).contains(", Pregnancy Week: ")) {
+                                complaintData = complaintList.get(getAdapterPosition()).replace("Pregnancy Week", "गर्भावस्था सप्ताह");
+                            }
+                            if(complaintData.contains(" weeks")) {
+                                complaintData = complaintData.replace("weeks", "हफ़्ते");
+                            }
+                            complaintText.setText(Html.fromHtml(complaintData));
+                        }
+                        else {
+                            complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
+                        }
+
                     }
                     else {
                         complaintText.setText(visitsumContext.getString(R.string.something_went_wrong));
@@ -422,7 +450,7 @@ OnVisitItemClickListner onClickingIteListner;
     }
 
     public void updateDatabase(String string, String conceptID) {
-        sessionManager = new SessionManager(context);
+      //  sessionManager = new SessionManager(context);
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {

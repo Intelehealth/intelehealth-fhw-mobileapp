@@ -1301,7 +1301,7 @@ public class Node implements Serializable {
                         } else {
                             if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
                                 String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
-                                node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
+                                node.addLanguage(" " + dateString + ", Pregnancy Week: " + pregnancy_week);
                             }
                             else {
                                 node.addLanguage(" " + dateString);
@@ -2041,7 +2041,7 @@ private static String ml_en(String unit) {
                         } else {
                             if(!node.getPregnancy_date().isEmpty() && node.getPregnancy_date().equalsIgnoreCase("yes")) {
                                 String pregnancy_week = pregnancy_calculator(dayOfMonth, monthOfYear, year);
-                                node.addLanguage(" " + dateString + ", Pregnancy Weeks: " + pregnancy_week);
+                                node.addLanguage(" " + dateString + ", Pregnancy Week: " + pregnancy_week);
                             }
                             else {
                                 node.addLanguage(" " + dateString);
