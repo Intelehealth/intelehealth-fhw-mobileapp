@@ -4,6 +4,8 @@ package org.intelehealth.msfarogyabharat.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.msfarogyabharat.utilities.StringUtils;
+
 public class PatientAttributesDTO {
 
     @SerializedName("uuid")
@@ -29,6 +31,11 @@ public class PatientAttributesDTO {
     }
 
     public String getValue() {
+//        return value;
+        return StringUtils.getValueForAppLanguage(value);
+    }
+
+    public String getValueJson() {
         return value;
     }
 

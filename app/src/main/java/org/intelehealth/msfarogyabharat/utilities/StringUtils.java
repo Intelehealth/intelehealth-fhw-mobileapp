@@ -14,17 +14,30 @@
 
 package org.intelehealth.msfarogyabharat.utilities;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.util.Log;
 import android.widget.Spinner;
 
+import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
+
+import com.google.gson.Gson;
+
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.intelehealth.msfarogyabharat.app.IntelehealthApplication;
+import org.json.JSONObject;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
+    private static Gson gson = new Gson();
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -2220,5 +2233,69 @@ public final class StringUtils {
             }
         }
         return result;
+    }
+
+    @NonNull
+    public static Resources getLocalizedResources(Context context, Locale desiredLocale) {
+        Configuration conf = context.getResources().getConfiguration();
+        conf = new Configuration(conf);
+        conf.setLocale(desiredLocale);
+        Context localizedContext = context.createConfigurationContext(conf);
+        return localizedContext.getResources();
+    }
+
+    public static String arrayValueInLocale(Context context, String value, @ArrayRes int sourceArrayId, @ArrayRes int targetArrayId) {
+        String[] sourceArray = context.getResources().getStringArray(sourceArrayId);
+        String[] targetArray = context.getResources().getStringArray(targetArrayId);
+        if (sourceArray == null && targetArray == null)
+            return null;
+        for (int i = 0; i < sourceArray.length; i++) {
+            if (sourceArray[i].equalsIgnoreCase(value))
+                return targetArray[i];
+        }
+        return null;
+    }
+
+
+    public static String arrayValueInJson(Context context, String appLanguage, String value, @ArrayRes int array_en, @ArrayRes int array_hi) {
+        int sourceArray, targetArray;
+        String targetValue = "", targetLanguage;
+
+//        if (appLanguage.equalsIgnoreCase("hi")) {
+//            sourceArray = array_hi;
+//            targetArray = array_en;
+//            targetLanguage = "en";
+//        } else {
+//            sourceArray = array_en;
+//            targetArray = array_hi;
+//            targetLanguage = "hi";
+//        }
+
+        //hardcode
+        sourceArray = array_en;
+        targetArray = array_hi;
+        targetLanguage = "hi";
+
+        targetValue = arrayValueInLocale(context, value, sourceArray, targetArray);
+
+        Map<String, String> resultMap = new HashMap<>();
+//        resultMap.put(appLanguage,value);
+        resultMap.put("en",value);
+        resultMap.put(targetLanguage, targetValue);
+        return gson.toJson(resultMap);
+    }
+
+    public static String getValueForAppLanguage(String string) {
+        try {
+            JSONObject jsonObject = new JSONObject(string);
+//            String s = jsonObject.optString(IntelehealthApplication.sessionManager.getAppLanguage());
+            String s = jsonObject.optString("en");
+            if (s == null)
+                return string;
+            else
+                return s;
+        } catch (Exception e) {
+            return string;
+        }
     }
 }

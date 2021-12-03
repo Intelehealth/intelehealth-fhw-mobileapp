@@ -1,5 +1,7 @@
 package org.intelehealth.msfarogyabharat.models;
 
+import org.intelehealth.msfarogyabharat.utilities.StringUtils;
+
 public class Patient {
     private String uuid;
     private String openmrs_id;
@@ -51,7 +53,8 @@ public class Patient {
     }
 
     public String getEducation_value() {
-        return education_value;
+//        return education_value;
+        return StringUtils.getValueForAppLanguage(education_value);
     }
 
     public void setEducation_value(String education_value) {
@@ -59,7 +62,8 @@ public class Patient {
     }
 
     public String getCurrent_marital_status() {
-        return current_marital_status;
+//        return current_marital_status;
+        return StringUtils.getValueForAppLanguage(current_marital_status);
     }
 
     public void setCurrent_marital_status(String current_marital_status) {
@@ -75,7 +79,8 @@ public class Patient {
     }
 
     public String getOccupation_value() {
-        return occupation_value;
+//        return occupation_value;
+        return StringUtils.getValueForAppLanguage(occupation_value);
     }
 
     public void setOccupation_value(String occupation_value) {
@@ -91,7 +96,8 @@ public class Patient {
     }
 
     public String getHusband_occupation() {
-        return husband_occupation;
+//        return husband_occupation;
+        return StringUtils.getValueForAppLanguage(husband_occupation);
     }
 
     public void setHusband_occupation(String husband_occupation) {
@@ -99,7 +105,8 @@ public class Patient {
     }
 
     public String getChildren() {
-        return children;
+//        return children;
+        return StringUtils.getValueForAppLanguage(children);
     }
 
     public void setChildren(String children) {
@@ -115,6 +122,11 @@ public class Patient {
     }
 
     public String getCaste_value() {
+//        return caste_value;
+        return StringUtils.getValueForAppLanguage(caste_value);
+    }
+
+    public String getCaste_valueJson() {
         return caste_value;
     }
 
@@ -123,7 +135,8 @@ public class Patient {
     }
 
     public String getContact_type() {
-        return contact_type;
+//        return contact_type;
+        return StringUtils.getValueForAppLanguage(contact_type);
     }
 
     public void setContact_type(String contact_type) {
@@ -131,7 +144,8 @@ public class Patient {
     }
 
     public String getHelpline_no_from() {
-        return helpline_no_from;
+//        return helpline_no_from;
+        return StringUtils.getValueForAppLanguage(helpline_no_from);
     }
 
     public void setHelpline_no_from(String helpline_no_from) {
@@ -139,7 +153,8 @@ public class Patient {
     }
 
     public String getJob() {
-        return job;
+//        return job;
+        return StringUtils.getValueForAppLanguage(job);
     }
 
     public void setJob(String job) {
@@ -147,7 +162,8 @@ public class Patient {
     }
 
     public String getDescribe_location() {
-        return describe_location;
+//        return describe_location;
+        return StringUtils.getValueForAppLanguage(describe_location);
     }
 
     public void setDescribe_location(String describe_location) {
@@ -155,7 +171,8 @@ public class Patient {
     }
 
     public String getReferred_case() {
-        return referred_case;
+//        return referred_case;
+        return StringUtils.getValueForAppLanguage(referred_case);
     }
 
     public void setReferred_case(String referred_case) {
@@ -163,7 +180,8 @@ public class Patient {
     }
 
     public String getAmSpeaking() {
-        return amSpeaking;
+//        return amSpeaking;
+        return StringUtils.getValueForAppLanguage(amSpeaking);
     }
 
     public void setAmSpeaking(String amSpeaking) {
@@ -195,7 +213,8 @@ public class Patient {
     }
 
     public String getType_marriage() {
-        return type_marriage;
+//        return type_marriage;
+        return StringUtils.getValueForAppLanguage(type_marriage);
     }
 
     public void setType_marriage(String type_marriage) {
@@ -235,7 +254,8 @@ public class Patient {
     }
 
     public String getCurrent_address() {
-        return current_address;
+//        return current_address;
+        return StringUtils.getValueForAppLanguage(current_address);
     }
 
     public void setCurrent_address(String current_address) {
@@ -243,7 +263,8 @@ public class Patient {
     }
 
     public String getWhom_living() {
-        return whom_living;
+//        return whom_living;
+        return StringUtils.getValueForAppLanguage(whom_living);
     }
 
     public void setWhom_living(String whom_living) {
@@ -384,6 +405,11 @@ public class Patient {
     }
 
     public String getGender() {
+//        return gender;
+        return StringUtils.getValueForAppLanguage(gender);
+    }
+
+    public String getGenderJson() {
         return gender;
     }
 
@@ -408,7 +434,8 @@ public class Patient {
     }
 
     public String getOccupation() {
-        return occupation;
+        return StringUtils.getValueForAppLanguage(occupation);
+//        return occupation;
     }
 
     public void setOccupation(String occupation) {

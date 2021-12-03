@@ -53,7 +53,7 @@ import java.util.List;
 public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapter.VisitSummaryViewHolder> {
     Context context, visitsumContext;
     List<String> complaintList;
-    List<String> visitUuidList;
+    List<String> visitUuidList, visitStartDatesList;
     List<String> physexamList;
     boolean allVisitsEnded = false;
     String currentvisituuid;
@@ -64,12 +64,13 @@ public class VisitSummaryAdapter extends RecyclerView.Adapter<VisitSummaryAdapte
     SessionManager sessionManager;
 OnVisitItemClickListner onClickingIteListner;
 
-    public VisitSummaryAdapter(Context context, Context visitsumContext, List<String> visitUuidList,
+    public VisitSummaryAdapter(Context context, Context visitsumContext, List<String> visitUuidList, List<String> visitStartDatesList,
                                List<String> complaintList, List<String> physexamList,
                                boolean allVisitsEnded, String currentvisituuid, Add_Doc_Adapter_DataModel model,OnVisitItemClickListner listner) {
         this.context = context;
         this.visitsumContext = visitsumContext;
         this.visitUuidList = visitUuidList;
+        this.visitStartDatesList = visitStartDatesList;
         this.complaintList = complaintList;
         this.physexamList = physexamList;
         this.allVisitsEnded = allVisitsEnded;
@@ -99,7 +100,12 @@ OnVisitItemClickListner onClickingIteListner;
         else
             physexam = visitsumContext.getString(R.string.something_went_wrong);
 
-        holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1));
+        if(visitStartDatesList.size() > 0 && position != visitStartDatesList.size())
+            holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1)
+                    + " : " + visitStartDatesList.get(position));
+        else
+            holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1));
+
         holder.textView_content_complaint.setText(complaint);
         holder.textView_content_physexam.setText(physexam);
     }

@@ -1,5 +1,7 @@
 package org.intelehealth.msfarogyabharat.activities.visitSummaryActivity;
 
+import static org.intelehealth.msfarogyabharat.utilities.DateAndTimeUtils.SimpleDatetoLongDate;
+
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -319,7 +321,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isRespiratory = false;
     String appLanguage;
     View button_resolution;
-    private List<String> visitUuidList;
+    private List<String> visitUuidList, visitStartDatesList;
     private List<String> complaintList_adapter, physexamList_adapter;
     private VisitSummaryAdapter visitsum_adapter;
     private LinearLayoutManager visitsum_layoutmanager;
@@ -805,13 +807,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         //get all visits from patientuuid
         visitUuidList = new ArrayList<>();
+        visitStartDatesList = new ArrayList<>();
+        String visitStartDate = "";
         String visitIDSelection = "patientuuid = ?";
         String[] visitIDArgs = {patientUuid};
         Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
         if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
             do {
                 visitUuid = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                visitStartDate = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
                 visitUuidList.add(visitUuid); // All visits will be stored in this arraylist.
+
+                visitStartDate = SimpleDatetoLongDate(visitStartDate);
+                Log.v("main", "startdate: " + visitStartDate);
+
+                visitStartDatesList.add(visitStartDate);
             } while (visitIDCursor.moveToNext());
         }
         if (visitIDCursor != null) {
@@ -952,7 +962,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //get all visits - end
         Add_Doc_Adapter_DataModel model = new Add_Doc_Adapter_DataModel(encounterAdultInit, patientUuid, visitUuid,
                 patientName, float_ageYear_Month);
-        visitsum_adapter = new VisitSummaryAdapter(context, context1, visitUuidList,
+        visitsum_adapter = new VisitSummaryAdapter(context, context1, visitUuidList, visitStartDatesList,
                 complaintList_adapter, physexamList_adapter, allVisitsEnded, visitUuid, model, new VisitSummaryAdapter.OnVisitItemClickListner() {
             @Override
             public void mItemClicking(int pos) {
@@ -2372,7 +2382,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
-        String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+        String mDate = SimpleDatetoLongDate(startDateTime);
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
@@ -3002,7 +3012,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
-        String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+        String mDate = SimpleDatetoLongDate(startDateTime);
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
@@ -3349,7 +3359,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitIDCursor.moveToLast();
         String startDateTime = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("startdate"));
         visitIDCursor.close();
-        String mDate = DateAndTimeUtils.SimpleDatetoLongDate(startDateTime);
+        String mDate = SimpleDatetoLongDate(startDateTime);
 
         String mPatHist = patHistory.getValue();
         if (mPatHist == null) {
