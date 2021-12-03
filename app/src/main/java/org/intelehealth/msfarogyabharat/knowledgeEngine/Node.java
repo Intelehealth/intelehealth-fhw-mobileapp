@@ -2506,8 +2506,10 @@ private static String ml_en(String unit) {
             for (int i = 0; i < mOptions.size(); i++) {
                 if (mOptions.get(i).isSelected()) {
                     String test = mOptions.get(i).getLanguage();
+
                     if (language.equalsIgnoreCase("hi"))
                         test = mOptions.get(i).getDisplay_hindi();
+
                     if (!test.isEmpty()) {
                         if (test.equals("%")) {
                         } else if (test.substring(0, 1).equals("%")) {
@@ -2546,7 +2548,7 @@ private static String ml_en(String unit) {
                     }
 
                     if (!mOptions.get(i).isTerminal()) {
-                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        stringsList.add(mOptions.get(i).formLanguageHindi(language));
                         isTerminal = false;
                     } else {
                         isTerminal = true;
@@ -3519,6 +3521,95 @@ private static String ml_en(String unit) {
         return null;
     }
 
+    public String formLanguageHindi(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if(mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if(mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+                                else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            }
+                            else {
+                                if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                }
+                                else {
+                                   // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        return mLanguage;
+    }
+
     public String formLanguageHindi() {
         List<String> stringsList = new ArrayList<>();
         List<Node> mOptions = optionsList;
@@ -3549,7 +3640,7 @@ private static String ml_en(String unit) {
                                     stringsList.add(mOptions.get(i).getLanguage());
                                 }
                                 else {
-                                    stringsList.add(mOptions.get(i).findDisplay());
+                                    stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
                                 }
 
                             }
