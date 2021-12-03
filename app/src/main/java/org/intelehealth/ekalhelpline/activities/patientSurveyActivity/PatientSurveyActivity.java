@@ -209,6 +209,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
             }
         });
 
+        AR_scheduleTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showDatePicker(calendar, newCalendar, "followup");
+            }
+        });
+
         followUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
