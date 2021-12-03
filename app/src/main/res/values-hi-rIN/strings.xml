@@ -817,4 +817,6 @@
     <string name="doctor_resolved_comment">डॉक्टर संकल्प हल</string>
     <string name="reason_for_resolved">विज़िट को समाधान के रूप में चिह्नित करने का कारण चुनें</string>
     <string name="additional_comments">अतिरिक्त टिप्पणियाँ (यदि कोई हो)</string>
+    <string name="want_follow_up_text">क्या आप अनुवर्ती शेड्यूल करना चाहते हैं?</string>
+    <string name="select_follow_up">कृपया एक अनुवर्ती तिथि चुनें।</string>
 </resources>

@@ -410,6 +410,12 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="yes_no_hi">
+        <item>चुनिये</item>
+        <item>हाँ</item>
+        <item>नहीं</item>
+    </string-array>
+
     <string-array name="states_india">
         <item>Select State</item>
         <item>Andhra Pradesh</item>
