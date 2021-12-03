@@ -556,7 +556,7 @@
     <string name="do_you_have_any_children">Do you have any children?</string>
     <string name="how_many_children">How many children?</string>
     <string name="enter_no_of_children">Enter no of children</string>
-    <string name="contact_type">Contact Type</string>
+    <string name="contact_type">Contact Type*</string>
     <string name="where_did_you_get_the_helpline_number_from">Where did you get the helpline number from?</string>
     <string name="select_reason_of_complaint">Select Reason of Complaint</string>
     <string name="safe_abortion_specific">Safe abortion specific</string>
