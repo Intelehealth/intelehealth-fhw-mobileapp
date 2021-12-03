@@ -134,7 +134,8 @@ public class SetupActivity extends AppCompatActivity {
     String base_url;
     Map.Entry<String, String> village_name;
     int state_count = 0, district_count = 0, sanch_count = 0, village_count = 0;
-    private String selectedState = "";
+    private String selectedState = "",selectedDistrict="",selectedSanch="";
+    NewLocationDao newLocationDao=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,7 +206,6 @@ public class SetupActivity extends AppCompatActivity {
                 attemptLogin();
                 //progressBar.setVisibility(View.VISIBLE);
                 //progressBar.setProgress(0);
-
             }
         });
         DialogUtils dialogUtils = new DialogUtils();
@@ -269,6 +269,24 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
+                if(position!=0){
+                    String state_uuid = "";
+                    selectedState = spinner_state.getSelectedItem().toString();
+                    List<String> district_locations = newLocationDao.getDistrictList(selectedState);
+
+                    if(district_locations.size()!=0) {
+                        LocationArrayAdapter locationArrayAdapter =
+                                new LocationArrayAdapter(SetupActivity.this, district_locations);
+
+                        spinner_district.setEnabled(true);
+                        spinner_district.setAlpha(1);
+                        spinner_district.setAdapter(locationArrayAdapter);
+                        isLocationFetched = true;
+                    }else{
+                        empty_spinner("district");
+                    }
+                }
+
                 /*String state_uuid = "";
 
                 selectedState = spinner_state.getSelectedItem().toString();
@@ -325,6 +343,23 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
+
+                if(position!=0){
+                    String district_uuid = "";
+                    selectedDistrict=spinner_district.getSelectedItem().toString();
+                    List<String> sanch_locations = newLocationDao.getSanchList(selectedState,selectedDistrict);
+                    if(sanch_locations.size()!=0) {
+                        LocationArrayAdapter locationArrayAdapter =
+                                new LocationArrayAdapter(SetupActivity.this, sanch_locations);
+
+                        spinner_sanch.setEnabled(true);
+                        spinner_sanch.setAlpha(1);
+                        spinner_sanch.setAdapter(locationArrayAdapter);
+                        isLocationFetched = true;
+                    }else{
+                        empty_spinner("sanch");
+                    }
+                }
                 /*String district_uuid = "";
 
                 if (district_count == 0) {
@@ -378,6 +413,24 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //sanch wise locations...
+
+                if(position!=0){
+                    String district_uuid = "";
+                    selectedSanch=spinner_sanch.getSelectedItem().toString();
+                    List<String> village_locations = newLocationDao.getVillageList(selectedState,selectedDistrict,selectedSanch);
+                    if(village_locations.size()!=0){
+                    LocationArrayAdapter locationArrayAdapter =
+                            new LocationArrayAdapter(SetupActivity.this, village_locations);
+
+                    spinner_village.setEnabled(true);
+                    spinner_village.setAlpha(1);
+                    spinner_village.setAdapter(locationArrayAdapter);
+                    isLocationFetched = true;
+                    }else{
+                        empty_spinner("village");
+                    }
+                }
+
                 /*String sanch_uuid = "";
 
                 if (sanch_count == 0) {
@@ -843,9 +896,29 @@ public class SetupActivity extends AppCompatActivity {
                         public void onNext(@NonNull Setup_LocationModel location) {
                             if (location.getStates() != null) {
                                 try {
-                                    NewLocationDao newLocationDao = new NewLocationDao();
+                                    newLocationDao = new NewLocationDao();
                                     newLocationDao.insertSetupLocations(location);
                                     customProgressDialog.dismiss();
+
+                                    List<String> state_locations=newLocationDao.getStateList();
+
+                                    if(state_locations.size()!=0) {
+                                        LocationArrayAdapter locationArrayAdapter =
+                                                new LocationArrayAdapter(SetupActivity.this, state_locations);
+
+                                        spinner_state.setEnabled(true);
+                                        spinner_state.setAlpha(1);
+                                        spinner_state.setAdapter(locationArrayAdapter);
+                                        isLocationFetched = true;
+                                    }else{
+                                        empty_spinner("state");
+                                    }
+
+                                    /*hashMap1 = new HashMap<>();
+                                    for (int i = 0; i < state.getResults().size(); i++) {
+                                        hashMap1.put(state.getResults().get(i).getUuid(),
+                                                state.getResults().get(i).getDisplay());
+                                    }*/
                                     value = true;
                                 } catch (DAOException e) {
                                     e.printStackTrace();

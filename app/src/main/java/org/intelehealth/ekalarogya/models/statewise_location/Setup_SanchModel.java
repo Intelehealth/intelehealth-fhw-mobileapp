@@ -5,20 +5,20 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Setup_DistrictModel {
-    @SerializedName("sanchs")
+public class Setup_SanchModel {
+    @SerializedName("villages")
     @Expose
-    private List<Setup_SanchModel> sanchs;
+    private List<Setup_VillageModel> villages;
     @SerializedName("name")
     @Expose
     private String name;
 
-    public List<Setup_SanchModel> getSanchs() {
-        return sanchs;
+    public List<Setup_VillageModel> getVillages() {
+        return villages;
     }
 
-    public void setSanchs(List<Setup_SanchModel> sanchs) {
-        this.sanchs = sanchs;
+    public void setVillages(List<Setup_VillageModel> villages) {
+        this.villages = villages;
     }
 
     public String getName() {
