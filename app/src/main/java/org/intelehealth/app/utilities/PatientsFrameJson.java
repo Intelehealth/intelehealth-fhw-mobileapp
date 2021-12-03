@@ -193,7 +193,6 @@ public class PatientsFrameJson {
         return pushRequestApiCall;
     }
 
-
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
