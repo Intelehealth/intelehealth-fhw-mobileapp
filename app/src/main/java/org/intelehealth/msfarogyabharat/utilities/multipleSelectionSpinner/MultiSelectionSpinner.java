@@ -66,7 +66,7 @@ final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.styl
         String[] itemNames = new String[items.size()];
 
         for (int i = 0; i < items.size(); i++) {
-        itemNames[i] = items.get(i).getName();
+        itemNames[i] = items.get(i).getName()+"\n";
         }
 
         builder.setMultiChoiceItems(itemNames, selection, this);
@@ -130,7 +130,7 @@ private String buildSelectedItemString() {
         for (int i = 0; i < items.size(); ++i) {
         if (selection[i]) {
         if (foundOne) {
-        sb.append("\n");
+        sb.append("\n\n");
         }
 
         foundOne = true;

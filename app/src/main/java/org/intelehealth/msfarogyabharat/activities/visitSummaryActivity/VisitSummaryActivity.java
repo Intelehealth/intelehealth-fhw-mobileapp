@@ -978,7 +978,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //todo single textutill
                     if (!TextUtils.isEmpty(facilityText)) {
                         if (facilityText == null) {
-                        } else if(facilityText.equalsIgnoreCase("-")) {
+
+                        }
+                        else if(facilityText.equalsIgnoreCase("-")) {
                             autocompleteState.setText("");
                             autocompleteDistrict.setText("");
                             txtViewFacility.setText("");
@@ -999,6 +1001,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             txtViewFacility.setText(arrayString[arrayString.length - 1].replaceAll("\\|", "\n\n"));
 
                         }
+                    }
+                    else{
+                        autocompleteState.setText("");
+                        autocompleteDistrict.setText("");
+                        txtViewFacility.setText("");
+                        mFacilityValue="";
                     }
                     medHistCursor.close();
                 } catch (CursorIndexOutOfBoundsException e) {
@@ -4135,7 +4143,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                medHistory = patHistory.getValue();
 //Toast.makeText(this,"fa=== "+facilityText,Toast.LENGTH_LONG).show();
                 if (facilityText == null) {
-                }else if(facilityText.equalsIgnoreCase("-")){
+
+                }
+                else if(facilityText.equalsIgnoreCase("-")){
                     autocompleteState.setText("");
                     autocompleteDistrict.setText("");
                     txtViewFacility.setText("");
@@ -4159,6 +4169,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //                do {
 //                    medHistory = medHistory.replace("  ", "");
 //                } while (medHistory.contains("  "));
+            }
+            else{
+                autocompleteState.setText("");
+                autocompleteDistrict.setText("");
+                txtViewFacility.setText("");
+                mFacilityValue="";
             }
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
