@@ -23,7 +23,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +33,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,6 +77,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
     Handler mHandler;
+    EditText toolbarET;
+    ImageView toolbarClear, toolbarSearch;
 
 
     @Override
@@ -90,6 +96,59 @@ public class SearchPatientActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        //toolbar views
+        toolbarET = findViewById(R.id.toolbar_ET);
+        toolbarClear = findViewById(R.id.toolbar_clear);
+        toolbarSearch = findViewById(R.id.toolbar_search);
+        toolbarET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                toolbarClear.setVisibility(View.VISIBLE);
+                toolbarSearch.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (toolbarET.getText().toString().isEmpty()){
+                    toolbarET.clearFocus();
+                    toolbarClear.setVisibility(View.GONE);
+                    toolbarSearch.setVisibility(View.GONE);
+                    firstQuery();
+                }
+            }
+        });
+        toolbarClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbarET.setText(null);
+                toolbarET.clearFocus();
+                toolbarClear.setVisibility(View.GONE);
+                toolbarSearch.setVisibility(View.GONE);
+                firstQuery();
+            }
+        });
+        toolbarSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbarET.clearFocus();
+                String text = toolbarET.getText().toString();
+                if(text!=null || !text.isEmpty() || text.equalsIgnoreCase(" "))
+                {
+                    SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+                            SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                    suggestions.clearHistory();
+                    query = text;
+                    doQuery(text);
+                }
+            }
+        });
+
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
@@ -227,7 +286,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the options menu from XMLz
         MenuInflater inflater = getMenuInflater();
@@ -288,7 +347,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
-    }
+    }*/
 
     /**
      * This method is called when no search result is found for patient.
