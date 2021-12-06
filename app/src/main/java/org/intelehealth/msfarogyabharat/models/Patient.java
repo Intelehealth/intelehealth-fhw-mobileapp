@@ -197,7 +197,8 @@ public class Patient {
     }
 
     public String getEver_married() {
-        return ever_married;
+//        return ever_married;
+        return StringUtils.getValueForAppLanguage(ever_married);
     }
 
     public void setEver_married(String ever_married) {

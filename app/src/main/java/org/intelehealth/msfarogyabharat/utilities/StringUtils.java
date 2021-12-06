@@ -2276,12 +2276,23 @@ public final class StringUtils {
         targetArray = array_hi;
         targetLanguage = "hi";
 
-        targetValue = arrayValueInLocale(context, value, sourceArray, targetArray);
-
         Map<String, String> resultMap = new HashMap<>();
+        targetValue = arrayValueInLocale(context, value, sourceArray, targetArray);
+        if (targetValue == null) {
+            targetValue = arrayValueInLocale(context, value, targetArray, sourceArray);
+            if (targetValue != null) {
+                resultMap.put("en", targetValue);
+                resultMap.put(appLanguage, value);
+            } else {
+                resultMap.put("en", value);
+            }
+        }
+        else {
+
 //        resultMap.put(appLanguage,value);
-        resultMap.put("en",value);
-        resultMap.put(targetLanguage, targetValue);
+            resultMap.put("en", value);
+            resultMap.put(targetLanguage, targetValue);
+        }
         return gson.toJson(resultMap);
     }
 
