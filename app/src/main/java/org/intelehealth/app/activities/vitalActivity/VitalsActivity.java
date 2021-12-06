@@ -69,7 +69,7 @@ public class VitalsActivity extends AppCompatActivity {
     VitalsObject results = new VitalsObject();
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     EditText mHeight, mWeight, mPulse, mBpSys, mBpDia, mTemperature, mtempfaren, mSpo2, mBMI, mResp,
-            mHemoglobin,mSugarRandom, mSugarFasting, mSugarAfterMeal;
+            mHemoglobin, mSugarRandom, mSugarFasting, mSugarAfterMeal;
     Spinner mBlood_Spinner;
     ArrayAdapter<CharSequence> bloodAdapter;
 
@@ -123,19 +123,19 @@ public class VitalsActivity extends AppCompatActivity {
 
         mBMI.setEnabled(false);
 
-        mHemoglobin= findViewById(R.id.table_hemoglobin);
-        mSugarRandom= findViewById(R.id.table_sugar_level);
-        mSugarFasting= findViewById(R.id.table_sugar_fasting);
-        mSugarAfterMeal= findViewById(R.id.table_sugar_aftermeal);
-        mBlood_Spinner= findViewById(R.id.spinner_blood_grp);
-        String bloodStr="blood_group_"+ sessionManager.getAppLanguage();
-        int bloodGrpArray=getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
+        mHemoglobin = findViewById(R.id.table_hemoglobin);
+        mSugarRandom = findViewById(R.id.table_sugar_level);
+        mSugarFasting = findViewById(R.id.table_sugar_fasting);
+        mSugarAfterMeal = findViewById(R.id.table_sugar_aftermeal);
+        mBlood_Spinner = findViewById(R.id.spinner_blood_grp);
+        String bloodStr = "blood_group_" + sessionManager.getAppLanguage();
+        int bloodGrpArray = getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
         bloodAdapter = ArrayAdapter.createFromResource(this, bloodGrpArray/*R.array.blood_group*/, R.layout.blood_group_spinner);
         mBlood_Spinner.setAdapter(bloodAdapter);
         mBlood_Spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){
+                if (position == 0) {
                     ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.medium_gray));
                 }
             }
@@ -232,12 +232,16 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_height = 1;
                     heightvalue = mHeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT)) {
-                        mHeight.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
-                    } else {
-                        mHeight.setError(null);
+                    try {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEIGHT)) {
+                            mHeight.setError(getString(R.string.height_error, AppConstants.MAXIMUM_HEIGHT));
+                        } else {
+                            mHeight.setError(null);
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        mHeight.setText("");
                     }
-
                 } else {
                     flag_height = 0;
                     mBMI.getText().clear();
@@ -266,10 +270,15 @@ public class VitalsActivity extends AppCompatActivity {
                     mBMI.getText().clear();
                     flag_weight = 1;
                     weightvalue = mWeight.getText().toString();
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT)) {
-                        mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
-                    } else {
-                        mWeight.setError(null);
+                    try {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_WEIGHT)) {
+                            mWeight.setError(getString(R.string.weight_error, AppConstants.MAXIMUM_WEIGHT));
+                        } else {
+                            mWeight.setError(null);
+                        }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        mWeight.setText("");
                     }
                 } else {
                     flag_weight = 0;
@@ -309,13 +318,18 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
-                        mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
-                    } else {
-                        mSpo2.setError(null);
+                try {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
+                            mSpo2.setError(getString(R.string.spo2_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
+                        } else {
+                            mSpo2.setError(null);
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    mSpo2.setText("");
                 }
             }
 
@@ -340,23 +354,32 @@ public class VitalsActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 if (configUtils.celsius()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                        } else {
-                            mTemperature.setError(null);
+                    try {
+                        if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            } else {
+                                mTemperature.setError(null);
+                            }
                         }
-
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        mTemperature.setText("");
                     }
                 } else if (configUtils.fahrenheit()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                        } else {
-                            mTemperature.setError(null);
+                    try {
+                        if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
+                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                            } else {
+                                mTemperature.setError(null);
+                            }
                         }
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        mTemperature.setText("");
                     }
 
                 }
@@ -382,13 +405,18 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_RESPIRATORY) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_RESPIRATORY)) {
-                        mResp.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
-                    } else {
-                        mResp.setError(null);
+                try {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_RESPIRATORY) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_RESPIRATORY)) {
+                            mResp.setError(getString(R.string.resp_error, AppConstants.MINIMUM_RESPIRATORY, AppConstants.MAXIMUM_RESPIRATORY));
+                        } else {
+                            mResp.setError(null);
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    mResp.setText("");
                 }
             }
 
@@ -411,13 +439,18 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_PULSE) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_PULSE)) {
-                        mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
-                    } else {
-                        mPulse.setError(null);
+                try {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_PULSE) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_PULSE)) {
+                            mPulse.setError(getString(R.string.pulse_error, AppConstants.MINIMUM_PULSE, AppConstants.MAXIMUM_PULSE));
+                        } else {
+                            mPulse.setError(null);
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    mPulse.setText("");
                 }
             }
 
@@ -440,13 +473,18 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
-                        mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
-                    } else {
-                        mBpSys.setError(null);
+                try {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_SYS) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_SYS)) {
+                            mBpSys.setError(getString(R.string.bpsys_error, AppConstants.MINIMUM_BP_SYS, AppConstants.MAXIMUM_BP_SYS));
+                        } else {
+                            mBpSys.setError(null);
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    mBpSys.setText("");
                 }
             }
 
@@ -469,13 +507,18 @@ public class VitalsActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
-                        mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                    } else {
-                        mBpDia.setError(null);
+                try {
+                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_BP_DSYS) ||
+                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_BP_DSYS)) {
+                            mBpDia.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
+                        } else {
+                            mBpDia.setError(null);
+                        }
                     }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    mBpDia.setText("");
                 }
             }
 
@@ -490,121 +533,150 @@ public class VitalsActivity extends AppCompatActivity {
             }
         });
 
-        mHemoglobin.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        mHemoglobin.addTextChangedListener(new
 
-            }
+                                                   TextWatcher() {
+                                                       @Override
+                                                       public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEMOGLOBIN) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEMOGLOBIN)) {
-                        mHemoglobin.setError(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
-                    } else {
-                        mHemoglobin.setError(null);
-                    }
-                }
-            }
+                                                       }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                       @Override
+                                                       public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                           try {
+                                                               if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                                                                   if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_HEMOGLOBIN) ||
+                                                                           Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_HEMOGLOBIN)) {
+                                                                       mHemoglobin.setError(getString(R.string.hemoglobin_error, AppConstants.MINIMUM_HEMOGLOBIN, AppConstants.MAXIMUM_HEMOGLOBIN));
+                                                                   } else {
+                                                                       mHemoglobin.setError(null);
+                                                                   }
+                                                               }
+                                                           } catch (NumberFormatException e) {
+                                                               e.printStackTrace();
+                                                               mHemoglobin.setText("");
+                                                           }
 
-                if (mHemoglobin.getText().toString().startsWith(".")) {
-                    mHemoglobin.setText("");
-                } else {
+                                                       }
 
-                }
-            }
-        });
+                                                       @Override
+                                                       public void afterTextChanged(Editable s) {
 
-        mSugarRandom.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                           if (mHemoglobin.getText().toString().startsWith(".")) {
+                                                               mHemoglobin.setText("");
+                                                           } else {
 
-            }
+                                                           }
+                                                       }
+                                                   });
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
-                        mSugarRandom.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
-                    } else {
-                        mSugarRandom.setError(null);
-                    }
-                }
-            }
+        mSugarRandom.addTextChangedListener(new
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                    TextWatcher() {
+                                                        @Override
+                                                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                if (mSugarRandom.getText().toString().startsWith(".")) {
-                    mSugarRandom.setText("");
-                } else {
+                                                        }
 
-                }
-            }
-        });
+                                                        @Override
+                                                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                            try {
+                                                                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                                                                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
+                                                                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
+                                                                        mSugarRandom.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                                                                    } else {
+                                                                        mSugarRandom.setError(null);
+                                                                    }
+                                                                }
+                                                            } catch (NumberFormatException e) {
+                                                                e.printStackTrace();
+                                                                mSugarRandom.setText("");
+                                                            }
+                                                        }
 
-        mSugarFasting.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                        @Override
+                                                        public void afterTextChanged(Editable s) {
 
-            }
+                                                            if (mSugarRandom.getText().toString().startsWith(".")) {
+                                                                mSugarRandom.setText("");
+                                                            } else {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
-                        mSugarFasting.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
-                    } else {
-                        mSugarFasting.setError(null);
-                    }
-                }
-            }
+                                                            }
+                                                        }
+                                                    });
 
-            @Override
-            public void afterTextChanged(Editable s) {
+        mSugarFasting.addTextChangedListener(new
 
-                if (mSugarFasting.getText().toString().startsWith(".")) {
-                    mSugarFasting.setText("");
-                } else {
+                                                     TextWatcher() {
+                                                         @Override
+                                                         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                }
-            }
-        });
+                                                         }
 
-        mSugarAfterMeal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                         @Override
+                                                         public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                             try {
+                                                                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                                                                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
+                                                                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
+                                                                         mSugarFasting.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                                                                     } else {
+                                                                         mSugarFasting.setError(null);
+                                                                     }
+                                                                 }
+                                                             } catch (NumberFormatException e) {
+                                                                 e.printStackTrace();
+                                                                 mSugarFasting.setText("");
+                                                             }
+                                                         }
 
-            }
+                                                         @Override
+                                                         public void afterTextChanged(Editable s) {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                    if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
-                            Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
-                        mSugarAfterMeal.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
-                    } else {
-                        mSugarAfterMeal.setError(null);
-                    }
-                }
-            }
+                                                             if (mSugarFasting.getText().toString().startsWith(".")) {
+                                                                 mSugarFasting.setText("");
+                                                             } else {
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                             }
+                                                         }
+                                                     });
 
-                if (mSugarAfterMeal.getText().toString().startsWith(".")) {
-                    mSugarAfterMeal.setText("");
-                } else {
+        mSugarAfterMeal.addTextChangedListener(new
 
-                }
-            }
-        });
+                                                       TextWatcher() {
+                                                           @Override
+                                                           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                                                           }
+
+                                                           @Override
+                                                           public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                               try {
+                                                                   if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                                                                       if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SUGAR) ||
+                                                                               Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SUGAR)) {
+                                                                           mSugarAfterMeal.setError(getString(R.string.sugar_error, AppConstants.MINIMUM_SUGAR, AppConstants.MAXIMUM_SUGAR));
+                                                                       } else {
+                                                                           mSugarAfterMeal.setError(null);
+                                                                       }
+                                                                   }
+                                                               } catch (NumberFormatException e) {
+                                                                   e.printStackTrace();
+                                                                   mSugarAfterMeal.setText("");
+                                                               }
+                                                           }
+
+                                                           @Override
+                                                           public void afterTextChanged(Editable s) {
+
+                                                               if (mSugarAfterMeal.getText().toString().startsWith(".")) {
+                                                                   mSugarAfterMeal.setText("");
+                                                               } else {
+
+                                                               }
+                                                           }
+                                                       });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         assert fab != null;
@@ -631,9 +703,7 @@ public class VitalsActivity extends AppCompatActivity {
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
-        }
-        else
-        {
+        } else {
             mBMI.getText().clear();
         }
     }
@@ -648,9 +718,9 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else  {
+        } else {
             // do nothing
             mBMI.getText().clear();
         }
@@ -726,9 +796,9 @@ public class VitalsActivity extends AppCompatActivity {
                 break;
 
             case UuidDictionary.BLOODGROUP: //blood
-                if(value.isEmpty() || value.length()==0){
+                if (value.isEmpty() || value.length() == 0) {
                     mBlood_Spinner.setSelection(0);
-                }else {
+                } else {
                     String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
                     int pos = Arrays.asList(blood_Array).indexOf(value);
                     mBlood_Spinner.setSelection(pos);
@@ -741,7 +811,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
@@ -751,14 +821,13 @@ public class VitalsActivity extends AppCompatActivity {
         View focusView = null;
 
         //BP vaidations added by Prajwal.
-        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if(mBpSys.getText().toString().isEmpty()) {
+            if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
                 return;
-            }
-            else if(mBpDia.getText().toString().isEmpty()) {
+            } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
                 mBpDia.setError("Enter field");
                 return;
@@ -766,14 +835,13 @@ public class VitalsActivity extends AppCompatActivity {
         }
 
         //Sugar Level vaidations
-        if(mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
+        if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
-            if(mSugarFasting.getText().toString().isEmpty()) {
+            if (mSugarFasting.getText().toString().isEmpty()) {
                 mSugarFasting.requestFocus();
                 mSugarFasting.setError("Enter field");
                 return;
-            }
-            else if(mSugarAfterMeal.getText().toString().isEmpty()) {
+            } else if (mSugarAfterMeal.getText().toString().isEmpty()) {
                 mSugarAfterMeal.requestFocus();
                 mSugarAfterMeal.setError("Enter field");
                 return;
@@ -929,7 +997,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            } else if (i == 7){
+            } else if (i == 7) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
@@ -943,10 +1011,10 @@ public class VitalsActivity extends AppCompatActivity {
                         cancel = false;
                     }
 //       }
-                } else{
+                } else {
                     cancel = false;
                 }
-            }else if (i == 8){
+            } else if (i == 8) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
@@ -962,7 +1030,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            }else if (i == 9 || i==10 || i==11) {
+            } else if (i == 9 || i == 10 || i == 11) {
                 EditText et = values.get(i);
                 String abc1 = et.getText().toString().trim();
                 if (abc1 != null && !abc1.isEmpty()) {
@@ -978,7 +1046,7 @@ public class VitalsActivity extends AppCompatActivity {
                 } else {
                     cancel = false;
                 }
-            }else{
+            } else {
                 cancel = false;
             }
         }
@@ -1052,7 +1120,7 @@ public class VitalsActivity extends AppCompatActivity {
                     String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
                     results.setBlood((blood_Array[mBlood_Spinner.getSelectedItemPosition()]));
                     //results.setBlood((mBlood_Spinner.getSelectedItem().toString()));
-                }else{
+                } else {
                     results.setBlood("");
                 }
 
@@ -1393,7 +1461,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        if(temperature != null && temperature.length() > 0) {
+        if (temperature != null && temperature.length() > 0) {
             String result = "";
             double fTemp = Double.parseDouble(temperature);
             double cTemp = ((fTemp - 32) * 5 / 9);
