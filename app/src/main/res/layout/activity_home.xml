@@ -14,7 +14,19 @@
         tools:context=".activities.homeActivity.HomeActivity"
         tools:showIn="@layout/activity_home">
 
+        <TextView
+            android:id="@+id/tvLocation"
+            tools:text="Location"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <ScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -266,10 +278,54 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/manualsyncbutton"
+                    android:id="@+id/btnFollowUp"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="16dp"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/iv_follow_up"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="TODO"
+                            app:srcCompat="@drawable/ic_calendar" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_below="@+id/iv_follow_up"
+                            android:text="@string/title_follow_up"
+                            android:includeFontPadding="false"
+                            android:fontFamily="@font/lato_medium"
+                            android:layout_marginTop="16dp"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="20sp"/>
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/manualsyncbutton"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="16dp"
@@ -297,11 +353,12 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@id/iv_sync"
                             android:layout_marginTop="16dp"
-                            android:orientation="vertical">
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/lastsynctextview"
                                 android:textAlignment="center"
+                                android:layout_margin="8dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/lastsync"
@@ -327,7 +384,6 @@
                     </RelativeLayout>
 
                 </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
                 <!--<androidx.cardview.widget.CardView
                     android:id="@+id/cardview_home"
