@@ -490,19 +490,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager1 = new SessionManager(VisitSummaryActivity.this);
-//        String language = sessionManager.getAppLanguage();
-        //In case of crash still the app should hold the current lang fix.
-//        if (!language.equalsIgnoreCase("")) {
-//            Locale locale = new Locale(language);
-//            Locale.setDefault(locale);
-//            Configuration config = new Configuration();
-//            config.locale = locale;
-//            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//        }
-        appLanguage = sessionManager1.getAppLanguage();
-        if (!appLanguage.equalsIgnoreCase("")) {
-            setLocale(appLanguage);
+
+        String language = sessionManager.getAppLanguage();
+       // In case of crash still the app should hold the current lang fix.
+        if (!language.equalsIgnoreCase("")) {
+            Locale locale = new Locale(language);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            VisitSummaryActivity.this.getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
+
+        appLanguage = sessionManager1.getAppLanguage();
+//        if (!appLanguage.equalsIgnoreCase("")) {
+//            setLocale(appLanguage);
+//        }
 //        sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity

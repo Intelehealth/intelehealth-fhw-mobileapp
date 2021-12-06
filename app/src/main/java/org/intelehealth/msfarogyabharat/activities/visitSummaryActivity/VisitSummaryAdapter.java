@@ -188,7 +188,7 @@ OnVisitItemClickListner onClickingIteListner;
                 @Override
                 public void onClick(View v) {
                     final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(visitsumContext);
-                    complaintDialog.setTitle(context.getResources().getString(R.string.visit_summary_complaint));
+                    complaintDialog.setTitle(visitsumContext.getResources().getString(R.string.visit_summary_complaint));
                   //  final LayoutInflater inflater = getLayoutInflater();
                     final LayoutInflater inflater = LayoutInflater.from(visitsumContext);
                     View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
@@ -218,12 +218,12 @@ OnVisitItemClickListner onClickingIteListner;
 
                     complaintText.setEnabled(false);
 
-                    complaintDialog.setPositiveButton(context.getResources().getString(R.string.generic_manual_entry),
+                    complaintDialog.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_manual_entry),
                             new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(visitsumContext);
-                            textInput.setTitle(context.getResources().getString(R.string.question_text_input));
+                            textInput.setTitle(visitsumContext.getResources().getString(R.string.question_text_input));
                             final EditText dialogEditText = new EditText(visitsumContext);
 
                             if (complaintList != null && getAdapterPosition() != complaintList.size()) {
@@ -236,7 +236,7 @@ OnVisitItemClickListner onClickingIteListner;
                                 dialogEditText.setText("");
                             }
                             textInput.setView(dialogEditText);
-                            textInput.setPositiveButton(context.getResources().getString(R.string.generic_ok),
+                            textInput.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_ok),
                                     new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -253,7 +253,7 @@ OnVisitItemClickListner onClickingIteListner;
                                     dialog.dismiss();
                                 }
                             });
-                            textInput.setNeutralButton(context.getResources().getString(R.string.generic_cancel),
+                            textInput.setNeutralButton(visitsumContext.getResources().getString(R.string.generic_cancel),
                                     new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -266,7 +266,7 @@ OnVisitItemClickListner onClickingIteListner;
                         }
                     });
 
-                    complaintDialog.setNegativeButton(context.getResources().getString(R.string.generic_erase_redo),
+                    complaintDialog.setNegativeButton(visitsumContext.getResources().getString(R.string.generic_erase_redo),
                             new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -298,7 +298,7 @@ OnVisitItemClickListner onClickingIteListner;
                         }
                     });
 
-                    complaintDialog.setNeutralButton(context.getResources().getString(R.string.generic_cancel),
+                    complaintDialog.setNeutralButton(visitsumContext.getResources().getString(R.string.generic_cancel),
                             new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -310,15 +310,15 @@ OnVisitItemClickListner onClickingIteListner;
                     AlertDialog alertDialog = complaintDialog.create();
                     alertDialog.show();
                     Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    pb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    pb.setTextColor(visitsumContext.getResources().getColor((R.color.colorPrimary)));
                     pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                    nb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    nb.setTextColor(visitsumContext.getResources().getColor((R.color.colorPrimary)));
                     nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                    neutralb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    neutralb.setTextColor(visitsumContext.getResources().getColor((R.color.colorPrimary)));
                     neutralb.setTypeface(ResourcesCompat.getFont(visitsumContext, R.font.lato_bold));
 
                     IntelehealthApplication.setAlertDialogCustomTheme(visitsumContext, alertDialog);
@@ -331,7 +331,7 @@ OnVisitItemClickListner onClickingIteListner;
                 @Override
                 public void onClick(View v) {
                     final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(visitsumContext);
-                    physicalDialog.setTitle(context.getResources().getString(R.string.visit_summary_on_examination));
+                    physicalDialog.setTitle(visitsumContext.getResources().getString(R.string.visit_summary_on_examination));
                     final LayoutInflater inflater = LayoutInflater.from(visitsumContext);
                     View convertView = inflater.inflate(R.layout.dialog_edit_entry, null);
                     physicalDialog.setView(convertView);
@@ -345,12 +345,12 @@ OnVisitItemClickListner onClickingIteListner;
 
                     physicalText.setEnabled(false);
 
-                    physicalDialog.setPositiveButton(context.getResources().getString(R.string.generic_manual_entry),
+                    physicalDialog.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_manual_entry),
                             new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(visitsumContext);
-                            textInput.setTitle(context.getResources().getString(R.string.question_text_input));
+                            textInput.setTitle(visitsumContext.getResources().getString(R.string.question_text_input));
                             final EditText dialogEditText = new EditText(visitsumContext);
                             if (physexamList != null && getAdapterPosition() != physexamList.size())
                                 if(physexamList.size() > 0)
@@ -361,7 +361,7 @@ OnVisitItemClickListner onClickingIteListner;
                             else
                                 dialogEditText.setText("");
                             textInput.setView(dialogEditText);
-                            textInput.setPositiveButton(context.getResources().getString(R.string.generic_ok),
+                            textInput.setPositiveButton(visitsumContext.getResources().getString(R.string.generic_ok),
                                     new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -377,7 +377,7 @@ OnVisitItemClickListner onClickingIteListner;
                                     dialog.dismiss();
                                 }
                             });
-                            textInput.setNegativeButton(context.getResources().getString(R.string.generic_cancel),
+                            textInput.setNegativeButton(visitsumContext.getResources().getString(R.string.generic_cancel),
                                     new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -390,7 +390,7 @@ OnVisitItemClickListner onClickingIteListner;
                         }
                     });
 
-                    physicalDialog.setNegativeButton(context.getString(R.string.generic_erase_redo),
+                    physicalDialog.setNegativeButton(visitsumContext.getString(R.string.generic_erase_redo),
                             new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -431,15 +431,15 @@ OnVisitItemClickListner onClickingIteListner;
                     AlertDialog alertDialog = physicalDialog.create();
                     alertDialog.show();
                     Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                    pb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    pb.setTextColor(visitsumContext.getResources().getColor((R.color.colorPrimary)));
                     pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                    nb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    nb.setTextColor(visitsumContext.getResources().getColor((R.color.colorPrimary)));
                     nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
                     Button neutralb = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
-                    neutralb.setTextColor(context.getResources().getColor((R.color.colorPrimary)));
+                    neutralb.setTextColor(visitsumContext.getResources().getColor((R.color.colorPrimary)));
                     neutralb.setTypeface(ResourcesCompat.getFont(visitsumContext, R.font.lato_bold));
 
                     IntelehealthApplication.setAlertDialogCustomTheme(visitsumContext, alertDialog);
