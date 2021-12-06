@@ -107,18 +107,18 @@ OnVisitItemClickListner onClickingIteListner;
         else
             holder.textView_caseTitle.setText(visitsumContext.getString(R.string.case_visitsummary) + (position + 1));
 
-        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+    /*    if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
          if(complaint.contains(", Pregnancy Week: ")) {
              complaint = complaint.replace("Pregnancy Week", "गर्भावस्था सप्ताह");
          }
-         if(complaint.contains(" weeks")) {
-             complaint = complaint.replace("weeks", "हफ़्ते");
+         if(complaint.contains(" week")) {
+             complaint = complaint.replace("week", "हफ़्ते");
          }
             holder.textView_content_complaint.setText(complaint);
         }
         else {
             holder.textView_content_complaint.setText(complaint);
-        }
+        }*/
 
         holder.textView_content_complaint.setText(complaint);
         holder.textView_content_physexam.setText(physexam);
@@ -197,19 +197,20 @@ OnVisitItemClickListner onClickingIteListner;
                     final TextView complaintText = convertView.findViewById(R.id.textView_entry);
                     if (complaintList.size() > 0 && getAdapterPosition() != complaintList.size() && complaintList != null) {
 
-                        String complaintData = "";
+                       /* String complaintData = "";
                         if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                             if(complaintList.get(getAdapterPosition()).contains(", Pregnancy Week: ")) {
                                 complaintData = complaintList.get(getAdapterPosition()).replace("Pregnancy Week", "गर्भावस्था सप्ताह");
                             }
-                            if(complaintData.contains(" weeks")) {
-                                complaintData = complaintData.replace("weeks", "हफ़्ते");
+                            if(complaintData.contains(" week")) {
+                                complaintData = complaintData.replace("week", "हफ़्ते");
                             }
                             complaintText.setText(Html.fromHtml(complaintData));
                         }
                         else {
                             complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
-                        }
+                        }*/
+                        complaintText.setText(Html.fromHtml(complaintList.get(getAdapterPosition())));
 
                     }
                     else {

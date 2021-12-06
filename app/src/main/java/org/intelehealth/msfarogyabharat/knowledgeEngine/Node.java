@@ -2090,7 +2090,7 @@ private static String ml_en(String unit) {
         long weeks = elapsedDays / 7;
         Log.v("date", "weeks::: "+ weeks);
 
-        return weeks + " weeks";
+        return weeks + " week";
     }
 
     public static void subAskNumber(final Node node, Activity context, final CustomArrayAdapter adapter) {

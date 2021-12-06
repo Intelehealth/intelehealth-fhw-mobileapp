@@ -371,8 +371,15 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             String complaintString = currentNode.generateLanguage();
             String complaintStringHindi = currentNode.generateLanguage("hi");
 
+            if(complaintStringHindi.contains(", Pregnancy Week:") && complaintStringHindi.contains(" week")) {
+                complaintStringHindi = complaintStringHindi
+                        .replace("Pregnancy Week", "गर्भावस्था सप्ताह")
+                        .replace("week", "हफ़्ते");
+            }
+
             if (complaintString != null && !complaintString.isEmpty()) {
                 //     String complaintFormatted = complaintString.replace("?,", "?:");
+
 
                 String complaint = currentNode.getText();
                 //    complaintDetails.put(complaint, complaintFormatted);
@@ -380,7 +387,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
 
                 insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
-                String insertionHindi = Node.bullet_arrow + "<b>" + currentNode.getDisplay_hindi() + "</b>" + ": " + Node.next_line + complaintStringHindi + " ";
+                String insertionHindi = Node.bullet_arrow + "<b>" + currentNode.getDisplay_hindi() + "</b>" + ": " +
+                        Node.next_line + complaintStringHindi + " ";
                 Map<String, String> complaintData = new HashMap<>();
                 complaintData.put("en", insertion);
                 complaintData.put("hi", insertionHindi);
@@ -707,6 +715,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("Hours", "घंटे").replace("Days", "दिन")
                     .replace("Weeks", "हफ्तों").replace("Months", "महीने")
                     .replace("Years", "वर्ष")
+                    .replace("Pregnancy Week", "गर्भावस्था सप्ताह")
+                    .replace("week", "हफ़्ते")
                     .replace("times per hour", "प्रति घंटे बार")
                     .replace("time per day", "प्रति दिन का समय")
                     .replace("times per week", "प्रति सप्ताह बार")
