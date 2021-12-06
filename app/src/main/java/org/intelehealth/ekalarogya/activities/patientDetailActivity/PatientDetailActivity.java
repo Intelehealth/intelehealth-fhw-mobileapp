@@ -691,41 +691,45 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         //economic
-        if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            economic_statusView.setText("नहीं दिया गया");
-        } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            economic_statusView.setText(patient_new.getEconomic_status());
-        } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String economic = switch_hi_economic_edit(patient_new.getEconomic_status());
-                economic_statusView.setText(economic);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        if(patient_new.getEconomic_status()!=null) {
+            if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                economic_statusView.setText("नहीं दिया गया");
+            } else if (patient_new.getEconomic_status().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 economic_statusView.setText(patient_new.getEconomic_status());
             } else {
-                economic_statusView.setText(patient_new.getEconomic_status());
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String economic = switch_hi_economic_edit(patient_new.getEconomic_status());
+                    economic_statusView.setText(economic);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    economic_statusView.setText(patient_new.getEconomic_status());
+                } else {
+                    economic_statusView.setText(patient_new.getEconomic_status());
+                }
+                // economic_statusView.setText(patient_new.getEconomic_status());
             }
-            // economic_statusView.setText(patient_new.getEconomic_status());
         }
 
         //caste
-        if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            casteView.setText("नहीं दिया गया");
-        } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            casteView.setText(patient_new.getCaste());
-        } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String caste = switch_hi_caste_edit(patient_new.getCaste());
-                casteView.setText(caste);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        if(patient_new.getCaste()!=null) {
+            if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                casteView.setText("नहीं दिया गया");
+            } else if (patient_new.getCaste().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 casteView.setText(patient_new.getCaste());
             } else {
-                casteView.setText(patient_new.getCaste());
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String caste = switch_hi_caste_edit(patient_new.getCaste());
+                    casteView.setText(caste);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    casteView.setText(patient_new.getCaste());
+                } else {
+                    casteView.setText(patient_new.getCaste());
+                }
+                // casteView.setText(patient_new.getCaste());
             }
-            // casteView.setText(patient_new.getCaste());
         }
 
 //

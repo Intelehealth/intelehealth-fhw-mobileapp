@@ -8,12 +8,24 @@ public class Setup_VillageModel {
     @Expose
     private String name;
 
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String name) {
+        this.uuid = uuid;
     }
 
 }

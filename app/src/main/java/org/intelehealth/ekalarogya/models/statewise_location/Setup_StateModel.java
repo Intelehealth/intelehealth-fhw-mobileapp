@@ -13,6 +13,10 @@ public class Setup_StateModel {
     @Expose
     private String name;
 
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+
     public List<Setup_DistrictModel> getDistricts() {
         return districts;
     }
@@ -27,5 +31,13 @@ public class Setup_StateModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.name = uuid;
     }
 }

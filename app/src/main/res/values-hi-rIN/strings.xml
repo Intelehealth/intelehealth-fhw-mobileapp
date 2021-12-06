@@ -672,5 +672,5 @@
     <string name="have_you_taken_a_covid_vaccine">1. क्या आपको कोविड का टिका लगा है?</string>
     <string name="select_option_vaccination_dialog">टीकाकरण के लिए विकल्प चुनें</string>
 
-
+    <string name="identification_screen_prompt_village">गांव *</string>
 </resources>

@@ -5,19 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Setup_DistrictModel {
-    @SerializedName("sanchs")
-    @Expose
-    private List<Setup_SanchModel> sanchs;
-
-    @SerializedName("tehsils")
-    @Expose
-    private List<Setup_TehsilModel> tehsils;
-
+public class Setup_TehsilModel {
     @SerializedName("villages")
     @Expose
     private List<Setup_VillageModel> villages;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -25,22 +16,6 @@ public class Setup_DistrictModel {
     @SerializedName("uuid")
     @Expose
     private String uuid;
-
-    public List<Setup_SanchModel> getSanchs() {
-        return sanchs;
-    }
-
-    public void setSanchs(List<Setup_SanchModel> sanchs) {
-        this.sanchs = sanchs;
-    }
-
-    public List<Setup_TehsilModel> getTehsils() {
-        return tehsils;
-    }
-
-    public void setTehsils(List<Setup_TehsilModel> tehsils) {
-        this.tehsils = tehsils;
-    }
 
     public List<Setup_VillageModel> getVillages() {
         return villages;
@@ -63,6 +38,6 @@ public class Setup_DistrictModel {
     }
 
     public void setUuid(String uuid) {
-        this.uuid = uuid;
+        this.name = uuid;
     }
 }

@@ -13,6 +13,10 @@ public class Setup_SanchModel {
     @Expose
     private String name;
 
+    @SerializedName("uuid")
+    @Expose
+    private String uuid;
+
     public List<Setup_VillageModel> getVillages() {
         return villages;
     }
@@ -27,5 +31,13 @@ public class Setup_SanchModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }
