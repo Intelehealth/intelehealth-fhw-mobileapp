@@ -260,7 +260,7 @@ public class PhysicalExam extends Node {
                         if (language.equalsIgnoreCase("hi"))
                             stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay(language)); //Chip UI
                         else
-                            stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay());
+                            stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay(language));
                     }
                     else {
                         stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
@@ -338,7 +338,7 @@ public class PhysicalExam extends Node {
                 if (checkSet) {
                     if(node.getInputType().equalsIgnoreCase("")) {
                         //This means chip is selected as answer...
-                       stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay()); //Chip UI
+                       stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay("en")); //Chip UI
                     }
                     else {
                         stringsList.add("<b>" + levelOne + ": " + "</b>" + bullet + " " + node.getLanguage());
@@ -350,7 +350,7 @@ public class PhysicalExam extends Node {
                 else  {
                     if(node.getInputType().equalsIgnoreCase("")) {
                         //This means chip is not selected as answer...
-                        stringsList.add(bullet + " " + node.findDisplay()); //Chip UI
+                        stringsList.add(bullet + " " + node.findDisplay("en")); //Chip UI
                     }
                     else {
                         stringsList.add(bullet + " " + node.getLanguage());
