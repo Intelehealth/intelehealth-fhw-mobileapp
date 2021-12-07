@@ -246,7 +246,7 @@ public class SetupActivity extends AppCompatActivity {
                     // user didn't typed for 1.5 seconds, do whatever you want
                     if (!mUrlField.getText().toString().trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
-                            String BASE_URL = "https://testing.intelehealth.org" /*+mUrlField.getText().toString()*/ + ":3004/api/openmrs/";
+                            String BASE_URL = "https://" +mUrlField.getText().toString() + ":3004/api/openmrs/";
                             if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched && !BASE_URL.contains("?"))
                                 value = getLocationFromServer(BASE_URL); //state wise locations...
                             else
@@ -275,7 +275,6 @@ public class SetupActivity extends AppCompatActivity {
                     String state_uuid = "";
                     selectedState = spinner_state.getSelectedItem().toString();
                     List<String> district_locations = newLocationDao.getDistrictList(selectedState);
-
                     if(district_locations.size()>1) {
                         LocationArrayAdapter locationArrayAdapter =
                                 new LocationArrayAdapter(SetupActivity.this, district_locations);
@@ -284,6 +283,8 @@ public class SetupActivity extends AppCompatActivity {
                         spinner_district.setAlpha(1);
                         spinner_district.setAdapter(locationArrayAdapter);
                         isLocationFetched = true;
+                    }else{
+                        empty_spinner("state");
                     }
                 }
 
@@ -551,22 +552,22 @@ public class SetupActivity extends AppCompatActivity {
         if (value.equalsIgnoreCase("state")) {
             List<String> list_district = new ArrayList<>();
             list_district.add("Select District");
-//            spinner_district.setEnabled(false);
-//            spinner_district.setAlpha(0.4F);
+            spinner_district.setEnabled(false);
+            spinner_district.setAlpha(0.4F);
             LocationArrayAdapter adapter_district = new LocationArrayAdapter(SetupActivity.this, list_district);
             spinner_district.setAdapter(adapter_district);
 
             List<String> list_sanch = new ArrayList<>();
             list_sanch.add("Select Sanch");
-//            spinner_sanch.setEnabled(false);
-//            spinner_sanch.setAlpha(0.4F);
+            spinner_sanch.setEnabled(false);
+            spinner_sanch.setAlpha(0.4F);
             LocationArrayAdapter adapter_sanch = new LocationArrayAdapter(SetupActivity.this, list_sanch);
             spinner_sanch.setAdapter(adapter_sanch);
 
             List<String> list_village = new ArrayList<>();
             list_village.add("Select Village");
-//            spinner_village.setEnabled(false);
-//            spinner_village.setAlpha(0.4F);
+            spinner_village.setEnabled(false);
+            spinner_village.setAlpha(0.4F);
             LocationArrayAdapter adapter_village = new LocationArrayAdapter(SetupActivity.this, list_village);
             spinner_village.setAdapter(adapter_village);
         } else if (value.equalsIgnoreCase("district")) {

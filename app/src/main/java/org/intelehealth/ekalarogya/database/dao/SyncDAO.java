@@ -381,7 +381,6 @@ public class SyncDAO {
         VisitsDAO visitsDAO = new VisitsDAO();
         EncounterDAO encounterDAO = new EncounterDAO();
 
-
         PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
         pushRequestApiCall = patientsFrameJson.frameJson();

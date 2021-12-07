@@ -167,6 +167,7 @@ public class NewLocationDao {
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
+                if(cursor.getString(cursor.getColumnIndex("district"))!=null)
                 district_locations.add(cursor.getString(cursor.getColumnIndex("district")));
             }
         }
@@ -200,6 +201,7 @@ public class NewLocationDao {
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
+                if(cursor.getString(cursor.getColumnIndex("village"))!=null)
                 village_locations.add(cursor.getString(cursor.getColumnIndex("village")));
             }
         }
