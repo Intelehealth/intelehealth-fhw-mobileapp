@@ -387,7 +387,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
     {
         ArrayList<String> notes = new ArrayList<>();
         notes.add(getString(R.string.select));
-        if(visitType.equals("follow-up")|| visitType.equals("Agent Resolution"))
+        if(!visitType.equals("follow-up") && visitType.equals("Agent Resolution"))
+        {
+            notes.add(getString(R.string.issue_resolved));
+//            notes.add(getString(R.string.other_concern));
+//            notes.add(getString(R.string.unable_follow_up));
+            notes.add(getString(R.string.others));
+        }
+        else if (visitType.equals("follow-up"))
         {
             notes.add(getString(R.string.issue_resolved));
             notes.add(getString(R.string.other_concern));
