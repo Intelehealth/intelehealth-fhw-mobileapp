@@ -386,9 +386,29 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
 //                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
 
-                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+
+                /*insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
                 String insertionHindi = Node.bullet_arrow + "<b>" + currentNode.getDisplay_hindi() + "</b>" + ": " +
                         Node.next_line + complaintStringHindi + " ";
+                Map<String, String> complaintData = new HashMap<>();
+                complaintData.put("en", insertion);
+                complaintData.put("hi", insertionHindi);
+                insertion = new Gson().toJson(complaintData);*/
+
+                ObsDTO obsDTO = new ObsDTO();
+                obsDTO.setValue(insertion);
+                insertion = obsDTO.getValue(null);
+                String insertionHindi = obsDTO.getValue("hi");
+                if (insertion.equalsIgnoreCase(insertionHindi)) {
+                    insertionHindi = Node.bullet_arrow + "<b>" + currentNode.getDisplay_hindi() + "</b>" + ": " +
+                            Node.next_line + complaintStringHindi + " ";
+                } else {
+                    insertionHindi = insertionHindi.concat(Node.bullet_arrow + "<b>" + currentNode.getDisplay_hindi() + "</b>" + ": " +
+                            Node.next_line + complaintStringHindi + " ");
+                }
+
+                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
+
                 Map<String, String> complaintData = new HashMap<>();
                 complaintData.put("en", insertion);
                 complaintData.put("hi", insertionHindi);
