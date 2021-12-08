@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">HIHIटेलीहेल्थ</string>
+    <string name="app_name" translatable="false">HIHI टेलीहेल्थ</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">आगे</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen-----इंटेलीहेल्थ
-    <string name="title_activity_login" translatable="false">HIHIटेलीहेल्थ</string>
+    <string name="title_activity_login" translatable="false">HIHI टेलीहेल्थ</string>
     <string name="prompt_email" translatable="false">उपयोगकर्ता नाम</string>
     <string name="prompt_password" translatable="false">कुंजिका</string>
     <string name="prompt_admin_password" translatable="false">व्यवस्थापक कुंजी</string>
@@ -51,7 +51,7 @@
     <string name="error_invalid_password" translatable="false">यह पासवर्ड बहुत छोटा है</string>
     <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
     <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
-    <string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
+    <string name="error_network" translatable="false">नेटवर्क त्रुटि!</string>
     <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन मान का चयन करें</string>
     <string name="error_location_not_fetched" translatable="false">स्थानों को लाने में असमर्थ</string>
     <string name="permission_rationale" translatable="false">ईमेल पूर्णता प्रदान करने के लिए संपर्क अनुमतियों की आवश्यकता होती है।
@@ -499,10 +499,14 @@
     <string name="image_upload_failed">छवी डालना असफल</string>
     <string name="sure_to_exit">क्या आप निसंदेह बाहर निकलना चाहते है?</string>
     <string name="sure_to_logout">क्या आप लॉग आउट करना चाहते हैं?</string>
+    <string name="app_reset_toast">ऐप रीसेट हो गया!</string>
+    <string name="sure_to_reset_app">क्या आप ऐप रीसेट करना चाहते हैं?</string>
+    <string name="resetting_app_dialog">ऐप रीसेट हो रही है</string>
+    <string name="reset_app">ऐप रीसेट करें</string>
     <string name="lastsync_normal">आखिरी सिंक</string>
     <string name="update_patient_identification">मरीज डालना</string>
     <string name="are_you_want_go_back">क्या आप वाकई वापस जाना चाहते हैं?</string>
-    <string name="error">भूल</string>
+    <string name="error">त्रुटि!</string>
     <string name="patient_data_upload">मरीज डेटा अपलोड</string>
     <string name="patient_image_download_notifi">मरीज छवी डाउनलोड</string>
     <string name="image_download_complete_notifi">छवी डाउनलोड पूरा हुआ</string>
@@ -532,6 +536,7 @@
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
     <string name="last_synced">आखरी समन्वित- </string>
+    <string name="location_setup">सेटअप स्थान -</string>
     <string name="today_visits">आज की विज़िट्स</string>
     <string name="active_visits">आक्टिव विज़िट्स</string>
     <string name="day">दिन</string>
@@ -657,11 +662,38 @@
     <string name="ok_close_now">ठीक है, इसे बंद करें</string>
     <string name="retry_again">पुन: प्रयास करें!</string>
 
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्ते,HIHIटेलीहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्ते, HIHI टेलीहेल्थ का उपयोग करने के लिए धन्यवाद। अपना नुस्खा डाउनलोड करने के लिए कृपया यहां क्लिक करें"</string>
     <string name="and_enter_your_patient_id">"और अपनी मरीज़ आईडी दर्ज करें -"</string>
 
     <string name="mode_cardview_title">केस मोड</string>
     <string name="select_mode_text">चुने मोड</string>
     <string name="please_select_mode_msg">कृपया केस मोड चुने</string>
     <string name="notification_title">Realtime sync is ON!</string>
+
+    //Reset App functionality
+    <string name="sync_failed">ऐप सिंक विफल! बाद में पुन: प्रयास करें।</string>
+    <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
+    <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
+
+    <string name="blood_grp">रक्त वर्ग: </string>
+    <string name="visit_summary_hemoglobin" translatable="false">HGB</string>
+    <string name="visit_summary_sugar" translatable="false">शुगर लेवल (रैंडम)</string>
+    <string name="visit_summary_sugarfast" translatable="false">शुगर लेवल (उपवास/भोजन के बाद)</string>
+    <string name="visit_summary_blood" translatable="false">रक्त वर्ग</string>
+    <string name="hemoglobin_error" translatable="false">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="sugar_error" translatable="false">शुगर लेवल का स्तर %1$s और %2$s के बीच होना चाहिए</string>
+    <string name="blood_error" translatable="false">कृपया रक्त वर्ग चुनें</string>
+    <string name="table_sugar_fasting" translatable="false">शुगर(उपवास)</string>
+    <string name="table_sugar_aftermeal" translatable="false">शुगर(भोजन के बाद)</string>
+
+    <string name="table_hemoglobin" translatable="false">हीमोग्लोबिन</string>
+    <string name="table_bld_grp" translatable="false">रक्त वर्ग</string>
+    <string name="table_sugar_level" translatable="false">शुगर लेवल-मिलीग्राम/डीएल (रैंडम)</string>
+
+    //Follow-up Visits
+    <string name="title_follow_up">फॉलो अप विज़िट</string>
+    <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
+    <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
+    <string name="due_on">नियत तारीख:</string>
+
 </resources>

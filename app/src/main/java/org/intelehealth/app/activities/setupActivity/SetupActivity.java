@@ -318,7 +318,8 @@ public class SetupActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
                 String state_uuid = "";
-
+                district_count = 0;
+                village_count = 0;
                 selectedState = spinner_state.getSelectedItem().toString();
 
                 if (state_count == 0) {
@@ -374,7 +375,7 @@ public class SetupActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //district wise locations...
                 String district_uuid = "";
-
+                village_count=0;
                 if (district_count == 0) {
                     if (value && parent.getSelectedItemPosition() > 0) {
                         for (Map.Entry<String, String> entry : hashMap2.entrySet()) {
@@ -480,7 +481,6 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //village wise locations...
-
                 if (village_count == 0) {
                     if (value && parent.getSelectedItemPosition() > 0) {
                         for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
@@ -492,7 +492,7 @@ public class SetupActivity extends AppCompatActivity {
                             }
                         }
                         // value = getLocationFromServer_District(base_url, village_name, "sanch");
-                        village_count = parent.getSelectedItemPosition();
+                        //village_count = parent.getSelectedItemPosition();
                     }
                 } else if (village_count == parent.getSelectedItemPosition()) {
                     if (value && parent.getSelectedItemPosition() > 0) {
@@ -510,6 +510,16 @@ public class SetupActivity extends AppCompatActivity {
 //                    Toast.makeText(context, "Enter Url", Toast.LENGTH_SHORT).show();
 //                    mUrlField.getText().clear();
                     empty_spinner("Village");
+                    if (value && parent.getSelectedItemPosition() > 0) {
+                        for (Map.Entry<String, String> entry : hashMap4.entrySet()) {
+                            String list = entry.getValue();
+                            // Do things with the list
+                            if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
+                                village_name = entry;
+                            }
+                        }
+                        //value = getLocationFromServer_District(base_url, village_name, "sanch");
+                    }
                 }
             }
 
@@ -622,7 +632,6 @@ public class SetupActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String admin_password = mAdminPasswordView.getText().toString();
-
 
         boolean cancel = false;
         View focusView = null;
@@ -1639,6 +1648,11 @@ public class SetupActivity extends AppCompatActivity {
         Log.e(TAG, "physExam.json=" + physicalExam.exists());
         if (physicalExam.exists()) {
             physicalExam.delete();
+        }
+        File physicalExam2 = new File(context.getFilesDir().getAbsolutePath() + "/physExam_2.json");
+        Log.e(TAG, "physExam.json=" + physicalExam2.exists());
+        if (physicalExam2.exists()) {
+            physicalExam2.delete();
         }
         File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
         Log.e(TAG, "famHist.json=" + familyHistory.exists());

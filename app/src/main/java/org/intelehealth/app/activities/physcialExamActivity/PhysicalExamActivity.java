@@ -39,7 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,7 +88,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
     String intentTag;
     private float float_ageYear_Month;
 
-    ArrayList<String> selectedExamsList;
+    ArrayList<String> selectedExamsList,complaintExamsList;
 
     SQLiteDatabase localdb;
 
@@ -153,6 +153,7 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
         //pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
         selectedExamsList = new ArrayList<>();
+        complaintExamsList = new ArrayList<>();
         Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -167,15 +168,28 @@ public class PhysicalExamActivity extends AppCompatActivity implements Questions
             intentTag = intent.getStringExtra("tag");
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             selectedExamsList.clear();
+            Set<String> selectedComplaints = sessionManager.getSelectedComplaint(patientUuid);
+            complaintExamsList.clear();
             if (selectedExams != null)
                 selectedExamsList.addAll(selectedExams);
+            if(selectedComplaints!= null)
+                complaintExamsList.addAll(selectedComplaints);
             filePath = new File(AppConstants.IMAGE_PATH);
         }
+
+        /*
+        For HIH: If Live Camp Mode MM is selected then the other physicalExam MM should get triggered.
+        Thus the below condition is written.
+        In the complaint Exam List gives the list of the chief complaints selected by the agent.
+         */
+        if(complaintExamsList!=null && complaintExamsList.size()==1 && complaintExamsList.get(0).equalsIgnoreCase("A. Live Camp Mode"))
+            mFileName = "physExam_2.json";
 
         if ((selectedExamsList == null) || selectedExamsList.isEmpty()) {
             Log.d(TAG, "No additional exams were triggered");
             physicalExamMap = new PhysicalExam(FileUtils.encodeJSON(this, mFileName), selectedExamsList);
         } else {
+
             Set<String> selectedExamsWithoutDuplicates = new LinkedHashSet<>(selectedExamsList);
             Log.d(TAG, selectedExamsList.toString());
             selectedExamsList.clear();

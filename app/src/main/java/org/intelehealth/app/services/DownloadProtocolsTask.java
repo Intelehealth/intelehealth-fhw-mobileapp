@@ -140,6 +140,8 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
             if (engines_dir.exists()) deleteFolder(engines_dir);
             File physicalExam = new File(activity.getFilesDir().getAbsolutePath() + "/physExam.json");
             Log.i(TAG, "onPostExecute: " + physicalExam.exists());
+            File physicalExam2 = new File(activity.getFilesDir().getAbsolutePath() + "/physExam_2.json");
+            Log.i(TAG, "onPostExecute: " + physicalExam2.exists());
             File familyHistory = new File(activity.getFilesDir().getAbsolutePath() + "/famHist.json");
             Log.i(TAG, "onPostExecute: " + familyHistory);
             File pastMedicalHistory = new File(activity.getFilesDir().getAbsolutePath() + "/patHist.json");
@@ -158,6 +160,18 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
                 physExam.delete();
+            }
+
+            File physExam2 = new File(engines_dir, "physExam_2.json");
+            if (physExam2.exists()) {
+                Log.i(TAG, "onPostExecute: physExam");
+                physicalExam2.delete();
+                try {
+                    copyFile(physExam2, physicalExam2);
+                } catch (IOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+                physExam2.delete();
             }
 
             File famHist = new File(engines_dir, "famHist.json");
@@ -386,8 +400,12 @@ public class DownloadProtocolsTask extends AsyncTask<String, String, String> {
         String file_name = name;
         if (!name.isEmpty() && name.length() > 7) {
             switch (name.substring(0, 6)) {
-                case "physEx": {
+                case "physExam": {
                     file_name = "physExam.json";
+                    break;
+                }
+                case "physExam_2": {
+                    file_name = "physExam_2.json";
                     break;
                 }
                 case "famHis": {

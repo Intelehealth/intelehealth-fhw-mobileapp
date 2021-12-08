@@ -336,6 +336,11 @@
     <string name="image_upload_failed">" చిత్రం అప్‌లోడ్ విఫలమైంది"</string>
     <string name="sure_to_exit">" మీరు ఖచ్చితంగా నిష్క్రమించాలనుకుంటున్నారా?"</string>
     <string name="sure_to_logout">" మీరు ఖచ్చితంగా లాగ్ అవుట్ చేయాలనుకుంటున్నారా?"</string>
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="reset_app">Reset App</string>
+    <string name="location_setup">Setup Location - </string>
     <string name="lastsync_normal">" చివరి రిఫ్రెష్"</string>
     <string name="update_patient_identification">" రోగిని నవీకరించండి"</string>
     <string name="are_you_want_go_back">" మీరు ఖచ్చితంగా తిరిగి వెళ్లాలనుకుంటున్నారా?"</string>

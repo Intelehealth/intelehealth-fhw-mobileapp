@@ -1,2 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\debug\shaders"/></dataSet></merger>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Intelehealth\Mobile-APP\HIH-Sprint1\webrtc\src\debug\shaders"/></dataSet></merger>
+=======
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="C:\Users\NISHITA GOYAL\OneDrive\Desktop\AndroidStudio\Android-Mobile-Client\webrtc\src\debug\shaders"/></dataSet></merger>
+>>>>>>> Hand-In-Hand-Sprint1
+=======
+<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\main\shaders"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="D:\Users\knima\AndroidStudioProjects\Android-Mobile-Client\webrtc\src\debug\shaders"/></dataSet></merger>
+>>>>>>> HIH-79-Crashlytics-Fix

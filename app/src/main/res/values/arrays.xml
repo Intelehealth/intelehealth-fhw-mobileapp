@@ -4,7 +4,7 @@
     <string-array name="language_names">
         <item>हिंदी</item>
         <item>English</item>
-        <item>தமிழ்</item>
+<!--        <item>தமிழ்</item>-->
         <!--<item>தெலுங்கு</item>-->
         <!--<item>ଓଡିଆ</item>-->
 <!--     <item>Cebuano</item>-->
@@ -13,7 +13,7 @@
     <string-array name="language_values">
         <item>hi</item>
         <item>en</item>
-        <item>ta</item>
+<!--        <item>ta</item>-->
         <!--<item>te</item>-->
         <!--<item>or</item>-->
 <!--        <item>cb</item>-->
@@ -561,6 +561,42 @@
 
     <string-array name="location_village">
         <item>Select Village</item>
+    </string-array>
+
+    <!--<string-array name="blood_group">
+        <item>Please Select</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>-->
+
+    <string-array name="blood_group_en">
+        <item>Please Select</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
+    </string-array>
+
+    <string-array name="blood_group_hi">
+        <item>कृपया चुनें</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>O+</item>
+        <item>O-</item>
     </string-array>
 
 </resources>

@@ -163,7 +163,6 @@
     <string name="action_loopback">Loopback connection</string>
     <string name="action_settings">Settings</string>
     <string name="add_favorite_description">Add favorite</string>
-    <string name="app_name" translatable="false">Int-Health V-Call</string>
     <string name="audio_off_lbl">Audio Off!</string>
     <string name="audio_on_lbl">Audio On!</string>
     <string name="audio_on_off_button">audio on/off button</string>

@@ -403,6 +403,86 @@
                             android:textSize="@dimen/card_content_sub_text_size" />
                     </TableRow>
 
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_blood"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/visit_summary_blood"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_blood_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_hemoglobin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/visit_summary_hemoglobin"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_hemoglobin_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_sugar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/visit_summary_sugar"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_sugarrandom_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/textView_sugar_fasting"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="@string/visit_summary_sugarfast"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView_sugarfastandmeal_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/lato_regular"
+                            android:textSize="@dimen/card_content_sub_text_size" />
+                    </TableRow>
+
                 </TableLayout>
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

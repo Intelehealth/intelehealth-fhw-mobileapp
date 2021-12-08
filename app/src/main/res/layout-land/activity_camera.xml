@@ -16,6 +16,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:adjustViewBounds="true"
+        app:autoFocus="true"
+        android:keepScreenOn="true"
         android:background="@android:color/black"
         app:aspectRatio="4:3"
         app:facing="back" />

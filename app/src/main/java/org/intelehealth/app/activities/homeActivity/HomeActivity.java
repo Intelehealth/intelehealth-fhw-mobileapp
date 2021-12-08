@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.homeActivity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -52,11 +53,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.activePatientsActivity.ActivePatientActivity;
+import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.activities.privacyNoticeActivity.PrivacyNotice_Activity;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
+import org.intelehealth.app.activities.setupActivity.SetupActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -67,8 +70,10 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.FollowUpNotificationWorker;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.OfflineLogin;
@@ -89,6 +94,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -108,18 +114,18 @@ public class HomeActivity extends AppCompatActivity {
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
-    private ProgressDialog mSyncProgressDialog;
+    private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
 
-    TextView lastSyncTextView;
+    TextView lastSyncTextView, locationSetupTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
     //Myreceiver reMyreceive;
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6, c7;
     private String key = null;
     private String licenseUrl = null;
 
@@ -133,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, follow_up_textview;
     private ObjectAnimator syncAnimator;
 
     @Override
@@ -159,6 +165,11 @@ public class HomeActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
+        mResetSyncDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mResetSyncDialog.setTitle(R.string.app_sync);
+        mResetSyncDialog.setCancelable(false);
+        mResetSyncDialog.setProgress(i);
+
         //reMyreceive = new Myreceiver();
         //filter = new IntentFilter("lasysync");
 
@@ -168,6 +179,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
+        locationSetupTextView = findViewById(R.id.locationTV);
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -177,6 +189,7 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7 = findViewById(R.id.cardview_follow_up);
 
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatients_textview);
@@ -196,6 +209,9 @@ public class HomeActivity extends AppCompatActivity {
 
         help_textview = findViewById(R.id.help_textview);
         help_textview.setText(R.string.Whatsapp_Help_Cardview);
+
+        follow_up_textview = findViewById(R.id.follow_up_textview);
+        follow_up_textview.setText(getString(R.string.title_follow_up));
 
         //String myString = null;
         //myString.length();
@@ -264,10 +280,18 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+        c7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onFollowUpClick(view);
+            }
+        });
+
         ivSync = findViewById(R.id.iv_sync);
 
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-
+        locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 ////            lastSyncAgo.setText(CalculateAgoTime());
@@ -317,6 +341,8 @@ public class HomeActivity extends AppCompatActivity {
         }*/
 
         showProgressbar();
+        FollowUpNotificationWorker.schedule();
+
     }
 
     private void saveToken() {
@@ -374,6 +400,11 @@ public class HomeActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void onFollowUpClick(View view) {
+        Intent intent = new Intent(HomeActivity.this, FollowUpPatientActivity.class);
+        startActivity(intent);
     }
 
     //function for handling the video library feature...
@@ -690,10 +721,119 @@ public class HomeActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
                 return true;
+
+            case R.id.restAppOption:
+
+                if((isNetworkConnected()))
+                {
+                    mResetSyncDialog.show();
+                    boolean isSynced = syncUtils.syncForeground("home");
+                    if(isSynced)
+                    {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() { //Do something after 100ms
+                                showResetConfirmationDialog();
+                            }
+                        }, 3000);
+                    }
+                    else
+                    {
+                        mResetSyncDialog.dismiss();
+                        DialogUtils dialogUtils = new DialogUtils();
+                        dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                    }
+                    return true;
+                }
+                else
+                {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+                }
+
+
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private void showResetConfirmationDialog() {
+        mResetSyncDialog.dismiss();
+        MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
+        resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showResetProgressbar();
+                deleteCache(getApplicationContext());
+            }
+        });
+        resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
+        resetAlertDialog.show();
+        Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
+    }
+
+
+    private void showResetProgressbar() {
+        mRefreshProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mRefreshProgressDialog.setTitle(R.string.resetting_app_dialog);
+        mRefreshProgressDialog.setCancelable(false);
+        mRefreshProgressDialog.setProgress(i);
+        mRefreshProgressDialog.show();
+    }
+
+    public void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            boolean success = deleteDir(dir);
+            if(success){
+                clearAppData();
+            }
+        } catch (Exception e) { e.printStackTrace();}
+    }
+
+    public boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+    private void clearAppData() {
+        try {
+            // clearing app data
+            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+                mRefreshProgressDialog.dismiss();
+                ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+            } else {
+                String packageName = getApplicationContext().getPackageName();
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec("pm clear "+packageName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * This method starts intent to another activity to change settings
@@ -889,6 +1029,11 @@ public class HomeActivity extends AppCompatActivity {
         if (physicalExam.exists()) {
             physicalExam.delete();
         }
+        File physicalExam2 = new File(context.getFilesDir().getAbsolutePath() + "/physExam_2.json");
+        Log.e(TAG, "physExam.json=" + physicalExam2.exists());
+        if (physicalExam2.exists()) {
+            physicalExam2.delete();
+        }
         File familyHistory = new File(context.getFilesDir().getAbsolutePath() + "/famHist.json");
         Log.e(TAG, "famHist.json=" + familyHistory.exists());
         if (familyHistory.exists()) {
@@ -1013,6 +1158,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+            locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
+
+
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
