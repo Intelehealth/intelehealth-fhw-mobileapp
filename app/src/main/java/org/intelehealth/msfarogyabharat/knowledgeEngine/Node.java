@@ -2533,7 +2533,7 @@ private static String ml_en(String unit) {
                             }
                             else {
                                 if(mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
-                                    if (language.equalsIgnoreCase("hi"))
+                                    if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("["))
                                         stringsList.add(mOptions.get(i).getDisplay_hindi());
                                     else
                                         stringsList.add(mOptions.get(i).getLanguage());
