@@ -49,6 +49,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.ekalarogya.activities.setupActivity.LocationArrayAdapter;
+import org.intelehealth.ekalarogya.database.dao.LocationDAO;
+import org.intelehealth.ekalarogya.database.dao.NewLocationDao;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -139,10 +142,10 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mRelationship;
     //  EditText mOccupation;
     EditText countryText;
-    EditText stateText;
+    EditText stateText, villageText;
     EditText casteText;
     Spinner mCountry;
-    Spinner mState;
+    Spinner mState, mVillage;
     EditText economicText;
     EditText educationText;
     TextInputLayout casteLayout;
@@ -251,6 +254,10 @@ public class IdentificationActivity extends AppCompatActivity {
 
         stateText = findViewById(R.id.identification_state);
         mState = findViewById(R.id.spinner_state);
+
+        villageText = findViewById(R.id.identification_village);
+        mVillage = findViewById(R.id.spinner_village);
+
         mPostal = findViewById(R.id.identification_postal_code);
         countryText = findViewById(R.id.identification_country);
         mCountry = findViewById(R.id.spinner_country);
@@ -377,11 +384,11 @@ public class IdentificationActivity extends AppCompatActivity {
             } else {
                 mAddress2.setVisibility(View.GONE);
             }
-            if (obj.getBoolean("mCity")) {
+           /* if (obj.getBoolean("mCity")) {
                 mCity.setVisibility(View.VISIBLE);
             } else {
                 mCity.setVisibility(View.GONE);
-            }
+            }*/
 
             if (obj.getBoolean("countryStateLayout")) {
                 countryStateLayout.setVisibility(View.VISIBLE);
@@ -430,7 +437,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 economicLayout.setVisibility(View.GONE);
             }
             country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
+            //state = obj.getString("mState");
+            state = sessionManager.getStateName();
 
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
@@ -470,7 +478,8 @@ public class IdentificationActivity extends AppCompatActivity {
         mPhoneNum.setText(patient1.getPhone_number());
         mAddress1.setText(patient1.getAddress1());
         mAddress2.setText(patient1.getAddress2());
-        mCity.setText(patient1.getCity_village());
+        //mCity.setText(patient1.getCity_village());
+
         mPostal.setText(patient1.getPostal_code());
         mRelationship.setText(patient1.getSdw());
         // mOccupation.setText(patient1.getOccupation());
@@ -483,6 +492,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 R.array.countries, R.layout.custom_spinner);
         //countryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCountry.setAdapter(countryAdapter);
+        mCountry.setEnabled(false);
 
 //        ArrayAdapter<CharSequence> casteAdapter = ArrayAdapter.createFromResource(this,
 //                R.array.caste, R.layout.custom_spinner);
@@ -1129,10 +1139,6 @@ public class IdentificationActivity extends AppCompatActivity {
             }
             //vaccinatio - end
 
-
-
-
-
             if (patient1.getSource_of_water() != null && !patient1.getSource_of_water()
                     .equalsIgnoreCase("")) {
 
@@ -1236,11 +1242,24 @@ public class IdentificationActivity extends AppCompatActivity {
             mCountry.setSelection(countryAdapter.getPosition(country1));
         }
 
+        NewLocationDao newLocationDao=new NewLocationDao();
+        List<String> villageList = newLocationDao.getVillageList(sessionManager.getStateName(),sessionManager.getDistrictName()
+                ,sessionManager.getSanchName());
+        if(villageList.size()>1) {
+            LocationArrayAdapter locationArrayAdapter =
+                    new LocationArrayAdapter(IdentificationActivity.this, villageList);
+            mVillage.setAdapter(locationArrayAdapter);
+            if(patientID_edit!=null){
+                mVillage.setSelection(locationArrayAdapter.getPosition(patient1.getCity_village()));
+            }else {
+                mVillage.setSelection(locationArrayAdapter.getPosition(sessionManager.getVillageName()));
+            }
+        }
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
-
+        mState.setEnabled(false);
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -1296,6 +1315,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
+
         mState.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1321,7 +1341,6 @@ public class IdentificationActivity extends AppCompatActivity {
 
             }
         });
-
 
         mGenderF.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2027,7 +2046,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+                && !villageText.getText().toString().equals("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("")
                 && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2050,9 +2069,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
+            /*if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2096,6 +2115,15 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             stateText.setError(null);
+        }
+
+        if (mVillage.getSelectedItemPosition() == 0) {
+            villageText.setError(getString(R.string.error_field_required));
+            focusView = villageText;
+            cancel = true;
+            return;
+        } else {
+            villageText.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2350,7 +2378,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            //patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCityvillage(mVillage.getSelectedItem().toString());
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
@@ -2829,7 +2858,7 @@ public class IdentificationActivity extends AppCompatActivity {
 */
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
-                && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
+                && !villageText.getText().toString().equalsIgnoreCase("")/*!mCity.getText().toString().equals("")*/ && !countryText.getText().toString().equals("") &&
                 !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
                 !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
 
@@ -2852,9 +2881,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 mAge.setError(getString(R.string.error_field_required));
             }
 
-            if (mCity.getText().toString().equals("")) {
+            /*if (mCity.getText().toString().equals("")) {
                 mCity.setError(getString(R.string.error_field_required));
-            }
+            }*/
 
             if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -2898,6 +2927,15 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         } else {
             stateText.setError(null);
+        }
+
+        if (mVillage.getSelectedItemPosition() == 0) {
+            villageText.setError(getString(R.string.error_field_required));
+            focusView = villageText;
+            cancel = true;
+            return;
+        } else {
+            villageText.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -3150,7 +3188,8 @@ public class IdentificationActivity extends AppCompatActivity {
             //  patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth(StringUtils.getValue(dob_value)));
             patientdto.setAddress1(StringUtils.getValue(mAddress1.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
-            patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            //patientdto.setCity_village(StringUtils.getValue(mCity.getText().toString()));
+            patientdto.setCity_village(mVillage.getSelectedItem().toString());
             patientdto.setPostal_code(StringUtils.getValue(mPostal.getText().toString()));
             patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatient_photo(mCurrentPhotoPath);

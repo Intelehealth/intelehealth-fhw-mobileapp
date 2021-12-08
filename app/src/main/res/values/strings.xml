@@ -675,4 +675,6 @@
     <string name="have_you_taken_a_covid_vaccine">Have you taken a covid vaccine?</string>
     <string name="select_option_vaccination_dialog">Select Option for Vaccination</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
+
+    <string name="identification_screen_prompt_village">Village *</string>
 </resources>

@@ -32,7 +32,6 @@ public class ApiClient {
     }
 
     public static <S> S createService(Class<S> serviceClass) {
-
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);

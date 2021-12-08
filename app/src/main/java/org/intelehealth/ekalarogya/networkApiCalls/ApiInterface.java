@@ -14,6 +14,7 @@ import org.intelehealth.ekalarogya.models.patientImageModelRequest.PatientProfil
 import org.intelehealth.ekalarogya.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.ekalarogya.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.ekalarogya.models.statewise_location.District_Sanch_Village;
+import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.models.statewise_location.State;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -46,6 +47,9 @@ public interface ApiInterface {
     @GET("location?tag=Login%20Location")
     Observable<Results<Location>> LOCATION_OBSERVABLE(@Query("v") String representation);
 
+    //-SetupLocation
+    @GET("getLocations")
+    Observable<Setup_LocationModel> SETUP_LOCATIONOBSERVABLE();
 
     @DELETE
     Call<Void> DELETE_ENCOUNTER(@Url String url,
