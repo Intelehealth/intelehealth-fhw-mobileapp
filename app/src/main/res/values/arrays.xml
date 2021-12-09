@@ -5,6 +5,7 @@
         <item>हिंदी</item>
         <item>English</item>
         <item>ଓଡିଆ</item>
+        <item>ગુજરાતી</item>
 <!--        <item>Cebuano</item>-->
     </string-array>
 
@@ -12,6 +13,7 @@
         <item>hi</item>
         <item>en</item>
         <item>or</item>
+        <item>gu</item>
 <!--        <item>cb</item>-->
     </string-array>
 
@@ -67,6 +69,16 @@
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
     </string-array>
+
+    <string-array name="education_gu">
+        <item>પસંદ કરો</item>
+        <item>અશિક્ષિત</item>
+        <item>પ્રાથમિક</item>
+        <item>સેકેંડરી</item>
+        <item>હાયર સેકેંડરી</item>
+        <item>સ્નાતક અને વધુ</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -92,6 +104,24 @@
         <item>SC</item>
         <item>ST</item>
         <item>others</item>
+    </string-array>
+
+    <string-array name="caste_cb">
+        <item>Select</item>
+        <item>General</item>
+        <item>OBC</item>
+        <item>SC</item>
+        <item>ST</item>
+        <item>others</item>
+    </string-array>
+
+    <string-array name="caste_gu">
+        <item>પસંદ કરો</item>
+        <item>જનરલ</item>
+        <item>સામાજિક શૈક્ષણિક પછાત</item>
+        <item>શેડ્યુલ કાસ્ટ</item>
+        <item>શેડ્યુલ ટ્રાઇબ</item>
+        <item>અન્ય</item>
     </string-array>
 
     <string-array name="caste_or">
@@ -122,6 +152,12 @@
         <item>ଚୟନ</item>
         <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ଉପରେ</item>
         <item>ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ</item>
+    </string-array>
+
+    <string-array name="economic_gu">
+        <item>પસંદ કરો</item>
+        <item>ગરીબીની રેખાથી ઉપર</item>
+        <item>ગરીબીની રેખાથી નિચે</item>
     </string-array>
 
     <string-array name="economic_cb">

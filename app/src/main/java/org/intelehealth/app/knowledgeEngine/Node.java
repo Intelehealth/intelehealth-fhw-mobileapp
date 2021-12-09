@@ -70,6 +70,7 @@ public class Node implements Serializable {
     private String display;
     private String display_oriya;
     private String display_cebuno;
+    private String display_gujarati;
     private String display_hindi;
     private String language;
     private String choiceType;
@@ -173,6 +174,14 @@ public class Node implements Serializable {
                 this.display = this.text;
             }
 
+            this.display_gujarati = jsonNode.optString("display-gj");
+            if (this.display_gujarati.isEmpty()) {
+                this.display_gujarati = jsonNode.optString("display-gj");
+            }
+            if (this.display_gujarati.isEmpty()) {
+                this.display_gujarati = this.display;
+            }
+
             this.display_oriya = jsonNode.optString("display-or");
             if (this.display_oriya.isEmpty()) {
                 this.display_oriya = jsonNode.optString("display-or");
@@ -269,6 +278,7 @@ public class Node implements Serializable {
         this.text = source.text;
         this.display = source.display;
         this.display_oriya = source.display_oriya;
+        this.display_gujarati = source.display_gujarati;
         this.display_cebuno = source.display_cebuno;
         this.optionsList = source.optionsList;
         this.terminal = source.terminal;
@@ -421,6 +431,19 @@ public class Node implements Serializable {
                 } else {
                     //Log.i(TAG, "findDisplay: eng dis");
                     return display;
+                }
+            }
+            case "gu": {
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    return display_gujarati;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
                 }
             }
             case "or": {
@@ -636,9 +659,11 @@ public class Node implements Serializable {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
                             (associatedTest.trim().equals("H/o specific illness")) ||
-                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))
+                            || (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")))) {
 
-                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) ||
+                                (associatedTest.trim().equals("સંકળાયેલ લક્ષણો"))) {
                             if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                                 raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                                 raw = raw.substring(6);
@@ -666,7 +691,8 @@ public class Node implements Serializable {
                 } else {
                     String associatedTest = node_opt.getText();
                     if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
-                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")))) {
                         if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
                             raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
                             raw = raw.substring(6);
@@ -1102,6 +1128,7 @@ public class Node implements Serializable {
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(unit_text); //for Odiya...
+                unit_text = gu_en(unit_text); //for Gujarati...
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
                 if (node.getLanguage().contains("_")) {
@@ -1146,6 +1173,36 @@ public class Node implements Serializable {
                 break;
 
             case "वर्षों":
+                unit = "Years";
+                break;
+
+            default:
+                return unit;
+        }
+
+        return unit;
+    }
+
+    private static String gu_en(String unit) {
+
+        switch (unit) {
+            case "કલાક":
+                unit = "Hours";
+                break;
+
+            case "દિવસ":
+                unit = "Days";
+                break;
+
+            case "અઠવાડિયું":
+                unit = "Weeks";
+                break;
+
+            case "માસ":
+                unit = "Months";
+                break;
+
+            case "વર્ષ":
                 unit = "Years";
                 break;
 
@@ -1518,6 +1575,7 @@ public class Node implements Serializable {
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
                 unit_text = or_en(unit_text); //for Odiya...
+                unit_text = gu_en(unit_text); //for Gujarati...
 
                 String durationString = quantityPicker.getValue() + " " + unit_text;
 
@@ -1757,6 +1815,14 @@ public class Node implements Serializable {
 
     public void setDisplay(String display) {
         this.display = display;
+    }
+
+    public String getDisplay_gujarati() {
+        return display_gujarati;
+    }
+
+    public void setDisplay_gujarati(String display_gujarati) {
+        this.display_gujarati = display_gujarati;
     }
 
     public String getDisplay_oriya() {
@@ -2008,7 +2074,7 @@ public class Node implements Serializable {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
                     if ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))|| (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો"))) {
                         question = question + next_line + "Patient reports -";
                     }
                 } else {
@@ -2041,7 +2107,7 @@ public class Node implements Serializable {
             } else if (mOptions.get(i).getText() != null &&
                     ((mOptions.get(i).getText().equalsIgnoreCase("Associated symptoms"))
                             || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))
-                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")))) {
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
 
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay() + next_line);
@@ -2108,6 +2174,7 @@ public class Node implements Serializable {
                 ", min_age='" + min_age + '\'' +
                 ", max_age='" + max_age + '\'' +
                 ", display='" + display + '\'' +
+                ", display_gujarati='" + display_gujarati + '\'' +
                 ", display_oriya='" + display_oriya + '\'' +
                 ", display_cebuno='" + display_cebuno + '\'' +
                 ", display_hindi='" + display_hindi + '\'' +
