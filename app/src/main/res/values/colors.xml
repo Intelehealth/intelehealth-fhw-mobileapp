@@ -54,5 +54,7 @@
 
     <color name="transparent_tab">#75000000</color>
 
+    <!-- Thermal Printer -->
+    <color name="gray2">#EEEEEE</color>
 
 </resources>

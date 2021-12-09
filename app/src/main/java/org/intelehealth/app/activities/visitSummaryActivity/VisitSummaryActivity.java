@@ -300,6 +300,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private boolean isRespiratory = false;
     String appLanguage;
 
+    TextView tv_device_selected;
+    Button btn_connect;
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        MenuInflater inflater = getMenuInflater();
