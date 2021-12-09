@@ -117,7 +117,7 @@ public class HomeActivity extends AppCompatActivity {
     private boolean hasLicense = false;
     int i = 5;
 
-    TextView lastSyncTextView;
+    TextView lastSyncTextView, locationSetupTextView;
     TextView lastSyncAgo;
     CardView manualSyncButton;
     //IntentFilter filter;
@@ -272,6 +272,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
+        locationSetupTextView = findViewById(R.id.locationTV);
         lastSyncAgo = findViewById(R.id.lastsyncago);
         manualSyncButton = findViewById(R.id.manualsyncbutton);
 //        manualSyncButton.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -377,7 +378,7 @@ public class HomeActivity extends AppCompatActivity {
         ivSync = findViewById(R.id.iv_sync);
 
         lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-
+        locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 ////            lastSyncAgo.setText(CalculateAgoTime());
