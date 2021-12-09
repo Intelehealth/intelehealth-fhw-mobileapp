@@ -1,10 +1,12 @@
 package org.intelehealth.ekalhelpline.activities.followuppatients;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -12,15 +14,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.R;
+import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.Closed_Visits_Activity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
+import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.models.FollowUpModel;
 import org.intelehealth.ekalhelpline.models.dto.PatientDTO;
 import org.intelehealth.ekalhelpline.utilities.Logger;
@@ -42,13 +49,15 @@ import java.util.Locale;
  */
 
 public class FollowUpPatientActivity extends AppCompatActivity {
-
+    private static final String TAG = FollowUpPatientActivity.class.getSimpleName();
     private FollowUpPatientAdapter recycler;
     RecyclerView recyclerView;
     SessionManager sessionManager = null;
     TextView msg;
     private SQLiteDatabase db;
     int limit = Integer.MAX_VALUE, offset = 0;
+    MaterialAlertDialogBuilder dialogBuilder;
+    ProviderDAO providerDAO = new ProviderDAO();
 
 
     @Override
@@ -86,18 +95,28 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        // inflater.inflate(R.menu.menu_today_patient, menu);
+        inflater.inflate(R.menu.today_filter, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_filter:
+                displaySelectionDialog();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     private void firstQuery() {
         try {
             recycler = new FollowUpPatientAdapter(getAllPatientsFromDB(offset), FollowUpPatientActivity.this);
-
             recyclerView.setAdapter(recycler);
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -171,10 +190,111 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         return phone;
     }
 
-
     @Override
     protected void onStop() {
         super.onStop();
     }
 
+    private void displaySelectionDialog() {
+        ArrayList selectedItems = new ArrayList<>();
+        String[] filter_by = {"Date", "Creator"};
+
+        dialogBuilder = new MaterialAlertDialogBuilder(FollowUpPatientActivity.this);
+        dialogBuilder.setTitle(getString(R.string.filter_by));
+        dialogBuilder.setMultiChoiceItems(filter_by, null, new DialogInterface.OnMultiChoiceClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    if(filter_by[which].equalsIgnoreCase("Date"))
+                        showDateSelectionDialog();
+                    else if(filter_by[which].equalsIgnoreCase("Creator"))
+                        showCreatorSelectionDialog();
+                    selectedItems.add(filter_by[which]);
+                } else if (selectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(filter_by[which]);
+                }
+            }
+        });
+
+        dialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //display filter query code on list menu
+//                doQueryWithProviders(selectedItems);
+            }
+        });
+
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+    }
+
+    private void showDateSelectionDialog() {
+        //do something
+    }
+
+    private void showCreatorSelectionDialog() {
+        ArrayList selectedItems = new ArrayList<>();
+        String[] creator_names = null;
+        String[] creator_uuid = null;
+        try {
+            creator_names = providerDAO.getProvidersList().toArray(new String[0]);
+            creator_uuid = providerDAO.getProvidersUuidList().toArray(new String[0]);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        dialogBuilder = new MaterialAlertDialogBuilder(FollowUpPatientActivity.this);
+        dialogBuilder.setTitle(getString(R.string.filter_by_creator));
+        String[] finalCreator_names = creator_names;
+        String[] finalCreator_uuid = creator_uuid;
+        dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
+
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
+                Logger.logD(TAG, "multichoice" + which + isChecked);
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    selectedItems.add(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                } else if (selectedItems.contains(which)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                }
+            }
+        });
+
+        dialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //display filter query code on list menu
+                Logger.logD(TAG, "onclick" + i);
+//                doQueryWithProviders(selectedItems);
+            }
+        });
+
+        dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
+        //dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+
+    }
 }
