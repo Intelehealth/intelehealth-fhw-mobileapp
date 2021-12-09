@@ -671,4 +671,15 @@
     <string name="due_on">Due Date:</string>
     <string name="title_follow_up">Follow Up Visits</string>
     <string name="location">Location</string>
+
+    //----------reset app strings-------------
+    <string name="reset_app">Reset App</string>
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+
+    //Reset App functionality
+    <string name="sync_failed">Sync Failed! Please try again later.</string>
+    <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
+    <string name="app_sync">Syncing App..</string>
 </resources>

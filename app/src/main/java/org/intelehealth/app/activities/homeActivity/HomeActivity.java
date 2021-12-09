@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.homeActivity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ActivityManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -67,6 +68,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.services.firebase_services.CallListenerBackgroundService;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
@@ -110,7 +112,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final String ACTION_NAME = "org.intelehealth.app.RTC_MESSAGING_EVENT";
     SessionManager sessionManager = null;
     //ProgressDialog TempDialog;
-    private ProgressDialog mSyncProgressDialog;
+    private ProgressDialog mSyncProgressDialog, mRefreshProgressDialog, mResetSyncDialog;
     CountDownTimer CDT;
     private boolean hasLicense = false;
     int i = 5;
@@ -257,6 +259,10 @@ public class HomeActivity extends AppCompatActivity {
         setTitle(R.string.title_activity_login);
         context = HomeActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
+        mResetSyncDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mResetSyncDialog.setTitle(R.string.app_sync);
+        mResetSyncDialog.setCancelable(false);
+        mResetSyncDialog.setProgress(i);
         //reMyreceive = new Myreceiver();
         //filter = new IntentFilter("lasysync");
 
@@ -739,6 +745,37 @@ public class HomeActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
                 return true;
+
+            case R.id.restAppOption:
+
+                if((isNetworkConnected()))
+                {
+                    mResetSyncDialog.show();
+                    boolean isSynced = syncUtils.syncForeground("home");
+                    if(isSynced)
+                    {
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() { //Do something after 100ms
+                                showResetConfirmationDialog();
+                            }
+                        }, 3000);
+                    }
+                    else
+                    {
+                        mResetSyncDialog.dismiss();
+                        DialogUtils dialogUtils = new DialogUtils();
+                        dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+                    }
+                    return true;
+                }
+                else
+                {
+                    DialogUtils dialogUtils = new DialogUtils();
+                    dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
+                }
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -1138,4 +1175,80 @@ public class HomeActivity extends AppCompatActivity {
 
         super.onAttachedToWindow();
     }
+
+    private void showResetConfirmationDialog() {
+        mResetSyncDialog.dismiss();
+        MaterialAlertDialogBuilder resetAlertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        resetAlertdialogBuilder.setMessage(R.string.sure_to_reset_app);
+        resetAlertdialogBuilder.setPositiveButton(R.string.generic_yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showResetProgressbar();
+                deleteCache(getApplicationContext());
+            }
+        });
+        resetAlertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog resetAlertDialog = resetAlertdialogBuilder.create();
+        resetAlertDialog.show();
+        Button resetPositiveButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button resetNegativeButton = resetAlertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        resetPositiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        resetNegativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, resetAlertDialog);
+    }
+
+
+    private void showResetProgressbar() {
+        mRefreshProgressDialog = new ProgressDialog(HomeActivity.this, R.style.AlertDialogStyle);
+        mRefreshProgressDialog.setTitle(R.string.resetting_app_dialog);
+        mRefreshProgressDialog.setCancelable(false);
+        mRefreshProgressDialog.setProgress(i);
+        mRefreshProgressDialog.show();
+    }
+
+    public void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            boolean success = deleteDir(dir);
+            if(success){
+                clearAppData();
+            }
+        } catch (Exception e) { e.printStackTrace();}
+    }
+
+    public boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+            return dir.delete();
+        } else if(dir!= null && dir.isFile()) {
+            return dir.delete();
+        } else {
+            return false;
+        }
+    }
+
+    private void clearAppData() {
+        try {
+            // clearing app data
+            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+                mRefreshProgressDialog.dismiss();
+                ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+            } else {
+                String packageName = getApplicationContext().getPackageName();
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec("pm clear "+packageName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
