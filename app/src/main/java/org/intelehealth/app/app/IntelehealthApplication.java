@@ -22,6 +22,7 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.apprtc.data.Manager;
 
@@ -31,6 +32,9 @@ import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
 public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+
+    @BaseEnum.CmdType
+    private static int currentCmdType = BaseEnum.CMD_PIN;
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -168,5 +172,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+    }
+
+    @BaseEnum.CmdType
+    public static int getCurrentCmdType() {
+        return currentCmdType;
+    }
+
+    public void setCurrentCmdType(@BaseEnum.CmdType int currentCmdType) {
+        this.currentCmdType = currentCmdType;
     }
 }
