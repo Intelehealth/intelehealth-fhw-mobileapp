@@ -3065,8 +3065,8 @@ public class IdentificationActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            if (mCurrentPhotoPath == null)
-                mCurrentPhotoPath = patientdto.getPatient_photo();
+//            if (mCurrentPhotoPath == null)
+//                mCurrentPhotoPath = patientdto.getPatient_photo();
 
             patientdto.setFirst_name(StringUtils.getValue(mFirstName.getText().toString()));
             patientdto.setMiddle_name(StringUtils.getValue(mMiddleName.getText().toString()));
