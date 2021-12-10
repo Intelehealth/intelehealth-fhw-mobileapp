@@ -89,11 +89,13 @@ import com.rt.printerlibrary.enumerate.ConnectStateEnum;
 import com.rt.printerlibrary.factory.connect.BluetoothFactory;
 import com.rt.printerlibrary.factory.connect.PIFactory;
 import com.rt.printerlibrary.factory.printer.PrinterFactory;
+import com.rt.printerlibrary.factory.printer.ThermalPrinterFactory;
 import com.rt.printerlibrary.factory.printer.UniversalPrinterFactory;
 import com.rt.printerlibrary.observer.PrinterObserver;
 import com.rt.printerlibrary.observer.PrinterObserverManager;
 import com.rt.printerlibrary.printer.RTPrinter;
 
+import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.TimeRecordUtils;
@@ -326,6 +328,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
     private PrinterInterface curPrinterInterface = null;
+    IntelehealthApplication application;
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -618,9 +621,14 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
         btn_connect = findViewById(R.id.btn_connect);
         pb_connect = findViewById(R.id.pb_connect);
 
-        printerFactory = new UniversalPrinterFactory();
+        application = new IntelehealthApplication();
+        application.setCurrentCmdType(BaseEnum.CMD_ESC);
+       // printerFactory = new UniversalPrinterFactory();
+        printerFactory = new ThermalPrinterFactory();
         rtPrinter = printerFactory.create();
+        rtPrinter.setPrinterInterface(curPrinterInterface);
         PrinterObserverManager.getInstance().add(this);
+        application.setRtPrinter(rtPrinter);
 
         tv_device_selected.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4482,9 +4490,10 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
             case BaseEnum.CMD_ESC:
                 //turn2Activity(TextPrintESCActivity.class);
                 Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
+                startActivity(intent_esc);
                 break;
             default:
-                turn2Activity(TextPrintActivity.class);
+               // turn2Activity(TextPrintActivity.class);
                 break;
         }
     }

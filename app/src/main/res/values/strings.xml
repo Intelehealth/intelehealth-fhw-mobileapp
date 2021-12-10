@@ -726,5 +726,20 @@
     <string name="_main_connected_fail">connect fail</string>
     <string name="_main_disconnect">disconnected</string>
     <string name="please_enter_text">Please enter text.</string>
+    <string name="small_font">Small Font</string>
+    <string name="anti_white">Anti white</string>
+    <string name="double_width">Double Width</string>
+    <string name="double_height">Double Height</string>
+    <string name="bold">Bold</string>
+    <string name="underline">Underline</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
+    <string name="text_encode">Text Encode:</string>
+    <string name="dialog_title_chartset_setting">Chartset name settings</string>
+    <string name="spin_default_esc_font">Please choose a Font</string>
+    <string name="tv_font_select">Font Choose：</string>
+    <string name="btn_clk_sel_font">Click to choose the printed font</string>
+    <string name="label_setting">Label Setting</string>
 
 </resources>

@@ -18,6 +18,7 @@ import androidx.multidex.MultiDexApplication;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
+import com.rt.printerlibrary.printer.RTPrinter;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -35,6 +36,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     @BaseEnum.CmdType
     private static int currentCmdType = BaseEnum.CMD_PIN;
+    private static RTPrinter rtPrinter;
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -181,5 +183,13 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
 
     public void setCurrentCmdType(@BaseEnum.CmdType int currentCmdType) {
         this.currentCmdType = currentCmdType;
+    }
+
+    public static RTPrinter getRtPrinter() {
+        return rtPrinter;
+    }
+
+    public void setRtPrinter(RTPrinter rtPrinter) {
+        this.rtPrinter = rtPrinter;
     }
 }
