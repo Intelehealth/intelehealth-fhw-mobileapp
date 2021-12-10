@@ -142,22 +142,21 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 saveImage(mCurrentPhotoPath);
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
-            Uri selectedImage = data.getData();
-            String[] filePath = {MediaStore.Images.Media.DATA};
-            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-            c.moveToFirst();
-            int columnIndex = c.getColumnIndex(filePath[0]);
-            String picturePath = c.getString(columnIndex);
-            c.close();
-            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-            Log.v("path", picturePath + "");
+                Uri selectedImage = data.getData();
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                Log.v("path", picturePath + "");
 
-            // copy & rename the file
-            String finalImageName = UUID.randomUUID().toString();
-            final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-            BitmapUtils.copyFile(picturePath, finalFilePath);
-            compressImageAndSave(finalFilePath);
-
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, finalFilePath);
+                compressImageAndSave(finalFilePath);
         }
     }
 
@@ -280,6 +279,4 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }*/
     }
-
-
 }

@@ -429,11 +429,10 @@ public class PatientsDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
         IntelehealthApplication.getAppContext().startService(intent);
+
         return isUpdated;
     }
 

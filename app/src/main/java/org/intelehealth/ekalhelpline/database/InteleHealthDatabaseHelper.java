@@ -252,7 +252,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-
     public SQLiteDatabase getWriteDb() {
         if (database != null && database.isOpen())
             return database;

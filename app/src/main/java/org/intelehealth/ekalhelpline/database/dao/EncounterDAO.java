@@ -46,17 +46,14 @@ public class EncounterDAO {
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
-
         }
         return isInserted;
     }
 
     private boolean createEncounters(EncounterDTO encounter, SQLiteDatabase db) throws DAOException {
         boolean isCreated = false;
-
         ContentValues values = new ContentValues();
         try {
-
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
@@ -109,6 +106,7 @@ public class EncounterDAO {
     public String getEncounterTypeUuid(String attr) {
         String encounterTypeUuid = "";
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_uuid_dictionary where name = ? COLLATE NOCASE", new String[]{attr});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -116,6 +114,8 @@ public class EncounterDAO {
             }
         }
         cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
 
         return encounterTypeUuid;
     }
@@ -190,9 +190,7 @@ public class EncounterDAO {
         String[] whereargs = {uuid};
         try {
             values.put("sync", synced);
-
             values.put("uuid", uuid);
-
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();
@@ -214,7 +212,7 @@ public class EncounterDAO {
         String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        //db.beginTransaction();
+        //db.beginTransactionNonExclusive();
         ContentValues values = new ContentValues();
         String whereclause = "visituuid = ? AND encounter_type_uuid = ? ";
         String[] whereargs = {visitUuid, emergency_uuid};
@@ -223,13 +221,13 @@ public class EncounterDAO {
             values.put("sync", false);
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
             Logger.logD("encounter", "description" + i);
-            // db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException sql) {
             Logger.logD("encounter", "encounter" + sql.getMessage());
             FirebaseCrashlytics.getInstance().recordException(sql);
             throw new DAOException(sql.getMessage());
         } finally {
-            //   db.endTransaction();
+            //db.endTransaction();
 
         }
         if (emergencyChecked) {
@@ -332,12 +330,7 @@ public class EncounterDAO {
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
-
-
         }
-
         return isUpdated;
     }
-
-
 }

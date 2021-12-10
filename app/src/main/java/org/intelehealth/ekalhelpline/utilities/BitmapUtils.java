@@ -1,4 +1,5 @@
 package org.intelehealth.ekalhelpline.utilities;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -72,10 +73,11 @@ public class BitmapUtils {
             bmp = BitmapFactory.decodeFile(filePath, options);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
-
         }
         try {
+
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
         }
@@ -90,6 +92,7 @@ public class BitmapUtils {
 
         Canvas canvas = new Canvas(scaledBitmap);
         canvas.setMatrix(scaleMatrix);
+
         canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
                 Paint.FILTER_BITMAP_FLAG));
 

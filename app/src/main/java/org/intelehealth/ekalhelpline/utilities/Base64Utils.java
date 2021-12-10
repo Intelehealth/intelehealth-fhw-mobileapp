@@ -37,7 +37,6 @@ public class Base64Utils {
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
         return encodeString;
     }
 }

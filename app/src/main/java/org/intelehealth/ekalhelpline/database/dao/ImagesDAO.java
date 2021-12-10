@@ -44,7 +44,6 @@ public class ImagesDAO {
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();
-
         }
         return isInserted;
     }
@@ -64,10 +63,8 @@ public class ImagesDAO {
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Logger.logE(TAG, "exception ", e);
-
         } finally {
             db.endTransaction();
-
         }
 
         return true;
@@ -105,7 +102,6 @@ public class ImagesDAO {
 
         localdb.beginTransaction();
         try {
-
             ContentValues cv = new ContentValues();
             cv.put("voided", "1"); //These Fields should be your String values of actual column names
             cv.put("sync", "false");
@@ -134,6 +130,7 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
@@ -214,13 +211,12 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
             localdb.endTransaction();
-
         }
-
         return patientProfiles;
     }
 
@@ -242,6 +238,7 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
@@ -266,6 +263,7 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
@@ -341,6 +339,7 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
@@ -349,7 +348,6 @@ public class ImagesDAO {
         }
         return uuidList;
     }
-
 
     public List<String> getImages(String encounterUUid, String ConceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();
@@ -364,6 +362,7 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
@@ -385,6 +384,7 @@ public class ImagesDAO {
                 }
             }
             idCursor.close();
+            localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         } finally {
@@ -404,8 +404,5 @@ public class ImagesDAO {
         }
         return isLocalImageExists;
     }
-
-
-
 }
 

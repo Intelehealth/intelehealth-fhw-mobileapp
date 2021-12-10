@@ -74,6 +74,7 @@ import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.OfflineLogin;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
+
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -680,6 +681,7 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
+
         super.onResume();
     }
 
@@ -692,12 +694,12 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        super.onStop();
         try {
             unregisterReceiver(syncBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
+        super.onStop();
     }
 
     private boolean keyVerified(String key) {

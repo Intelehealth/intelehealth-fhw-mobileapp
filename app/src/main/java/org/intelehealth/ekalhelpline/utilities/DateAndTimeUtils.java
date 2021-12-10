@@ -49,11 +49,11 @@ public class DateAndTimeUtils {
         int xyears, xmonths;
         String x_format = "";
 
-        if(period.getYears() > 0)
+        if (period.getYears() > 0)
             xyears = period.getYears();
         else
             xyears = 0;
-        if(period.getMonths() > 0)
+        if (period.getMonths() > 0)
             xmonths = period.getMonths();
         else
             xmonths = 0;
@@ -112,6 +112,7 @@ public class DateAndTimeUtils {
         }
 
     }
+
     //calculate year, month, days from two date
     public static String getAgeInYearMonth(String s, Context context) {
         if (s == null) return "";
@@ -142,22 +143,21 @@ public class DateAndTimeUtils {
         String tyears = "", tmonth = "", tdays = "";
         //String xyears = "", xmonths = "";
 
-        if(period.getYears() > 0) {
+        if (period.getYears() > 0) {
             tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
             //xyears = String.valueOf(period.getYears());
         }
-        if(period.getMonths() > 0) {
+        if (period.getMonths() > 0) {
             tmonth = period.getMonths() + " " + context.getResources().getString(R.string.months);
             //xmonths = String.valueOf(period.getMonths());
         }
-        if(period.getDays() > 0)
+        if (period.getDays() > 0)
             tdays = period.getDays() + " " + context.getResources().getString(R.string.days);
 
         age = tyears + " " + tmonth + " " + tdays;
 
         return age;
     }
-
 
 
     public static String getAgeInYearMonth(String s) {
@@ -185,14 +185,14 @@ public class DateAndTimeUtils {
         String age = "";
         String tyears = "0", tmonth = "0", tdays = "0";
 
-        if(period.getYears() > 0)
-            tyears = ""+period.getYears();
+        if (period.getYears() > 0)
+            tyears = "" + period.getYears();
 
-        if(period.getMonths() > 0)
-            tmonth = ""+period.getMonths();
+        if (period.getMonths() > 0)
+            tmonth = "" + period.getMonths();
 
-        if(period.getDays() > 0)
-            tdays = ""+period.getDays();
+        if (period.getDays() > 0)
+            tdays = "" + period.getDays();
 
         age = tyears + " " + tmonth + " " + tdays;
 
@@ -200,25 +200,27 @@ public class DateAndTimeUtils {
     }
 
     public static String getFormatedDateOfBirth(String oldformatteddate) {
-
         DateFormat originalFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         Date date = null;
-        try {
-            date = originalFormat.parse(oldformatteddate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        if (date == null) {
-            originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        if (oldformatteddate != null && !oldformatteddate.isEmpty() && oldformatteddate.length() > 0 && !oldformatteddate.equalsIgnoreCase("null")) {
+
             try {
                 date = originalFormat.parse(oldformatteddate);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        }
 
+            if (date == null) {
+                originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                try {
+                    date = originalFormat.parse(oldformatteddate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         return targetFormat.format(date);
     }
@@ -227,11 +229,14 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         Date date = null;
-        try {
-            date = originalFormat.parse(oldformatteddate);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (oldformatteddate != null && !oldformatteddate.isEmpty() && oldformatteddate.length() > 0 && !oldformatteddate.equalsIgnoreCase("null")) {
+            try {
+                date = originalFormat.parse(oldformatteddate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         return formattedDate;

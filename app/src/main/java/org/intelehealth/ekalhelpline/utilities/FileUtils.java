@@ -68,12 +68,10 @@ public class FileUtils {
             InputRead.close();
             Log.i("FILEREAD>", s);
             return s;
-
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
-
     }
 
     public static JSONObject encodeJSON(Context context, String fileName) {
