@@ -1097,6 +1097,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:textSize="@dimen/card_content_sub_text_size"
+                    android:maxLength="2"
                     android:hint="@string/enter_number"/>
 
                 <Space
@@ -1115,6 +1116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
+                    android:maxLength="2"
                     android:textSize="@dimen/card_content_sub_text_size"
                     android:hint="@string/enter_number"/>
 
@@ -1336,6 +1338,7 @@
                         android:hint="@string/enter_number"
                         android:imeOptions="actionUnspecified"
                         android:inputType="number"
+                        android:maxLength="3"
                         android:maxLines="1"
                         android:singleLine="true"
                         android:textSize="@dimen/card_content_sub_text_size" />
