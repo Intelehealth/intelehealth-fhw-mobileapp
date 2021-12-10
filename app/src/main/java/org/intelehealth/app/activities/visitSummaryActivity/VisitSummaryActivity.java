@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
 import android.app.NotificationManager;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -79,7 +80,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
+import com.rt.printerlibrary.connect.PrinterInterface;
+import com.rt.printerlibrary.enumerate.ConnectStateEnum;
 
+import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
+import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -302,6 +308,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     TextView tv_device_selected;
     Button btn_connect;
+    private Object configObj;
+    private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -589,6 +597,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+
+        tv_device_selected = findViewById(R.id.tv_device_selected);
+        btn_connect = findViewById(R.id.btn_connect);
+
+        tv_device_selected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
+                showBluetoothDeviceChooseDialog();
+            }
+        });
+
+        btn_connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Here on clicking will connect with the selected Bluetooth device...
+
+            }
+        });
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1754,6 +1781,71 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
+    }
+
+    //This will open a Dialog that will show all the Bluetooth devices...
+        private void showBluetoothDeviceChooseDialog() {
+        BluetoothDeviceChooseDialog bluetoothDeviceChooseDialog = new BluetoothDeviceChooseDialog();
+        bluetoothDeviceChooseDialog.setOnDeviceItemClickListener(
+                new BluetoothDeviceChooseDialog.onDeviceItemClickListener() {
+            @Override
+            public void onDeviceItemClick(BluetoothDevice device) {
+                if (TextUtils.isEmpty(device.getName())) {
+                    tv_device_selected.setText(device.getAddress());
+                } else {
+                    tv_device_selected.setText(device.getName() + " [" + device.getAddress() + "]");
+                }
+                configObj = new BluetoothEdrConfigBean(device);
+                tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
+                isConfigPrintEnable(configObj);
+            }
+        });
+        bluetoothDeviceChooseDialog.show(VisitSummaryActivity.this.getFragmentManager(), null);
+    }
+
+    private void isConfigPrintEnable(Object configObj) {
+        if (isInConnectList(configObj)) {
+            setPrintEnable(true);
+        } else {
+            setPrintEnable(false);
+        }
+    }
+
+    private void setPrintEnable(boolean isEnable) {
+       // btn_txt_print.setEnabled(isEnable);
+        card_print.setEnabled(isEnable);
+        btn_connect.setEnabled(!isEnable);
+       // btn_disConnect.setEnabled(isEnable);
+
+        /*btn_selftest_print.setEnabled(isEnable);
+        btn_img_print.setEnabled(isEnable);
+        btn_template_print.setEnabled(isEnable);
+        btn_barcode_print.setEnabled(isEnable);
+        btn_beep.setEnabled(isEnable);
+        btn_all_cut.setEnabled(isEnable);
+        btn_cash_box.setEnabled(isEnable);
+        btn_wifi_setting.setEnabled(isEnable);
+        btn_wifi_ipdhcp.setEnabled(isEnable);
+        btn_cmd_test.setEnabled(isEnable);
+        btn_test.setEnabled(isEnable);
+//        btn_label_setting.setEnabled(isEnable);
+        btn_print_status.setEnabled(isEnable);
+        btn_print_status2.setEnabled(isEnable);*/
+
+    }
+
+    private boolean isInConnectList(Object configObj) {
+        boolean isInList = false;
+        for (int i = 0; i < printerInterfaceArrayList.size(); i++) {
+            PrinterInterface printerInterface = printerInterfaceArrayList.get(i);
+            if (configObj.toString().equals(printerInterface.getConfigObject().toString())) {
+                if (printerInterface.getConnectState() == ConnectStateEnum.Connected) {
+                    isInList = true;
+                    break;
+                }
+            }
+        }
+        return isInList;
     }
 
     /**
