@@ -114,7 +114,7 @@ public class Closed_Visits_Activity extends AppCompatActivity {
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         // chw_name = sessionManager.getChwname();
-        chw_name = sessionManager.getProviderID();
+        chw_name = sessionManager.getProviderID(); //267c1076-041b-4c29-9a66-00a7884aed2d
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -127,7 +127,7 @@ public class Closed_Visits_Activity extends AppCompatActivity {
                     if(allPatientsFromDB.size() > 0) {
                      //   allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
                         List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
-                        List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
+                        List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(chw_name, offset);
                         
                         mClosedVisitAdapter.activePatientModels.addAll(allPatientsFromDB);
                         mClosedVisitAdapter.activePatient_speciality.addAll(visit_speciality); //it fetches the other speciality visits as well...
@@ -148,7 +148,7 @@ public class Closed_Visits_Activity extends AppCompatActivity {
                     List<ActivePatientModel> allPatientsFromDB = doQuery(offset, chw_name);
                   //  allPatientsFromDB = fetch_Prescription_Data(allPatientsFromDB);
                     List<ActivePatientModel> visit_speciality = activeVisits_Speciality(offset, chw_name);
-                    List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
+                    List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(chw_name,offset);
 
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
@@ -170,7 +170,7 @@ public class Closed_Visits_Activity extends AppCompatActivity {
             List<ActivePatientModel> activePatientModels = doQuery(offset, chw_name);
            // activePatientModels = fetch_Prescription_Data(activePatientModels);
             List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
-            List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(offset);
+            List<ActivePatientModel> todayvisit_exitsurveycomments = getExitSurvey_Comments(chw_name,offset);
 
             mClosedVisitAdapter = new ClosedVisitsAdapter(activePatientModels, Closed_Visits_Activity.this,
                     listPatientUUID, todayvisit_exitsurveycomments, activeVisit_Speciality);
@@ -261,10 +261,14 @@ public class Closed_Visits_Activity extends AppCompatActivity {
     private List<ActivePatientModel> activeVisits_Speciality(int offset, String user_data_) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
+        /*String query = "SELECT DISTINCT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value " +
                 "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter x, tbl_provider y " +
                 "WHERE b.uuid = a.patientuuid AND a.uuid = d.visit_uuid AND d.visit_uuid = x.visituuid AND x.provider_uuid = y.uuid " +
-                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? ORDER BY a.startdate DESC limit ? offset ?";
+                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND y.uuid = ? ORDER BY a.startdate DESC limit ? offset ?";*/
+
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value, o.value AS obsvalue FROM tbl_visit a, tbl_patient b, tbl_visit_attribute c, tbl_encounter d, tbl_obs o WHERE b.uuid = a.patientuuid AND a.enddate is NOT NULL AND a.uuid = c.visit_uuid AND c.visit_uuid = d.visituuid AND d.uuid = o.encounteruuid  AND d.provider_uuid = ? AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce'  " +
+                "AND (obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC limit ? offset ?";
+
         final Cursor cursor = db.rawQuery(query, new String[]{user_data_, String.valueOf(limit), String.valueOf(offset)});
         Log.v("main", "active: "+ query);
 
@@ -294,10 +298,19 @@ public class Closed_Visits_Activity extends AppCompatActivity {
     private List<ActivePatientModel> doQuery(int offset, String user_uuid) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         Date cDate = new Date();
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
-                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
-                "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
-                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate DESC limit ? offset ?";
+//        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
+//                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f, tbl_provider g " +
+//                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND (a.enddate is NOT NULL OR a.enddate != '') AND e.provider_uuid = g.uuid AND g.uuid = ? AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid AND (obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%')" +
+//                "ORDER BY a.startdate DESC limit ? offset ?";
+
+//        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id " +
+//                "FROM tbl_visit a, tbl_patient b, tbl_encounter c, tbl_provider d " +
+//                "WHERE b.uuid = a.patientuuid AND a.uuid = c.visituuid AND c.provider_uuid = d.uuid " +
+//                "AND (a.enddate is NOT NULL OR a.enddate != '') AND d.uuid = ? GROUP BY a.uuid ORDER BY a.startdate DESC limit ? offset ?";
+
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o WHERE b.uuid = a.patientuuid AND  a.enddate is NOT NULL  AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid  AND d.provider_uuid = ? AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce'  " +
+                "AND (o.value like '%TLD Closed%' or o.value like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC limit ? offset ?";
+
         final Cursor cursor = db.rawQuery(query, new String[]{user_uuid, String.valueOf(limit), String.valueOf(offset)});
         Log.v("main", "doquery: "+ query);
 
@@ -498,7 +511,7 @@ public class Closed_Visits_Activity extends AppCompatActivity {
                     // If the user checked the item, add it to the selected items
                     selectedItems.add(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
-                } else if (selectedItems.contains(which)) {
+                } else if (selectedItems.contains(finalCreator_uuid[which])) {
                     // Else, if the item is already in the array, remove it
                     selectedItems.remove(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
@@ -584,10 +597,23 @@ public class Closed_Visits_Activity extends AppCompatActivity {
 
     private void doQueryWithProviders(List<String> providersuuids) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query = "select distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
-                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
-                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
+        /*String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f, tbl_provider g " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND (a.enddate is NOT NULL OR a.enddate != '') AND " +
+                "e.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') AND " +
+                "f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
+                "AND obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%'" +
+                "ORDER BY a.startdate DESC";*/
+
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o WHERE b.uuid = a.patientuuid AND  a.enddate is NOT NULL AND a.uuid = d.visituuid AND " +
+                "d.uuid = o.encounteruuid AND d.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce'  " +
+                "AND (o.value like '%TLD Closed%' or o.value like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC";
+
+//        String query = "select distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth " +
+//                "from tbl_visit a,tbl_encounter b ,tbl_patient c " +
+//                "where b.visituuid=a.uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+////                "and a.patientuuid=c.uuid and (a.enddate is not null OR a.enddate!='')  order by a.startdate
+
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
 
@@ -646,13 +672,28 @@ public class Closed_Visits_Activity extends AppCompatActivity {
 
     private List<ActivePatientModel> getSpeciality_Filter(List<String> providersuuids) {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query = "select distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth, d.value " +
+
+        /*String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
+                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f, tbl_provider g " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND (a.enddate is NOT NULL OR a.enddate != '') AND " +
+                "e.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') AND " +
+                "f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid " +
+                "AND obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%'" +
+                "ORDER BY a.startdate DESC";*/
+
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value, o.value AS obsvalue FROM tbl_visit a, tbl_patient b, tbl_visit_attribute c, tbl_encounter d, tbl_obs o WHERE b.uuid = a.patientuuid " +
+                "AND a.enddate is NOT NULL AND a.uuid = c.visit_uuid AND c.visit_uuid = d.visituuid AND d.uuid = o.encounteruuid  AND d.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "') AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce'  " +
+                "AND (obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC";
+
+        /*String query = "select distinct a.uuid, a.sync, c.uuid AS patientuuid,a.startdate AS startdate,a.enddate " +
+                "AS enddate, c.first_name,c.middle_name,c.last_name,c.openmrs_id,c.date_of_birth, d.value " +
                 "from tbl_visit a,tbl_encounter b ,tbl_patient c, tbl_visit_attribute d " +
-                "where b.visituuid=a.uuid and a.uuid = d.visit_uuid and b.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                "and a.patientuuid=c.uuid and (a.enddate is null OR a.enddate='')  order by a.startdate ASC";
+                "where b.visituuid=a.uuid and a.uuid = d.visit_uuid and b.provider_uuid " +
+                "in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
+                "and a.patientuuid=c.uuid and (a.enddate is not null OR a.enddate!='')  order by a.startdate ASC";*/
+
         Logger.logD(TAG, query);
         final Cursor cursor = db.rawQuery(query, null);
-
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
@@ -691,17 +732,15 @@ public class Closed_Visits_Activity extends AppCompatActivity {
         return phone;
     }
 
-    private List<ActivePatientModel> getExitSurvey_Comments(int offset) {
+    private List<ActivePatientModel> getExitSurvey_Comments(String useruuid,int offset) {
         List<ActivePatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, d.value, f.value as obsvalue " +
-                "FROM tbl_visit a, tbl_patient b, tbl_visit_attribute d, tbl_encounter e, tbl_obs f " +
-                "WHERE a.patientuuid = b.uuid AND a.uuid = d.visit_uuid AND f.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND a.uuid = e.visituuid AND e.uuid = f.encounteruuid AND (a.enddate is NOT NULL OR a.enddate != '') " +
-                "ORDER BY a.startdate DESC limit ? offset ?";
-        Logger.logD(TAG, "\n today_exit: " +query);
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value, o.value AS obsvalue FROM tbl_visit a, tbl_patient b, tbl_visit_attribute c, tbl_encounter d, tbl_obs o WHERE b.uuid = a.patientuuid AND a.enddate is NOT NULL AND a.uuid = c.visit_uuid AND c.visit_uuid = d.visituuid AND d.uuid = o.encounteruuid  AND d.provider_uuid = ? AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce'  " +
+                "AND (obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC limit ? offset ?";
 
-        final Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(limit), String.valueOf(offset)});
+        Logger.logD(TAG, "\n today_exit: " +query);
+        final Cursor cursor = db.rawQuery(query, new String[]{useruuid,String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {

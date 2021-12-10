@@ -160,34 +160,6 @@ public class ClosedVisitsAdapter extends RecyclerView.Adapter<ClosedVisitsAdapte
                         if (activePatient_speciality.get(i).getVisit_speciality() != null &&
                                 activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("TLD Query")) { //TLD Query as speciality.
 
-                            if (activePatientModel.getEnddate() == null) { // visit is NOT Ended/Active
-
-                                //Reason for Call - Start
-                                String tld_call = PatientsDAO.getReason_for_Call(activePatient_speciality.get(i).getPatientuuid());
-                                if(tld_call.equalsIgnoreCase("TLD 1st Attempt") || tld_call.equalsIgnoreCase("TLD 2nd Attempt") ||
-                                        tld_call.equalsIgnoreCase("TLD 3rd Attempt")) {
-                                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                                        holder.tld_reason_for_call.setText(switch_hi_Reason_for_Call_TAG(tld_call));
-                                    } else {
-                                        holder.tld_reason_for_call.setText(tld_call);
-                                    }
-                                    holder.tld_reason_for_call.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                    holder.tld_reason_for_call.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                                }
-                                //Reason for Call - End
-
-
-                                if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
-                                    holder.tld_query_tag.setText(R.string.tld_query_answered_tag); //Prescription is GIVEN
-                                    holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                    holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                                } else {
-                                    holder.tld_query_tag.setText(R.string.tld_query_asked_tag); //Prescription is NOT GIVEN
-                                    holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-                                    holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
-                                }
-                            }
-                            else {
                                 //Visit is ended...
                                 //check the spinner value for this from the exit survey selection and then
                                 // based on that checking add the text.
@@ -209,10 +181,10 @@ public class ClosedVisitsAdapter extends RecyclerView.Adapter<ClosedVisitsAdapte
                                             holder.tld_query_tag.setVisibility(View.GONE); // Any other spinner value is selected in PatientExitSurvey screen.
                                         }
                                     }
-                                }
                                 //end...
                             }
-                        } else {
+                        }
+                        else {
                             // Specilaity is not TLD Query and Agent Resolution
                             if (activePatient_speciality.get(i).getVisit_speciality() != null &&
                                     !activePatient_speciality.get(i).getVisit_speciality().equalsIgnoreCase("Agent Resolution")) {
