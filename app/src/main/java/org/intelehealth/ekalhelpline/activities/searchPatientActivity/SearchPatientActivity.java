@@ -78,7 +78,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     boolean fullyLoaded = false;
     Handler mHandler;
     EditText toolbarET;
-    ImageView toolbarClear, toolbarSearch;
+    ImageView toolbarClear, toolbarSearch, toolbarFilter;
+    LinearLayoutManager reLayoutManager;
 
 
     @Override
@@ -101,6 +102,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         toolbarET = findViewById(R.id.toolbar_ET);
         toolbarClear = findViewById(R.id.toolbar_clear);
         toolbarSearch = findViewById(R.id.toolbar_search);
+        toolbarFilter = findViewById(R.id.toolbar_filter);
         toolbarET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -148,6 +150,12 @@ public class SearchPatientActivity extends AppCompatActivity {
                 }
             }
         });
+        toolbarFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displaySingleSelectionDialog();
+            }
+        });
 
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
@@ -166,7 +174,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         mHandler = new Handler();
-        LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
+        reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -269,9 +277,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         try {
 //            getAllPatientsFromDB();
 
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
-
-
+            recycler = new SearchPatientAdapter(getAllPatientsFromDB(0), SearchPatientActivity.this);
 //            Log.i("db data", "" + getAllPatientsFromDB());
 //            RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
 //            recyclerView.setLayoutManager(reLayoutManager);
@@ -458,28 +464,22 @@ public class SearchPatientActivity extends AppCompatActivity {
         }
         dialogBuilder = new MaterialAlertDialogBuilder(SearchPatientActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
-
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
+
         dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
-
-
             @Override
             public void onClick(DialogInterface dialogInterface, int which, boolean isChecked) {
                 Logger.logD(TAG, "multichoice" + which + isChecked);
                 if (isChecked) {
                     // If the user checked the item, add it to the selected items
-                    if (finalCreator_uuid != null) {
-                        selectedItems.add(finalCreator_uuid[which]);
-                    }
-
-                } else if (selectedItems.contains(which)) {
+                    selectedItems.add(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
+                } else if (selectedItems.contains(finalCreator_uuid[which])) {
                     // Else, if the item is already in the array, remove it
-                    if (finalCreator_uuid != null) {
-                        selectedItems.remove(finalCreator_uuid[which]);
-                    }
+                    selectedItems.remove(finalCreator_uuid[which]);
+                    Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
                 }
-
             }
         });
 
@@ -488,11 +488,19 @@ public class SearchPatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
-                doQueryWithProviders(query, selectedItems);
+                if(selectedItems.isEmpty())
+                    firstQuery();
+                else
+                    doQueryWithProviders(selectedItems);
             }
         });
 
-        dialogBuilder.setNegativeButton(R.string.generic_cancel, null);
+        dialogBuilder.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                firstQuery();
+            }
+        });
 
         //dialogBuilder.show();
         AlertDialog alertDialog = dialogBuilder.create();
@@ -503,8 +511,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+//        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
     }
 
@@ -595,8 +602,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     }
 
-    private void doQueryWithProviders(String querytext, List<String> providersuuids) {
-        if (querytext == null) {
+    private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
             List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
             String query =
                     "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
@@ -605,7 +611,6 @@ public class SearchPatientActivity extends AppCompatActivity {
             Logger.logD(TAG, query);
             final Cursor cursor = db.rawQuery(query, null);
             Logger.logD(TAG, "Cursour count" + cursor.getCount());
-
             try {
                 if (cursor != null) {
                     if (cursor.moveToFirst()) {
@@ -632,73 +637,14 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
             try {
+                recyclerView.clearOnScrollListeners();
                 recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
-//            Log.i("db data", "" + getQueryPatients(query));
-//                RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-//                recyclerView.setLayoutManager(reLayoutManager);
-            /*    recyclerView.addItemDecoration(new
-                        DividerItemDecoration(this,
-                        DividerItemDecoration.VERTICAL));*/
                 recyclerView.setAdapter(recycler);
 
             } catch (Exception e) {
                 Logger.logE("doquery", "doquery", e);
             }
-        } else {
-            String search = querytext.trim().replaceAll("\\s", "");
-            List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-            String query =
-                    "select   b.openmrs_id,b.firstname,b.last_name,b.middle_name,b.uuid,b.date_of_birth  from tbl_visit a, tbl_patient b, tbl_encounter c WHERE" +
-                            "first_name LIKE " + "'%" + search +
-                            "%' OR middle_name LIKE '%" + search +
-                            "%' OR last_name LIKE '%" + search +
-                            "%' OR openmrs_id LIKE '%" + search +
-                            "%' " +
-                            "AND a.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
-                            "AND  a.patientuuid = b.uuid  AND c.visituuid=a.uuid " +
-                            "group by a.uuid order by b.uuid ASC";
-            Logger.logD(TAG, query);
-            final Cursor cursor = db.rawQuery(query, null);
-            Logger.logD(TAG, "Cursour count" + cursor.getCount());
-            try {
-                if (cursor != null) {
-                    if (cursor.moveToFirst()) {
-                        do {
-                            PatientDTO model = new PatientDTO();
-                            model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                            model.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                            model.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                            model.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
-                            model.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
-                            model.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
-                            model.setPhonenumber(StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))));
-                            modelList.add(model);
-
-                        } while (cursor.moveToNext());
-                    }
-                }
-                cursor.close();
-            } catch (DAOException sql) {
-                FirebaseCrashlytics.getInstance().recordException(sql);
-            }
-
-
-            try {
-                recycler = new SearchPatientAdapter(modelList, SearchPatientActivity.this);
-//                RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-//                recyclerView.setLayoutManager(reLayoutManager);
-           /*     recyclerView.addItemDecoration(new
-                        DividerItemDecoration(this,
-                        DividerItemDecoration.HORIZONTAL));*/
-                recyclerView.setAdapter(recycler);
-
-            } catch (Exception e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-                Logger.logE("doquery", "doquery", e);
-            }
-        }
-
-
+        return modelListwihtoutQuery;
     }
 
     private String phoneNumber(String patientuuid) throws DAOException {
