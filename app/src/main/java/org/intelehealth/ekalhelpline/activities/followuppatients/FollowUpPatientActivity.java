@@ -147,7 +147,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
                     Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(date);
                     int value = followUp.compareTo(currentD);
-                    if (value == -1) {
+                    if (value == -1 || value == 0 || value == 1) {
                         modelList.add(new FollowUpModel(
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
@@ -158,19 +158,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
-                    } else if (value == 0) {
-                        modelList.add(new FollowUpModel(
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-                                "null",
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),value));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -233,7 +221,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 //                doQueryWithProviders(selectedItems);
                 if(selectedItems.size()==1 && selectedItems.contains("Date") && date_string!=null && date_string!=" ")
                 {
-                    recycler = new FollowUpPatientAdapter(getAllPatientsFromDB(offset,date_string), FollowUpPatientActivity.this);
+                    recycler = new FollowUpPatientAdapter(doQueryWithDate(offset,date_string), FollowUpPatientActivity.this);
                     recyclerView.setAdapter(recycler);
                     recycler.notifyDataSetChanged();
                 }
@@ -279,7 +267,6 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 date_string = todayDateFormat.format(calendar.getTime());
             }
         }, year, month, day);
-        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         datePickerDialog.show();
 
         Button positiveButton = datePickerDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -369,7 +356,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),value));
                     } else if (value == 0) {
                         modelList.add(new FollowUpModel(
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
@@ -380,8 +367,54 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
                                 StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
-                                "null",
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),value));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+
+        return modelList;
+    }
+
+    public List<FollowUpModel> doQueryWithDate(int offset, String date) {
+        List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid";
+        final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    String followUpDate = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                    Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
+                    Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+                    int value = followUp.compareTo(currentD);
+                    if (value == -1) {
+                        modelList.add(new FollowUpModel(
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),value));
+                    } else if (value == 0) {
+                        modelList.add(new FollowUpModel(
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),value));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
