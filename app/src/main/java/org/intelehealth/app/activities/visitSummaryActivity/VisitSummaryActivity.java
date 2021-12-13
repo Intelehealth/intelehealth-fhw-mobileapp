@@ -155,7 +155,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
-public class VisitSummaryActivity extends AppCompatActivity implements PrinterObserver {
+public class VisitSummaryActivity extends AppCompatActivity/* implements PrinterObserver*/ {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
@@ -320,7 +320,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
     private boolean isRespiratory = false;
     String appLanguage;
 
-    TextView tv_device_selected;
+  /*  TextView tv_device_selected;
     Button btn_connect;
     private Object configObj;
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
@@ -328,7 +328,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
     private PrinterInterface curPrinterInterface = null;
-    IntelehealthApplication application;
+    IntelehealthApplication application;*/
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -617,7 +617,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
 
-        tv_device_selected = findViewById(R.id.tv_device_selected);
+        /*tv_device_selected = findViewById(R.id.tv_device_selected);
         btn_connect = findViewById(R.id.btn_connect);
         pb_connect = findViewById(R.id.pb_connect);
 
@@ -628,16 +628,17 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
         rtPrinter = printerFactory.create();
         rtPrinter.setPrinterInterface(curPrinterInterface);
         PrinterObserverManager.getInstance().add(this);
-        application.setRtPrinter(rtPrinter);
+        application.setRtPrinter(rtPrinter);*/
 
-        tv_device_selected.setOnClickListener(new View.OnClickListener() {
+     /*   tv_device_selected.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
                 showBluetoothDeviceChooseDialog();
             }
-        });
+        });*/
 
+/*
         btn_connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -645,10 +646,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
                 doConnect();
             }
         });
+*/
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 try {
                     textPrint();
                 } catch (UnsupportedEncodingException e) {
@@ -1817,50 +1820,50 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
         doQuery();
     }
 
-    private void doConnect() {
+//    private void doConnect() {
+//
+//        if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
+//            showAlertDialog(getString(R.string.main_pls_choose_device));
+//            return;
+//        }
+//
+//        pb_connect.setVisibility(View.VISIBLE);
+//                    TimeRecordUtils.record("Start：", System.currentTimeMillis());
+//                    BluetoothEdrConfigBean bluetoothEdrConfigBean = (BluetoothEdrConfigBean) configObj;
+//                    connectBluetooth(bluetoothEdrConfigBean);
+//    }
+//
+//    private void connectBluetooth(BluetoothEdrConfigBean bluetoothEdrConfigBean) {
+//        PIFactory piFactory = new BluetoothFactory();
+//        PrinterInterface printerInterface = piFactory.create();
+//        printerInterface.setConfigObject(bluetoothEdrConfigBean);
+//
+//        rtPrinter.setPrinterInterface(printerInterface);
+//        try {
+//            rtPrinter.connect(bluetoothEdrConfigBean);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            //do nothing...
+//        }
+//    }
+//
+//
+//    public void showAlertDialog(final String msg){
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                android.app.AlertDialog.Builder dialog =
+//                        new android.app.AlertDialog.Builder(VisitSummaryActivity.this);
+//                dialog.setTitle("Please connect device");
+//                dialog.setMessage(msg);
+//                dialog.setNegativeButton(R.string.cancel, null);
+//                dialog.show();
+//            }
+//        });
+//    }
 
-        if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
-            showAlertDialog(getString(R.string.main_pls_choose_device));
-            return;
-        }
-
-        pb_connect.setVisibility(View.VISIBLE);
-                    TimeRecordUtils.record("Start：", System.currentTimeMillis());
-                    BluetoothEdrConfigBean bluetoothEdrConfigBean = (BluetoothEdrConfigBean) configObj;
-                    connectBluetooth(bluetoothEdrConfigBean);
-    }
-
-    private void connectBluetooth(BluetoothEdrConfigBean bluetoothEdrConfigBean) {
-        PIFactory piFactory = new BluetoothFactory();
-        PrinterInterface printerInterface = piFactory.create();
-        printerInterface.setConfigObject(bluetoothEdrConfigBean);
-
-        rtPrinter.setPrinterInterface(printerInterface);
-        try {
-            rtPrinter.connect(bluetoothEdrConfigBean);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            //do nothing...
-        }
-    }
-
-
-    public void showAlertDialog(final String msg){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                android.app.AlertDialog.Builder dialog =
-                        new android.app.AlertDialog.Builder(VisitSummaryActivity.this);
-                dialog.setTitle("Please connect device");
-                dialog.setMessage(msg);
-                dialog.setNegativeButton(R.string.cancel, null);
-                dialog.show();
-            }
-        });
-    }
-
-    //This will open a Dialog that will show all the Bluetooth devices...
+   /* //This will open a Dialog that will show all the Bluetooth devices...
         private void showBluetoothDeviceChooseDialog() {
         BluetoothDeviceChooseDialog bluetoothDeviceChooseDialog = new BluetoothDeviceChooseDialog();
         bluetoothDeviceChooseDialog.setOnDeviceItemClickListener(
@@ -1878,52 +1881,52 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
             }
         });
         bluetoothDeviceChooseDialog.show(VisitSummaryActivity.this.getFragmentManager(), null);
-    }
+    }*/
 
-    private void isConfigPrintEnable(Object configObj) {
-        if (isInConnectList(configObj)) {
-            setPrintEnable(true);
-        } else {
-            setPrintEnable(false);
-        }
-    }
-
-    private void setPrintEnable(boolean isEnable) {
-       // btn_txt_print.setEnabled(isEnable);
-        card_print.setEnabled(isEnable);
-        btn_connect.setEnabled(!isEnable);
-       // btn_disConnect.setEnabled(isEnable);
-
-        /*btn_selftest_print.setEnabled(isEnable);
-        btn_img_print.setEnabled(isEnable);
-        btn_template_print.setEnabled(isEnable);
-        btn_barcode_print.setEnabled(isEnable);
-        btn_beep.setEnabled(isEnable);
-        btn_all_cut.setEnabled(isEnable);
-        btn_cash_box.setEnabled(isEnable);
-        btn_wifi_setting.setEnabled(isEnable);
-        btn_wifi_ipdhcp.setEnabled(isEnable);
-        btn_cmd_test.setEnabled(isEnable);
-        btn_test.setEnabled(isEnable);
-//        btn_label_setting.setEnabled(isEnable);
-        btn_print_status.setEnabled(isEnable);
-        btn_print_status2.setEnabled(isEnable);*/
-
-    }
-
-    private boolean isInConnectList(Object configObj) {
-        boolean isInList = false;
-        for (int i = 0; i < printerInterfaceArrayList.size(); i++) {
-            PrinterInterface printerInterface = printerInterfaceArrayList.get(i);
-            if (configObj.toString().equals(printerInterface.getConfigObject().toString())) {
-                if (printerInterface.getConnectState() == ConnectStateEnum.Connected) {
-                    isInList = true;
-                    break;
-                }
-            }
-        }
-        return isInList;
-    }
+//    private void isConfigPrintEnable(Object configObj) {
+//        if (isInConnectList(configObj)) {
+//            setPrintEnable(true);
+//        } else {
+//            setPrintEnable(false);
+//        }
+//    }
+//
+//    private void setPrintEnable(boolean isEnable) {
+//       // btn_txt_print.setEnabled(isEnable);
+//        card_print.setEnabled(isEnable);
+//        btn_connect.setEnabled(!isEnable);
+//       // btn_disConnect.setEnabled(isEnable);
+//
+//        /*btn_selftest_print.setEnabled(isEnable);
+//        btn_img_print.setEnabled(isEnable);
+//        btn_template_print.setEnabled(isEnable);
+//        btn_barcode_print.setEnabled(isEnable);
+//        btn_beep.setEnabled(isEnable);
+//        btn_all_cut.setEnabled(isEnable);
+//        btn_cash_box.setEnabled(isEnable);
+//        btn_wifi_setting.setEnabled(isEnable);
+//        btn_wifi_ipdhcp.setEnabled(isEnable);
+//        btn_cmd_test.setEnabled(isEnable);
+//        btn_test.setEnabled(isEnable);
+////        btn_label_setting.setEnabled(isEnable);
+//        btn_print_status.setEnabled(isEnable);
+//        btn_print_status2.setEnabled(isEnable);*/
+//
+//    }
+//
+//    private boolean isInConnectList(Object configObj) {
+//        boolean isInList = false;
+//        for (int i = 0; i < printerInterfaceArrayList.size(); i++) {
+//            PrinterInterface printerInterface = printerInterfaceArrayList.get(i);
+//            if (configObj.toString().equals(printerInterface.getConfigObject().toString())) {
+//                if (printerInterface.getConnectState() == ConnectStateEnum.Connected) {
+//                    isInList = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return isInList;
+//    }
 
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
@@ -4002,7 +4005,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
         isReceiverRegistered = false;
     }
 
-    @Override
+  /*  @Override
     public void printerObserverCallback(final PrinterInterface printerInterface, final int state) {
         runOnUiThread(new Runnable() {
             @Override
@@ -4052,7 +4055,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
-    }
+    }*/
 
 
     public class NetworkChangeReceiver extends BroadcastReceiver {
@@ -4488,6 +4491,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
     private void textPrint() throws UnsupportedEncodingException {
         String htmlDocPrescription = sms_prescription();
         String htmlDoctorDetails = getDoctorDetailsHTML();
+        Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
+        intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
+        intent_esc.putExtra("doctorDetails", htmlDoctorDetails);
+        startActivity(intent_esc);
+
+/*
         switch (IntelehealthApplication.getCurrentCmdType()) {
             case BaseEnum.CMD_ESC:
                 //turn2Activity(TextPrintESCActivity.class);
@@ -4500,6 +4509,7 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
                // turn2Activity(TextPrintActivity.class);
                 break;
         }
+*/
     }
 
     private String getDoctorDetailsHTML() {

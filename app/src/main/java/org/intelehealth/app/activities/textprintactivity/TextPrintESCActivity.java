@@ -1,9 +1,11 @@
 package org.intelehealth.app.activities.textprintactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,18 +21,30 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
 import com.rt.printerlibrary.bean.Position;
 import com.rt.printerlibrary.cmd.Cmd;
 import com.rt.printerlibrary.cmd.EscFactory;
+import com.rt.printerlibrary.connect.PrinterInterface;
 import com.rt.printerlibrary.enumerate.BmpPrintMode;
 import com.rt.printerlibrary.enumerate.CommonEnum;
+import com.rt.printerlibrary.enumerate.ConnectStateEnum;
 import com.rt.printerlibrary.enumerate.ESCFontTypeEnum;
 import com.rt.printerlibrary.enumerate.SettingEnum;
 import com.rt.printerlibrary.exception.SdkException;
 import com.rt.printerlibrary.factory.cmd.CmdFactory;
+import com.rt.printerlibrary.factory.connect.BluetoothFactory;
+import com.rt.printerlibrary.factory.connect.PIFactory;
+import com.rt.printerlibrary.factory.printer.PrinterFactory;
+import com.rt.printerlibrary.factory.printer.ThermalPrinterFactory;
+import com.rt.printerlibrary.observer.PrinterObserver;
+import com.rt.printerlibrary.observer.PrinterObserverManager;
 import com.rt.printerlibrary.printer.RTPrinter;
 import com.rt.printerlibrary.setting.BitmapSetting;
 import com.rt.printerlibrary.setting.CommonSetting;
@@ -39,16 +53,21 @@ import com.rt.printerlibrary.utils.BitmapConvertUtil;
 import com.rt.printerlibrary.utils.FuncUtils;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
 import org.intelehealth.app.utilities.BaseEnum;
+import org.intelehealth.app.utilities.TimeRecordUtils;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 public class TextPrintESCActivity extends AppCompatActivity implements View.OnClickListener,
-        CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener{
+        CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
+
     private static final String TAG = TextPrintESCActivity.class.getSimpleName();
-    private ScrollEditText et_text;
+    private TextView et_text;
     private Button btn_txtprint, btn_select_chartsetname;
     private CheckBox ck_smallfont, ck_anti_white, ck_double_width,
             ck_double_height, ck_bold, ck_underline;
@@ -56,7 +75,6 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private Spinner spin_esc_font_type;
     private EditText et_linespacing;
 
-    private RTPrinter rtPrinter;
     private String printStr;
     private TextSetting textSetting;
     private String mChartsetName = "UTF-8";
@@ -66,6 +84,14 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     IntelehealthApplication application;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 40;
+    TextView tv_device_selected;
+    Button btn_connect;
+    private Object configObj;
+    private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
+    private ProgressBar pb_connect;
+    private RTPrinter rtPrinter = null;
+    private PrinterFactory printerFactory;
+    private PrinterInterface curPrinterInterface = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,36 +100,52 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         initView();
         addListener();
         init();
+
+        application = new IntelehealthApplication();
+        application.setCurrentCmdType(BaseEnum.CMD_ESC);
+        // printerFactory = new UniversalPrinterFactory();
+        printerFactory = new ThermalPrinterFactory();
+        rtPrinter = printerFactory.create();
+        rtPrinter.setPrinterInterface(curPrinterInterface);
+        PrinterObserverManager.getInstance().add(this);
+        application.setRtPrinter(rtPrinter);
     }
 
     @SuppressLint("WrongViewCast")
     public void initView() {
         et_text = findViewById(R.id.et_text);
         btn_txtprint = findViewById(R.id.btn_txtprint);
-        ck_smallfont = findViewById(R.id.ck_smallfont);
-        ck_anti_white = findViewById(R.id.ck_anti_white);
-        ck_double_width = findViewById(R.id.ck_double_width);
-        ck_double_height = findViewById(R.id.ck_double_height);
-        ck_bold = findViewById(R.id.ck_bold);
-        ck_underline = findViewById(R.id.ck_underline);
-        rg_align_group = findViewById(R.id.rg_align_group);
-        btn_select_chartsetname = findViewById(R.id.btn_select_chartsetname);
-        spin_esc_font_type = findViewById(R.id.spin_esc_font_type);
-        et_linespacing = findViewById(R.id.et_linespacing);
+//        ck_smallfont = findViewById(R.id.ck_smallfont);
+//        ck_anti_white = findViewById(R.id.ck_anti_white);
+//        ck_double_width = findViewById(R.id.ck_double_width);
+//        ck_double_height = findViewById(R.id.ck_double_height);
+//        ck_bold = findViewById(R.id.ck_bold);
+//        ck_underline = findViewById(R.id.ck_underline);
+//        rg_align_group = findViewById(R.id.rg_align_group);
+//        btn_select_chartsetname = findViewById(R.id.btn_select_chartsetname);
+//        spin_esc_font_type = findViewById(R.id.spin_esc_font_type);
+//        et_linespacing = findViewById(R.id.et_linespacing);
+        tv_device_selected = findViewById(R.id.tv_device_selected);
+        btn_connect = findViewById(R.id.btn_connect);
+        pb_connect = findViewById(R.id.pb_connect);
     }
 
     public void addListener() {
         btn_txtprint.setOnClickListener(this);
-        btn_select_chartsetname.setOnClickListener(this);
+        tv_device_selected.setOnClickListener(this);
+        btn_connect.setOnClickListener(this);
 
-        ck_smallfont.setOnCheckedChangeListener(this);
-        ck_anti_white.setOnCheckedChangeListener(this);
-        ck_double_width.setOnCheckedChangeListener(this);
-        ck_double_height.setOnCheckedChangeListener(this);
-        ck_bold.setOnCheckedChangeListener(this);
-        ck_underline.setOnCheckedChangeListener(this);
-        rg_align_group.setOnCheckedChangeListener(this);
+//        btn_select_chartsetname.setOnClickListener(this);
+//        ck_smallfont.setOnCheckedChangeListener(this);
+//        ck_anti_white.setOnCheckedChangeListener(this);
+//        ck_double_width.setOnCheckedChangeListener(this);
+//        ck_double_height.setOnCheckedChangeListener(this);
+//        ck_bold.setOnCheckedChangeListener(this);
+//        ck_underline.setOnCheckedChangeListener(this);
+//        rg_align_group.setOnCheckedChangeListener(this);
 
+
+/*
         spin_esc_font_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
@@ -145,12 +187,22 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
+*/
     }
 
     public void init() {
         application = new IntelehealthApplication();
+        application.setCurrentCmdType(BaseEnum.CMD_ESC);
+        // printerFactory = new UniversalPrinterFactory();
+        printerFactory = new ThermalPrinterFactory();
+        rtPrinter = printerFactory.create();
+        rtPrinter.setPrinterInterface(curPrinterInterface);
+        PrinterObserverManager.getInstance().add(this);
+        application.setRtPrinter(rtPrinter);
+
         rtPrinter = IntelehealthApplication.getRtPrinter();
         textSetting = new TextSetting();
+
         intent = this.getIntent();
         if(intent != null) {
             et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
@@ -158,8 +210,11 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
         }
 
+        et_text.setText(prescData + doctorDetails);
+
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
         showImage(uri);
+
     }
 
     private void textPrint() throws UnsupportedEncodingException {
@@ -181,6 +236,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     /**
      * line spacing setting
      */
+/*
     private int getInputLineSpacing() {
         String strLineSpacing = et_linespacing.getText().toString();
         if (TextUtils.isEmpty(strLineSpacing)) {
@@ -193,6 +249,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         }
         return n;
     }
+*/
 
     public static String stringToUnicode(String string) {
         StringBuffer unicode = new StringBuffer();
@@ -224,7 +281,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
             Position txtposition = new  Position(0,0);
             textSetting.setTxtPrintPosition(txtposition);
-            commonSetting.setEscLineSpacing(getInputLineSpacing());
+           // commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
             escCmd.append(escCmd.getTextCmd(textSetting, prescData));
             escCmd.append(escCmd.getLFCRCmd());
@@ -282,8 +339,14 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                     e.printStackTrace();
                 }
                 break;
-            case R.id.btn_select_chartsetname:
+            /*case R.id.btn_select_chartsetname:
                 showSelectChartsetnameDialog();
+                break;*/
+            case R.id.tv_device_selected:
+                showBluetoothDeviceChooseDialog(); // Here on click, will open the Dialog that will show all the nearby Bluetooth devices...
+                break;
+            case R.id.btn_connect:
+                doConnect(); //Here on clicking will connect with the selected Bluetooth device...
                 break;
             default:
                 break;
@@ -339,24 +402,22 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, int i) {
-        switch (i) {
-            case R.id.rb_align_left:
-                textSetting.setAlign(CommonEnum.ALIGN_LEFT);
-                break;
-            case R.id.rb_align_middle:
-                textSetting.setAlign(CommonEnum.ALIGN_MIDDLE);
-                break;
-            case R.id.rb_align_right:
-                textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
-                break;
-            default:
-                break;
-        }
+//        switch (i) {
+//            case R.id.rb_align_left:
+//                textSetting.setAlign(CommonEnum.ALIGN_LEFT);
+//                break;
+//            case R.id.rb_align_middle:
+//                textSetting.setAlign(CommonEnum.ALIGN_MIDDLE);
+//                break;
+//            case R.id.rb_align_right:
+//                textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
+//                break;
+//            default:
+//                break;
+//        }
     }
 
     private void showImage(Uri uri) {
-//        llUploadImage.setVisibility(View.GONE);
-//        flContent.setVisibility(View.VISIBLE);
 
         if (mBitmap != null) {
             mBitmap.recycle();
@@ -385,6 +446,150 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 //        Log.d(TAG, "mBitmap getWidth = " + mBitmap.getWidth());
 //        Log.d(TAG, "mBitmap getHeight = " + mBitmap.getHeight());
        // ivImage.setImageBitmap(mBitmap);
+    }
+
+    //This will open a Dialog that will show all the Bluetooth devices...
+    private void showBluetoothDeviceChooseDialog() {
+        BluetoothDeviceChooseDialog bluetoothDeviceChooseDialog = new BluetoothDeviceChooseDialog();
+        bluetoothDeviceChooseDialog.setOnDeviceItemClickListener(
+                new BluetoothDeviceChooseDialog.onDeviceItemClickListener() {
+                    @Override
+                    public void onDeviceItemClick(BluetoothDevice device) {
+                        if (TextUtils.isEmpty(device.getName())) {
+                            tv_device_selected.setText(device.getAddress());
+                        } else {
+                            tv_device_selected.setText(device.getName() + " [" + device.getAddress() + "]");
+                        }
+                        configObj = new BluetoothEdrConfigBean(device);
+                        tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
+                        isConfigPrintEnable(configObj);
+                    }
+                });
+        bluetoothDeviceChooseDialog.show(TextPrintESCActivity.this.getFragmentManager(), null);
+    }
+
+    private void isConfigPrintEnable(Object configObj) {
+        if (isInConnectList(configObj)) {
+            setPrintEnable(true);
+        } else {
+            setPrintEnable(false);
+        }
+    }
+
+    private void setPrintEnable(boolean isEnable) {
+        // btn_txt_print.setEnabled(isEnable);
+        btn_connect.setEnabled(!isEnable);
+        // btn_disConnect.setEnabled(isEnable);
+
+    }
+
+    private boolean isInConnectList(Object configObj) {
+        boolean isInList = false;
+        for (int i = 0; i < printerInterfaceArrayList.size(); i++) {
+            PrinterInterface printerInterface = printerInterfaceArrayList.get(i);
+            if (configObj.toString().equals(printerInterface.getConfigObject().toString())) {
+                if (printerInterface.getConnectState() == ConnectStateEnum.Connected) {
+                    isInList = true;
+                    break;
+                }
+            }
+        }
+        return isInList;
+    }
+
+    private void doConnect() {
+
+        if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) { // No device is selected.
+            showAlertDialog(getString(R.string.main_pls_choose_device));
+            return;
+        }
+
+        pb_connect.setVisibility(View.VISIBLE);
+        TimeRecordUtils.record("Start：", System.currentTimeMillis());
+        BluetoothEdrConfigBean bluetoothEdrConfigBean = (BluetoothEdrConfigBean) configObj;
+        connectBluetooth(bluetoothEdrConfigBean);
+    }
+
+    private void connectBluetooth(BluetoothEdrConfigBean bluetoothEdrConfigBean) {
+        PIFactory piFactory = new BluetoothFactory();
+        PrinterInterface printerInterface = piFactory.create();
+        printerInterface.setConfigObject(bluetoothEdrConfigBean);
+
+        rtPrinter.setPrinterInterface(printerInterface);
+        try {
+            rtPrinter.connect(bluetoothEdrConfigBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            //do nothing...
+        }
+    }
+
+
+    public void showAlertDialog(final String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                android.app.AlertDialog.Builder dialog =
+                        new android.app.AlertDialog.Builder(TextPrintESCActivity.this);
+                dialog.setTitle("Please connect device");
+                dialog.setMessage(msg);
+                dialog.setNegativeButton(R.string.cancel, null);
+                dialog.show();
+            }
+        });
+    }
+
+    @Override
+    public void printerObserverCallback(final PrinterInterface printerInterface, final int state) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                pb_connect.setVisibility(View.GONE);
+                switch (state) {
+                    case CommonEnum.CONNECT_STATE_SUCCESS:
+                        TimeRecordUtils.record("RT连接end：", System.currentTimeMillis());
+                        Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
+                                + getString(R.string._main_connected), Toast.LENGTH_SHORT).show();
+                        tv_device_selected.setText(printerInterface.getConfigObject().toString());
+                        tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
+                        curPrinterInterface = printerInterface; // set current Printer Interface
+                        printerInterfaceArrayList.add(printerInterface);
+                        rtPrinter.setPrinterInterface(printerInterface);
+                        setPrintEnable(true);
+                        break;
+                    case CommonEnum.CONNECT_STATE_INTERRUPTED:
+                        if (printerInterface != null && printerInterface.getConfigObject() != null) {
+                            Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
+                                            + getString(R.string._main_disconnect),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(TextPrintESCActivity.this, getString(R.string._main_disconnect),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        TimeRecordUtils.record("Time：", System.currentTimeMillis());
+                        tv_device_selected.setText(R.string.please_connect);
+                        tv_device_selected.setTag(BaseEnum.NO_DEVICE);
+                        curPrinterInterface = null;
+                        printerInterfaceArrayList.remove(printerInterface);
+                        setPrintEnable(false);
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    }
+
+    @Override
+    public void printerReadMsgCallback(PrinterInterface printerInterface, byte[] bytes) {
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 
 }
