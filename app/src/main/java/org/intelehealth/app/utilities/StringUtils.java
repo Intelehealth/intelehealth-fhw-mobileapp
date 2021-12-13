@@ -260,25 +260,27 @@ public final class StringUtils {
 
 
 public static String switch_ru_education(String val) {
-        switch (val) {
-            case "Безграмотный":
-                val = "Illiterate";
-                break;
-            case "Начальный":
-                val = "Primary";
-                break;
-            case "Вторичный":
-                val = "Secondary";
-                break;
-            case "Высшее среднее":
-                val = "Higher Secondary";
-                break;
-            case "Выпускной и высшее":
-                val = "Graduation & Higher";
-                break;
-            default:
-                return val;
-        }
+    switch (val) {
+        case "Безграмотный":
+            val = "Illiterate";
+            break;
+        case "Начальный":
+            val = "Primary";
+            break;
+        case "Вторичный":
+            val = "Secondary";
+            break;
+        case "Высшее среднее":
+            val = "Higher Secondary";
+            break;
+        case "Выпускной и высшее":
+            val = "Graduation & Higher";
+            break;
+        default:
+            return val;
+    }
+    return val;
+}
     public static String switch_gu_education_edit(String val) {
         switch (val) {
             case "Illiterate":
@@ -373,6 +375,8 @@ public static String switch_ru_education(String val) {
             default:
                 return val;
         }
+        return val;
+    }
 
     public static String switch_gu_caste_edit(String val) {
         switch (val) {
