@@ -4514,12 +4514,12 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
 
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
+                    "<br><span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
                             "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
                             + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                             doctrRegistartionNum;
 
-            Log.e("precs", "htmlpresc: "+ Html.fromHtml(doctorDetailStr).toString());
+            Log.e("precs", "htmlpresc_doctor: "+ Html.fromHtml(doctorDetailStr).toString());
 
 //                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
 //                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";

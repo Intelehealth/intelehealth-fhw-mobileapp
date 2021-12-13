@@ -6,7 +6,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,19 +25,24 @@ import android.widget.Spinner;
 import com.rt.printerlibrary.bean.Position;
 import com.rt.printerlibrary.cmd.Cmd;
 import com.rt.printerlibrary.cmd.EscFactory;
+import com.rt.printerlibrary.enumerate.BmpPrintMode;
 import com.rt.printerlibrary.enumerate.CommonEnum;
 import com.rt.printerlibrary.enumerate.ESCFontTypeEnum;
 import com.rt.printerlibrary.enumerate.SettingEnum;
+import com.rt.printerlibrary.exception.SdkException;
 import com.rt.printerlibrary.factory.cmd.CmdFactory;
 import com.rt.printerlibrary.printer.RTPrinter;
+import com.rt.printerlibrary.setting.BitmapSetting;
 import com.rt.printerlibrary.setting.CommonSetting;
 import com.rt.printerlibrary.setting.TextSetting;
+import com.rt.printerlibrary.utils.BitmapConvertUtil;
 import com.rt.printerlibrary.utils.FuncUtils;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.BaseEnum;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 public class TextPrintESCActivity extends AppCompatActivity implements View.OnClickListener,
@@ -55,6 +63,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private ESCFontTypeEnum curESCFontType = null;
     Intent intent;
     String prescData, doctorDetails;
+    IntelehealthApplication application;
+    private Bitmap mBitmap = null;
+    private int bmpPrintWidth = 40;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +148,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void init() {
+        application = new IntelehealthApplication();
         rtPrinter = IntelehealthApplication.getRtPrinter();
         textSetting = new TextSetting();
         intent = this.getIntent();
@@ -144,8 +156,10 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
             prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
-
         }
+
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
+        showImage(uri);
     }
 
     private void textPrint() throws UnsupportedEncodingException {
@@ -202,15 +216,25 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             escCmd.append(escCmd.getHeaderCmd());//初始化, Initial //btnCmds = 2......
             escCmd.setChartsetName(mChartsetName);
             CommonSetting commonSetting = new CommonSetting();
+
+            BitmapSetting bitmapSetting = new BitmapSetting();
+            bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
+            bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
+
+
             Position txtposition = new  Position(0,0);
-            textSetting.setTxtPrintPosition(txtposition);//如果没设置X值的偏移，就不要调用了
+            textSetting.setTxtPrintPosition(txtposition);
             commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
             escCmd.append(escCmd.getTextCmd(textSetting, prescData));
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
-            escCmd.append(escCmd.getLFCRCmd());
-            escCmd.append(escCmd.getLFCRCmd());
+
+            try {
+                escCmd.append(escCmd.getBitmapCmd(bitmapSetting, mBitmap));
+            } catch (SdkException e) {
+                e.printStackTrace();
+            }
             escCmd.append(escCmd.getLFCRCmd());
 
             //here it prints 2nd time taking the position of the cursor where the priting ended above.
@@ -329,4 +353,38 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
+
+    private void showImage(Uri uri) {
+//        llUploadImage.setVisibility(View.GONE);
+//        flContent.setVisibility(View.VISIBLE);
+
+        if (mBitmap != null) {
+            mBitmap.recycle();
+            mBitmap = null;
+            System.gc();
+        }
+        try {
+            mBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (application.getCurrentCmdType() == BaseEnum.CMD_ESC) {
+            if (mBitmap.getWidth() > 48 * 8) {
+                mBitmap = BitmapConvertUtil.decodeSampledBitmapFromUri(TextPrintESCActivity.this, uri, 48 * 8, 4000);
+            }
+        } else if (application.getCurrentCmdType() == BaseEnum.CMD_PIN) {
+            if (mBitmap.getWidth() > 210 * 8) {
+                mBitmap = BitmapConvertUtil.decodeSampledBitmapFromUri(TextPrintESCActivity.this, uri, 210 * 8, 4000);
+            }
+        } else {
+            if (mBitmap.getWidth() > 72 * 8) {
+                mBitmap = BitmapConvertUtil.decodeSampledBitmapFromUri(TextPrintESCActivity.this, uri, 72 * 8, 4000);
+            }
+        }
+
+//        Log.d(TAG, "mBitmap getWidth = " + mBitmap.getWidth());
+//        Log.d(TAG, "mBitmap getHeight = " + mBitmap.getHeight());
+       // ivImage.setImageBitmap(mBitmap);
+    }
+
 }
