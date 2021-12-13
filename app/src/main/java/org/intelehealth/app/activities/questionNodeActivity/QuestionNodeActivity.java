@@ -581,11 +581,21 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-hi", "क्या आपको निम्नलिखित लक्षण हैं?");
                 assoSympObj.put("display-or", "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?");
                 assoSympObj.put("display-gj", "શું તમારી પાસે નીચેના લક્ષણ (ઓ) છે?");
+                assoSympObj.put("display-kn", "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣವನ್ನು ಹೊಂದಿದ್ದೀರಾ?");
+                assoSympObj.put("display-te", "మీకు ఈ క్రింది లక్షణం (లు) ఉన్నాయా?");
+                assoSympObj.put("display-mr", "तुम्हाला खालील लक्षणे आहेत का?");
+                assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
+                assoSympObj.put("display-ml", "നിങ്ങൾക്ക് ഇനിപ്പറയുന്ന രോഗലക്ഷണം ഉണ്ടോ?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
+                finalAssoSympObj.put("display-kn", "ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು");
+                finalAssoSympObj.put("display-ml", "ബന്ധപ്പെട്ട രോഗലക്ഷണങ്ങൾ");
+                finalAssoSympObj.put("display-as", "সম্পৰ্কিত লক্ষণসমূহ");
+                finalAssoSympObj.put("display-mr", "संबंधित लक्षणे");
+                finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
                 finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
@@ -616,6 +626,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
+            setTitle(patientName + ": " + currentNode.findDisplay());
             setTitle(patientName + ": " + currentNode.findDisplay());
 
         }
@@ -670,6 +681,78 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "દર અઠવાડિયે વખત")
                     .replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "વર્ષ દીઠ વખત")));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
+                    .replace("Patient reports -", "రోగి నివేదికలు -")
+                    .replace("Patient denies -", "రోగి నిరాకరించాడు -")
+                    .replace("Hours", "గంటలు").replace("Days", "రోజులు")
+                    .replace("Weeks", "వారాలు").replace("Months", "నెలల")
+                    .replace("Years", "సంవత్సరాలు")
+                    .replace("times per hour", "గంటకు సార్లు")
+                    .replace("time per day", "రోజుకు సార్లు")
+                    .replace("times per week", "వారానికి సార్లు")
+                    .replace("times per month", "నెలకు సార్లు")
+                    .replace("times per year", "సంవత్సరానికి సార్లు")));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
+                    .replace("Patient reports -", "रुग्ण अहवाल-")
+                    .replace("Patient denies -", "रुग्ण नकार देतो-")
+                    .replace("Hours", "तास")
+                    .replace("Days", "दिवस")
+                    .replace("Weeks", "आठवडे")
+                    .replace("Months", "महिने")
+                    .replace("Years", "वर्षे")
+                    .replace("times per hour", "प्रति तास")
+                    .replace("time per day", "दररोज वेळा")
+                    .replace("times per week", "आठवड्यातून काही वेळा")
+                    .replace("times per month", "दरमहा वेळा")
+                    .replace("times per year", "दरवर्षी वेळा")));
+
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಲಾಗಿಲ್ಲ")
+                    .replace("Patient reports -", "ರೋಗಿಯ ವರದಿಗಳು-")
+                    .replace("Patient denies -", "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-")
+                    .replace("Hours", "ಗಂಟೆಗಳು").replace("Days", "ದಿನಗಳು")
+                    .replace("Weeks", "ವಾರಗಳು").replace("Months", "ತಿಂಗಳುಗಳು")
+                    .replace("Years", "ವರ್ಷಗಳು")
+                    .replace("times per hour", "ಗಂಟೆಗೆ ಬಾರಿ").replace("time per day", "ದಿನಕ್ಕೆ ಬಾರಿ")
+                    .replace("times per week", "ವಾರಕ್ಕೆ ಬಾರಿ").replace("times per month", "ತಿಂಗಳಿಗೆ ಬಾರಿ")
+                    .replace("times per year", "ವರ್ಷಕ್ಕೆ ಬಾರಿ")));
+        }
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই")
+                    .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
+                    .replace("Patient denies -", "ৰোগীয়ে অস্বীকাৰ কৰে -")
+                    .replace("Hours", "ঘণ্টা").replace("Days", "দিনসমূহ")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাহ")
+                    .replace("Years", "বছৰ")
+                    .replace("times per hour", "প্ৰতি ঘণ্টাত সময়")
+                    .replace("time per day", "প্ৰতিদিনে সময়")
+                    .replace("times per week", "প্ৰতি সপ্তাহত সময়")
+                    .replace("times per month", "প্ৰতি মাহে সময়")
+                    .replace("times per year", "প্ৰতি বছৰে সময়")));
+        }
+         //Malyalam Language Support...
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "ചോദ്യത്തിന് ഉത്തരം ലഭിച്ചില്ല")
+                    .replace("Patient reports -", "രോഗിയുടെ റിപ്പോർട്ടുകൾ -")
+                    .replace("Patient denies -", "രോഗി നിരസിക്കുന്നു -")
+                    .replace("Hours", "മണിക്കൂറുകൾ").replace("Days", "ദിവസങ്ങളിൽ")
+                    .replace("Weeks", "ആഴ്ചകൾ").replace("Months", "മാസങ്ങൾ")
+                    .replace("Years", "വർഷങ്ങൾ")
+                    .replace("times per hour", "മണിക്കൂറിൽ തവണ")
+                    .replace("time per day", "പ്രതിദിനം തവണ")
+                    .replace("times per week", "ആഴ്ചയിൽ തവണ")
+                    .replace("times per month", "മാസത്തിൽ തവണ")
+                    .replace("times per year", "വർഷത്തിൽ തവണ")));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));

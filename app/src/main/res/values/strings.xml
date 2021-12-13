@@ -527,6 +527,7 @@
     <string name="syncing_visitDialog">Refreshing</string>
     <string name="successfully_synced_notif">Successfully Refreshed</string>
     <string name="languages">Languages</string>
+    <string name="change_languages">Change Languages</string>
     <string name="current_language">Current Language</string>
 
     <string name="protocols_downloaded_successfully">Protocols Downloaded Successfully!</string>
@@ -667,6 +668,12 @@
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
+    <!--    Strings for special Check-->
+    <string name="str_check_Odisha">Odisha</string>
+    <string name="str_check_Bukidnon">Bukidnon</string>
+    <string name="str_check_India">India</string>
+    <string name="str_check_UnitedStates">United States</string>
+    <string name="str_check_Philippines">Philippines</string>
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
     <string name="due_on">Due Date:</string>

@@ -525,6 +525,7 @@
     <string name="syncing_visitDialog">सिंकिंग</string>
     <string name="successfully_synced_notif">सफलतापूर्वक सिंक किया गया</string>
     <string name="languages">भाषए</string>
+    <string name="change_languages">भाषा बदलें</string>
     <string name="current_language">सेलेक्टेड भाषा</string>
     <string name="protocols_downloaded_successfully">प्रोटोकॉल सफलतापूर्वक डाउनलोड!</string>
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
@@ -671,4 +672,11 @@
     <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
 
 
+
+<!--    Strings for special Check-->
+    <string name="str_check_Odisha">Odisha</string>
+    <string name="str_check_Bukidnon">Bukidnon</string>
+   <string name="str_check_India">इंडिया</string>
+    <string name="str_check_UnitedStates">संयुक्त राज्य अमेरिका</string>
+     <string name="str_check_Philippines">फिलीपींस</string>
 </resources>

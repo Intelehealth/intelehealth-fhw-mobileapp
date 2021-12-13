@@ -118,7 +118,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this, rowListItem, AppConstants.IMAGE_PATH);
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials, rowListItem, AppConstants.IMAGE_PATH);
             recyclerView.setAdapter(recyclerViewAdapter);
 
         }
@@ -240,6 +240,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
 
 /**
  * @param filePath Final Image path to compress.
+ *
  * */
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {

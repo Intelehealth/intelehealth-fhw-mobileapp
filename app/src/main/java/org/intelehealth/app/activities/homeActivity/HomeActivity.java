@@ -15,6 +15,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -137,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview;
+            activeVisits_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
 
     private void saveToken() {
@@ -284,6 +286,8 @@ public class HomeActivity extends AppCompatActivity {
         c6 = findViewById(R.id.cardview_help_whatsapp);
         ((TextView) findViewById(R.id.tvLocation)).setText(String.format("%s: %s", getText(R.string.location), sessionManager.getLocationName()));
 
+        tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
+        tvActiveVisitsBadge = findViewById(R.id.tvActiveVisitsBadge);
         //card textview referrenced to fix bug of localization not working in some cases...
         /*newPatient_textview = findViewById(R.id.newPatient_textview);
         newPatient_textview.setText(R.string.new_patient);*/
@@ -844,6 +848,8 @@ public class HomeActivity extends AppCompatActivity {
                 && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
         }
+
+
         super.onResume();
     }
 
@@ -852,6 +858,25 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
+        showBadge();
+    }
+
+    private void showBadge() {
+        long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+
+        tvTodayVisitsBadge.setVisibility(View.VISIBLE);
+        if (todayPatientCount > 0) {
+            tvTodayVisitsBadge.setText("(" + String.valueOf(todayPatientCount) + ")");
+        } else {
+            tvTodayVisitsBadge.setText("(0)");
+        }
+        tvActiveVisitsBadge.setVisibility(View.VISIBLE);
+        if (activePatientCount > 0) {
+            tvActiveVisitsBadge.setText("(" + String.valueOf(activePatientCount) + ")");
+        } else {
+            tvActiveVisitsBadge.setText("(0)");
+        }
     }
 
     @Override
@@ -1098,6 +1123,7 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
+                    showBadge();
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
