@@ -446,6 +446,7 @@ public class SearchPatientActivity extends AppCompatActivity {
 
         ProviderDAO providerDAO = new ProviderDAO();
         ArrayList selectedItems = new ArrayList<>();
+        selectedItems.clear();
         String[] creator_names = null;
         String[] creator_uuid = null;
         try {
@@ -490,8 +491,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         dialogBuilder.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                firstQuery();
-            }
+                firstQuery(); }
         });
 
         //dialogBuilder.show();
@@ -597,7 +597,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     private List<PatientDTO> doQueryWithProviders(List<String> providersuuids) {
             List<PatientDTO> modelListwihtoutQuery = new ArrayList<PatientDTO>();
             String query =
-                    "select b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
+                    "select distinct b.openmrs_id,b.first_name,b.last_name,b.middle_name,b.uuid,b.date_of_birth from tbl_visit a, tbl_patient b, tbl_encounter c WHERE a.patientuuid = b.uuid  AND c.visituuid=a.uuid and c.provider_uuid in " +
                             "('" + StringUtils.convertUsingStringBuilder(providersuuids) + "')  " +
                             "group by a.uuid order by b.uuid ASC";
             Logger.logD(TAG, query);
@@ -631,6 +631,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             try {
                 recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
                 recyclerView.setAdapter(recycler);
+                recyclerView.clearOnScrollListeners();
 
             } catch (Exception e) {
                 Logger.logE("doquery", "doquery", e);

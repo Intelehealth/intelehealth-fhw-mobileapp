@@ -59,7 +59,7 @@ public class CompletedVisitsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_patient);
+        setContentView(R.layout.activity_active_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -83,7 +83,7 @@ public class CompletedVisitsActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
-        recyclerView = findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.today_patient_recycler_view);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         if (sessionManager.isPullSyncFinished()) {
@@ -142,10 +142,10 @@ public class CompletedVisitsActivity extends AppCompatActivity {
                 "AND (obsvalue like '%TLD Closed%' or obsvalue like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC limit ? offset ?";*/
 
         String query = "SELECT distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, " +
-                "b.openmrs_id, o.value, c.value AS speciality FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE b.uuid = a.patientuuid " +
+                "b.openmrs_id, o.value, c.value AS speciality, c.visit_uuid FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE b.uuid = a.patientuuid " +
                 "AND  a.enddate is NOT NULL  AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND a.uuid = c.visit_uuid  AND d.provider_uuid = ? " +
                 "AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND (o.value like '%TLD Resolved%' or o.value " +
-                "like '%Doctor Resolution Resolved%' or speciality like '%Agent Resolution%'  or speciality like '%Curiosity Resolution%') ORDER BY a.startdate DESC limit ? offset ?";
+                "like '%Doctor Resolution Resolved%' or speciality like '%Agent Resolution%'  or speciality like '%Curiosity Resolution%') GROUP BY c.visit_uuid ORDER BY a.startdate DESC limit ? offset ?";
 
         final Cursor cursor = db.rawQuery(query, new String[]{userUuid,String.valueOf(limit), String.valueOf(offset)});
         if (cursor != null) {
@@ -215,11 +215,11 @@ public class CompletedVisitsActivity extends AppCompatActivity {
     private static List<ActivePatientModel> doQuery_(String user_uuid) {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         List<ActivePatientModel> activePatientList = new ArrayList<>();
-        String query = "SELECT distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, o.value, c.value AS speciality " +
+        String query = "SELECT distinct a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, o.value, c.value AS speciality, c.visit_uuid " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE b.uuid = a.patientuuid AND  a.enddate is NOT NULL  " +
                 "AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND a.uuid = c.visit_uuid  AND d.provider_uuid = ? " +
                 "AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce'  AND (o.value like '%TLD Resolved%' or o.value like '%Doctor Resolution Resolved%' or " +
-                "speciality like '%Agent Resolution%'  or speciality like '%Curiosity Resolution%') ORDER BY a.startdate DESC";
+                "speciality like '%Agent Resolution%'  or speciality like '%Curiosity Resolution%') GROUP BY c.visit_uuid ORDER BY a.startdate DESC";
         final Cursor cursor = db.rawQuery(query, new String[]{user_uuid});
         Log.v("main", "doquery: "+ query);
         if (cursor != null) {

@@ -60,7 +60,7 @@ public class ClosedVisitsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_patient);
+        setContentView(R.layout.activity_active_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -84,7 +84,7 @@ public class ClosedVisitsActivity extends AppCompatActivity {
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
-        recyclerView = findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.today_patient_recycler_view);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         if (sessionManager.isPullSyncFinished()) {

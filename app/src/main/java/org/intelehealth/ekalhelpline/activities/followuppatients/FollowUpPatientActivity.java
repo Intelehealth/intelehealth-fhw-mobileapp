@@ -71,7 +71,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_patient);
+        setContentView(R.layout.activity_active_patient);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
@@ -98,7 +98,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
-        recyclerView = findViewById(R.id.recycle);
+        recyclerView = findViewById(R.id.today_patient_recycler_view);
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         if (sessionManager.isPullSyncFinished()) {
@@ -253,7 +253,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                 }
                 else if(selectedItems.size()==2 && selectedItems.contains("Date") && selectedItems.contains("Creator") && date_string!=null && date_string!=" " && !creatorsSelected.isEmpty())
                 {
-                    List<FollowUpModel> requiredPatients = doQueryWithProviders(creatorsSelected,date_string);
+                    List<FollowUpModel> requiredPatients = doQueryWithProvidersWithDate(creatorsSelected,date_string);
                     recycler = new FollowUpPatientAdapter(requiredPatients, FollowUpPatientActivity.this);
                     if(requiredPatients.size()>0)
                         no_records_found_textview.setVisibility(View.GONE);
@@ -313,6 +313,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
         dialogBuilder = new MaterialAlertDialogBuilder(FollowUpPatientActivity.this);
         dialogBuilder.setTitle(getString(R.string.filter_by_creator));
+        selectedCreators.clear();
         String[] finalCreator_names = creator_names;
         String[] finalCreator_uuid = creator_uuid;
         dialogBuilder.setMultiChoiceItems(creator_names, null, new DialogInterface.OnMultiChoiceClickListener() {
@@ -324,7 +325,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                     // If the user checked the item, add it to the selected items
                     selectedCreators.add(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
-                } else if (selectedCreators.contains(which)) {
+                } else if (selectedCreators.contains(finalCreator_uuid[which])) {
                     // Else, if the item is already in the array, remove it
                     selectedCreators.remove(finalCreator_uuid[which]);
                     Logger.logD(TAG, finalCreator_names[which] + finalCreator_uuid[which]);
@@ -337,6 +338,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
+                creatorsSelected.clear();
                 creatorsSelected.addAll(selectedCreators);
 //                doQueryWithProviders(selectedCreators,currentDate);
             }
@@ -357,7 +359,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         return selectedCreators;
     }
 
-    private List<FollowUpModel> doQueryWithProviders(List<String> providersUuids, String date) {
+    private List<FollowUpModel> doQueryWithProvidersWithDate(List<String> providersUuids, String date) {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND " +
                 "d.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') " +
@@ -405,6 +407,44 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
         return modelList;
     }
+
+    private List<FollowUpModel> doQueryWithProviders(List<String> providersUuids, String date) {
+        List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND " +
+                "d.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') " +
+                "AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid";
+
+        final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    String followUpDate = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                    Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
+                    Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+                    int value = followUp.compareTo(currentD);
+                    if (value == -1 || value == 0 || value == 1) {
+                        modelList.add(new FollowUpModel(
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
+                                StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),value));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+
+        return modelList;
+    }
+
 
     public List<FollowUpModel> doQueryWithDate(int offset, String date) {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
