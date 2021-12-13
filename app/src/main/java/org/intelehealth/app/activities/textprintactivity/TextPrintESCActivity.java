@@ -54,6 +54,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private String mChartsetName = "UTF-8";
     private ESCFontTypeEnum curESCFontType = null;
     Intent intent;
+    String prescData, doctorDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +142,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         intent = this.getIntent();
         if(intent != null) {
             et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
+            prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+            doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
+
         }
     }
 
@@ -202,7 +206,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             textSetting.setTxtPrintPosition(txtposition);//如果没设置X值的偏移，就不要调用了
             commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
-            escCmd.append(escCmd.getTextCmd(textSetting, printStr));
+            escCmd.append(escCmd.getTextCmd(textSetting, prescData));
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
@@ -210,15 +214,15 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             escCmd.append(escCmd.getLFCRCmd());
 
             //here it prints 2nd time taking the position of the cursor where the priting ended above.
-            /*txtposition.x = 160;
+            txtposition.x = 160;
             textSetting.setTxtPrintPosition(txtposition);
-            escCmd.append(escCmd.getTextCmd(textSetting, printStr));
+            escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getHeaderCmd());
-            escCmd.append(escCmd.getLFCRCmd());*/
+            escCmd.append(escCmd.getLFCRCmd());
 
             Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
             rtPrinter.writeMsgAsync(escCmd.getAppendCmds());

@@ -4487,17 +4487,56 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
     // This function will call the TextPrintActivity screen for printing the text data.
     private void textPrint() throws UnsupportedEncodingException {
         String htmlDocPrescription = sms_prescription();
+        String htmlDoctorDetails = getDoctorDetailsHTML();
         switch (IntelehealthApplication.getCurrentCmdType()) {
             case BaseEnum.CMD_ESC:
                 //turn2Activity(TextPrintESCActivity.class);
                 Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
                 intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
+                intent_esc.putExtra("doctorDetails", htmlDoctorDetails);
                 startActivity(intent_esc);
                 break;
             default:
                // turn2Activity(TextPrintActivity.class);
                 break;
         }
+    }
+
+    private String getDoctorDetailsHTML() {
+        // Generate an HTML document on the fly:
+        String doctrRegistartionNum = "";
+        // String docDigitallySign = "";
+        String doctorDetailStr = "";
+        if (objClsDoctorDetails != null) {
+
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
+                    objClsDoctorDetails.getRegistrationNumber() : "";
+
+            doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
+
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
+                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
+                            + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                            doctrRegistartionNum;
+
+            Log.e("precs", "htmlpresc: "+ Html.fromHtml(doctorDetailStr).toString());
+
+//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
+
+//                            + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>"
+            /*+*/
+
+                   /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
+                    + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
+
+            /*"</div>"*/;
+
+        }
+        return doctorDetailStr;
     }
 
     /**
@@ -4686,62 +4725,62 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
             pat_hist = getString(R.string.no_history_patient_illness_found);
         }
 
-        // Generate an HTML document on the fly:
-        String fontFamilyFile = "";
-        if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            Log.d("font", "font: " + objClsDoctorDetails.getFontOfSign());
-            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
-            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
-            }
-        }
-        String font_face = "<style>" +
-                "                @font-face {" +
-                "                    font-family: \"MyFont\";" +
-                fontFamilyFile +
-                "                }" +
-                "            </style>";
-
-        String doctorSign = "";
-        String doctrRegistartionNum = "";
-        // String docDigitallySign = "";
-        String doctorDetailStr = "";
-        if (objClsDoctorDetails != null) {
-            //  docDigitallySign = "Digitally Signed By";
-            doctorSign = objClsDoctorDetails.getTextOfSign();
-
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
-                    objClsDoctorDetails.getRegistrationNumber() : "";
-
-            doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
-
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
-                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
-                    + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                            doctrRegistartionNum;
-
-                    Log.e("precs", "htmlpresc: "+ Html.fromHtml(doctorDetailStr).toString());
-
+//        // Generate an HTML document on the fly:
+//        String fontFamilyFile = "";
+//        if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
+//            Log.d("font", "font: " + objClsDoctorDetails.getFontOfSign());
+//            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+//            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+//            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+//            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita-mLZJP.ttf');";
+//            }
+//        }
+//        String font_face = "<style>" +
+//                "                @font-face {" +
+//                "                    font-family: \"MyFont\";" +
+//                fontFamilyFile +
+//                "                }" +
+//                "            </style>";
+//
+//        String doctorSign = "";
+//        String doctrRegistartionNum = "";
+//        // String docDigitallySign = "";
+//        String doctorDetailStr = "";
+//        if (objClsDoctorDetails != null) {
+//            //  docDigitallySign = "Digitally Signed By";
+//            doctorSign = objClsDoctorDetails.getTextOfSign();
+//
+//            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
+//                    objClsDoctorDetails.getRegistrationNumber() : "";
+//
+//            doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
+//
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
+//                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
+//                    + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//                            doctrRegistartionNum;
+//
+//                    Log.e("precs", "htmlpresc: "+ Html.fromHtml(doctorDetailStr).toString());
+//
+////                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+////                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
+//
+////                            + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>"
+//            /*+*/
+//
+//                   /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
+//                    + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//
 //                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
-
-//                            + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>"
-            /*+*/
-
-                   /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
-                    + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
-
-            /*"</div>"*/;
-
-        }
+//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
+//
+//            /*"</div>"*/;
+//
+//        }
 
 //        if (isRespiratory) {
         String htmlDocument =
@@ -4781,18 +4820,20 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
                                 "<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
                                 "%s" + "</b><br>" +
                                 "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
-                                "%s" + "</b><br>" +
+                                "%s" + "</b><br>"
+                                //+
                                 /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
 
                                 /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
 
-                                doctorDetailStr
+                               // doctorDetailStr
                         /*"<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" +*/
 
                         /*  doctrRegistartionNum + "</p>" +*/
 
                         /*"</div>"*/
-                        , heading, heading2, /*heading3,*/ mPatientName, age, mGender, /*mSdw*/
+                        ,
+                        heading, heading2, /*heading3,*/ mPatientName, age, mGender, /*mSdw*/
 //                            address, mPatientOpenMRSID, mDate,
 
                             /*(!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
