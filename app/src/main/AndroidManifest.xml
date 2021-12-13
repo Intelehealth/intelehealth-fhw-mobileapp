@@ -36,18 +36,32 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".activities.completedvisits.Completed_Visits_Activity"
+        <activity
+            android:name=".activities.completedvisits.CompletedVisitsActivity"
             android:configChanges="uiMode"
             android:label="@string/Completed_Visits"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.ClosedVisitsActivity.Closed_Visits_Activity"
+        <activity
+            android:name=".activities.completedvisits.Completed_Visits_Activity"
+            android:configChanges="uiMode"
+            android:label="@string/Completed_Visits"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ClosedVisitsActivity.Closed_Visits_Activity"
             android:configChanges="uiMode"
             android:label="@string/Closed_Visits"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ClosedVisitsActivity.ClosedVisitsActivity"
+            android:configChanges="uiMode"
+            android:label="@string/Closed_Visits"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
 
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"
@@ -248,8 +262,6 @@
             android:configChanges="uiMode"
             android:label="@string/call_recordings"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.recordings.AudioPlayerActivity"

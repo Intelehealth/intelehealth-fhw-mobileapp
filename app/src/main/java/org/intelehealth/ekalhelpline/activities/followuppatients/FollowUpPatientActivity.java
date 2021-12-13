@@ -28,8 +28,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.ClosedVisitsAdapter;
-import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.Closed_Visits_Activity;
 import org.intelehealth.ekalhelpline.app.AppConstants;
 import org.intelehealth.ekalhelpline.database.dao.ProviderDAO;
 import org.intelehealth.ekalhelpline.models.ActivePatientModel;
@@ -68,6 +66,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     String date_string = " ";
     String currentDate = " ";
     List<String> creatorsSelected = new ArrayList<>();
+    TextView no_records_found_textview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +80,9 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
         context = FollowUpPatientActivity.this;
+        no_records_found_textview = findViewById(R.id.no_records_found_textview);
+
+
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -128,8 +131,16 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
     private void firstQuery() {
         try {
-            recycler = new FollowUpPatientAdapter(getAllPatientsFromDB(offset,currentDate), FollowUpPatientActivity.this);
-            recyclerView.setAdapter(recycler);
+            List<FollowUpModel> allPatients = getAllPatientsFromDB(offset,currentDate);
+            if(allPatients.size()>0) {
+                recycler = new FollowUpPatientAdapter(allPatients, FollowUpPatientActivity.this);
+                recyclerView.setAdapter(recycler);
+                no_records_found_textview.setVisibility(View.GONE); }
+            else
+            {   recycler = new FollowUpPatientAdapter(allPatients, FollowUpPatientActivity.this);
+                recyclerView.setAdapter(recycler);
+                no_records_found_textview.setVisibility(View.VISIBLE);
+                no_records_found_textview.setHint(R.string.no_records_found); }
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("firstquery", "exception", e);
@@ -218,25 +229,40 @@ public class FollowUpPatientActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
-//                doQueryWithProviders(selectedItems);
                 if(selectedItems.size()==1 && selectedItems.contains("Date") && date_string!=null && date_string!=" ")
                 {
-                    recycler = new FollowUpPatientAdapter(doQueryWithDate(offset,date_string), FollowUpPatientActivity.this);
-                    recyclerView.setAdapter(recycler);
-                    recycler.notifyDataSetChanged();
+                    List<FollowUpModel> requiredPatients = doQueryWithDate(offset,date_string);
+                    recycler = new FollowUpPatientAdapter(requiredPatients, FollowUpPatientActivity.this);
+                    if(requiredPatients.size()>0)
+                        no_records_found_textview.setVisibility(View.GONE);
+                    else
+                    {
+                        no_records_found_textview.setVisibility(View.VISIBLE);
+                        no_records_found_textview.setHint(R.string.no_records_found);
+                    }
                 }
                 else if(selectedItems.size()==1 && selectedItems.contains("Creator") && !creatorsSelected.isEmpty())
                 {
-                    recycler = new FollowUpPatientAdapter(doQueryWithProviders(creatorsSelected,currentDate), FollowUpPatientActivity.this);
-                    recyclerView.setAdapter(recycler);
-                    recycler.notifyDataSetChanged();
+                    List<FollowUpModel> requiredPatients = doQueryWithProviders(creatorsSelected,currentDate);
+                    recycler = new FollowUpPatientAdapter(requiredPatients, FollowUpPatientActivity.this);
+                    if(requiredPatients.size()>0)
+                        no_records_found_textview.setVisibility(View.GONE);
+                    else
+                    {   no_records_found_textview.setVisibility(View.VISIBLE);
+                        no_records_found_textview.setHint(R.string.no_records_found); }
                 }
                 else if(selectedItems.size()==2 && selectedItems.contains("Date") && selectedItems.contains("Creator") && date_string!=null && date_string!=" " && !creatorsSelected.isEmpty())
                 {
-                    recycler = new FollowUpPatientAdapter(doQueryWithProviders(creatorsSelected,date_string), FollowUpPatientActivity.this);
-                    recyclerView.setAdapter(recycler);
-                    recycler.notifyDataSetChanged();
+                    List<FollowUpModel> requiredPatients = doQueryWithProviders(creatorsSelected,date_string);
+                    recycler = new FollowUpPatientAdapter(requiredPatients, FollowUpPatientActivity.this);
+                    if(requiredPatients.size()>0)
+                        no_records_found_textview.setVisibility(View.GONE);
+                    else
+                    {   no_records_found_textview.setVisibility(View.VISIBLE);
+                        no_records_found_textview.setHint(R.string.no_records_found); }
                 }
+                recyclerView.setAdapter(recycler);
+                recycler.notifyDataSetChanged();
             }
         });
 
@@ -336,9 +362,6 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND " +
                 "d.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') " +
                 "AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid";
-
-        /*SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND
-                d.provider_uuid  = '267c1076-041b-4c29-9a66-00a7884aed2d' AND o.conceptuuid = '36d207d6-bee7-4b3e-9196-7d053c6eddce' AND (o.value like '%TLD Closed%' or o.value like '%Doctor Resolution Closed%') ORDER BY a.startdate DESC*/
 
         final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (searchCursor.moveToFirst()) {
