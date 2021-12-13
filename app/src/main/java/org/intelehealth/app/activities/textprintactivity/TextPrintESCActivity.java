@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -51,6 +53,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private TextSetting textSetting;
     private String mChartsetName = "UTF-8";
     private ESCFontTypeEnum curESCFontType = null;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +138,10 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     public void init() {
         rtPrinter = IntelehealthApplication.getRtPrinter();
         textSetting = new TextSetting();
+        intent = this.getIntent();
+        if(intent != null) {
+            et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
+        }
     }
 
     private void textPrint() throws UnsupportedEncodingException {
