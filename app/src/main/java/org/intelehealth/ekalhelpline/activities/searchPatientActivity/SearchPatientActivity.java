@@ -190,7 +190,6 @@ public class SearchPatientActivity extends AppCompatActivity {
                     if (allPatientsFromDB.size() < limit) {
                         fullyLoaded = true;
                     }
-
                     recycler.patients.addAll(allPatientsFromDB);
                     recycler.notifyDataSetChanged();
                 }
@@ -275,17 +274,10 @@ public class SearchPatientActivity extends AppCompatActivity {
 
     private void firstQuery() {
         try {
-//            getAllPatientsFromDB();
-
-            recycler = new SearchPatientAdapter(getAllPatientsFromDB(0), SearchPatientActivity.this);
-//            Log.i("db data", "" + getAllPatientsFromDB());
-//            RecyclerView.LayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
-//            recyclerView.setLayoutManager(reLayoutManager);
-         /*   recyclerView.addItemDecoration(new
-                    DividerItemDecoration(this,
-                    DividerItemDecoration.VERTICAL));*/
+            offset = 0;
+            fullyLoaded = false;
+            recycler = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
             recyclerView.setAdapter(recycler);
-
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("firstquery", "exception", e);
@@ -637,7 +629,6 @@ public class SearchPatientActivity extends AppCompatActivity {
             }
 
             try {
-                recyclerView.clearOnScrollListeners();
                 recycler = new SearchPatientAdapter(modelListwihtoutQuery, SearchPatientActivity.this);
                 recyclerView.setAdapter(recycler);
 
