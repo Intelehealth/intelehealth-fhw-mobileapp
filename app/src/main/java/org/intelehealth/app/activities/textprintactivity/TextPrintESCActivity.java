@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -67,7 +68,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
 
     private static final String TAG = TextPrintESCActivity.class.getSimpleName();
-    private TextView et_text;
+    private TextView pres_textview, drSign_textview, drDetails_textview;
     private Button btn_txtprint, btn_select_chartsetname;
     private CheckBox ck_smallfont, ck_anti_white, ck_double_width,
             ck_double_height, ck_bold, ck_underline;
@@ -80,7 +81,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private String mChartsetName = "UTF-8";
     private ESCFontTypeEnum curESCFontType = null;
     Intent intent;
-    String prescData, doctorDetails;
+    String prescData, doctorDetails, font_family, drSign_Text;
     IntelehealthApplication application;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 40;
@@ -113,7 +114,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
     @SuppressLint("WrongViewCast")
     public void initView() {
-        et_text = findViewById(R.id.et_text);
+        pres_textview = findViewById(R.id.pres_textview);
+        drSign_textview = findViewById(R.id.drSign_textview);
+        drDetails_textview = findViewById(R.id.drDetails_textview);
         btn_txtprint = findViewById(R.id.btn_txtprint);
 //        ck_smallfont = findViewById(R.id.ck_smallfont);
 //        ck_anti_white = findViewById(R.id.ck_anti_white);
@@ -205,12 +208,32 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         intent = this.getIntent();
         if(intent != null) {
-            et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
+           // et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
             prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
+            font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
+            drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
         }
 
-        et_text.setText(prescData + doctorDetails);
+        String fontFamilyFile = "";
+        if (font_family != null && font_family != null) {
+            if (font_family.toLowerCase().equalsIgnoreCase("youthness")) {
+                fontFamilyFile = "fonts/Youthness.ttf";
+            } else if (font_family.toLowerCase().equalsIgnoreCase("asem")) {
+                fontFamilyFile = "fonts/Asem.otf";
+            } else if (font_family.toLowerCase().equalsIgnoreCase("arty")) {
+                fontFamilyFile = "fonts/Arty.otf";
+            }/* else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = R.font.almondita;
+            }*/
+        }
+
+        Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
+        drSign_textview.setTypeface(face);
+        pres_textview.setText(prescData);
+        drSign_textview.setTextSize(50f);
+        drSign_textview.setText(drSign_Text);
+        drDetails_textview.setText(doctorDetails);
 
         Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
         showImage(uri);
@@ -218,7 +241,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void textPrint() throws UnsupportedEncodingException {
-        printStr = et_text.getText().toString();
+        printStr = pres_textview.getText().toString();
 
         if (TextUtils.isEmpty(printStr)) {
             printStr = "Hello Printer";

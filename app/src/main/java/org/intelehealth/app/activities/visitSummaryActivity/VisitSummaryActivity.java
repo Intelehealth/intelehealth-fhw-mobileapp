@@ -14,6 +14,8 @@ import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -47,7 +49,10 @@ import android.telephony.SmsManager;
 import android.text.Html;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Layout;
 import android.text.Spanned;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
@@ -97,6 +102,7 @@ import com.rt.printerlibrary.printer.RTPrinter;
 
 import org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
+import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.utilities.BaseEnum;
 import org.intelehealth.app.utilities.TimeRecordUtils;
 import org.intelehealth.apprtc.ChatActivity;
@@ -4490,10 +4496,13 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     // This function will call the TextPrintActivity screen for printing the text data.
     private void textPrint() throws UnsupportedEncodingException {
         String htmlDocPrescription = sms_prescription();
+       // Bitmap doctorSignature = getdoctorsignature();
         String htmlDoctorDetails = getDoctorDetailsHTML();
         Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
         intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
         intent_esc.putExtra("doctorDetails", htmlDoctorDetails);
+        intent_esc.putExtra("font-family", objClsDoctorDetails.getFontOfSign());
+        intent_esc.putExtra("drSign-text", objClsDoctorDetails.getTextOfSign());
         startActivity(intent_esc);
 
 /*
@@ -4942,4 +4951,29 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         }
         return formatted;
     }
+
+/*
+    private Bitmap getdoctorsignature() {
+        // Generate an HTML document on the fly:
+        int fontFamilyFile = 0;
+        if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
+            Log.d("font", "font: " + objClsDoctorDetails.getFontOfSign());
+            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+                fontFamilyFile = R.font.youthness;
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                fontFamilyFile = R.font.asem;
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+                fontFamilyFile = R.font.arty;
+            }*/
+/* else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = R.font.almondita;
+            }*//*
+
+        }
+
+        return testB;
+
+    }
+*/
+
 }

@@ -73,22 +73,39 @@
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">
 
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
+                    android:background="@drawable/button_bg_rounded_stroke"
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/et_text"
+                        android:id="@+id/pres_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/button_bg_rounded_stroke"
                         android:padding="@dimen/padding_card"
-
+                        android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/drSign_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/padding_card"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/drDetails_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/padding_card"
+                        android:paddingHorizontal="@dimen/padding_card"
                         android:textSize="16sp" />
 
                 </LinearLayout>
+            </ScrollView>
         </androidx.cardview.widget.CardView>
 
 <!--
