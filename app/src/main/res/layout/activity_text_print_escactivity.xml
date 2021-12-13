@@ -83,7 +83,9 @@
                         android:id="@+id/et_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/button_bg_rounded_stroke"
                         android:padding="@dimen/padding_card"
+
                         android:textSize="16sp" />
 
                 </LinearLayout>
