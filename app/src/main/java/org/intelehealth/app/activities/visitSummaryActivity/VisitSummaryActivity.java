@@ -4717,10 +4717,21 @@ public class VisitSummaryActivity extends AppCompatActivity implements PrinterOb
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
                     objClsDoctorDetails.getRegistrationNumber() : "";
+
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/
 
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>" /*+*/
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" + // Dr.Name
+                            "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() //Dr. Qualifi
+                    + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                            doctrRegistartionNum;
+
+                    Log.e("precs", "htmlpresc: "+ Html.fromHtml(doctorDetailStr).toString());
+
+//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
+
+//                            + "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "+918068533343" + "</span>"
+            /*+*/
 
                    /* "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification()
                     + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +

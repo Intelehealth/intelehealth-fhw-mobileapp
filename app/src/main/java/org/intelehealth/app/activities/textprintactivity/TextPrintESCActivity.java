@@ -194,34 +194,32 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         if (rtPrinter != null) {
             CmdFactory escFac = new EscFactory();
             Cmd escCmd = escFac.create();
-            escCmd.append(escCmd.getHeaderCmd());//初始化, Initial
-            //    escCmd.append(((EscCmd)escCmd).getPageMode(true));//设置为页模式
-            //    escCmd.append(((EscCmd)escCmd).getPageArea(10,10,200,200));//设置为页模式的打印区域
-            //      escCmd.append(((EscCmd)escCmd).getSetLeftStartSpacing(10*8));//左边留白 Leave white on the left(Unit: Point 1mm=8 points)
-//            escCmd.append(((EscCmd)escCmd).getSetAreaWidth(76*8));//设置打印区域Set the print area (Unit: Point 1mm=8 points)
-//            escCmd.append(((EscCmd)escCmd).getSetAreaWidth(104*8));//TODO  by FZP 由于下位机对于新版本RP410c的打印区域算法会溢出，所以针对此机型先屏蔽处理
-            escCmd.setChartsetName(mChartsetName);
 
+            escCmd.append(escCmd.getHeaderCmd());//初始化, Initial //btnCmds = 2......
+            escCmd.setChartsetName(mChartsetName);
             CommonSetting commonSetting = new CommonSetting();
             Position txtposition = new  Position(0,0);
             textSetting.setTxtPrintPosition(txtposition);//如果没设置X值的偏移，就不要调用了
-
             commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
             escCmd.append(escCmd.getTextCmd(textSetting, printStr));
             escCmd.append(escCmd.getLFCRCmd());
-            //以下为设置X轴的函数的测试
-            //注意如果txtposition.x>0,会和居中，对齐，冲突，不能共用
-            txtposition.x = 160;//往右偏移160*0.125=20mm,txtposition.y目前没有用
-            textSetting.setTxtPrintPosition(txtposition); //也可以用getSetXPosition来代替 escCmd.append(((EscCmd)escCmd).getSetXPosition(160));
+            escCmd.append(escCmd.getLFCRCmd());
+            escCmd.append(escCmd.getLFCRCmd());
+            escCmd.append(escCmd.getLFCRCmd());
+            escCmd.append(escCmd.getLFCRCmd());
+
+            //here it prints 2nd time taking the position of the cursor where the priting ended above.
+            /*txtposition.x = 160;
+            textSetting.setTxtPrintPosition(txtposition);
             escCmd.append(escCmd.getTextCmd(textSetting, printStr));
             escCmd.append(escCmd.getLFCRCmd());
-            //   escCmd.append(((EscCmd)escCmd).getPageEnd(true));
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
-            escCmd.append(escCmd.getHeaderCmd());//初始化, Initial
-            escCmd.append(escCmd.getLFCRCmd());
+            escCmd.append(escCmd.getHeaderCmd());
+            escCmd.append(escCmd.getLFCRCmd());*/
+
             Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
             rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
         }
