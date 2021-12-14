@@ -13,6 +13,9 @@
         <item>Malyalam</item>
         <item>Russian</item>
         <!--        <item>Cebuano</item>-->
+        <item>বাংলা</item>
+        <item>தமிழ்</item>
+<!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
@@ -27,6 +30,9 @@
         <item>ml</item>
         <item>ru</item>
         <!--        <item>cb</item>-->
+        <item>bn</item>
+        <item>ta</item>
+<!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -102,6 +108,26 @@
         <item>હાયર સેકેંડરી</item>
         <item>સ્નાતક અને વધુ</item>
     </string-array>
+
+    <string-array name="education_bn">
+        <item>নির্বাচন করুন</item>
+        <item>নিরক্ষর</item>
+        <item>প্রাথমিক</item>
+        <item>মাধ্যমিক</item>
+        <item>উচ্চ মাধ্যমিক</item>
+        <item>স্নাতক বা উচ্চতর</item>
+    </string-array>
+
+
+    <string-array name="education_ta">
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>எழுதப்படிக்கத்தெரியாதவர்</item>
+        <item>முதல்நிலை</item>
+        <item>இடைநிலை</item>
+        <item>மேல்நிலை</item>
+        <item>பட்டம் மற்றும் உயர்</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -196,6 +222,24 @@
         <item>અન્ય</item>
     </string-array>
 
+    <string-array name="caste_bn">
+        <item>নির্বাচন করুন</item>
+        <item>সাধারণ</item>
+        <item>ওবিসি</item>
+        <item>এসসি</item>
+        <item>এসটি</item>
+        <item>অন্যান্য</item>
+    </string-array>
+
+    <string-array name="caste_ta">
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>பொது</item>
+        <item>ஓபிசி</item>
+        <item>எஸ்சி</item>
+        <item>எஸ்டி</item>
+        <item>மற்றவை</item>
+    </string-array>
+
     <string-array name="caste_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>ସାଧାରଣ</item>
@@ -262,6 +306,18 @@
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_ta">
+        <item>தேர்ந்தெடுக்கவும்</item>
+        <item>வறுமைக் கோட்டிற்கு மேல்</item>
+        <item>வறுமைக் கோட்டிற்குக் கீழ்</item>
+    </string-array>
+
+    <string-array name="economic_bn">
+        <item>নির্বাচন করুন</item>
+        <item>দারিদ্র্যসীমার উপরে</item>
+        <item>দারিদ্র্যসীমার নিচে</item>
     </string-array>
 
     <string-array name="economic_or">

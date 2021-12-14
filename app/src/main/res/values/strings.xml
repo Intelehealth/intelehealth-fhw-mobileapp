@@ -57,8 +57,9 @@
     <string name="permission_rationale" translatable="false">Contacts permissions are needed for providing email completions.
     </string>
     <string name="device_id">Device ID:</string>
-
-
+    <string name="identification_screen_prompt_time">Time:</string>
+    <string name="identification_screen_picker_hours" translatable="false">Hours</string>
+    <string name="identification_screen_picker_minute" translatable="false">Minutes</string>
     <string name="cant_login_user">Can\'t log in?</string>
     <string name="email_link">Please contact your System Administrator to reset your password or send an email to support@intelehealth.io</string>
     <string name="contact_whatsapp">Please contact your System Administrator to reset your password</string>
