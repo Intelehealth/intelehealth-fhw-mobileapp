@@ -89,17 +89,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/padding_card"
+                        tools:text="Doctor Prescription"
                         android:textSize="16sp" />
                     <TextView
                         android:id="@+id/drSign_textview"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/padding_card"
+                        tools:text="Dr. Prajwal Waingankar"
+                        android:layout_marginHorizontal="@dimen/padding_card"
                         android:textSize="16sp" />
                     <TextView
                         android:id="@+id/drDetails_textview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        tools:text="Doctor Details"
                         android:paddingBottom="@dimen/padding_card"
                         android:paddingHorizontal="@dimen/padding_card"
                         android:textSize="16sp" />

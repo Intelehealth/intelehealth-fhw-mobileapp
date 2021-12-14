@@ -208,7 +208,6 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         intent = this.getIntent();
         if(intent != null) {
-           // et_text.setText(Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString());
             prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
@@ -230,13 +229,21 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
         drSign_textview.setTypeface(face);
-        pres_textview.setText(prescData);
         drSign_textview.setTextSize(50f);
+        drSign_textview.setBackgroundColor(getResources().getColor(R.color.white));
         drSign_textview.setText(drSign_Text);
+        drSign_textview.setDrawingCacheEnabled(true);
+        drSign_textview.buildDrawingCache();
+        drSign_textview.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        drSign_textview.layout(0, 0, drSign_textview.getMeasuredWidth(), drSign_textview.getMeasuredHeight());
+        mBitmap = drSign_textview.getDrawingCache();
+
+        pres_textview.setText(prescData);
         drDetails_textview.setText(doctorDetails);
 
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
-        showImage(uri);
+//        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
+//        showImage(uri);
 
     }
 
