@@ -238,7 +238,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     TextView pulseView;
     TextView bpView;
     TextView tempView;
-    TextView spO2View, hemoglobinView, bloodView, sugarRandomView,sugarFastAndMealView;
+    TextView spO2View, hemoglobinView, bloodView, sugarRandomView, sugarFastAndMealView;
     TextView bmiView;
     TextView complaintView;
     TextView famHistView;
@@ -699,7 +699,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                         }
                     };
                     String partial_whatsapp_presc_url = new UrlModifiers().setwhatsappPresciptionUrl();
-                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid)+"/"+idView.getText().toString();
+                    String whatsapp_url = partial_whatsapp_presc_url.concat(visitUuid) + "/" + idView.getText().toString();
 //                    Spanned hyperlink_whatsapp = HtmlCompat.fromHtml("<a href=" + whatsapp_url + ">Click Here</a>", HtmlCompat.FROM_HTML_MODE_COMPACT);
 
                     editText.setFilters(new InputFilter[]{inputFilter, new InputFilter.LengthFilter(10)});
@@ -843,8 +843,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         //Hashmap to List<String> add all value
         ArrayAdapter<String> stringModeArrayAdapter;
 
-        String caseModeStr="casemode_values_"+ sessionManager.getAppLanguage();
-        int caseModeVal=getResources().getIdentifier(caseModeStr, "array", getApplicationContext().getPackageName());
+        String caseModeStr = "casemode_values_" + sessionManager.getAppLanguage();
+        int caseModeVal = getResources().getIdentifier(caseModeStr, "array", getApplicationContext().getPackageName());
 
         //  if(getResources().getConfiguration().locale.getLanguage().equalsIgnoreCase("en")) {
         stringModeArrayAdapter =
@@ -1186,7 +1186,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         String gender_tv = patientGender;
         nameView.setText(patientName);
 
-        if(gender_tv!=null) {
+        if (gender_tv != null) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 if (gender_tv.equalsIgnoreCase("M")) {
                     genderView.setText(getResources().getString(R.string.identification_screen_checkbox_male));
@@ -1305,25 +1305,25 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         spO2View.setText(spO2.getValue());
 
         hemoglobinView.setText(hemoglobin.getValue());
-        String bloodStr="blood_group_"+ sessionManager.getAppLanguage();
-        int bloodGrpArray=getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
+        String bloodStr = "blood_group_" + sessionManager.getAppLanguage();
+        int bloodGrpArray = getResources().getIdentifier(bloodStr, "array", getApplicationContext().getPackageName());
         String[] blood_Array = getResources().getStringArray(R.array.blood_group_en);
-        int pos=0;
-        for(int i=0;i<blood_Array.length;i++){
-            if(blood_Array[i].equalsIgnoreCase(blood.getValue())){
-                pos=i;
+        int pos = 0;
+        for (int i = 0; i < blood_Array.length; i++) {
+            if (blood_Array[i].equalsIgnoreCase(blood.getValue())) {
+                pos = i;
                 break;
             }
         }
-        if(pos!=0) {
+        if (pos != 0) {
             bloodView.setText(getResources().getStringArray(bloodGrpArray)[pos]);
         }
 
         sugarRandomView.setText(sugarrandom.getValue());
-        if(sugarfasting.getValue()!=null || sugaraftermeal.getValue()!=null) {
+        if (sugarfasting.getValue() != null || sugaraftermeal.getValue() != null) {
             sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
-        }else{
-            System.out.println("error====="+"");
+        } else {
+            System.out.println("error=====" + "");
         }
 
         if (complaint.getValue() != null)
@@ -1943,7 +1943,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
-                new String[]{uuid,"3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
+                new String[]{uuid, "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -1962,7 +1962,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
-                new String[]{uuid,"443d91e7-3897-4307-a549-787da32e241e"});
+                new String[]{uuid, "443d91e7-3897-4307-a549-787da32e241e"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -4496,7 +4496,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     // This function will call the TextPrintActivity screen for printing the text data.
     private void textPrint() throws UnsupportedEncodingException {
         String htmlDocPrescription = sms_prescription();
-       // Bitmap doctorSignature = getdoctorsignature();
+        // Bitmap doctorSignature = getdoctorsignature();
         String htmlDoctorDetails = getDoctorDetailsHTML();
         Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
         intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
@@ -4538,7 +4538,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                             + " " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                             doctrRegistartionNum;
 
-            Log.e("precs", "htmlpresc_doctor: "+ Html.fromHtml(doctorDetailStr).toString());
+            Log.e("precs", "htmlpresc_doctor: " + Html.fromHtml(doctorDetailStr).toString());
 
 //                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
 //                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>";
@@ -4552,7 +4552,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +*/
 
-            /*"</div>"*/;
+            /*"</div>"*/
+            ;
 
         }
         return doctorDetailStr;
@@ -4840,12 +4841,12 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                                 "%s" + "</b><br>" +
                                 "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
                                 "%s" + "</b><br>"
-                                //+
-                                /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
+                        //+
+                        /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +*/
 
-                                /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
+                        /* "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
 
-                               // doctorDetailStr
+                        // doctorDetailStr
                         /*"<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" +*/
 
                         /*  doctrRegistartionNum + "</p>" +*/

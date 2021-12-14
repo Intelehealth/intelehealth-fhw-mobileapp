@@ -207,12 +207,13 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         textSetting = new TextSetting();
 
         intent = this.getIntent();
-        if(intent != null) {
+        if (intent != null) {
             prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
             drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
         }
+        Log.e("pres:", "prescFinall:" + intent.getStringExtra("sms_prescripton") + intent.getStringExtra("doctorDetails"));
 
         String fontFamilyFile = "";
         if (font_family != null && font_family != null) {
@@ -222,14 +223,15 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                 fontFamilyFile = "fonts/Asem.otf";
             } else if (font_family.toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "fonts/Arty.otf";
-            }/* else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = R.font.almondita;
-            }*/
+            } else if (font_family.toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = "fonts/Almondita-mLZJP.otf";
+            }
         }
 
         Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
         drSign_textview.setTypeface(face);
         drSign_textview.setTextSize(50f);
+        drSign_textview.setTextColor(getResources().getColor(R.color.ink_pen));
         drSign_textview.setBackgroundColor(getResources().getColor(R.color.white));
         drSign_textview.setText(drSign_Text);
         drSign_textview.setDrawingCacheEnabled(true);
@@ -241,10 +243,11 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         pres_textview.setText(prescData);
         drDetails_textview.setText(doctorDetails);
+        Log.e("pres:", "prescFinal:" + pres_textview.getText().toString() + drSign_textview.getText().toString() +
+                drDetails_textview.getText().toString());
 
 //        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
 //        showImage(uri);
-
     }
 
     private void textPrint() throws UnsupportedEncodingException {
@@ -280,7 +283,6 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         return n;
     }
 */
-
     public static String stringToUnicode(String string) {
         StringBuffer unicode = new StringBuffer();
         for (int i = 0; i < string.length(); i++) {
@@ -294,13 +296,12 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
     private void escPrint() throws UnsupportedEncodingException {
         if (rtPrinter != null) {
             CmdFactory escFac = new EscFactory();
             Cmd escCmd = escFac.create();
 
-            escCmd.append(escCmd.getHeaderCmd());//初始化, Initial //btnCmds = 2......
+            escCmd.append(escCmd.getHeaderCmd());// Initial //btnCmds = 2......
             escCmd.setChartsetName(mChartsetName);
             CommonSetting commonSetting = new CommonSetting();
 
@@ -309,9 +310,10 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
 
 
-            Position txtposition = new  Position(0,0);
+            Position txtposition = new Position(0, 0);
             textSetting.setTxtPrintPosition(txtposition);
-           // commonSetting.setEscLineSpacing(getInputLineSpacing());
+            // textSetting.setAlign(CommonEnum.ALIGN_MIDDLE);
+            // commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
             escCmd.append(escCmd.getTextCmd(textSetting, prescData));
             escCmd.append(escCmd.getLFCRCmd());
@@ -341,7 +343,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void showSelectChartsetnameDialog() {
-        final String[] chartsetNameArray = new String[]{"UTF-8", "GBK", "BIG5","UCS2"};
+        final String[] chartsetNameArray = new String[]{"UTF-8", "GBK", "BIG5", "UCS2"};
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(R.string.dialog_title_chartset_setting);
         dialog.setItems(chartsetNameArray, new DialogInterface.OnClickListener() {
@@ -349,8 +351,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             public void onClick(DialogInterface dialogInterface, int pos) {
                 mChartsetName = chartsetNameArray[pos];
                 btn_select_chartsetname.setText(mChartsetName);
-                if (pos==3){
-                    mChartsetName ="UnicodeBigUnmarked";//UTF-16BE
+                if (pos == 3) {
+                    mChartsetName = "UnicodeBigUnmarked";//UTF-16BE
                 }
             }
         });
@@ -475,7 +477,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
 //        Log.d(TAG, "mBitmap getWidth = " + mBitmap.getWidth());
 //        Log.d(TAG, "mBitmap getHeight = " + mBitmap.getHeight());
-       // ivImage.setImageBitmap(mBitmap);
+        // ivImage.setImageBitmap(mBitmap);
     }
 
     //This will open a Dialog that will show all the Bluetooth devices...
@@ -556,7 +558,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    public void showAlertDialog(final String msg){
+    public void showAlertDialog(final String msg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

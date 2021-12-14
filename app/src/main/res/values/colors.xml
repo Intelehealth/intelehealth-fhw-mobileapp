@@ -60,6 +60,7 @@
     <color name="orange_color">#ef6c00</color>
     <color name="gray_bg">#eeeeee</color>
     <color name="basic_item_bg">@android:color/white</color>
+    <color name="ink_pen">#16264c</color>
 
     <color name="basic_text_color">@android:color/white</color>
     <color name="hint_text_color">#7f7f7f</color>
