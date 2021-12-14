@@ -1247,7 +1247,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         sugarRandomView.setText(sugarrandom.getValue());
-        if(sugarfasting.getValue()!=null || sugaraftermeal.getValue()!=null) {
+        if(sugarfasting.getValue()!=null || sugaraftermeal.getValue()!=null
+                && !sugarfasting.getValue().isEmpty() || !sugaraftermeal.getValue().isEmpty()) {
             sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
         }else{
             System.out.println("error====="+"");
