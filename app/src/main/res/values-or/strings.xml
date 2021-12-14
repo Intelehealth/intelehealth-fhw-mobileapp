@@ -535,8 +535,18 @@
     <string name = "change_languages">ଭାଷା ପରିବର୍ତ୍ତନ</string>
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
 
-    <string name="app_reset_toast">App Reset is done!</string>
-    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
-    <string name="resetting_app_dialog">Resetting App</string>
-    <string name="reset_app">Reset App</string>
+    <string name="app_reset_toast">ଆପ୍ ପୁନ et ସେଟ୍ ହୋଇଛି !</string>
+    <string name="sure_to_reset_app">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଆପ୍ ପୁନ res ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି??</string>
+    <string name="resetting_app_dialog">ଆପ୍ ପୁନ et ସେଟ୍ କରୁଛି |</string>
+    <string name="reset_app">ଆପ୍ ପୁନ Res ସେଟ୍ କରନ୍ତୁ |</string>
+
+    <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି ...</string>
+    <string name="warning_app_update">ଦୟାକରି ଆପକୁ ସର୍ବଶେଷ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ.</string>
+    <string name="due_on">ଧାର୍ଯ୍ୟ ତାରିଖ:</string>
+    <string name="title_follow_up">ପରିଦର୍ଶନଗୁଡିକ ଅନୁସରଣ କରନ୍ତୁ </string>
+    <string name="location">ଅବସ୍ଥାନ</string>
+
+
+
+
 </resources>

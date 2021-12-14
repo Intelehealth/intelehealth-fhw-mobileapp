@@ -545,6 +545,15 @@
     <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
     <string name = "change_languages">ഭാഷകൾ മാറ്റുക</string>
+
+    <string name="loading_more">കൂടുതൽ ലോഡുചെയ്യുന്നു...</string>
+    <string name="warning_app_update">ഏറ്റവും പുതിയ പതിപ്പിലേക്ക് ആപ്പ് അപ്ഡേറ്റ് ചെയ്യുക.</string>
+    <string name="due_on">അവസാന തീയതി:</string>
+    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>
+    <string name="location">സ്ഥാനം</string>
+
+
+
 </resources>
 
 

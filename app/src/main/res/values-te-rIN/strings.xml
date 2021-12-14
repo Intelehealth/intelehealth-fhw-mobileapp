@@ -561,6 +561,14 @@
     <string name="txt_additional_info">అదనపు సమాచారం</string>
     <string name="medical_advice">వైద్య సలహా</string>
 
+
+
+
+    <string name="loading_more">మరింత లోడ్ అవుతోంది...</string>
+    <string name="warning_app_update">దయచేసి యాప్‌ని తాజా వెర్షన్‌కి అప్‌డేట్ చేయండి.</string>
+    <string name="due_on">గడువు తేది:</string>
+    <string name="title_follow_up">ఫాలో అప్ సందర్శనలు</string>
+    <string name="location">స్థానం</string>
     <!--    Strings for special Check-->
     <string name="str_check_Odisha">ఒడిశా</string>
     <string name="str_check_Bukidnon">బుకిడ్నాన్</string>

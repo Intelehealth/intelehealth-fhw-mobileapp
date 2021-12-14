@@ -64,6 +64,7 @@
                                 android:id="@+id/iv_find_patient"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+
                                 android:layout_centerHorizontal="true"
                                 android:contentDescription="TODO"
                                 app:srcCompat="@drawable/ic_search_patient" />
@@ -107,6 +108,7 @@
                                 android:id="@+id/iv_today_patients"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
+                                android:layout_marginTop="21dp"
                                 android:layout_centerHorizontal="true"
                                 android:contentDescription="TODO"
                                 app:srcCompat="@drawable/ic_calendar" />
@@ -133,7 +135,7 @@
                                 android:layout_centerHorizontal="true"
 
                                 android:layout_below="@+id/todaysVisits_textview"
-                                android:gravity="center"
+
                                 android:minWidth="32dp"
                                 android:textAlignment="center"
                                 android:textColor="@color/red"
@@ -173,6 +175,7 @@
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="21dp"
                                 android:contentDescription="TODO"
                                 app:srcCompat="@drawable/ic_active_cases" />
 

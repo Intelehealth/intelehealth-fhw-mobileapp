@@ -668,4 +668,10 @@
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
     <string name = "change_languages">ಭಾಷೆಗಳನ್ನು ಬದಲಿಸಿ</string>
+
+    <string name="loading_more">ಇನ್ನಷ್ಟು ಲೋಡ್ ಆಗುತ್ತಿದೆ...</string>
+    <string name="warning_app_update">ದಯವಿಟ್ಟು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗೆ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ನವೀಕರಿಸಿ.</string>
+    <string name="due_on">ಅಂತಿಮ ದಿನಾಂಕ:</string>
+    <string name="title_follow_up">ಭೇಟಿಗಳನ್ನು ಅನುಸರಿಸಿ</string>
+    <string name="location">ಸ್ಥಳ</string>
 </resources>

@@ -675,4 +675,10 @@
     <string name="select_specialization_text">વિશેષતા પસંદ કરો</string>
     <string name="please_select_specialization_msg">કૃપા કરીને વિશેષતા પસંદ કરો</string>
     <string name="visit_closed">મુલાકાત બંધ</string>
+
+    <string name="loading_more">વધુ લોડ કરી રહ્યું છે...</string>
+    <string name="warning_app_update">કૃપા કરીને એપ્લિકેશનને નવીનતમ સંસ્કરણ પર અપડેટ કરો.</string>
+    <string name="due_on">નિયત તારીખ:</string>
+    <string name="title_follow_up">મુલાકાતો અનુસરો</string>
+    <string name="location">સ્થાન</string>
 </resources>

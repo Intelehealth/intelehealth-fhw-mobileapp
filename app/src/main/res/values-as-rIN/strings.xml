@@ -518,4 +518,10 @@
     <string name="additional_doc_image_picker_title">অতিৰিক্ত দস্তাবেজ যোগ কৰক!</string>
     <string name="change_languages">ভাষা পৰিবৰ্তন কৰক</string>
 
+    <string name="loading_more">অধিক লোড কৰা হৈছে...</string>
+    <string name="warning_app_update">অনুগ্ৰহ কৰি এপ্পটো শেহতীয়া সংস্কৰণলৈ আপডেট কৰক.</string>
+    <string name="due_on">প্ৰযোজ্য তাৰিখ:</string>
+    <string name="title_follow_up">সাক্ষাৎসমূহ অনুসৰণ কৰক</string>
+    <string name="location">অৱস্থান</string>
+
 </resources>

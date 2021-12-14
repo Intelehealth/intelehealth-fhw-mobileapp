@@ -682,4 +682,10 @@
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
 
     <string name = "change_languages">भाषा बदला</string>
+
+    <string name="loading_more">अधिक लोड करत आहे...</string>
+    <string name="warning_app_update">कृपया अॅप नवीनतम आवृत्तीवर अपडेट करा.</string>
+    <string name="due_on">देय तारीख:</string>
+    <string name="title_follow_up">फॉलो अप भेटी</string>
+    <string name="location">स्थान</string>
 </resources>
