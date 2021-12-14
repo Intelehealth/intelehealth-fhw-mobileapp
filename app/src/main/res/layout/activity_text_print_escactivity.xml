@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <TextView
             android:id="@+id/tv_device_selected"
@@ -19,10 +33,11 @@
             android:layout_marginRight="14dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_bg_rounded_stroke"
+            android:textColor="@color/colorPrimaryDark"
+            android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:padding="10dp"
             android:tag="-1"
-            android:textColor="@color/colorPrimaryDark"
             android:text="@string/please_connect"
             android:textSize="18sp" />
 
@@ -44,8 +59,10 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:enabled="false"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:background="@drawable/button_bg_rounded_stroke"
+                android:backgroundTint="@color/tag_red_bg"
                 android:text="@string/disconnect" />
 
             <Button
@@ -54,8 +71,10 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/white"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:background="@drawable/button_bg_rounded_stroke"
+                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/connect" />
 
         </LinearLayout>
@@ -72,10 +91,6 @@
                 app:cardCornerRadius="5dp"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="true">
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,7 +123,6 @@
                         android:textSize="16sp" />
 
                 </LinearLayout>
-            </ScrollView>
         </androidx.cardview.widget.CardView>
 
 <!--
@@ -301,9 +315,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:foreground="?android:attr/selectableItemBackground"
             android:background="@drawable/button_bg_rounded_stroke"
-            android:text="@string/action_print" />
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/action_print"
+            android:textSize="@dimen/text_size_title"/>
 
     </LinearLayout>
 </ScrollView>

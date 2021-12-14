@@ -4495,15 +4495,20 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
 
     // This function will call the TextPrintActivity screen for printing the text data.
     private void textPrint() throws UnsupportedEncodingException {
-        String htmlDocPrescription = sms_prescription();
-        // Bitmap doctorSignature = getdoctorsignature();
-        String htmlDoctorDetails = getDoctorDetailsHTML();
-        Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
-        intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
-        intent_esc.putExtra("doctorDetails", htmlDoctorDetails);
-        intent_esc.putExtra("font-family", objClsDoctorDetails.getFontOfSign());
-        intent_esc.putExtra("drSign-text", objClsDoctorDetails.getTextOfSign());
-        startActivity(intent_esc);
+        if (objClsDoctorDetails != null) {
+            String htmlDocPrescription = sms_prescription();
+            // Bitmap doctorSignature = getdoctorsignature();
+            String htmlDoctorDetails = getDoctorDetailsHTML();
+            Intent intent_esc = new Intent(VisitSummaryActivity.this, TextPrintESCActivity.class);
+            intent_esc.putExtra("sms_prescripton", htmlDocPrescription);
+            intent_esc.putExtra("doctorDetails", htmlDoctorDetails);
+            intent_esc.putExtra("font-family", objClsDoctorDetails.getFontOfSign());
+            intent_esc.putExtra("drSign-text", objClsDoctorDetails.getTextOfSign());
+            startActivity(intent_esc);
+        }
+        else {
+            Toast.makeText(VisitSummaryActivity.this, "No Prescription Available", Toast.LENGTH_SHORT).show();
+        }
 
 /*
         switch (IntelehealthApplication.getCurrentCmdType()) {

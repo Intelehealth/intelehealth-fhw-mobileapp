@@ -704,7 +704,7 @@
     <string name="due_on">Due Date:</string>
 
     <!-- Thermal Printers -->
-    <string name="please_connect">Click to connect a device</string>
+    <string name="please_connect">Select Available Device</string>
     <string name="disconnect">Disconnect</string>
     <string name="connect">Connect</string>
     <string name="choose_bluetooth_device">Choose Bluetooth Device</string>

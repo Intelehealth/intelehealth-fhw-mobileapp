@@ -46,6 +46,7 @@
         <activity
             android:name=".activities.textprintactivity.TextPrintESCActivity"
             android:label="@string/view_print"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".activities.followuppatients.FollowUpPatientActivity"

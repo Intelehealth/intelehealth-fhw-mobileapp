@@ -1,6 +1,8 @@
 package org.intelehealth.app.activities.textprintactivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
@@ -9,6 +11,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -93,6 +97,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
     private PrinterInterface curPrinterInterface = null;
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +119,14 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
     @SuppressLint("WrongViewCast")
     public void initView() {
+        setTitle(getString(R.string.view_print));
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        mToolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
+        mToolbar.setTitleTextColor(Color.WHITE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
         pres_textview = findViewById(R.id.pres_textview);
         drSign_textview = findViewById(R.id.drSign_textview);
         drDetails_textview = findViewById(R.id.drDetails_textview);
@@ -230,7 +243,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
         drSign_textview.setTypeface(face);
-        drSign_textview.setTextSize(50f);
+        drSign_textview.setTextSize(40f);
         drSign_textview.setTextColor(getResources().getColor(R.color.ink_pen));
         drSign_textview.setBackgroundColor(getResources().getColor(R.color.white));
         drSign_textview.setText(drSign_Text);
@@ -624,4 +637,12 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
