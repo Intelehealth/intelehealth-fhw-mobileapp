@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -510,7 +511,24 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                         isConfigPrintEnable(configObj);
                     }
                 });
-        bluetoothDeviceChooseDialog.show(TextPrintESCActivity.this.getFragmentManager(), null);
+
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            // Device does not support Bluetooth.
+            Toast.makeText(TextPrintESCActivity.this,
+                    getResources().getString(R.string.bluetooth_notsupported_device), Toast.LENGTH_SHORT).show();
+            return;
+        } else if (!mBluetoothAdapter.isEnabled()) {
+            // Bluetooth is Turned OFF.
+            Toast.makeText(TextPrintESCActivity.this,
+                    getResources().getString(R.string.turn_on_bluetooth), Toast.LENGTH_SHORT).show();
+            return;
+        } else {
+            // Bluetooth is Turned ON.
+            bluetoothDeviceChooseDialog.show(TextPrintESCActivity.this.getFragmentManager(), null);
+        }
+
+
     }
 
     private void isConfigPrintEnable(Object configObj) {

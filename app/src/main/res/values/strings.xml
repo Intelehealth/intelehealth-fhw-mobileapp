@@ -741,5 +741,8 @@
     <string name="tv_font_select">Font Choose：</string>
     <string name="btn_clk_sel_font">Click to choose the printed font</string>
     <string name="label_setting">Label Setting</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="no_presc_available">No Prescription Available</string>
 
 </resources>

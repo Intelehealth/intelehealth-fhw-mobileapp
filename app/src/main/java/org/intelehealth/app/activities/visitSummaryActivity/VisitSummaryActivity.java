@@ -4507,7 +4507,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
             startActivity(intent_esc);
         }
         else {
-            Toast.makeText(VisitSummaryActivity.this, "No Prescription Available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.no_presc_available), Toast.LENGTH_SHORT).show();
         }
 
 /*

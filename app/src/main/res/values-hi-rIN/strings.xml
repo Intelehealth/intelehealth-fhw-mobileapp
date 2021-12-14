@@ -695,5 +695,8 @@
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
     <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
     <string name="due_on">नियत तारीख:</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="no_presc_available">No Prescription Available</string>
 
 </resources>
