@@ -12,8 +12,8 @@
         android:background="@color/colorPrimary"
         android:padding="16dp"
         android:text="@string/choose_bluetooth_device"
-        android:textColor="@color/orange_color"
-        android:textSize="@dimen/text_size_large" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_title" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -26,6 +26,7 @@
 
         <Button
             android:id="@+id/btn_hide"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hide_↑↑↑"
@@ -64,10 +65,12 @@
 
         <TextView
             android:id="@+id/tv_dialog_choose_bluetooth_device_search_device"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/button_bg_rounded_stroke"
             android:clickable="true"
-            android:padding="16dp"
+            android:padding="10dp"
+            android:layout_margin="5dp"
             android:text="@string/search_device"
             android:textSize="@dimen/text_size_normal" />
 
