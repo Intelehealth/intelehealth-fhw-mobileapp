@@ -180,8 +180,11 @@ public final class StringUtils {
             val = switch_gu_caste(val);
             val = switch_gu_economic(val);
             val = switch_gu_education(val);
+        } else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            val = switch_bn_caste(val);
+            val = switch_bn_economic(val);
+            val = switch_bn_education(val);
         }
-
         return val;
     }
 
@@ -303,11 +306,6 @@ public static String switch_ru_education(String val) {
         }
         return val;
     }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-            val = switch_bn_caste(val);
-            val = switch_bn_economic(val);
-            val = switch_bn_education(val);
-        }
 
     public static String switch_gu_education(String val) {
         switch (val) {
