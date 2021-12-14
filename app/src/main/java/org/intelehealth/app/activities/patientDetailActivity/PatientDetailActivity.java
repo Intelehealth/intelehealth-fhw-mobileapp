@@ -666,9 +666,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             String dob_text = en__ru_dob(dob); //to show text of English into Russian...
             dobView.setText(dob_text);
-        }else {
-        }
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
             String dob_text = en__ta_dob(dob); //to show text of English into Tamil...
             dobView.setText(dob_text);
         }else {
@@ -943,7 +941,6 @@ public class PatientDetailActivity extends AppCompatActivity {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                 String education = switch_ta_education_edit(patient_new.getEducation_level());
                 education_statusView.setText(education);
-            } else {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 String education = switch_te_education_edit(patient_new.getEducation_level());
                 education_statusView.setText(education);
