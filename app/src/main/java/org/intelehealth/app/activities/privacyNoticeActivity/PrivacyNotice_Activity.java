@@ -136,8 +136,16 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                     privacy_textview.setText(privacy_string);
                 }
 
-            }
-            else if (current.toString().equals("kn")) {          //Privacy text support for Kannada
+            } else if (current.toString().equals("ta")) {
+                String privacy_string = obj.getString("privacyNoticeText_Tamil");
+                if (privacy_string.isEmpty()) {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                } else {
+                    privacy_textview.setText(privacy_string);
+                }
+
+            } else if (current.toString().equals("kn")) {          //Privacy text support for Kannada
                 String privacy_string = obj.getString("privacyNoticeText_Kannada");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
@@ -177,18 +185,17 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                 }
 
 
-        }else if (current.toString().equals("ml")) {
-            //  todo
-            String privacy_string = obj.getString("privacyNoticeText_Hindi");
-            if (privacy_string.isEmpty()) {
-                privacy_string = obj.getString("privacyNoticeText");
-                privacy_textview.setText(privacy_string);
-            } else {
-                privacy_textview.setText(privacy_string);
-            }
+            } else if (current.toString().equals("ml")) {
+                //  todo
+                String privacy_string = obj.getString("privacyNoticeText_Hindi");
+                if (privacy_string.isEmpty()) {
+                    privacy_string = obj.getString("privacyNoticeText");
+                    privacy_textview.setText(privacy_string);
+                } else {
+                    privacy_textview.setText(privacy_string);
+                }
 
-        }
-            else {
+            } else {
                 String privacy_string = obj.getString("privacyNoticeText");
                 privacy_textview.setText(privacy_string);
             }
