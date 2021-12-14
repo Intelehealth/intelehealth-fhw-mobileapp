@@ -16,6 +16,8 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
@@ -223,9 +225,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         intent = this.getIntent();
         if (intent != null) {
-            prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
-            /*prescData = "    - Not Provided\n" +
-                    "    ";*/
+           // prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+            prescData = "    - Not Provided\n" +
+                    "    ";
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
             drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
@@ -315,10 +317,10 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
 
     private void escPrint() throws UnsupportedEncodingException {
-        new Thread(new Runnable() {
+
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-
                 if (rtPrinter != null) {
             CmdFactory escFac = new EscFactory();
             Cmd escCmd = escFac.create();
@@ -333,7 +335,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
             Position txtposition = new Position(0, 0);
             textSetting.setTxtPrintPosition(txtposition);
-             textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
+            // textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
             // commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
             try {
@@ -367,10 +369,14 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             escCmd.append(escCmd.getLFCRCmd());
 
             Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
-            rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
+            if(rtPrinter.getPrinterInterface() != null) // If without selecting Bluetooth user click Print button crash happens so added this condition.
+                rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
+            else
+                Toast.makeText(TextPrintESCActivity.this, getResources().getString
+                        (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
         }
             }
-        }).start();
+        });
     }
 
     private void showSelectChartsetnameDialog() {
