@@ -111,6 +111,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Dr. Prajwal Waingankar"
+                        android:includeFontPadding="false"
+                        android:layout_marginBottom="-20dp"
                         android:layout_marginHorizontal="@dimen/padding_card"
                         android:textSize="16sp" />
                     <TextView

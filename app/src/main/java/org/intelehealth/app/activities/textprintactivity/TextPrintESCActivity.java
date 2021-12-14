@@ -20,6 +20,7 @@ import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -223,6 +224,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         intent = this.getIntent();
         if (intent != null) {
             prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+            /*prescData = "    - Not Provided\n" +
+                    "    ";*/
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
             drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
@@ -244,7 +247,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
         drSign_textview.setTypeface(face);
-        drSign_textview.setTextSize(40f);
+        drSign_textview.setTextSize(60f);
+        drSign_textview.setIncludeFontPadding(false);
         drSign_textview.setTextColor(getResources().getColor(R.color.ink_pen));
         drSign_textview.setBackgroundColor(getResources().getColor(R.color.white));
         drSign_textview.setText(drSign_Text);
@@ -311,7 +315,11 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
 
     private void escPrint() throws UnsupportedEncodingException {
-        if (rtPrinter != null) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                if (rtPrinter != null) {
             CmdFactory escFac = new EscFactory();
             Cmd escCmd = escFac.create();
 
@@ -323,13 +331,16 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
             bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
 
-
             Position txtposition = new Position(0, 0);
             textSetting.setTxtPrintPosition(txtposition);
-            // textSetting.setAlign(CommonEnum.ALIGN_MIDDLE);
+             textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
             // commonSetting.setEscLineSpacing(getInputLineSpacing());
             escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
-            escCmd.append(escCmd.getTextCmd(textSetting, prescData));
+            try {
+                escCmd.append(escCmd.getTextCmd(textSetting, prescData));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
 
@@ -341,9 +352,13 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             escCmd.append(escCmd.getLFCRCmd());
 
             //here it prints 2nd time taking the position of the cursor where the priting ended above.
-            txtposition.x = 160;
+            txtposition.x = 20;
             textSetting.setTxtPrintPosition(txtposition);
-            escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
+            try {
+                escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
             escCmd.append(escCmd.getLFCRCmd());
@@ -354,6 +369,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
             rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
         }
+            }
+        }).start();
     }
 
     private void showSelectChartsetnameDialog() {
