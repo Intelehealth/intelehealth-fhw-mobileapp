@@ -99,6 +99,10 @@ import static org.intelehealth.app.utilities.StringUtils.getValue;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_caste_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_economic_edit;
+import static org.intelehealth.app.utilities.StringUtils.switch_bn_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_hi_education_edit;
@@ -569,6 +573,10 @@ public class IdentificationActivity extends AppCompatActivity {
                     String education = switch_gu_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String education = switch_bn_education_edit(patient1.getEducation_level());
+                    mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
+                }
                 else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String education = switch_ml_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
@@ -622,6 +630,10 @@ public class IdentificationActivity extends AppCompatActivity {
                     String economic = switch_gu_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String economic = switch_bn_economic_edit(patient1.getEconomic_status());
+                    mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
+                }
                 else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
@@ -659,6 +671,10 @@ public class IdentificationActivity extends AppCompatActivity {
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String caste = switch_gu_caste_edit(patient1.getCaste());
+                    mCaste.setSelection(casteAdapter.getPosition(caste));
+                }
+                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String caste = switch_bn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 }
                 else {
@@ -909,6 +925,9 @@ public class IdentificationActivity extends AppCompatActivity {
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                     String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
                     mDOB.setText(dob_text);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
+                    mDOB.setText(dob_text);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
                     mDOB.setText(dob_text);
@@ -997,7 +1016,10 @@ public class IdentificationActivity extends AppCompatActivity {
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                 String dob_text = en__gu_dob(dob); //to show text of English into Gujarati...
                 mDOB.setText(dob_text);
-            } else {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                String dob_text = en__bn_dob(dob); //to show text of English into Bengali...
+                mDOB.setText(dob_text);
+            }else {
                 mDOB.setText(dob);
             }
 
@@ -1136,6 +1158,9 @@ public class IdentificationActivity extends AppCompatActivity {
                         mDOB.setText(dob_text);
                     }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
+                        mDOB.setText(dob_text);
+                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                        String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
                         mDOB.setText(dob_text);
                     } else {
                         mDOB.setText(dobString);
@@ -1576,12 +1601,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or__en_noEdit
+                String dob = StringUtils.hi_or_bn_en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
@@ -1906,12 +1931,12 @@ public class IdentificationActivity extends AppCompatActivity {
 
             //get month index and return English value for month.
             if (dob_indexValue == 15) {
-                String dob = StringUtils.hi_or__en_noEdit
+                String dob = StringUtils.hi_or_bn_en_noEdit
                         (mDOB.getText().toString(), sessionManager.getAppLanguage());
                 patientdto.setDate_of_birth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
-                String dob = StringUtils.hi_or__en_month(dob_indexValue);
+                String dob = StringUtils.hi_or_bn_en_month(dob_indexValue);
                 String dob_month_split = dob_array[1];
                 dob_array[1] = dob_month_split.replace(dob_month_split, dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];

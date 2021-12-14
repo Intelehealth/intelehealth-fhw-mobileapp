@@ -534,7 +534,8 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .equalsIgnoreCase("Associated symptoms"))
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("जुड़े लक्षण")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ"))) {
+                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ") || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                    .equalsIgnoreCase("জড়িত লক্ষণগুলি")))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
 
@@ -586,6 +587,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-mr", "तुम्हाला खालील लक्षणे आहेत का?");
                 assoSympObj.put("display-as", "আপোনাৰ নিম্নলিখিত লক্ষণবোৰ আছে নেকি?");
                 assoSympObj.put("display-ml", "നിങ്ങൾക്ക് ഇനിപ്പറയുന്ന രോഗലക്ഷണം ഉണ്ടോ?");
+                assoSympObj.put("display-bn", "আপনার কি নিম্নলিখিত লক্ষণগুলি রয়েছে?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
                 assoSympArr.put(0, assoSympObj);
@@ -598,6 +600,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 finalAssoSympObj.put("display-te", "అనుబంధ లక్షణాలు");
                 finalAssoSympObj.put("display-or", "ପେଟଯନ୍ତ୍ରଣା");
                 finalAssoSympObj.put("display-hi", "जुड़े लक्षण");
+                finalAssoSympObj.put("display-bn", "জড়িত লক্ষণগুলি");
                 finalAssoSympObj.put("display-gj", "સંકળાયેલ લક્ષણો");
                 finalAssoSympObj.put("perform-physical-exam", "");
                 finalAssoSympObj.put("options", assoSympArr);
@@ -627,8 +630,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
             setTitle(patientName + ": " + currentNode.findDisplay());
-            setTitle(patientName + ": " + currentNode.findDisplay());
-
         }
     }
 
@@ -753,6 +754,20 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "ആഴ്ചയിൽ തവണ")
                     .replace("times per month", "മാസത്തിൽ തവണ")
                     .replace("times per year", "വർഷത്തിൽ തവണ")));
+        }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")){
+            alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
+                    .replace("Question not answered", "প্রশ্নের উত্তর দেওয়া হয়নি")
+                    .replace("Patient reports -", "রোগীর রিপোর্ট-")
+                    .replace("Patient denies -", "রোগী অস্বীকার করে-")
+                    .replace("Hours", "ঘন্টার").replace("Days", "দিনগুলি")
+                    .replace("Weeks", "সপ্তাহ").replace("Months", "মাস")
+                    .replace("Years", "বছর")
+                    .replace("times per hour", "প্রতি ঘন্টা")
+                    .replace("time per day", "দিনে বার")
+                    .replace("times per week", "প্রতি সপ্তাহে বার")
+                    .replace("times per month", "প্রতি মাসে বার")
+                    .replace("times per year", "প্রতি বছর বার")));
         }
         else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));

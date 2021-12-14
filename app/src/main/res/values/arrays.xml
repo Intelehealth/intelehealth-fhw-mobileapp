@@ -13,6 +13,8 @@
         <item>Malyalam</item>
         <item>Russian</item>
         <!--        <item>Cebuano</item>-->
+        <item>বাংলা</item>
+<!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
@@ -27,6 +29,8 @@
         <item>ml</item>
         <item>ru</item>
         <!--        <item>cb</item>-->
+        <item>bn</item>
+<!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
@@ -102,6 +106,16 @@
         <item>હાયર સેકેંડરી</item>
         <item>સ્નાતક અને વધુ</item>
     </string-array>
+
+    <string-array name="education_bn">
+        <item>নির্বাচন করুন</item>
+        <item>নিরক্ষর</item>
+        <item>প্রাথমিক</item>
+        <item>মাধ্যমিক</item>
+        <item>উচ্চ মাধ্যমিক</item>
+        <item>স্নাতক বা উচ্চতর</item>
+    </string-array>
+
     <string-array name="education_cb">
         <item>Select Education</item>
         <item>Illiterate</item>
@@ -196,6 +210,15 @@
         <item>અન્ય</item>
     </string-array>
 
+    <string-array name="caste_bn">
+        <item>নির্বাচন করুন</item>
+        <item>সাধারণ</item>
+        <item>ওবিসি</item>
+        <item>এসসি</item>
+        <item>এসটি</item>
+        <item>অন্যান্য</item>
+    </string-array>
+
     <string-array name="caste_or">
         <item>ଚୟନ କରନ୍ତୁ</item>
         <item>ସାଧାରଣ</item>
@@ -262,6 +285,12 @@
         <item>Select</item>
         <item>APL</item>
         <item>BPL</item>
+    </string-array>
+
+    <string-array name="economic_bn">
+        <item>নির্বাচন করুন</item>
+        <item>দারিদ্র্যসীমার উপরে</item>
+        <item>দারিদ্র্যসীমার নিচে</item>
     </string-array>
 
     <string-array name="economic_or">

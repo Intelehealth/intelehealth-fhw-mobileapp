@@ -303,6 +303,11 @@ public static String switch_ru_education(String val) {
         }
         return val;
     }
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            val = switch_bn_caste(val);
+            val = switch_bn_economic(val);
+            val = switch_bn_education(val);
+        }
 
     public static String switch_gu_education(String val) {
         switch (val) {
@@ -687,6 +692,53 @@ public static String switch_ru_education(String val) {
         return val;
     }
 
+    public static String switch_bn_education_edit(String val) {
+        switch (val) {
+            case "Illiterate":
+                val = "নিরক্ষর";
+                break;
+            case "Primary":
+                val = "প্রাথমিক";
+                break;
+            case "Secondary":
+                val = "মাধ্যমিক";
+                break;
+            case "Higher Secondary":
+                val = "উচ্চ মাধ্যমিক";
+                break;
+            case "Graduation & Higher":
+                val = "স্নাতক বা উচ্চতর";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+
+    public static String switch_bn_education(String val) {
+        switch (val) {
+            case "নিরক্ষর":
+                val = "Illiterate";
+                break;
+            case "প্রাথমিক":
+                val = "Primary";
+                break;
+            case "মাধ্যমিক":
+                val = "Secondary";
+                break;
+            case "উচ্চ মাধ্যমিক":
+                val = "Higher Secondary";
+                break;
+            case "স্নাতক বা উচ্চতর":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_economic(String val) {
         switch (val) {
             case "गरीबी रेखा से ऊपर":
@@ -750,6 +802,34 @@ public static String switch_ru_education(String val) {
                 break;
             case "BPL":
                 val = "ଦାରିଦ୍ର୍ୟ ସୀମାରେଖା ତଳେ";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_bn_economic(String val) {
+        switch (val) {
+            case "দারিদ্র্যসীমার উপরে":
+                val = "APL";
+                break;
+            case "দারিদ্র্যসীমার নিচে":
+                val = "BPL";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_bn_economic_edit(String val) {
+        switch (val) {
+            case "APL":
+                val = "দারিদ্র্যসীমার উপরে";
+                break;
+            case "BPL":
+                val = "দারিদ্র্যসীমার নিচে";
                 break;
             default:
                 return val;
@@ -1210,6 +1290,29 @@ public static String switch_ru_education(String val) {
         return val;
     }
 
+    public static String switch_bn_caste(String val) {
+        switch (val) {
+            case "সাধারণ":
+                val = "General";
+                break;
+            case "ওবিসি":
+                val = "OBC";
+                break;
+            case "এসসি":
+                val = "SC";
+                break;
+            case "এসটি":
+                val = "ST";
+                break;
+            case "অন্যান্য":
+                val = "others";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
     public static String switch_hi_caste_edit(String val) {
         switch (val) {
             case "General":
@@ -1272,6 +1375,29 @@ public static String switch_ru_education(String val) {
                 break;
             case "others":
                 val = "ఇతరులు";
+                break;
+            default:
+                return val;
+        }
+        return val;
+    }
+
+    public static String switch_bn_caste_edit(String val) {
+        switch (val) {
+            case "General":
+                val = "সাধারণ";
+                break;
+            case "OBC":
+                val = "ওবিসি";
+                break;
+            case "SC":
+                val = "এসসি";
+                break;
+            case "ST":
+                val = "এসটি";
+                break;
+            case "others":
+                val = "অন্যান্য";
                 break;
             default:
                 return val;
@@ -1537,7 +1663,26 @@ public static String switch_ru_education(String val) {
         return mdob_text;
     }
 
-    public static String hi_or__en_month(int month_index) {
+    public static String en__bn_dob(String dob) { //English dob is replaced to Bengali text.
+        String mdob_text = dob
+                .replace("January", "জানুয়ারী")
+                .replace("February", "ফেব্রুয়ারী")
+                .replace("March", "মার্চ")
+                .replace("April", "এপ্রিল")
+                .replace("May", "মে")
+                .replace("June", "জুন")
+                .replace("July", "জুলাই")
+                .replace("August", "আগস্ট")
+                .replace("September", "সেপ্টেম্বর")
+                .replace("October", "অক্টোবর")
+                .replace("November", "নভেম্বর")
+                .replace("December", "ডিসেম্বর");
+
+        return mdob_text;
+    }
+
+
+    public static String hi_or_bn_en_month(int month_index) {
         String dob_string = "";
 
         switch (month_index) {
@@ -1586,7 +1731,7 @@ public static String switch_ru_education(String val) {
     }
 
 
-    public static String hi_or__en_noEdit(String dobString, String locale) {
+    public static String hi_or_bn_en_noEdit(String dobString, String locale) {
 
         if (locale.equalsIgnoreCase("hi")) {
             String dob = dobString
@@ -1716,6 +1861,23 @@ public static String switch_ru_education(String val) {
                     .replace("ಅಕ್ಟೋಬರ್", "October")
                     .replace("ನವೆಂಬರ್", "November")
                     .replace("ಡಿಸೆಂಬರ್", "December");
+            return dob;
+        }
+        else if(locale.equalsIgnoreCase("bn")) {
+            //Bengali
+            String dob = dobString
+                    .replace("জানুয়ারী", "January")
+                    .replace("ফেব্রুয়ারী", "February")
+                    .replace("মার্চ", "March")
+                    .replace("এপ্রিল", "April")
+                    .replace("মে", "May")
+                    .replace("জুন", "June")
+                    .replace("জুলাই", "July")
+                    .replace("আগস্ট", "August")
+                    .replace("সেপ্টেম্বর", "September")
+                    .replace("অক্টোবর", "October")
+                    .replace("নভেম্বর", "November")
+                    .replace("ডিসেম্বর", "December");
             return dob;
         }
        else if (locale.equalsIgnoreCase("ru")) {
