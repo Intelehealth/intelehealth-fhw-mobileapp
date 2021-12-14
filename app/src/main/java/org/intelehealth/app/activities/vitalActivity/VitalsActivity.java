@@ -72,6 +72,7 @@ public class VitalsActivity extends AppCompatActivity {
             mHemoglobin, mSugarRandom, mSugarFasting, mSugarAfterMeal;
     Spinner mBlood_Spinner;
     ArrayAdapter<CharSequence> bloodAdapter;
+    boolean fabClickFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -683,7 +684,10 @@ public class VitalsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateTable();
+                if(!fabClickFlag) {
+                    fabClickFlag=true;
+                    validateTable();
+                }
             }
         });
     }
@@ -823,11 +827,14 @@ public class VitalsActivity extends AppCompatActivity {
         //BP vaidations added by Prajwal.
         if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if (mBpSys.getText().toString().isEmpty()) {
+            if(mBpSys.getText().toString().isEmpty()) {
+                fabClickFlag=false;
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
                 return;
-            } else if (mBpDia.getText().toString().isEmpty()) {
+            }
+            else if(mBpDia.getText().toString().isEmpty()) {
+                fabClickFlag=false;
                 mBpDia.requestFocus();
                 mBpDia.setError("Enter field");
                 return;
@@ -837,11 +844,14 @@ public class VitalsActivity extends AppCompatActivity {
         //Sugar Level vaidations
         if (mSugarFasting.getText().toString().isEmpty() && !mSugarAfterMeal.getText().toString().isEmpty() ||
                 !mSugarFasting.getText().toString().isEmpty() && mSugarAfterMeal.getText().toString().isEmpty()) {
-            if (mSugarFasting.getText().toString().isEmpty()) {
+            if(mSugarFasting.getText().toString().isEmpty()) {
+                fabClickFlag=false;
                 mSugarFasting.requestFocus();
                 mSugarFasting.setError("Enter field");
                 return;
-            } else if (mSugarAfterMeal.getText().toString().isEmpty()) {
+            }
+            else if(mSugarAfterMeal.getText().toString().isEmpty()) {
+                fabClickFlag=false;
                 mSugarAfterMeal.requestFocus();
                 mSugarAfterMeal.setError("Enter field");
                 return;
@@ -1061,6 +1071,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         if (cancel) {
             // There was an error - focus the first form field with an error.
+            fabClickFlag=false;
             focusView.requestFocus();
             return;
         } else {
@@ -1444,7 +1455,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
-
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
