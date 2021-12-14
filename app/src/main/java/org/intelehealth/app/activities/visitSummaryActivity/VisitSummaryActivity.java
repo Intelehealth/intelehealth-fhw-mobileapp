@@ -1248,10 +1248,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         sugarRandomView.setText(sugarrandom.getValue());
         if(sugarfasting.getValue()!=null || sugaraftermeal.getValue()!=null
-                && !sugarfasting.getValue().isEmpty() || !sugaraftermeal.getValue().isEmpty()) {
+        && !sugarfasting.getValue().equalsIgnoreCase("null") && !sugaraftermeal.getValue().equalsIgnoreCase("null")) {
             sugarFastAndMealView.setText(sugarfasting.getValue() + " | " + sugaraftermeal.getValue());
         }else{
             System.out.println("error====="+"");
+            sugarFastAndMealView.setText("");
         }
 
         if (complaint.getValue() != null)
