@@ -458,7 +458,12 @@ public class Node implements Serializable {
                 sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
                 String locale = sessionManager.getCurrentLang();
 
+                if(node.generateLanguage()!=null){
                 node.setText(node.generateLanguage());
+                }else{
+                    node.setText("");
+                }
+
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
                 if (node.anySubSelected() && node.anySubPopUp()) {
