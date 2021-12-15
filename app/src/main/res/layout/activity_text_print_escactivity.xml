@@ -60,9 +60,6 @@
                 android:layout_weight="1"
                 android:enabled="false"
                 android:textColor="@color/white"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:background="@drawable/button_bg_rounded_stroke"
-                android:backgroundTint="@color/tag_red_bg"
                 android:text="@string/disconnect" />
 
             <Button
@@ -72,9 +69,6 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:textColor="@color/white"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:background="@drawable/button_bg_rounded_stroke"
-                android:backgroundTint="@color/colorPrimary"
                 android:text="@string/connect" />
 
         </LinearLayout>

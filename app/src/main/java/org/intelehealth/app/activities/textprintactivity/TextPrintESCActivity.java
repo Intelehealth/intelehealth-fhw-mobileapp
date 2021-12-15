@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -11,10 +12,12 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -94,7 +97,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 40;
     TextView tv_device_selected;
-    Button btn_connect;
+    Button btn_connect, btn_disConnect;
     private Object configObj;
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private ProgressBar pb_connect;
@@ -147,13 +150,18 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 //        et_linespacing = findViewById(R.id.et_linespacing);
         tv_device_selected = findViewById(R.id.tv_device_selected);
         btn_connect = findViewById(R.id.btn_connect);
+        btn_disConnect = findViewById(R.id.btn_disConnect);
         pb_connect = findViewById(R.id.pb_connect);
+
+        btn_disConnect.setBackgroundResource(R.drawable.bg_button_disable);
+        btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
     }
 
     public void addListener() {
         btn_txtprint.setOnClickListener(this);
         tv_device_selected.setOnClickListener(this);
         btn_connect.setOnClickListener(this);
+        btn_disConnect.setOnClickListener(this);
 
 //        btn_select_chartsetname.setOnClickListener(this);
 //        ck_smallfont.setOnCheckedChangeListener(this);
@@ -417,9 +425,30 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             case R.id.btn_connect:
                 doConnect(); //Here on clicking will connect with the selected Bluetooth device...
                 break;
+            case R.id.btn_disConnect:
+                doDisConnect();
+                break;
             default:
                 break;
         }
+    }
+
+    private void doDisConnect() {
+
+        if (Integer.parseInt(tv_device_selected.getTag().toString()) == BaseEnum.NO_DEVICE) {
+            return;
+        }
+        if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
+            rtPrinter.disConnect();
+        }
+
+        // disconnect and connect button color change.
+        btn_disConnect.setBackgroundResource(R.drawable.bg_button_disable);
+        btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
+
+        tv_device_selected.setText(getString(R.string.please_connect));
+        tv_device_selected.setTag(BaseEnum.NO_DEVICE);
+        setPrintEnable(false);
     }
 
     @Override
@@ -532,6 +561,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                         configObj = new BluetoothEdrConfigBean(device);
                         tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
                         isConfigPrintEnable(configObj);
+
+                        btn_disConnect.setBackgroundResource(R.drawable.bg_button_disable);
+                        btn_connect.setBackgroundResource(R.drawable.bg_visit_details);
                     }
                 });
 
@@ -563,9 +595,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void setPrintEnable(boolean isEnable) {
-        // btn_txt_print.setEnabled(isEnable);
+       // btn_txtprint.setEnabled(isEnable);
         btn_connect.setEnabled(!isEnable);
-        // btn_disConnect.setEnabled(isEnable);
+        btn_disConnect.setEnabled(isEnable);
 
     }
 
@@ -632,6 +664,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void run() {
                 pb_connect.setVisibility(View.GONE);
+                // disconnect and connect button color change.
+
+
                 switch (state) {
                     case CommonEnum.CONNECT_STATE_SUCCESS:
                         TimeRecordUtils.record("RT连接end：", System.currentTimeMillis());
@@ -643,6 +678,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                         printerInterfaceArrayList.add(printerInterface);
                         rtPrinter.setPrinterInterface(printerInterface);
                         setPrintEnable(true);
+                        btn_disConnect.setBackgroundResource(R.drawable.bg_end_visit);
+                        btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
                         break;
                     case CommonEnum.CONNECT_STATE_INTERRUPTED:
                         if (printerInterface != null && printerInterface.getConfigObject() != null) {
@@ -659,6 +696,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                         curPrinterInterface = null;
                         printerInterfaceArrayList.remove(printerInterface);
                         setPrintEnable(false);
+                        btn_disConnect.setBackgroundResource(R.drawable.bg_button_disable);
+                        btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
 
                         break;
                     default:
