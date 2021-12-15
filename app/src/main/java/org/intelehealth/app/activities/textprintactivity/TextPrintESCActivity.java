@@ -93,7 +93,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private ESCFontTypeEnum curESCFontType = null;
     Intent intent;
     String prescData, doctorDetails, font_family, drSign_Text;
-    IntelehealthApplication application;
+   // IntelehealthApplication application;
     private Bitmap mBitmap = null;
     private int bmpPrintWidth = 40;
     TextView tv_device_selected;
@@ -103,7 +103,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     private ProgressBar pb_connect;
     private RTPrinter rtPrinter = null;
     private PrinterFactory printerFactory;
-    private PrinterInterface curPrinterInterface = null;
+    public static PrinterInterface curPrinterInterface = null;
     Toolbar mToolbar;
 
     @Override
@@ -113,15 +113,6 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         initView();
         addListener();
         init();
-
-        application = new IntelehealthApplication();
-        application.setCurrentCmdType(BaseEnum.CMD_ESC);
-        // printerFactory = new UniversalPrinterFactory();
-        printerFactory = new ThermalPrinterFactory();
-        rtPrinter = printerFactory.create();
-        rtPrinter.setPrinterInterface(curPrinterInterface);
-        PrinterObserverManager.getInstance().add(this);
-        application.setRtPrinter(rtPrinter);
     }
 
     @SuppressLint("WrongViewCast")
@@ -219,23 +210,32 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void init() {
-        application = new IntelehealthApplication();
-        application.setCurrentCmdType(BaseEnum.CMD_ESC);
+        IntelehealthApplication.getInstance().setCurrentCmdType(BaseEnum.CMD_ESC);
         // printerFactory = new UniversalPrinterFactory();
         printerFactory = new ThermalPrinterFactory();
         rtPrinter = printerFactory.create();
-        rtPrinter.setPrinterInterface(curPrinterInterface);
         PrinterObserverManager.getInstance().add(this);
-        application.setRtPrinter(rtPrinter);
 
-        rtPrinter = IntelehealthApplication.getRtPrinter();
+        if(curPrinterInterface != null) { // to maintain the bluetooth pairing throughout the app.
+            rtPrinter.setPrinterInterface(curPrinterInterface);
+            tv_device_selected.setText(curPrinterInterface.getConfigObject().toString());
+            tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
+            printerInterfaceArrayList.add(curPrinterInterface);
+            rtPrinter.setPrinterInterface(curPrinterInterface);
+            setPrintEnable(true);
+            btn_disConnect.setBackgroundResource(R.drawable.bg_end_visit);
+            btn_connect.setBackgroundResource(R.drawable.bg_button_disable);
+        }
+
+        IntelehealthApplication.getInstance().setRtPrinter(rtPrinter);
+        rtPrinter = IntelehealthApplication.getInstance().getRtPrinter();
         textSetting = new TextSetting();
 
         intent = this.getIntent();
         if (intent != null) {
-            prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
-           /* prescData = "    - Not Provided\n" +
-                    "    ";*/
+           // prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+            prescData = "    - Not Provided\n" +
+                    "    ";
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
             drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
@@ -285,7 +285,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             printStr = "Hello Printer";
         }
 
-        switch (IntelehealthApplication.getCurrentCmdType()) {
+        switch (IntelehealthApplication.getInstance().getCurrentCmdType()) {
             case BaseEnum.CMD_ESC:
                 escPrint();
                 break;
@@ -527,11 +527,11 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (application.getCurrentCmdType() == BaseEnum.CMD_ESC) {
+        if (IntelehealthApplication.getInstance().getCurrentCmdType() == BaseEnum.CMD_ESC) {
             if (mBitmap.getWidth() > 48 * 8) {
                 mBitmap = BitmapConvertUtil.decodeSampledBitmapFromUri(TextPrintESCActivity.this, uri, 48 * 8, 4000);
             }
-        } else if (application.getCurrentCmdType() == BaseEnum.CMD_PIN) {
+        } else if (IntelehealthApplication.getInstance().getCurrentCmdType() == BaseEnum.CMD_PIN) {
             if (mBitmap.getWidth() > 210 * 8) {
                 mBitmap = BitmapConvertUtil.decodeSampledBitmapFromUri(TextPrintESCActivity.this, uri, 210 * 8, 4000);
             }
@@ -725,4 +725,5 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

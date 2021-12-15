@@ -177,7 +177,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     }
 
     @BaseEnum.CmdType
-    public static int getCurrentCmdType() {
+    public int getCurrentCmdType() {
         return currentCmdType;
     }
 
@@ -185,7 +185,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         this.currentCmdType = currentCmdType;
     }
 
-    public static RTPrinter getRtPrinter() {
+    public RTPrinter getRtPrinter() {
         return rtPrinter;
     }
 
