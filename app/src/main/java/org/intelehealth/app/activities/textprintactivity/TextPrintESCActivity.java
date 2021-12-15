@@ -233,9 +233,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         intent = this.getIntent();
         if (intent != null) {
-           // prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
-            prescData = "    - Not Provided\n" +
-                    "    ";
+            prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+           /* prescData = "    - Not Provided\n" +
+                    "    ";*/
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
             drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
