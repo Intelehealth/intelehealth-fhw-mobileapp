@@ -10,7 +10,7 @@ android {
         targetSdkVersion 30
         versionCode 14
         buildToolsVersion('29.0.2')
-        versionName "1.9.3"
+        versionName "1.10.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
