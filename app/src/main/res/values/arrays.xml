@@ -307,4 +307,128 @@
         <item>Select Village</item>
     </string-array>
 
+    <string-array name="medications">
+        <item>Albendazole Tablets 400mg</item>
+        <item>Amlodipine Tablets 5 mg</item>
+        <item>Amoxycillin Capsules 500 mg</item>
+        <item>Amoxycillin Capsules 250mg</item>
+        <item>Ascorbic Acid Tablets(Chewable)</item>
+        <item>Atenolol Tablets 50 mg</item>
+        <item>Bisacodyl Tablet 5 mg</item>
+        <item>Calcium gluconate Tablet 500 mg</item>
+        <item>Chloroquine phosphateTablet 250 mg</item>
+        <item>Chlorpheniramine Maleate Tablets 4 mg</item>
+        <item>Clotrimazole Vaginal Tablet 100 mg</item>
+        <item>Dexamethasone Tablet 0.5 mg</item>
+        <item>Diclofenac Sodium Tablets 50 mg</item>
+        <item>Dicyclomine Tablets 20 mg</item>
+        <item>Domperidone Tablets 10 mg</item>
+        <item>Enalapril Maleate Tablets 5 mg</item>
+        <item>Etopyllin with theophylline tablet</item>
+        <item>Ferrous salt 20 mg + Folic acid 100 mcg Tablet</item>
+        <item>Ferrous salt 100 mg + Folic acid 500 mcg Tablet</item>
+        <item>Folic Acid Tablets 5mg</item>
+        <item>Ibuprofen Tablets 400mg</item>
+        <item>Metformin HCL Tablets 500mg</item>
+        <item>Metronidazole Tablets 400mg</item>
+        <item>Metronidazole Tablet 200mg</item>
+        <item>Norfloxacin Tablets 400mg</item>
+        <item>Paracetamol Tablets 500mg</item>
+        <item>Primaquine Phosphate Tablets 2.5mg</item>
+        <item>Primaquine Phosphate Tablets 7.5mg</item>
+        <item>Salbutamol Tablet 4 mg</item>
+        <item>Vitamin A Capsules</item>
+        <item>Vitamin B Complex Tablets (Therapeutic)</item>
+        <item>Azithromycin Tablet 500 mg</item>
+        <item>Cefixime Tablet 200 mg</item>
+        <item>Asprin (Acetylsalicylic acid) Tablet 75 mg</item>
+        <item>Clopidogrel Tablets 75mg</item>
+        <item>Zinc Sulphate Dispersible Tablets 20mg</item>
+        <item>Atorvastatin Tablet 40 mg</item>
+        <item>Bisacodyl Suppository 5 mg</item>
+        <item>Azithromycin Tablet 250 mg</item>
+        <item>Famotidine Tablets 40mg</item>
+        <item>Formoterol &amp; Budesonide Rotacap 6 mcg+ 200 mcg 200mcg</item>
+        <item>Montelukast Sodium Tablet 10 mg</item>
+        <item>Paracetamol Tablet 650 mg</item>
+        <item>Labetalol Tablet 100 mg</item>
+        <item>Ferrous salt 60mg + Folic acid 500mcg</item>
+        <item>Tablet Diclofenac sodium</item>
+        <item>Injection Eteophylline &amp; Theophylline</item>
+        <item>Injection Gentamicin Injection 80 mg/ml</item>
+        <item>Pralidoxime chloride Injection 25 mg/ml</item>
+        <item>Ringer lactate Injection</item>
+        <item>Sodium chloride injection</item>
+        <item>Sterile Water for Injection (5ml)</item>
+        <item>Vitamin B Complex Injection</item>
+        <item>Sodium Chloride Inj.(IV use) 100ml</item>
+        <item>Albendazole Oral liquid 200 mg/5 ml</item>
+        <item>Amoxycillin oral suspension</item>
+        <item>Betamethasone Valerate Cream 0.1%</item>
+        <item>Cholecalciferol Granules (Vitamin D3)</item>
+        <item>Ciprofloxacin Ophthalmic Solution</item>
+        <item>Clotrimazole Cream 1%</item>
+        <item>Vitamin A Solution Conc. 1 Lac IU/1ml, 100ml</item>
+        <item>Bottle Dextromethorphan Syrup 13.5 mg/5 ml</item>
+        <item>Domperidone Syrup</item>
+        <item>Framycetin Sulphate Skin Cream (30Gm Tube)</item>
+        <item>Glycerine Hydrogen peroxide Solution</item>
+        <item>Ibuprofen oral Suspension 100 mg/5 ml</item>
+        <item>Metronidazole Oral liquid 100 mg/5 ml</item>
+        <item>O.R.S.(W.H.O. Formula)</item>
+        <item>Paracetamol Syrup 125 mg/5ml</item>
+        <item>Povidone iodine Solution 5%</item>
+        <item>Povidine lodine (Ointment)</item>
+        <item>Povidone lodine Solution 5%W/V(1 Litre)</item>
+        <item>Salbutamol Nebulizer Solution</item>
+        <item>Salbutamol Syrup 2 mg/5 ml</item>
+        <item>Silver sulphadiazine Cream 1%</item>
+        <item>Calamine Lotion Neomycin</item>
+        <item>Bacitracin &amp; Palymaxin B Oint.</item>
+        <item>Azithromycin Oral liquid 200mg/5ml</item>
+        <item>Levocetirizine Dihydrochloride Syrup</item>
+        <item>Lignocaine Hydrochloride Jelly</item>
+        <item>IRON FOLIC ACID (IFA) SYRUP</item>
+        <item>Alcoholic Rub Hand Disinfectant 500 ml</item>
+        <item>Calcium &amp; Vitamin D3 Suspension 100 ml bottle</item>
+        <item>Cefixime syrup</item>
+        <item>Xylometazoline Nasal Drops 0.05%</item>
+        <item>Disposable Syringe 10 ml(Without Needle)</item>
+        <item>Sterile Hypodermic Syringe for Single use Size 2 ml(Without Needle)</item>
+        <item>Sterile Hypodermic Syringe for Single use Size: SML(Without Needle)</item>
+        <item>Plastic Bags(Yellow)</item>
+        <item>Small Plastic Bags(Red)</item>
+        <item>Small Plastic Bags(Black)</item>
+        <item>Small Surgical Rubber Gloves(Disposable) 6 Inch</item>
+        <item>Surgical Rubber Gloves(Disposable) 6.5 Inch</item>
+        <item>Surgical Rubber Gloves(Disposable) 7 Inch</item>
+        <item>Surgical Rubber Gloves (Disposable) 7.5 Inch</item>
+        <item>Surgical Rubber Gloves (Disposable) 8 Inch tab</item>
+        <item>metformin 500mg + tab glimeperide 2mg tab</item>
+        <item>metformin 500mg + tab glimeperide 1mg Glimepiride Tablet 2 mg</item>
+        <item>Metformin Hydrochloride Tablets 500 mg TAB</item>
+        <item>GLIPIZIDE 5MG</item>
+        <item>Tab Paracetamol 500mg</item>
+        <item>Tab Cetrizine 10mg</item>
+        <item>Tab Amoxicillin/clavulanic acid 875/125mg</item>
+        <item>Cap Omeprazole 20mg</item>
+        <item>Tab Dexamethasone 6mg</item>
+        <item>Tab Hydrocortisone 10mg</item>
+        <item>Tab Prednisolone 20mg</item>
+        <item>Tab Methylprednisolone 8mg</item>
+        <item>Tab Vitamin C 500mg</item>
+        <item>Cholecalciferol Grannules 6000IU</item>
+        <item>Tab Metformin 500mg</item>
+        <item>Tab Glimepride 2mg</item>
+        <item>Tab Glibenclamide 5mg</item>
+        <item>Tab Atenolol 50mg</item>
+        <item>Tab Amlodepine 5mg</item>
+        <item>Tab Enalapril 5mg</item>
+        <item>Tab Cefixime 200mg</item>
+        <item>Tab Azithromycin 250mg</item>
+        <item>Lactulose 250ml bottle</item>
+        <item>ORS 21gm sachet</item>
+        <item>Tab Doxycycline 100mg</item>
+        <item>Syrup Kesol 200ml bottle</item>
+    </string-array>
 </resources>

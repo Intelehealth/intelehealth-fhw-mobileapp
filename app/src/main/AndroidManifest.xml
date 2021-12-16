@@ -230,6 +230,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name="org.intelehealth.unicef.activities.presription.PrescriptionActivity"
+            android:configChanges="uiMode"
+            android:label="@string/prescription"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!--        <service-->
         <!--            android:name=".services.OnClearFromRecentService"-->
         <!--            android:stopWithTask="false" />-->

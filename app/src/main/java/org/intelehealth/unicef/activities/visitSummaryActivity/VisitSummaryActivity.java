@@ -86,6 +86,7 @@ import org.intelehealth.unicef.activities.familyHistoryActivity.FamilyHistoryAct
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.unicef.activities.presription.PrescriptionActivity;
 import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
@@ -3629,6 +3630,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadPrescriptionService = null;
         }
         isReceiverRegistered = false;
+    }
+
+    public void signAndSubmit(View view) {
+        Intent visitSummary = new Intent(this, PrescriptionActivity.class);
+
+        visitSummary.putExtra("visitUuid", visitUUID);
+        visitSummary.putExtra("patientUuid", patientUuid);
+        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+        visitSummary.putExtra("name", patientName);
+        visitSummary.putExtra("gender", genderView.getText());
+        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+        visitSummary.putExtra("tag", intentTag);
+        visitSummary.putExtra("pastVisit", isPastVisit);
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            visitSummary.putExtra("hasPrescription", "true");
+        } else {
+            visitSummary.putExtra("hasPrescription", "false");
+        }
+        startActivity(visitSummary);
     }
 
 
