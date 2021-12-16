@@ -252,7 +252,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             } else if (font_family.toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "fonts/Arty.otf";
             } else if (font_family.toLowerCase().equalsIgnoreCase("almondita")) {
-                fontFamilyFile = "fonts/Almondita-mLZJP.otf";
+                fontFamilyFile = "fonts/Almondita.ttf";
             }
         }
 
