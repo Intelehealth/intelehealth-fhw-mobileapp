@@ -2165,8 +2165,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     public String parseDateToddMMyyyy(String time) {
         String inputPattern = "dd-MM-yyyy";
         String outputPattern = "dd MMM yyyy";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
         Date date = null;
         String str = null;
