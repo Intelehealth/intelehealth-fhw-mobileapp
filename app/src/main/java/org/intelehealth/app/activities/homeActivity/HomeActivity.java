@@ -948,7 +948,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
-                curPrinterInterface = null;
+               // curPrinterInterface = null;
                 // finish();
             }
         });

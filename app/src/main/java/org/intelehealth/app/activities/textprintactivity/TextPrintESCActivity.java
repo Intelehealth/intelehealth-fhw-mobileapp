@@ -216,7 +216,8 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         rtPrinter = printerFactory.create();
         PrinterObserverManager.getInstance().add(this);
 
-        if(curPrinterInterface != null) { // to maintain the bluetooth pairing throughout the app.
+        if(curPrinterInterface != null) {
+            // to maintain the bluetooth pairing throughout the app.
             rtPrinter.setPrinterInterface(curPrinterInterface);
             tv_device_selected.setText(curPrinterInterface.getConfigObject().toString());
             tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
@@ -233,9 +234,9 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
 
         intent = this.getIntent();
         if (intent != null) {
-           // prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
-            prescData = "    - Not Provided\n" +
-                    "    ";
+            prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
+           /* prescData = "    - Not Provided\n" +
+                    "    ";*/
             doctorDetails = Html.fromHtml(intent.getStringExtra("doctorDetails")).toString();
             font_family = Html.fromHtml(intent.getStringExtra("font-family")).toString();
             drSign_Text = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
