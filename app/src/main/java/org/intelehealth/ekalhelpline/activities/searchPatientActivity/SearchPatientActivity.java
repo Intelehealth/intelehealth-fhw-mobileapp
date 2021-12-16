@@ -278,6 +278,25 @@ public class SearchPatientActivity extends AppCompatActivity {
             fullyLoaded = false;
             recycler = new SearchPatientAdapter(getAllPatientsFromDB(offset), SearchPatientActivity.this);
             recyclerView.setAdapter(recycler);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (recycler.patients != null && recycler.patients.size() < limit) {
+                        return;
+                    }
+                    if (!fullyLoaded && newState == RecyclerView.SCROLL_STATE_IDLE && reLayoutManager.findLastVisibleItemPosition() == recycler.getItemCount() -1) {
+                        Toast.makeText(SearchPatientActivity.this, R.string.loading_more, Toast.LENGTH_SHORT).show();
+                        offset += limit;
+                        List<PatientDTO> allPatientsFromDB = getAllPatientsFromDB(offset);
+                        if (allPatientsFromDB.size() < limit) {
+                            fullyLoaded = true;
+                        }
+                        recycler.patients.addAll(allPatientsFromDB);
+                        recycler.notifyDataSetChanged();
+                    }
+                }
+            });
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE("firstquery", "exception", e);
