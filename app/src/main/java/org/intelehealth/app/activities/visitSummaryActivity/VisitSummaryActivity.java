@@ -4533,7 +4533,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) +
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No:" +
                     objClsDoctorDetails.getRegistrationNumber() : "";
 
             doctorDetailStr =/* "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +*/

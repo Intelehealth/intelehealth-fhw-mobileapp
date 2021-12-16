@@ -388,6 +388,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+/*
     private void showSelectChartsetnameDialog() {
         final String[] chartsetNameArray = new String[]{"UTF-8", "GBK", "BIG5", "UCS2"};
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -405,6 +406,7 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
         dialog.setNegativeButton(R.string.dialog_cancel, null);
         dialog.show();
     }
+*/
 
 
     @Override

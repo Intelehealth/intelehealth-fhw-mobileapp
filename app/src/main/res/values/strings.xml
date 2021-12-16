@@ -718,13 +718,14 @@
     <string name="main_pls_choose_device">Please choose a device</string>
     <string name="dialog_back">Back</string>
     <string name="main_discon_click_repeatedly">Device has been disconnected, no need to click repeatedly</string>
-    <string name="barcode_print">Barcode Print</string>
+    <string name="_main_connected">- connect success</string>
+    <string name="_main_connected_fail">connect fail</string>
+    <string name="_main_disconnect">disconnected</string>
+
+   <!-- <string name="barcode_print">Barcode Print</string>
     <string name="headbar_back">Back</string>
     <string name="title_barcode">Barcode</string>
     <string name="title_activity_barcode_print">BarcodePrintActivity</string>
-    <string name="_main_connected">-connect success</string>
-    <string name="_main_connected_fail">connect fail</string>
-    <string name="_main_disconnect">disconnected</string>
     <string name="please_enter_text">Please enter text.</string>
     <string name="small_font">Small Font</string>
     <string name="anti_white">Anti white</string>
@@ -740,7 +741,7 @@
     <string name="spin_default_esc_font">Please choose a Font</string>
     <string name="tv_font_select">Font Choose：</string>
     <string name="btn_clk_sel_font">Click to choose the printed font</string>
-    <string name="label_setting">Label Setting</string>
+    <string name="label_setting">Label Setting</string>-->
     <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
     <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
     <string name="no_presc_available">No Prescription Available</string>
