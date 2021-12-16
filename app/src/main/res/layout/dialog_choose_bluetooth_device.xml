@@ -61,7 +61,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_dialog_choose_bluetooth_device_search_device"
@@ -85,13 +86,16 @@
 
     </FrameLayout>
 
+<!--
     <View style="@style/BaseLine" />
+-->
 
     <ListView
         android:id="@+id/lv_dialog_choose_bluetooth_device_found_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/stroke_gray_color"
+        android:visibility="gone"
         android:dividerHeight="1dp" />
 
     <TextView

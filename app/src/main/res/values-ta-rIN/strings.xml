@@ -577,4 +577,5 @@
     <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
     <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
     <string name="no_presc_available">No Prescription Available</string>
+    <string name="printing">Printing...</string>
 </resources>

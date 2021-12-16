@@ -39,6 +39,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
 import com.rt.printerlibrary.bean.Position;
 import com.rt.printerlibrary.cmd.Cmd;
@@ -63,8 +64,10 @@ import com.rt.printerlibrary.setting.CommonSetting;
 import com.rt.printerlibrary.setting.TextSetting;
 import com.rt.printerlibrary.utils.BitmapConvertUtil;
 import com.rt.printerlibrary.utils.FuncUtils;
+import com.rt.printerlibrary.utils.PrintListener;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dialog.BluetoothDeviceChooseDialog;
@@ -378,11 +381,32 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             escCmd.append(escCmd.getLFCRCmd());
 
             Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
-            if(rtPrinter.getPrinterInterface() != null) // If without selecting Bluetooth user click Print button crash happens so added this condition.
+            if(rtPrinter.getPrinterInterface() != null) {
+                // If without selecting Bluetooth user click Print button crash happens so added this condition.
                 rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
-            else
+
+                    MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(TextPrintESCActivity.this);
+                    alertdialogBuilder.setMessage(R.string.printing);
+                    alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+
+                    androidx.appcompat.app.AlertDialog alertDialog = alertdialogBuilder.create();
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.setCancelable(false);
+                    alertDialog.show();
+
+                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);
+            }
+            else {
                 Toast.makeText(TextPrintESCActivity.this, getResources().getString
                         (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
+            }
         }
             }
         });
@@ -668,14 +692,28 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
             public void run() {
                 pb_connect.setVisibility(View.GONE);
                 // disconnect and connect button color change.
+                if(state == CommonEnum.CONNECT_STATE_SUCCESS) {
+                    Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
+                            + getString(R.string._main_connected), Toast.LENGTH_SHORT).show();
+                }
+                else if(state == CommonEnum.CONNECT_STATE_INTERRUPTED){
+                    if (printerInterface != null && printerInterface.getConfigObject() != null) {
+                        Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
+                                        + getString(R.string._main_disconnect),
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(TextPrintESCActivity.this, getString(R.string._main_disconnect),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
 
 
                 switch (state) {
                     case CommonEnum.CONNECT_STATE_SUCCESS:
                         TimeRecordUtils.record("RT连接end：", System.currentTimeMillis());
-                        Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
-                                + getString(R.string._main_connected), Toast.LENGTH_SHORT).show();
-                        tv_device_selected.setText(printerInterface.getConfigObject().toString());
+//                        Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
+//                                + getString(R.string._main_connected), Toast.LENGTH_SHORT).show();
+//                        tv_device_selected.setText(printerInterface.getConfigObject().toString());
                         tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
                         curPrinterInterface = printerInterface; // set current Printer Interface
                         printerInterfaceArrayList.add(printerInterface);
@@ -686,12 +724,12 @@ public class TextPrintESCActivity extends AppCompatActivity implements View.OnCl
                         break;
                     case CommonEnum.CONNECT_STATE_INTERRUPTED:
                         if (printerInterface != null && printerInterface.getConfigObject() != null) {
-                            Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
-                                            + getString(R.string._main_disconnect),
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TextPrintESCActivity.this, printerInterface.getConfigObject().toString()
+//                                            + getString(R.string._main_disconnect),
+//                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(TextPrintESCActivity.this, getString(R.string._main_disconnect),
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TextPrintESCActivity.this, getString(R.string._main_disconnect),
+//                                    Toast.LENGTH_SHORT).show();
                         }
                         TimeRecordUtils.record("Time：", System.currentTimeMillis());
                         tv_device_selected.setText(R.string.please_connect);
