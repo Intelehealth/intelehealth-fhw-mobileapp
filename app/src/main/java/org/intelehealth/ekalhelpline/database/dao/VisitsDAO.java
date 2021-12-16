@@ -282,7 +282,7 @@ public class VisitsDAO {
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
                 new String[]{/*"0", */visit_uuid});
 
         VisitAttribute_Speciality data = new VisitAttribute_Speciality();

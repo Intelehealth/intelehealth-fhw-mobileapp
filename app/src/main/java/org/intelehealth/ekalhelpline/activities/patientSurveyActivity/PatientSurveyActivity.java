@@ -221,7 +221,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(followUpSpinner.getSelectedItem().equals("Yes") || followUpSpinner.getSelectedItem().equals("हाँ") )
-                { showDatePicker(calendar, newCalendar, "followup"); }
+                {
+                    showDatePicker(calendar, newCalendar, "followup");
+                    noteText = "Yes";
+                }
                 else if (followUpSpinner.getSelectedItem().equals("No") || followUpSpinner.getSelectedItem().equals("नहीं"))
                 {
                     followUpLL.setVisibility(View.GONE);
