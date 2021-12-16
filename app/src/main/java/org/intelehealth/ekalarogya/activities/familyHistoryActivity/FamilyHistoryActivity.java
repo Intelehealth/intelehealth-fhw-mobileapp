@@ -74,6 +74,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     String patientName;
     String intentTag;
     private float float_ageYear_Month;
+    AlertDialog confirmationAlertDialog=null;
 
     ArrayList<String> physicalExams;
     String mFileName = "famHist.json";
@@ -131,7 +132,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_FamHist == null)
+            if (edit_FamHist == null)
                 new_result = getFamilyHistoryVisitData();
         }
 
@@ -219,11 +220,11 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         }
-           
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_family_history);
         setTitle(R.string.title_activity_family_history);
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -235,7 +236,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
         FloatingActionButton fab = findViewById(R.id.fab);
         family_history_recyclerView = findViewById(R.id.family_history_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         family_history_recyclerView.setLayoutManager(linearLayoutManager);
         family_history_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -333,6 +334,13 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     }
 
     private void onFabClick() {
+
+        if(insertionList!=null && insertionList.size()>0){
+            insertionList.clear();
+            insertion = "";
+            fhistory = "";
+        }
+
         if (familyHistoryMap.anySubSelected()) {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
@@ -368,10 +376,9 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             }
         }
 
-
         if (intentTag != null && intentTag.equals("edit")) {
-            updateDatabase(insertion);
-
+            ConfirmationDialog(insertion);
+           /* updateDatabase(insertion);
             Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
@@ -382,8 +389,9 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("name", patientName);
             intent.putExtra("tag", intentTag);
             intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            startActivity(intent);*/
         } else {
+
 
             if (flag == true) {
                 // only if OK clicked, collect this new info (old patient)
@@ -392,12 +400,14 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 } else {
                     fhistory = fhistory + "";
                 }
-                insertDb(fhistory);
+                ConfirmationDialog(fhistory);
+               // insertDb(fhistory);
             } else {
-                insertDb(insertion); // new details of family history
+                ConfirmationDialog(insertion);
+                //insertDb(insertion); // new details of family history
             }
 
-            flag = false;
+            /*flag = false;
             sessionManager.setReturning(false);
             Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
             intent.putExtra("patientUuid", patientUuid);
@@ -410,10 +420,64 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             intent.putExtra("float_ageYear_Month", float_ageYear_Month);
             intent.putExtra("tag", intentTag);
             //   intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);
+            startActivity(intent);*/
         }
 
+    }
 
+    public void ConfirmationDialog(String confirmationStr) {
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(Html.fromHtml(confirmationStr));
+            alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (intentTag != null && intentTag.equals("edit")) {
+                        updateDatabase(insertion);
+                        Intent intent = new Intent(FamilyHistoryActivity.this, VisitSummaryActivity.class);
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("tag", intentTag);
+                        intent.putExtra("hasPrescription", "false");
+                        startActivity(intent);
+                    } else {
+                        insertDb(confirmationStr);
+                        flag = false;
+                        sessionManager.setReturning(false);
+                        Intent intent = new Intent(FamilyHistoryActivity.this, PhysicalExamActivity.class); // earlier it was vitals
+                        intent.putExtra("patientUuid", patientUuid);
+                        intent.putExtra("visitUuid", visitUuid);
+                        intent.putExtra("encounterUuidVitals", encounterVitals);
+                        intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                        intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                        intent.putExtra("state", state);
+                        intent.putExtra("name", patientName);
+                        intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        intent.putExtra("tag", intentTag);
+                        //   intent.putStringArrayListExtra("exams", physicalExams);
+                        startActivity(intent);
+                    }
+                }
+            });
+            alertDialogBuilder.setNegativeButton(getString(R.string.generic_back), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            confirmationAlertDialog = alertDialogBuilder.create();
+            // alertDialog.show();
+            if(!confirmationAlertDialog.isShowing()) {
+                confirmationAlertDialog.show();
+                confirmationAlertDialog.setCancelable(false);
+                IntelehealthApplication.setAlertDialogCustomTheme(this, confirmationAlertDialog);
+            }
     }
 
     public boolean insertDb(String value) {
@@ -484,7 +548,6 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
     public void onChildListClickEvent(int groupPos, int childPos, int physExamPos) {
         onListClick(null, groupPos, childPos);
     }
-
 
 
     public void AnimateView(View v) {
