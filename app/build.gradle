@@ -8,12 +8,13 @@ android {
         applicationId "org.intelehealth.hellosaathitraining"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
+        versionCode 7
         buildToolsVersion('29.0.2')
-        versionName "1.6"
+        versionName '1.6'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
+        archivesBaseName = "HelloSaathi-Training-"+versionName
         //vectorDrawables.useSupportLibrary = true
 
     }
