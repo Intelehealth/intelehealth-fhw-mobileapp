@@ -588,7 +588,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
-                selectedSubscriptionTime = timeAdapter.getItem(position);
+                selectedSubscriptionTime = String.valueOf(position);
             }
 
             @Override
