@@ -67,12 +67,13 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                 holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.lite_red));
                 holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
             }
-            else if(patinet.getFollowUpType() == 0)
-            {
-                holder.linearLayout.setVisibility(View.VISIBLE);
-                holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.green));
-                holder.indicatorTextView.setText("Follow-Up Scheduled for Today");
-            }
+            //commenting this as per Gobinda's instruction date should be visible instead of "Today" in all the cases.
+//            else if(patinet.getFollowUpType() == 0)
+//            {
+//                holder.linearLayout.setVisibility(View.VISIBLE);
+//                holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.green));
+//                holder.indicatorTextView.setText("Follow-Up Scheduled for Today");
+//            }
             else
             {
                 holder.linearLayout.setVisibility(View.VISIBLE);
