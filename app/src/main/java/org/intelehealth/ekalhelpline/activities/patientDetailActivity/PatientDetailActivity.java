@@ -637,7 +637,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
 
-                                if (!gender.equalsIgnoreCase(userData.genderselected)) {
+                                if (body.userdata.size()>1 || !gender.equalsIgnoreCase(userData.genderselected)) {
                                     SubscriptionStatus.UserData userData2 = null;
                                     if (body.userdata.size() > 1) {
                                         userData2 = body.userdata.get(1);
