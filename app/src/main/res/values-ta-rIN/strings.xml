@@ -558,5 +558,15 @@
     <string name="please_select_specialization_msg">தயவு செய்து தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="chat_fab">இன்னுரையாடல் ஃபேப்</string>
     <string name="visit_closed">வருகை மூடப்பட்டது</string>
+    <string name="title_follow_up">பின்தொடரவும்</string>
+
+    <string name="change_languages">மொழிகளை மாற்றவும்</string>
+    <string name="location_setup">இருப்பிட அமைப்பு - </string>
+    //----------reset app strings-------------
+    <string name="reset_app">பயன்பாட்டை மீட்டமைக்கவும்</string>
+    <string name="app_reset_toast">பயன்பாட்டு மீட்டமைப்பு முடிந்தது!</string>
+    <string name="resetting_app_dialog">ஆப்ஸை மீட்டமைக்கிறது</string>
+    <string name="sure_to_reset_app">நிச்சயமாக ஆப்ஸை மீட்டமைக்க விரும்புகிறீர்களா?</string>
+
 
 </resources>

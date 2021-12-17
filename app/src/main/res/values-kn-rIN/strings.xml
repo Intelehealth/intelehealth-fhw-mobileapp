@@ -674,4 +674,20 @@
     <string name="due_on">ಅಂತಿಮ ದಿನಾಂಕ:</string>
     <string name="title_follow_up">ಭೇಟಿಗಳನ್ನು ಅನುಸರಿಸಿ</string>
     <string name="location">ಸ್ಥಳ</string>
+
+
+    //----------reset app strings-------------
+    <string name="reset_app">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಸಿ</string>
+    <string name="app_reset_toast">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಕೆಯನ್ನು ಮಾಡಲಾಗಿದೆ!</string>
+    <string name="resetting_app_dialog">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಸಲಾಗುತ್ತಿದೆ</string>
+    <string name="sure_to_reset_app">ನೀವು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
+
+<!--    //ಅಪ್ಲಿಕೇಶನ್ ಕಾರ್ಯವನ್ನು ಮರುಹೊಂದಿಸಿ-->
+    <string name="sync_failed">ಸಿಂಕ್ ವಿಫಲವಾಗಿದೆ! ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="no_network_sync">ನೀವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="app_sync">ಅಪ್ಲಿಕೇಶನ್ ಸಿಂಕ್ ಮಾಡಲಾಗುತ್ತಿದೆ..</string>
+
+    <string name="location_setup">ಸೆಟಪ್ ಸ್ಥಳ - </string>
+
+
 </resources>

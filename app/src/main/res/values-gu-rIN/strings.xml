@@ -503,6 +503,7 @@
     <string name="successfully_synced_notif">રિફ્રેશ સફળ</string>
     <string name="languages">ભાષા</string>
     <string name="current_language">હાલની ભાષા</string>
+    <string name="change_languages">ભાષાઓ બદલો</string>
 
     <string name="protocols_downloaded_successfully">પ્રોટોકોલ સફળતાપુર્વક ડાઉનલોડ થઇ ગયા છે</string>
     <string name="no_protocols_found">પ્રોટોકોલ મળેલ નથી</string>
@@ -681,4 +682,13 @@
     <string name="due_on">નિયત તારીખ:</string>
     <string name="title_follow_up">મુલાકાતો અનુસરો</string>
     <string name="location">સ્થાન</string>
+
+    <string name="reset_app">એપ્લિકેશન રીસેટ કરો</string>
+    <string name="app_reset_toast">એપ રીસેટ થઈ ગયું!</string>
+    <string name="resetting_app_dialog">એપ્લિકેશન રીસેટ કરી રહ્યું છે</string>
+    <string name="sure_to_reset_app">શું તમે ખરેખર એપ રીસેટ કરવા માંગો છો?</string>
+
+    <string name="location_setup">સેટઅપ સ્થાન - </string>
+
+
 </resources>

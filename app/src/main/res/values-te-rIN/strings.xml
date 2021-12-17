@@ -576,4 +576,16 @@
     <string name="str_check_UnitedStates">సంయుక్త రాష్ట్రాలు</string>
     <string name="str_check_Philippines">ఫిలిప్పీన్స్</string>
     <string name = "change_languages">భాషలను మార్చండి</string>
+    <string name="speciality_cardview_title">ప్రత్యేకత</string>
+
+    <string name="location_setup">స్థానం సెటప్ - </string>
+    //----------reset app strings-------------
+    <string name="reset_app">యాప్‌ని రీసెట్ చేయండి</string>
+    <string name="app_reset_toast">యాప్ రీసెట్ పూర్తయింది!</string>
+    <string name="resetting_app_dialog">యాప్‌ని రీసెట్ చేస్తోంది</string>
+    <string name="sure_to_reset_app">మీరు ఖచ్చితంగా యాప్‌ని రీసెట్ చేయాలనుకుంటున్నారా?</string>
+
+
+
+
 </resources>

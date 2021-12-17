@@ -541,18 +541,17 @@
     <string name="setup_internet_not_available">നിങ്ങൾ ഇന്റർനെറ്റിലേക്ക് കണക്റ്റുചെയ്‌തിട്ടില്ല.</string>
     <string name="generic_info">വിവരം!</string>
 
-    <string name="take_photo">ഫോട്ടോ എടുക്കുക</string>
-    <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
-    <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
-    <string name = "change_languages">ഭാഷകൾ മാറ്റുക</string>
+    <string name="reset_app">ആപ്പ് പുനഃസജ്ജമാക്കുക</string>
+    <string name="app_reset_toast">ആപ്പ് റീസെറ്റ് പൂർത്തിയായി!</string>
+    <string name="resetting_app_dialog">ആപ്പ് പുനഃസജ്ജമാക്കുന്നു</string>
+    <string name="sure_to_reset_app">ആപ്പ് റീസെറ്റ് ചെയ്യണമെന്ന് തീർച്ചയാണോ?</string>
 
-    <string name="loading_more">കൂടുതൽ ലോഡുചെയ്യുന്നു...</string>
-    <string name="warning_app_update">ഏറ്റവും പുതിയ പതിപ്പിലേക്ക് ആപ്പ് അപ്ഡേറ്റ് ചെയ്യുക.</string>
-    <string name="due_on">അവസാന തീയതി:</string>
-    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>
-    <string name="location">സ്ഥാനം</string>
+    //ആപ്പ് പ്രവർത്തനം പുനഃസജ്ജമാക്കുക
+    <string name="sync_failed">സമന്വയം പരാജയപ്പെട്ടു! ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="no_network_sync">നിങ്ങൾ ഇന്റർനെറ്റിലേക്ക് കണക്‌റ്റ് ചെയ്‌തിട്ടില്ല. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="app_sync">ആപ്പ് സമന്വയിപ്പിക്കുന്നു..</string>
 
-
+    <string name="location_setup">സജ്ജീകരണ സ്ഥാനം -</string>
 
 </resources>
 

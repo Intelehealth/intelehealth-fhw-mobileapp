@@ -546,6 +546,9 @@
     <string name="title_follow_up">ପରିଦର୍ଶନଗୁଡିକ ଅନୁସରଣ କରନ୍ତୁ </string>
     <string name="location">ଅବସ୍ଥାନ</string>
 
+    <string name = "sync_failed"> ସିଙ୍କ ବିଫଳ ହେଲା! ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
+    <string name = "no_network_sync"> ଆପଣ ଇଣ୍ଟରନେଟ୍ ସହିତ ସଂଯୁକ୍ତ ନୁହଁନ୍ତି | ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
+    <string name = "app_sync"> ସିଙ୍କ୍ ଆପ୍ .. </string>
 
 
 

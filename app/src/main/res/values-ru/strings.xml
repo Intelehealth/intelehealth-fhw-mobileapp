@@ -725,4 +725,17 @@
     <string name="due_on">Срок:</string>
     <string name="title_follow_up">Последующие посещения</string>
     <string name="location">Место расположения</string>
+
+    <string name = "reset_app"> Сбросить приложение </string>
+    <string name = "app_reset_toast"> Сброс приложения завершен! </string>
+    <string name = "resetting_app_dialog"> Сброс приложения </string>
+    <string name = "sure_to_reset_app"> Вы действительно хотите сбросить настройки приложения? </string>
+
+    // Сбросить функциональность приложения
+    <string name = "sync_failed"> Ошибка синхронизации! Повторите попытку позже. </string>
+    <string name = "no_network_sync"> Вы не подключены к Интернету. Повторите попытку позже. </string>
+    <string name = "app_sync"> Приложение для синхронизации .. </string>
+
+    <string name="location_setup">Место установки - </string>
+
 </resources>

@@ -688,4 +688,19 @@
     <string name="due_on">देय तारीख:</string>
     <string name="title_follow_up">फॉलो अप भेटी</string>
     <string name="location">स्थान</string>
+
+    //----------reset app strings-------------
+    <string name = "reset_app"> अॅप रीसेट करा</string>
+    <string name="app_reset_toast">अॅप रीसेट पूर्ण झाले!</string>
+    <string name="resetting_app_dialog">अॅप रीसेट करत आहे</string>
+    <string name="sure_to_reset_app">तुम्हाला खात्री आहे की तुम्ही अॅप रीसेट करू इच्छिता?</string>
+
+    // अॅप कार्यक्षमता रीसेट करा
+    <string name="sync_failed">सिंक अयशस्वी! कृपया नंतर पुन्हा प्रयत्न करा.</string>
+    <string name="no_network_sync">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही. कृपया नंतर पुन्हा प्रयत्न करा.</string>
+    <string name = "app_sync"> अॅप सिंक करत आहे..</string>
+
+
+    <string name="location_setup">सेटअप स्थान - </string>
+
 </resources>
