@@ -199,7 +199,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     private Button btnSubscribe;
     private String subscriptionAuthHeader = "Bearer bnVyc2UxOk51cnNlMTIz";
     private CharSequence selectedSubscriptionTime, selectedLanguage, selectedSubscriptionTime2, selectedLanguage2;
-    private BucketResponse.Bucket selectedBucket, selectedBucket2;
+    private int selectedBucket, selectedBucket2;
     String callNoteText = "";
     String gender;
 
@@ -566,7 +566,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
-                selectedBucket = bucketAdapter.getItem(position);
+//                selectedBucket = bucketAdapter.getItem(position);
+                //sub remodel does not require any bucket selection so selecting it "999" by default
+                selectedBucket = 999;
             }
 
             @Override
@@ -711,15 +713,15 @@ public class PatientDetailActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (selectedBucket == null) {
-                    Toast.makeText(context, R.string.error_bucket_not_selected, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (selectedBucket == null) {
+//                    Toast.makeText(context, R.string.error_bucket_not_selected, Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
 
                 SubscriptionData data = new SubscriptionData();
                 data.gender = gender;
                 data.phonenumber = patient_new.getPhone_number();
-                data.bucketsubscribedto = selectedBucket.bucketId;
+                data.bucketsubscribedto = selectedBucket;
                 data.slotselected = selectedSubscriptionTime.toString();
                 data.subscribedby = sessionManager.getProviderID();
                 data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language.getSelectedItemPosition()];
@@ -773,7 +775,9 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
-                selectedBucket2 = bucketAdapter.getItem(position);
+                //                selectedBucket2 = bucketAdapter.getItem(position);
+                //sub remodel does not require any bucket selection so selecting it "999" by default
+                selectedBucket2 = 999;
             }
 
             @Override
@@ -795,9 +799,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
-                selectedSubscriptionTime2 = String.valueOf(position);
+                selectedSubscriptionTime2 = timeAdapter.getItem(position);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -876,15 +879,15 @@ public class PatientDetailActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (selectedBucket2 == null) {
-                    Toast.makeText(context, R.string.error_bucket_not_selected, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if (selectedBucket2 == null) {
+//                    Toast.makeText(context, R.string.error_bucket_not_selected, Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
 
                 SubscriptionData data = new SubscriptionData();
                 data.gender = gender;
                 data.phonenumber = patient_new.getPhone_number();
-                data.bucketsubscribedto = selectedBucket2.bucketId;
+                data.bucketsubscribedto = selectedBucket2;
                 data.slotselected = selectedSubscriptionTime2.toString();
                 data.subscribedby = sessionManager.getProviderID();
                 data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language2.getSelectedItemPosition()];
