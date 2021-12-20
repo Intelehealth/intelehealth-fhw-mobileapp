@@ -533,4 +533,8 @@
     <string name="ok_close_now">ଠିକ ଅଛି, ଏହାକୁ ବନ୍ଦ କର </string>
     <string name="retry_again">ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ!</string>
     <string name="notification_title">Realtime sync is ON!</string>
+    <string name="bluetooth_notsupported_device">Bluetooth is not supported on this device</string>
+    <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
+    <string name="no_presc_available">No Prescription Available</string>
+    <string name="printing">Printing...</string>
 </resources>

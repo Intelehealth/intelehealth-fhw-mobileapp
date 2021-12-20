@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity.curPrinterInterface;
+
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
@@ -946,6 +948,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
+               // curPrinterInterface = null;
                 // finish();
             }
         });
