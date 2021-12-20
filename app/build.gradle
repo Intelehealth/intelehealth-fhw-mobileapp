@@ -5,15 +5,16 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "org.intelehealth.hellosaathi"
+        applicationId 'org.intelehealth.hellosaathi'
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 9
+        versionCode 11
         buildToolsVersion('29.0.2')
-        versionName "1.5.1"
+        versionName '1.5.3'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
+        archivesBaseName = "HelloSaathi-"+versionName
         //vectorDrawables.useSupportLibrary = true
 
     }
