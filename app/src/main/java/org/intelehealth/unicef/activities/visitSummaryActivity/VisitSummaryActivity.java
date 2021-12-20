@@ -1,6 +1,8 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
 import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -61,6 +63,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -105,6 +108,11 @@ import org.intelehealth.unicef.models.Patient;
 import org.intelehealth.unicef.models.dto.EncounterDTO;
 import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.models.dto.RTCConnectionDTO;
+import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.networkApiCalls.ApiClient;
+import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.services.DownloadService;
 import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
@@ -121,6 +129,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
@@ -132,6 +142,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -292,6 +310,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     String appLanguage;
     private List<String> specialityListRussian = new ArrayList<String>();
     private List<String> specialityList = new ArrayList<String>();
+    EndVisitEncounterPrescription endVisitEncounterPrescription;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -3633,24 +3652,83 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     public void signAndSubmit(View view) {
-        Intent visitSummary = new Intent(this, PrescriptionActivity.class);
+        endVisitApiCall();
 
-        visitSummary.putExtra("visitUuid", visitUUID);
-        visitSummary.putExtra("patientUuid", patientUuid);
-        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
-        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
-        visitSummary.putExtra("name", patientName);
-        visitSummary.putExtra("gender", genderView.getText());
-        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-        visitSummary.putExtra("tag", intentTag);
-        visitSummary.putExtra("pastVisit", isPastVisit);
-        if (hasPrescription.equalsIgnoreCase("true")) {
-            visitSummary.putExtra("hasPrescription", "true");
-        } else {
-            visitSummary.putExtra("hasPrescription", "false");
-        }
-        startActivity(visitSummary);
+    }
+
+    private void endVisitApiCall() {
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        endVisitEncounterPrescription = getEndVisitDataModel();
+        String encoded = sessionManager.getEncoded();
+
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<EndVisitResponseBody> resultsObservable = apiService.END_VISIT_RESPONSE_BODY_OBSERVABLE
+                (url, endVisitEncounterPrescription, "Basic " + encoded);
+        resultsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<EndVisitResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull EndVisitResponseBody endVisitResponseBody) {
+                          String encounter = endVisitResponseBody.getUuid(); // Use this uuid for pres obs api body.
+
+                        Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+                        visitSummary.putExtra("visitUuid", visitUUID);
+                        visitSummary.putExtra("patientUuid", patientUuid);
+                        visitSummary.putExtra("startVisitNoteApiEncounterResponse", encounter);
+                        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+                        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+                        visitSummary.putExtra("name", patientName);
+                        visitSummary.putExtra("gender", genderView.getText());
+                        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        visitSummary.putExtra("tag", intentTag);
+                        visitSummary.putExtra("pastVisit", isPastVisit);
+                        if (hasPrescription.equalsIgnoreCase("true")) {
+                            visitSummary.putExtra("hasPrescription", "true");
+                        } else {
+                            visitSummary.putExtra("hasPrescription", "false");
+                        }
+                        startActivity(visitSummary);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("err", "sd: "+ e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("err", "sd");
+                    }
+                });
+    }
+
+    private EndVisitEncounterPrescription getEndVisitDataModel() {
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+
+        encounterProvider.setEncounterRole(ENCOUNTER_ROLE); // Constant
+        encounterProvider.setProvider(sessionManager1.getProviderID()); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUUID);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_NOTE);
+
+        Log.v("presbody", "new: "+ new Gson().toJson(datamodel));
+        return datamodel;
+    }
+
+    public String fiveMinutesAgo(String timeStamp) throws ParseException {
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        long time = df.parse(timeStamp).getTime();
+
+        return df.format(new Date(time - FIVE_MINS_IN_MILLIS));
     }
 
 

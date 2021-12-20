@@ -11,6 +11,9 @@ import org.intelehealth.unicef.models.dto.ResponseDTO;
 import org.intelehealth.unicef.models.loginModel.LoginModel;
 import org.intelehealth.unicef.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.unicef.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.unicef.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.unicef.models.statewise_location.District_Sanch_Village;
@@ -100,4 +103,18 @@ public interface ApiInterface {
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<EndVisitResponseBody> END_VISIT_RESPONSE_BODY_OBSERVABLE(
+            @Url String url,
+            @Body EndVisitEncounterPrescription endVisitEncounterPrescription,
+            @Header("Authorization") String authHeader);
+
+    @POST
+    Observable<ResponseBody> OBS_PRESCRIPTION_UPLOAD
+            (@Url String url,
+             @Body ObsPrescription prescription,
+             @Header("Authorization") String authHeader);
+
 }

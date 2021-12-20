@@ -1,5 +1,12 @@
 package org.intelehealth.unicef.activities.presription;
 
+import static org.intelehealth.unicef.utilities.UuidDictionary.ADDITIONAL_COMMENTS;
+import static org.intelehealth.unicef.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+import static org.intelehealth.unicef.utilities.UuidDictionary.JSV_MEDICATIONS;
+import static org.intelehealth.unicef.utilities.UuidDictionary.MEDICAL_ADVICE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.REQUESTED_TESTS;
+import static org.intelehealth.unicef.utilities.UuidDictionary.TELEMEDICINE_DIAGNOSIS;
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +30,7 @@ import android.widget.RadioGroup;
 import android.widget.Space;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -32,6 +40,10 @@ import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.ObsDAO;
 import org.intelehealth.unicef.models.dto.ObsDTO;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
+import org.intelehealth.unicef.networkApiCalls.ApiClient;
+import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.utilities.LocaleHelper;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.UuidDictionary;
@@ -44,6 +56,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 public class PrescriptionActivity extends AppCompatActivity {
 
@@ -59,6 +77,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     String patientGender;
     String intentTag;
     String visitUUID;
+    String encounterVisitNote;
 
     SQLiteDatabase db;
     private SessionManager sessionManager;
@@ -67,8 +86,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     private String encounterVitals;
     private String encounterUuidAdultIntial;
     ObsDAO obsDAO = new ObsDAO();
-
     private Context mContext;
+    String OBSURL;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -81,12 +100,14 @@ public class PrescriptionActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager = new SessionManager(this);
         appLanguage = sessionManager.getAppLanguage();
+        OBSURL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/obs";
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
             visitUuid = intent.getStringExtra("visitUuid");
             patientGender = intent.getStringExtra("gender");
+            encounterVisitNote = intent.getStringExtra("startVisitNoteApiEncounterResponse"); // this is needed for the obs api for sending each data.
             encounterVitals = intent.getStringExtra("encounterUuidVitals");
             encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
 //            EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");
@@ -129,7 +150,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 btnCallSubmit.setEnabled(false);
                 btnCallSubmit.setAlpha(0.4f);
                 rgCall.clearCheck();
-                setObsData(encounterUuidAdultIntial, UuidDictionary.MEDICAL_ADVICE, result);
+                setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                 uploadCallWithPatientData();
             }
         });
@@ -150,10 +171,13 @@ public class PrescriptionActivity extends AppCompatActivity {
                     if (checked1 != null && checked2 != null) {
                         String result = String.format("%s:%s & %s", etDiagnosis.getText(), checked1.getText(), checked2.getText());
                         addResult(llDiagnosisResult, result);
-                        setObsData(encounterUuidAdultIntial, UuidDictionary.TELEMEDICINE_DIAGNOSIS, result);
+                        setObsData(encounterUuidAdultIntial, TELEMEDICINE_DIAGNOSIS, result);
                         etDiagnosis.setText("");
                         rgDiagnosis1.clearCheck();
                         rgDiagnosis2.clearCheck();
+
+                        // Api call will upload this piece of data...
+                        uploadPrescriptionData(result, TELEMEDICINE_DIAGNOSIS);
                     }
                 }
             }
@@ -202,7 +226,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                             ,etMedicationInstructions.getText()
                             );
                     addResult(llMedsResult, result);
-                    setObsData(encounterUuidAdultIntial, UuidDictionary.JSV_MEDICATIONS, result);
+                    setObsData(encounterUuidAdultIntial, JSV_MEDICATIONS, result);
                             etMedication.setText("");
                             etMedicationStrength.setText("");
                             etMedicationUnit.setText("");
@@ -214,6 +238,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                             etMedicationDuration.setText("");
                             etMedicationUnitsDays.setText("");
                             etMedicationInstructions.setText("");
+
+                            uploadPrescriptionData(result, JSV_MEDICATIONS);
                 }
             }
         });
@@ -229,8 +255,9 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etTest.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     addResult(llTestResult, result);
-                    setObsData(encounterUuidAdultIntial, UuidDictionary.REQUESTED_TESTS, result);
+                    setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
                     etTest.setText("");
+                    uploadPrescriptionData(result, REQUESTED_TESTS);
                 }
             }
         });
@@ -246,8 +273,9 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etAdviceRefer.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     addResult(llAdviceResult, result);
-                    setObsData(encounterUuidAdultIntial, UuidDictionary.MEDICAL_ADVICE, result);
+                    setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                     etAdviceRefer.setText("");
+                    uploadPrescriptionData(result, MEDICAL_ADVICE);
                 }
             }
         });
@@ -262,8 +290,9 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etNotes.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     addResult(llNotesResult, result);
-                    setObsData(encounterUuidAdultIntial, UuidDictionary.ADDITIONAL_COMMENTS, result);
+                    setObsData(encounterUuidAdultIntial, ADDITIONAL_COMMENTS, result);
                     etNotes.setText("");
+                    uploadPrescriptionData(result, ADDITIONAL_COMMENTS);
                 }
             }
         });
@@ -283,12 +312,53 @@ public class PrescriptionActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
                         result += ", Remarks: " + etFollowUpRemark.getText();
                     addResult(llFollowUpResult, result);
-                    setObsData(encounterUuidAdultIntial, UuidDictionary.FOLLOW_UP_VISIT, result);
+                    setObsData(encounterUuidAdultIntial, FOLLOW_UP_VISIT, result);
                     etFollowUpDate.setText("");
                     etFollowUpRemark.setText("");
+                    uploadPrescriptionData(result, FOLLOW_UP_VISIT);
                 }
             }
         });
+    }
+
+    private boolean uploadPrescriptionData(String data, String CONCEPTUUID) {
+        boolean isupload = false;
+        String encoded = sessionManager.getEncoded();
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        ObsPrescription prescription = getObsPrescription(AppConstants.dateAndTimeUtils.currentDateTime(), data, CONCEPTUUID);
+        Observable<ResponseBody> resultsObservable = apiService.OBS_PRESCRIPTION_UPLOAD(OBSURL, prescription, "Basic " + encoded);
+        resultsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull ResponseBody responseBody) {
+                        // Response of successful uploaded data.
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+        return isupload;
+    }
+
+    private ObsPrescription getObsPrescription(String currentDateTime, String diagnosisData, String CONCEPT_UUID) {
+        ObsPrescription obsPrescription = new ObsPrescription();
+        obsPrescription.setConcept(CONCEPT_UUID);
+        obsPrescription.setPerson(patientUuid);
+        obsPrescription.setObsDatetime(currentDateTime);
+        obsPrescription.setValue(diagnosisData);
+        obsPrescription.setEncounter(encounterVisitNote);
+
+        return obsPrescription;
     }
 
     private boolean uploadCallWithPatientData() {
