@@ -200,7 +200,6 @@ public class Node implements Serializable {
             }
 
 
-
             //Only for physical exams
             if (!this.language.isEmpty()) {
                 if (this.language.contains(":")) {
@@ -300,7 +299,6 @@ public class Node implements Serializable {
             }
         }
 
-
         subQuestion.setTitle(node.findDisplay());
         ListView listView = convertView.findViewById(R.id.dialog_subquestion_list_view);
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
@@ -326,7 +324,6 @@ public class Node implements Serializable {
         subQuestion.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 node.setText(node.generateLanguage());
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
@@ -498,7 +495,6 @@ public class Node implements Serializable {
     public boolean isAidAvailable() {
         return aidAvailable;
     }
-
 
     public List<Node> getOptionsList() {
         return optionsList;
@@ -689,6 +685,400 @@ public class Node implements Serializable {
             return formatted;
         }
         return null;
+    }
+
+    public String generateLanguage(String language) {
+
+        String raw = "";
+        List<Node> mOptions = optionsList;
+        if (optionsList != null && !optionsList.isEmpty()) {
+            for (Node node_opt : mOptions) {
+                if (node_opt.isSelected()) {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms") || associatedTest.trim().equals("जुड़े लक्षण") ||
+                            (associatedTest.trim().equals("H/o specific illness")) ||
+                            (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("এইচ/অ নিৰ্দিষ্ট ৰোগ")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")))) {
+
+                        if ((associatedTest.trim().equals("Associated symptoms")) || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                                (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                                (associatedTest.trim().equals("संबंधित लक्षणे"))
+                                || (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ"))) {
+                            if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                                raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                                raw = raw.substring(6);
+                                Log.e("FinalText= ", raw);
+                            } else {
+                                Log.e("FinalText= ", raw);
+
+                            }
+                        } else {
+                            raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                        }
+
+                    } else {
+                        if (!node_opt.getLanguage().isEmpty()) {
+                            if (node_opt.getLanguage().equals("%")) {
+                                raw = raw + bullet + " " + node_opt.formLanguage(language) + next_line;
+                            } else if (node_opt.getLanguage().substring(0, 1).equals("%")) {
+                                raw = raw + (bullet + " " + node_opt.getLanguage().substring(1) + " - " + node_opt.formLanguage(language)) + next_line;
+                            } else {
+                                if (language.equalsIgnoreCase("hi"))
+                                    raw = raw + (bullet + " " + node_opt.getDisplay_hindi() + " - " + node_opt.formLanguage(language)) + next_line;
+                                else
+                                    raw = raw + (bullet + " " + node_opt.getLanguage() + " - " + node_opt.formLanguage(language)) + next_line;
+                            }
+                            Log.e("FinalText= ", raw);
+
+                        }
+                    }
+                    //raw = raw + ("\n"+"\n" + bullet +" "+ node_opt.formLanguage());
+                } else {
+                    String associatedTest = node_opt.getText();
+                    if (associatedTest != null && (associatedTest.trim().equals("Associated symptoms")
+                            || associatedTest.trim().equals("जुड़े लक्षण") || (associatedTest.trim().equals("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (associatedTest.trim().equals("ಸಂಯೋಜಿತ ಲಕ್ಷಣಗಳು")) ||
+                            (associatedTest.trim().equals("સંકળાયેલ લક્ષણો")) ||
+                            (associatedTest.trim().equals("संबंधित लक्षणे")) ||
+                            (associatedTest.trim().equals("সম্পৰ্কিত লক্ষণসমূহ")))) {
+                        if (!generateAssociatedSymptomsOrHistory(node_opt).isEmpty()) {
+                            raw = raw + (generateAssociatedSymptomsOrHistory(node_opt)) + next_line;
+                            raw = raw.substring(6);
+                            Log.e("FinalText= ", raw);
+                        } else {
+                            Log.e("FinalText= ", raw);
+                        }
+                    }
+                }
+            }
+        }
+
+        String formatted;
+        if (!raw.isEmpty()) {
+            if (Character.toString(raw.charAt(0)).equals(",")) {
+                formatted = raw.substring(2);
+            } else {
+                formatted = raw;
+            }
+            formatted = formatted.replaceAll("\\. -", ".");
+            formatted = formatted.replaceAll("\\.,", ", ");
+            Log.i(TAG, "generateLanguage: " + formatted);
+            return formatted;
+        }
+        return null;
+    }
+
+    public String formLanguage(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+
+                    if (language.equalsIgnoreCase("hi"))
+                        test = mOptions.get(i).getDisplay_hindi();
+
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    if (language.equalsIgnoreCase("hi") && !mOptions.get(i).getDisplay_hindi().startsWith("["))
+                                        stringsList.add(mOptions.get(i).getDisplay_hindi());
+                                    else
+                                        stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    stringsList.add(mOptions.get(i).findDisplay(language));
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi(language));
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        return mLanguage;
+    }
+
+    public String formLanguageHindi(String language) {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    // stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                    if (language.equalsIgnoreCase("hi"))
+                                        stringsList.add(mOptions.get(i).findDisplay(language)); //Chip UI
+                                    else
+                                        stringsList.add(mOptions.get(i).findDisplay());
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        return mLanguage;
+    }
+
+    public String findDisplay(String language) {
+        switch (language) {
+            case "en": {
+
+                if (display != null && display.isEmpty()) {
+                    return text;
+                } else {
+                    return display;
+                }
+
+            }
+
+            case "or": {
+                //Log.i(TAG, "findDisplay: ori");
+                if (display_oriya != null && !display_oriya.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: ori dis");
+                    return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+            }
+
+            case "hi": {
+                //Log.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //Log.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //Log.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //Log.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+
+            }
+
+            default: {
+                {
+                    if (display != null && display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+        }
+    }
+
+    public String formLanguageHindi() {
+        List<String> stringsList = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean isTerminal = false;
+        if (mOptions != null && !mOptions.isEmpty()) {
+            for (int i = 0; i < mOptions.size(); i++) {
+                if (mOptions.get(i).isSelected()) {
+                    String test = mOptions.get(i).getLanguage();
+                    if (!test.isEmpty()) {
+                        if (test.equals("%")) {
+                        } else if (test.substring(0, 1).equals("%")) {
+                            stringsList.add(test.substring(1));
+                        } else {
+                            // stringsList.add(test);
+                            if (mOptions.get(i).getText() != null && mOptions.get(i).getText().replaceAll("\\s", "")
+                                    .equalsIgnoreCase(mOptions.get(i).getLanguage().replaceAll("\\s", ""))) {
+                                if (mOptions.get(i).getInputType().equalsIgnoreCase("")) {
+                                    //This means chip is selected as answer...
+                                    stringsList.add(mOptions.get(i).findDisplay()); //Chip UI
+                                } else {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                    //input's other than Text as for text input: text and language both are same.
+                                }
+                            } else {
+                                if (mOptions.get(i).getInputType() != null && mOptions.get(i).getInputType().equalsIgnoreCase("text")) {
+                                    stringsList.add(mOptions.get(i).getLanguage());
+                                } else {
+                                    stringsList.add(mOptions.get(i).findDisplay()); //here be hindi case handled....
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    if (!mOptions.get(i).isTerminal()) {
+                        stringsList.add(mOptions.get(i).formLanguageHindi());
+                        isTerminal = false;
+                    } else {
+                        isTerminal = true;
+                    }
+                }
+            }
+        }
+
+        String languageSeparator;
+        if (isTerminal) {
+            languageSeparator = ", ";
+        } else {
+            languageSeparator = " - ";
+        }
+        String mLanguage = "";
+        for (int i = 0; i < stringsList.size(); i++) {
+            if (i == 0) {
+
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(stringsList.get(i));
+                    }
+                }
+            } else {
+                if (!stringsList.get(i).isEmpty()) {
+                    if (i == stringsList.size() - 1 && isTerminal) {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i) + ".");
+                    } else {
+                        mLanguage = mLanguage.concat(languageSeparator + stringsList.get(i));
+                    }
+                }
+            }
+        }
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            mLanguage = mLanguage.replaceAll("Question not answered", "सवाल का जवाब नहीं दिया");
+        return mLanguage;
     }
 
     //TODO: Check this, as associated complaints are not being triggered.
@@ -1008,7 +1398,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
+        // final String[] units = new String[]{"per Hour", "per Day", "Per Week", "per Month", "per Year"};
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1390,7 +1780,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-      //  final String[] units = context.getResources().getStringArray(R.array.units);
+        //  final String[] units = context.getResources().getStringArray(R.array.units);
         final String[] units = new String[]{context.getString(R.string.per_Hour),
                 context.getString(R.string.per_Day), context.getString(R.string.per_Week),
                 context.getString(R.string.per_Month), context.getString(R.string.per_Year)};
@@ -1443,7 +1833,7 @@ public class Node implements Serializable {
         final TextView endText = convertView.findViewById(R.id.dialog_2_numbers_text_2);
         endText.setVisibility(View.GONE);
         middleText.setVisibility(View.GONE);
-       // final String[] units = context.getResources().getStringArray(R.array.duration_units);
+        // final String[] units = context.getResources().getStringArray(R.array.duration_units);
         final String[] units = new String[]{
                 context.getString(R.string.Hours), context.getString(R.string.Days),
                 context.getString(R.string.Weeks), context.getString(R.string.Months),
@@ -1459,7 +1849,7 @@ public class Node implements Serializable {
             public void onClick(DialogInterface dialog, int which) {
                 quantityPicker.setValue(quantityPicker.getValue());
                 unitPicker.setValue(unitPicker.getValue());
-              //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
+                //  String durationString = quantityPicker.getValue() + " " + units[unitPicker.getValue()];
                 //translate back to English from Hindi if present...
                 String unit_text = "";
                 unit_text = hi_en(units[unitPicker.getValue()]); //for Hindi...
@@ -2089,16 +2479,16 @@ public class Node implements Serializable {
     public void fetchAge(float age) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if(!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
                     !optionsList.get(i).getMax_age().equalsIgnoreCase("")) {
                 if (age < Float.parseFloat(optionsList.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
                     remove(optionsList, i);
                     i--;
                 }
 
-            //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-             else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
+                //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
+                else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
                     remove(optionsList, i);
                     i--;
                 }
@@ -2106,10 +2496,10 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
-                    if(!optionsList.get(i).getOptionsList()
+                    if (!optionsList.get(i).getOptionsList()
                             .get(j).getMin_age().equalsIgnoreCase("") &&
                             !optionsList.get(i).getOptionsList()
                                     .get(j).getMax_age().equalsIgnoreCase("")) {
@@ -2117,9 +2507,7 @@ public class Node implements Serializable {
                                 .get(j).getMin_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
-                        }
-
-                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
+                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
                                 .get(j).getMax_age())) {
                             remove(optionsList.get(i).getOptionsList(), j);
                             j--;
@@ -2130,19 +2518,17 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
+                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age())) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
-                                }
-
-                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
+                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
                                     k--;
                                 }
@@ -2154,15 +2540,15 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
 
-                                    if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                    if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getMax_age().equalsIgnoreCase("")) {
 
@@ -2171,9 +2557,7 @@ public class Node implements Serializable {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
-                                        }
-
-                                        else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
+                                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                                 .getMax_age())) {
                                             remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
                                             l--;
@@ -2188,19 +2572,19 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {
 
-                                            if(!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                     .get(l).getOptionsList().get(m).getMax_age().equalsIgnoreCase("")) {
                                                 if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2209,9 +2593,7 @@ public class Node implements Serializable {
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                             .get(l).getOptionsList(), m);
                                                     m--;
-                                                }
-
-                                                else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                         .get(l).getOptionsList().get(m).getMax_age())) {
 
                                                     remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
@@ -2220,7 +2602,7 @@ public class Node implements Serializable {
 
                                                 }
                                             }
-                                    }
+                                        }
                                     }
                                 }
                             }
@@ -2236,7 +2618,7 @@ public class Node implements Serializable {
     public void fetchItem(String s) {
 
         //for 1st level
-        for (int i = 0; i <optionsList.size() ; i++) {
+        for (int i = 0; i < optionsList.size(); i++) {
             if (optionsList.get(i).getGender().equalsIgnoreCase(s)) {
                 remove(optionsList, i);
                 i--;
@@ -2244,8 +2626,8 @@ public class Node implements Serializable {
         }
 
         //2nd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
                     if (optionsList.get(i).getOptionsList().get(j).getGender().equalsIgnoreCase(s)) {
                         remove(optionsList.get(i).getOptionsList(), j);
@@ -2256,10 +2638,10 @@ public class Node implements Serializable {
         }
 
         //3rd level
-        for (int i = 0; i <optionsList.size() ; i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2273,13 +2655,13 @@ public class Node implements Serializable {
         }
 
         //4th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
                                     if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
                                             .getGender().equalsIgnoreCase(s)) {
 //                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
@@ -2295,14 +2677,14 @@ public class Node implements Serializable {
         }
 
         //5th level
-        for (int i = 0; i <optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList()!=null) {
+        for (int i = 0; i < optionsList.size(); i++) {
+            if (optionsList.get(i).getOptionsList() != null) {
                 for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList()!=null) {
+                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
                         for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
                             if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l <optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
+                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
+                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                             .get(l).getOptionsList() != null) {
                                         for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
                                                 .get(l).getOptionsList().size(); m++) {
