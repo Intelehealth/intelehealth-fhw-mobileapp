@@ -130,6 +130,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 btnCallSubmit.setAlpha(0.4f);
                 rgCall.clearCheck();
                 setObsData(encounterUuidAdultIntial, UuidDictionary.MEDICAL_ADVICE, result);
+                uploadCallWithPatientData();
             }
         });
 
@@ -288,6 +289,12 @@ public class PrescriptionActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean uploadCallWithPatientData() {
+        boolean isUpload = false;
+
+        return isUpload;
     }
 
     private void assignDatePicker(EditText etFollowUpDate) {
