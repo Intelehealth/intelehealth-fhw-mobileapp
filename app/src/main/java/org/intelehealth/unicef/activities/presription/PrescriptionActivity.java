@@ -1,9 +1,13 @@
 package org.intelehealth.unicef.activities.presription;
 
 import static org.intelehealth.unicef.utilities.UuidDictionary.ADDITIONAL_COMMENTS;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 import static org.intelehealth.unicef.utilities.UuidDictionary.JSV_MEDICATIONS;
 import static org.intelehealth.unicef.utilities.UuidDictionary.MEDICAL_ADVICE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.OBS_DOCTORDETAILS;
 import static org.intelehealth.unicef.utilities.UuidDictionary.REQUESTED_TESTS;
 import static org.intelehealth.unicef.utilities.UuidDictionary.TELEMEDICINE_DIAGNOSIS;
 
@@ -36,11 +40,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.gson.Gson;
+
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.database.dao.ObsDAO;
+import org.intelehealth.unicef.models.ClsDoctorDetails;
 import org.intelehealth.unicef.models.dto.ObsDTO;
+import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
+import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.Ob;
 import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
@@ -88,6 +99,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     ObsDAO obsDAO = new ObsDAO();
     private Context mContext;
     String OBSURL;
+    EndVisitEncounterPrescription visitCompleteStatus;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -141,6 +153,8 @@ public class PrescriptionActivity extends AppCompatActivity {
         LinearLayout llCallResult = findViewById(R.id.llCallResult);
         RadioGroup rgCall = findViewById(R.id.rgCall);
         Button btnCallSubmit = findViewById(R.id.btnCallSubmit);
+        Button btnSignSubmit = findViewById(R.id.btnSignSubmit);
+
         btnCallSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,6 +333,74 @@ public class PrescriptionActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnSignSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
+                String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+                visitCompleteStatus = getVisitCompleteDataModel();
+                String encoded = sessionManager.getEncoded();
+
+                ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+                Observable<ResponseBody> responseBodyObservable = apiService.OBS_SIGNANDSUBMIT_STATUS(
+                        url, visitCompleteStatus, "Basic " + encoded);
+                responseBodyObservable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableObserver<ResponseBody>() {
+                            @Override
+                            public void onNext(@NonNull ResponseBody responseBody) {
+                                // status is received...
+                                Intent intent = new Intent(PrescriptionActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onError(@NonNull Throwable e) {
+                                Log.e("pres", "signandsubmit: "+ e);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.e("pres", "signandsubmitcomplete: ");
+                            }
+                        });
+            }
+        });
+    }
+
+    private EndVisitEncounterPrescription getVisitCompleteDataModel() {
+        ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+        doctorDetails.setName("Demo doctor1");
+        doctorDetails.setPhoneNumber("7005308163");
+        doctorDetails.setWhatsapp("7005308163");
+        doctorDetails.setSpecialization("Neurologist");
+        doctorDetails.setFontOfSign("Pacifico");
+        doctorDetails.setTextOfSign("Dr. Demo 1");
+
+        List<Ob> obList = new ArrayList<>();
+        Ob ob = new Ob();
+        ob.setConcept(OBS_DOCTORDETAILS);
+        ob.setValue(doctorDetails);
+        obList.add(ob);
+
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+        encounterProvider.setEncounterRole(ENCOUNTER_ROLE); // Constant
+        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUUID);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_COMPLETE);
+        datamodel.setObs(obList);
+
+        Log.v("presbody", "newsubmit: "+ new Gson().toJson(datamodel));
+        return datamodel;
     }
 
     private boolean uploadPrescriptionData(String data, String CONCEPTUUID) {

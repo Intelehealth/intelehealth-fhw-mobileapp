@@ -117,4 +117,11 @@ public interface ApiInterface {
              @Body ObsPrescription prescription,
              @Header("Authorization") String authHeader);
 
+    @Headers({"Accept: application/json"})
+    @POST
+    Observable<ResponseBody> OBS_SIGNANDSUBMIT_STATUS(
+            @Url String url,
+            @Body EndVisitEncounterPrescription prescription,
+            @Header("Authorization") String authHeader);
+
 }

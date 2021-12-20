@@ -44,6 +44,7 @@ public class UuidDictionary {
     public static final String ENCOUNTER_ROLE = "73bbb069-9781-4afc-a9d1-54b6b2270e04";
     public static final String ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
+    public static final String OBS_DOCTORDETAILS = "7a9cb7bc-9ab9-4ff0-ae82-7a1bd2cca93e";
 
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
