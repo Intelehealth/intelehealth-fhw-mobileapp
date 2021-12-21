@@ -9,17 +9,21 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -629,9 +633,10 @@ public class Node implements Serializable {
     public static void askText(final Node node, Activity context, final QuestionsAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
-        final EditText dialogEditText = new EditText(context);
-        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
-        textInput.setView(dialogEditText);
+        View view = View.inflate(context, R.layout.multiline_edit_text_view, null);
+        final EditText dialogEditText = view.findViewById(R.id.etvMoreInfo);
+
+        textInput.setView(view);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -1231,8 +1236,8 @@ public class Node implements Serializable {
     public static void subAskText(final Node node, Activity context, final CustomArrayAdapter adapter) {
         final MaterialAlertDialogBuilder textInput = new MaterialAlertDialogBuilder(context);
         textInput.setTitle(R.string.question_text_input);
-        final EditText dialogEditText = new EditText(context);
-        dialogEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        View view = View.inflate(context, R.layout.multiline_edit_text_view, null);
+        final EditText dialogEditText = view.findViewById(R.id.etvMoreInfo);
         textInput.setView(dialogEditText);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override

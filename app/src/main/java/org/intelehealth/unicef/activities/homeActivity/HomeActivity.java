@@ -69,6 +69,7 @@ import org.intelehealth.unicef.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.unicef.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.appointment.AppointmentListingActivity;
 import org.intelehealth.unicef.models.CheckAppUpdateRes;
 import org.intelehealth.unicef.models.DownloadMindMapRes;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
@@ -284,6 +285,14 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        findViewById(R.id.cardview_appointment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AppointmentListingActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         //card textview referrenced to fix bug of localization not working in some cases...
         /*newPatient_textview = findViewById(R.id.newPatient_textview);

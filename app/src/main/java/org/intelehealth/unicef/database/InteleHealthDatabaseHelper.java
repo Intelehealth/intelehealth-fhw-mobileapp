@@ -15,12 +15,34 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
     public static SQLiteDatabase database;
     /**
-     * This take will keep the log of the connection info wrt the visit-uuid
+     * This will keep the log of the connection info wrt the visit-uuid
      */
     public static final String CREATE_RTC_LOGS = "CREATE TABLE IF NOT EXISTS tbl_rtc_connection_log (" +
             "uuid TEXT PRIMARY KEY," +
             "visit_uuid TEXT," +
             "connection_info TEXT )";
+
+    /**
+     * This will keep the appointment listing
+     */
+    public static final String CREATE_APPOINTMENTS = "CREATE TABLE IF NOT EXISTS tbl_appointments (" +
+            "uuid TEXT PRIMARY KEY," +
+            "appointment_id Integer," +
+            "slot_day TEXT," +
+            "slot_date TEXT," +
+            "slot_duration Integer," +
+            "slot_duration_unit TEXT," +
+            "slot_time TEXT," +
+            "speciality TEXT," +
+            "user_uuid TEXT," +
+            "dr_name TEXT," +
+            "visit_uuid TEXT," +
+            "patient_id TEXT," +
+            "patient_name TEXT," +
+            "open_mrs_id TEXT," +
+            "status TEXT," +
+            "created_at TEXT," +
+            "updated_at TEXT )";
 
     public static final String CREATE_ENCOUNTER_MAIN = "CREATE TABLE IF NOT EXISTS tbl_encounter (" +
             "uuid TEXT PRIMARY KEY," +
@@ -237,6 +259,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DR_SPECIALITY);
         db.execSQL(CREATE_VISIT_ATTRIBUTES);
         db.execSQL(CREATE_RTC_LOGS);
+        db.execSQL(CREATE_APPOINTMENTS);
 
         uuidInsert(db);
         database = db;

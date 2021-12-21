@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-<!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
+    <!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
     <string name="title_activity_login" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="prompt_email" translatable="false">Имя пользователя</string>
     <string name="prompt_password" translatable="false">Пароль</string>
@@ -591,7 +591,7 @@
     <string name="economic_values_missing">Экономические показатели отсутствуют</string>
     <string name="education_values_missing">Отсутствуют показатели образования</string>
     <string name="intelehealth_a_telemedicine_platform">Телемед KG - Приложение - это приложение по телемедицине, которое объединяет медицинских работников труднодоступных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
-<!--    <string name="intelehealth_name">Intelehealth</string>-->
+    <!--    <string name="intelehealth_name">Intelehealth</string>-->
     <string name="intelehealth_name">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="Ayu_name">Айя</string>
     <string name="close_button">Закрыть</string>
@@ -717,4 +717,16 @@
  \n\n
  Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>
+    <string name="book_appointment">Book Appointment</string>
+    <string name="reschedule_appointment">Reschedule Appointment</string>
+    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
+    <string name="cancel_appointment">Cancel Appointment</string>
+    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
+    <string name="appointment_empty_message">You don\'t have any appointment!</string>
+    <string name="appointment_listing_title">Appointment Listing</string>
+    <string name="appointment_booking_title">Appointment Booking</string>
+    <string name="appointment_for">Appointment For</string>
+    <string name="please_select_appointment_slot">Please select appointment slot</string>
+    <string name="please_select_speciality">Please select speciality!</string>
 </resources>

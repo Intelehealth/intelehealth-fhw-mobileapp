@@ -83,6 +83,7 @@
         <item name="fontFamily">@font/lato_medium</item>
         <item name="android:textSize">16sp</item>
     </style>
+
     <style name="ScrollingPagerIndicator">
         <item name="spi_dotColor">@android:color/darker_gray</item>
         <item name="spi_dotSelectedColor">@android:color/darker_gray</item>
@@ -94,5 +95,9 @@
         <item name="spi_looped">false</item>
     </style>
 
+    <style name="DatePicker.Theme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 
 </resources>

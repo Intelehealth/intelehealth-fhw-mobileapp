@@ -89,6 +89,11 @@ import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActiv
 import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.appointment.ScheduleListingActivity;
+import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
+import org.intelehealth.unicef.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.unicef.appointment.model.CancelRequest;
+import org.intelehealth.unicef.appointment.model.CancelResponse;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
@@ -131,6 +136,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -437,7 +445,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         super.attachBaseContext(LocaleHelper.updateLocale(newBase, new SessionManager(newBase).getAppLanguage()));
     }
 
-
+private TextView mDoctorAppointmentBookingTextView;
+private TextView mCancelAppointmentBookingTextView;
+private TextView mInfoAppointmentBookingTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(getApplicationContext());
@@ -542,7 +552,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-//we can remove by data binding
+        //we can remove by data binding
+        mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
+        mCancelAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingCancel);
+        mInfoAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingInfo);
+        mCancelAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelAppointment();
+            }
+        });
+        mDoctorAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(speciality_selected==null
+                        || speciality_selected.isEmpty()
+                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
+                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
+                ){
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivity(new Intent(VisitSummaryActivity.this, ScheduleListingActivity.class)
+                .putExtra("visitUuid", visitUuid)
+                .putExtra("patientUuid", patientUuid)
+                .putExtra("patientName", patientName)
+                .putExtra("openMrsId", patient.getOpenmrs_id())
+                .putExtra("speciality", speciality_selected)
+                );
+            }
+        });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
@@ -3606,6 +3645,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            File dir = new File(path);
 //            deleteRecursive(dir);
 //        }
+        // load the appointment details
+        getAppointmentDetails(visitUuid);
     }
 
 //    public static void deleteRecursive(File fileOrDirectory) {
@@ -4061,5 +4102,78 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+private AppointmentDetailsResponse mAppointmentDetailsResponse;
+    private void getAppointmentDetails(String visitUUID) {
+        String baseurl = "https://" + sessionManager.getServerUrl() +":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getAppointmentDetails(visitUUID)
+                .enqueue(new Callback<AppointmentDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        mAppointmentDetailsResponse = response.body();
+                        if(mAppointmentDetailsResponse.getData()==null){
+                             mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+                             mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+                             mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
+                        }else{
+                            mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
+                            mInfoAppointmentBookingTextView.setText("Appointment Booked:\n\n"+
+                                    mAppointmentDetailsResponse.getData().getSlotDay()+"\n"+
+                                    mAppointmentDetailsResponse.getData().getSlotDate()+"\n"+
+                                    mAppointmentDetailsResponse.getData().getSlotTime()
+                            );
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+
+    }
+    private void cancelAppointment() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
+                //set positive button
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        CancelRequest request = new CancelRequest();
+                        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
+                        request.setId(mAppointmentDetailsResponse.getData().getId());
+                        String baseurl = "https://" + sessionManager.getServerUrl() +":3004";
+                        ApiClientAppointment.getInstance(baseurl).getApi()
+                                .cancelAppointment(request)
+                                .enqueue(new Callback<CancelResponse>() {
+                                    @Override
+                                    public void onResponse(Call<CancelResponse> call, retrofit2.Response<CancelResponse> response) {
+                                        CancelResponse cancelResponse = response.body();
+                                        Toast.makeText(VisitSummaryActivity.this, cancelResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                        getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                                        Log.v("onFailure", t.getMessage());
+                                    }
+                                });
+                    }
+                })
+                //set negative button
+                .setNegativeButton(mContext.getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+
+
+    }
 
 }
