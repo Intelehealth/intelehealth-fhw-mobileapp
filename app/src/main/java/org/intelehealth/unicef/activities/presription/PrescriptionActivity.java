@@ -162,7 +162,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 btnCallSubmit.setEnabled(false);
                 btnCallSubmit.setAlpha(0.4f);
                 rgCall.clearCheck();
-                setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
+              //  setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                 uploadCallWithPatientData();
             }
         });
@@ -187,7 +187,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     if (checked1 != null && checked2 != null) {
                         String result = String.format("%s:%s & %s", etDiagnosis.getText(), checked1.getText(), checked2.getText());
                         addResult(llDiagnosisResult, result);
-                        setObsData(encounterUuidAdultIntial, TELEMEDICINE_DIAGNOSIS, result);
+                       // setObsData(encounterUuidAdultIntial, TELEMEDICINE_DIAGNOSIS, result);
                         etDiagnosis.setText("");
                         rgDiagnosis1.clearCheck();
                         rgDiagnosis2.clearCheck();
@@ -256,7 +256,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                             ,etMedicationInstructions.getText()
                             );
                     addResult(llMedsResult, result);
-                    setObsData(encounterUuidAdultIntial, JSV_MEDICATIONS, result);
+                   // setObsData(encounterUuidAdultIntial, JSV_MEDICATIONS, result);
                             etMedication.setText("");
                             etMedicationStrength.setText("");
                             etMedicationUnit.setText("");
@@ -287,7 +287,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etTest.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     addResult(llTestResult, result);
-                    setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
+                  //  setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
                     etTest.setText("");
                     uploadPrescriptionData(result, REQUESTED_TESTS);
                 }
@@ -307,7 +307,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etAdviceRefer.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     addResult(llAdviceResult, result);
-                    setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
+                   // setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                     etAdviceRefer.setText("");
                     uploadPrescriptionData(result, MEDICAL_ADVICE);
                 }
@@ -324,7 +324,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etNotes.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     addResult(llNotesResult, result);
-                    setObsData(encounterUuidAdultIntial, ADDITIONAL_COMMENTS, result);
+                  //  setObsData(encounterUuidAdultIntial, ADDITIONAL_COMMENTS, result);
                     etNotes.setText("");
                     uploadPrescriptionData(result, ADDITIONAL_COMMENTS);
                 }
@@ -346,7 +346,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
                         result += ", Remarks: " + etFollowUpRemark.getText();
                     addResult(llFollowUpResult, result);
-                    setObsData(encounterUuidAdultIntial, FOLLOW_UP_VISIT, result);
+                  //  setObsData(encounterUuidAdultIntial, FOLLOW_UP_VISIT, result);
                     etFollowUpDate.setText("");
                     etFollowUpRemark.setText("");
                     uploadPrescriptionData(result, FOLLOW_UP_VISIT);
@@ -414,7 +414,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
         datamodel.setPatient(patientUuid);
         datamodel.setEncounterProviders(encounterProviderList);
-        datamodel.setVisit(visitUUID);
+        datamodel.setVisit(visitUuid);
         datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
         datamodel.setEncounterType(ENCOUNTER_VISIT_COMPLETE);
         datamodel.setObs(obList);
@@ -517,7 +517,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         llResult.addView(space);
     }
 
-    void setObsData(String encounterUid, String conceptUid, String value) {
+   /* void setObsData(String encounterUid, String conceptUid, String value) {
         ObsDTO obsDTO = new ObsDTO();
         try {
             obsDTO.setUuid(UUID.randomUUID().toString());
@@ -528,7 +528,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private List<String> getResult(LinearLayout llResult) {
         List<String> result = new ArrayList<>();
