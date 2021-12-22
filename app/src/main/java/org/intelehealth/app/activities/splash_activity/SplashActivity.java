@@ -26,6 +26,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.IntroActivity.IntroActivity;
+import org.intelehealth.app.activities.chooseLanguageActivity.ChooseLanguageActivity;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.loginActivity.LoginActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -248,29 +249,37 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void nextActivity() {
+
         boolean setup = sessionManager.isSetupComplete();
 
         String LOG_TAG = "SplashActivity";
         Logger.logD(LOG_TAG, String.valueOf(setup));
-        if (setup) {
+        if (sessionManager.isFirstTimeLaunch()) {
+            Logger.logD(LOG_TAG, "Starting setup");
+            Intent intent = new Intent(this, ChooseLanguageActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            if (setup) {
 
-            if (sessionManager.isLogout()) {
-                Logger.logD(LOG_TAG, "Starting login");
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                if (sessionManager.isLogout()) {
+                    Logger.logD(LOG_TAG, "Starting login");
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Logger.logD(LOG_TAG, "Starting home");
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             } else {
-                Logger.logD(LOG_TAG, "Starting home");
-                Intent intent = new Intent(this, HomeActivity.class);
+                Logger.logD(LOG_TAG, "Starting setup");
+                Intent intent = new Intent(this, IntroActivity.class);
                 startActivity(intent);
                 finish();
             }
-
-        } else {
-            Logger.logD(LOG_TAG, "Starting setup");
-            Intent intent = new Intent(this, IntroActivity.class);
-            startActivity(intent);
-            finish();
         }
     }
 

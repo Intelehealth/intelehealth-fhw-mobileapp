@@ -3,6 +3,8 @@ package org.intelehealth.app.activities.activePatientsActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.Html;
@@ -22,7 +24,11 @@ import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
+import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.ActivePatientModel;
+import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.StringUtils;
 
@@ -78,7 +84,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
 //            holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
         }
 
-        if (activePatientModel.getSync().equalsIgnoreCase("0")){
+        if (activePatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -108,7 +114,93 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String patientStatus = "returning";
+
+                Intent visitSummary = new Intent(context, VisitSummaryActivity.class);
+                String patientUuid = activePatientModel.getPatientuuid();
+
+                String patientSelection = "uuid = ?";
+                String[] patientArgs = {patientUuid};
+                String[] patientColumns = {"first_name", "middle_name", "last_name", "gender",
+                        "date_of_birth",};
+                SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+                Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
+                String visit_id = "";
+
+                String end_date="",dob = "", mGender = "", patientName = "";
+                float float_ageYear_Month = 0;
+                if (idCursor.moveToFirst()) {
+                    do {
+                        mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
+                        patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
+                                idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
+                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
+                    } while (idCursor.moveToNext());
+                }
+                idCursor.close();
+
+                String visitSelection = "patientuuid = ?";
+                String[] visitArgs = {patientUuid};
+                String[] visitColumns = {"uuid, startdate", "enddate"};
+                String visitOrderBy = "startdate";
+                Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+
+                if (visitCursor.getCount() >= 1) {
+                    if (visitCursor.moveToLast() && visitCursor != null) {
+                        do {
+                            end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                        } while (visitCursor.moveToPrevious());
+                    }
+                }
+                visitCursor.close();
+
+                String encounterlocalAdultintial = "";
+                String encountervitalsLocal = null;
+                String encounterIDSelection = "visituuid = ?";
+
+                String[] encounterIDArgs = {visit_id};
+
+                EncounterDAO encounterDAO = new EncounterDAO();
+                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                    } while (encounterCursor.moveToNext());
+                }
+                encounterCursor.close();
+
+                Boolean past_visit = false;
+                if (end_date == null || end_date.isEmpty()) {
+                    past_visit = false;
+                } else {
+                    past_visit = true;
+                }
+
+                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
+
+                visitSummary.putExtra("visitUuid", visit_id);
+                visitSummary.putExtra("patientUuid", patientUuid);
+                visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
+                visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
+                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
+                visitSummary.putExtra("name", patientName);
+                visitSummary.putExtra("gender", mGender);
+                visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+                visitSummary.putExtra("tag", "");
+                visitSummary.putExtra("pastVisit", past_visit);
+
+                if (holder.ivPriscription.getTag().equals("1")) {
+                    visitSummary.putExtra("hasPrescription", "true");
+                } else {
+                    visitSummary.putExtra("hasPrescription", "false");
+                }
+                context.startActivity(visitSummary);
+                /*String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
                 intent.putExtra("patientUuid", activePatientModel.getPatientuuid());
                 intent.putExtra("status", patientStatus);
@@ -119,7 +211,7 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 } else {
                     intent.putExtra("hasPrescription", "false");
                 }
-                context.startActivity(intent);
+                context.startActivity(intent);*/
             }
         };
 //        holder.getRootView().setOnClickListener(listener);
