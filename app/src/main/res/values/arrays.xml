@@ -152,7 +152,7 @@
         <item>Uttarakhand</item>
         <item>West Bengal</item>
     </string-array>
-  <string-array name="states_india_ru">
+    <string-array name="states_india_ru">
         <item>Выберите штат</item>
         <item>Андхра-Прадеш</item>
         <item>Аруначал-Прадеш</item>
@@ -230,7 +230,7 @@
 
     </string-array>
 
- <string-array name="states_kyrgyzstan_en">
+    <string-array name="states_kyrgyzstan_en">
         <item>Select State</item>
         <item>Bishkek</item>
         <item>Tokmok</item>
@@ -431,4 +431,5679 @@
         <item>Tab Doxycycline 100mg</item>
         <item>Syrup Kesol 200ml bottle</item>
     </string-array>
+
+    <string-array name="weight_units">
+        <item>Ampule(s)</item>
+        <item>Application</item>
+        <item>Bar</item>
+        <item>Biscuit wafer</item>
+        <item>Can</item>
+        <item>Capsule</item>
+        <item>Container</item>
+        <item>Drop</item>
+        <item>Enema</item>
+        <item>Fluid ounce</item>
+        <item>Gallon</item>
+        <item>Gram</item>
+        <item>Gum</item>
+        <item>Inch</item>
+        <item>International units</item>
+        <item>Kilogram</item>
+        <item>Liter</item>
+        <item>Lozenge</item>
+        <item>Milliequivalent</item>
+        <item>Metric drop</item>
+        <item>Microgram</item>
+        <item>Milligram</item>
+        <item>Milligram per meter squared</item>
+        <item>Milliliter</item>
+        <item>Million units</item>
+        <item>Nebulizer</item>
+        <item>Pad</item>
+        <item>Patch</item>
+        <item>Pint</item>
+        <item>Puff</item>
+        <item>Ring pessary</item>
+        <item>Scoopful</item>
+        <item>Spray</item>
+        <item>Suppository</item>
+        <item>Syringe</item>
+        <item>Tablet</item>
+        <item>Tablespoon</item>
+        <item>Teaspoon</item>
+        <item>Tube</item>
+        <item>Unit</item>
+        <item>Vial</item>
+    </string-array>
+
+    <string-array name="frequency">
+        <item>Twice daily</item>
+        <item>Twice daily before meals</item>
+        <item>Twice daily after meals</item>
+        <item>Twice daily with meals</item>
+        <item>Once daily</item>
+        <item>Once daily, at bedtime</item>
+        <item>Once daily, in the morning</item>
+        <item>Once daily, in the evening</item>
+        <item>Thrice daily</item>
+        <item>Thrice daily, after meals</item>
+        <item>Thrice daily, with meals</item>
+        <item>Thrice daily, before meals</item>
+        <item>Four times daily</item>
+        <item>Four times daily, before meals and at bedtime</item>
+        <item>Four times daily, after meals and at bedtime</item>
+        <item>One time</item>
+        <item>Every two hours</item>
+        <item>Every 30 min</item>
+        <item>Every four hours</item>
+        <item>Every five hours</item>
+        <item>Every six hours</item>
+        <item>Every twelve hours</item>
+        <item>Every eight hours</item>
+        <item>Every twenty-four hours</item>
+        <item>Every thirty-six hours</item>
+        <item>Every forty-eight hours</item>
+        <item>Every seventy-two hours</item>
+        <item>Every Monday, Wednesday and Friday</item>
+        <item>Concept #163141</item>
+        <item>HALF HR BEFORE BREAKFAST</item>
+        <item>AFTER BREAKFAST</item>
+        <item>15MIN BEFORE LUNCH</item>
+        <item>AFTER LUNCH</item>
+        <item>EVENING</item>
+        <item>HALF HR BEFORE DINNER</item>
+        <item>15MIN BEFORE DINNER</item>
+        <item>AFTER DINNER</item>
+        <item>AT BEDTIME</item>
+        <item>As and when required</item>
+        <item>Continue until further consultation</item>
+    </string-array>
+
+    <string-array name="route">
+        <item>Oral</item>
+        <item>Intravenous</item>
+        <item>Intramuscular</item>
+        <item>Subcutaneous</item>
+        <item>Inhalation</item>
+        <item>Intranasal</item>
+        <item>In left ear</item>
+        <item>In right ear</item>
+        <item>In both ears</item>
+        <item>In left eye</item>
+        <item>In right eye</item>
+        <item>In both eyes</item>
+        <item>Transdermal</item>
+        <item>Vaginally</item>
+        <item>Rectally</item>
+        <item>Per NG tube</item>
+        <item>Intraosseous</item>
+    </string-array>
+
+    <string-array name="time_units">
+        <item>Seconds</item>
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>DAYS</item>
+        <item>WEEKS</item>
+        <item>MONTHS</item>
+        <item>Years</item>
+        <item>Number of occurrences</item>
+    </string-array>
+
+    <string-array name="tests">
+        <item>CBC: HB/WBC/RBC PLATELET</item>
+        <item>BLOOD SUGAR: F AND PP</item>
+        <item>UREA AND CREATININE TEST</item>
+        <item>SERUM SODIUM AND POTASSIUM</item>
+        <item>PREGNANCY TEST</item>
+        <item>LIVER FUNCTION TEST: BILIRUBIN AND LIVER ENZYMES (SGOT/SGPT/SAKP)</item>
+        <item>HBA1C</item>
+        <item>THYROID FUNCTION TEST (T3 /T4/TSH)</item>
+        <item>URINE: ROUTINE AND MICROSCOPIC ANC CULTURE</item>
+        <item>STOOL: OCCULT BLOOD AND MICROSCOPIC FOR CYSTS ETC. AND CULTURE</item>
+        <item>WIDAL TEST (TYPHOID FEVER)</item>
+        <item>SERUM URIC ACID</item>
+        <item>LIPID PROFILE</item>
+        <item>SERUM CALCIUM</item>
+        <item>SERUM VIT. D3</item>
+        <item>SERUM ALBUMIN AND GLOBULIN</item>
+        <item>TROPONIN - T</item>
+        <item>URINE MICROALBUMINURIA</item>
+        <item>TB PCR</item>
+        <item>MALARIA - ANTIGEN/ANTOBODY/PARASITE DETECTION</item>
+        <item>DENGUE</item>
+        <item>COAGULATION PROFILE (PT/APTT)</item>
+        <item>BLOOD GROUP AND RH</item>
+        <item>RHEUMATOID FACTOR/ANTI-NUCLEAR FACTOR/HLA B27</item>
+        <item>FEVER PANEL: PYREXIA OF UNKNOWN ORIGIN VIRAL/BACTERIAL/PARASITIC</item>
+        <item>SERUM IRON AND VIT. B12</item>
+        <item>CHEST X-RAY PA VIEW</item>
+        <item>CERVICAL SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>THORACIC SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>LUMBOSACCRAL SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>KNEE JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>SHOULDER JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>ANKLE JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>ULTRASOUND, ABDOMEN</item>
+        <item>PELVIC ULTRASOUND</item>
+        <item>ECG</item>
+        <item>Concept #163201</item>
+    </string-array>
+
+    <string-array name="advice">
+        <item>DO NOT SLEEP AT NOON</item>
+        <item>DO NOT EAT STALE FOODS AND FERMENTED RICE</item>
+        <item>DO NOT SMOKE CIGARETTES</item>
+        <item>DO NOT WALK BAREFOOT</item>
+        <item>FOLLOW DIABETIC FOOD CHART</item>
+        <item>DO NOT EAT RAW SALT</item>
+        <item>DIET</item>
+        <item>DO NOT BATH IN PONDS</item>
+        <item>DO NOT CHEW TOBACCO</item>
+        <item>EAT HOT MEALS</item>
+        <item>EAT FOODS COOKED WITHOUT SALT</item>
+        <item>STAY NEAT AND CLEAN</item>
+        <item>DO NOT CLOSE ALL THE DOORS AND WINDOWS WHILE SLEEPING</item>
+        <item>DRINK LESS WATER</item>
+        <item>DO NOT EAT RAW ONION</item>
+        <item>DO NOT EAT RAW ONION, TOMATO, LETTUCE, OR LENTIL</item>
+        <item>DRINK LOTS OF WATER</item>
+        <item>DRINK COOLED BOILED DRINKING WATER</item>
+        <item>WEAR DRY CLOTHES AFTER BATH</item>
+        <item>DO NOT DO HEAVY WORK</item>
+        <item>DO NOT BRUSH YOUR TEETH WITH GURAKHU</item>
+        <item>EAT PLENTY OF GREEN LEAF VEGETABLES AND FRUITS</item>
+        <item>AVOID OILY AND SPICY FOODS</item>
+        <item>DO NOT DRINK ALCHOHOL</item>
+        <item>REVIEW WITH DIAGNOSTIC REPORT</item>
+        <item>GURGLE WITH LUKEWARM SALINE WATER</item>
+        <item>DO NOT STUDY IN LOW LIGHT</item>
+        <item>Concept #163113</item>
+        <item>Concept #163112</item>
+    </string-array>
+
+    <string-array name="diagnosis">
+        <item>1 PUFF</item>
+        <item>1 TABLET</item>
+        <item>1 TEASPOON (5ML)</item>
+        <item>1 time per day</item>
+        <item>1-2 HR</item>
+        <item>1.5 TABLETS</item>
+        <item>1/2 Halfprin</item>
+        <item>15MIN BEFORE DINNER</item>
+        <item>15MIN BEFORE LUNCH</item>
+        <item>2 PUFFS</item>
+        <item>2 TABLETS</item>
+        <item>2 TEASPOONS (10ML)</item>
+        <item>2 times per day</item>
+        <item>2 TO 3 TIMES A WEEK</item>
+        <item>2 TO 4 TIMES A MONTH</item>
+        <item>3 PUFFS</item>
+        <item>3 TABLETS</item>
+        <item>3 TEASPOONS (15ML)</item>
+        <item>3 times a week on Monday, Wednesday and Friday</item>
+        <item>3 times per day</item>
+        <item>3 times per day, after meals</item>
+        <item>3 times per day, before meals</item>
+        <item>3 times per day, with meals</item>
+        <item>30-60 MIN</item>
+        <item>3TC</item>
+        <item>4 PUFFS</item>
+        <item>4 TABLETS</item>
+        <!--<item>4 TEASPOONS (20ML)</item>-->
+        <item>4 TIMES A DAY</item>
+        <item>4 times per day</item>
+        <item>4 times per day, after meals and at bedtime</item>
+        <item>4 times per day, before meals and at bedtime</item>
+        <item>4 TO 5 TIMES A WEEK</item>
+        <item>6 OR MORE TIMES A WEEK</item>
+        <item>60-120 MIN</item>
+        <!--<item><1:2</item>
+        <item><30 MIN</item>
+        <item>>120 MINS</item>
+        <item>>1:32</item>
+        <item>>2 HR</item>-->
+        <item>A</item>
+        <item>A MIBACTIN DS</item>
+        <item>A NEGATIVE</item>
+        <item>A POSITIVE</item>
+        <item>A+</item>
+        <item>A-</item>
+        <item>AB NEGATIVE</item>
+        <item>AB POSITIVE</item>
+        <item>AB+</item>
+        <item>AB-</item>
+        <item>ABACAVIR</item>
+        <item>ABACAVIR ARV</item>
+        <item>ABACAVIR COMMENT</item>
+        <item>ABACAVIR DISCONTINUATION1</item>
+        <item>ABACAVIR DISCONTINUATION1 TODAY</item>
+        <item>ABACAVIR DISCONTINUATION2</item>
+        <item>ABACAVIR DISCONTINUATION2 TODAY</item>
+        <item>ABACAVIR DISCONTINUED</item>
+        <item>ABACAVIR LAMIVUDINE AND ZIDOVUDINE</item>
+        <item>ABACAVIR PAST</item>
+        <item>ABACAVIR PRESENT</item>
+        <item>ABACAVIR RECOMMENDATION</item>
+        <item>ABACAVIR SIG</item>
+        <item>ABACAVIR START CONTINUE</item>
+        <item>ABACAVIR START DATE</item>
+        <item>ABACAVIR START STOP DATE</item>
+        <item>ABACAVIR STOP DATE</item>
+        <item>ABACAVIRP MTCT</item>
+        <item>ABC</item>
+        <item>ABCÈS</item>
+        <item>ABDOMEN</item>
+        <item>ABDOMEN COMMENT</item>
+        <item>ABDOMINAL</item>
+        <item>ABDOMINAL EXAM FINDINGS</item>
+        <item>ABDOMINAL GUARDING</item>
+        <item>ABDOMINAL MASS</item>
+        <item>ABDOMINAL MASS LLQ</item>
+        <item>ABDOMINAL MASS LUQ</item>
+        <item>ABDOMINAL MASS RLQ</item>
+        <item>ABDOMINAL MASS RUQ</item>
+        <item>Abdominal or pelvic pain</item>
+        <item>ABDOMINAL PAIN</item>
+        <item>ABDOMINAL REBOUND TENDERNESS</item>
+        <item>ABDOMINAL SWELLING</item>
+        <item>ABDOMINAL TENDERNESS</item>
+        <item>ABDOMINAL TENDERNESS LLQ</item>
+        <item>ABDOMINAL TENDERNESS LUQ</item>
+        <item>ABDOMINAL TENDERNESS RLQ</item>
+        <item>ABDOMINAL TENDERNESS RUQ</item>
+        <item>ABDOMINAL ULTRASOUND</item>
+        <item>ABDOMINAL X-RAY</item>
+        <item>ABDOMINAL XRAY</item>
+        <item>ABLET D</item>
+        <item>ABLET – D</item>
+        <item>ABNORMAL</item>
+        <item>ABNORMAL FUNDUS</item>
+        <item>ABNORMAL GAIT</item>
+        <item>ABNORMAL SOUNDS</item>
+        <item>ABNORMAL TONE</item>
+        <item>Abnormal urine</item>
+        <item>ABORTION</item>
+        <item>ABORTION, INCOMPLETE</item>
+        <item>aborto espontáneo</item>
+        <item>absceso de la piel Y/O del tejido celular subcutáneo</item>
+        <item>ABSCESS</item>
+        <item>Abscess of Skin and Subcutaneous Tissue</item>
+        <item>ABSOLUTE ATYPICAL LYMPHOCYTE COUNT</item>
+        <item>ABSOLUTE BASOPHIL COUNT</item>
+        <item>ABSOLUTE EOSINOPHIL COUNT</item>
+        <item>ABSOLUTE IMMATURE CELL COUNT</item>
+        <item>ABSOLUTE LYMPHOCYTE COUNT</item>
+        <item>ABSOLUTE MONOCYTE COUNT</item>
+        <item>ABSOLUTE NEUTROPHIL COUNT</item>
+        <item>ACCIDENT NOS</item>
+        <item>ACCIDENT, MOTOR VEHICLE</item>
+        <item>ACCIDENT, NOT OTHERWISE SPECIFIED</item>
+        <item>ACCUPRIL</item>
+        <item>ACE inhibitors</item>
+        <item>ACE-inhibitors</item>
+        <item>ACECLO MR</item>
+        <item>ACECLOFENAC</item>
+        <!--<item>ACECLOFENAC (100)  + PARACETAMOL (500)</item>-->
+        <item>ACETOMINOPHEN</item>
+        <item>Acetylsalicylate sodium</item>
+        <item>ACETYLSALICYLIC ACID</item>
+        <item>ACHILLES REFLEX</item>
+        <item>ACIBAN</item>
+        <item>ACIBAN 20MG</item>
+        <item>ACIBAN 40MG</item>
+        <item>ACIBAN DSR</item>
+        <item>ACIBAN – DSR</item>
+        <item>ACIDITY</item>
+        <item>ACILOC</item>
+        <item>ACISTAL D</item>
+        <item>ACISTAL –D</item>
+        <item>ACNE</item>
+        <item>ACQUIRED IMMUNODEFICIENCY SYNDROME</item>
+        <item>ACTIFED</item>
+        <item>ACTIFED SYRUP</item>
+        <item>ACTIVE</item>
+        <item>ACTIVE OHTER</item>
+        <item>Acuprin 81</item>
+        <item>ACUTE BRONCHITIS</item>
+        <item>acute faryngitis</item>
+        <item>Acute malnutrition</item>
+        <item>Acute pain</item>
+        <item>Acute Pharyngitis</item>
+        <item>acute pijn</item>
+        <item>Acute Poliomyelitis, Poliovirus</item>
+        <item>Acute respiratory infection, NEC</item>
+        <item>Acute respiratory infection, other</item>
+        <item>Acute severe asthma</item>
+        <item>Acute Tonsillitis</item>
+        <item>Acute viral hepatitis, other</item>
+        <item>ACYCLOVIR</item>
+        <item>ADALAT</item>
+        <item>ADALAT TABLETS</item>
+        <item>Additional Comments</item>
+        <item>ADDITIONAL EVALUATION</item>
+        <item>ADDITIONAL EVALUATION DESC</item>
+        <item>ADENITIS</item>
+        <item>ADENITIS, NOS</item>
+        <item>ADENITIS, TUBERCULOUS</item>
+        <item>adenomegalia</item>
+        <item>ADENOPATHY</item>
+        <item>Adenopati</item>
+        <item>ADHERENCE</item>
+        <item>ADHERENCE COUNSELING</item>
+        <item>Adhesive tape</item>
+        <item>ADMIT MOSORIOT</item>
+        <item>ADMIT TO MTRH</item>
+        <item>ADRENALINE INJECTION</item>
+        <item>ADULT PEDS</item>
+        <item>ADULT WHO CONDITION QUERY</item>
+        <item>ADULTS PEDS</item>
+        <item>ADVENT</item>
+        <item>AFB SMEAR SPUTUM</item>
+        <item>AFFORDABILITY</item>
+        <item>AFTER BREAKFAST</item>
+        <item>AFTER DINNER</item>
+        <item>AFTER LUNCH</item>
+        <item>AGE</item>
+        <item>AGE OF FIRST SIBLING</item>
+        <item>AGE OF LAST SIBLING</item>
+        <item>AGENERASE</item>
+        <item>AIDS</item>
+        <item>AINS</item>
+        <item>ALANINE AMINOTRANSFERASE</item>
+        <item>ALBENDAZOLE</item>
+        <item>ALBUMIN POS</item>
+        <item>ALBUMIN POSITIVE</item>
+        <item>ALC</item>
+        <item>ALCOHOL COUNSELING</item>
+        <item>ALCOHOL USE COMMENT</item>
+        <item>ALDEZOL DF</item>
+        <item>ALDOMET</item>
+        <item>Alert</item>
+        <item>Alert brand of caffeine</item>
+        <item>Alertness Al</item>
+        <item>ALK PHOS</item>
+        <item>ALKALINE PHOSPHATASE</item>
+        <item>ALL</item>
+        <item>ALLERGIC CONJUNCTIVITIS</item>
+        <item>ALLERGIC DERMATITIS</item>
+        <item>ALLERGIC ECZEMA</item>
+        <item>ALLERGIC RASH</item>
+        <item>ALLERGIC REACTION</item>
+        <item>ALLERGIC RHINITIS</item>
+        <item>ALLERGY</item>
+        <item>ALLERGY TO OTHER MEDICINE</item>
+        <item>ALLERGY TO PENICILLIN</item>
+        <item>ALLERGY TO SULFA</item>
+        <item>ALOO</item>
+        <item>ALP</item>
+        <item>ALPRAZOLAM</item>
+        <item>ALT</item>
+        <item>ALTACEF 125MG</item>
+        <item>ALTACEF 250MG</item>
+        <item>ALTACEF 500MG</item>
+        <item>ALTACEF SUS 100MG</item>
+        <item>ALTACEF SUS 200MG</item>
+        <item>Altered Mental Status</item>
+        <item>ALUMINUM HYDROXIDE</item>
+        <item>AMAIGRISSEMENT</item>
+        <item>Ambroisie</item>
+        <item>Ambrosia</item>
+        <item>AMEBIS FORTE</item>
+        <item>AMICLINE PLUS</item>
+        <item>amigdalitis aguda</item>
+        <item>AMINOPHYLINE INJECTION</item>
+        <item>AMINOPHYLLINE</item>
+        <item>AMITRYPTILINE</item>
+        <item>AMODIAQUIN</item>
+        <item>AMODIAQUIN SYRUP</item>
+        <item>AMOEBIASIS</item>
+        <item>AMOEBIC DIARRHOEA</item>
+        <item>AMOEBIC DYSENTRY</item>
+        <item>AMORPHOUS PHOS CRYSTALS</item>
+        <item>AMORPHOUS PHOSPHATE CRYSTALS</item>
+        <item>AMOXICILLIN</item>
+        <item>AMOXICILLIN AND CLAVULANIC ACID</item>
+        <item>AMOXIL</item>
+        <item>AMOXYL</item>
+        <item>AMOXYL SYRUP</item>
+        <item>Amp</item>
+        <item>AMPATH</item>
+        <item>AMPATH MED KIT</item>
+        <item>AMPICILLIN</item>
+        <item>AMPICILLIN AND CLOXACILLIN</item>
+        <item>AMPICILLIN INJECTION</item>
+        <item>AMPICILLIN+CLOXACILLIN</item>
+        <item>AMPICLOX</item>
+        <item>AMPICLOX DROPS</item>
+        <item>AMPICLOX NEONATAL DROPS</item>
+        <item>AMPICLOX SUSPENSION</item>
+        <item>AMPRENAVIR</item>
+        <item>Ampule</item>
+        <!--<item>Ampule(s)</item>-->
+        <item>AMYLASE</item>
+        <item>Anacin Aspirin Regimen</item>
+        <item>Anadin All-Night</item>
+        <item>ANAEMIA</item>
+        <item>Anaemic</item>
+        <item>Anafilaktik</item>
+        <item>anafilaxis</item>
+        <item>anafylaxie</item>
+        <item>Anaphylaxie</item>
+        <item>Anaphylaxis</item>
+        <item>ANATOMIC LOCATIONS</item>
+        <item>Anbwazi</item>
+        <item>ane</item>
+        <item>Anemi</item>
+        <item>Anemi, Defisi Fè</item>
+        <item>ANEMIA</item>
+        <item>ANEMIA COMMENT</item>
+        <item>anemia ferropénica</item>
+        <item>ANEMIA NOS</item>
+        <item>ANEMIA, BLOOD LOSS</item>
+        <item>ANEMIA, HEMOLYSIS</item>
+        <item>ANEMIA, IRON DEFICIENCY</item>
+        <item>Anémie</item>
+        <item>Anemie, carence en fer</item>
+        <item>Anemie, deficience en fer</item>
+        <item>Angio-edema</item>
+        <item>Angioedema</item>
+        <item>angioneurotisch oedeem</item>
+
+        <item>Angiotensin 2 receptor antagonists</item>
+        <item>Angiotensin 2 receptor blockers</item>
+        <item>Angiotensin II receptor antagonists</item>
+        <item>Angiotensin II receptor blockers</item>
+        <item>Angiotensin-converting enzyme inhibitors drug class</item>
+        <item>Angyoedema</item>
+        <item>Anjyotansen II bloke reseptè</item>
+        <item>Anjyotansen-konvèti anzim inhibiteurs klas dwòg</item>
+        <item>ANKLE JERK</item>
+        <item>ANKLE JOINT X-RAY PA AND LATERAL VIEW</item>
+        <item>ANKLE REFLEX</item>
+        <item>ANKYLOSTOMIASE</item>
+        <item>Annees</item>
+        <item>ANNUSOL SUPPOSITORIES</item>
+        <item>anogenitale wrat</item>
+        <item>ANOREXIA</item>
+        <item>Años</item>
+        <item>ANTACID</item>
+        <item>ANTEPARTUM</item>
+
+        <item>ANTEPARTUM HEMORRHAGE</item>
+        <item>ANTEPARTUM POSTPARTUM</item>
+        <item>ANTERIOR</item>
+        <item>ANTI TB ADHERENCE</item>
+        <item>ANTI-CRYPTOCOCCUS ADHERENCE</item>
+        <item>ANTI-RABIES VACCINE</item>
+        <item>ANTI-TB ADHERENCE</item>
+        <item>ANTI-VENIN SNAKE</item>
+        <item>ANTIBIOTICS</item>
+        <item>ANTIHISTAMINE CREAM</item>
+        <item>ANTIKÒ VIRIS IMINODEFISYANS</item>
+        <item>ANTIRETROVIRAL ADHERENCE IN PAST WEEK</item>
+        <item>ANTIRETROVIRAL DOSE QUANTIFICATION</item>
+        <item>ANTIRETROVIRAL DRUGS</item>
+        <item>ANTIRETROVIRAL MEDICATION HISTORY</item>
+        <item>ANTIRETROVIRAL PLAN</item>
+        <item>ANTIRETROVIRAL USE</item>
+        <item>ANTIRETROVIRALS STARTED</item>
+        <item>ANTIRETROVIRALS USED FOR MTCT PROPHYLAXIS</item>
+        <item>AORTIC BRUIT</item>
+        <item>APATHETIC</item>
+        <item>APEX</item>
+        <item>APPENDICITIS</item>
+        <item>Application</item>
+        <!--<item>Application(s)</item>-->
+        <item>APPROPRIATE MILESTONES</item>
+        <item>APT DATE</item>
+        <item>APT TIME</item>
+        <item>AR VS COMMENT</item>
+        <!--<item>ARA-II (antagonistes des récepteurs de l'angiotensine II)</item>-->
+        <item>ARB</item>
+        <item>ARBS</item>
+        <item>ARBs (angiotensin II receptor blockers)</item>
+
+        <item>ARFLUR MR</item>
+        <item>ARISTOGYL PLUS ASTRA</item>
+        <item>Aritmi</item>
+        <item>ARM X-RAY</item>
+        <item>ARM XRAY</item>
+        <item>ARMS</item>
+        <item>Arrhythmia</item>
+        <item>ARTANE</item>
+        <item>ARTHRITIS</item>
+        <item>Arthritis Foundation Aspirin</item>
+        <item>ARTHRITIS NOS</item>
+        <item>Arthritis Pain</item>
+        <item>ARTHRITIS RHEUMATOID</item>
+        <item>ARTHRITIS, KNEE</item>
+        <item>artropatía</item>
+        <item>ARV</item>
+        <item>ARV ADHERENCE</item>
+        <item>ARV COMMENT</item>
+        <item>ARV COMMENTS</item>
+        <item>ARV COUNSEL PRIOR TO BIRTH</item>
+        <item>ARV ELIGIBILITY</item>
+        <item>ARV ELIGIBLE</item>
+        <item>ARV ELIGIBLE TOTAL PMTCT</item>
+        <item>ARV FOR MOTHER</item>
+        <item>ARV MEDICINE CHANGE</item>
+        <item>ARV MEDS MISSED</item>
+        <item>ARV OTHER1 DISCONTINUATION1</item>
+        <item>ARV OTHER1 DISCONTINUATION2</item>
+        <item>ARV OTHER1 SIG</item>
+        <item>ARV OTHER2 DISCONTINUATION1</item>
+        <item>ARV OTHER2 DISCONTINUATION2</item>
+        <item>ARV OTHER2 RECOMMENDATION</item>
+        <item>ARV OTHER2 SIG</item>
+        <item>ARV OTHER2 SPECIFY</item>
+        <item>ARV OTHER2 START STOP DATE</item>
+        <item>ARV PLAN</item>
+        <item>ARV PRESCRIBED</item>
+        <item>ARV PREVIOUSLY ELIGIBLE</item>
+        <item>ARV PREVIOUSLY ELIGIBLE DESC</item>
+        <item>ARV START DATE</item>
+        <item>ARVS</item>
+        <item>Arythmie</item>
+        <item>As and when required</item>
+        <item>ASA</item>
+        <item>Ascariasis</item>
+        <item>ASCITES</item>
+        <item>Ascitic fluid</item>
+        <item>ASCORIL</item>
+        <item>ASCORIL SYRUP</item>
+        <item>Ascriptin Enteric</item>
+        <item>Asetilsalisilat sodium</item>
+        <item>Asid</item>
+        <item>Asima</item>
+        <item>asma</item>
+        <item>asma con estado de mal asmático</item>
+        <item>ASPARTATE AMINOTRANSFERASE</item>
+        <item>Aspergum</item>
+        <item>Aspergum Cherry</item>
+        <item>Aspergum Orginal</item>
+        <item>Aspir-Low</item>
+        <item>Aspir-trin</item>
+        <item>ASPIRIN</item>
+        <item>Aspirin Child</item>
+        <item>Aspirin Child Chewable</item>
+        <item>Aspirin Litecoat</item>
+        <item>Aspirin Lo-Dose</item>
+        <item>Aspirin Low Strength</item>
+        <item>Aspirin Tri-Buffered</item>
+        <item>Aspirin-Antacid</item>
+        <item>Aspirine</item>
+        <item>Aspirinn</item>
+        <item>Aspirtab</item>
+        <item>Aspro Clear Maximum Strength</item>
+        <item>ASSAULT NOS</item>
+        <item>AST</item>
+        <item>ASTHMA</item>
+        <item>ASTHMA EXACERBATION</item>
+        <item>ASTHMA NOS</item>
+        <item>ASTHMA RELAPSE</item>
+        <item>Asthma with status asthmaticus</item>
+        <item>ASTHMACORT</item>
+        <item>Asthme</item>
+        <item>Asthme grave aigu</item>
+        <item>Astramorph PF</item>
+        <item>ASYMMETRIC REFLEXES</item>
+        <item>ASYMPTOMATIC</item>
+        <item>ASYMPTOMATIC HIV INFECTION</item>
+        <item>AT BEDTIME</item>
+        <item>ATAXIA</item>
+        <item>ATT DEFAULT ATTACHMENT</item>
+        <item>ATT IMAGE ATTACHMENT</item>
+        <item>ATTENDED SCHOOL EVER</item>
+        <item>ATYPICAL LYMPHOCYTE (%)</item>
+        <item>AUDIT-3 OVERALL FREQUENCY</item>
+        <item>AUDIT-3 SIX OR MORE DRINKS</item>
+        <item>AUDIT-3 TYPICAL DAY</item>
+        <item>AUGMENTIN</item>
+        <item>AUGMENTIN DUO</item>
+        <item>AUGMENTIN SYRUP</item>
+        <item>AUGMENTIN TAB</item>
+        <item>AUNT</item>
+        <item>Autre et non codé</item>
+        <item>AVELOX</item>
+        <item>Avinza</item>
+        <!--<item>Avortement-spontané (fausse-couche)</item>-->
+        <item>avòtman espontane</item>
+        <item>AWAITING ASSIGNMENT</item>
+        <item>AXILLA</item>
+        <item>AXILLARY</item>
+        <item>AZINORM</item>
+        <item>AZINORM C</item>
+        <item>AZITHROMYCIN</item>
+        <item>AZT</item>
+        <item>AZT DISCONTINUATION1 TODAY</item>
+        <item>AZT DISCONTINUATION2 TODAY</item>
+        <item>AZT RECOMMENDATION</item>
+        <item>AZT SIG</item>
+        <item>AZT START STOP DATE</item>
+        <item>B</item>
+        <item>B NEGATIVE</item>
+        <item>B POSITIVE</item>
+        <item>B+</item>
+        <item>B-</item>
+        <item>BACILLE CAMILE-GUERIN VACCINATION</item>
+        <item>BACK</item>
+        <item>BACK PAIN</item>
+        <item>BACKACHE</item>
+        <item>BACTERIA</item>
+        <item>Bacterial diarrhea</item>
+        <item>Bacterial foodborne intoxication</item>
+        <item>Bacterial Gastroenteritis</item>
+        <item>Bacterial Infection</item>
+        <item>BACTERIAL MENINGITIS</item>
+        <item>bacteriële voedselvergiftiging</item>
+        <item>bacteriologisch en histologisch bevestigde primaire respiratoire tuberculose</item>
+        <item>Bag</item>
+        <!--<item>Bag(s)</item>-->
+        <!--<item>BALENO EZ (CAP)</item>-->
+        <item>BALENO EZ CAP</item>
+        <item>BANDS</item>
+        <item>BANDS (%) MICROSCOPIC EXAM</item>
+        <item>BANOCIDE 100MG</item>
+        <item>BANOCIDE 50MG</item>
+        <item>Bar</item>
+        <item>Bar(s)</item>
+        <!--<item>BARTHOLIN'S ABSCESS</item>
+        <item>BARTHOLIN'S GLAND ABSCESS</item>-->
+        <item>BARTHOLINS ABSCESS</item>
+        <item>BASCOPAN</item>
+        <item>based on requirement</item>
+        <item>BASOPHILS</item>
+        <item>BASOPHILS (%) - MICROSCOPIC EXAM</item>
+        <item>BASOS</item>
+        <item>Batman kè</item>
+        <item>Bayer Aspirin</item>
+        <item>Bayer Aspirin with Calcium</item>
+        <item>Bayer Childrens Aspirin</item>
+        <item>Bayer Low Strength</item>
+        <item>Bayer Plus</item>
+        <item>BBE</item>
+        <item>BCG</item>
+        <item>BCG VACCINE</item>
+        <item>BD</item>
+        <item>BDL</item>
+        <item>BECLOMETASONE INHALER</item>
+        <item>BECLOMETHASONE</item>
+        <item>BECLOMETHASONE INHALER</item>
+        <item>BECONASE</item>
+        <item>Bee stings</item>
+        <item>Bee venom</item>
+        <item>Beef</item>
+        <item>Behavior disorders not due to alcohol and drugs</item>
+        <item>BENADRYL</item>
+        <item>Bệnh lây truyền qua đường tình dục</item>
+        <item>Bệnh sốt rét</item>
+        <item>Bệnh tả do Vibrio cholerae</item>
+        <item>Bệnh thiếu máu</item>
+        <item>BENYLINE SYRUP</item>
+        <item>BENYLINE SYRUP</item>
+        <item>BENZYL BENZOATE EMULSION</item>
+        <item>BETADINE</item>
+        <item>BETAMETHASONE</item>
+        <item>BEYOND DETECTABLE LIMIT</item>
+        <item>BICARBONATE</item>
+        <item>BICEPS</item>
+        <item>BICEPS REFLEX</item>
+        <item>BID</item>
+        <item>BIDAC</item>
+        <item>BIDNAC</item>
+        <item>BIDPC</item>
+        <item>BIDWM</item>
+        <item>BIFONAZOLE</item>
+        <item>Bikomere byumubiri</item>
+        <item>Bilateral ear administration</item>
+        <item>Bilateral eye administration</item>
+        <item>BILHARZIA</item>
+        <item>Bilharziasis</item>
+        <item>BILI</item>
+        <item>BILIARY TRACT DISEASE NOS</item>
+        <item>BILIARY TRACT DISEASE NOT OTHERWISE SPECIFIED</item>
+        <item>BILIARY TRACT DISEASE, GALLSTONES</item>
+        <item>BILIRUBIN</item>
+        <item>Bịnh phong cùi</item>
+        <item>Bịnh đau mắt hột</item>
+        <item>BIRTH CONTROL PILLS</item>
+        <item>BIRTH DATE</item>
+        <item>BIRTH DAY</item>
+        <item>BIRTH MONTH</item>
+        <item>BIRTH WEIGHT</item>
+        <item>BIRTH YEAR</item>
+        <item>Biscuit wafer</item>
+        <item>BITE, ANIMAL</item>
+        <item>BITE, DOG</item>
+        <item>BITE, HUMAN</item>
+        <item>Ble</item>
+        <item>Bleeding</item>
+        <item>Bleeding from pulmonary tract</item>
+        <item>Bleeding from respiratory system</item>
+        <item>BLOOD GROUP</item>
+        <item>BLOOD GROUP AND RH</item>
+        <item>BLOOD OXYGEN SATURATION</item>
+        <item>BLOOD PLATELET</item>
+        <item>BLOOD SUGAR</item>
+        <item>BLOOD SUGAR: F AND PP</item>
+        <item>BLOOD TRANSFUSION</item>
+        <item>BLOOD TYPING</item>
+        <item>BLOOD UREA NITROGEN</item>
+        <item>BLOODY</item>
+        <item>Bloody diarrhea</item>
+        <item>BLOODY URINE</item>
+        <item>Bloody urine</item>
+        <item>blozen</item>
+        <item>BMI</item>
+        <item>BODY MASS INDEX</item>
+        <item>BODY SURFACE AREA</item>
+        <item>Boeuf</item>
+        <item>Bolus</item>
+        <!--<item>Bolus(es)</item>-->
+        <item>Bỏng</item>
+        <item>Both ear administration</item>
+        <item>Both eye administration</item>
+        <item>Bottle</item>
+        <!--<item>Bottle(s)</item>-->
+        <item>Box</item>
+        <!--<item>Box(es)</item>-->
+        <item>BREASTFED EXCLUSIVELY</item>
+        <item>BREASTFED OTHERFOOD FU</item>
+        <item>BREASTFED PREDOMINATELY</item>
+        <item>BREASTFEEDING</item>
+        <item>BREASTFEEDING EX</item>
+        <item>BREASTFEEDING PRESSURE</item>
+        <item>breaths per minute</item>
+        <item>BREECH</item>
+        <item>BREECH BIRTH</item>
+        <item>BREECH PRESENTATION</item>
+        <item>BRONCHIAL BREATH SOUND LOCATION</item>
+        <item>BRONCHIAL BREATH SOUNDS</item>
+        <item>BRONCHITIS</item>
+        <item>BRONCHITIS, ACUTE</item>
+        <item>BRONCHITIS, RECURRENT</item>
+        <item>BRONCHOPNEUMONIA</item>
+        <item>BRONCHOSPASM</item>
+        <item>Bronchospasme</item>
+        <item>Bronkospasm</item>
+        <item>BRUCELLA TEST</item>
+        <item>BRUCELLOSIS</item>
+        <item>BRUFEN</item>
+        <item>BRUFEN 200MG</item>
+        <item>BRUFEN 400MG</item>
+        <item>BRUFEN 600MG</item>
+        <item>BRUFEN SYRUP</item>
+        <item>BRUISE</item>
+        <item>BRUISES MULTIPLE</item>
+        <item>BRUIT CAROTID</item>
+        <item>Brûlure</item>
+        <item>BS FOR MPS</item>
+        <item>BSA</item>
+        <item>Bufferin</item>
+        <item>Bufferin Arthritis Strength</item>
+        <item>Bufferin Extra Strength</item>
+        <item>Buffex</item>
+        <item>BUN</item>
+        <item>BURN</item>
+        <item>Burn</item>
+        <item>BURN NOS</item>
+        <item>Burn unspecified</item>
+        <item>BURNING SENSATION</item>
+        <item>BURNT FOREST</item>
+        <item>BUSCOPAN</item>
+        <item>By mouth</item>
+        <item>C DOM</item>
+        <item>C-DOM</item>
+        <item>C-SECTION</item>
+        <item>CADIPHEN SYRUP</item>
+        <item>CADOLAC 10MG</item>
+        <item>Cafcit</item>
+        <item>Caféine</item>
+        <item>Caffedrine</item>
+        <item>Caffeine</item>
+        <item>CALAMINE LOTION</item>
+        <item>CALCIUM HEPARIN</item>
+        <item>CALCIUM OXALATE CRYSTALS</item>
+        <item>CALF, MEDIAL</item>
+        <item>CALPOL</item>
+        <item>CALPOL 500MG</item>
+        <item>CALPOL 650MG</item>
+        <item>CALPOL PLUS</item>
+        <item>CAMOQUIN</item>
+        <item>Can</item>
+        <!--<item>Can(s)</item>-->
+        <item>CANDID B CREAM</item>
+        <item>CANDID MOUTH PAINT</item>
+        <item>CANDIDIASIS</item>
+        <item>CANDIDIASIS OF OSEOPHAGUS, TRACHEA AND/OR BRONCHUS</item>
+        <item>CANDIDIASIS ORAL</item>
+        <item>CANDIDIASIS, ORAL</item>
+        <item>CANDIDIASIS, VAGINAL</item>
+        <item>Candidose</item>
+        <item>CANNOT AFFORD TREATMENT</item>
+        <item>Cap</item>
+        <!--<item>Cap(s)</item>-->
+        <item>Caprin</item>
+        <item>Capsule</item>
+        <item>CARBAMAZEPINE</item>
+        <item>Cardiac arrhythmia</item>
+        <item>Cardiac Dysrhythmia</item>
+        <item>CARDIAC EXAM FINDINGS</item>
+        <item>CARDIAC MURMUR</item>
+        <item>CARDIOMEGALY</item>
+        <item>CARDIOMYOPATHY</item>
+        <item>cardiopatía hipertensiva</item>
+        <item>Cardiovascular system diagnoses</item>
+        <item>CARIE DENTAIRE</item>
+        <item>caries dental</item>
+        <item>caries dentales</item>
+        <item>Cartridge</item>
+        <item>Cartridge(s)</item>
+        <item>CATARACT</item>
+        <item>CAUSE OF DEATH</item>
+        <item>CAVITARY LESION</item>
+        <item>CAVITIES</item>
+        <item>CAVITY</item>
+        <item>CBC</item>
+        <item>CBC: HB/WBC/RBC PLATELET</item>
+        <item>CD3</item>
+        <item>CD3 COUNT</item>
+        <item>CD3 PERCENT</item>
+        <item>CD3%</item>
+        <item>CD3+%LYMPH</item>
+        <item>CD3+ABS CNT</item>
+        <item>CD3+CD4+%LYMPH</item>
+        <item>CD3+CD4+ABS CNT</item>
+        <item>CD3+CD8+%LYMPH</item>
+        <item>CD3+CD8+ABS CNT</item>
+        <item>CD4</item>
+        <item>CD4 COUNT</item>
+        <item>CD4 COUNT GREATER THAN 15%</item>
+        <item>CD4 COUNT GREATER THAN 200</item>
+        <item>CD4 DATE</item>
+        <item>CD4 PANEL</item>
+        <item>CD4 PERCENT</item>
+        <item>CD4 PERCENT</item>
+        <item>CD4%</item>
+        <item>CD4/CD8</item>
+        <item>CD4/CD8 RATIO</item>
+        <item>CD45+ABS CNT</item>
+        <item>CD8</item>
+        <item>CD8 COUNT</item>
+        <item>CD8%</item>
+        <item>CDC CATEGORY A</item>
+        <item>CDC CATEGORY B</item>
+        <item>CDC CATEGORY C</item>
+        <item>CDC COMMENT</item>
+        <item>cefalea</item>
+        <item>CEFINAR 100MG</item>
+        <item>CEFINAR 200MG</item>
+        <item>CEFIXIME</item>
+        <item>CEFSPAN 100MG</item>
+        <item>CEFSPAN 200MG</item>
+        <item>CEFTIN</item>
+        <item>CEFTRIAXONE</item>
+        <item>CEFTUM 125MG</item>
+        <item>CEFTUM 250MG</item>
+        <item>CEFTUM 500MG</item>
+        <item>CEFUROXIME</item>
+        <item>CELEBRAL PALSY</item>
+        <item>CELEBREX</item>
+        <item>CELECOXIB</item>
+        <item>CELESTAMINE</item>
+        <item>CELITOL SYRUP 50MG</item>
+        <item>CELLULITIS</item>
+        <item>CENTWIN</item>
+        <item>CENTWIN TAB SUS</item>
+        <item>CENTWIN-TAB/SUS</item>
+        <item>CÉPHALÉE</item>
+        <item>Cephalosporin drug class</item>
+        <item>Céphalosporines</item>
+        <item>Cephalosporins</item>
+        <item>CEREBRAL PALSY</item>
+        <item>Cerebrospinal fluid</item>
+        <item>Certitude de diagnostic</item>
+        <item>CERUMEN IMPACTION</item>
+        <item>CERUMEN IMPACTION</item>
+        <item>CERVICAL</item>
+        <item>CERVICAL CAP</item>
+        <item>CERVICAL LAN</item>
+        <item>CERVICAL LYMPHADENOPATHY</item>
+        <item>CERVICAL NODES</item>
+        <item>CERVICAL SPINE X-RAY PA AND LATERAL VIEW</item>
+        <item>CESAREAN SECTION</item>
+        <item>CETIL 125MG</item>
+        <item>CETIL 250MG</item>
+        <item>CETIL 500MG</item>
+        <item>CETIRIZINE</item>
+        <item>CHALAZION</item>
+        <item>Chấn thương đầu bề mặt</item>
+        <item>CHANCRE MOU</item>
+        <item>Chancroid</item>
+        <item>chancroide</item>
+        <item>CHANGE FORMULATION</item>
+        <item>CHANGE REGIMEN</item>
+        <item>Chanjman eta mantal</item>
+        <item>Chank mou</item>
+        <!--<item>CHARGE TO PATIENT (KSH)</item>-->
+        <item>CHEM7</item>
+        <item>CHEST</item>
+        <item>CHEST COMMENT</item>
+        <item>CHEST EXAM FINDINGS</item>
+        <item>CHEST EXPANSION DECREASED</item>
+        <item>CHEST EXPANSION INCREASED</item>
+        <item>CHEST PAIN</item>
+        <item>CHEST PAIN DURATION</item>
+        <item>CHEST PAIN LOCATION</item>
+        <item>CHEST PAIN QUALITY</item>
+        <item>CHEST X-RAY PA VIEW</item>
+        <item>CHEST XRAY</item>
+        <item>CHICKEN POX</item>
+        <item>CHIEF COMPLAINT</item>
+        <item>CHIEF COMPLAINT COMMENT</item>
+        <item>Child ASA</item>
+        <item>Child Aspirin</item>
+        <item>CHILD ATTENDED SCHOOL</item>
+        <item>CHILD AZT DOSE</item>
+        <item>CHILD AZT TX WEEKS</item>
+        <item>CHILD BREAST FED IN PAST</item>
+        <item>CHILD FED OTHER FOOD</item>
+        <item>CHILD NVP DOSE</item>
+        <item>CHILD NVP TX WEEKS</item>
+        <item>CHILD OF HIV PATIENT IN CLINIC</item>
+        <item>CHILD OTHER DESC</item>
+        <item>CHILD OTHER DOSE</item>
+        <item>CHILD OTHER TX WEEKS</item>
+        <item>CHILD3 TC DOSE</item>
+        <item>CHILD3 TC TX WEEKS</item>
+        <item>CHILDBED FEVER</item>
+        <item>CHILDREN BETWEEN5 AND14</item>
+        <item>CHILDS CURRENT HIV STATUS</item>
+        <item>CHILLS</item>
+        <item>CHLAMYDIA PCR</item>
+        <item>CHLAMYDIA PCR QUAL</item>
+        <item>CHLAMYDIA TRACHOMATIS POLYMERASE CHAIN REACTION</item>
+        <item>CHLAMYDIA TRACHOMATIS POLYMERASE CHAIN REACTION, QUALITATIVE</item>
+        <item>CHLORAMPHENICOL</item>
+        <item>CHLORAMPHENICOL DROPS</item>
+        <item>CHLORAMPHENICOL INJECTION</item>
+        <item>CHLORIDE</item>
+        <item>CHLOROQUINE</item>
+        <item>CHLORPHENAMINE</item>
+        <item>CHLORPHENIRAMINE</item>
+        <item>CHLORPROMAZINE</item>
+        <item>CHLORPROPRAMIDE</item>
+        <item>Choc</item>
+        <item>Chocolat</item>
+        <item>Chocolate</item>
+        <item>Chòk</item>
+        <item>Chokola</item>
+        <item>CHOL</item>
+        <item>CHOLECYSTITIS</item>
+        <item>CHOLERA</item>
+        <item>Cholera</item>
+        <item>Choléra à Vibrio cholerae</item>
+        <item>Cholera due to Vibrio Cholerae</item>
+        <item>CHOLESTEROL</item>
+        <item>choque</item>
+        <item>CHRONIC DIARRHEA</item>
+        <item>CHRONIC DIARRHOEA</item>
+        <item>CHRONIC DIARRHOEA</item>
+        <item>Chronic intractable pain</item>
+        <item>CHRONIC OBSTRUCTIVE PULMONARY DISEASE</item>
+        <item>Chronic Viral Hepatitis</item>
+        <item>chronische onbehandelbare pijn</item>
+        <item>chronische virale hepatitis</item>
+        <item>churuwa</item>
+        <item>CIDO</item>
+        <item>CIFRAN 100MG</item>
+        <item>CIFRAN 250MG</item>
+        <item>CIFRAN 500MG</item>
+        <item>CIFRAN 750MG</item>
+        <item>CINZAN</item>
+        <item>CIPGEN 250MG</item>
+        <item>CIPGEN 500MG</item>
+        <item>CIPLOX 100MG</item>
+        <item>CIPLOX 250MG</item>
+        <item>CIPLOX 750MG</item>
+        <item>CIPRO</item>
+        <item>CIPROFLOXACIN</item>
+        <item>CIRCONFÉRENCE DU HAUT DU BRAS</item>
+        <item>Circulatory collapse</item>
+        <item>CIRCULATORY DISEASE</item>
+        <item>cistitis</item>
+        <item>CIVIL STATUS</item>
+        <item>CK</item>
+        <item>CL</item>
+        <item>CLAP</item>
+        <item>Claradin</item>
+        <item>CLARITIN</item>
+        <item>CLEAN AND DRESSING</item>
+        <item>CLINIC</item>
+        <item>CLINIC TRAVEL TIME</item>
+        <item>CLINICAL</item>
+        <item>CLINICAL MALARIA</item>
+        <item>CLINICAL OFFICER</item>
+        <item>CLOTRIMAZOLE</item>
+        <item>CLOTRIMAZOLE CREAM</item>
+        <item>CLOTRIMAZOLE PESSARIES</item>
+        <item>CLOXACILLIN</item>
+        <item>CLOXACILLIN SYRUP</item>
+        <item>CLOXACILLIN TABS</item>
+        <item>CLUBBING</item>
+        <item>CO-TRIMOXAZOLE</item>
+        <item>CO2</item>
+        <item>COAGULATION PROFILE (PT/APTT)</item>
+        <item>Coated Aspirin</item>
+        <item>Coded diagnoses for problem list</item>
+        <item>Codeine</item>
+        <item>cólera</item>
+        <item>COLIRID</item>
+        <item>COLLES FRACTURE</item>
+        <item>COLOSPA</item>
+        <item>COLOSPA 135MG</item>
+        <item>COLPITIS</item>
+        <item>COMBIVIR</item>
+        <item>Comments</item>
+        <item>COMMON COLD</item>
+        <item>COMPLETE BLOOD COUNT</item>
+        <item>COMPLETED</item>
+        <item>COMPLETED TOTAL PMTCT</item>
+        <item>Complex Image AD</item>
+        <item>Complex Image PE</item>
+        <item>COMPLIANCE IMPRESSION</item>
+        <item>complicación del puerperio</item>
+        <item>Complication of puerperium</item>
+        <item>COMPRIMÉ</item>
+        <item>COMPUTED TOMOGRAPHY SCAN, HEAD</item>
+        <item>CONDOMS</item>
+        <item>Condyloma</item>
+        <item>Confirmé</item>
+        <item>Confirmed</item>
+        <item>Confirmed diagnosis</item>
+        <item>Confirmed malaria with minor digestive symptoms, pregnant</item>
+        <item>Confirmed malaria with pregnancy</item>
+        <item>CONFUSION</item>
+        <item>CONGENITAL ABNORMALITY</item>
+        <item>CONGENITAL ANOMALIES</item>
+        <item>CONGENITAL DISORDERS</item>
+        <item>congenitale polydactylie</item>
+        <item>congenitale spina bifida</item>
+        <item>CONGESTION</item>
+        <item>Conjonctivite néonatale</item>
+        <item>CONJONCTIVITE VIRALE</item>
+        <item>CONJUCTIVA INJECTED</item>
+        <item>CONJUNCTIVA PALE</item>
+        <item>CONJUNCTIVAE PALE</item>
+        <item>CONJUNCTIVITIS</item>
+        <item>Conjunctivitis of newborn</item>
+        <item>CONJUNCTIVITIS, ALLERGIC</item>
+        <item>conjuntivitis neonatal</item>
+        <item>conjuntivitis viral</item>
+        <item>CONSTIPATION</item>
+        <item>CONSULTANT</item>
+        <item>Container</item>
+        <item>Container(s)</item>
+        <item>CONTAMINATED NEEDLE STICK</item>
+        <item>CONTINUATION</item>
+        <item>Continue</item>
+        <item>CONTINUE REGIMEN</item>
+        <item>Continue until further consultation</item>
+        <item>CONTINUOUS</item>
+        <item>convulsies van de pasgeborene</item>
+        <item>CONVULSION</item>
+        <item>convulsiones en el recién nacido</item>
+        <item>Convulsions</item>
+        <item>Convulsions du nouveau-né</item>
+        <item>Convulsions in the newborn</item>
+        <item>COPD</item>
+        <item>Coquillages</item>
+        <item>CORYZA</item>
+        <item>COSCOF SYRUP</item>
+        <item>COTRIMAZOLE CREAM</item>
+        <item>COTRIMOXAZOLE</item>
+        <item>COTRIMOXAZOLE COMMENT</item>
+        <item>COTRIMOXAZOLE CURRENT</item>
+        <item>COTRIMOXAZOLE DISCONTINUATION1 TODAY</item>
+        <item>COTRIMOXAZOLE DISCONTINUATION2 TODAY</item>
+        <item>COTRIMOXAZOLE RECOMMENDATION</item>
+        <item>COTRIMOXAZOLE SIG</item>
+        <item>COTRIMOXAZOLE START STOP DATE</item>
+        <item>COUGH</item>
+        <item>COUGH DURATION</item>
+        <item>Cough Linctus</item>
+        <item>COW MILK</item>
+        <item>CPK</item>
+        <item>CR</item>
+        <item>CR XNORMAL</item>
+        <item>CR XREADING</item>
+        <item>CRANIAL NERVE ABN</item>
+        <item>CRANIAL NERVE ABNORMALITIES</item>
+        <item>CREATINE KINASE</item>
+        <item>CREATININE</item>
+        <item>CREATININE PHOSPHOKINASE</item>
+        <item>CREPITATIONS</item>
+        <item>CREPITATIONS LINGULA</item>
+        <item>CREPITATIONS LINGULAR</item>
+        <item>CREPITATIONS LLL</item>
+        <item>CREPITATIONS LOCATION</item>
+        <item>CREPITATIONS LUL</item>
+        <item>CREPITATIONS RLL</item>
+        <item>CREPITATIONS RML</item>
+        <item>CREPITATIONS RUL</item>
+        <item>CRIT</item>
+        <item>CRIXAVAN</item>
+        <item>CROCIN 500MG SUS</item>
+        <item>CROCIN 650MG SUS</item>
+        <item>CRYPTOCOCCAL MENINGITIS</item>
+        <item>CRYPTOCOCCAL TREATMENT PLAN</item>
+        <item>CRYPTOCOCCOSIS</item>
+        <item>CRYPTOCOCCUS TREATMENT ADHERENCE IN PAST WEEK</item>
+        <item>CRYPTOCOSSUS TREATMENT STARTED</item>
+        <item>CRYSTAPEN INJECTION</item>
+        <item>CSF</item>
+        <item>CSF (cerebrospinal fluid)</item>
+        <item>CT PCR</item>
+        <item>CT PCR QUAL</item>
+        <item>CT QUAL</item>
+        <item>CTD Aspirin</item>
+        <item>CURRENT ANTIRETROVIRAL DRUGS USED FOR TRANSMISSION PROPHYLAXIS</item>
+        <item>CURRENT ANTIRETROVIRAL DRUGS USED FOR TREATMENT</item>
+        <item>CURRENT ARV</item>
+        <item>CURRENT ARV THERAPY</item>
+        <item>CURRENT COMPLAINT</item>
+        <item>CURRENT DRUGS USED</item>
+        <item>CURRENT MEDS</item>
+        <item>CURRENT OI</item>
+        <item>CURRENT OI THERAPY</item>
+        <item>CURRENT PAST DX VARIOUS SYMPTOMS</item>
+        <item>CURRENT TB PROPHYLAXIS</item>
+        <item>CURRENT TB TREATMENT</item>
+        <item>CURRENT TB TX</item>
+        <item>CURRENT WHO HIV STAGE</item>
+        <item>CURRENTLY BREASTFED FU</item>
+        <item>CURRENTLY BREASTFEEDING CHILD</item>
+        <item>CURRENTLY IN SCHOOL</item>
+        <item>CURRENTLY IN SCHOOL FU</item>
+        <item>CURRENTLY USING BIRTH CONTROL</item>
+        <item>CUTANEOUS ABSCESS NOT SPECIFIED</item>
+        <item>CV SPRIN 150MG</item>
+        <item>CV SPRIN 75MG</item>
+        <item>CV-SPRIN</item>
+        <item>CXR</item>
+        <item>CXR NOS</item>
+        <item>CXR PI EFF</item>
+        <item>CYANOSIS</item>
+        <item>CYCLOPAM</item>
+        <item>CYST</item>
+        <item>CYST HISTOLYTICA</item>
+        <item>CYST NOS</item>
+        <item>Cystite</item>
+        <item>Cystitis</item>
+        <item>D4T</item>
+        <item>Daily</item>
+        <item>DAILY OR ALMOST DAILY</item>
+        <item>Dairy food</item>
+        <item>Dairy product</item>
+        <item>Dairy products</item>
+        <item>DAKTARIN</item>
+        <item>DAKTARIN ORAL GEL</item>
+        <item>DALACIN C 150MG</item>
+        <item>DALACIN C 300MG</item>
+        <item>DALCINEX 150MG</item>
+        <item>DALCINEX 300MG</item>
+        <item>DAPSONE</item>
+        <item>DAPSONE COMMENT</item>
+        <item>DAPSONE CURRENT</item>
+        <item>DAPSONE DISCONTINUATION1 TODAY</item>
+        <item>DAPSONE DISCONTINUATION2 TODAY</item>
+        <item>DAPSONE RECOMMENDATION</item>
+        <item>DAPSONE SIG</item>
+        <item>DAPSONE START STOP DATE</item>
+        <item>DARVOCET</item>
+        <item>DATE</item>
+        <item>Date du diagnostic</item>
+        <item>DATE OF CONFINEMENT</item>
+        <item>DATE OF DELIVERY</item>
+        <item>dawa ya kitibu kichwa</item>
+        <item>dawa ya kupunguza maumivu</item>
+        <item>DAYS</item>
+        <item>DBILI</item>
+        <item>DBP</item>
+        <item>DC DATE</item>
+        <item>DDI</item>
+        <item>DDI-125</item>
+        <item>DDI-200</item>
+        <item>DEATH</item>
+        <item>DEATH DATE</item>
+        <item>DEATHCODE</item>
+        <item>DECREASED FREMITUS</item>
+        <item>DECREASED SENSATION</item>
+        <item>DECREASED SENSATION DIFFUSE</item>
+        <item>DECREASED SENSATION LLE</item>
+        <item>DECREASED SENSATION RLE</item>
+        <item>DECREASED SENSATION RUE</item>
+        <item>Decubitus loét</item>
+        <item>Decubitus Ulcer</item>
+        <item>DEEP HEAT</item>
+        <item>DEEP VENOUS THROMBOSIS</item>
+        <item>DEEP WOUND</item>
+        <item>DEHYDRATION</item>
+        <item>DELAYED MILESTONES</item>
+        <item>DELIVERY DAY</item>
+        <item>DELIVERY MO</item>
+        <item>DELIVERY YR</item>
+        <item>Démangeaisons</item>
+        <item>DEMENTED</item>
+        <item>DEMENTIA</item>
+        <item>DEMENTIA PRAECOX</item>
+        <item>DEMENTIA, SENILE</item>
+        <item>Demerol</item>
+        <item>DENGUE</item>
+        <item>DENTAL CARIES</item>
+        <item>Dental caries</item>
+        <item>Dental diagnoses</item>
+        <item>DENTAL DISORDERS</item>
+        <item>Dènye dyagnostik</item>
+        <item>DEPO PROVERA</item>
+        <item>DEPO-PROVERA</item>
+        <item>Depodur</item>
+        <item>DEPOPROVERA</item>
+        <item>DEPRESSED</item>
+        <item>DEPRESSION</item>
+        <item>DEPRESSIVE EPISODE</item>
+        <item>Depresyon</item>
+        <item>DERMATITIS</item>
+        <item>DERMATITIS NOS</item>
+        <item>DERMATITIS, ALLERGIC</item>
+        <item>dermatofitosis</item>
+        <item>Dermatological diagnoses</item>
+        <item>Dermatomycosis</item>
+        <item>Dermatosis</item>
+        <item>DERMAZINE CREAM</item>
+        <item>Des fraises</item>
+        <item>Desconocida</item>
+        <item>Desconocido</item>
+        <item>DETECTED</item>
+        <item>DEVELOPMENT</item>
+        <item>DEVELOPMENT COMMENT</item>
+        <item>DEVELOPMENT MILESTONES</item>
+        <item>DEVELOPMENTAL EXAM FINDINGS</item>
+        <item>DEVIATED TRACHEA</item>
+        <item>DEWORMIS 150MG</item>
+        <item>DEWORMIS 50MG</item>
+        <item>DEXTROMETHORPHAN</item>
+        <item>Dezyèm</item>
+        <item>DF118</item>
+        <item>DI</item>
+        <item>DIABENESE</item>
+        <item>Diabete</item>
+        <item>Diabète mellitus</item>
+        <item>Diabète sucré non insulino-dépendant (Type 2)</item>
+        <item>Diabetes</item>
+        <item>DIABETES INSIPIDUS</item>
+        <item>Diabetes Mellitus</item>
+        <item>diabetes mellitus no dependiente de insulina</item>
+        <item>diabetes mellitus type II</item>
+        <item>Diabetes Mellitus, Type II</item>
+        <item>DIAGNOSIS ADDED</item>
+        <item>Diagnosis certainty</item>
+        <item>Diagnosis date</item>
+        <item>DIAGNOSIS LIST</item>
+        <item>Diagnosis or problem, non-coded</item>
+        <item>Diagnosis order</item>
+        <item>DIAGNOSIS RESOLVED</item>
+        <item>Diagnostic confirmé</item>
+        <item>Diagnostic final</item>
+        <item>Diagnostic ou problème, non codés</item>
+        <item>Diagnostic probable</item>
+        <item>Diagnostic provisoire</item>
+        <item>DIALOX</item>
+        <item>DIAPHRAGM</item>
+        <item>diarrea</item>
+        <item>diarrea crónica</item>
+        <item>diarrea hemorrágica</item>
+        <item>DIARRHEA</item>
+        <item>DIARRHEA AND GASTROENTERITIS OF PRESUMED INFECTIOUS ORIGIN</item>
+        <item>DIARRHEA CONTINUOUS</item>
+        <item>DIARRHEA DURATION</item>
+        <item>DIARRHEA NOS</item>
+        <item>DIARRHEA, AMOEBIASIS</item>
+        <item>diarrhea, bacterial</item>
+        <item>DIARRHEA, CHOLERA</item>
+        <item>Diarrhea, chronic</item>
+        <item>DIARRHÉE</item>
+        <item>DIARRHÉE CHRONIQUE</item>
+        <item>DIARRHÉE HÉMORRAGIQUE</item>
+        <item>DIARRHÉE, BACTÉRIENNE</item>
+        <item>DIARRHÉE, SANGLANTE</item>
+        <item>DIARRHOEA</item>
+        <item>DIARRHOEA AND GASTROENTERITIS OF PRESUMED INFECTIOUS ORIGIN</item>
+        <item>Dias</item>
+        <item>DIASTOLIC</item>
+        <item>DIASTOLIC BLOOD PRESSURE</item>
+        <item>DIASTOLIC DESCRESENDO MURMUR</item>
+        <item>DIASTOLIC RUMBLE</item>
+        <item>DIAZEPAM</item>
+        <item>DICLOFENAC</item>
+        <item>DICLONAC GEL</item>
+        <item>DICLOVAR CZ</item>
+        <item>DICTIONARY ID</item>
+        <item>DIDANOSINE</item>
+        <item>DIDANOSINE ARV</item>
+        <item>DIDANOSINE COMMENT</item>
+        <item>DIDANOSINE DISCONTINUATION1</item>
+        <item>DIDANOSINE DISCONTINUATION1 TODAY</item>
+        <item>DIDANOSINE DISCONTINUATION2</item>
+        <item>DIDANOSINE DISCONTINUATION2 TODAY</item>
+        <item>DIDANOSINE DISCONTINUED</item>
+        <item>DIDANOSINE PAST</item>
+        <item>DIDANOSINE PRESENT</item>
+        <item>DIDANOSINE RECOMMENDATION</item>
+        <item>DIDANOSINE SIG</item>
+        <item>DIDANOSINE START CONTINUE</item>
+        <item>DIDANOSINE START DATE</item>
+        <item>DIDANOSINE START STOP DATE</item>
+        <item>DIDANOSINE STOP DATE</item>
+        <item>DIDANOSINEP MTCT</item>
+        <item>DIFF</item>
+        <item>DIFFERENTIAL</item>
+        <item>DIFFICULTY BREATHING</item>
+        <item>Difficulty swallowing</item>
+        <item>DIFFUSE</item>
+        <item>DIFFUSE GOITER</item>
+        <item>DIFFUSE NON-MILIARY CHANGES</item>
+        <item>DIFLUCAN</item>
+        <item>Digestive system diagnoses</item>
+        <item>DIHYDROCODEINE</item>
+        <item>DILANTIN</item>
+        <item>DILIGAN</item>
+        <item>DIMINISHED BREATH SOUNDS</item>
+        <item>DIPHENHYDRAMINE</item>
+        <item>DIPHENYLHYDANTOIN</item>
+        <item>DIPLOCOCCI</item>
+        <item>DIPROSALIC CREAM</item>
+        <item>DIPTHERIA TETANUS AND PERTUSSIS VACCINATION</item>
+        <item>DIPTHERIA TETANUS BOOSTER</item>
+        <item>DIRECT BILIRUBIN</item>
+        <item>DISCLOSURE COUNSELING</item>
+        <item>DISCORDANT COUPLE</item>
+        <item>DISCORDED COUPLE</item>
+        <item>DISEASE OF BLOOD AND BLOOD FORMING ORGANS</item>
+        <item>Disease of bone and joint</item>
+        <item>DISEASE OF PUERPERIUM AND CHILDBIRTH</item>
+        <item>Disease of stomach and duodenum, other</item>
+        <item>disfagia</item>
+        <item>Disfaji</item>
+        <item>DISLOCATION</item>
+        <item>disnea</item>
+        <item>Disorder of Ear</item>
+        <item>Disorder of eye</item>
+        <item>Disorder of joint</item>
+        <item>Disorder of Metabolism</item>
+        <item>Disorder of Nervous System</item>
+        <item>Dispensing units</item>
+        <item>DISPLACED PMI</item>
+        <item>DISPLACED POINT OF MAXIMAL IMPULSE</item>
+        <item>Distoni</item>
+        <item>distonía</item>
+        <item>disuria</item>
+        <item>DIVORCED</item>
+        <item>DIVORCED/SEPARATED</item>
+        <item>DIZIRON</item>
+        <item>Dizuri</item>
+        <item>DIZZINESS</item>
+        <item>DM</item>
+        <item>DNA PCR</item>
+        <item>DO NOT DRINK ALCOHOL</item>
+        <item>DO NOT EAT RAW ONION, TOMATO, LETTUCE, OR LENTIL</item>
+        <item>DO NOT SLEEP AT NOON-ମାଧ୍ୟାନରେ ସୁଅ ନାହିଁ</item>
+        <item>DO NOT SMOKE BIDIS OR CIGARETTES</item>
+        <item>DOCTOR</item>
+        <item>DOCTOR CODE</item>
+        <item>Doctor details</item>
+        <item>DOG BITE</item>
+        <item>DOLONEX</item>
+        <item>dolor agudo</item>
+        <item>dolor crónico intratable</item>
+        <item>dolor por flatulencias, eructos y meteorismo</item>
+        <item>DOMPERIDONE</item>
+        <item>DOMPERONE</item>
+        <item>DOMSTAL</item>
+        <item>DOMSTAL CZ</item>
+        <item>DOMSTAL-CZ</item>
+        <item>Donovanosis</item>
+        <item>Dose pack</item>
+        <item>Dose pack(s)</item>
+        <item>Dose unit</item>
+        <item>DOSING CHANGE</item>
+        <item>Dosing unit</item>
+        <item>Doulè mis</item>
+        <item>Douleur chronique irréductible</item>
+        <item>Douleurs musculo-squelettiques</item>
+        <item>DOXT 100MG</item>
+        <item>DOXYCYCLINE</item>
+        <item>DPT</item>
+        <item>DPT VACCINATION</item>
+        <item>DPT VACCINATION NO.1</item>
+        <item>DPT VACCINATION NO.2</item>
+        <item>DPT VACCINATION NO.3</item>
+        <item>Drop</item>
+        <item>Drop(s)</item>
+        <item>DROPSY</item>
+        <item>Dropsy</item>
+        <item>DRUG POISONING</item>
+        <item>DRUG TOXICITY</item>
+        <item>DTAP</item>
+        <item>DULCOLAX</item>
+        <item>DULL TM</item>
+        <item>DULL TYMPANIC MEMBRANE</item>
+        <item>DULLNESS</item>
+        <item>DULLNESS TO PERCUSSION</item>
+        <item>DUODENAL ULCER</item>
+        <item>DUOSPAN</item>
+        <item>DUPHALAC</item>
+        <item>Duramorph PF</item>
+        <item>Duration units</item>
+        <item>DURÉE UNITAIRE</item>
+        <item>Duromorph</item>
+        <item>Dust</item>
+        <item>DVT</item>
+        <item>Dyagnostik konfime</item>
+        <item>Dyagnostik oswa yon pwoblèm, ki pa kode</item>
+        <item>Dyagnostik pwobab</item>
+        <item>Dyagnostik pwovizwa</item>
+        <item>Dyagnostik sètitid</item>
+        <item>Dyagnostik Vizit</item>
+        <item>Dyare</item>
+        <item>Dyare emorajik</item>
+        <item>Dyare, kwonik</item>
+        <item>DYAZIDE</item>
+        <item>DYRADE M</item>
+        <item>DYSENTERY</item>
+        <item>DYSENTRY</item>
+        <item>dysfagie</item>
+        <item>DYSMENORRHEA</item>
+        <item>DYSMENORRHOEA</item>
+        <item>DYSPEPSIA</item>
+        <item>DYSPHAGIA</item>
+        <item>Dysphagia</item>
+        <item>Dysphagie</item>
+        <item>dyspnoe</item>
+        <item>Dystonia</item>
+        <item>Dystonie</item>
+        <item>DYSURIA</item>
+        <item>Dysurie</item>
+    <item>E COLI</item>
+        <item>E HISTOLYTICA</item>
+        <item>Each</item>
+        <item>Ear diagnoses</item>
+        <item>EAR DISCHARGE</item>
+        <item>EAR DISORDERS</item>
+        <item>Easprin</item>
+        <item>EBF</item>
+        <item>ECG</item>
+        <item>ECOSPRIN</item>
+        <item>ECOSPRIN 150MG</item>
+        <item>ECOSPRIN 325MG</item>
+        <item>ECOSPRIN 75 MG</item>
+        <item>Ecotrin</item>
+        <item>Ecotrin Adult Low Strength</item>
+        <item>Ecotrin Low Strength Adult</item>
+        <item>Ecotrin Maximum Strength</item>
+        <!--<item>ÉCOULEMENT DE L'URÈTRE</item>-->
+        <item>Ecoulement urétral</item>
+        <item>ECZEMA</item>
+    <item>EDC</item>
+        <item>EDEMA</item>
+        <item>EDEMA LEFT LOWER EXTREMITY</item>
+        <item>Edema nos</item>
+        <item>EDEMA RIGHT LOWER EXTREMITY</item>
+        <item>EDEMA, LEGS</item>
+    <item>EFAVIRENZ</item>
+        <item>EFAVIRENZ ARV</item>
+        <item>EFAVIRENZ COMMENT</item>
+        <item>EFAVIRENZ DISCONTINUATION1</item>
+        <item>EFAVIRENZ DISCONTINUATION2</item>
+        <item>EFAVIRENZ DISCONTINUED</item>
+        <item>EFAVIRENZ PAST</item>
+        <item>EFAVIRENZ PRESENT</item>
+        <item>EFAVIRENZ RECOMMENDATION</item>
+        <item>EFAVIRENZ START CONTINUE</item>
+        <item>EFAVIRENZ START DATE</item>
+        <item>EFAVIRENZ START STOP DATE</item>
+        <item>EFAVIRENZ STOP DATE</item>
+        <item>EFAVIRENZP MTCT</item>
+        <item>efecto tóxico de un veneno</item>
+        <item>efectos tardíos de la enfermedad cerebrovascular</item>
+        <item>EFV</item>
+        <item>EGGS</item>
+        <item>Eggs (edible)</item>
+        <item>EGOPHONY</item>
+        <item>Ekoulman nan iret</item>
+        <item>Electrolyte or Fluid Disorder</item>
+        <item>ELECTROLYTES</item>
+        <item>elevated blood glucose</item>
+        <item>ELISA</item>
+        <item>ELYVATE CREAM</item>
+        <item>Ematuri</item>
+        <item>embarazo múltiple</item>
+        <item>emergency</item>
+        <item>EMESIS</item>
+        <item>Emoraji apre akouchman</item>
+        <item>Emowoyid</item>
+        <item>Empirin</item>
+        <item>EMPLOYED OUTSIDE HOME</item>
+        <item>EMTRI</item>
+        <item>EMTRICITABINE</item>
+        <item>EMTRIVA</item>
+        <item>ENALAPRIL</item>
+        <item>encefalocele</item>
+        <item>encefalocoele</item>
+        <item>Encephalocele</item>
+        <item>ENCEPHALOPATHY</item>
+        <item>Enema</item>
+        <item>Enema(s)</item>
+        <item>Enfeksyon irinè</item>
+        <item>enfermedad causada por la superfamilia Ancylostomatoidea</item>
+        <item>enfermedad de pulpa y tejido periapical</item>
+        <item>enfermedad infecciosa bacteriana</item>
+        <item>enfermedad infecciosa transmitida por vía sexual</item>
+        <item>enfermedad linfática no infecciosa</item>
+        <item>enfermedad metabólica</item>
+        <item>enfermedad por reflujo gastroesofágico</item>
+        <item>enfle</item>
+        <item>ENGOGEN CAPS SYR</item>
+        <item>ENGOGEN CAPS/SYR</item>
+        <item>Enkoni</item>
+        <item>ENLARGED TONSILS</item>
+        <item>ENT</item>
+        <item>ENTAMIZOLE FORTE</item>
+        <item>ENTAMOEBA HISTOLYTICA</item>
+        <item>Entaprin</item>
+        <item>Entercote</item>
+        <item>ENTERIC FEVER</item>
+        <item>Enterobiasis</item>
+        <item>ENTOMOEBA COLI</item>
+        <item>ENTROLATE</item>
+        <item>Enzyme de conversion classe des inhibiteurs de la drogue</item>
+        <item>EOS</item>
+        <item>EOSINOPHILS</item>
+        <item>EOSINOPHILS (%) - MICROSCOPIC EXAM</item>
+        <item>Eparinn</item>
+        <item>Epatotoksik</item>
+        <item>EPI CELLS</item>
+        <item>EPIGASTRIC</item>
+        <item>Epilepsi</item>
+        <item>epilepsia</item>
+        <item>epilepsie</item>
+        <item>EPILEPSY</item>
+        <item>Epileptic Seizure</item>
+        <item>EPISIOTOMY ON MOTHER</item>
+        <item>EPISTAXIS</item>
+        <item>EPITHELIAL CELLS</item>
+        <item>EPIVIR</item>
+        <item>EQUIVOCAL</item>
+        <item>ERGOTAMINE INJECTION</item>
+        <item>Eritwomisinn</item>
+        <item>Eruption cutanées</item>
+        <item>Éruption urticaire</item>
+        <item>ERYHTHEMATOUS</item>
+        <item>ERYTHEMA</item>
+        <item>ERYTHEMATOUS THROAT</item>
+        <item>ERYTHROCYTE SEDIMENTATION RATE</item>
+        <item>ERYTHROMYCIN</item>
+        <item>ERYTHROMYCIN SYRUP</item>
+        <item>Erythromycines</item>
+        <item>Erythromycins</item>
+        <item>ESCHERICHIA COLI</item>
+        <item>ESOMEPRAZOLE</item>
+        <item>ESOTRAX</item>
+        <item>ESOTRAX 20MG</item>
+        <item>ESOTRAX 40MG</item>
+        <item>ESOZ</item>
+        <item>ESOZ 20MG</item>
+        <item>ESOZ 40MG</item>
+        <item>ESOZ D</item>
+        <item>ESOZ – D</item>
+        <item>espina bífida</item>
+        <item>esquizofrenia</item>
+        <item>ESR</item>
+        <item>Essential hypertension</item>
+        <item>EST DELIVERY MO</item>
+        <item>EST DELIVERY YR</item>
+        <item>estado mental alterado</item>
+        <item>ESTIMATED DATE OF CONFINEMENT</item>
+        <item>ESTIMATED DATE OF DELIVERY</item>
+        <item>ESTIMATED DELIVERY DATE</item>
+        <item>Etat de mal asthmatique</item>
+        <item>ETHAMBUTOL</item>
+        <item>ETHAMBUTOL AND ISONIZAID</item>
+        <item>ETHAMBUTOL COMMENT</item>
+        <item>ETHAMBUTOL CURRENT</item>
+        <item>ETHIZIDE</item>
+        <item>EUBIOZ</item>
+        <item>EVENING</item>
+     <item>Every 12 hours</item>
+        <item>Every 2 hours</item>
+        <item>Every 24 hours</item>
+        <item>Every 3 hours</item>
+        <item>Every 30 min</item>
+        <item>Every 36 hours</item>
+        <item>Every 4 hours</item>
+        <item>Every 48 hours</item>
+        <item>Every 5 hours</item>
+        <item>Every 6 hours</item>
+        <item>Every 72 hours</item>
+        <item>Every 8 hours</item>
+        <item>Every eight hours</item>
+        <item>Every five hours</item>
+        <item>Every forty-eight hours</item>
+        <item>Every four hours</item>
+        <item>Every hour</item>
+        <item>Every Monday, Wednesday and Friday</item>
+        <item>Every seventy-two hours</item>
+        <item>Every six hours</item>
+        <item>Every thirty-six hours</item>
+        <item>Every three hours</item>
+        <item>Every twelve hours</item>
+        <item>Every twenty-four hours</item>
+        <item>Every two hours</item>
+        <item>EVIDENCE OF CARDIAC ENLARGEMENT</item>
+        <item>EVIDENCE OF CARDIOMEGALY</item>
+        <item>EXCLUSIVE BREASTFEEDING</item>
+        <item>Expectorations</item>
+        <item>EXPOSURE TO HIV</item>
+        <item>Extra Strength Bayer</item>
+        <item>EXTREMITIES</item>
+        <item>EXTREMITIES COMMENT</item>
+        <item>EXTREMITY</item>
+        <item>EXAM FINDINGS</item>
+        <item>EXUDATE</item>
+        <item>Eye diagnoses</item>
+        <item>EYE DISCHARGE</item>
+        <item>EYE INFECTIONS</item>
+        <item>EYE OINTMENT, TETRACYCLINE</item>
+        <item>EYE PROBLEM OTHER</item>
+    <item>FABOLIFE</item>
+        <item>FACILITY CODE</item>
+        <item>FAILURE TO THRIVE</item>
+        <item>FALSE</item>
+        <item>FALSE LABOR</item>
+        <item>Falso</item>
+        <item>Falta de aliento</item>
+        <item>FAMCICLOVIR</item>
+        <item>FAMILY HISTORY</item>
+        <item>FAMILY MEMBER ACCOMPANYING PATIENT</item>
+        <item>FAMILY MEMBER THAT ADMINISTERS MEDICATIONS</item>
+        <item>FAMILY PLANNING</item>
+        <item>FAMILY PLANNING OTHER SPEC</item>
+        <item>FAMILY PLANNING SERVICES</item>
+        <item>FAMILY PLANNING VIA CONDOMS</item>
+        <item>FAMILY PLANNING VIA ORAL CONTRACEPTIVE PILLS</item>
+        <item>FAMILY PLANNING VIA OTHER MEANS</item>
+        <item>FAMOCID</item>
+        <item>FAMVIR</item>
+        <item>FANSIDAR</item>
+        <item>FAnsidar</item>
+        <item>FANSIDAR INJECTION</item>
+        <item>FANSIDAR SYROP</item>
+        <item>FANSIDAR SYRUP</item>
+        <item>FANSIDAR SYSRUP</item>
+        <item>FAringitis aguda</item>
+        <item>FARIZYM FORTE</item>
+        <item>FASIGIN</item>
+        <item>FASIGYN</item>
+        <item>FAST BREATHING</item>
+        <item>FASTNAC</item>
+        <item>FASTNAC SR 200MG</item>
+        <item>FASTNAC-SR (200)</item>
+        <item>Fatal</item>
+        <item>FATHER AWARE OF CHILD SEROSTATUS</item>
+        <item>FATHER DECEASED</item>
+        <item>FATHER NAME</item>
+        <item>FAtig</item>
+        <item>FAtiga</item>
+        <item>FATIGUE</item>
+        <item>Faux</item>
+    </string-array>
+    <!--FEBRILE ILLNESS
+     FEBRILE ILLNESS TIME
+     Feces
+     fecha de diagnostico
+     FEED BREAST FEED
+     FEED RF
+     FEEDING CHANGED
+     FEEDING PLAN
+     Feeding problems in newborn
+     FEFOL
+     FEFOL SYRUP
+     FELCOM
+     FELDEX
+     FEMALE STERILIZATION
+     FERROUS SULFATE
+     FERROUS SULFATE AND FOLIC ACID
+     FERROUS SULPHATE
+     FERRUM B SYRUP
+     FETAL HEMOGLOBIN
+     FEVER
+     FEVER NOS
+     FEVER OF UNKNOWN ORIGIN
+     FEVER PANEL: PYREXIA OF UNKNOWN ORIGIN VIRAL/BACTERIAL/PARASITIC
+     FEW
+     FHG
+     fiebre
+     fiebre de origen desconocido
+     fiebre reumática con compromiso cardíaco
+     fiebre reumática sin compromiso cardíaco
+     Fièvre
+     Fièvre d'origine indéterminée
+     Final diagnosis
+     FIRST CHILD AGE
+     FIRST NAME
+     Fish
+     FIVE TO SIX
+     FIXX 100MG
+     FIXX 200MG
+     FIXX SYRUP 100MG
+     FIXX SYRUP 200MG
+     FLAGYL
+     FLAGYL INJECTION
+     FLAGYL SYRUP
+     FLAT WART
+     Flatulence, Eructation and Gas Pain
+     FLAVOCIP
+     flebitis y tromboflebitis
+     FLEXON MR
+     FLOX  O 200MG
+     FLOXACILLIN
+     FLUCLOXACILLIN
+     FLUCONAZOLE
+     FLUCONAZOLE COMMENT
+     FLUCONAZOLE CURRENT
+     FLUCONAZOLE DISCONTINUATION1 TODAY
+     FLUCONAZOLE DISCONTINUATION2 TODAY
+     FLUCONAZOLE RECOMMENDATION
+     FLUCONAZOLE SIG
+     FLUCONAZOLE START STOP DATE
+     Fluid ounce
+     Fluid ounce(s)
+     FLUNARIN
+     FLUPHENAZINE
+     Flushing
+     FLUXOCILLIN
+     Fo
+     FOCAL CNS
+     FOCAL WEAKNESS
+     FOLACIN
+     FOLATE
+     FOLIC ACID
+     FOLLICULITIS
+     Follow up visit
+     FOOD POISONING
+     FOOT X-RAY
+     FOOT XRAY
+     FOREIGN BODY
+     FORM  EAR DISCHARGE
+     FORM  RHONCHI
+     FORM  RHYTHM
+     FORM  TM DULL
+     FORM  TM INJECTED
+     FORM ANKLE REFLEX
+     FORM BICEPS REFLEX
+     FORM BREATH SOUNDS DIMINISHED
+     FORM CERUMEN IMPACTION
+     FORM DULLNESS LEFT
+     FORM DULLNESS RIGHT
+     FORM FUNDAL ABN
+     FORM PATELLAR REFLEX
+     FORM SCLERIC ICTERIC
+     FORM TRACHEA DEVIATED
+     FORMULA FEEDS
+     Four times a day
+     Four times a day, after meals and at bedtime
+     Four times a day, before meals and at bedtime
+     Four times daily
+     Four times daily, after meals and at bedtime
+     Four times daily, before meals and at bedtime
+     Four times per day
+     Four times per day, after meals and at bedtime
+     Four times per day, before meals and at bedtime
+     FRACTURE
+     FRACTURE NOS
+     FRACTURE, COLLES
+     Frequency
+     Frèz
+     FRI SPAS
+     FRI-SPAS
+     FRICTION RUB
+     FRICTION RUB LINGULAR
+     FRICTION RUB LLL
+     FRICTION RUB LUL
+     FRICTION RUB RLL
+     FRICTION RUB RML
+     FRIEND
+     FTC
+     FULL HEMOGRAM
+     Functional disorder of intestine, NEC
+     Functional intestinal disorders, other
+     FUNDAL ABNORMALITY
+     FUNDUS ABNORMAL
+     FUNGAL INFECTION
+     FUNGAL INFECTION NOS
+     FUNGAL INFECTION SKIN
+     FUNGAL SKIN INFECTION
+     FUNGICIDIN
+     FUNTIME
+     FUO
+     FUO (fever of unknown origin)
+     FUROSEMIDE
+     FURUNCULOSIS
+     Fyèv
+     GABBRORAL
+     GABBRORAL SYRUP
+     GABBRORAL TABS
+     GAIT
+     Gal
+     Gale
+     Gallon
+     Gallon(s)
+     GALLSTONES
+     GASTRIC ULCER
+     Gastrit
+     Gastrite
+     Gastritis
+     Gastritis, nos
+     GASTRIUM
+     GASTRO ENTÉRITE
+     gastro-oesofagale reflux
+     Gastroanterit
+     GASTROENTÉRITE
+     GASTROENTERITIS
+     gastroenteritis bacteriana
+     Gastroesophageal reflux
+     Gastroesophageal reflux disease
+     Gastrointestinal Irritation
+     GASTROINTESTINAL SYMPTOMS
+     GC PCR
+     GC PCR
+     GC PCR QUAL
+     GC PCR QUAL
+     GELLULE
+     Genacote
+     GENEGESIC ZX
+     GENEGESIC ZX
+     General and unspecified diagnoses
+     GENERAL BODYACHE
+     GENERAL EXAM COMMENT
+     GENERAL EXAM FINDINGS
+     General patient note
+     Generalized Skin Infection due to AIDS
+     Genital herpes
+     GENITAL SORES
+     Genital ulcer, LGV
+     genital ulcers, chancroid
+     Genitourinary tract infection in pregnancy
+     Gennin-FC
+     Genprin
+     GENTAMICIN
+     GENTIAN VIOLET
+     GER
+     GERD
+     GESTATION
+     GESTATION AT BIRTH
+     gewichtsverlies
+     GI SYMPTOMS
+     GI upset
+     Giảm thể tích máu
+     GIARDIA
+     GIARDIA LAMBLIA
+     Gingivitis and periodontal diseases
+     GLEVO 250MG
+     GLEVO 500MG
+     GLU
+     GLUCOSE
+     GLUCOSE POS
+     GLUCOSE POSITIVE
+     glucosuria
+     glucosurie
+     GLUTEAL WASTING
+     Glycosuria
+     gm
+     GNRS
+     GNRs
+     GOITER
+     GOITRE
+     GONOCOCCAL PCR QUAL
+     gonorrea
+     Gonorrhea
+     GONORRHEA PCR
+     GONORRHEA PCR QUAL
+     Gonorrhée
+     GONORRHOEA
+     GORD (gastro-oesophageal reflux disease)
+     GPCS
+     GPRS
+     GRABACIN POWDER
+     Gram
+     GRAM +VE RODS
+     GRAM +VE RODS
+     GRAM -VE RODS
+     GRAM -VE RODS
+     GRAM NEGATIVE RODS
+     GRAM POSITIVE RODS
+     Gram(s)
+     GRANDPARENT
+     GRANULAR CELLS
+     granuloma inguinal
+     Granuloma inguinale
+     Gratèl
+     GRAVIDA
+     Grossesse multiple
+     GROSSESSE, FAUSSE COUCHE
+     GUARDING
+     GUD
+     Gum
+     Gum(s)
+     GURGLE
+     GUTRITE
+     Hạ cam mềm
+     HAART
+     HAART ACTIVE
+     HAART ELIGIBLE
+     HAART RESERVED
+     Hạch to
+     Haemorrhage in early pregnancy
+     HAIJULIKANI
+     HALF
+     HALF A TABLET
+     HALF HR BEFORE BREAKFAST
+     HALF HR BEFORE DINNER
+     HALFAN SYRUP
+     HALFAN TABS
+     Halfprin
+     hallazgo relacionado con el descenso de peso
+     hallazgos positivos en cultivos serológicos Y/O virales para el virus de la inmunodeficiencia humana
+     HALOFANTRINE
+     HAND X-RAY
+     HAND XRAY
+     HANSEN'S DISEASE
+     HANSENOSIS
+     HB
+     HBA1C
+     HC
+     HCT
+     HCTZ
+     HDL
+     HEAD CIRCUMFERENCE
+     HEAD CT
+     HEAD INJURY
+     HEAD NECK
+     HEAD NECK COMMENT
+     Headache
+     HEALTH CARE PROVIDER
+     HEALTH CENTER HOSPITALS
+     HEAPTIC ULTRASOUND
+     HEARING DIFFICULTIES
+     HEARING DIFFICULTY
+     HEART
+     HEART COMMENT
+     Heart rate
+     HEARTBURN
+     Heartline
+     HEENT COMMENT
+     HEENT EXAM FINDINGS
+     HEIGHT (CM)
+     Helminth Infection
+     HELMINTHIASE
+     Helminthiasis
+     helmintiasis intestinal
+     HEMATOCRIT
+     Hematuria
+     Hématurie
+     HEMIPARESIS
+     Hemochron
+     HEMOGLOBIN
+     HEMOGRAM
+     HEMOPHILUS INFLUENZA B VACCINATION
+     HEMOPTYSIS
+     hemorragia
+     hemorragia a principios del embarazo
+     hemorragia postparto
+     hemorragia pulmonar
+     hemorragia umbilical después del nacimiento
+     Hémorragie
+     Hémorragie du début de la grossesse
+     Hemorrhage
+     HEMORRHAGE ANTEPARTUM
+     Hemorrhage in early pregnancy
+     Hemorrhage postpartum
+     Hemorrhagic diarrhea
+     Hemorrhoids
+     Hémorroïde
+     hemorroides
+     Hen suyễn
+     HEP A
+     HEP B
+     HEP B TEST (CUT-OFF OD)
+     HEP B TEST (OD) - QUANT
+     HEP B TEST - QUAL
+     HEP C TEST (CUT-OFF OD)
+     HEP C TEST (OD) - QUANT
+     HEP C TEST - QUAL
+     Hep-Lock
+     Hep-Pak
+     Hep-Pak CVC
+     HEPA
+     Heparin
+     Heparin derivative
+     Heparin drug class
+     HEPARIN SODIUM
+     Héparine non fractionnée
+     Héparines
+     HEPARINOIDS
+     HEPARINOIDS / HYALURONIDASE
+     HEPARINOIDS / SALICYLIC ACID
+     Heparins
+     HEPATIC BRUIT
+     HEPATIC DISEASE
+
+
+
+
+     HEPATIC DISEASE COMMENT
+     Hepatic toxicity
+     HEPATITIS
+     HEPATITIS
+     HEPATITIS A
+     HEPATITIS A VACCINATION
+     HEPATITIS B
+     HEPATITIS B TEST (CUT-OFF OD)
+     HEPATITIS B TEST (OD) - QUANTITATIVE
+     HEPATITIS B TEST - QUALITATIVE
+     HEPATITIS B VACCINATION
+     HEPATITIS B VACCINATION
+     HEPATITIS B VAX NO.1
+     HEPATITIS B VAX NO.2
+     HEPATITIS B VAX NO.2
+     HEPATITIS B VAX NO.3
+     HEPATITIS B VAX NO.3
+     HEPATITIS C
+     HEPATITIS C TEST (CUT-OFF OD)
+     HEPATITIS C TEST (OD) - QUANTITATIVE
+     HEPATITIS C TEST - QUALITATIVE
+     HEPATITIS NOS
+     hepatitis viral crónica
+     HEPATOMEGALY
+     HEPATOMEGALY
+     Hepatomegaly or splenomegaly, NEC
+     Hepatomegaly or splenomegaly, not classified elsewhere
+     HEPATOSPLENOMEGALY
+     Hépatotoxicité
+     Hepatotoxicity
+     Hepflush
+     HERPES PCR
+     HERPES PCR QUAL
+     herpes simple
+     herpes simple genital
+     Herpes Simplex
+     Herpes simplex
+     HERPES SIMPLEX VIRUS POLYMERASE CHAIN REACTION
+     HERPES SIMPLEX VIRUS POLYMERASE CHAIN REACTION, QUALITATIVE
+     HERPES SIMPLEX VIRUS SEROLOGY, QUANTITATIVE
+     HERPES SIMPLEX VIRUS THRESHHOLD PERCENTAGE, QUANTITATIVE
+     HERPES SIMPLEX VIRUS, QUALITATIVE
+     HERPÈS SIMPLEX, NON-SPÉCIFIÉ
+     Herpes simplex, nos
+     Herpes sinh dục
+     HERPES ZOSTER
+     Herpes Zoster
+     herpes zoster
+     Herpes Zoster
+     HETRAZAN 100MG
+     HETRAZAN 100MG
+     HETRAZAN 50MG
+     HETRAZAN 50MG
+     HFP
+     HGB
+     HGB
+     HGB
+     HGM
+     HIB
+     High blood pressure
+     HIGH-DENSITY LIPOPROTEIN CHOLESTEROL
+     hiperglucemia
+     hipertensión arterial
+     hipertensión arterial esencial
+     hipertensión arterial secundaria
+     hipotensión arterial
+     hipotermia del recién nacido
+     hipovitaminosis A con queratomalacia
+     hipovolemia
+     HISTORICAL DRUG START DATE
+     HISTORICAL DRUG STOP DATE
+     HISTORY OF EXPOSURE TO ANTIRETROVIRAL DRUGS
+     HISTORY OF JAUNDICE
+     HISTORY OF NEVIRAPINE TO INFANT
+     HISTORY OF PNEUMONIA
+     HIV
+     HIV and opportunistic infection diagnoses
+     HIV ANTIBODY
+     HIV DISCLOSURE OTHER SPEC
+     HIV DISCLOSURE TO ANYONE
+     HIV DISCLOSURE TO ANYONE, SPECIFIC
+     HIV disease resulting in other specified diseases
+     HIV DNA PCR
+     HIV DNA PCR
+     HIV DNA POLYMERASE CHAIN REACTION
+     HIV DNA POLYMERASE CHAIN REACTION, QUALITATIVE
+     HIV EIA (CUT-OFF OD) QUANT
+     HIV EIA (CUT-OFF OD) QUANT
+     HIV EIA QUAL
+     HIV EIA QUAL
+     HIV EIA QUANT
+     HIV EIA QUANT
+     HIV ELISA (CUT-OFF) QUANT
+     HIV ELISA QUAL
+     HIV ELISA QUANT
+     HIV ENZYME IMMUNOASSAY (CUT-OFF OD), QUANTITATIVE
+     HIV ENZYME IMMUNOASSAY, QUALITATIVE
+     HIV ENZYME IMMUNOASSAY, QUANTITATIVE
+     HIV EXPOSURE
+     HIV INFECTED
+     HIV PCR Qual
+     HIV PCR QUAL
+     HIV POS
+     HIV POS
+     HIV QUAL
+     HIV RAPID 1 QUAL
+     HIV RAPID 2 QUAL
+     HIV RAPID TEST 1, QUALITATIVE
+     HIV RAPID TEST 2, QUALITATIVE
+     HIV resulting in infectious or parasitic disease
+     HIV STAGE, HIGHEST - PEDS
+     HIV STAGING  - CANDIDIASIS, ORORESPIRATORY TRACT
+     HIV STAGING  - CANDIDIASIS, ORORESPIRATORY TRACT
+     HIV STAGING - ADULT HERPES ZOSTER
+     HIV STAGING - ADULT SHINGLES
+     HIV STAGING - BACTERIAL INFECTION
+     HIV STAGING - CHILD HSV INFECTION
+     HIV STAGING - CHRONIC CYTOPENIA(S)
+     HIV STAGING - CMV
+     HIV STAGING - COCCIDIODOMYCOSIS, DISSEMINATED
+     HIV STAGING - CRYPTOCOCCOSIS, EXTRAPULMONARY
+     HIV STAGING - CRYPTOSPORIDIOSIS
+     HIV STAGING - CYTOMEGALOVIRUS DISEASE
+     HIV STAGING - DISSEMINATED CHICKENPOX
+     HIV STAGING - DISSEMINATED ENDEMIC MYCOSIS
+     HIV STAGING - ESOPHAGEAL PULMONARY CANDIDIASIS
+     HIV STAGING - HISTOPLASMOSIS, DISSEMINATED
+     HIV STAGING - HSV BRONCHITIS
+     HIV STAGING - HSV STOMATITIS
+     HIV STAGING - INFANT CYTOMEGALOVIRUS
+     HIV STAGING - INFANT TOXOPLASMOSIS
+     HIV STAGING - LIP
+     HIV STAGING - LYMPHOID INTERSTITIAL PNEUMONIA
+     HIV STAGING - LYMPHOMA
+     HIV STAGING - LYMPHOMA, BRAIN
+     HIV STAGING - MINOR MUCOCUTANEOUS MANIFESTATIONS
+     HIV STAGING - MUCOCUTANEOUS HERPES SIMPLEX
+     HIV STAGING - MUCOCUTANEOUS HSV
+     HIV STAGING - MYCOBACTERIUM AVIUM COMPLEX
+     HIV STAGING - MYCOBACTERIUM, OTHER
+     HIV STAGING - NONRESPONSIVE HERPES SIMPLEX VIRUS
+     HIV STAGING - NONRESPONSIVE HSV
+     HIV STAGING - PEDS HERPES ZOSTER
+     HIV STAGING - PEDS SHINGLES
+     HIV STAGING - PEDS THRUSH
+     HIV STAGING - PERSISTENT FEVER
+     HIV STAGING - PERSISTENT GENERALIZED LYMPHADENOPATHY
+     HIV STAGING - RECURRENT BACTERIAL PNEUMONIA
+     HIV STAGING - RECURRENT UPPER RESPIRATORY INFECTION
+     HIV STAGING - REFRACTORY ANEMIA
+     HIV STAGING - SALMONELLA SEPTICEMIA
+     HIV STAGING - SEVERE BACTERIAL INFECTION
+     HIV STAGING - STEROID RESISTANT THROMBOCYTOPENIA
+     HIV STAGING - TOXOPLASMOSIS, BRAIN
+     HIV STAGING - TUBERCULOSIS WITHIN YEAR
+     HIV STAGING - VARICELLA, DISSEMINATED
+     HIV STAGING - WEIGHT LOSS GREATER THAN TEN PERCENT
+     HIV STAGING - WEIGHT LOSS LESS THAN TEN PERCENT
+     HIV THERAPY
+     HIV VIRAL LOAD
+     HIV WB BANDS
+     HIV WB QUAL
+     HIV WB QUAL
+     HIV WESTERN BLOT BANDS
+     HIV WESTERN BLOT, QUALITATIVE
+     Hives
+     HMG CoA reductase inhibitors
+     Ho
+     HOCKER
+     HOCKER
+     hoesten
+     Hội chứng ruột kích thích
+     HOLOSYSTOLIC MURMUR
+     homa
+     Homa isiyojulikana chanzo
+     HOME ELECTRICITY
+     HOME PLUMBING
+     hoofdpijn
+     hookworm
+     hookworm disease
+     Horas
+     HOSPITAL WAIVER
+     HOSPITALIZATION DESCRIPTION
+     HOSPITALIZATION LAST VISIT DESC
+     HOSPITALIZATION LAST VISIT NUMBER
+     HOSPITALIZED PREVIOUS YEAR
+     HOSPITALIZED SINCE LAST VISIT
+     HOSPITALIZED SINCE LAST VISIT
+     hourly
+     Hours
+     HOUSEHOLD MEMBER ENR
+     HPV
+     HR
+     HR
+     HR
+     HR
+     Hrs
+     HSM
+     HSM
+     HSV CUTOFF %
+     HSV CUTOFF PERCENTAGE
+     HSV PCR
+     HSV PCR
+     HSV PCR QUAL
+     HSV PCR QUAL
+     HSV QUAL
+     HSV QUANT
+     HSV SER QUANT
+     HSV TEST
+     HT
+     HT
+     HTA
+     HTN
+     HTN (hypertension)
+     huidinfectie
+     humaan immunodeficiëntievirus-ziekte
+     HUMAN IMMUNODEFICIENCY VIRUS
+     HUMAN IMMUNODEFICIENCY VIRUS (HIV) DISEASE
+     Human immunodeficiency virus (HIV) infection
+     human immunodeficiency virus disease HIV resulting in infectious or parasitic disease
+     Human immunodeficiency virus disease resulting in other specified diseases
+     HUMAN PAPILLOMAVIRUS
+     Huyết áp cao
+     HVS TEST
+     HYCOMYCIN EYE DROPS
+     HYCOMYCIN EYE DROPS
+     HYDRALAZINE
+     HYDRALAZINE INJECTION
+     HYDRALAZINE INJECTION
+     HYDRALAZINE TABLETS
+     HYDRALAZINE TABLETS
+     HYDROCHLOROTHIAZIDE
+     HYDROCORTISONE
+     HYDROCORTISONE CREAM
+     HYDROCORTISONE EYE DROPS
+     HYDROCORTISONE OINTMENT
+     HYDROCORTISONE OINTMENT
+     HYDROCORTISONE OINTMENT
+     HYDROCORTIZONE EYE DROPS
+     HYDRODIURIL
+     HYDROGEN PEROXIDE
+     Hydroxymethylglutaryl-coenzyme A reductase inhibitor drug class
+     Hydroxymethylglutaryl-coenzyme A reductase inhibitors
+     HYOSCINE BUTYLBROMIDE
+     HYPERACIDITY
+     HYPEREMESIS GRAVIDARUM
+     Hyperglycaemia
+     hyperglycaemia
+     hyperglycemia
+     Hyperglycémie
+     hypertensie van de moeder
+     hypertensieve hartaandoening
+     HYPERTENSION
+     HYPERTENSION
+     Hypertension
+     Hypertension artérielle
+     Hypertension essentielle
+     Hypertension secondaire
+     Hypertensive heart disease
+     hypotensie
+     Hypotension
+     Hypothermia of newborn
+     hypothermie van de pasgeborene
+     Hypovolaemia
+     Hypovolemia
+     Hypovolemic
+     Hypovolémique
+     HYSTERECTOMY
+     Ibiro (Kg)
+     IBS
+     IBS (irritable bowel syndrome)
+     IBUGESIC 200MG
+     IBUGESIC 200MG
+     IBUGESIC 400MG
+     IBUGESIC 400MG
+     IBUGESIC 600MG
+     IBUGESIC 600MG
+     IBUGESIC PLUS
+     IBUGESIC PLUS
+     IBUPROFEN
+     ICPC cardiovascular diagnoses
+     ICPC dental diagnoses
+     ICPC diagnosis areas
+     ICPC diagnosis categories
+     ICPC digestive diagnoses
+     ICPC ear diagnoses
+     ICPC eye diagnoses
+     ICPC general and unspecified diagnoses
+     ICPC HIV and opportunistic infection diagnoses
+     ICPC immune mechanism diagnoses
+     ICPC male and female genital diagnoses
+     ICPC malnutrition, endocrine and metabolic diagnosis
+     ICPC musculoskeletal and injuries diagnoses
+     ICPC neurological diagnoses
+     ICPC pregnancy, childbearing and family planning diagnoses
+     ICPC psychological diagnoses
+     ICPC respiratory diagnoses
+     ICPC skin diagnoses
+     ICPC urological diagnoses
+     Ictère
+     ICTERIC SCLERA
+     ictericia
+     ICTERUS
+     icterus
+     IDA
+     IDA
+     IDV
+     IDV
+     IDV
+     Igipimo cy'umuriro (celcius)
+     ILOSONE
+     ILOTYCIN
+     IM
+     IM route of administration
+     IMIPRAMINE
+     IMMATURE CELL (%)
+     Immune mechanism diagnoses
+     IMMUNIZATIONS EVER
+     IMMUNIZATIONS ON SCHEDULE
+     IMMUNIZATIONS ORDERED
+     IMMUNIZATIONS UP TO DATE
+     IMODIUM
+     IMODIUM
+     Impression clinique
+     Impyiko
+     IMUTREX
+     IMUTREX
+     in
+     In both ears
+     In both eyes
+     In left ear
+     In left eye
+     In right ear
+     In right eye
+     Inch
+     Inch(es)
+     Inconnu
+     Incontinent of urine
+     INDERAL
+     INDERAL
+     INDEX WOMAN MTCT
+     INDIFFERENT
+     INDIGESTION
+     INDIGESTION
+     INDINAVIR
+     INDINAVIR
+     INDIVIDUALS15 AND OVER
+     INDOCID
+     INDOCIN
+     INDOMETHACIN
+     INDUCTION
+     INFANT FEEDING METHOD
+     INFANT FORMULA
+     INFANT NVP
+     INFANTILE PARALYSIS
+     Infantile paralysis
+     infección amebiásica
+     infección de la piel
+     infección de las vías genitourinarias en el embarazo
+     infección por helmintos
+     infección por Schistosoma
+     infección por Strongyloides
+     infección por Taenia
+     infección por Trichomonas
+     infección por virus de la inmunodeficiencia humana
+     infección postnatal
+     infección puerperal grave
+     infección urinaria
+     infectie met Taenia saginata (lintworm)
+     Infection bactérienne
+     Infection by Strongyloides
+     Infection by Taenia
+     Infection de la peau
+     Infection intestinale virale et d'autres spécifiée
+     Infection of Skin
+     Infection of teeth or gums
+     INFECTION SKIN
+     INFECTION SKIN
+     Infection urinaire
+     infestación por Sarcoptes scabiei, variedad hominis
+     Infestation by Sarcoptes Scabiei Var Hominis
+     INFILTRATE
+     Inflammation of the Covering of the Brain and Spinal Cord
+     Infumorph
+     INGUINAL
+     INGUINAL
+     INH
+     INH PROPHYLAXIS
+     Inhalation
+     Inhaled
+     Inhaled administration
+     Inhaled route of administration
+     Inhaler
+     Inhaler(s)
+     Inhibiteurs de l’ECA
+     INHIBITORY
+     Init dire
+     INITIAL VISIT
+     INJECTABLE CONTRACEPTIVES
+     INJECTABLE HORMONES
+     INJECTED CONJUCTIVA
+     INJECTED THROAT
+     INJECTED TYMPANIC MEMBRANE
+     INJECTION
+     INJECTION
+     INJECTION VALIUM
+     INJECTION VALIUM
+     INJURY
+     INJURY NOS
+     INJURY OF UNSPECIFIED BODY REGION
+     INP WARD
+     INPATIENT CARE OR HOSPITALIZATION
+     INSOMNIA
+     INSULIN LENTE
+     INSULIN LENTE
+     INSULIN, LENTE
+     INSULIN, REGULAR
+     Intermenstrual bleeding - irregular
+     International units
+     INTERVAL COMPLAINTS
+     Intestinal helminthiasis, NEC
+     Intestinal helminthiasis, other
+     Intestinal parasites
+     Intestinal Parasitism
+     INTESTINAL WORMS
+     intestinale helminthiasis
+     INTO NECK
+     INTOLERANCE
+     Intoxication bactérienne d'origine alimentaire
+     Intra-osseous route
+     Intramuscular
+     Intramuscular administration
+     Intramuscular route of administration
+     Intranasal
+     Intraosseous
+     Intraosseous administration
+     Intraosseous route of administration
+     INTRAPARTUM
+     INTRAUTERINE DEVICE
+     Intravenous
+     Intravenous administration
+     INTRAVENOUS DRUG USE
+     Intravenous route of administration
+     Inzoka
+     Ipètansyon
+     Iritasyon gastro-entestinal
+     Iritasyon gastro-entestinal
+     IRON DEFICIENCY ANEMIA
+     IRON DEFICIENCY ANEMIA
+     Irregular intermenstrual bleeding
+     IRRITABILITY
+     IRRITABLE
+     IRRITABLE
+     Irritable bowel syndrome
+     irritación gastrointestinal
+     Irritation gastro-intestinale
+     Iseru
+     ISONIAZID
+     ISONIAZID
+     ISONIAZID COMMENT
+     ISONIAZID CURRENT
+     ISONIAZID DISCONTINUATION1 TODAY
+     ISONIAZID DISCONTINUATION2 TODAY
+     ISONIAZID RECOMMENDATION
+     ISONIAZID SIG
+     ISONIAZID START STOP DATE
+     ITCHING
+     ITCHING
+     Itching
+     Itching
+     Itikè
+     ITRACONAZOLE
+     IU
+     IUCD
+     IUD
+     IV
+     IYCF OR MILK COUNSEL EVER
+     JAUNDICE
+     Jaundice
+     Jeraha
+     JOINT PAIN
+     JOINT PAINS
+     JOINT SWELLING
+     Jou
+     Jours
+     JSV ADVICE
+     JSV Advice Set
+     JSV MEDICATIONS
+     JSV MEDICATIONS
+     JSV MEDICATIONS
+     JSV TESTS
+     JSV TESTS
+     K
+     Kadian
+     Kafeyin
+     KALETRA
+     KALETRA
+     kamata
+     KAPOSI SARCOMA
+     KAPOSI SARCOMA
+     KAPOSI SARCOMA
+     KAPOSI SARCOMA - OLD
+     KAPOSI SARCOMA ORAL
+     KAPOSI'S SARCOMA
+     KARNOFSKY PERFORMANCE SCORE
+     kase lezo tro bone
+     kè bwile
+     Keep Alert
+     KENACORT
+     KETANOV 10MG
+     KETANOV 10MG
+     KETOCONAZOLE
+     KETRAX SYRUP
+     KETRAX SYRUP
+     KETRAX TABLETS
+     KETRAX TABLETS
+     KEXID
+     KEXID
+     kg
+     Khó nuốt
+     Khó thở
+     KIFAFA
+     Kikohozi
+     Kilogram
+     Kilogram(s)
+     KINETO DP
+     KINETO DP
+     Kit
+     Kit(s)
+     Klas eparinn
+     KNEE JERK
+     KNEE JOINT X-RAY PA AND LATERAL VIEW
+     KNEE JOINT X-RAY PA AND LATERAL VIEW
+     KNEE, ARTHRITIS
+     Kodeyinn
+     Kolera
+     Konbyen oksijèn ki nan san an
+     Konfime
+     koorts
+     krache
+     Kristase
+     Kriz
+     KS
+     KSH
+     KUB
+     Kubura amaraso
+     Kuchimbuka chimbuka kwa jino
+     Kuhara
+     kuharisha damu
+     kulazwa hospitalini tangu siku ya mwisho kuhudhuria hospitalini
+     kupunguza uzito
+     Kuruka no kuhitwa
+     Kushindwa kumeza kitu chakula,kutokana na vidonda au ugonjwa
+     Kutokwa damu isivyo kawaida
+     Kuvimba sehemu za mwili kwa kujaa maji
+     Kwashiorkor
+     kwashiorkor
+     kwashiorkor
+     Kwashiorkor
+     Kwashiorkor
+     kwashiorkor marásmico
+     Kwatèrnèr
+     L
+     l'angiotensine II antagonistes des récepteurs
+     L'herbe à poux
+     L'ordre de Diagnostic
+     La diarrhée
+     La toux
+     Laboprin
+     Labor and delivery complicated by intrapartum hemorrhage
+     LABOR PAIN
+     LABOR PAIN, FALSE
+     LABOR PAIN, FALSE
+     Laboratory evidence of HIV
+     Laboratory evidence of human immunodeficiency virus
+     LABORATORY ORDERS
+     LAC
+     laceración perineal durante el parto
+     LACERATION
+     LACTATE
+     LACTATE
+     LACTATE DEHYDROGENASE
+     LACTIC ACID
+     LACTIC DEHYDROGENASE
+     Lafyèv ki gen orijin enkoni
+     Lajònis
+     LAMIVUDINE
+     LAMIVUDINE ARV
+     LAMIVUDINE COMMENT
+     LAMIVUDINE DISCONTINUATION1
+     LAMIVUDINE DISCONTINUATION2
+     LAMIVUDINE DISCONTINUED
+     LAMIVUDINE PAST
+     LAMIVUDINE PRESENT
+     LAMIVUDINE START CONTINUE
+     LAMIVUDINE START DATE
+     LAMIVUDINE STOP DATE
+     LAMIVUDINEP MTCT
+     LANSOPRAZOLE
+     Lansoprazole 15 OR 30 mg
+     Laraj
+     LARGACTIL
+     LARGACTIL
+     LARIAM
+     LARIAM
+     LAROXYL TABS
+     LAROXYL TABS
+     LARYNGITIS
+     LASIX
+     LASIX
+     LAST CHILD AGE
+     LAST NAME
+     Late Effects of Cerebrovascular Disease
+     Latèks
+     LATERAL
+     Latex
+     Latex
+     Lậu
+     LAVAZYME
+     LAVAZYME
+     LAVAZYME
+     LAVAZYME CAP
+     LAVAZYME CAP
+     LAVAZYME CAP
+     LD
+     LDH
+     LDH
+     LDL
+     LDL
+     Le changement de l'état mental
+     LEARNING PROBLEMS
+     LEFT
+     LEFT ARM
+     Left ear administration
+     Left eye administration
+     LEFT LEG
+     LEFT LOWER EXTREMITY
+     LEFT LOWER LOBE
+     LEFT LOWER QUADRANT
+     LEFT UPPER EXTREMITY
+     LEFT UPPER LOBE
+     LEFT VENTRICULAR HEAVE
+     LEFT VENTRICULAR LIFT
+     LEG SWELLING
+     LEG ULCERS
+     LEG ULCERS
+     LEG X-RAY
+     LEG XRAY
+     LÉGER
+     LEGS
+     LEIOMYOSARCOMA
+     Lejè
+     Length
+     LENTE INSULIN
+     Lèp
+     lepra
+     Lèpre
+     LEPROSY
+     LEPROSY
+     Leprosy
+     Les statines
+     lesión superficial en el hombro y miembro superior
+     lesión traumática superficial de cabeza
+     lesión traumática superficial del antebrazo
+     LESS THAN 30 MINUTES
+     LESS THAN MONTHLY
+     LEUKEMIA
+     LEUKEMIA
+     LEUKOCYTE COUNT
+     LEVAMISOLE
+     LEVANT
+     LEVANT 15MG
+     LEVANT 15MG
+     LEVANT 30MG
+     LEVANT 30MG
+     LEVAQUIN
+     LEVAQUIN
+     Levius
+     LEVODAY 500MG
+     LEVOFLOX
+     LEVOFLOX
+     LEVOFLOXACIN
+     LFTS
+     LFTS
+     LGV (lymphogranuloma venereum)
+     LIDOCAINE AND HYDROCORTISONE
+     LIFESTYLE/HABITS
+     LIFESTYLE/HABITS
+     LIMP
+     LINCOMYCIN
+     linfogranuloma venéreo
+     LINGULA
+     LIPASE
+     LIPASE
+     LIPID PANEL
+     LIPID PROFILE
+     LIPID PROFILE
+     LIPIDS
+     LIQUIDE CÉPHALO-RACHIDIEN
+     LIS PWOBLÈM
+     LISTE DE PROBLÈME
+     Litecoat Aspirin
+     Liter
+     LIVER FUNCTION TEST: BILIRUBIN AND LIVER ENZYMES (SGOT/SGPT/SAKP)
+     LIVER FUNCTION TEST: BILIRUBIN AND LIVER ENZYMES (SGOT/SGPT/SAKP)
+     LIVER FUNCTION TESTS
+     LIVER PANEL
+     LIVER SIZE
+     LIVER SIZE
+     LIVERIL  CAPS/SUS
+     LIVERIL CAPS SUS
+     LIVERIL CAPS SUS
+     LIVING WITH PARTNER
+     LLE
+     LLL
+     LLQ
+     LLQ
+     Loạn nhịp tim
+     LOBAR PNEUMONIA
+     lòd dyagnostik
+     Loét bao tử
+     Lok-Pak-N
+     LOOGIE
+     LOOGIE
+     loose bowel movement
+     loose bowels
+     LOPERAMIDE
+     LOPINAVIR AND RITONAVIR
+     LORATADINE
+     LOST DEVELOPMENT MILESTONES
+     LOST TO FOLLOWUP
+     LOST TO FOLLOWUP GT 3
+     Lòt
+     Lòt ki pa-kode
+     Lòt pwoblèm Sikolojik
+     LÒT SAN-KÒD
+     LOUD P2
+     LOW BACK PAIN
+     Low Dose ASA
+     LOW-DENSITY LIPOPROTEIN CHOLESTEROL
+     LOWER EXTREMITIES
+     Lozenge
+     Lozenge(s)
+     LRTI
+     Lucidex
+     LUE
+     LUL
+     LUMBAGO
+     LUMBAGO
+     LUMBOSACCRAL SPINE X-RAY PA AND LATERAL VIEW
+     LUMBOSACCRAL SPINE X-RAY PA AND LATERAL VIEW
+     LUPIVON
+     LUPIVON
+     LUPIVON
+     LUPIZOLE
+     LUPIZOLE 15MG
+     LUPIZOLE 15MG
+     LUPIZOLE 30MG
+     LUPIZOLE 30MG
+     LV HEAVE
+     LV LIFT
+     lymfadenopathie
+     lymfogranuloma venereum
+     LYMPH
+     LYMPH CELLS
+     LYMPH NODE EXAM FINDINGS
+     LYMPH NODES
+     LYMPH NODES COMMENT
+     Lymphadénopathie
+     LYMPHADENOPATHY
+     LYMPHADENOPATHY
+     Lymphadenopathy
+     LYMPHOCYTE COUNT
+     LYMPHOCYTE SUBSET PANEL
+     LYMPHOCYTES
+     LYMPHOCYTES (%) - MICROSCOPIC EXAM
+     Lymphogranuloma inguinale
+     Lymphogranuloma venereum
+     LYMPHS
+     M-Eslon
+     Macrolide drug class
+     Macrolides
+     MACULAR
+     MACULOPAPULAR
+     MAGNESIUM TRISILICATE
+     MAHACEF 100MG
+     MAHACEF 100MG
+     MAHACEF 200MG
+     MAHACEF 200MG
+     Major Puerperal Infection, Postpartum
+     Mal de tête
+     Maladi ou trape nan fe bagay
+     Maladi sik
+     Maladi sikyatrik
+     Maladie hypertensive du coeur
+     Maladie reflux gastroesophageal
+     Maladie sexuellement transmissible
+     Maladies de la pulpe et des tissus périapicaux
+     MALAISE
+     MALARIA
+     MALARIA
+     Malaria
+     Malaria
+     MALARIA - ANTIGEN/ANTOBODY/PARASITE DETECTION
+     MALARIA - ANTIGEN/ANTOBODY/PARASITE DETECTION
+     Malaria confirmed with minor digestive symptoms
+     Malaria confirmées
+     MALARIA R/O
+     Malaria sevère
+     Malaria severe
+     MALARIA, CLINICAL
+     MALARIA, CLINICAL
+     Malaria, confirmed
+     MALARIA, MILD
+     MALARIA, PRESUMED
+     MALARIA, PRESUMED
+     MALARIA, RULE OUT
+     MALARIA, SEVERE
+     MALARIAL SMEAR
+     Malarya
+     Male and female genital diagnoses
+     MALNUTRITION
+     Maltèt
+     MAMMITIS
+     Manje ki gen lèt
+     Marasme nutritionnel
+     Marasmic Kwashiorkor
+     marasmo nutricional
+     marasmus
+     MARRIED
+     MASS CYSTIC
+     MASS NOS
+     MASS PULSATILE
+     MASS TENDER
+     MASS, ABDOMINAL
+     MASS, OTHER
+     MASTADENTITIS
+     MASTITIS
+     mastitis asociada con el parto
+     Mastitis-Postpartum
+     MATERNAL TREATMENT FOR HIV OR OI
+     MATIÈRES FÉCALES
+     Maumivu wakati wa kukojoa
+     mcg
+     MCH
+     MCH
+     MCHC
+     MCHC
+     MCM
+     MCV
+     MCV
+     MEAN CELL HEMOGLOBIN CONCENTRATION
+     MEAN CORPUSCULAR HEMOGLOBIN
+     MEAN CORPUSCULAR VOLUME
+     MEAN PLATELET VOLUME
+     MEASLES
+     MEASLES
+     MEASLES
+     MEASLES VACCINATION
+     MEBENDAZOLE
+     MEBRIN AZ
+     MEBRIN AZ
+     MEBRIN –AZ
+     Med Aspirin
+     MED HX COMMENT
+     MEDICAL ADVICE
+     MEDICAL ADVICE
+     MEDICAL EXAMINATION, ROUTINE
+     MEDICAL HISTORY
+     MEDICAL HISTORY
+     MEDICAL RECORD OBSERVATIONS
+     MEDICATION HISTORY
+     MEDICATION ORDERS
+     MEDICATION RECEIVED AT VIST
+     MEDICATIONS
+     Medikaman pou bese kolestewòl
+     MEDITEREANEAN FEVER
+     MEDROXYPROGESTERONE ACETATE
+     MEFLOQUINE
+     MEFTAL 500MG
+     MEFTAL 500MG
+     MEFTAL SPAS TAB SUS
+     MEFTAL SPAS TAB SUS
+     MEFTAL SPAS – TAB/SUS
+     MEMORY PROBLEMS
+     Menenjit
+     Méningite
+     MENINGITIS
+     Meningitis
+     meningitis
+     MENINGITIS, BACTERIAL
+     MENINGITIS, CRYPTOCOCCAL
+     MENINGITIS, NOS
+     MENOPAUSAL
+     MENSTRUAL DYSFUNCTION
+     MENSTRUATING
+     Mental Disorder
+     MENTAL DISORDERS
+     MENTAL HEALTH SERVICES
+     MENTAL ILLNESS
+     MENTAL ILLNESS COMMENT
+     Mental or behavioral disorder due to alcohol or illicit drug use
+     Mental status change
+     MEq
+     MEqs
+     Meses
+     Mesure de la circonférence brachiale
+     Mesure du périmètre brachial (MPB)
+     Mệt mỏi
+     Metabolic disorder
+     METAKELFIN
+     METAKELFIN
+     METAKELFIN TABLETS
+     METAKELFIN TABLETS
+     METAKELFIN TABLETS
+     METFAL 250MG
+     METFAL 250MG
+     METHOD OF BIRTH CONTROL
+     METHOD OF DELIVERY
+     METHOD OF DELIVERY OTHER
+     METHOD OF FAMILY PLANNING
+     METHOD OF HIV EXPOSURE
+     METHYLDOPA
+     METOCLOPRAMIDE
+     Metric drop
+     Metric drop(s)
+     METROGYL COMPOUND
+     METROGYL COMPOUND
+     METRON DF
+     METRON DF
+     METRONIDAZOLE
+     mg
+     mg/m2
+     MICATIN
+     MICONAZOLE
+     micosis dérmica
+     microcefalie
+     microcéfalo
+     Microcéphalie
+     Microcephalus
+     Microgram
+     Microgram(s)
+     MID CLAVICULAR LINE
+     MID-UPPER ARM CIRCUMFERENCE
+     MID-UPPER ARM CIRCUMFERENCE
+     MIDAXILLARY
+     MIDDLE NAME
+     MIGRIL
+     MIGRIL
+     Mikwòb Enfeksyon
+     Mild
+     Mild to moderate
+     Milk product
+     Milk protein
+     Milliequivalent
+     Milliequivalent(s)
+     Milligram
+     Milligram per meter squared
+     Milligram per meter2
+     Milliliter
+     Million units
+     miltip jestasyon
+     min
+     Minihep
+     Minihep Calcium
+     Minitabs
+     MINOR CUTANEOUS MANIFESTATIONS
+     Minutes
+     MINUTES
+     Miscarriage
+     MISSED ABORTION
+     MISSED ARV CLINIC RAN OUT
+     MISSED ARV DISCLOSURE ISSUES
+     MISSED ARV FORGOT
+     MISSED ARV LOST MED
+     MISSED ARV OTHER
+     MISSED ARV OTHER DESC
+     MISSED ARV PT RAN OUT
+     MISSED ARV REFUSED
+     MISSED ARV SIDE EFFECTS
+     MISSED ARV TOO ILL
+     MISSED ARV VOMITED
+     MISSED OI CLINIC RAN OUT
+     MISSED OI DISCLOSURE
+     MISSED OI FORGOT
+     MISSED OI LOST MED
+     MISSED OI OTHER
+     MISSED OI OTHER DESC
+     MISSED OI PT RAN OUT
+     MISSED OI REFUSED
+     MISSED OI SIDE EFFECTS
+     MISSED OI TOO ILL
+     MISSED OI VOMITED
+     MISSED TB CLINIC RAN OUT
+     MISSED TB DISCLOSURE
+     MISSED TB FORGOT
+     MISSED TB LOST MED
+     MISSED TB OTHER
+     MISSED TB OTHER DESC
+     MISSED TB PT RAN OUT
+     MISSED TB REFUSED
+     MISSED TB SIDE EFFECTS
+     MISSED TB TO ILL
+     MISSED TB VOMITED
+     MIST-ANTACIDS
+     MIST-ANTACIDS
+     MIXED FEEDING
+     MIXED FEEDING
+     MIXED FEEDING
+     mL
+     MMM
+     MOD
+     MODECATE INJECTION
+     MODECATE INJECTION
+     Moderate
+     Moderate to severe
+     MODÉRÉ
+     Modere
+     MOFAX
+     MOFAX
+     MOI TEACHING AND REFERRAL HOSPITAL
+     Mois
+     Moisissure
+     Mold
+     MOLLUSCUM CONTAGIOSUM
+     MONOCYTES
+     MONOCYTES (%) - MICROSCOPIC EXAM
+     MONOS
+     MONOS
+     MONTH OF CURRENT GESTATION
+     MONTHLY
+     Monthly
+     MONTHLY OR LESS
+     MONTHS
+     Months
+     Morcap SR
+     MORE THAN TWO DOSES
+     MOREASE
+     MOREASE 135MG
+     MOREASE 135MG
+     Morfinn
+     Morphine
+     Morphine
+     MOSORIOT CATCHMENT AREA
+     MOST
+     MOTHER
+     MOTHER AZT ANTE DOSE
+     MOTHER AZT ANTE TX WEEKS
+     MOTHER AZT ANTEPARTUM
+     MOTHER AZT INTRAPARTUM
+     MOTHER AZT POST DOSE
+     MOTHER AZT POST PARTUM
+     MOTHER AZT POST TX WEEKS
+     MOTHER DECEASED
+     MOTHER FIRST NAME
+     MOTHER NVP ANTE DOSE
+     MOTHER NVP ANTE TX WEEKS
+     MOTHER NVP ANTEPARTUM
+     MOTHER NVP INTRAPARTUM
+     MOTHER NVP POST DOSE
+     MOTHER NVP POST TX WEEKS
+     MOTHER NVP POSTPARTUM
+     MOTHER OTHER ANTE DOSE
+     MOTHER OTHER ANTE TX WEEKS
+     MOTHER OTHER ANTEPARTUM
+     MOTHER OTHER DESC
+     MOTHER OTHER INTRAPARTUM
+     MOTHER RECEIVED ARV
+     MOTHER'S AMPATHID
+     MOTHER3 TC ANTE DOSE
+     MOTHER3 TC ANTE TX WEEKS
+     MOTHER3 TC ANTEPARTUM
+     MOTHER3 TC INTRAPARTUM
+     MOTHER3 TC POST DOSE
+     MOTHER3 TC POST TX WEEKS
+     MOTHER3 TC POSTPARTUM
+     MOTILE BACTERIA
+     MOTILE BACTERIA
+     MOTILIUM
+     MOTILIUM
+     MOTOR VEHICLE ACCIDENT
+     Moule
+     MOUTH SORES
+     MOXIFLOXACIN
+     MOXIKIND CV
+     MOXIKIND CV
+     MP TEST
+     MPV
+     MPV
+     MRCT PLUS ID
+     MRGO (Maladie reflux gastroesophageal)
+     MS Contin
+     MS/S
+     MSIR
+     MST Continus
+     MTCT PATIENT TYPE
+     MTCT SERVICE ADHERENCE
+     MTCT SERVICE MENTAL HEALTH
+     MTCT SERVICE NONE
+     MTCT SERVICE NUTRITIONAL
+     MTCT SERVICE OTHER
+     MTCT SERVICE OTHER DESC
+     MTCT SERVICE PSYCHOSOCIAL
+     MTCT SERVICE SOCIAL SUPPORT
+     MTCT STAFF
+     MTCT-PLUS
+     MTCT-PLUS PT
+     MTRH
+     MTRHID
+     MU
+     MUAC
+     MUAC
+     MUAC
+     MUAC
+     MUCAINE
+     MUCOCUTANEOUS EXAM FINDINGS
+     Mũi
+     MULTI DRUG RESISTANT TUBERCULOSIS
+     MULTINODULAR GOITER
+     multipele zwangerschap
+     MULTIPLE BRUISES
+     Multiple delivery
+     Multiple gestation
+     multiple pregnancy
+     MULTIVITAMIN
+     MULTIVITAMIN CURRENT
+     MUMPS
+     MURMUR DIASTOLIC DECRECENDO GRADE
+     MURMUR DIASTOLIC DECRESCENDO
+     MURMUR DIASTOLIC RUMBLE GRADE
+     MURMUR HSM
+     MURMUR HSM
+     MURMUR HSM GRADE
+     MURMUR LLSB
+     MURMUR SEM
+     MURMUR SEM
+     MURMUR SEM GRADE
+     MURMUR ULSB
+     MURMUR URSB
+     MUSCLE ATROPHY DIFFUSE
+     MUSCLE ATROPHY LLE
+     MUSCLE ATROPHY LUE
+     MUSCLE ATROPHY RLE
+     MUSCLE ATROPHY RUE
+     MUSCLE PAIN
+     MUSCLE TENDERNESS
+     MUSCLE WEAKNESS DIFFUSE
+     MUSCLE WEAKNESS LLE
+     MUSCLE WEAKNESS LUE
+     MUSCLE WEAKNESS RLE
+     MUSCLE WEAKNESS RUE
+     MUSCULOSKELETAL
+     MUSCULOSKELETAL COMMENT
+     MUSCULOSKELETAL EXAM FINDINGS
+     Musculoskeletal pain
+     Musculoskeletal system and injury diagnoses
+     Muzima
+     MVA
+     MVI
+     Mwa
+     Mwazi
+     MXL brand of morphine sulfate
+     MYALGIA
+     Myalgia
+     Myalgie
+     Myalji
+     MYCELEX
+     MYCELEX
+     MYCOBACTERIUM TUBERCULOSIS, EXTRAPULMONARY
+     Myèl pike
+     NA
+     NA
+     NALIDIXIC ACID
+     Não
+     NASACORT
+     NASACORT
+     Nasal
+     Nasal administration
+     NASAL BLOCKAGE
+     NASAL BLOCKAGE
+     NASAL DISCHARGE
+     NASAL OBSTRUCTION
+     Nasal route of administration
+     NASCOP
+     Nasogastric tube administration
+     NATURAL FAMILY PLANNING
+     NAUSEA
+     NAUSEA DURATION
+     navelbloeding na de geboorte
+     Ne sait pas
+     Neb
+     Neb(s)
+     Nebulizer
+     Nebulizer(s)
+     NECK PAINS
+     NECK STIFFNESS
+     NECK SUPPLE
+     NEG
+     NEG
+     NEGATIVE
+     NEGGRAM
+     NEISSERIA GONORRHOEAE POLYMERASE CHAIN REACTION
+     NEISSERIA GONORRHOEAE POLYMERASE CHAIN REACTION, QUALITATIVE
+     NELFINAVIR
+     NELFINAVIR ARV
+     NELFINAVIR COMMENT
+     NELFINAVIR DISCONTINUATION1
+     NELFINAVIR DISCONTINUATION1 TODAY
+     NELFINAVIR DISCONTINUATION2
+     NELFINAVIR DISCONTINUATION2 TODAY
+     NELFINAVIR DISCONTINUED
+     NELFINAVIR PAST
+     NELFINAVIR PRESENT
+     NELFINAVIR SIG
+     NELFINAVIR START CONTINUE
+     NELFINAVIR START DATE
+     NELFINAVIR START STOP DATE
+     NELFINAVIR STOP DATE
+     NELFINAVIRP MTCT
+     NELTOLON
+     NELTOLON
+     Nemoni
+     Neonatal conjunctivitis
+     NEONATAL INFECTION
+     NEONATAL SEPSIS
+     neonatal tetanus
+     neonatale conjunctivitis
+     NEOPLASM
+     Nepenthe
+     NEPHROPATHY
+     neumonía
+     NEUROLOGIC
+     NEUROLOGIC COMMENT
+     NEUROLOGIC EXAM FINDINGS
+     NEUROLOGIC SYMPTOMS
+     Neurological condition
+     Neurological diagnoses
+     NEUTROPHILS
+     NEUTROPHILS (%) - MICROSCOPIC EXAM
+     NEUTROSEC (TABLET
+     NEUTROSEC TABLET
+     NEUTROSEC TABLET
+     NEVER
+     NEVER MARRIED
+     NEVIRAPINE
+     NEVIRAPINE ARV
+     NEVIRAPINE COMMENT
+     NEVIRAPINE DISCONTINUATION1
+     NEVIRAPINE DISCONTINUATION1 TODAY
+     NEVIRAPINE DISCONTINUATION2
+     NEVIRAPINE DISCONTINUATION2 TODAY
+     NEVIRAPINE PAST
+     NEVIRAPINE PRESENT
+     NEVIRAPINE RECOMMENDATION
+     NEVIRAPINE SIG
+     NEVIRAPINE START CONTINUE
+     NEVIRAPINE START STOP DATE
+     NEVIRAPINE STOP DATE
+     NEVIRAPINEP MTCT
+     NEW COMPLAINTS
+     NEW WHO/CDC STAGING CRITERIA MET
+     NEWBORN ANTIRETROVIRAL USE
+     NEXIUM
+     NEXIUM
+     NFV
+     NG tube administration
+     Nhiễm giun kim
+     Nhiễm khuẩn đường tiết niệu
+     Nhiễm trùng da
+     Nhiễm trùng tiểu
+     Nicholas Favre disease
+     NIDAQUIN D
+     NIDAQUIN D
+     NIFEDIPINE
+     NIGHT SWEATS
+     NIZAROL
+     NIZORAL
+     NIZORAL TABS
+     NIZORAL TABS
+     NO
+     No
+     No
+     No
+     No Doz
+     No Doz Maximum Strength
+     NO KNOWN RISK FACTORS
+     NO REFERRAL
+     No. of times
+     NOCARDIOSIS
+     Non
+     Non
+     Non stéroïdiens agent anti-inflammatoire classe de médicaments
+     NON-AMPATH
+     Non-coded diagnosis
+     Non-coded frequency
+     Non-insulin dependent diabetes mellitus
+     NON-REACTIVE
+     NONE
+     Nonsteroidal anti-inflammatory agent drug class
+     Nonsteroidal anti-inflammatory drug
+     NORBID
+     NORBID
+     NORFLOXACIN
+     NORFLOXACIN TABLETS
+     NORMAL
+     NORMAXICILLIN
+     NORMAXICILLIN
+     NOROXIN
+     NORVIR
+     Norwich Aspirin
+     NOSEBLEED
+     NOT APPLICABLE
+     NOT DETECTED
+     NOT DONE
+     NOT MARRIED
+     Nốt phỏng
+     NOTES
+     NOVA M
+     NOVA M
+     NOVADOM C
+     NOVADOM C
+     NSAIDs
+     Ntabizi
+     Nu-Seals Aspirin
+     NUCHAL RIGIDITY
+     NUMBER OF DOSES RECEIVED BEFORE ENROLLMENT
+     NUMBER OF HOSPITALIZATIONS IN PAST YEAR
+     Number of occurrences
+     NUMBER OF SEXUAL PARTNERS
+     NUMBER OF SIBLINGS
+     Number of times
+     NUMBER OF WEEKS ON TREATMENT
+     NUMBER OF WEEKS PREGNANT
+     NUMBER OF WIVES
+     NUMBNESS
+     Nuốt khó
+     NUROKIND G
+     NUROKIND G
+     Nutritional Edema with Dyspigmentation of Skin and Hair
+     Nutritional Marasmus
+     NUTRITIONAL SUPPORT
+     Nutritional, endocrine and metabolic diagnoses
+     NVP
+     NVP
+     NVP PRIOR TO DELIVERY
+     Nyinginezo
+     NYSTATIN
+     NYSTATIN DROPS
+     NYSTATIN DROPS
+     NYSTATIN PESSORIAL
+     NYSTATIN PESSORIAL
+     NYSTATIN SUPPOSITORY
+     NYSTATIN SUPPOSITORY
+     O
+     Ợ hơi gây đau
+     O NEGATIVE
+     O POSITIVE
+     O+
+     O+
+     O-
+     O-
+     OCCUPATION
+     OD
+     OD (once daily)
+     OD administration
+     OE
+     OEDEMA
+     Oedema
+     OEDÈME
+     Oeufs
+     OFLIN 400MG
+     OFLOX OZ TAB SUSP
+     OFLOX OZ TAB SUSP
+     OI ADHERENCE
+     OI ALTERATION
+     OI ALTERATION COMMENT
+     OI COMMENTS
+     OI ELIGIBILITY
+     OI ELIGIBLE
+     OI ELIGIBLE TOTAL PMTCT
+     OI INELIGIBLE HIV STATUS
+     OI MEDS MISSED
+     OI NEWLY ELIGIBLE CD4
+     OI NEWLY ELIGIBLE HIV EXPOSED
+     OI NEWLY ELIGIBLE OTHER
+     OI NEWLY ELIGIBLE OTHER SPECIFY
+     OI NEWLY ELIGIBLE WHO
+     OI PRESCRIBED
+     OI PREVIOUSLY ELIGIBLE
+     OI PREVIOUSLY ELIGIBLE DESC
+     OLIGURIA
+     OM
+     OMEPRAZOLE
+     OMNIX 100MG
+     OMNIX 100MG
+     OMNIX 200MG
+     OMNIX 200MG
+     OMS
+     OMS brand of Morphine Sulfate
+     ON ANTIRETROVIRAL THERAPY
+     ON ARVS
+     Once
+     Once a day
+     Once a day, at bedtime
+     Once a day, in the evening
+     Once a day, in the morning
+     Once a month
+     Once a week
+     Once daily
+     Once daily, at bedtime
+     Once daily, in the evening
+     Once daily, in the morning
+     Once per day
+     Once per day, at bedtime
+     Once per day, in the evening
+     Once per day, in the morning
+     Once per month
+     Once per week
+     ONCOTREX
+     ONCOTREX
+     ONE DOSE
+     One time
+     ONE TO TWO
+     onregelmatige intermenstruele bloeding
+     OPEN WOUND
+     OPEN WOUND OF UNSPECIFIED BODY REGION
+     Ophthalmia neonatorum
+     oppervlakkig letsel van het been
+     Opresyon
+     Oral
+     Oral administration
+     ORAL CANDIDIASIS
+     ORAL CONTRACEPTION
+     ORAL HAIRY LEUKOPLAKIA
+     ORAL HAIRY LEUKOPLAKIA
+     ORAL KAPOSI SARCOMA
+     ORAL POLIO VACCINATION
+     ORAL POLIO VAX NO.0
+     ORAL POLIO VAX NO.0
+     ORAL POLIO VAX NO.1
+     ORAL POLIO VAX NO.2
+     ORAL POLIO VAX NO.2
+     ORAL POLIO VAX NO.3
+     ORAL POLIO VAX NO.3
+     ORAL REHYDRATION SALTS
+     Oral route of administration
+     ORAL SORES
+     ORAL THRUSH
+     Oramorph
+     Oramorph SR
+     ORDER AFB
+     ORDER AST
+     ORDER CD4
+     ORDER COMPLETE BLOOD COUNT
+     ORDER CREATININE
+     ORDER CXR
+     ORDER ELISA
+     ORDER INFANT HIV
+     ORDER NONE
+     ORDER OTHER
+     ORDER OTHER SPEC
+     ORDER PC DNA
+     ORDER PREGNANCY TEST
+     ORDER RADIOLOGY TEST
+     ORDER RADIOLOGY TEST SPEC
+     ORDER SGPT
+     ORDER VDRL
+     ORDER VIRAL LOAD
+     ORETIC
+     orina anormal
+     ORPHAN
+     ORS
+     OS
+     OS administration
+     OTHER
+     Other
+     OTHER
+     OTHER AND UNSPECIFIED CONVULSIONS
+     OTHER ANTIRETROVIRAL DRUG
+     OTHER ARV
+     Other bacterial agents as the cause of diseases classified to other chapters
+     OTHER COMMENT
+     OTHER CONDITION1
+     OTHER CONDITION1 COMMENT
+     OTHER CONDITION1 SPEC
+     OTHER CONDITION2
+     OTHER CONDITION2 SPEC
+     OTHER DISCONTINUATION1
+     OTHER DISCONTINUATION2
+     OTHER DISCONTINUED
+     Other disease of hard tissue of teeth
+     OTHER DRUGS
+     OTHER DRUGS
+     OTHER FAMILY MEMBER
+     OTHER FEEDS
+     OTHER HIV CONDITIONS
+     OTHER HIV CONDITIONS DESC
+     OTHER HOUSEHOLD MEMBER
+     OTHER MEDICATION
+     OTHER NON-CODED
+     OTHER NON-CODED
+     Other Noninfectious Disorders of Lymphatic Channels
+     OTHER PAST
+     OTHER PHYSICAL EXAM
+     OTHER PHYSICAL EXAM COMMENT
+     OTHER PHYSICAL EXAM DESC
+     OTHER PRESENT
+     OTHER PROBLEMS
+     OTHER PROBLEMS
+     OTHER REFERRAL
+     OTHER SERVICES
+     OTHER SERVICES
+     OTHER SPEC
+     Other Specified Dermatomycoses
+     OTHER START CONTINUE
+     OTHER START DATE
+     OTHER STOP DATE
+     OTHER TESTS
+     OTHER TRIBE
+     OTHER X-RAY
+     OTHER1 COMMENT
+     OTHER1 CURRENT
+     OTHER1 DISCONTINUATION1
+     OTHER1 DISCONTINUATION2
+     OTHER1 RECOMMENDATION
+     OTHER1 SIG
+     OTHER1 SPEC
+     OTHER1 SPECIFY
+     OTHER1 START STOP DATE
+     OTHER2 COMMENT
+     OTHER2 CURRENT
+     OTHER2 DISCONTINUATION1
+     OTHER2 DISCONTINUATION2
+     OTHER2 RECOMMENDATION
+     OTHER2 SIG
+     OTHER2 SPEC
+     OTHER2 SPECIFY
+     OTHER2 START STOP DATE
+     OTHERP MTCT
+     Otite (moyenne)
+     OTITE EXTERNE
+     OTITIS EXTERNA
+     Otitis externa
+     otitis externa
+     OTITIS MEDIA
+     Otitis media
+     otitis media
+     OTORRHEA
+     OTORRHEA
+     Otro no codificado
+     OU
+     OU administration
+     Oui
+     OUTSIDE HC
+     OUTSIDE HC OTHER
+     OUTSIDE HC OTHER DESC
+     OUTSIDE HC PHARMACIST
+     OUTSIDE HC PRIVATE DR
+     OUTSIDE HC PUBLIC DR
+     OUTSIDE HC TRADITIONAL CARE
+     OVA
+     OVERALL DRUG ADHERENCE IN LAST MONTH
+     OVUM
+     OXALGIN D 25MG
+     OXALGIN D 25MG
+     OXALGIN DP
+     OXALGIN DP
+     OXALGIN DSP
+     OXALGIN DSP
+     OXALGIN SR 100MG
+     OXALGIN SR 100MG
+     OXALGIN –D(25)
+     OXALGIN –SR (100)
+     OXALGIN-DP
+     Oxyuriasis
+     Oz
+     Oz(s)
+     P.V. DISCHARGE
+     P23
+     PACKED CELL VOLUME
+     Packets
+     Pad
+     Pad(s)
+     PAID
+     PAID
+     PAIN, LOWER EXTREMITIES
+     PAINFUL SWALLOWING
+     PAINFUL SWALLOWING
+     PAINIL (100mg)
+     PAINIL 100MG
+     PAINIL 100MG
+     Palaprin Forte
+     PALE CONJUNCTIVA
+     PALENESS
+     PALLOR
+     Paludisme
+     Paludismo
+     PAN-D
+     PAN-D
+     PAN-D
+     PANADOL
+     PANADOL
+     PANADUR INJECTION
+     PANTOCID 20MG
+     PANTOCID 20MG
+     PANTOCID 40MG
+     PANTOCID 40MG
+     PANTODAC 20MG
+     PANTODAC 20MG
+     PANTODAC 40MG
+     PANTODAC 40MG
+     PANTOPRAZOLE
+     PAP SMEAR
+     PAP SMEAR
+     PAP TEST
+     PAPANICOLAOU SMEAR
+     PAPANICOLAOU SMEAR
+     PAPULAR
+     PAPULAR PRURITIC ERUPTION
+     PARACETAMOL
+     PARACETAMOL SYRUP
+     PARACETAMOL SYRUP
+     PARAPAS
+     PARAPAS
+     PARAPAS
+     PARAPHIMOSIS
+     parasitismo intestinal
+     Parasitose intestinale
+     parazitism entestinal
+     PARESTHESIA
+     PAROMOMYCIN
+     PAROTID ENLARGEMENT
+     PAROTITIS
+     PARTNER CONFIRMED HIV+
+     PARTNER MULTIPLE SEXUAL PARTNERS
+     PARTNER OR SPOUSE
+     PARTUM ANTIRETROVIRAL USE
+     PARTUM DOSING PERIOD
+     PAST BCG
+     PAST BCG DOSES
+     PAST DPT
+     PAST DPT DOSES
+     PAST HBV
+     PAST HBV DOSES
+     PAST HIB
+     PAST HIB DOSES
+     PAST MEASLES
+     PAST MEASLES DOSES
+     PAST OPV
+     PAST OPV DOSES
+     PAST OTHER
+     PAST OTHER DESC
+     PAST OTHER DOSES
+     PAST YELLOW FEVER DOSES
+     Pasyan-rapòte
+     Patch
+     Patch(es)
+     PATELLAR REFLEX
+     PATELLAR REFLEX
+     PATIENT AGE
+     PATIENT HAD SEX IN LAST 6MO
+     PATIENT HOSPITALIZED
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT ID
+     PATIENT MULTIPLE SEXUAL PARTNERS
+     PATIENT PAYS
+     PATIENT RELATION TO MTCT WOMAN
+     PATIENT REPORTED CURRENT CRYPTOCOCCUS TREATMENT
+     PATIENT REPORTED CURRENT PCP PROPHYLAXIS
+     PATIENT REPORTED CURRENT TUBERCULOSIS PROPHYLAXIS
+     PATIENT REPORTED CURRENT TUBERCULOSIS TREATMENT
+     Patient Satisfaction
+     Patient-reported
+     PAY CATEGORY
+     Paynocil
+     PBML
+     PCP
+     PCP
+     PCP
+     PCP - OLD
+     PCP PROPHYLAXIS ADHERENCE IN PAST WEEK
+     PCP PROPHYLAXIS DRUGS
+     PCP PROPHYLAXIS PLAN
+     PCP PROPHYLAXIS STARTED
+     PCT
+     PCT
+     PCV
+     PDW
+     PDW
+     Peanuts
+     Pèdi pwa
+     PEDS CDC CATEGORY QUERY
+     PEDS CDC SPECIFIC CONDITION QUERY
+     PEDS WHO CATEGORY QUERY
+     PEDS WHO SPECIFIC CONDITION QUERY
+     PELLAGRA
+     PELVIC INFLAMMATORY DISEASE
+     PELVIC ULTRASOUND
+     PELVIC ULTRASOUND
+     PELVIS X-RAY
+     PELVIS XRAY
+     PENICILLIN
+     Penicillin drug class
+     PENICILLIN INJECTION
+     PENICILLIN INJECTION
+     PENICILLIN V (ORAL) TABS
+     PENICILLIN V (ORAL) TABS
+     PENICILLIN V SYRUP
+     PENICILLIN V SYRUP
+     Pénicillines
+     Penicillins
+     Penisilinn
+     PEPFLUX
+     PEPFLUX MUCAINE
+     PEPFLUX MUCAINE
+     PEPTIC ULCER
+     Peptic ulcer
+     Peptic ulcer disease
+     PEPTIC ULCER NOS
+     peptisch ulcus
+     Per NG tube
+     Per rectum
+     Per vagina
+     PERICARDIAL FRICTION RUB
+     Perimèt brakyal
+     PERINATAL ARV  PROPHYLAXIS
+     Perineal laceration during delivery
+     Perineal laceration, with delivery
+     PERIPHERAL BLOOD MONONUCLEAR CELLS
+     PERIPHERAL NEUROPATHY
+     PERSCOMP
+     Persistent diarrhea
+     persistent oral candidiasis
+     Perte de poids
+     PERTUSSIS
+     peso (kg)
+     Peumonie
+     PEURPERAL FEVER
+     Peurperal fever
+     PGL
+     PHARYNGITIS
+     PHARYNGITIS NOS
+     PHASE VIH - CANDIDIASIS, VOIE ORORESPIRATOIRE
+     PHENOBARBITAL
+     PHENOBARBITONE
+     PHENYTOIN
+     Phlébite et thrombophlébite
+     Phlebitis and thrombophlebitis
+     Phỏng
+     Phù mạch
+     PHYSICAL EXAMINATION
+     PHYSICAL EXAMINATION
+     Physical injury
+     Physical trauma
+     PID
+     PID
+     PIH
+     PILLS
+     PILLS TAKEN LAST7 DAYS
+     Pilsasyon
+     PINK EYE
+     Pint
+     Pint(s)
+     Pinworm infection
+     PIPERAZINE
+     Piqûres d'abeilles
+     Piqûres de guêpe
+     PIRICAM
+     PIRICAM
+     PIRITON
+     PIRITON
+     PIRITON SYRUP
+     PIRITON SYRUP
+     PIRITON TABS
+     PIRITON TABS
+     PIROX
+     PIROX
+     Pistach
+     Pistache
+     PL EFFUSION
+     PLAN COMMENT
+     PLANE WART
+     PLASIL
+     PLASIL
+     PLASMA
+     Plasma
+     PLATELET DISTRIBUTION WIDTH
+     PLATELETCRIT
+     PLATELETS
+     Platet
+     PLEURAL EFFUSION
+     PLEURITIC
+     PLTS
+     PLTS
+     PMI AX
+     PMI DISPLACED
+     PMI EPIGASTRIC
+     PMI EPIGASTRIC
+     PMI MCL
+     PMI PS
+     PML
+     PML
+     PMNS
+     PNEUMOCYSTIC CARINII PNEUMONIA
+     PNEUMOCYSTIC CARINII PNEUMONIA PROPHYLACTIC DRUGS
+     PNEUMONIA
+     PNEUMONIA
+     Pneumonia
+     PNEUMONIA BRONCHIAL
+     PNEUMONIA BRONCHIAL
+     PNEUMONIA NOS
+     PNEUMONIA, LOBAR
+     PNEUMONIA, TUBERCULOUS
+     pneumonie
+     PO
+     POIDS (KG)
+     POISONING NOS
+     POISONING, FOOD
+     POISONING, FOOD
+     Poisson
+     pole
+     Polèn
+     polidactilia
+     POLIO
+     Polio
+     POLIO VACCINATION
+     POLIO VAX NO.0
+     POLIO VAX NO.0
+     POLIO VAX NO.1
+     POLIO VAX NO.1
+     POLIO VAX NO.2
+     POLIO VAX NO.2
+     POLIO VAX NO.3
+     POLIO VAX NO.3
+     poliomielitis aguda
+     Poliomyélite
+     Poliomyélite, suspectés
+     POLIOMYELITIS
+     Poliomyelitis
+     Poliomyelitis, suspected
+     Pollen
+     Pollen
+     Polydactylie
+     Polydactyly
+     POLYMENORRHEA
+     POLYMORPHONUCLEAR CELLS
+     Polyomyelit
+     POLYS
+     POLYS
+     POOR APPETITE
+     POOR SAMPLE QUALITY
+     POOR WT GAIN
+     POOR WT GAIN
+     POOR WT GAIN TIME
+     porciones retenidas de placenta Y/O membranas sin hemorragia
+     POS
+     POS
+     POSITIVE
+     Positive Serological and/or Viral Culture Findings for Human Immunodeficiency Virus
+     Post-traumatic stress disorder
+     POSTERIOR
+     POSTERIOR
+     postMI
+     Postnatal infection
+     POSTPARTUM
+     postpartum bloeding
+     Postpartum haemorrhage
+     POSTPARTUM HEMORRHAGE
+     POSTPARTUM HEMORRHAGE
+     Postpartum Hemorrhage
+     POTASSIUM
+     Pouls
+     Pousantaj respiratwa
+     Poussière
+     Pousyè
+     POWDER
+     POWDER
+     PPE
+     PPE
+     PPF
+     PPF
+     PPH (Postpartum Hemorrhage)
+     PR
+     PREDNISOLONE
+     PREDNISONE
+     PREECLAMPSIA
+     PREGNANCY
+     PREGNANCY
+     PREGNANCY OUTCOME
+     PREGNANCY STATUS
+     PREGNANCY TEST
+     PREGNANCY TEST
+     Pregnancy, childbearing and family planning diagnoses
+     PREGNANCY, ECTOPIC
+     PREGNANCY, HYPERTENSION ASSOCIATED
+     PREGNANCY, MISCARRIAGE
+     Pregnancy, miscarriage
+     PREGNANCY, TERMINATION
+     PREGNANCY-INDUCED HYPERTENSION
+     Premature rupture of membranes
+     Prensipal
+     PRESCRIPTION
+     PRESCRIPTION
+     Presenting Complaints
+     PRESSION DIASTOLIQUE
+     PRESSION SYSTOLIQUE
+     PRESSURE SENSATION
+     PRESUMED
+     Presumed diagnosis
+     Presumed malaria with pregnancy
+     Presumptive malaria with minor digestive symptoms, pregnant
+     Presumptive malaria with minor digestive system
+     Presumptive malaria with pregnancy
+     PREVACID
+     PREVIOUS ANTIRETROVIRAL DRUGS USED FOR TRANSMISSION PROPHYLAXIS
+     PREVIOUS ANTIRETROVIRAL DRUGS USED FOR TREATMENT
+     PREVIOUS DIAGNOSIS/PRESCRIPTION
+     PREVIOUS IMMUNIZATIONS ADMINISTERED
+     PREVIOUS IMMUNIZATIONS NOT ADMINISTERED
+     PRILOSEC
+     Primary
+     PRIMARY COMPLAINT
+     PRIMARY REGIMEN
+     Primary Respiratory Tuberculosis, Confirmed Bacteriologically and Histologically
+     Primordial
+     Principal
+     PROBENECID
+     PROBLEM ADDED
+     PROBLEM COMMENT
+     PROBLEM LIST
+     PROBLEM LIST
+     PROBLEM RESOLVED
+     Problem severity
+     problema de alimentación en el recién nacido
+     Problème psychologique, autre
+     PROCARDIA
+     PRODUCTIVE COUGH
+     PRODUCTIVE COUGH QUALITY
+     Produits laitiers
+     PROEBENECID
+     PROEBENECID
+     PROGRESSIVE MULTIFOCAL LEUKOENCEPHALOPATHY
+     PROGUANIL
+     PROLIXIN
+     PROM (premature rupture of membranes)
+     PROPANOLOL
+     PROPRANOLOL
+     PROTEIN POS
+     Protéines du lait
+     PROTOGUT
+     PROTOGUT 15MG
+     PROTOGUT 15MG
+     PROTOGUT 30MG
+     PROTOGUT 30MG
+     PROTONIX
+     Protozoal intestinal diseases, other
+     Protozoan infection, NEC
+     PROVIDED INFO FATHER
+     PROVIDED INFO MOTHER
+     PROVIDED INFO OTHER
+     PROVIDED INFO OTHER DESC
+     PROVIDED INFO PATIENT
+     PROVIDED INFO SIBLING
+     PROVIDER
+     Provisional diagnosis
+     Prurit
+     PRURITIS
+     prurito
+     Pruritus
+     PSEUDOEPHEDRINE AND TRIPOLIDINE
+     PSQ
+     PSQ
+     PSYCHIATRIC
+     PSYCHIATRIC COMMENT
+     Psychiatric disorder
+     PSYCHIATRIC EXAM FINDINGS
+     Psychological diagnoses
+     Psychological problem, NEC
+     Psychological problem, other
+     PSYCHOSIS
+     PSYCHOSOCIAL COUNSELING
+     Psychosomatic disorder
+     Psychosomatic problems
+     PT PAYS FOR WORK UP RX
+     PTB
+     PTSD (post-traumatic stress disorder)
+     PUD
+     PUD
+     Puerperal complications
+     PUERPERAL SEPSIS
+     Puerperal sepsis
+     Puerperal septicemia
+     Puff
+     Puff(s)
+     pulmonale bloeding
+     Pulmonary hemorrhage
+     PULMONARY SYMPTOMS
+     PULMONARY SYMPTOMS TIME
+     PULMONARY TB
+     PULMONARY TUBERCULOSIS
+     Pulp and periapical tissue disease
+     PULSE
+     Pulse
+     PULSUS
+     PULSUS PARADOXUS
+     PUO
+     PUO (pyrexia of unknown origin)
+     PURULENT
+     PURULENT DISCHARGE
+     PUS CELLS
+     PUS CELLS
+     PV
+     Pwa (kg)
+     Pwason
+     Pwoteyin lèt
+     PYRAZINAMIDE
+     PYRAZINAMIDE COMMENT
+     PYREXIA OF UNKNOWN ORIGIN
+     PYREXIA OF UNKNOWN ORIGON(PUO)
+     PYRIDOXINE
+     PYRIMETHAMINE / SULFADOXINE
+     PYRODEX
+     PYRODEX
+     q12h
+     q1h
+     q24h
+     q2h
+     q30m
+     q36h
+     q3h
+     q48h
+     q4h
+     q5h
+     q6h
+     q72h
+     q8h
+     qac and qhs
+     qAM
+     QD (once daily)
+     QDS (four times a day)
+     qHS
+     QID
+     QIDACHS
+     QIDPCHS
+     qMWF
+     qPM
+     Quartenary
+     Quaternaire
+     QUIGYL DS RPG LS
+     QUIGYL DS RPG LS
+     QUINAPRIL
+     QUININE
+     QUININE INJECTION
+     QUININE INJECTION
+     QUININE SYRUP
+     QUININE SYRUP
+     R/O
+     R/O
+     RABIES
+     Rabies
+     RABIES VACCINATION
+     RACHITIS
+     RACHITIS
+     RACIPER
+     RACIPER 20MG
+     RACIPER 20MG
+     RACIPER 40MG
+     RACIPER 40MG
+     RACIPER D
+     RACIPER D
+     RACIPER-D
+     RADIATES INTO AXILLA
+     RADIATES INTO NECK
+     Rage
+     Ragweed
+     RANITIDINE
+     RANITIDINE
+     Rapi-Ject
+     RAPID BREATHING
+     RAPID BREATHING
+     RAPID BREATHING TIME
+     Rapportée par le patient
+     RASH
+     Rash
+     RASH
+     RASH
+     RASH ALLERGIC
+     RASH ALLERGIC
+     RASH ALLERGIC
+     RASH, SEPTIC
+     RAXIM 100MG
+     RAXIM 100MG
+     RAXIM 200MG
+     RAXIM 200MG
+     RB CELLS
+     RB CELLS
+     RBC
+     RBCS
+     RBCS
+     RDW
+     RDW
+     Reaction to severe stress, and adjustment disorder
+     REACTIVE
+     REASON ANTIRETROVIRALS STARTED
+     REASON ANTIRETROVIRALS STOPPED
+     REASON ARV NOT PRESCRIBED
+     REASON FEEDING METHOD CHANGED
+     REASON FOR NOT PAYING
+     REASON FOR NOT PAYING
+     REASON OI NOT PRESCRIBED
+     REASON ORDER STOPPED
+     REASON PCP PROPHYLAXIS STOPPED
+     REASON TUBERCULOSIS PROPHYLAXIS STOPPED
+     REASON TUBERCULOSIS TREATMENT STOPPED
+     REBOUND
+     REBOUND
+     Rectal administration
+     Rectally
+     RECTOVAGINAL FISTULA
+     RECURRENT BRONCHITIS
+     RECURRENT PNEUMONIA
+     RED BLOOD CELLS
+     RED CELL DISTRIBUTION WIDTH
+     Reference application allergic reactions
+     Reference application common drug allergens
+     Reference application common environmental allergens
+     Reference application common food allergens
+     REFERRAL IMMUNIZATION
+     REFERRAL IMMUNIZATION SPEC
+     REFERRAL OTHER SPEC
+     REFERRALS ORDERED
+     REFLUX FORTE GEL
+     REFLUX FORTE GEL
+     REFLUX FORTE GEL
+     Reflux Gatro-Oesophagien
+     REFUSAL TO FEED
+     REFUSAL TO FEED DURATION
+     REGIMEN FAILURE
+     REGRESSED MILESTONES
+     REGULAR INSULIN
+     REGULAR INSULIN
+     RELATIONHIP TO MTCT WOMAN
+     RELAXYL SPRAY
+     RELAXYL SPRAY
+     RELCER
+     REMOVE DIAGNOSIS
+     RENAL DISEASE
+     RENAL DISEASE COMMENT
+     REQUESTED TESTS
+     REQUESTED TESTS
+     Rescudose
+     RESEARCH
+     Respirasyon pa minit
+     RESPIRATORY DISEASE NOS
+     RESPIRATORY RATE
+     Respiratory rate
+     Respiratory system diagnoses
+     RESPIRATORY TRACT INFECTION
+     RESPIRATORY TRACT INFECTION, LOWER
+     RESPIRATORY TRACT INFECTION, NOS
+     RESPIRATORY TRACT INFECTION, UPPER
+     Respiratory tract route
+     RESTARTED BREAST FEED
+     RESULT
+     RESULT
+     RESULT
+     Retained placenta or membranes, without Hemorrhage
+     retención de orina
+     Rétention d'urine
+     Retention of urine
+     RETICS (%)
+     RETICULOCYTES (%)
+     RETROVIR
+     RETROVIR
+     RETURN VISIT DATE
+     RETURN VISIT MONTHS
+     RETURN VISIT WEEKS
+     REVIEW OF SYSTEMS, CARDIOPULMONARY
+     REVIEW OF SYSTEMS, CENTRAL NERVOUS SYSTEM
+     REVIEW OF SYSTEMS, DEVELOPMENTAL
+     REVIEW OF SYSTEMS, GASTROINTESTINAL
+     REVIEW OF SYSTEMS, GENERAL
+     REVIEW OF SYSTEMS, GENITOURINARY
+     REVIEW OF SYSTEMS, HEENT
+     REVIEW OF SYSTEMS, MUSCULOSKELETAL
+     REVIVE
+     REVIVE (product)
+     Revive brand of caffeine
+     RHD
+     RHD
+     Rheumatic fever with cardiac involvement
+     Rheumatic fever with heart involvement
+     Rheumatic fever without cardiac involvement
+     Rheumatic fever without heart involvement
+     RHEUMATIC HEART DISEASE
+     RHEUMATISM
+     RHEUMATISM
+     RHEUMATOID ARTHRITIS
+     RHEUMATOID FACTOR/ANTI-NUCLEAR FACTOR/HLA B27
+     RHEUMATOID FACTOR/ANTI-NUCLEAR FACTOR/HLA B27
+     RHINITIS, ALLERGIC
+     RHINITIS, ALLERGIC
+     RHK Advice
+     RHK current complaint
+     RHK DIAGNOSIS
+     RHK Exam
+     RHK Family History
+     RHK Frequency
+     RHK Lifestyle
+     RHK Medical Advice
+     RHK Medical Advice Set
+     RHK Medical History
+     RHK occupation
+     RHK Prescription
+     RHK Previous Prescription
+     RHK Relationship
+     RHK TESTS
+     RHK tests
+     RHOMBERG
+     RHONCHI
+     RHONCHI
+     RHYTHM
+     RHYTHM METHOD
+     RICKETS
+     RICKETS
+     RICKETS
+     RICKETS
+     Ridiprin
+     RIFAFOUR
+     RIFAMPICIN
+     RIFAMPICIN AND ISONIAZID
+     RIFAMPICIN ISONIAZID AND PYRAZINAMIDE
+     RIFAMPICIN ISONIAZID PYRAZINAMIDE AND ETHAMBUTOL
+     RIFAMPIN
+     RIFAMPIN COMMENT
+     RIFAMPIN CURRENT
+     RIFATER
+     RIFINAH
+     RIGHT
+     RIGHT ARM
+     Right ear administration
+     Right eye administration
+     RIGHT LEG
+     RIGHT LOWER EXTREMITY
+     RIGHT LOWER LOBE
+     RIGHT MIDDLE LOBE
+     RIGHT UPPER EXTREMITY
+     RIGHT UPPER LOBE
+     RIGHT UPPER QUADRANT
+     RIGHT VENTRICULAR HEAVE
+     RIGHT VENTRICULAR LIFT
+     Ring pessary
+     Ring pessary(ies)
+     Ring suppository
+     Ring suppository(ies)
+     RINGWORM OF THE SCALP
+     RITONAVIR
+     RLE
+     RML
+     RMS
+     ROAD TRAFFIC ACCIDENT
+     ROAD TRAFFIC ACCIDENT
+     ROCEPHIN
+     ROFECOXIB
+     Rối loạn căng thẳng sau chấn thương
+     Rối loạn nước điện giải
+     roncha
+     ROS CNS COMMENT
+     ROS CP COMMENT
+     ROS DEV COMMENT
+     ROS GENERAL COMMENT
+     ROS GI COMMENT
+     ROS GU COMMENT
+     ROS HEENT COMMENT
+     ROS MEDS COMMENT
+     ROS MS COMMENT
+     ROUGEOLE
+     Roujol
+     roundworm infection
+     Routes of administration
+     ROUTINE, MEDICAL EXAMINATION
+     ROUTINE, MEDICAL EXAMINATION
+     Roxanol
+     Roxanol UD
+     Roxanol-T
+     RR
+     RR
+     RTA
+     RTA
+     RTA
+     RTI
+     Ruban adhésif
+     rubor
+     RUE
+     RUL
+     RULE OUT
+     RULE-OUT
+     RULE-OUT
+     RUNNING NOSE
+     ruptura prematura de membranas
+     RUPTURE OF MEMBRANES MORE THAN 4 HOURS
+     Rupture prématurée des membranes
+     RUQ
+     RUQ
+     RV HEAVE
+     RV LIFT
+     RX DC
+     RX DC
+     RX DC TOX
+     RX DC TOX
+     RX FREQ
+     RX FREQ
+     RX STRENGTH
+     RX STRENGTH
+     Rythme respiratoire
+     S/W/D
+     S/W/D
+     S1 INCREASED
+     S1 SINGLE
+     S1 SPLIT
+     S2 DIMINISHED A2
+     S2 FIXED SPLIT
+     S2 LOUD P2
+     S2 LOUD P2
+     S2 PARADOXICAL SPLIT
+     S2 PARADOXICAL SPLIT
+     S2 SINGLE
+     S2 SINGLE
+     S2 SOFT A2
+     S2 SPLIT
+     S3 GALLOP
+     S3 GALLOP
+     S4 GALLOP
+     SACHET
+     SACHET
+     SACHETS
+     Saignement
+     Saignement post partum
+     SALBUTAMOL
+     SALBUTAMOL INHALER
+     SALBUTAMOL SYRUP
+     SALBUTAMOL SYRUP
+     SALBUTAMOL TABS
+     SALBUTAMOL TABS
+     SALICYLIC ACID OINT
+     Sán máng
+     San nan pipi
+     Sang Total
+     sangrado intermenstrual irregular
+     SAO2
+     SaO2
+     sarampión
+     Saturation d'oxygène dans le sang
+     SBP
+     SBP
+     SBP
+     SBP
+     SCABIES
+     Scabies
+     SCALP RINGWORM
+     SCALY
+     SCHEDULED VISIT
+     SCHISTOSOMIASE
+     SCHISTOSOMIASIS
+     SCHISTOSOMIASIS
+     SCHISTOSOMIASIS
+     SCHISTOSOMIASIS
+     SCHIZOPHRENIA
+     Schizophrenia
+     Schizophrénie
+     SCHOOL YEARS COMPLETED
+     SCLERAL ICTERUS
+     SCLERIC ICTERIC
+     Scoop
+     Scoop(s)
+     Scoopful
+     SCOPOLAMINE
+     SCORBUTUS
+     SCURVY
+     SCURVY
+     Secondaire
+     Secondary
+     Secondary hypertension
+     Seconds
+     secreción uretral
+     secs
+     SED RATE
+     Sefalosporin
+     SEIZURE
+     Seizure
+     SEIZURES
+     SELF
+     SELF PAY
+     SEM
+     Semanas
+     SENILE DEMENTIA
+     SENILE DEMENTIA
+     SENILE PSYCHOSIS
+     SEPARATED
+     SEPSIS NEONATAL
+     SEPSIS NEONATAL
+     SEPTIC LESIONS
+     septicemia puerperal
+     Septicémie puerpérale
+     SEPTRIN
+     SEPTRIN
+     SEPTRIN SYRUP
+     SEPTRIN SYRUP
+     Sequelae of cerebrovascular disease
+     SERUM
+     Serum
+     SERUM ALBUMIN
+     SERUM ALBUMIN AND GLOBULIN
+     SERUM ALBUMIN AND GLOBULIN
+     SERUM CALCIUM
+     SERUM CALCIUM
+     SERUM CARBON DIOXIDE
+     SERUM CHLORIDE
+     SERUM CO2
+     SERUM CREATININE
+     SERUM ELECTROLYTES
+     SERUM GLUCOSE
+     SERUM GLUTAMIC-OXALOACETIC TRANSAMINASE
+     SERUM GLUTAMIC-PYRUVIC TRANSAMINASE
+     SERUM IRON AND VIT. B12
+     SERUM IRON AND VIT. B12
+     SERUM LACTATE
+     SERUM LIPASE
+     SERUM POTASSIUM
+     SERUM SODIUM
+     SERUM SODIUM AND POTASSIUM
+     SERUM SODIUM AND POTASSIUM
+     SERUM URIC ACID
+     SERUM URIC ACID
+     SERUM VIT. D3
+     SERUM VIT. D3
+     SERVICES
+     SERVICES ORDERED
+     SERVICES OTHER
+     SES
+     SES
+     SESCODE
+     Sevè
+     SEVEN TO NINE
+     Severe
+     SÉVÈRE
+     SEVERITY
+     Sevredol
+     SEX
+     SEXUAL ASSAULT
+     Sexually transmitted chlamydial disease
+     Sexually transmitted disease
+     SEXUALLY TRANSMITTED DISEASE UNSPECIFIED
+     SGOT
+     SGOT
+     SGPT
+     SGPT
+     SHARP SENSATION
+     Shellfish
+     Shellfish (dietary)
+     Shigellosis
+     shigelosis
+     SHINGLES
+     Shock
+     shock
+     SHORTNESS OF BREATH
+     Shortness of breath
+     SHORTNESS OF BREATH AT REST
+     SHORTNESS OF BREATH DURATION
+     SHORTNESS OF BREATH WITH EXERTION
+     SHOULDER DISLOCATION
+     SHOULDER JOINT X-RAY PA AND LATERAL VIEW
+     SHOULDER JOINT X-RAY PA AND LATERAL VIEW
+     SHOULDER X-RAY
+     SHOULDER XRAY
+     Sí
+     Sì
+     SIBELIUM
+     SIBELIUM
+     SIBLING HIV INFECTED
+     sífilis
+     Sifilis
+     SIG
+     SIG
+     SIGN SYMPTOM OTHER DESC
+     SIGN SYMPTOM OTHER1
+     SIGN SYMPTOM YES NO
+     SILVER SULFADIAZINE
+     SILVEREX CREAM
+     SILVEREX CREAM
+     Sim
+     síncope y colapso
+     Single event
+     Single spontaneous delivery
+     SINUSITIS
+     SITE CODE
+     SKIN
+     Skin abscess
+     SKIN COMMENT
+     SKIN DISORDERS
+     SKIN EXAM FINDINGS
+     SKIN FOLD THICK
+     SKIN FOLD THICKNESS
+     Skin infection
+     SKIN INFECTION NOS
+     SKIN INFECTION, FUNGAL
+     SKIN INFECTION, FUNGAL
+     Skin rash
+     SKULL XRAY
+     Sloprin
+     SNAKE ANTI-VENIN
+     SNEEZING
+     SOB
+     SOB
+     SOB (Shortness of Breath)
+     SOB AT REST
+     SOB DURATION
+     SOB EXERTION
+     SOB REST
+     SOB WITH EXERTION
+     Sốc
+     Sốc phản vệ
+     SOCIAL SUPPORT SERVICES
+     SODIUM
+     SOFT TISSUE INJURY
+     SOFTOVAC
+     SOFTOVAC
+     SOFTOVAC
+     Soja
+     Solprin
+     SOLUBLE INSULIN
+     SOLUBLE INSULIN
+     SORBILINE
+     SORBILINE
+     SORBILINE
+     Sốt
+     Sốt không rõ nguyên nhân
+     Sốt rét nặng
+     Soy
+     Soy bean
+     Soya
+     Soya bean
+     SPARACID
+     SPARACID
+     SPARACID
+     SPASMINDON
+     SPASMINDON
+     SPASMINDON
+     SPASMINDON DPS
+     SPASMINDON DPS
+     SPASMINDON –DPS
+     Spastic colon
+     Specified bacterial disease, other
+     Specimen sources
+     SPECTINOMYCIN
+     SPECTOMYCIN
+     Spina Bifida
+     SPINE X-RAY
+     SPINE XRAY
+     SPIT
+     SPIT
+     SPLEEN SIZE
+     SPLENOMEGALY
+     SPLENOMEGALY
+     SPLENOMEGALY
+     SPLINTING
+     SpO2
+     SpO2
+     SPONDLOSIS
+     SPONDLOSIS
+     SPONDYLOSIS
+     Spontaneous abortion
+     SPONTANEOUS VAGINAL DELIVERY
+     SPONTREL
+     SPONTREL
+     SPORANOX
+     SPORANOX
+     SPOUSE AWARE HIV
+     SPOUSE DEAD
+     SPOUSE DIED
+     SPOUSE EXPIRED FROM HIV
+     SPOUSE YEAR OF DEATH FROM HIV
+     SPOUSES PARTNER SUSPECTED HIV+
+     SPRAIN MR
+     SPRAIN MR
+     Spray
+     Spray(s)
+     SPUTUM
+     Sputum
+     SPUTUM FOR ACID FAST BACILLI
+     SPUTUM FOR AFB
+     St. Joseph Adult Chewable Aspirin
+     St. Joseph Aspirin
+     St. Joseph Aspirin Adult Chewable
+     St. Joseph Aspirin Adult EC
+     STABS
+     Stanback Analgesic
+     Stanley-Linctus
+     Stanley-Syrup
+     START DRUGS
+     START HAART
+     START INH
+     START SEPTRIN
+     STARZYME
+     STARZYME
+     STARZYME
+     Stat Awake
+     Statins
+     STAVUDINE
+     STAVUDINE ARV
+     STAVUDINE COMMENT
+     STAVUDINE DISCONTINUATION1
+     STAVUDINE DISCONTINUATION1 TODAY
+     STAVUDINE DISCONTINUATION2
+     STAVUDINE DISCONTINUATION2 TODAY
+     STAVUDINE DISCONTINUED
+     STAVUDINE LAMIVUDINE AND NEVIRAPINE
+     STAVUDINE PAST
+     STAVUDINE PRESENT
+     STAVUDINE RECOMMENDATION
+     STAVUDINE SIG
+     STAVUDINE START CONTINUE
+     STAVUDINE START DATE
+     STAVUDINE START STOP DATE
+     STAVUDINE STOP DATE
+     STAVUDINEP MTCT
+     Stay Alert
+     Stay Awake
+     STD (sexually transmitted disease)
+     Steroidyen anti-enflamatwa dwòg ajan klas
+     STI
+     STI (sexually transmitted infection)
+     STI,FEMALES
+     STI,MALES
+     STI,MALES
+     STIFF NECK
+     Sting of bee
+     STOCRIN
+     STOCRIN
+     stool
+     STOOL EXAM
+     STOOL MICROSCOPY
+     STOOL MICROSCOPY
+     STOOL: OCCULT BLOOD AND MICROSCOPIC FOR CYSTS ETC. AND CULTURE
+     STOOL: OCCULT BLOOD AND MICROSCOPIC FOR CYSTS ETC. AND CULTURE
+     STOP ALL
+     Strawberries
+     Strawberry
+     Streptococcus or staphylococcus as the cause of disease
+     STREPTOMYCIN
+     STREPTOMYCIN CURRENT
+     STREPTOMYCIN INJECTION
+     STREPTOMYCIN INJECTION
+     STREPTOMYCIN TABLETS
+     STREPTOMYCIN TABLETS
+     Strongyloides infection
+     strongyloidiasis
+     STRUMA
+     STUGERON
+     STUGERON
+     STUGERON
+     STUGIL
+     STUGIL
+     STUGIL
+     STY
+     STY
+     STYE
+     Subcutaneous
+     Subcutaneous administration
+     Subcutaneous route of administration
+     Subdermal
+     SUBMANDIBULAR
+     SUBMANDIBULAR
+     SubQ
+     SUBSCAPULAR
+     SUBSTERNAL
+     SUCRASE
+     SUCRASE
+     SUCRASE
+     SUDHINOL
+     SUDHINOL
+     SUDHINOL
+     SUGAR
+     SUGAR
+     Sulfa drugs
+     SULFADOXINE
+     SULFADOXINE AND PYRIMETHAMINE
+     SULFADOXINE AND PYRIMETHAMINE
+     SULFADOXINE AND PYRIMETHAMINE
+     SULFALENE AND PYRAMETHAMINE
+     Sulfamides
+     Sulfonamid
+     Sulfonamide
+     Sulfonamide drug class
+     Sulfonamides
+     SULPHUR OINTMENT
+     Superficial head injury
+     Superficial injury of abdomen, lower back or pelvis
+     Superficial injury of forearm
+     Superficial injury of hand or wrist
+     Superficial injury of hip or thigh
+     Superficial injury of lower limb, level unspecified
+     Superficial injury of shoulder and upper arm
+     Superficial injury of shoulder or upper arm
+     SUPERIOR
+     Supp
+     SUPPOSITOIRE
+     Suppository
+     Suppository(ies)
+     SUPRACLAVICULAR
+     SUPRACLAVICULAR
+     SUPRAPUBIC
+     SUPRAPUBIC TAP
+     SUPRAX
+     SUPRAX
+     SURGERY
+     SUSPECT HIV CAUSED FATHER DEATH
+     SUSPECT HIV CAUSED MOTHER DEATH
+     SUSPECTED PAST HIV EXPOSURE
+     SUSTIVA
+     SUSTIVE
+     SUSTIVE
+     Suy dinh dưỡng thể teo đét và thể phù
+     Suyễn
+     SVD
+     SWALLOWING DIFFICULTIES
+     SWELLING
+     SYMPTOM
+     Symptom involving urinary system
+     SYMPTOMATIC
+     SYNALGESIC
+     SYNALGESIC
+     SYNALGESIC
+     Syncope and collapse
+     SYNOVITIS
+     SYPHILIS
+     Syphilis
+     Syphilis
+     SYPHILIS QUALITATIVE (TPHA)
+     SYPHILIS TEST (TPHA)
+     SYPHILIS TEST (TPHA) IN TITRE
+     SYPHILIS TEST (VDRL)
+     SYPHILIS TITRE
+     Syringe
+     Syringe(s)
+     SYRUP
+     SYRUP
+     SYSTOLIC
+     SYSTOLIC
+     SYSTOLIC BLOOD PRESSURE
+     Systolic blood pressure
+     SYSTOLIC EJECTION MURMUR
+     T H/S RATIO
+     T PEN
+     T VAGINALIS
+     T VAGINALIS
+     T'PEN
+     T-PEN
+     T-PMTCT
+     Tab
+     Tablespoon
+     Tablespoon(s)
+     Tablet
+     Tablet(s)
+     TACHYPNEA
+     TACHYPNEA DURATION
+     Taeniasis
+     TAGAMYCIN
+     TAGAMYCIN
+     Taille (CM)
+     Tâm thần phân liệt
+     Tăng huyết áp
+     Tăng huyết áp khi cần thiết
+     Tăng huyết áp thứ phát
+     TANNER STAGING, QUALITATIVE
+     TANNER STAGING, QUANTITATIVE
+     Tanperati (C)
+     Tansyon diastolik
+     Tansyon systolik
+     TAUX RESPIRATOIRE
+     TB
+     TB
+     TB ADENITIS
+     TB COMMENT
+     TB CURRENT TREATMENT TYPE
+     TB DRUG START DATE
+     TB DRUGS
+     TB DRUGS CONTINUE
+     TB FURTHER WORK UP
+     TB MEDS MISSED
+     TB PCR
+     TB PCR
+     TB PNEUMONIA
+     TB PROPHYLAXIS
+     TB PROPHYLAXIS ADHERENCE
+     TB PROPHYLAXIS STARTED
+     TB SKIN TEST
+     TB TX COMPLETED YRS
+     TBILI
+     TBILI
+     Tbsp
+     TCO2
+     TD
+     TD BOOSTER
+     TDF
+     TDF FORTE
+     TDF FORTE
+     Teaspoon
+     Teaspoon(s)
+     TEGRETOL
+     TEGRETOL
+     TELEMEDICINE DIAGNOSIS
+     TEMP (C)
+     TEMP (C)
+     TEMP (C)
+     Temp (C)
+     TEMPERATURE (C)
+     Temperature (C)
+     TEMPÉRATURE (C)
+     TEMPORAL ANSWERS
+     TEMPORAL WASTING
+     TEN OR MORE
+     TENOFOVIR
+     TENSION ARTÉRIELLE DIASTOLIQUE
+     TENSION ARTÉRIELLE SYSTOLIQUE
+     TEO
+     TEO
+     Tep adezif
+     Tertiaire
+     Tertiary
+     Test Concept
+     TESTS ORDERED
+     Tèt Fè Mal
+     Tétanos
+     tétanos
+     Tetanòs
+     tétanos del neonato
+     Tetanos neonatal
+     Tetanosi
+     Tetanus
+     tetanus
+     TETANUS BOOSTER
+     Tetanus neonatorum
+     tetanus neonatorum
+     TETANUS TOXOID
+     TETRACYCLINE
+     TETRACYCLINE EYE OINTMENT
+     TETRACYCLINE EYE OINTMENT
+     TETRADOX 100MG
+     TETRADOX 100MG
+     Text of encounter note
+     TG
+     TG
+     Therapy Bayer
+     Thiếu máu
+     THIGH, FRONT
+     THORACIC SPINE X-RAY PA AND LATERAL VIEW
+     THORACIC SPINE X-RAY PA AND LATERAL VIEW
+     Threadworm infection
+     Three times a day
+     Three times a day, after meals
+     Three times a day, before meals
+     Three times a day, with meals
+     Three times a week on Monday, Wednesday and Friday
+     Three times per day
+     Three times per day, after meals
+     Three times per day, before meals
+     Three times per day, with meals
+     THREE TO FOUR
+     Thrice daily
+     Thrice daily, after meals
+     Thrice daily, before meals
+     Thrice daily, with meals
+     THRILL DIASTOLIC
+     THRILL SYSTOLIC
+     THROAT INJECTED
+     THROAT PAINFUL
+     THROMBOCYTE
+     THROMBOCYTOPENIA
+     THROMBOPENIA
+     THRUSH
+     THRUSH
+     THRUSH
+     THRUSH
+     Thuốc ức chế men chuyển
+     THYROID FUNCTION TEST (T3 /T4/TSH)
+     THYROID FUNCTION TEST (T3 /T4/TSH)
+     THYROID NODULE
+     THYROMEGALY
+     THYROMEGALY
+     THYROMEGALY DIFFUSE ENLARGEMENT
+     THYROMEGALY MULTINODULAR
+     THYROMEGALY SINGLE NODULE
+     TID
+     TIDAC
+     TIDPC
+     TIDWM
+     Tiết dịch niệu đạo
+     Tiêu chảy
+     Tiêu chảy xuất huyết
+     Tiểu khó
+     Tiểu không kiểm soát
+     Tiểu không tự chủ
+     Tiêu lỏng
+     Tiểu đau
+     Tiểu đường
+     TIME TO RETURN VISIT
+     TIME TO RETURN VISIT OTHER
+     TIMES PREGNANT
+     TIMESET
+     TINEA CAPITIS
+     TINEA CORPORIS
+     TINEA VERSICOLOR
+     TINEA VERSICOLOR
+     Tình trạng gầy ốm
+     Tình trạng gầy ốm dinh dưỡng
+     TINIBA DF
+     TINIBA DF
+     TINIDAZOLE
+     TINIDAZOLE
+     TINIDIL
+     TINIDIL
+     Tirikomonasi
+     TM DULL
+     TM DULL
+     TM DULL
+     TM INJECTED
+     TM INJECTED
+     TM SCLEROSIS
+     TM SCLEROSIS
+     TOBITIL
+     TOBITIL
+     TOFRANIL
+     TONE ABN
+     TONSIL ENLARGED
+     TONSILAR ENLARGEMENT
+     TONSILAR HYPERTROPHY
+     TONSILITIS
+     TONSILLAR HYPERTROPHY
+     TONSILLITIS
+     tos
+     TOTAL BILIRUBIN
+     TOTAL CHILDREN UNDER 5YO LIVING IN HOME
+     TOTAL CHOLESTEROL
+     TOTAL CK
+     TOTAL CO2
+     TOTAL LDH
+     TOTAL NUMBER OF CHILDREN SIRED
+     TOTAL OFFSPRING LIVING IN HOME
+     TOTAL OFFSPRING UNDER 5YO LIVING IN HOME
+     TOTAL PEOPLE LIVING IN HOME
+     TOTAL PMTCT
+     TOTAL PROTEIN
+     Touble Psychiatrique
+     Tous
+     TOUX
+     TOXEMIA
+     Toxic Effect of Venom
+     Toxic liver disease
+     TOXICITY NOS
+     TOXICITY, DRUG
+     TOXICITY, FOOD
+     TOXICITY, NOT OTHERWISE SPECIFIED
+     TOXOPLASMOSIS
+     TOXOPLASMOSIS, CENTRAL NERVOUS SYSTEM
+     TPHA
+     TPHA
+     TPHA QUAL
+     TPHA QUALITATIVE
+     TPMTCT
+     TRACHEA DEVIATED
+     Trachoma
+     Trachome
+     trachoom
+     tracoma
+     Trầm cảm
+     Transdermal
+     Transdermal
+     Transdermal administration
+     TRANSFER CARE TO OTHER CENTER
+     TRANSPORT PROBLEMS
+     trastorno auditivo
+     trastorno de conducción cardíaca
+     trastorno del globo ocular
+     trastorno del oído
+     trastorno del sistema esquelético
+     trastorno del sistema nervioso
+     trastorno hidroelectrolítico
+     trastorno mental
+     trastorno por estrés postraumático
+     trastornos depresivos
+     Traumatic neurosis
+     TRAUMATISME PHYSIQUE
+     TREATMENT
+     Treatment Type.
+     TREPONEMA PALLIDUM HEMAGGLUTINATION ASSAY
+     TREPONEMA PALLIDUM HEMAGGLUTINATION ASSAY, QUALITATIVE
+     Trĩ
+     Tri-Buffered Aspirin
+     TRIAMCINALONE
+     TRIBE
+     TRICAINE MPS
+     TRICAINE MPS
+     TRICAINE MPS
+     TRICEPS
+     TRICH PCR
+     TRICH PCR QUAL
+     trichiasis
+     Trichiasis of eyelid
+     trichiuriasis
+     TRICHOMONAS
+     TRICHOMONAS PCR
+     TRICHOMONAS PCR QUAL
+     TRICHOMONAS VAGINALIS
+     TRICHOMONAS VAGINALIS
+     TRICHOMONAS VAGINALIS POLYMERASE CHAIN REACTION
+     TRICHOMONAS VAGINALIS POLYMERASE CHAIN REACTION, QUALITATIVE
+     Trichomoniase
+     Trichomoniasis
+     Trichuriasis
+     trichuriasis
+     TRIG
+     TRIGLYCERIDES
+     TRIHEXYPHENIDYL
+     TRIMETHOPRIM
+     TRIMETHOPRIM AND SULFAMETHOXAZOLE
+     TRIOMUNE
+     TRIOMUNE-30
+     TRIOMUNE-40
+     TRIPLE PEN INJECTION
+     TRIPLE PEN INJECTION
+     TRIPLE RX FOR HELICOBACTER
+     triquiasis
+     TRIZIVIR
+     Troche
+     Troche(s)
+     TROPHOZOITE
+     TROPONIN - T
+     TROPONIN - T
+     Trouble de stress post-traumatique
+     TRUE
+     Tsp
+     TT1
+     TT1
+     TT2
+     TT2
+     Tube
+     Tube(s)
+     TUBERCULIN SKIN TEST
+     TUBERCULOSIS
+     TUBERCULOSIS DRUG TREATMENT START DATE
+     TUBERCULOSIS NOS
+     TUBERCULOSIS PROPHYLACTIC DRUGS
+     TUBERCULOSIS PROPHYLAXIS ADHERENCE IN PAST WEEK
+     TUBERCULOSIS PROPHYLAXIS PLAN
+     TUBERCULOSIS PROPHYLAXIS STARTED
+     tuberculosis respiratoria primaria, con confirmación bacteriológica e histológica
+     TUBERCULOSIS TREATMENT ADHERENCE IN PAST WEEK
+     TUBERCULOSIS TREATMENT COMPLETION YEAR
+     TUBERCULOSIS TREATMENT DRUGS
+     TUBERCULOSIS TREATMENT OR DOT PROGRAM
+     TUBERCULOSIS TREATMENT PLAN
+     TUBERCULOSIS TREATMENT STARTED
+     TUBERCULOSIS TREATMENT STATUS
+     Tuberculosis, Tuberculosis BK+
+     TUMOUR
+     TURBO
+     TV PCR
+     TV PCR
+     TV PCR QUAL
+     TV PCR QUAL
+     Twazyèm
+     Twice a day
+     Twice a day after meals
+     Twice a day before meals
+     Twice a day with meals
+     Twice daily
+     Twice daily after meals
+     Twice daily before meals
+     Twice daily with meals
+     Twice per day
+     Twice per day after meals
+     Twice per day before meals
+     Twice per day with meals
+     TWO DOSES
+     Twoub estrès pòs-twomatik
+     TYMPANIC MEMBRANE DULL
+     TYMPANIC MEMBRANE INJECTED
+     TYMPANIC MEMBRANE SCLEROSIS
+     type 2 diabetes
+     TYPHOID FEVER
+     U
+     U hạt bẹn
+     UA
+     UA
+     Uchovu
+     ug
+     Ugonjwa wa Kisukari
+     ugonjwa wa presha ya kupanda usiosababisha magonjwa mengine
+     ugonjwa wa pumu
+     Ugonjwa wa tumbo unaoambatana na kuharisha na kutapika
+     ULCER DUODENAL
+     ULCER DUODENAL
+     ULCER GASTRIC
+     ULCER GASTRIC
+     ULCER PEPTIC NOS
+     ULCER PEPTIC NOS
+     úlcera péptica
+     úlcera por presión
+     Ulcère de décubitus
+     ULCÈRE PEPTIQUE
+     ULCERS
+     ULTRASOUND, ABDOMEN
+     ULTRASOUND, HEPATIC
+     Umbilical hemorrhage after birth
+     Umuriro
+     Umusonga
+     umwa kichwa
+     UNABLE TO WALK
+     UNCLASSIFIED DISEASES
+     UNCLE
+     UNDULANT FEVER
+     Unfractionated heparin
+     Uni-Buff
+     Uni-Tren
+     Unihep
+     Uniparin
+     Unit
+     Unit(s)
+     Units of duration
+     UNKNOWN
+     Unknown
+     UNKNOWN ANTIRETROVIRAL DRUG
+     UNKNOWN COMMENT
+     UNKNOWN DISCONTINUATION1
+     UNKNOWN DISCONTINUATION2
+     UNKNOWN DISCONTINUED
+     UNKNOWN PAST
+     UNKNOWN PRESENT
+     UNKNOWN SPEC
+     UNKNOWN START CONINUE
+     UNKNOWN START DATE
+     UNKNOWN STOP DATE
+     UNKNOWNP MTCT
+     Unspecified complication of puerperium
+     UNSPECIFIED MALARIA
+     unspecified maternal hypertension, postpartum condition or complication
+     Unspecified perineal laceration during delivery
+     Uốn ván
+     Uốn ván sơ sinh
+     UPPER EXTREMITIES
+     UPPER RESPIRATORY TRACT INFECTION
+     Upungufu wa damu mwilini
+     UREA
+     UREA AND CREATININE TEST
+     UREA AND CREATININE TEST
+     URETHRAL
+     URETHRAL DISCHARGE
+     Urethral discharge
+     URETHRAL DISCHARGE DURATION
+     URETHRITIS
+     URETHRITIS
+     Urethritis or urethral syndrome
+     Urethrorrhoea
+     URI
+     URIMAX D
+     URIMAX D
+     URINALYSIS
+     URINARY ALBUMIN
+     Urinary bladder inflammation
+     Urinary incontinence
+     Urinary retention
+     Urinary symptoms
+     URINARY TRACT INFECTION
+     Urinary tract infection
+     Urine
+     Urine abnormality
+     URINE MICROALBUMINURIA
+     URINE MICROALBUMINURIA
+     URINE MICROSCOPY
+     URINE PREGNANCY TEST
+     urine-incontinentie
+     URINE: ROUTINE AND MICROSCOPIC ANC CULTURE
+     URINE: ROUTINE AND MICROSCOPIC ANC CULTURE
+     urineretentie
+     UROGENITAL
+     UROGENITAL
+     UROGENITAL COMMENT
+     UROGENITAL EXAM FINDINGS
+     UROGENITAL SWAB
+     Urological system diagnoses
+     URTI
+     UTI
+     UTI (urinary tract infection)
+     UTIBID
+     UTIBID
+     uzito
+     Uzito katika kilogram
+     VACCINATIONS
+     Vaginal administration
+     VAGINAL CANDIDIASIS
+     VAGINAL CANDIDIASIS
+     VAGINAL DISCHARGE
+     VAGINAL DISCHARGE DURATION
+     Vaginally
+     VAGINITIS
+     VALACYCLOVIR
+     VALIUM
+     VALIUM INJECTION
+     VALIUM INJECTION
+     Valomag
+     VALTREX
+     Vàng da
+     varicela
+     VARICELLA
+     Varicella
+     varicella
+     Varicelle
+     VARICOSE LEG ULCERS
+     VARICOSE VEINS
+     VARICOSE VEINS WITH ULCERATION
+     Varisèl
+     VASOGRAIN
+     VASOGRAIN
+     Vasomotor or allergic rhinitis
+     VASOTEC
+     VDRL
+     VDRL TITRE
+     vejiga: incontinente
+     VELOZ D
+     VELOZ D
+     VELOZ –D
+     VENOUS STASIS
+     VENTOLIN
+     VENTOLIN
+     VENTOLIN INHALER
+     VENTOLIN INHALER
+     VER ROND
+     Verdadeiro
+     Verdadero
+     VERGO
+     VERGO
+     VERGO
+     vermoeidheid
+     VERMOX
+     VERMOX
+     VERNAVO
+     VERNAVO
+     VERNAVO
+     Vero
+     VERRUCA PLANUS
+     verrugas venéreas
+     VERTIZINE D
+     VERTIZINE D
+     VERTIZINE-D
+     Verv
+     VERY LOW DENSITY LIPOPROTEIN
+     Vết phòng
+     Vị não
+     Vial
+     Vial(s)
+     VIDEX
+     VIDEX
+     Viêm bàng quang
+     Viêm bao tử
+     Viêm bọng đái
+     Viêm dạ dày
+     Viêm dạ dày do vi khuẩn
+     Viêm dạ dày ruột
+     Viêm gan do virus mạn
+     Viêm họng cấp tính
+     Viêm kết mạc do virus
+     Viêm kết mạc ở trẻ sơ sinh
+     Viêm màng não
+     Viêm phổi
+     Viêm tai ngoài
+     VILLAGE
+     VIOXX
+     VIOXX
+     VIRACEPT
+     VIRACEPT
+     Viral and other specified intestinal infection
+     Viral conjunctivitis
+     VIRAL LOAD
+     VIRAL LOAD - QUAL
+     VIRAL LOAD, QUAL
+     virale conjunctivitis
+     VIRAMUNE
+     VIRAMUNE
+     VIREAD
+     VIREAD
+     VIRUS DE L'IMMUNODÉFICIENCE HUMAINE
+     VISCO GEL
+     VISCO GEL
+     VISCO GEL
+     VISION DIFFICULTIES
+     Visit Diagnoses
+     Visit Dx
+     VISIT NUMBER
+     VISIT NUMBER
+     VISIT NUMBER
+     VISIT NUMBER
+     VISIT NUMBER
+     VISIT NUMBER
+     VISIT TYPE
+     Visite Diagnostic
+     VITAL SIGNS
+     Vitamin A Deficiency with Keratomalacia
+     VITAMIN B COMPLEX
+     VITAMIN C DEFICIENCY
+     VITAMIN D DEFICIENCY
+     VITAZYME CAPS
+     VITAZYME CAPS
+     VITAZYME CAPS
+     VITAZYME LIQ
+     VITAZYME LIQ
+     VITAZYME LIQ
+     Vivarin
+     VIVOGESIC MR
+     VIVOGESIC MR
+     VIVOGESIC PLUS
+     VIVOGESIC PLUS
+     VIVOGESIC PLUS
+     VLDL
+     VLDL-CHOLESTEROL
+     voedingsprobleem bij pasgeborene
+     VOLTAREN
+     Volume depletion
+     VOLUME SANGUIN
+     VOMITING
+     VOMITING CONTINUOUS
+     VOMITING DURATION
+     VOVERAN D 50MG
+     VOVERAN D 50MG
+     VOVERAN EMULGEL
+     VOVERAN EMULGEL
+     VOVERAN – D (50)
+     Vrai
+     Vre
+     Vyann bèf
+     Wafer
+     Wafer(s)
+     Wakespan
+     wastani au Kadiri
+     WASTING SYNDROME
+     WASTING SYNDROME
+     Waykup
+     WBC
+     WBC
+     WBC
+     WBCS
+     WEAKNESS
+     WEAKNESS
+     WEANED
+     WEEKLY
+     Weekly
+     WEEKS
+     Weeks
+     WEIGHT (KG)
+     Weight (kg)
+     WEIGHT CHANGE
+     WEIGHT GAIN
+     WEIGHT GAIN
+     WEIGHT LOSS
+     Weight loss
+     WEIGHT LOSS
+     WEIGHT LOSS
+     WESTERGREN SED RATE
+     WH OSTAGE
+     Wheal
+     Wheat
+     WHEEZE
+     when required
+     WHITE
+     WHITE BLOOD CELLS
+     WHITE CELLS
+     WHITE CELLS
+     WHITFIELD OINTMENT
+     WHO HIV - CHRONIC DIARRHEA
+     WHO HIV - CRYPTOSPORIDIOSIS WITH DIARRHEA
+     WHO HIV - CYTOMEGALOVIRUS DISEASE NOT LIVER SPLEEN NODES
+     WHO HIV - DISSEMINATED ATYPICAL MYCOBACTERIOSIS
+     WHO HIV - EXTRAPULMONARY CRYPTOCOCCOSIS
+     WHO HIV - EXTRAPULMONARY TUBERCULOSIS
+     WHO HIV - HIV WASTING SYNDROME
+     WHO HIV - LYMPHOMA
+     WHO HIV - PROGRESSIVE MULTIFOCAL LEUKOENCEPHALOPATHY
+     WHO HIV - PROLONGED FEVER
+     WHO HIV - RECURRENT UPPER RESPIRATORY INFECTIONS
+     WHO HIV PEDS - ENCEPHALOPATHY
+     WHO HIV PEDS - SALMONELLA
+     WHO STAGE 1 ADULT
+     WHO STAGE 1 PEDS
+     WHO STAGE 2 ADULT
+     WHO STAGE 2 PEDS
+     WHO STAGE 3 ADULT
+     WHO STAGE 3 PEDS
+     WHO STAGE 4 ADULT
+     WHO STAGE 4 PEDS
+     WHOLE BLOOD
+     Whole blood sample
+     WHOLEBLOOD
+     WHOOPING COUGH
+     WHOOPING COUGH
+     Wi
+     WIDAL TEST
+     WIDAL TEST (TYPHOID FEVER)
+     WIDAL TEST (TYPHOID FEVER)
+     WIDOWED
+     Worms
+     WORMS NOS
+     WORMS NOS
+     Worms NOS
+     WORMS, INTESTINAL
+     WORMS, INTESTINAL
+     WORMS, INTESTINAL
+     Wotè (cm)
+     WOUND DRESSING
+     WOUND NOS
+     WOUND, CUT
+     WOUND, DEEP
+     WOUND, PIERCE
+     WOUND, PIERCE
+     WOUND, PRICK
+     WOUND, SEPTIC
+     WT
+     WT
+     WYGESIC
+     WYGESIC
+     WYGESIC
+     X-RAY ABDOMEN
+     X-RAY ABDOMEN
+     X-RAY ARM
+     X-RAY ARM
+     X-RAY CHEST
+     X-RAY CHEST
+     X-RAY FOOT
+     X-RAY FOOT
+     X-RAY HAND
+     X-RAY HAND
+     X-RAY HEAD
+     X-RAY HEAD
+     X-RAY LEG
+     X-RAY LEG
+     X-RAY OTHER
+     X-RAY OTHER
+     X-RAY PELVIS
+     X-RAY PELVIS
+     X-RAY SHOULDER
+     X-RAY SHOULDER
+     X-RAY SKULL
+     X-RAY SKULL
+     X-RAY SPINE
+     X-RAY SPINE
+     X-RAY, ABDOMEN
+     X-RAY, ARM
+     X-RAY, CHEST
+     X-RAY, FOOT
+     X-RAY, HAND
+     X-RAY, LEG
+     X-RAY, OTHER
+     X-RAY, PELVIS
+     X-RAY, SHOULDER
+     X-RAY, SKULL
+     X-RAY, SPINE
+     XANAX
+     XANAX
+     XRAY ARM
+     XRAY FOOT
+     XRAY HAND
+     XRAY LEG
+     XRAY OTHER
+     XRAY PELVIS
+     XRAY SHOULDER
+     XRAY SKULL
+     XRAY SPINE
+     XYLOPROCT
+     YEAR OF BLOOD TRANSFUSION EXPOSURE
+     Years
+     YEARS OF SCHOOL COMPLETED
+     YEAST
+     YEAST
+     YEAST CELLS
+     Yego
+     YELLOW FEVER VACCINATION
+     YELLOW JACK
+     YES
+     Yes
+     yrs
+     YSP Aspirin
+     ZADY 500MG
+     ZANOCIN 100MG
+     ZANOCIN 200MG
+     ZANTAC
+     ZANTAC TABLETS
+     ZDV
+     ZDV
+     Ze
+     ZENFLOX 100MG
+     ZENFLOX 100MG
+     ZENFLOX 100MG SUS
+     ZENFLOX 100MG SUS
+     ZENFLOX 200MG
+     ZENFLOX 200MG
+     ZENFLOX 200MG SUS
+     ZENFLOX 200MG SUS
+     ZENFLOX 4000MG SUS
+     ZENFLOX 4000MG SUS
+     ZENFLOX OZ TAB SUS
+     ZENFLOX OZ TAB SUS
+     ZENTEL
+     ZENTEL 400 SUS 200MG 5ML
+     ZENTEL 400 SUS 200MG 5ML
+     ZENTEL TABLETS
+     ZENTEL TABLETS
+     ZERIT
+     ZERIT
+     ZERO
+     Zero-Order Release
+     ZIAGEN
+     ZIAGEN
+     ZIDOVUDINE
+     ZIDOVUDINE AND LAMIVUDINE
+     ZIDOVUDINE ARV
+     ZIDOVUDINE COMMENT
+     ZIDOVUDINE DISCONTINUATION1
+     ZIDOVUDINE DISCONTINUATION2
+     ZIDOVUDINE DISCONTINUED
+     ZIDOVUDINE PAST
+     ZIDOVUDINE PRESENT
+     ZIDOVUDINE START CONTINUE
+     ZIDOVUDINE START DATE
+     ZIDOVUDINE STOP DATE
+     ZIDOVUDINEP MTCT
+     ZIEHL NIELSEN STAIN
+     ZIEHL NIELSEN STAIN
+     ZILEE 250MG
+     ZILEE 250MG
+     ZILEE 500MG
+     ZILEE 500MG
+     ZINETAC
+     ZINETAC
+     ZINETAC
+     ZIPANT
+     ZIPANT 20MG
+     ZIPANT 20MG
+     ZIPANT 40MG
+     ZIPANT 40MG
+     ZIPANT DSR
+     ZIPANT DSR
+     ZIPANT – DS
+     ZITHROMAX
+     ZN STAIN
+     ZN STAIN
+     ZN STAIN
+     ZOA FORTE
+     ZOA FORTE
+     Zomorph
+     Zona
+     ZONE MR
+     ZONE MR
+     ZORAN
+     ZORAN
+     ZORAN
+     Zorprin
+     ZOVANTA D
+     ZOVANTA D
+     ZOVANTA –D
+     ZOVIRAX
+     ZOVIRAX
+     ZUPAR
+     ZUPAR
+     ZYCOLCHIN
+     ZYCOLCHIN
+     ZYLORIC
+     ZYLORIC
+     ZYNCET
+     ZYRTEC-->
+
 </resources>
+

@@ -49,7 +49,6 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     private static final String TAG = PrescriptionActivity.class.getSimpleName();
 
-
     Context context;
 
     String patientUuid;
@@ -100,7 +99,6 @@ public class PrescriptionActivity extends AppCompatActivity {
         setTitle(R.string.prescription);
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
@@ -160,22 +158,36 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
 
 
-
         //meds
         LinearLayout llMedsResult = findViewById(R.id.llMedsResult);
         AutoCompleteTextView etMedication = findViewById(R.id.etMedication);
         etMedication.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.medications)));
+        etMedication.setThreshold(1);
+
         EditText etMedicationStrength = findViewById(R.id.etMedicationStrength);
-        EditText etMedicationUnit = findViewById(R.id.etMedicationUnit);
+        AutoCompleteTextView etMedicationUnit = findViewById(R.id.etMedicationUnit);
+        etMedicationUnit.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.weight_units)));
+        etMedicationUnit.setThreshold(1);
+
         EditText etMedicationAmount = findViewById(R.id.etMedicationAmount);
-        EditText etMedicationUnitTabSyrup = findViewById(R.id.etMedicationUnitTabSyrup);
+        AutoCompleteTextView etMedicationUnitTabSyrup = findViewById(R.id.etMedicationUnitTabSyrup);
+        etMedicationUnitTabSyrup.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.weight_units)));
+        etMedicationUnitTabSyrup.setThreshold(1);
+
         EditText etMedicationFreq = findViewById(R.id.etMedicationFreq);
-        EditText etMedicationRoute = findViewById(R.id.etMedicationRoute);
+        AutoCompleteTextView etMedicationRoute = findViewById(R.id.etMedicationRoute);
+        etMedicationRoute.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.route)));
+        etMedicationRoute.setThreshold(1);
+
         EditText etMedicationDuration = findViewById(R.id.etMedicationDuration);
-        EditText etMedicationUnitsDays = findViewById(R.id.etMedicationUnitsDays);
+        AutoCompleteTextView etMedicationUnitsDays = findViewById(R.id.etMedicationUnitsDays);
+        etMedicationUnitsDays.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.time_units)));
+        etMedicationUnitsDays.setThreshold(1);
+
         EditText etMedicationReason = findViewById(R.id.etMedicationReason);
         EditText etMedicationInstructions = findViewById(R.id.etMedicationInstructions);
         Button btnAddMeds = findViewById(R.id.btnAddMeds);
+
         btnAddMeds.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,10 +230,12 @@ public class PrescriptionActivity extends AppCompatActivity {
             }
         });
 
-
         //test
         LinearLayout llTestResult = findViewById(R.id.llTestResult);
         AutoCompleteTextView etTest = findViewById(R.id.etTest);
+        etTest.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.tests)));
+        etTest.setThreshold(1);
+
         Button btnAddTest = findViewById(R.id.btnAddTest);
         btnAddTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,10 +249,12 @@ public class PrescriptionActivity extends AppCompatActivity {
             }
         });
 
-
         //advice
         LinearLayout llAdviceResult = findViewById(R.id.llAdviceResult);
         AutoCompleteTextView etAdviceRefer = findViewById(R.id.etAdviceRefer);
+        etAdviceRefer.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.advice)));
+        etAdviceRefer.setThreshold(1);
+
         Button btnAddAdvice = findViewById(R.id.btnAddAdvice);
         btnAddAdvice.setOnClickListener(new View.OnClickListener() {
             @Override

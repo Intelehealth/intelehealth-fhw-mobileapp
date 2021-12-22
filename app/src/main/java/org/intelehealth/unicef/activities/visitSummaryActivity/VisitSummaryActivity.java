@@ -236,7 +236,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView followUpDateCard;
     CardView card_print, card_share;
 
-
     TextView diagnosisTextView;
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
@@ -502,7 +501,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         setTitle(patientName + ": " + getTitle());
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_summary);

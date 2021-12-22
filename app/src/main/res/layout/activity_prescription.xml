@@ -447,7 +447,6 @@
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
                                 android:maxLines="1"
-
                                 android:nextFocusForward="@id/password"
                                 android:textSize="14sp" />
 
