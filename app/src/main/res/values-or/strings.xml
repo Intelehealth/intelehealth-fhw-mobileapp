@@ -343,6 +343,7 @@
     <string name="protocols_downloaded_successfully">ପ୍ରୋଟୋକଲ୍ ସଫଳତାର ସହ ଡାଉନଲୋଡ୍ ହେଲା!</string>
     <string name="no_protocols_found">କୌଣସି ପ୍ରୋଟୋକଲ୍ ମିଳିଲା ନାହିଁ</string>
     <string name="last_synced">ଶେଷ ସମକାଳୀନକରଣ - </string>
+    <string name="location_setup">ସେଟଅପ୍ ଅବସ୍ଥାନ - </string>
     <string name="day">ଦିନ</string>
     <string name="hour">ଘଣ୍ଟା</string>
     <string name="minute">ମିନିଟ୍</string>
@@ -531,6 +532,11 @@
     <string name="take_photo">ଫଟୋ ନିଅନ୍ତୁ </string>
     <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
     <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
-
+    <string name = "change_languages">ଭାଷା ପରିବର୍ତ୍ତନ</string>
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
+
+    <string name="app_reset_toast">App Reset is done!</string>
+    <string name="sure_to_reset_app">Are you sure you want to reset app?</string>
+    <string name="resetting_app_dialog">Resetting App</string>
+    <string name="reset_app">Reset App</string>
 </resources>

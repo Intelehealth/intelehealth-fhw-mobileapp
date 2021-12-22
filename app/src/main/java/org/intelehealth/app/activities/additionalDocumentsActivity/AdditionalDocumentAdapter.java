@@ -32,9 +32,12 @@ import java.util.List;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.DocumentObject;
 
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
@@ -50,16 +53,18 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
     private List<DocumentObject> documentList = new ArrayList<>();
     private Context context;
     private String filePath;
+    String mEncounterUUID;
     ImagesDAO imagesDAO = new ImagesDAO();
     private static final String TAG = AdditionalDocumentAdapter.class.getSimpleName();
 
-    public AdditionalDocumentAdapter(Context context, List<DocumentObject> documentList, String filePath) {
+    public AdditionalDocumentAdapter(Context context, String edult,List<DocumentObject> documentList, String filePath) {
         this.documentList = documentList;
         this.context = context;
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screen_height = displayMetrics.heightPixels;
         screen_width = displayMetrics.widthPixels;
+        mEncounterUUID=edult;
         this.filePath = filePath;
 
     }
@@ -77,7 +82,7 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
 //        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
         holder.getDocumentNameTextView().setText
-        (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
+                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
 
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
@@ -105,11 +110,21 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
                 notifyItemRangeChanged(position, documentList.size());
                 String imageName = holder.getDocumentNameTextView().getText().toString();
 
-                try {
-                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
+
+                    try {
+                        List<String> imageList = imagesDAO.isImageListObsExists(mEncounterUUID, UuidDictionary.COMPLEX_IMAGE_AD);
+                        for (String images : imageList) {
+                           Log.d(TAG,"image= "+images);
+
+                        }
+                        imagesDAO.deleteImageFromDatabase(imageList.get(position));
+                    } catch (DAOException e) {
+
+                        e.printStackTrace();
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+//                    imagesDAO.deleteImageFromDatabase(StringUtils.getFileNameWithoutExtensionString(imageName));
+
             }
         });
     }

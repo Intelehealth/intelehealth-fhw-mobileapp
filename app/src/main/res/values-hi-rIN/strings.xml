@@ -525,11 +525,14 @@
     <string name="syncing_visitDialog">सिंकिंग</string>
     <string name="successfully_synced_notif">सफलतापूर्वक सिंक किया गया</string>
     <string name="languages">भाषए</string>
+    <string name="change_languages">भाषा बदलें</string>
     <string name="current_language">सेलेक्टेड भाषा</string>
+
     <string name="protocols_downloaded_successfully">प्रोटोकॉल सफलतापूर्वक डाउनलोड!</string>
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
     <string name="last_synced">आखरी समन्वित- </string>
+    <string name="location_setup">सेटअप स्थान -</string>
     <string name="today_visits">आज की विज़िट्स</string>
     <string name="active_visits">आक्टिव विज़िट्स</string>
     <string name="day">दिन</string>
@@ -657,4 +660,22 @@
     <string name="choose_from_gallery">गैलरी से चयन करो</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
+
+    //--------------reset app strings------------------------
+    <string name="app_reset_toast">ऐप रीसेट हो गया!</string>
+    <string name="sure_to_reset_app">क्या आप ऐप रीसेट करना चाहते हैं?</string>
+    <string name="resetting_app_dialog">ऐप रीसेट हो रही है</string>
+    <string name="reset_app">ऐप रीसेट करें</string>
+
+    //Reset App functionality
+    <string name="sync_failed">ऐप सिंक विफल! बाद में पुन: प्रयास करें।</string>
+    <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
+    <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
+
+<!--    Strings for special Check-->
+    <string name="str_check_Odisha">Odisha</string>
+    <string name="str_check_Bukidnon">Bukidnon</string>
+   <string name="str_check_India">इंडिया</string>
+    <string name="str_check_UnitedStates">संयुक्त राज्य अमेरिका</string>
+     <string name="str_check_Philippines">फिलीपींस</string>
 </resources>
