@@ -1,9 +1,7 @@
 package org.intelehealth.unicef.activities.presription;
 
-import static org.intelehealth.unicef.utilities.UuidDictionary.ADDITIONAL_COMMENTS;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
-import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 import static org.intelehealth.unicef.utilities.UuidDictionary.JSV_MEDICATIONS;
 import static org.intelehealth.unicef.utilities.UuidDictionary.MEDICAL_ADVICE;
@@ -39,6 +37,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
@@ -50,7 +50,6 @@ import org.intelehealth.unicef.models.ClsDoctorDetails;
 import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
-import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.unicef.models.prescriptionUpload.Ob;
 import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescResponse;
 import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
@@ -58,7 +57,6 @@ import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.utilities.LocaleHelper;
 import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.VisitUtils;
 import org.intelehealth.unicef.utilities.exception.DAOException;
 
@@ -67,7 +65,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,6 +77,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private static final String TAG = PrescriptionActivity.class.getSimpleName();
 
     Context context;
+    Context presContext;
 
     String patientUuid;
     String visitUuid;
@@ -100,6 +98,9 @@ public class PrescriptionActivity extends AppCompatActivity {
     private Context mContext;
     String OBSURL;
     EndVisitEncounterPrescription visitCompleteStatus;
+    RecyclerView diagnosisRecyclerView;
+    DiagnosisPrescAdapter diagnosisPrescAdapter;
+    List<PrescDataModel> diagnosisList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -142,6 +143,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         context = getApplicationContext();
+        presContext = PrescriptionActivity.this;
 
 
         initUI();
@@ -149,10 +151,9 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     private void initUI() {
         //call
-        LinearLayout llCallResult = findViewById(R.id.llCallResult);
+        /* LinearLayout llCallResult = findViewById(R.id.llCallResult);
         RadioGroup rgCall = findViewById(R.id.rgCall);
         Button btnCallSubmit = findViewById(R.id.btnCallSubmit);
-        Button btnSignSubmit = findViewById(R.id.btnSignSubmit);
 
         btnCallSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,11 +167,19 @@ public class PrescriptionActivity extends AppCompatActivity {
               //  setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                 uploadCallWithPatientData();
             }
-        });
+        });*/
 
+        Button btnSignSubmit = findViewById(R.id.btnSignSubmit);
 
         //diagnosis
-        LinearLayout llDiagnosisResult = findViewById(R.id.llDiagnosisResult);
+       // LinearLayout llDiagnosisResult = findViewById(R.id.llDiagnosisResult);
+        diagnosisRecyclerView = findViewById(R.id.diagnosisRecyclerView);
+        diagnosisList = new ArrayList<>();
+        diagnosisPrescAdapter = new DiagnosisPrescAdapter(presContext, diagnosisList);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);
+        diagnosisRecyclerView.setLayoutManager(manager);
+        diagnosisRecyclerView.setAdapter(diagnosisPrescAdapter);
+
         RadioGroup rgDiagnosis1 = findViewById(R.id.rgDiagnosis1);
         RadioGroup rgDiagnosis2 = findViewById(R.id.rgDiagnosis2);
         Button btnAddDiagnosis = findViewById(R.id.btnAddDiagnosis);
@@ -187,7 +196,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                     RadioButton checked2 = findViewById(rgDiagnosis2.getCheckedRadioButtonId());
                     if (checked1 != null && checked2 != null) {
                         String result = String.format("%s:%s & %s", etDiagnosis.getText(), checked1.getText(), checked2.getText());
-                        addResult(llDiagnosisResult, result);
+                        Log.v("diag", "diag: "+ result);
+                      //  addResult(llDiagnosisResult, result);
                        // setObsData(encounterUuidAdultIntial, TELEMEDICINE_DIAGNOSIS, result);
                         etDiagnosis.setText("");
                         rgDiagnosis1.clearCheck();
@@ -316,7 +326,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
 
         //notes
-        LinearLayout llNotesResult = findViewById(R.id.llNotesResult);
+       /* LinearLayout llNotesResult = findViewById(R.id.llNotesResult);
         AutoCompleteTextView etNotes = findViewById(R.id.etNotes);
         Button btnAddNote = findViewById(R.id.btnAddNote);
         btnAddNote.setOnClickListener(new View.OnClickListener() {
@@ -330,7 +340,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     uploadPrescriptionData(result, ADDITIONAL_COMMENTS);
                 }
             }
-        });
+        });*/
 
         //follow up
         LinearLayout llFollowUpResult = findViewById(R.id.llFollowUpResult);
@@ -438,8 +448,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                     public void onNext(@NonNull ObsPrescResponse obsPrescResponse) {
                         // Response of successful uploaded data.
                         String uuid = obsPrescResponse.getUuid();
-                        String value = obsPrescResponse.getDisplay();
+                      //  String value = obsPrescResponse.getDisplay();
+                        String value = data;
                         setObsData(uuid, CONCEPTUUID, value);
+                        diagnosisList.add(new PrescDataModel(uuid, value));
+                        diagnosisPrescAdapter.notifyDataSetChanged();
                     }
 
                     @Override
