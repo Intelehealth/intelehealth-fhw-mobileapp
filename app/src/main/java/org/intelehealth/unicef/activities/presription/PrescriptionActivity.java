@@ -173,7 +173,11 @@ public class PrescriptionActivity extends AppCompatActivity {
         RadioGroup rgDiagnosis1 = findViewById(R.id.rgDiagnosis1);
         RadioGroup rgDiagnosis2 = findViewById(R.id.rgDiagnosis2);
         Button btnAddDiagnosis = findViewById(R.id.btnAddDiagnosis);
-        EditText etDiagnosis = findViewById(R.id.etDiagnosis);
+        AutoCompleteTextView etDiagnosis = findViewById(R.id.etDiagnosis);
+        etDiagnosis.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1,
+                getResources().getStringArray(R.array.diagnosis)));
+        etDiagnosis.setThreshold(1);
+
         btnAddDiagnosis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
