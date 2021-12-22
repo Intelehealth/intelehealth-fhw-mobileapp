@@ -70,10 +70,11 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:visibility="gone"
                             android:paddingTop="5dp">
 
                             <EditText
-                                android:id="@+id/editText_URL"
+                                android:id="@+id/editText_URL1"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:hint="@string/enter_url"
@@ -82,6 +83,32 @@
                                 android:inputType="textUri"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"/>
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            >
+
+                            <AutoCompleteTextView
+                                android:id="@+id/editText_URL"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:completionThreshold="1"
+                                android:imeOptions="actionNext|flagNoExtractUi"
+
+                                android:maxLength="45"
+                                android:maxLines="1"
+                                android:singleLine="true"
+
+                                android:hint="@string/enter_url"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/lato_regular"
+                                android:inputType="textUri"
+                                android:focusable="true"
+
+                                />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <android.widget.Space

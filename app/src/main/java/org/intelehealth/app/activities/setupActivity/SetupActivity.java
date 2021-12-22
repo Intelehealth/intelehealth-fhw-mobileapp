@@ -34,6 +34,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,6 +86,10 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -117,7 +122,8 @@ public class SetupActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mAdminPasswordView;
-    private EditText mUrlField;
+    private EditText mUrlField1;
+    private AutoCompleteTextView mUrlField;
     private Button mLoginButton;
     //private Spinner mDropdownLocation;
     private Spinner spinner_state, spinner_district,
@@ -141,7 +147,8 @@ public class SetupActivity extends AppCompatActivity {
     Map.Entry<String, String> village_name;
     int state_count = 0, district_count = 0/*, sanch_count = 0*/, village_count = 0;
     private String selectedState = "";
-
+    List<String> mSetUpLocation;
+    ArrayAdapter<String> setUpURLAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,7 +157,7 @@ public class SetupActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
-
+        mSetUpLocation = new ArrayList<>();
        // coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -171,6 +178,62 @@ public class SetupActivity extends AppCompatActivity {
         mUrlField = findViewById(R.id.editText_URL);
 
         mLoginButton = findViewById(R.id.setup_submit_button);
+        mSetUpLocation.add("trn.digitalhih.net");
+        mSetUpLocation.add("tlm.digitalhih.net");
+        setUpURLAdapter = new ArrayAdapter<String>(SetupActivity.this, android.R.layout.simple_list_item_1, mSetUpLocation);
+        mUrlField.setAdapter(setUpURLAdapter);
+//        mUrlFields.etThreshold(0);
+        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    mUrlField.showDropDown();
+
+            }
+        });
+        mUrlField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUrlField.showDropDown();
+            }
+        });
+        mUrlField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedURL = parent.getItemAtPosition(position).toString();
+                if(!selectedURL.trim().isEmpty() ||
+                        !selectedURL.trim().equalsIgnoreCase("")) {
+
+                    isLocationFetched = false;
+                    mEmailView.setError(null);
+
+            /*LocationArrayAdapter adapter = new LocationArrayAdapter
+                    (SetupActivity.this, new ArrayList<String>());
+            mDropdownLocation.setAdapter(adapter);*/
+
+                    if (!selectedURL.trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                        if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                            String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                                //getLocationFromServer(BASE_URL);
+                            else
+                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+                else {
+
+                }
+
+
+            }
+        });
+
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,8 +349,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                mHandler.removeCallbacksAndMessages(null);
-                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
+//                mHandler.removeCallbacksAndMessages(null);
+//                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
 
 
             }
@@ -1125,6 +1188,35 @@ public class SetupActivity extends AppCompatActivity {
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
                         alertDialog.show();
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                        AutoCompleteTextView url = promptsView.findViewById(R.id.licenseurl);
+
+                        if(!mUrlField.getText().toString().isEmpty()){
+                            url.setText(mUrlField.getText().toString());
+                        }
+                        else {
+
+                        }
+
+                        url.setAdapter(setUpURLAdapter);
+
+                        url.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                url.showDropDown();
+                            }
+                        });
+                        url.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if (hasFocus)
+                                    url.showDropDown();
+
+                            }
+                        });
+
+
 
                         // Get the alert dialog buttons reference
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -1137,8 +1229,6 @@ public class SetupActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
 
                                 url.setError(null);
                                 text.setError(null);
