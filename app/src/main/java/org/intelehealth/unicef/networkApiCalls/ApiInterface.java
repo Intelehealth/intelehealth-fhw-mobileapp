@@ -13,6 +13,7 @@ import org.intelehealth.unicef.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.unicef.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescResponse;
 import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.unicef.models.pushResponseApiCall.PushResponseApiCall;
@@ -112,7 +113,7 @@ public interface ApiInterface {
             @Header("Authorization") String authHeader);
 
     @POST
-    Observable<ResponseBody> OBS_PRESCRIPTION_UPLOAD
+    Observable<ObsPrescResponse> OBS_PRESCRIPTION_UPLOAD
             (@Url String url,
              @Body ObsPrescription prescription,
              @Header("Authorization") String authHeader);

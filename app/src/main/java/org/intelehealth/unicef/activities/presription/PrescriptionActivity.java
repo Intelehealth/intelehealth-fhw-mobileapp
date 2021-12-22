@@ -52,6 +52,7 @@ import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.unicef.models.prescriptionUpload.Ob;
+import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescResponse;
 import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
@@ -428,14 +429,17 @@ public class PrescriptionActivity extends AppCompatActivity {
         String encoded = sessionManager.getEncoded();
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         ObsPrescription prescription = getObsPrescription(AppConstants.dateAndTimeUtils.currentDateTime(), data, CONCEPTUUID);
-        Observable<ResponseBody> resultsObservable = apiService.OBS_PRESCRIPTION_UPLOAD(OBSURL, prescription, "Basic " + encoded);
+        Observable<ObsPrescResponse> resultsObservable = apiService.OBS_PRESCRIPTION_UPLOAD(OBSURL, prescription, "Basic " + encoded);
         resultsObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
+                .subscribe(new DisposableObserver<ObsPrescResponse>() {
                     @Override
-                    public void onNext(@NonNull ResponseBody responseBody) {
+                    public void onNext(@NonNull ObsPrescResponse obsPrescResponse) {
                         // Response of successful uploaded data.
+                        String uuid = obsPrescResponse.getUuid();
+                        String value = obsPrescResponse.getDisplay();
+                        setObsData(uuid, CONCEPTUUID, value);
                     }
 
                     @Override
@@ -517,18 +521,29 @@ public class PrescriptionActivity extends AppCompatActivity {
         llResult.addView(space);
     }
 
-   /* void setObsData(String encounterUid, String conceptUid, String value) {
+    /**
+     * @param uuid
+     * @param conceptUid
+     * @param value
+     * @return
+     * This function will add in the local db of obs table the value that user entered so that we can then use it for Delete operation...
+     */
+    boolean setObsData(String uuid, String conceptUid, String value) {
+        boolean isInserted = false;
         ObsDTO obsDTO = new ObsDTO();
         try {
-            obsDTO.setUuid(UUID.randomUUID().toString());
-            obsDTO.setEncounteruuid(encounterUid);
+            obsDTO.setUuid(uuid);
+            obsDTO.setEncounteruuid(encounterVisitNote); //encounter of Start Visit Note api response.
             obsDTO.setValue(value);
             obsDTO.setConceptuuid(conceptUid);
-            obsDAO.insertObs(obsDTO);
+            obsDTO.setValue("0");
+            isInserted = obsDAO.insertObs(obsDTO);
         } catch (DAOException e) {
             e.printStackTrace();
+            isInserted = false;
         }
-    }*/
+        return isInserted;
+    }
 
     private List<String> getResult(LinearLayout llResult) {
         List<String> result = new ArrayList<>();
