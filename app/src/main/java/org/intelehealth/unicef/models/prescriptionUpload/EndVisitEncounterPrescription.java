@@ -28,6 +28,9 @@ public class EndVisitEncounterPrescription {
     @SerializedName("encounterDatetime")
     @Expose
     private String encounterDatetime;
+    @SerializedName("obs")
+    @Expose
+    private List<Ob> obs = null;
 
     public String getPatient() {
         return patient;
@@ -69,31 +72,11 @@ public class EndVisitEncounterPrescription {
         this.encounterDatetime = encounterDatetime;
     }
 
-}
-
-class EncounterProvider {
-
-    @SerializedName("provider")
-    @Expose
-    private String provider;
-    @SerializedName("encounterRole")
-    @Expose
-    private String encounterRole;
-
-    public String getProvider() {
-        return provider;
+    public List<Ob> getObs() {
+        return obs;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public void setObs(List<Ob> obs) {
+        this.obs = obs;
     }
-
-    public String getEncounterRole() {
-        return encounterRole;
-    }
-
-    public void setEncounterRole(String encounterRole) {
-        this.encounterRole = encounterRole;
-    }
-
 }
