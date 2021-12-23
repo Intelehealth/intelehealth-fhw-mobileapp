@@ -1400,6 +1400,16 @@ public class IdentificationActivity extends AppCompatActivity {
         } else {
             mCountryEditText.setError(null);
         }
+
+        if (mStateSpinner.getSelectedItemPosition() == 0) {
+            mStateEditText.setError(getString(R.string.error_field_required));
+            focusView = mStateEditText;
+            cancel = true;
+            return;
+        } else {
+            mStateEditText.setError(null);
+        }
+
         String country = StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
                 sessionManager.getAppLanguage()));
 
