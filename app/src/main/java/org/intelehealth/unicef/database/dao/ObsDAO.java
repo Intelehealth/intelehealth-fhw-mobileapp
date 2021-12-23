@@ -79,6 +79,46 @@ public class ObsDAO {
 
     }
 
+    /**
+     * @param obsDTO This obsDTO contains the Prescription obs values that we dont want to push to the server but need to save in localdb
+     *               so as when user goes back to the Presc activity then we an see all the data that he had provided as presc. Due to this
+     *               I have set sync flag = true. Then when user comes back to Presc screen in the oncreate() we will call the fetch query of db
+     *               and fetch all the obs against their conceptuuid and show in the RecyclerView...
+     * @return boolean Is insertion was successful or not.
+     * @throws DAOException
+     */
+    public boolean insertPrescObs(ObsDTO obsDTO) throws DAOException {
+        boolean isUpdated = true;
+        long insertedCount = 0;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+
+        try {
+            values.put("uuid", UUID.randomUUID().toString());
+            values.put("encounteruuid", obsDTO.getEncounteruuid());
+            values.put("creator", obsDTO.getCreator());
+            values.put("conceptuuid", obsDTO.getConceptuuid());
+            values.put("value", obsDTO.getValue());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("voided", "0");
+            values.put("sync", "true");
+            insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            db.setTransactionSuccessful();
+            Logger.logD("updated", "updatedrecords count" + insertedCount);
+        } catch (SQLException e) {
+            isUpdated = false;
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+
+        }
+
+        return isUpdated;
+
+    }
+
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;

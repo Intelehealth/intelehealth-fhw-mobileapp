@@ -98,9 +98,26 @@ public class PrescriptionActivity extends AppCompatActivity {
     private Context mContext;
     String OBSURL;
     EndVisitEncounterPrescription visitCompleteStatus;
+
     RecyclerView diagnosisRecyclerView;
     DiagnosisPrescAdapter diagnosisPrescAdapter;
     List<PrescDataModel> diagnosisList;
+
+    RecyclerView medicationRecyclerView;
+    MedicationPrescAdapter medicationPrescAdapter;
+    List<PrescDataModel> medicationList;
+
+    RecyclerView testRecyclerView;
+    TestPrescAdapter testPrescAdapter;
+    List<PrescDataModel> testList;
+
+    RecyclerView adviceRecyclerView;
+    AdvicePrescAdapter advicePrescAdapter;
+    List<PrescDataModel> adviceList;
+
+    RecyclerView followupRecyclerView;
+    FollowupPresAdapter followupPrescAdapter;
+    List<PrescDataModel> followupList;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -176,8 +193,9 @@ public class PrescriptionActivity extends AppCompatActivity {
         diagnosisRecyclerView = findViewById(R.id.diagnosisRecyclerView);
         diagnosisList = new ArrayList<>();
         diagnosisPrescAdapter = new DiagnosisPrescAdapter(presContext, diagnosisList);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);
-        diagnosisRecyclerView.setLayoutManager(manager);
+        RecyclerView.LayoutManager diagnosismanager = new LinearLayoutManager(PrescriptionActivity.this,
+                LinearLayoutManager.VERTICAL, false);
+        diagnosisRecyclerView.setLayoutManager(diagnosismanager);
         diagnosisRecyclerView.setAdapter(diagnosisPrescAdapter);
 
         RadioGroup rgDiagnosis1 = findViewById(R.id.rgDiagnosis1);
@@ -212,7 +230,15 @@ public class PrescriptionActivity extends AppCompatActivity {
 
 
         //meds
-        LinearLayout llMedsResult = findViewById(R.id.llMedsResult);
+      //  LinearLayout llMedsResult = findViewById(R.id.llMedsResult);
+        medicationRecyclerView = findViewById(R.id.medicationRecyclerView);
+        medicationList = new ArrayList<>();
+        medicationPrescAdapter = new MedicationPrescAdapter(presContext, medicationList);
+        RecyclerView.LayoutManager medicationmanager = new LinearLayoutManager(PrescriptionActivity.this,
+                LinearLayoutManager.VERTICAL, false);
+        medicationRecyclerView.setLayoutManager(medicationmanager);
+        medicationRecyclerView.setAdapter(medicationPrescAdapter);
+
         AutoCompleteTextView etMedication = findViewById(R.id.etMedication);
         etMedication.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.medications)));
         etMedication.setThreshold(1);
@@ -266,7 +292,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                             ,etMedicationUnitsDays.getText()
                             ,etMedicationInstructions.getText()
                             );
-                    addResult(llMedsResult, result);
+                 //   addResult(llMedsResult, result);
                    // setObsData(encounterUuidAdultIntial, JSV_MEDICATIONS, result);
                             etMedication.setText("");
                             etMedicationStrength.setText("");
@@ -286,7 +312,15 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
 
         //test
-        LinearLayout llTestResult = findViewById(R.id.llTestResult);
+       // LinearLayout llTestResult = findViewById(R.id.llTestResult);
+        testRecyclerView = findViewById(R.id.testRecyclerView);
+        testList = new ArrayList<>();
+        testPrescAdapter = new TestPrescAdapter(presContext, testList);
+        RecyclerView.LayoutManager testmanager = new LinearLayoutManager(PrescriptionActivity.this,
+                LinearLayoutManager.VERTICAL, false);
+        testRecyclerView.setLayoutManager(testmanager);
+        testRecyclerView.setAdapter(testPrescAdapter);
+
         AutoCompleteTextView etTest = findViewById(R.id.etTest);
         etTest.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.tests)));
         etTest.setThreshold(1);
@@ -297,7 +331,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String result = etTest.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
-                    addResult(llTestResult, result);
+                  //  addResult(llTestResult, result);
                   //  setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
                     etTest.setText("");
                     uploadPrescriptionData(result, REQUESTED_TESTS);
@@ -306,7 +340,15 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
 
         //advice
-        LinearLayout llAdviceResult = findViewById(R.id.llAdviceResult);
+       // LinearLayout llAdviceResult = findViewById(R.id.llAdviceResult);
+        adviceRecyclerView = findViewById(R.id.adviceRecyclerView);
+        adviceList = new ArrayList<>();
+        advicePrescAdapter = new AdvicePrescAdapter(presContext, adviceList);
+        RecyclerView.LayoutManager advicemanager = new LinearLayoutManager(PrescriptionActivity.this,
+                LinearLayoutManager.VERTICAL, false);
+        adviceRecyclerView.setLayoutManager(advicemanager);
+        adviceRecyclerView.setAdapter(advicePrescAdapter);
+
         AutoCompleteTextView etAdviceRefer = findViewById(R.id.etAdviceRefer);
         etAdviceRefer.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.advice)));
         etAdviceRefer.setThreshold(1);
@@ -317,7 +359,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String result = etAdviceRefer.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
-                    addResult(llAdviceResult, result);
+                  //  addResult(llAdviceResult, result);
                    // setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                     etAdviceRefer.setText("");
                     uploadPrescriptionData(result, MEDICAL_ADVICE);
@@ -343,7 +385,15 @@ public class PrescriptionActivity extends AppCompatActivity {
         });*/
 
         //follow up
-        LinearLayout llFollowUpResult = findViewById(R.id.llFollowUpResult);
+      //  LinearLayout llFollowUpResult = findViewById(R.id.llFollowUpResult);
+        followupRecyclerView = findViewById(R.id.followupRecyclerView);
+        followupList = new ArrayList<>();
+        followupPrescAdapter = new FollowupPresAdapter(presContext, followupList);
+        RecyclerView.LayoutManager folllowupmanager = new LinearLayoutManager(
+                PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);
+        followupRecyclerView.setLayoutManager(folllowupmanager);
+        followupRecyclerView.setAdapter(followupPrescAdapter);
+
         EditText etFollowUpDate = findViewById(R.id.etFollowUpDate);
         assignDatePicker(etFollowUpDate);
         EditText etFollowUpRemark = findViewById(R.id.etFollowUpRemark);
@@ -352,11 +402,11 @@ public class PrescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(etFollowUpDate.getText().toString())) {
-                    llFollowUpResult.removeAllViews();
+                   // llFollowUpResult.removeAllViews();
                     String result = etFollowUpDate.getText().toString();
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
                         result += ", Remarks: " + etFollowUpRemark.getText();
-                    addResult(llFollowUpResult, result);
+                 //   addResult(llFollowUpResult, result);
                   //  setObsData(encounterUuidAdultIntial, FOLLOW_UP_VISIT, result);
                     etFollowUpDate.setText("");
                     etFollowUpRemark.setText("");
@@ -410,10 +460,12 @@ public class PrescriptionActivity extends AppCompatActivity {
         doctorDetails.setFontOfSign("Pacifico");
         doctorDetails.setTextOfSign("Dr. Demo 1");
 
+        String drDetails = new Gson().toJson(doctorDetails);
         List<Ob> obList = new ArrayList<>();
         Ob ob = new Ob();
         ob.setConcept(OBS_DOCTORDETAILS);
-        ob.setValue(doctorDetails);
+        ob.setValue(drDetails);
+        Log.v("drdetail", "drdetail: " + drDetails);
         obList.add(ob);
 
         List<EncounterProvider> encounterProviderList = new ArrayList<>();
@@ -448,11 +500,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                     public void onNext(@NonNull ObsPrescResponse obsPrescResponse) {
                         // Response of successful uploaded data.
                         String uuid = obsPrescResponse.getUuid();
-                      //  String value = obsPrescResponse.getDisplay();
-                        String value = data;
-                        setObsData(uuid, CONCEPTUUID, value);
-                        diagnosisList.add(new PrescDataModel(uuid, value));
-                        diagnosisPrescAdapter.notifyDataSetChanged();
+                        setObsData(uuid, CONCEPTUUID, data);
+                        updateRecyclerView(CONCEPTUUID, uuid, data);
                     }
 
                     @Override
@@ -467,6 +516,33 @@ public class PrescriptionActivity extends AppCompatActivity {
                 });
 
         return isupload;
+    }
+
+    private void updateRecyclerView(String conceptuuid, String uuid, String data) {
+        switch (conceptuuid) {
+            case TELEMEDICINE_DIAGNOSIS:
+                diagnosisList.add(new PrescDataModel(uuid, data));
+                diagnosisPrescAdapter.notifyDataSetChanged();
+                break;
+            case JSV_MEDICATIONS:
+                medicationList.add(new PrescDataModel(uuid, data));
+                medicationPrescAdapter.notifyDataSetChanged();
+                break;
+            case REQUESTED_TESTS:
+                testList.add(new PrescDataModel(uuid, data));
+                testPrescAdapter.notifyDataSetChanged();
+                break;
+            case MEDICAL_ADVICE:
+                adviceList.add(new PrescDataModel(uuid, data));
+                advicePrescAdapter.notifyDataSetChanged();
+                break;
+            case FOLLOW_UP_VISIT:
+                followupList.add(new PrescDataModel(uuid, data));
+                followupPrescAdapter.notifyDataSetChanged();
+                break;
+            default:
+                // do nothing...
+        }
     }
 
     private ObsPrescription getObsPrescription(String currentDateTime, String diagnosisData, String CONCEPT_UUID) {
@@ -549,8 +625,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             obsDTO.setEncounteruuid(encounterVisitNote); //encounter of Start Visit Note api response.
             obsDTO.setValue(value);
             obsDTO.setConceptuuid(conceptUid);
-            obsDTO.setValue("0");
-            isInserted = obsDAO.insertObs(obsDTO);
+            isInserted = obsDAO.insertPrescObs(obsDTO);
         } catch (DAOException e) {
             e.printStackTrace();
             isInserted = false;

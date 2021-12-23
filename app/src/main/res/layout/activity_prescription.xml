@@ -402,7 +402,6 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/diagnosisRecyclerView"
                             android:layout_marginTop="8dp"
-                            tools:listitem="@layout/presc_selection_tab"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
@@ -637,12 +636,12 @@
                             android:text="@string/add_meds"
                             android:textColor="@color/white" />
 
-                        <LinearLayout
-                            android:id="@+id/llMedsResult"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/medicationRecyclerView"
                             android:layout_marginTop="8dp"
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -706,12 +705,12 @@
                             android:text="@string/add_test"
                             android:textColor="@color/white" />
 
-                        <LinearLayout
-                            android:id="@+id/llTestResult"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/testRecyclerView"
                             android:layout_marginTop="8dp"
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -774,12 +773,12 @@
                             android:text="@string/add_advice"
                             android:textColor="@color/white" />
 
-                        <LinearLayout
-                            android:id="@+id/llAdviceResult"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/adviceRecyclerView"
                             android:layout_marginTop="8dp"
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -934,12 +933,12 @@
                             android:text="@string/schedule_a_follow_up"
                             android:textColor="@color/white" />
 
-                        <LinearLayout
-                            android:id="@+id/llFollowUpResult"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/followupRecyclerView"
                             android:layout_marginTop="8dp"
-                            android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
+
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 

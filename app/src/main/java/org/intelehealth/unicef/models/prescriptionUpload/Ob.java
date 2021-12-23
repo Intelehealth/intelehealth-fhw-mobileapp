@@ -19,7 +19,7 @@ public class Ob {
     private String concept;
     @SerializedName("value")
     @Expose
-    private ClsDoctorDetails value;
+    private String value;
 
     public String getConcept() {
         return concept;
@@ -29,11 +29,11 @@ public class Ob {
         this.concept = concept;
     }
 
-    public ClsDoctorDetails getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(ClsDoctorDetails value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
