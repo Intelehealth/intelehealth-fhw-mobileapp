@@ -24,6 +24,7 @@ import io.reactivex.Single;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -123,6 +124,11 @@ public interface ApiInterface {
     Observable<ResponseBody> OBS_SIGNANDSUBMIT_STATUS(
             @Url String url,
             @Body EndVisitEncounterPrescription prescription,
+            @Header("Authorization") String authHeader);
+
+    @DELETE
+    Observable<Response<Void>> DELETE_PRESCOBS_ITEM (
+            @Url String url,
             @Header("Authorization") String authHeader);
 
 }

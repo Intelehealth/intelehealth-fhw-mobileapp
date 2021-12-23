@@ -453,11 +453,12 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     private EndVisitEncounterPrescription getVisitCompleteDataModel() {
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
-        doctorDetails.setName("Demo doctor1");
-        doctorDetails.setPhoneNumber("7005308163");
         doctorDetails.setWhatsapp("7005308163");
-        doctorDetails.setSpecialization("Neurologist");
+        doctorDetails.setQualification("MBBS");
+        doctorDetails.setPhoneNumber("7005308163");
         doctorDetails.setFontOfSign("Pacifico");
+        doctorDetails.setName("Demo doctor1");
+        doctorDetails.setSpecialization("Neurologist");
         doctorDetails.setTextOfSign("Dr. Demo 1");
 
         String drDetails = new Gson().toJson(doctorDetails);
@@ -501,7 +502,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                         // Response of successful uploaded data.
                         String uuid = obsPrescResponse.getUuid();
                         setObsData(uuid, CONCEPTUUID, data);
-                        updateRecyclerView(CONCEPTUUID, uuid, data);
+                        updateRecyclerView(CONCEPTUUID, uuid, data, encounterVisitNote);
                     }
 
                     @Override
@@ -518,26 +519,26 @@ public class PrescriptionActivity extends AppCompatActivity {
         return isupload;
     }
 
-    private void updateRecyclerView(String conceptuuid, String uuid, String data) {
+    private void updateRecyclerView(String conceptuuid, String uuid, String data, String encounterVisitNote) {
         switch (conceptuuid) {
             case TELEMEDICINE_DIAGNOSIS:
-                diagnosisList.add(new PrescDataModel(uuid, data));
+                diagnosisList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 diagnosisPrescAdapter.notifyDataSetChanged();
                 break;
             case JSV_MEDICATIONS:
-                medicationList.add(new PrescDataModel(uuid, data));
+                medicationList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 medicationPrescAdapter.notifyDataSetChanged();
                 break;
             case REQUESTED_TESTS:
-                testList.add(new PrescDataModel(uuid, data));
+                testList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 testPrescAdapter.notifyDataSetChanged();
                 break;
             case MEDICAL_ADVICE:
-                adviceList.add(new PrescDataModel(uuid, data));
+                adviceList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 advicePrescAdapter.notifyDataSetChanged();
                 break;
             case FOLLOW_UP_VISIT:
-                followupList.add(new PrescDataModel(uuid, data));
+                followupList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 followupPrescAdapter.notifyDataSetChanged();
                 break;
             default:

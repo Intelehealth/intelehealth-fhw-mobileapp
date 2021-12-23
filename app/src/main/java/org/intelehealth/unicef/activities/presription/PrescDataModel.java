@@ -10,10 +10,14 @@ package org.intelehealth.unicef.activities.presription;
 public class PrescDataModel {
     private String uuid;
     private String value;
+    private String encounterVisitNoteUuid;
+    private String conceptUuid;
 
-    public PrescDataModel(String uuid, String value) {
+    public PrescDataModel(String uuid, String value, String encounterVisitNoteUuid, String conceptUuid) {
         this.uuid = uuid;
         this.value = value;
+        this.encounterVisitNoteUuid = encounterVisitNoteUuid;
+        this.conceptUuid = conceptUuid;
     }
 
     public String getUuid() {
@@ -30,5 +34,21 @@ public class PrescDataModel {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String encounterVisitNoteUuid() {
+        return encounterVisitNoteUuid;
+    }
+
+    public void encounterVisitNoteUuid(String encounterVisitNoteUuid) {
+        this.encounterVisitNoteUuid = encounterVisitNoteUuid;
+    }
+
+    public String getConceptUuid() {
+        return conceptUuid;
+    }
+
+    public void setConceptUuid(String conceptUuid) {
+        this.conceptUuid = conceptUuid;
     }
 }
