@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.unicef.activities.presription.PrescDataModel;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.models.dto.ObsDTO;
@@ -324,4 +325,31 @@ public class ObsDAO {
         return obsuuid;
     }
 
+    public List<PrescDataModel> fetchAllObsPrescData(String encounterVisitNote, String CONCEPTUUID, String sync) {
+        List<PrescDataModel> prescDataModelList = new ArrayList<>();
+
+        db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=?",
+                new String[]{CONCEPTUUID, encounterVisitNote, sync});
+        try {
+            if (obsCursoursor.getCount() != 0) {
+                while (obsCursoursor.moveToNext()) {
+                    prescDataModelList.add(new PrescDataModel(
+                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("uuid")),
+                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("value")),
+                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("encounteruuid")),
+                            obsCursoursor.getString(obsCursoursor.getColumnIndexOrThrow("conceptuuid"))
+                    ));
+                }
+
+            }
+        } catch (SQLException sql) {
+            FirebaseCrashlytics.getInstance().recordException(sql);
+        } finally {
+            obsCursoursor.close();
+        }
+
+
+        return prescDataModelList;
+    }
 }
