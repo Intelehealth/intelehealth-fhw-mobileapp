@@ -12,16 +12,22 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
+import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
+import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
 import org.intelehealth.unicef.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.unicef.appointment.model.AppointmentInfo;
 import org.intelehealth.unicef.appointment.model.BookAppointmentRequest;
+import org.intelehealth.unicef.appointment.model.CancelRequest;
+import org.intelehealth.unicef.appointment.model.CancelResponse;
 import org.intelehealth.unicef.appointment.model.SlotInfo;
 import org.intelehealth.unicef.appointment.model.SlotInfoResponse;
 import org.intelehealth.unicef.appointment.utils.MyDatePicker;
@@ -47,7 +53,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     private String mSelectedStartDate = "";
     private String mSelectedEndDate = "";
-
+    SessionManager sessionManager;
     private RecyclerView rvSlots;
 
     @Override
@@ -61,6 +67,8 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         patientName = getIntent().getStringExtra("patientName");
         speciality = getIntent().getStringExtra("speciality");
         openMrsId = getIntent().getStringExtra("openMrsId");
+
+        sessionManager = new SessionManager(this);
 
         mDateTextView = findViewById(R.id.tvDate);
         mSelectedStartDate = simpleDateFormat.format(new Date());
@@ -189,7 +197,15 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                                 slotInfoResponse.getDates(), new SlotListingAdapter.OnItemSelection() {
                             @Override
                             public void onSelect(SlotInfo slotInfo) {
-                                bookAppointment(slotInfo);
+                                //------before reschedule need to cancel appointment----
+                                AppointmentDAO appointmentDAO=new AppointmentDAO();
+                                AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")){
+                                    CancelRequest(appointmentInfo);
+                                    bookAppointment(slotInfo);
+                                }else{
+                                    bookAppointment(slotInfo);
+                                }
                             }
                         });
                         rvSlots.setAdapter(slotListingAdapter);
@@ -206,5 +222,27 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     }
                 });
 
+    }
+
+    public void CancelRequest(AppointmentInfo appointmentInfo){
+        CancelRequest request = new CancelRequest();
+        request.setVisitUuid(appointmentInfo.getVisitUuid());
+        request.setId(appointmentInfo.getId());
+        String baseurl = "https://" + sessionManager.getServerUrl() +":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .cancelAppointment(request)
+                .enqueue(new Callback<CancelResponse>() {
+                    @Override
+                    public void onResponse(Call<CancelResponse> call, retrofit2.Response<CancelResponse> response) {
+                        CancelResponse cancelResponse = response.body();
+                        AppointmentDAO appointmentDAO=new AppointmentDAO();
+                        appointmentDAO.deleteAppointeByVisitId(appointmentInfo);
+                    }
+
+                    @Override
+                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
     }
 }

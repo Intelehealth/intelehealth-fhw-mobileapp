@@ -91,7 +91,9 @@ import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.appointment.ScheduleListingActivity;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
+import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
 import org.intelehealth.unicef.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.unicef.appointment.model.AppointmentInfo;
 import org.intelehealth.unicef.appointment.model.CancelRequest;
 import org.intelehealth.unicef.appointment.model.CancelResponse;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
@@ -3616,7 +3618,6 @@ private TextView mInfoAppointmentBookingTextView;
 
         callBroadcastReceiver();
 
-
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
@@ -4117,15 +4118,23 @@ private AppointmentDetailsResponse mAppointmentDetailsResponse;
                              mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
                             mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
                         }else{
-                            mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                            mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                            mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
-                            mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
-                            mInfoAppointmentBookingTextView.setText("Appointment Booked:\n\n"+
-                                    mAppointmentDetailsResponse.getData().getSlotDay()+"\n"+
-                                    mAppointmentDetailsResponse.getData().getSlotDate()+"\n"+
-                                    mAppointmentDetailsResponse.getData().getSlotTime()
-                            );
+                            //-------------------insert into local db--------------------
+                            try {
+                                AppointmentDAO appointmentDAO=new AppointmentDAO();
+                                appointmentDAO.insert(mAppointmentDetailsResponse.getData());
+
+                                mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
+                                mInfoAppointmentBookingTextView.setText("Appointment Booked:\n\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotDay() + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotTime()
+                                );
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
 
@@ -4153,6 +4162,11 @@ private AppointmentDetailsResponse mAppointmentDetailsResponse;
                                     @Override
                                     public void onResponse(Call<CancelResponse> call, retrofit2.Response<CancelResponse> response) {
                                         CancelResponse cancelResponse = response.body();
+                                        AppointmentDAO appointmentDAO=new AppointmentDAO();
+                                        AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                        if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                                            appointmentDAO.deleteAppointeByVisitId(mAppointmentDetailsResponse.getData());
+                                        }
                                         Toast.makeText(VisitSummaryActivity.this, cancelResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                         getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
                                     }

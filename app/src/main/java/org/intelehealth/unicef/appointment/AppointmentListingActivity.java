@@ -50,7 +50,6 @@ public class AppointmentListingActivity extends AppCompatActivity {
     }
 
     private void getAppointments() {
-
         List<AppointmentInfo> appointmentInfoList = new AppointmentDAO().getAppointments();
         AppointmentListingAdapter appointmentListingAdapter = new AppointmentListingAdapter(rvAppointments, this, appointmentInfoList, new AppointmentListingAdapter.OnItemSelection() {
             @Override

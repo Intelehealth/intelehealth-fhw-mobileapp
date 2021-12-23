@@ -136,4 +136,13 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
+    public void deleteAppointeByVisitId(AppointmentInfo appointmentInfo) {
+        Log.v(TAG, "getByVisitUUID - visitUUID - " + appointmentInfo.getVisitUuid());
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        db.delete("tbl_appointments","appointment_id=? and visit_uuid=?",new String[]{""+appointmentInfo.getId(),appointmentInfo.getVisitUuid()});
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+    }
 }

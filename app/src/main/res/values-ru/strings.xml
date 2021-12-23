@@ -717,6 +717,7 @@
  \n\n
  Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>
+    //-----------appointment module strings---------------------
     <string name="book_appointment">Book Appointment</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
