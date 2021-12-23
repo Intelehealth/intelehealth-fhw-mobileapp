@@ -1,5 +1,7 @@
 package org.intelehealth.unicef.activities.presription;
 
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_PROVIDER;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.FOLLOW_UP_VISIT;
@@ -11,6 +13,7 @@ import static org.intelehealth.unicef.utilities.UuidDictionary.TELEMEDICINE_DIAG
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -33,6 +36,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -40,11 +44,13 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.database.dao.ObsDAO;
 import org.intelehealth.unicef.models.ClsDoctorDetails;
 import org.intelehealth.unicef.models.dto.ObsDTO;
@@ -429,12 +435,12 @@ public class PrescriptionActivity extends AppCompatActivity {
                 responseBodyObservable
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+
                         .subscribe(new DisposableObserver<ResponseBody>() {
                             @Override
                             public void onNext(@NonNull ResponseBody responseBody) {
                                 // status is received...
-                                Intent intent = new Intent(PrescriptionActivity.this, HomeActivity.class);
-                                startActivity(intent);
+                                showDialogForHomeScreen();
                             }
 
                             @Override
@@ -451,10 +457,29 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
     }
 
+    private void showDialogForHomeScreen() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.prescGivenSuccessfully);
+        alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(PrescriptionActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
     private EndVisitEncounterPrescription getVisitCompleteDataModel() {
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
         doctorDetails.setWhatsapp("7005308163");
-        doctorDetails.setQualification("MBBS");
         doctorDetails.setPhoneNumber("7005308163");
         doctorDetails.setFontOfSign("Pacifico");
         doctorDetails.setName("Demo doctor1");
@@ -471,8 +496,8 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         List<EncounterProvider> encounterProviderList = new ArrayList<>();
         EncounterProvider encounterProvider = new EncounterProvider();
-        encounterProvider.setEncounterRole(ENCOUNTER_ROLE); // Constant
-        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
+        encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
+        encounterProvider.setProvider(ENCOUNTER_DR_PROVIDER); // user setup app provider
         encounterProviderList.add(encounterProvider);
 
         EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();

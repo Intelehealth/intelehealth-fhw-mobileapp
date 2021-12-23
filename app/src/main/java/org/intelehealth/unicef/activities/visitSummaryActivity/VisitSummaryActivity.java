@@ -6,6 +6,7 @@ import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_N
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -310,6 +311,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private List<String> specialityListRussian = new ArrayList<String>();
     private List<String> specialityList = new ArrayList<String>();
     EndVisitEncounterPrescription endVisitEncounterPrescription;
+    String visitnoteencounteruuid = "";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -577,6 +579,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+
+        //get from encountertbl from the encounter
+        EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+        visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3587,6 +3593,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     public void onResume() // register the receiver here
     {
+        //get from encountertbl from the encounter
+        if(visitnoteencounteruuid.equalsIgnoreCase("")) {
+            EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
+
         if (downloadPrescriptionService == null) {
             registerDownloadPrescription();
         }
@@ -3655,6 +3668,36 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void endVisitApiCall() {
+        // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
+        // and multiple Start Visit Note encounters wont br created.
+
+        if(visitnoteencounteruuid.equalsIgnoreCase("")) {
+            startvisitnoteApiCall();
+        }
+        else {
+            Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+            visitSummary.putExtra("visitUuid", visitUUID);
+            visitSummary.putExtra("patientUuid", patientUuid);
+            visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
+            visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+            visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+            visitSummary.putExtra("name", patientName);
+            visitSummary.putExtra("gender", genderView.getText());
+            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+            visitSummary.putExtra("tag", intentTag);
+            visitSummary.putExtra("pastVisit", isPastVisit);
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                visitSummary.putExtra("hasPrescription", "true");
+            } else {
+                visitSummary.putExtra("hasPrescription", "false");
+            }
+            startActivity(visitSummary);
+        }
+
+    }
+
+    public void startvisitnoteApiCall() {
         String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
         endVisitEncounterPrescription = getEndVisitDataModel();
         String encoded = sessionManager.getEncoded();
@@ -3668,7 +3711,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 .subscribe(new DisposableObserver<EndVisitResponseBody>() {
                     @Override
                     public void onNext(@NonNull EndVisitResponseBody endVisitResponseBody) {
-                          String encounter = endVisitResponseBody.getUuid(); // Use this uuid for pres obs api body.
+                        String encounter = endVisitResponseBody.getUuid(); // Use this uuid for pres obs api body.
+
+                        try {
+                            EncounterDAO encounterDAO_ = new EncounterDAO();
+                            encounterDAO_.insertStartVisitNoteEncounterToDb(encounter, visitUuid);;
+
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
 
                         Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
                         visitSummary.putExtra("visitUuid", visitUUID);

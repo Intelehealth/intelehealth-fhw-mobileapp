@@ -1477,7 +1477,7 @@
              android:fontFamily="@font/lato_bold"
              android:foreground="?android:attr/selectableItemBackground"
              android:gravity="center"
-             android:text="@string/sign_and_submit"
+             android:text="@string/startVisitNote"
             android:layout_marginVertical="16dp"
             android:onClick="signAndSubmit"
              android:textAlignment="center"

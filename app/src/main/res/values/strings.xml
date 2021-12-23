@@ -743,4 +743,6 @@
     <string name="submit">Submit</string>
     <string name="add_meds">Add Meds</string>
     <string name="add_diagnosis">Add Diagnosis</string>
+    <string name="startVisitNote">Start Visit Note</string>
+    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
 </resources>
