@@ -1,6 +1,7 @@
 package org.intelehealth.unicef.appointment.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.appointment.model.AppointmentInfo;
-import org.intelehealth.unicef.appointment.model.SlotInfo;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -65,6 +69,21 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
             genericViewHolder.dayTextView.setText(genericViewHolder.appointmentInfo.getSlotDay());
             genericViewHolder.statusTextView.setText(genericViewHolder.appointmentInfo.getStatus().toUpperCase());
             genericViewHolder.doctorDetailsTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getDrName(), genericViewHolder.appointmentInfo.getSpeciality()));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+            String currentDateTime = dateFormat.format(new Date());
+            String slottime = genericViewHolder.appointmentInfo.getSlotDate() + " " + genericViewHolder.appointmentInfo.getSlotTime();
+
+            long diff = 0;
+            try {
+                diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+                long second = diff / 1000;
+                long minutes = second / 60;
+                Log.v("AppointmentInfo", "Diff minutes - " + minutes);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
 
         }
     }

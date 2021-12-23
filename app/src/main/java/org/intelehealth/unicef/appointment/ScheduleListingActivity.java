@@ -12,14 +12,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
-import org.intelehealth.unicef.activities.visitSummaryActivity.VisitSummaryActivity;
 import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -75,7 +73,19 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         mSelectedEndDate = simpleDateFormat.format(new Date());
         mDateTextView.setText(mSelectedEndDate);
         TextView specialityTextView = findViewById(R.id.tvSpeciality);
-        specialityTextView.setText(speciality);
+        //specialityTextView.setText(speciality);
+
+        if (speciality.equalsIgnoreCase("Infectionist")) {
+            specialityTextView.setText("Инфекционист");
+        } else if (speciality.equalsIgnoreCase("Neurologist")) {
+            specialityTextView.setText("Невролог");
+        } else if (speciality.equalsIgnoreCase("Family Doctor")) {
+            specialityTextView.setText("Семейный врач");
+        } else if (speciality.equalsIgnoreCase("Pediatrician")) {
+            specialityTextView.setText("Педиатр");
+        } else if (speciality.equalsIgnoreCase("Neonatologist")) {
+            specialityTextView.setText("Неонатолог");
+        }
 
         rvSlots = findViewById(R.id.rvSlots);
         rvSlots.setLayoutManager(new GridLayoutManager(this, 3));
@@ -198,12 +208,12 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                             @Override
                             public void onSelect(SlotInfo slotInfo) {
                                 //------before reschedule need to cancel appointment----
-                                AppointmentDAO appointmentDAO=new AppointmentDAO();
-                                AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
-                                if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")){
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                AppointmentInfo appointmentInfo = appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                if (appointmentInfo != null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
                                     CancelRequest(appointmentInfo);
                                     bookAppointment(slotInfo);
-                                }else{
+                                } else {
                                     bookAppointment(slotInfo);
                                 }
                             }
@@ -224,19 +234,19 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     }
 
-    public void CancelRequest(AppointmentInfo appointmentInfo){
+    public void CancelRequest(AppointmentInfo appointmentInfo) {
         CancelRequest request = new CancelRequest();
         request.setVisitUuid(appointmentInfo.getVisitUuid());
         request.setId(appointmentInfo.getId());
-        String baseurl = "https://" + sessionManager.getServerUrl() +":3004";
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .cancelAppointment(request)
                 .enqueue(new Callback<CancelResponse>() {
                     @Override
                     public void onResponse(Call<CancelResponse> call, retrofit2.Response<CancelResponse> response) {
                         CancelResponse cancelResponse = response.body();
-                        AppointmentDAO appointmentDAO=new AppointmentDAO();
-                        appointmentDAO.deleteAppointeByVisitId(appointmentInfo);
+                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
                     }
 
                     @Override

@@ -715,7 +715,7 @@
     </string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
 
-    //---------appointment module----------------------
+    <!--appointment module strings -->
     <string name="book_appointment">Book Appointment</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
@@ -728,4 +728,7 @@
     <string name="appointment_for">Appointment For</string>
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
+    <string name="doctor_appointments">Doctor Appointments</string>
+    <string name="slot_info">Slot info</string>
+    <string name="appointment_booked">Appointment Booked</string>
 </resources>

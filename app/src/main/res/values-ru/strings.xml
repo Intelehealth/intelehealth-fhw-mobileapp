@@ -717,17 +717,20 @@
  \n\n
  Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>
-    //-----------appointment module strings---------------------
-    <string name="book_appointment">Book Appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
-    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
+    <!--appointment module strings -->
+    <string name="book_appointment">Запись на прием</string>
+    <string name="reschedule_appointment">Перенести встречу</string>
+    <string name="appointment_booking_confirmation_txt">Вы уверены, что забронируете этот слот?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Вы уверены, что отмените встречу?</string>
+    <string name="cancel_appointment">Отменить встречу</string>
+    <string name="slot_empty_message">Слот для встреч недоступен для выбранной даты и специальности!</string>
+    <string name="appointment_empty_message">У вас нет встречи!</string>
+    <string name="appointment_listing_title">Запись на прием</string>
+    <string name="appointment_booking_title">Запись на прием</string>
+    <string name="appointment_for">Назначение для</string>
+    <string name="please_select_appointment_slot">Пожалуйста, выберите время встречи</string>
+    <string name="please_select_speciality">Пожалуйста, выберите специальность!</string>
+    <string name="doctor_appointments">Запись к врачу</string>
+    <string name="slot_info">Информация о слоте</string>
+    <string name="appointment_booked">Назначение забронировано</string>
 </resources>

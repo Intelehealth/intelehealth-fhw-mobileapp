@@ -401,7 +401,7 @@
                                 android:fontFamily="@font/lato_medium"
                                 android:includeFontPadding="false"
                                 android:paddingBottom="12dip"
-                                android:text="Doctor Appointments"
+                                android:text="@string/doctor_appointments"
                                 android:textAlignment="center"
                                 android:textSize="15sp" />
 

@@ -1,6 +1,12 @@
 package org.intelehealth.unicef.appointment;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.LocaleList;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,14 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.appointment.adapter.AppointmentListingAdapter;
-import org.intelehealth.unicef.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
 import org.intelehealth.unicef.appointment.model.AppointmentInfo;
 import org.intelehealth.unicef.appointment.model.AppointmentListingResponse;
-import org.intelehealth.unicef.appointment.model.SlotInfo;
-import org.intelehealth.unicef.appointment.model.SlotInfoResponse;
 import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,7 +31,6 @@ import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AppointmentListingActivity extends AppCompatActivity {
     RecyclerView rvAppointments;
@@ -86,9 +89,20 @@ public class AppointmentListingActivity extends AppCompatActivity {
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                        if (response.body() == null) return;
                         AppointmentListingResponse slotInfoResponse = response.body();
+                        AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
-                        AppointmentListingAdapter slotListingAdapter = new AppointmentListingAdapter(rvAppointments,
+                            try {
+                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                            } catch (DAOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        getAppointments();
+                        /*AppointmentListingAdapter slotListingAdapter = new AppointmentListingAdapter(rvAppointments,
                                 AppointmentListingActivity.this,
                                 slotInfoResponse.getData(), new AppointmentListingAdapter.OnItemSelection() {
                             @Override
@@ -103,7 +117,7 @@ public class AppointmentListingActivity extends AppCompatActivity {
                             findViewById(R.id.llEmptyView).setVisibility(View.VISIBLE);
                         } else {
                             findViewById(R.id.llEmptyView).setVisibility(View.GONE);
-                        }
+                        }*/
                     }
 
                     @Override
@@ -112,5 +126,35 @@ public class AppointmentListingActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        conf.setLocale(locale);
+        context.createConfigurationContext(conf);
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
     }
 }

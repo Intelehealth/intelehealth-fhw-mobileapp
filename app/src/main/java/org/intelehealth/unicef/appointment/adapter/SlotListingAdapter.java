@@ -92,7 +92,7 @@ public class SlotListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View view) {
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext)
                             .setMessage(mContext.getString(R.string.appointment_booking_confirmation_txt)
-                                    + "\n\nSlot info - \n" + slotInfo.getSlotDate()
+                                    + "\n\n"+mContext.getString(R.string.slot_info) +"- \n" + slotInfo.getSlotDate()
                                     + "\n" + slotInfo.getSlotTime()
                                     + "\n" + slotInfo.getSlotDay()
                             )

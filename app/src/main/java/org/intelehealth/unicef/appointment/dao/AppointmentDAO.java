@@ -75,7 +75,7 @@ public class AppointmentDAO {
                 appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
                 appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
                 appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
-                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
                 appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
                 appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
                 appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
@@ -114,7 +114,7 @@ public class AppointmentDAO {
                 appointmentInfo.setSlotDuration(idCursor.getInt(idCursor.getColumnIndexOrThrow("slot_duration")));
                 appointmentInfo.setSlotDurationUnit(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_duration_unit")));
                 appointmentInfo.setSlotTime(idCursor.getString(idCursor.getColumnIndexOrThrow("slot_time")));
-                appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
+                appointmentInfo.setSpeciality(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality")));
                 appointmentInfo.setUserUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("user_uuid")));
                 appointmentInfo.setDrName(idCursor.getString(idCursor.getColumnIndexOrThrow("dr_name")));
                 appointmentInfo.setVisitUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")));
@@ -136,11 +136,11 @@ public class AppointmentDAO {
         return appointmentInfos;
     }
 
-    public void deleteAppointeByVisitId(AppointmentInfo appointmentInfo) {
-        Log.v(TAG, "getByVisitUUID - visitUUID - " + appointmentInfo.getVisitUuid());
+    public void deleteAppointmentByVisitId(String visitUuid) {
+        Log.v(TAG, "getByVisitUUID - visitUUID - " + visitUuid);
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
-        db.delete("tbl_appointments","appointment_id=? and visit_uuid=?",new String[]{""+appointmentInfo.getId(),appointmentInfo.getVisitUuid()});
+        db.delete("tbl_appointments", "visit_uuid=?", new String[]{visitUuid});
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();

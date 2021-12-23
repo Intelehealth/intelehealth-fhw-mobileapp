@@ -4,14 +4,12 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
 import androidx.annotation.NonNull;
-
 import androidx.core.app.NotificationCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
@@ -56,24 +54,28 @@ public class SyncWorkManager extends Worker {
             List<AppointmentInfo> appointmentInfoList = appointmentDAO.getAppointments();
             if (appointmentInfoList != null) {
                 for (AppointmentInfo appointmentInfo : appointmentInfoList) {
-                    String currentDateTime = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                    String currentDateTime =dateFormat.format(new Date());
                     String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(
-                            "dd/MM/yyyy HH:mm");
+
                     long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
                     long second = diff / 1000;
                     long minutes = second / 60;
                     if (minutes > 0 && minutes <= 20) {
-                        displayNotification("Appointment!", "Today at"+ appointmentInfo.getSlotTime()+" "+appointmentInfo.getPatientName()+" has an appointment with "+appointmentInfo.getDrName());
+                        displayNotification("Appointment!", "Today at" + appointmentInfo.getSlotTime() + " " + appointmentInfo.getPatientName() + " has an appointment with " + appointmentInfo.getDrName());
+                    }
+                    if (minutes <= 0) {
+                        appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return Result.success();
     }
+
     private void displayNotification(String title, String task) {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
