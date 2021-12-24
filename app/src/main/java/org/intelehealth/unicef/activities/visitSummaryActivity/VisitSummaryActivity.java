@@ -317,6 +317,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         mCHWname = findViewById(R.id.chw_details);
         mCHWname.setText(sessionManager.getChwname()); //session manager provider
+        mCHWname.setText(getChwName(visitUuid));
         //Added Prescription Title from config.Json dynamically through sharedPreferences
         prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
         prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
@@ -1690,6 +1691,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return isExists;
     }
 
+
+    private String getChwName(String visitUuid) {
+        String providerUuid = "";
+        String providerIDSelection = "visituuid = ?";
+        String[] providerIDArgs = {visitUuid};
+        final Cursor providerIDCursor = db.query("tbl_encounter", null, providerIDSelection, providerIDArgs, null, null, null);
+        if (providerIDCursor != null && providerIDCursor.moveToFirst() && providerIDCursor.getCount() > 0) {
+            providerIDCursor.moveToFirst();
+            providerUuid = providerIDCursor.getString(providerIDCursor.getColumnIndexOrThrow("provider_uuid"));
+        }
+        if (providerIDCursor != null) providerIDCursor.close();
+        String chw_name = getProviderName(providerUuid);
+        return chw_name;
+    }
+
+    private String getProviderName(String providerUuid) {
+        String chw_name = sessionManager.getChwname();
+        String providerIDSelection = "uuid = ?";
+        String[] providerIDArgs = {providerUuid};
+        final Cursor providerIDCursor = db.query("tbl_provider", null, providerIDSelection, providerIDArgs, null, null, null);
+        if (providerIDCursor != null && providerIDCursor.moveToFirst() && providerIDCursor.getCount() > 0) {
+            providerIDCursor.moveToFirst();
+            chw_name = providerIDCursor.getString(providerIDCursor.getColumnIndexOrThrow("given_name")) + " " +
+                    providerIDCursor.getString(providerIDCursor.getColumnIndexOrThrow("family_name"));
+        }
+        if (providerIDCursor != null) providerIDCursor.close();
+
+        return chw_name;
+    }
 
     private String convertCtoF(String temperature) {
 
