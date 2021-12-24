@@ -4007,8 +4007,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void downloadPrescriptionDefault() {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ?";
-        String[] encounterIDArgs = {visitUuid};
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"}; // so that the deleted values dont come in the presc.
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
@@ -4020,8 +4020,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         encounterCursor.close();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' ";
-        String[] visitArgs = {visitnote};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
