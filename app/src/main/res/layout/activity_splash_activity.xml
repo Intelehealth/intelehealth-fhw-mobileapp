@@ -21,7 +21,7 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center"
-            android:src="@drawable/un_training_round" />
+            android:src="@mipmap/ic_uninhibited_round" />
 
 <!--        <ImageView-->
 <!--            android:layout_width="160dp"-->
