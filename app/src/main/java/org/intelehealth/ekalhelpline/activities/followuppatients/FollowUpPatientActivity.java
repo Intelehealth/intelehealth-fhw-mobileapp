@@ -67,6 +67,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     String currentDate = " ";
     List<String> creatorsSelected = new ArrayList<>();
     TextView no_records_found_textview;
+    String chw_name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         String language = sessionManager.getAppLanguage();
         context = FollowUpPatientActivity.this;
         no_records_found_textview = findViewById(R.id.no_records_found_textview);
+        chw_name = sessionManager.getProviderID();
 
 
         //In case of crash still the app should hold the current lang fix.
@@ -131,7 +133,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
 
     private void firstQuery() {
         try {
-            List<FollowUpModel> allPatients = getAllPatientsFromDB(offset,currentDate);
+            List<FollowUpModel> allPatients = getAllPatientsFromDB(chw_name, offset,currentDate);
             if(allPatients.size()>0) {
                 recycler = new FollowUpPatientAdapter(allPatients, FollowUpPatientActivity.this);
                 recyclerView.setAdapter(recycler);
@@ -147,10 +149,10 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         }
     }
 
-    public List<FollowUpModel> getAllPatientsFromDB(int offset, String date) {
+    public List<FollowUpModel> getAllPatientsFromDB(String userUuid, int offset, String date) {
         List<FollowUpModel> modelList = new ArrayList<FollowUpModel>();
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid ORDER BY a.startdate DESC";
-        final Cursor searchCursor = db.rawQuery(query,  new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND d.provider_uuid = ? AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid ORDER BY a.startdate DESC";
+        final Cursor searchCursor = db.rawQuery(query,  new String[]{userUuid, UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (searchCursor.moveToFirst()) {
             do {
                 try {

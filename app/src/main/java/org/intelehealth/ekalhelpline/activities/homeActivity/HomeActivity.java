@@ -834,7 +834,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showFollowUpBadge() {
         String chwName = sessionManager1.getProviderID();
-        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long closedPatientCount = ClosedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long completedPatientCount = CompletedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
