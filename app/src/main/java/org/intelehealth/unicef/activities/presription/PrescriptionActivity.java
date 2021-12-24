@@ -221,6 +221,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(etDiagnosis.getText().toString())) {
+                    etDiagnosis.setError(null);
                     RadioButton checked1 = findViewById(rgDiagnosis1.getCheckedRadioButtonId());
                     RadioButton checked2 = findViewById(rgDiagnosis2.getCheckedRadioButtonId());
                     if (checked1 != null && checked2 != null) {
@@ -235,6 +236,10 @@ public class PrescriptionActivity extends AppCompatActivity {
                         // Api call will upload this piece of data...
                         uploadPrescriptionData(result, TELEMEDICINE_DIAGNOSIS);
                     }
+                }
+                else {
+                    etDiagnosis.setError(getResources().getString(R.string.error_field_required));
+                    return;
                 }
             }
         });
@@ -292,6 +297,15 @@ public class PrescriptionActivity extends AppCompatActivity {
                         &&!TextUtils.isEmpty(etMedicationDuration.getText().toString())
                         &&!TextUtils.isEmpty(etMedicationUnitsDays.getText().toString())
                 ) {
+                    etMedication.setError(null);
+                    etMedicationStrength.setError(null);
+                    etMedicationUnit.setError(null);
+                    etMedicationAmount.setError(null);
+                    etMedicationUnitTabSyrup.setError(null);
+                    etMedicationFreq.setError(null);
+                    etMedicationDuration.setError(null);
+                    etMedicationUnitsDays.setError(null);
+
                     String result = String.format("%s: %s %s %s %s %s %s %s for %s %s %s"
                             ,etMedication.getText()
                             ,etMedicationStrength.getText()
@@ -321,6 +335,40 @@ public class PrescriptionActivity extends AppCompatActivity {
 
                             uploadPrescriptionData(result, JSV_MEDICATIONS);
                 }
+                else {
+                    if(TextUtils.isEmpty(etMedication.getText().toString())) {
+                        etMedication.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationStrength.getText().toString())) {
+                        etMedicationStrength.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationUnit.getText().toString())) {
+                        etMedicationUnit.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationAmount.getText().toString())) {
+                        etMedicationAmount.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationUnitTabSyrup.getText().toString())) {
+                        etMedicationUnitTabSyrup.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationFreq.getText().toString())) {
+                        etMedicationFreq.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationDuration.getText().toString())) {
+                        etMedicationDuration.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                    if(TextUtils.isEmpty(etMedicationUnitsDays.getText().toString())) {
+                        etMedicationUnitsDays.setError(getResources().getString(R.string.error_field_required));
+                        return;
+                    }
+                }
             }
         });
 
@@ -346,10 +394,15 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String result = etTest.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
+                    etTest.setError(null);
                   //  addResult(llTestResult, result);
                   //  setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
                     etTest.setText("");
                     uploadPrescriptionData(result, REQUESTED_TESTS);
+                }
+                else {
+                    etTest.setError(getResources().getString(R.string.error_field_required));
+                    return;
                 }
             }
         });
@@ -376,10 +429,15 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String result = etAdviceRefer.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
+                    etAdviceRefer.setError(null);
                   //  addResult(llAdviceResult, result);
                    // setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                     etAdviceRefer.setText("");
                     uploadPrescriptionData(result, MEDICAL_ADVICE);
+                }
+                else {
+                    etAdviceRefer.setError(getResources().getString(R.string.error_field_required));
+                    return;
                 }
             }
         });
@@ -421,6 +479,7 @@ public class PrescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(etFollowUpDate.getText().toString())) {
+                    etFollowUpDate.setError(null);
                    // llFollowUpResult.removeAllViews();
                     String result = etFollowUpDate.getText().toString();
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
@@ -430,6 +489,10 @@ public class PrescriptionActivity extends AppCompatActivity {
                     etFollowUpDate.setText("");
                     etFollowUpRemark.setText("");
                     uploadPrescriptionData(result, FOLLOW_UP_VISIT);
+                }
+                else {
+                    etFollowUpDate.setError(getResources().getString(R.string.error_field_required));
+                    return;
                 }
             }
         });

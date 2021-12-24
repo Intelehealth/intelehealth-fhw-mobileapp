@@ -298,7 +298,6 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:hint="@string/diagnosis"
                                 android:imeOptions="actionNext"
-                                android:maxLines="1"
                                 android:nextFocusForward="@id/etMedication"
                                 android:textSize="14sp" />
 
@@ -391,10 +390,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="10dp"
+                            android:textSize="@dimen/card_content_normal_text_size"
                             android:background="@color/colorPrimary"
-                            android:fontFamily="@font/lato_bold"
+                            android:paddingHorizontal="10dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:paddingHorizontal="12dp"
                             android:text="@string/add_diagnosis"
                             android:textColor="@color/white" />
 
@@ -446,7 +445,6 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:hint="@string/medication"
                                 android:imeOptions="actionNext"
-                                android:maxLines="1"
                                 android:nextFocusForward="@id/etTest"
                                 android:textSize="14sp" />
 
@@ -628,10 +626,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="10dp"
+                            android:textSize="@dimen/card_content_normal_text_size"
                             android:background="@color/colorPrimary"
-                            android:fontFamily="@font/lato_bold"
+                            android:paddingHorizontal="10dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:paddingHorizontal="12dp"
                             android:text="@string/add_meds"
                             android:textColor="@color/white" />
 
@@ -683,7 +681,6 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:hint="@string/test"
                                 android:imeOptions="actionNext"
-                                android:maxLines="1"
                                 android:nextFocusForward="@id/etAdviceRefer"
                                 android:textSize="14sp" />
 
@@ -696,10 +693,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="10dp"
+                            android:textSize="@dimen/card_content_normal_text_size"
                             android:background="@color/colorPrimary"
-                            android:fontFamily="@font/lato_bold"
+                            android:paddingHorizontal="10dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:paddingHorizontal="12dp"
                             android:text="@string/add_test"
                             android:textColor="@color/white" />
 
@@ -750,7 +747,6 @@
                                 android:fontFamily="@font/lato_regular"
                                 android:hint="@string/advice_or_refer_patient"
                                 android:imeOptions="actionNext"
-                                android:maxLines="1"
                                 android:nextFocusForward="@id/etFollowUpDate"
                                 android:textSize="14sp" />
 
@@ -763,10 +759,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="10dp"
+                            android:textSize="@dimen/card_content_normal_text_size"
                             android:background="@color/colorPrimary"
-                            android:fontFamily="@font/lato_bold"
+                            android:paddingHorizontal="10dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:paddingHorizontal="12dp"
                             android:text="@string/add_advice"
                             android:textColor="@color/white" />
 
@@ -923,10 +919,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15dp"
                             android:layout_marginEnd="10dp"
+                            android:textSize="@dimen/card_content_normal_text_size"
                             android:background="@color/colorPrimary"
-                            android:fontFamily="@font/lato_bold"
+                            android:paddingHorizontal="10dp"
                             android:foreground="?android:attr/selectableItemBackground"
-                            android:paddingHorizontal="12dp"
                             android:text="@string/schedule_a_follow_up"
                             android:textColor="@color/white" />
 
