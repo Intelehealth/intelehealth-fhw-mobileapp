@@ -692,6 +692,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         etFollowUpDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                etFollowUpDate.setError(null);
                 mDOBPicker.show();
             }
         });

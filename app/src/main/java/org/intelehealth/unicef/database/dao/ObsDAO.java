@@ -329,8 +329,8 @@ public class ObsDAO {
         List<PrescDataModel> prescDataModelList = new ArrayList<>();
 
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
-        Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=?",
-                new String[]{CONCEPTUUID, encounterVisitNote, sync});
+        Cursor obsCursoursor = db.rawQuery("Select * from tbl_obs where conceptuuid=? and encounteruuid=? and sync=? and voided =?",
+                new String[]{CONCEPTUUID, encounterVisitNote, sync, "0"});
         try {
             if (obsCursoursor.getCount() != 0) {
                 while (obsCursoursor.moveToNext()) {
