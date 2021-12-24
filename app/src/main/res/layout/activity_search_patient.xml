@@ -53,6 +53,12 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/ic_baseline_filter_alt_24"
+                        android:layout_marginHorizontal="5dp"
+                        android:id="@+id/toolbar_filter" />
 
 
 
@@ -79,6 +85,19 @@
                 android:text="@string/please_wait_till_sync_is_completed"
                 android:fontFamily="@font/lato_regular"
                 android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/no_records_found_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="No records found"
+                android:textSize="20sp"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="@color/font_black_2"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_centerHorizontal="true"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle"
