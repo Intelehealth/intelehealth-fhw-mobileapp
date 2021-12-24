@@ -587,13 +587,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
         //disable the Start Visit Note button if the prescription is already given...
-        if (objClsDoctorDetails == null) {
+       /* if (objClsDoctorDetails != null) {
             btnSignSubmit.setEnabled(false);
             btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
         }
         else {
             btnSignSubmit.setEnabled(true);
-        }
+        }*/
 
 
         //end
@@ -3684,11 +3684,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void endVisitApiCall() {
         // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
         // and multiple Start Visit Note encounters wont br created.
-
-        if(visitnoteencounteruuid.equalsIgnoreCase("")) {
+        
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             startvisitnoteApiCall();
-        }
-        else {
+        } else {
             Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
             visitSummary.putExtra("visitUuid", visitUUID);
             visitSummary.putExtra("patientUuid", patientUuid);
@@ -3707,7 +3706,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 visitSummary.putExtra("hasPrescription", "false");
             }
             startActivity(visitSummary);
-        }
+    }
 
     }
 
