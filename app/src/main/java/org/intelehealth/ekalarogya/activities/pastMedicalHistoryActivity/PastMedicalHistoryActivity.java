@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 
+import org.intelehealth.ekalarogya.activities.physcialExamActivity.PhysicalExamActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,6 +77,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     String patientName;
     String intentTag;
     private float float_ageYear_Month;
+    AlertDialog confirmationAlertDialog = null;
 
     ArrayList<String> physicalExams;
     int lastExpandedPosition = -1;
@@ -100,7 +102,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     // CustomExpandableListAdapter adapter;
     //ExpandableListView historyListView;
 
-    String patientHistory;
+    String patientHistory, patientHistoryHindi;
     String phistory = "";
 
     boolean flag = false;
@@ -145,7 +147,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             intentTag = intent.getStringExtra("tag");
             float_ageYear_Month = intent.getFloatExtra("float_ageYear_Month", 0);
 
-            if(edit_PatHist == null)
+            if (edit_PatHist == null)
                 new_result = getPastMedicalVisitData();
         }
 
@@ -230,10 +232,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             alertDialog.setCanceledOnTouchOutside(false);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-            
+
         }
-
-
 
 
         setTitle(getString(R.string.title_activity_patient_history));
@@ -247,9 +247,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         toolbar.setTitleTextColor(Color.WHITE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        recyclerViewIndicator=findViewById(R.id.recyclerViewIndicator);
+        recyclerViewIndicator = findViewById(R.id.recyclerViewIndicator);
         pastMedical_recyclerView = findViewById(R.id.pastMedical_recyclerView);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         pastMedical_recyclerView.setLayoutManager(linearLayoutManager);
         pastMedical_recyclerView.setItemAnimator(new DefaultItemAnimator());
         PagerSnapHelper helper = new PagerSnapHelper();
@@ -288,10 +288,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
         mgender = PatientsDAO.fetch_gender(patientUuid);
 
-        if(mgender.equalsIgnoreCase("M")) {
+        if (mgender.equalsIgnoreCase("M")) {
             patientHistoryMap.fetchItem("0");
-        }
-        else if(mgender.equalsIgnoreCase("F")) {
+        } else if (mgender.equalsIgnoreCase("F")) {
             patientHistoryMap.fetchItem("1");
         }
 
@@ -359,7 +358,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
 
     private void fabClick() {
         //If nothing is selected, there is nothing to put into the database.
-
+        patientHistory="";
+        patientHistoryHindi="";
         List<String> imagePathList = patientHistoryMap.getImagePathList();
 
         if (imagePathList != null) {
@@ -368,59 +368,125 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             }
         }
 
-
         if (intentTag != null && intentTag.equals("edit")) {
             if (patientHistoryMap.anySubSelected()) {
                 patientHistory = patientHistoryMap.generateLanguage();
-                updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
+                if(!patientHistory.isEmpty() && !patientHistory.contains(" - <br/>")) {
+                    if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
+                        patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+                        ConfirmationDialog(patientHistory, patientHistoryHindi);
+                    } else {
+                        ConfirmationDialog(patientHistory, patientHistory);
+                    }
+                }
+                //updateDatabase(patientHistory); // update details of patient's visit, when edit button on VisitSummary is pressed
             }
 
-            // displaying all values in another activity
-            Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
-            intent.putExtra("patientUuid", patientUuid);
-            intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("tag", intentTag);
-            intent.putExtra("hasPrescription", "false");
-            startActivity(intent);
+            if(patientHistory.isEmpty() || patientHistory.contains(" - <br/>")) {
+                patientHistory="";
+                updateDatabase(patientHistory);
+                Intent intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+                intent.putExtra("patientUuid", patientUuid);
+                intent.putExtra("visitUuid", visitUuid);
+                intent.putExtra("encounterUuidVitals", encounterVitals);
+                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                intent.putExtra("state", state);
+                intent.putExtra("name", patientName);
+                intent.putExtra("tag", intentTag);
+                intent.putExtra("hasPrescription", "false");
+                startActivity(intent);
+            }
         } else {
-
-            //  if(patientHistoryMap.anySubSelected()){
+            //if(patientHistoryMap.anySubSelected()){
             patientHistory = patientHistoryMap.generateLanguage();
-
-            if (flag == true) { // only if OK clicked, collect this new info (old patient)
-                phistory = phistory + patientHistory; // only PMH updated
-                sessionManager.setReturning(true);
-
-
-                insertDb(phistory);
-
-                // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
-            } else  // new patient, directly insert into database
-            {
-                insertDb(patientHistory);
+            if(!patientHistory.isEmpty() && !patientHistory.contains(" - <br/>")) {
+                if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
+                    patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
+                    ConfirmationDialog(patientHistory, patientHistoryHindi);
+                } else {
+                    ConfirmationDialog(patientHistory, patientHistory);
+                }
+            }else {
+                if (patientHistory.isEmpty() || patientHistory.contains(" - <br/>")) {
+                    patientHistory="";
+                    if (flag == true) { // only if OK clicked, collect this new info (old patient)
+                        phistory = phistory + patientHistory; // only PMH updated
+                        sessionManager.setReturning(true);
+                        insertDb(phistory);
+                        // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                    } else  // new patient, directly insert into database
+                    {
+                        insertDb(patientHistory);
+                    }
+                    Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent.putExtra("tag", intentTag);
+                    //intent.putStringArrayListExtra("exams", physicalExams);
+                    startActivity(intent);
+                }
             }
-
-            Intent intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class);
-            intent.putExtra("patientUuid", patientUuid);
-            intent.putExtra("visitUuid", visitUuid);
-            intent.putExtra("encounterUuidVitals", encounterVitals);
-            intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-            intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-            intent.putExtra("state", state);
-            intent.putExtra("name", patientName);
-            intent.putExtra("float_ageYear_Month", float_ageYear_Month);
-            intent.putExtra("tag", intentTag);
-            //       intent.putStringArrayListExtra("exams", physicalExams);
-            startActivity(intent);
-
         }
     }
 
+    public void ConfirmationDialog(String patHist, String displayStr) {
+
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(Html.fromHtml(displayStr));
+        alertDialogBuilder.setPositiveButton(getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent;
+                if (intentTag != null && intentTag.equals("edit")) {
+                    updateDatabase(patHist);
+                    intent = new Intent(PastMedicalHistoryActivity.this, VisitSummaryActivity.class);
+                } else {
+                    if (flag == true) { // only if OK clicked, collect this new info (old patient)
+                        phistory = phistory + patHist; // only PMH updated
+                        sessionManager.setReturning(true);
+                        insertDb(phistory);
+                        // however, we concat it here to patientHistory and pass it along to FH, not inserting into db
+                    } else  // new patient, directly insert into database
+                    {
+                        insertDb(patHist);
+                    }
+                    intent = new Intent(PastMedicalHistoryActivity.this, FamilyHistoryActivity.class); // earlier it was vitals
+                }
+
+                intent.putExtra("patientUuid", patientUuid);
+                intent.putExtra("visitUuid", visitUuid);
+                intent.putExtra("encounterUuidVitals", encounterVitals);
+                intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                intent.putExtra("state", state);
+                intent.putExtra("name", patientName);
+                intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                intent.putExtra("tag", intentTag);
+                startActivity(intent);
+            }
+        });
+        alertDialogBuilder.setNegativeButton(getString(R.string.generic_back), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        confirmationAlertDialog = alertDialogBuilder.create();
+        // alertDialog.show();
+        if (!confirmationAlertDialog.isShowing()) {
+            confirmationAlertDialog.show();
+            confirmationAlertDialog.setCancelable(false);
+            IntelehealthApplication.setAlertDialogCustomTheme(this, confirmationAlertDialog);
+        }
+    }
 
     /**
      * This method inserts medical history of patient in database.
@@ -525,8 +591,6 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
 
-
-
     public void AnimateView(View v) {
 
         int fadeInDuration = 500; // Configure time values here
@@ -565,7 +629,8 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
     }
 
     private String getPastMedicalVisitData() {
-        String result = "";    db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        String result = "";
+        db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
         // String[] columns = {"value"};
         String[] columns = {"value", " conceptuuid"};
         try {
@@ -577,7 +642,9 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
             medHistCursor.close();
         } catch (CursorIndexOutOfBoundsException e) {
             result = ""; // if medical history does not exist
-        }    db.close();    return result;
+        }
+        db.close();
+        return result;
     }
 }
 
