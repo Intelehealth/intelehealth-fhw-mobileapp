@@ -1023,7 +1023,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/doctor_details_cardview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

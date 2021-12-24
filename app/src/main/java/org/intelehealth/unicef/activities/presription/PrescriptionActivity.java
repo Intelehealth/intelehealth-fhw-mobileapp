@@ -61,6 +61,7 @@ import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescResponse;
 import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
+import org.intelehealth.unicef.syncModule.SyncUtils;
 import org.intelehealth.unicef.utilities.LocaleHelper;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.VisitUtils;
@@ -450,6 +451,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                             @Override
                             public void onNext(@NonNull ResponseBody responseBody) {
                                 // status is received...
+                                SyncUtils syncUtils = new SyncUtils();
+                                syncUtils.syncForeground("downloadPrescription");
                                 showDialogForHomeScreen();
                             }
 
@@ -477,9 +480,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        alertdialogBuilder.setNegativeButton(R.string.generic_no, null);
+
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));

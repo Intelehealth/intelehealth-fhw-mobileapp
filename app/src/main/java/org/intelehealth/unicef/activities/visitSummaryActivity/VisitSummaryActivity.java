@@ -586,18 +586,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
         visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
-        //disable the Start Visit Note button if the prescription is already given...
-       /* if (objClsDoctorDetails != null) {
-            btnSignSubmit.setEnabled(false);
-            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
-        }
-        else {
-            btnSignSubmit.setEnabled(true);
-        }*/
-
-
-        //end
-
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3684,7 +3672,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private void endVisitApiCall() {
         // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
         // and multiple Start Visit Note encounters wont br created.
-        
+
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             startvisitnoteApiCall();
         } else {
@@ -3979,6 +3967,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
                 }
+                //disable the Start Visit Note button if the prescription is already given...
+                if (hasPrescription.equalsIgnoreCase("true")) {
+                    btnSignSubmit.setEnabled(false);
+                    btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
+                }
+                else {
+                    btnSignSubmit.setEnabled(true);
+                }
+                //end
 
 
                 if (uploaded) {
@@ -4037,6 +4034,15 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
         }
+        //disable the Start Visit Note button if the prescription is already given...
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            btnSignSubmit.setEnabled(false);
+            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
+        }
+        else {
+            btnSignSubmit.setEnabled(true);
+        }
+        //end
     }
 
     @Override
