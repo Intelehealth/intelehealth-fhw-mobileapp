@@ -2,7 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,6 +26,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             tools:text="Hi Hello There..."
+            android:layout_marginStart="5dp"
             android:layout_weight="1" />
 
         <ImageView
@@ -30,4 +40,5 @@
             android:src="@drawable/ic_action_delete" />
 
     </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
