@@ -16,6 +16,7 @@ import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
+import org.intelehealth.unicef.utilities.Base64Utils;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.UrlModifiers;
 
@@ -39,6 +40,7 @@ public class FollowupPresAdapter extends RecyclerView.Adapter<FollowupPresAdapte
     Context context;
     List<PrescDataModel> prescDataModels;
     SessionManager sessionManager;
+    Base64Utils base64Utils = new Base64Utils();
 
     public FollowupPresAdapter(Context context, List<PrescDataModel> prescDataModels) {
         this.context = context;
@@ -90,7 +92,8 @@ public class FollowupPresAdapter extends RecyclerView.Adapter<FollowupPresAdapte
                 String uuid = prescDataModels.get(clickedPosition).getUuid();
                 Log.v("index", "index1: " + clickedPosition);
                 String url = urlModifiers.setDeletePrescItemUrl(uuid);
-                String encoded = sessionManager.getEncoded();
+               // String encoded = sessionManager.getEncoded();
+                String encoded = base64Utils.encoded("sysnurse", "Nurse123");
 
                 ApiInterface apiService = ApiClient.createService(ApiInterface.class);
                 Observable<Response<Void>> responseBodyObservable = apiService.DELETE_PRESCOBS_ITEM(url, "Basic " + encoded);

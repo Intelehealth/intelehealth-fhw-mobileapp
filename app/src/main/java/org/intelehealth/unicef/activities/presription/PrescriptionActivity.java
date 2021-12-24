@@ -63,6 +63,7 @@ import org.intelehealth.unicef.models.prescriptionUpload.ObsPrescription;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.syncModule.SyncUtils;
+import org.intelehealth.unicef.utilities.Base64Utils;
 import org.intelehealth.unicef.utilities.LocaleHelper;
 import org.intelehealth.unicef.utilities.SessionManager;
 import org.intelehealth.unicef.utilities.VisitUtils;
@@ -126,6 +127,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     RecyclerView followupRecyclerView;
     FollowupPresAdapter followupPrescAdapter;
     List<PrescDataModel> followupList;
+    Base64Utils base64Utils = new Base64Utils();
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -138,6 +140,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         sessionManager = new SessionManager(this);
         appLanguage = sessionManager.getAppLanguage();
+
         OBSURL = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/obs";
 
         final Intent intent = this.getIntent(); // The intent was passed to the activity
@@ -503,7 +506,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                 // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
                 String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
                 visitCompleteStatus = getVisitCompleteDataModel();
-                String encoded = sessionManager.getEncoded();
+               // String encoded = sessionManager.getEncoded();
+                String encoded = base64Utils.encoded("sysnurse", "Nurse123");
 
                 ApiInterface apiService = ApiClient.createService(ApiInterface.class);
                 Observable<ResponseBody> responseBodyObservable = apiService.OBS_SIGNANDSUBMIT_STATUS(
@@ -594,7 +598,8 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     private boolean uploadPrescriptionData(String data, String CONCEPTUUID) {
         boolean isupload = false;
-        String encoded = sessionManager.getEncoded();
+       // String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         ObsPrescription prescription = getObsPrescription(AppConstants.dateAndTimeUtils.currentDateTime(), data, CONCEPTUUID);
         Observable<ObsPrescResponse> resultsObservable = apiService.OBS_PRESCRIPTION_UPLOAD(OBSURL, prescription, "Basic " + encoded);

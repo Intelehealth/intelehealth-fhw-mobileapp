@@ -116,6 +116,7 @@ import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.services.DownloadService;
 import org.intelehealth.unicef.syncModule.SyncUtils;
+import org.intelehealth.unicef.utilities.Base64Utils;
 import org.intelehealth.unicef.utilities.DateAndTimeUtils;
 import org.intelehealth.unicef.utilities.FileUtils;
 import org.intelehealth.unicef.utilities.LocaleHelper;
@@ -267,6 +268,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
+    Base64Utils base64Utils = new Base64Utils();
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -3701,7 +3703,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void startvisitnoteApiCall() {
         String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
         endVisitEncounterPrescription = getEndVisitDataModel();
-        String encoded = sessionManager.getEncoded();
+      //  String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
 
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         Observable<EndVisitResponseBody> resultsObservable = apiService.END_VISIT_RESPONSE_BODY_OBSERVABLE
