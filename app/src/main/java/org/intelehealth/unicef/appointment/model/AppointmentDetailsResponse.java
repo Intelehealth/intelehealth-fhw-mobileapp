@@ -9,6 +9,9 @@ public class AppointmentDetailsResponse implements Serializable {
     @SerializedName("status")
     private boolean status;
 
+    @SerializedName("message")
+    private String message;
+
     @SerializedName("data")
     private AppointmentInfo data;
 
@@ -27,5 +30,13 @@ public class AppointmentDetailsResponse implements Serializable {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

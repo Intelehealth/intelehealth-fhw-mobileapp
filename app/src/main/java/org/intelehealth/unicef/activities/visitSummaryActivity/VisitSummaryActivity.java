@@ -61,6 +61,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -145,6 +146,7 @@ import retrofit2.Callback;
 public class VisitSummaryActivity extends AppCompatActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
+    private static final int SCHEDULE_LISTING_INTENT = 2001;
     private WebView mWebView;
     private LinearLayout mLayout;
 
@@ -568,6 +570,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mDoctorAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                doQuery();
                 if (speciality_selected == null
                         || speciality_selected.isEmpty()
                         || "Select Specialization".equalsIgnoreCase(speciality_selected)
@@ -576,13 +579,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                startActivity(new Intent(VisitSummaryActivity.this, ScheduleListingActivity.class)
+                if (isSynedFlag.equalsIgnoreCase("0")) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivityForResult(new Intent(VisitSummaryActivity.this, ScheduleListingActivity.class)
                         .putExtra("visitUuid", visitUuid)
                         .putExtra("patientUuid", patientUuid)
                         .putExtra("patientName", patientName)
                         .putExtra("openMrsId", patient.getOpenmrs_id())
-                        .putExtra("speciality", speciality_selected)
+                        .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
                 );
+
+
             }
         });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
@@ -1665,6 +1674,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
+        getAppointmentDetails(visitUuid);
     }
 
     /**
@@ -3652,7 +3662,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            deleteRecursive(dir);
 //        }
         // load the appointment details
-        getAppointmentDetails(visitUuid);
+       // getAppointmentDetails(visitUuid);
     }
 
 //    public static void deleteRecursive(File fileOrDirectory) {
@@ -4111,6 +4121,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
 
     private void getAppointmentDetails(String visitUUID) {
+        Log.v("VisitSummary", "getAppointmentDetails");
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
                 .getAppointmentDetails(visitUUID)
@@ -4134,22 +4145,40 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
                                 mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
                                 mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
-                                        mAppointmentDetailsResponse.getData().getSlotDay() + "\n" +
+                                        org.intelehealth.unicef.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(mContext).getAppLanguage()) + "\n" +
                                         mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
                                         mAppointmentDetailsResponse.getData().getSlotTime()
                                 );
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
+                        checkAndDisplayAppointment();
                     }
 
                     @Override
                     public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
+                        checkAndDisplayAppointment();
                     }
                 });
 
+    }
+
+    private void checkAndDisplayAppointment() {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        boolean isCompletedOrExited = false;
+        try {
+            isCompletedOrExited = encounterDAO.isCompletedOrExited(visitUuid);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (isCompletedOrExited) {
+            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+            mDoctorAppointmentBookingTextView.setVisibility(View.GONE);
+        }
     }
 
     private void cancelAppointment() {
@@ -4197,4 +4226,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SCHEDULE_LISTING_INTENT){
+            getAppointmentDetails(visitUuid);
+        }
+    }
 }

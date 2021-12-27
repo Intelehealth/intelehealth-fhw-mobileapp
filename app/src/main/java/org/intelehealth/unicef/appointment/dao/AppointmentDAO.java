@@ -91,7 +91,7 @@ public class AppointmentDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+        //db.close();
 
         return appointmentInfo;
     }
@@ -131,7 +131,7 @@ public class AppointmentDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+        //db.close();
 
         return appointmentInfos;
     }
@@ -143,6 +143,6 @@ public class AppointmentDAO {
         db.delete("tbl_appointments", "visit_uuid=?", new String[]{visitUuid});
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.close();
+        //db.close();
     }
 }

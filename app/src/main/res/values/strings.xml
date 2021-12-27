@@ -731,4 +731,10 @@
     <string name="doctor_appointments">Doctor Appointments</string>
     <string name="slot_info">Slot info</string>
     <string name="appointment_booked">Appointment Booked</string>
+    <string name="minutes_txt">minutes</string>
+    <string name="booked_txt">booked</string>
+    <string name="cancelled_txt">cancelled</string>
+    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
+    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
+    <string name="appointment_booked_failed">Appointment booked failed!</string>
 </resources>

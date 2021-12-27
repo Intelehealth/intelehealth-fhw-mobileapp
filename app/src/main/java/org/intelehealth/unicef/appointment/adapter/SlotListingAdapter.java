@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.appointment.model.SlotInfo;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -64,7 +66,8 @@ public class SlotListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             genericViewHolder.slotInfo = mItemList.get(position);
 
             genericViewHolder.tvTime.setText(genericViewHolder.slotInfo.getSlotTime());
-            genericViewHolder.tvDuration.setText(String.format("%d %s", genericViewHolder.slotInfo.getSlotDuration(), genericViewHolder.slotInfo.getSlotDurationUnit()));
+            genericViewHolder.tvDuration.setText(String.format("%d %s", genericViewHolder.slotInfo.getSlotDuration(),
+                    mContext.getString(R.string.minutes_txt)));
 
         }
     }
@@ -92,9 +95,9 @@ public class SlotListingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View view) {
                     AlertDialog alertDialog = new AlertDialog.Builder(mContext)
                             .setMessage(mContext.getString(R.string.appointment_booking_confirmation_txt)
-                                    + "\n\n"+mContext.getString(R.string.slot_info) +"- \n" + slotInfo.getSlotDate()
+                                    + "\n\n" + mContext.getString(R.string.slot_info) + "- \n" + slotInfo.getSlotDate()
                                     + "\n" + slotInfo.getSlotTime()
-                                    + "\n" + slotInfo.getSlotDay()
+                                    + "\n" + StringUtils.getTranslatedDays(slotInfo.getSlotDay(), new SessionManager(mContext).getAppLanguage())
                             )
                             //set positive button
                             .setPositiveButton(mContext.getString(R.string.yes), new DialogInterface.OnClickListener() {

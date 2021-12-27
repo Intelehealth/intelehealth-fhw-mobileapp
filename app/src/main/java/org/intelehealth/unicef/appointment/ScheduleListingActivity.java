@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -73,18 +74,20 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         mSelectedEndDate = simpleDateFormat.format(new Date());
         mDateTextView.setText(mSelectedEndDate);
         TextView specialityTextView = findViewById(R.id.tvSpeciality);
-        //specialityTextView.setText(speciality);
+        specialityTextView.setText(speciality);
 
-        if (speciality.equalsIgnoreCase("Infectionist")) {
-            specialityTextView.setText("Инфекционист");
-        } else if (speciality.equalsIgnoreCase("Neurologist")) {
-            specialityTextView.setText("Невролог");
-        } else if (speciality.equalsIgnoreCase("Family Doctor")) {
-            specialityTextView.setText("Семейный врач");
-        } else if (speciality.equalsIgnoreCase("Pediatrician")) {
-            specialityTextView.setText("Педиатр");
-        } else if (speciality.equalsIgnoreCase("Neonatologist")) {
-            specialityTextView.setText("Неонатолог");
+        if (sessionManager.getAppLanguage().equals("ru")) {
+            if (speciality.equalsIgnoreCase("Infectionist")) {
+                specialityTextView.setText("Инфекционист");
+            } else if (speciality.equalsIgnoreCase("Neurologist")) {
+                specialityTextView.setText("Невролог");
+            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
+                specialityTextView.setText("Семейный врач");
+            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
+                specialityTextView.setText("Педиатр");
+            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
+                specialityTextView.setText("Неонатолог");
+            }
         }
 
         rvSlots = findViewById(R.id.rvSlots);
@@ -181,12 +184,20 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                         AppointmentDetailsResponse appointmentDetailsResponse = response.body();
+                        if (!appointmentDetailsResponse.isStatus()) {
+                            Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+                        }
+                        setResult(RESULT_OK);
                         finish();
                     }
 
                     @Override
                     public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
+                        Toast.makeText(ScheduleListingActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -211,8 +222,8 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                                 AppointmentInfo appointmentInfo = appointmentDAO.getAppointmentByVisitId(visitUuid);
                                 if (appointmentInfo != null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                                    CancelRequest(appointmentInfo);
-                                    bookAppointment(slotInfo);
+                                    CancelRequest(appointmentInfo, slotInfo);
+
                                 } else {
                                     bookAppointment(slotInfo);
                                 }
@@ -234,7 +245,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     }
 
-    public void CancelRequest(AppointmentInfo appointmentInfo) {
+    public void CancelRequest(AppointmentInfo appointmentInfo, SlotInfo slotInfo) {
         CancelRequest request = new CancelRequest();
         request.setVisitUuid(appointmentInfo.getVisitUuid());
         request.setId(appointmentInfo.getId());
@@ -247,11 +258,13 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                         CancelResponse cancelResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
                         appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
+                        bookAppointment(slotInfo);
                     }
 
                     @Override
                     public void onFailure(Call<CancelResponse> call, Throwable t) {
                         Log.v("onFailure", t.getMessage());
+                        Toast.makeText(ScheduleListingActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

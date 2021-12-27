@@ -3,6 +3,8 @@ package org.intelehealth.unicef.syncModule;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -49,29 +51,35 @@ public class SyncWorkManager extends Worker {
         syncUtils.syncBackground();
 
         //displayNotification("My Worker", "Hey I finished my work");
-        try {
-            AppointmentDAO appointmentDAO = new AppointmentDAO();
-            List<AppointmentInfo> appointmentInfoList = appointmentDAO.getAppointments();
-            if (appointmentInfoList != null) {
-                for (AppointmentInfo appointmentInfo : appointmentInfoList) {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
-                    String currentDateTime =dateFormat.format(new Date());
-                    String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                    List<AppointmentInfo> appointmentInfoList = appointmentDAO.getAppointments();
+                    if (appointmentInfoList != null) {
+                        for (AppointmentInfo appointmentInfo : appointmentInfoList) {
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
+                            String currentDateTime =dateFormat.format(new Date());
+                            String slottime = appointmentInfo.getSlotDate() + " " + appointmentInfo.getSlotTime();
 
-                    long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
-                    long second = diff / 1000;
-                    long minutes = second / 60;
-                    if (minutes > 0 && minutes <= 20) {
-                        displayNotification("Appointment!", "Today at" + appointmentInfo.getSlotTime() + " " + appointmentInfo.getPatientName() + " has an appointment with " + appointmentInfo.getDrName());
+                            long diff = dateFormat.parse(slottime).getTime() - dateFormat.parse(currentDateTime).getTime();
+                            long second = diff / 1000;
+                            long minutes = second / 60;
+                            if (minutes > 0 && minutes <= 45) {
+                                displayNotification("Appointment!", "Today at" + appointmentInfo.getSlotTime() + " " + appointmentInfo.getPatientName() + " has an appointment with " + appointmentInfo.getDrName());
+                            }
+                            if (minutes <= 0) {
+                                appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
+                            }
+                        }
                     }
-                    if (minutes <= 0) {
-                        appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        }, 15000);
+
 
         return Result.success();
     }

@@ -733,4 +733,9 @@
     <string name="doctor_appointments">Запись к врачу</string>
     <string name="slot_info">Информация о слоте</string>
     <string name="appointment_booked">Назначение забронировано</string>
+    <string name="minutes_txt">минут</string>
+    <string name="please_upload_visit">Пожалуйста, загрузите визит перед записью на прием.</string>
+    <string name="appointment_booked_successfully">Встреча успешно забронирована!</string>
+    <string name="appointment_booked_failed">Назначение не выполнено!</string>
+
 </resources>

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.appointment.model.AppointmentInfo;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.StringUtils;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -66,9 +68,9 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
             genericViewHolder.appointmentInfo = mItemList.get(position);
             genericViewHolder.patientInfoTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getPatientName(), genericViewHolder.appointmentInfo.getOpenMrsId()));
             genericViewHolder.dateTimeTextView.setText(String.format("%s %s", genericViewHolder.appointmentInfo.getSlotDate(), genericViewHolder.appointmentInfo.getSlotTime()));
-            genericViewHolder.dayTextView.setText(genericViewHolder.appointmentInfo.getSlotDay());
-            genericViewHolder.statusTextView.setText(genericViewHolder.appointmentInfo.getStatus().toUpperCase());
-            genericViewHolder.doctorDetailsTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getDrName(), genericViewHolder.appointmentInfo.getSpeciality()));
+            genericViewHolder.dayTextView.setText(StringUtils.getTranslatedDays(genericViewHolder.appointmentInfo.getSlotDay(), new SessionManager(mContext).getAppLanguage()));
+            genericViewHolder.statusTextView.setText(StringUtils.getAppointmentBookStatus(genericViewHolder.appointmentInfo.getStatus().toUpperCase(), new SessionManager(mContext).getAppLanguage()));
+            genericViewHolder.doctorDetailsTextView.setText(String.format("%s, %s", genericViewHolder.appointmentInfo.getDrName(), getSpeciality(genericViewHolder.appointmentInfo.getSpeciality())));
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault());
             String currentDateTime = dateFormat.format(new Date());
@@ -86,6 +88,25 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
 
 
         }
+    }
+
+    private String getSpeciality(String speciality) {
+        if (new SessionManager(mContext).getAppLanguage().equals("ru")) {
+            if (speciality.equalsIgnoreCase("Infectionist")) {
+                return "Инфекционист";
+            } else if (speciality.equalsIgnoreCase("Neurologist")) {
+                return "Невролог";
+            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
+                return "Семейный врач";
+            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
+                return "Педиатр";
+            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
+                return "Неонатолог";
+            }
+        } else {
+            return speciality;
+        }
+        return speciality;
     }
 
     @Override
