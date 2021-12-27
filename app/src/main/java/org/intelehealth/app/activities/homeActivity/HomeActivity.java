@@ -36,6 +36,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -526,6 +528,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         String licenseUrl = sessionManager.getMindMapServerUrl();
                         String licenseKey = sessionManager.getLicenseKey();
+
+
                         getMindmapDownloadURL("https://" + licenseUrl + ":3004/", licenseKey);
 
                     } else {
@@ -590,6 +594,37 @@ public class HomeActivity extends AppCompatActivity {
                         alertDialog.show();
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                        AutoCompleteTextView url = promptsView.findViewById(R.id.licenseurl);
+
+                        if(!sessionManager.getServerUrl().isEmpty()){
+                            url.setText(sessionManager.getServerUrl());
+                        }
+                        else{
+                            url.setText("");
+                        }
+
+                        List<String> mSetUpLocation  = new ArrayList<>();
+                        mSetUpLocation.add("trn.digitalhih.net");
+                        mSetUpLocation.add("tlm.digitalhih.net");
+                        ArrayAdapter<String> setUpURLAdapter= new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_list_item_1, mSetUpLocation);
+
+                        url.setAdapter(setUpURLAdapter);
+                        url.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                url.showDropDown();
+                            }
+                        });
+                        url.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if (hasFocus)
+                                    url.showDropDown();
+
+                            }
+                        });
                         // Get the alert dialog buttons reference
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -601,8 +636,6 @@ public class HomeActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
 
                                 url.setError(null);
                                 text.setError(null);
