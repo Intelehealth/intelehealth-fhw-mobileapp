@@ -534,7 +534,7 @@
                                 android:layout_weight="1"
                                 android:hint="Frequency">
 
-                                <EditText
+                                <AutoCompleteTextView
                                     android:id="@+id/etMedicationFreq"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"

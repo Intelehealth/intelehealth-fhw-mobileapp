@@ -128,6 +128,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     FollowupPresAdapter followupPrescAdapter;
     List<PrescDataModel> followupList;
     Base64Utils base64Utils = new Base64Utils();
+    boolean isuploadPrescription = false;
+    Button btnFollowUp;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -274,7 +276,11 @@ public class PrescriptionActivity extends AppCompatActivity {
         etMedicationUnitTabSyrup.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.weight_units)));
         etMedicationUnitTabSyrup.setThreshold(1);
 
-        EditText etMedicationFreq = findViewById(R.id.etMedicationFreq);
+       // EditText etMedicationFreq = findViewById(R.id.etMedicationFreq);
+        AutoCompleteTextView etMedicationFreq = findViewById(R.id.etMedicationFreq);
+        etMedicationFreq.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.frequency)));
+        etMedicationFreq.setThreshold(1);
+
         AutoCompleteTextView etMedicationRoute = findViewById(R.id.etMedicationRoute);
         etMedicationRoute.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.route)));
         etMedicationRoute.setThreshold(1);
@@ -464,10 +470,15 @@ public class PrescriptionActivity extends AppCompatActivity {
 
         //follow up
       //  LinearLayout llFollowUpResult = findViewById(R.id.llFollowUpResult);
+        btnFollowUp = findViewById(R.id.btnFollowUp);
         followupRecyclerView = findViewById(R.id.followupRecyclerView);
         followupList = new ArrayList<>();
         ObsDAO obsDAOFollowup = new ObsDAO();
         followupList = obsDAOFollowup.fetchAllObsPrescData(encounterVisitNote, FOLLOW_UP_VISIT, "true");
+        if(followupList.size() > 0)
+            btnFollowUp.setVisibility(View.GONE);
+        else
+            btnFollowUp.setVisibility(View.VISIBLE);
         followupPrescAdapter = new FollowupPresAdapter(presContext, followupList);
         RecyclerView.LayoutManager folllowupmanager = new LinearLayoutManager(
                 PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -477,7 +488,8 @@ public class PrescriptionActivity extends AppCompatActivity {
         EditText etFollowUpDate = findViewById(R.id.etFollowUpDate);
         assignDatePicker(etFollowUpDate);
         EditText etFollowUpRemark = findViewById(R.id.etFollowUpRemark);
-        Button btnFollowUp = findViewById(R.id.btnFollowUp);
+
+
         btnFollowUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -492,6 +504,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     etFollowUpDate.setText("");
                     etFollowUpRemark.setText("");
                     uploadPrescriptionData(result, FOLLOW_UP_VISIT);
+
                 }
                 else {
                     etFollowUpDate.setError(getResources().getString(R.string.error_field_required));
@@ -499,6 +512,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         btnSignSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -597,7 +611,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     }
 
     private boolean uploadPrescriptionData(String data, String CONCEPTUUID) {
-        boolean isupload = false;
+        isuploadPrescription = false;
        // String encoded = sessionManager.getEncoded();
         String encoded = base64Utils.encoded("sysnurse", "Nurse123");
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -613,11 +627,15 @@ public class PrescriptionActivity extends AppCompatActivity {
                         String uuid = obsPrescResponse.getUuid();
                         setObsData(uuid, CONCEPTUUID, data);
                         updateRecyclerView(CONCEPTUUID, uuid, data, encounterVisitNote);
+                        isuploadPrescription = true;
+
+                        if(CONCEPTUUID == FOLLOW_UP_VISIT)
+                            btnFollowUp.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        isuploadPrescription = false;
                     }
 
                     @Override
@@ -626,7 +644,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     }
                 });
 
-        return isupload;
+        return isuploadPrescription;
     }
 
     private void updateRecyclerView(String conceptuuid, String uuid, String data, String encounterVisitNote) {
@@ -650,6 +668,10 @@ public class PrescriptionActivity extends AppCompatActivity {
             case FOLLOW_UP_VISIT:
                 followupList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 followupPrescAdapter.notifyDataSetChanged();
+                if(followupList.size() > 0)
+                    btnFollowUp.setVisibility(View.GONE);
+                else
+                    btnFollowUp.setVisibility(View.VISIBLE);
                 break;
             default:
                 // do nothing...
@@ -693,7 +715,8 @@ public class PrescriptionActivity extends AppCompatActivity {
         }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+       // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        mDOBPicker.getDatePicker().setMinDate(System.currentTimeMillis() - 10000); // So that in Followup all the dates from today and future will be enabled to be selected.
         etFollowUpDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

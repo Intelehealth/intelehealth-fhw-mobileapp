@@ -41,6 +41,7 @@ public class FollowupPresAdapter extends RecyclerView.Adapter<FollowupPresAdapte
     List<PrescDataModel> prescDataModels;
     SessionManager sessionManager;
     Base64Utils base64Utils = new Base64Utils();
+    boolean isFollowupDeleted = false;
 
     public FollowupPresAdapter(Context context, List<PrescDataModel> prescDataModels) {
         this.context = context;
