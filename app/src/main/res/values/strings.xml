@@ -716,6 +716,7 @@
     <string name="warning_app_update">Please update the app to the latest version.</string>
     <string name="have_you_spoken_with_the_patient_directly">Have you spoken with the patient directly?</string>
     <string name="patient_interaction">Patient Interaction</string>
+
     <string name="diagnosis">Diagnosis</string>
     <string name="primary">Primary</string>
     <string name="secondary">Secondary</string>
@@ -746,4 +747,7 @@
     <string name="startVisitNote">Start Visit Note</string>
     <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
     <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
+    <string name="amount">Amount</string>
+    <string name="frequency">Frequency</string>
+    <string name="route_optional">Route (Optional)</string>
 </resources>

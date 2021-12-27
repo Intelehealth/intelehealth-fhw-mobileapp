@@ -482,7 +482,7 @@
     <string name="end_all_visit">Завершить все посещения</string>
     <string name="filter_by_creator">Фильтр по создателю</string>
     <string name="planet_name">Название планеты</string>
-    <string name="ok">OK</string>
+    <string name="ok">В ПОРЯДКЕ</string>
     <string name="cancel">Отменить</string>
     <string name="unable_to_end">Невозможно закончить</string>
     <string name="upload_before_end_visit_active"> Посещения. Пожалуйста, загрузите посещение перед попыткой его завершения.</string>
@@ -720,4 +720,36 @@
     <string name="startVisitNote">Начать визитку</string>
     <string name="prescGivenSuccessfully">Спасибо! Рецепт выдан успешно</string>
     <string name="morethanonefollowupnotallowed">Пожалуйста, предоставляйте только одно наблюдение за раз.</string>
+
+    <string name="diagnosis">Диагностика</string>
+    <string name="primary">Начальный</string>
+    <string name="secondary">Вторичный</string>
+    <string name="provisiona">Предварительный</string>
+    <string name="confirmed">Подтвержденный</string>
+    <string name="recommended_medication">Рекомендуемое лекарство</string>
+    <string name="medication">Медикамент</string>
+    <string name="strength">Сила</string>
+    <string name="units">Единицы (например: мг)</string>
+    <string name="units_tab">Единицы (например: Таблетка / Сироп)</string>
+    <string name="for_duration">На длительность</string>
+    <string name="units_eg_days_weeks_etc">Единицы (например: дни / недели и т. Д.)</string>
+    <string name="additional_instruction">Дополнительная инструкция</string>
+    <string name="recommended_tests">Рекомендуемые тесты</string>
+    <string name="test">Контрольная работа</string>
+    <string name="advice_or_refer_patient">Посоветуйте или направьте пациента</string>
+    <string name="notes">Примечания</string>
+    <string name="notes_not_shared_with_the_patient">Примечания (не передаются пациенту)</string>
+    <string name="follow_up">Следовать за</string>
+    <string name="sign_and_submit">Войти и отправить</string>
+    <string name="add_test">Добавить тест</string>
+    <string name="add_advice">Добавить совет</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="schedule_a_follow_up">Запланировать продолжение</string>
+    <string name="submit">Представлять на рассмотрение</string>
+    <string name="add_meds">Добавить лекарства</string>
+    <string name="add_diagnosis">Добавить диагноз</string>
+    <string name="amount">Amount</string>
+    <string name="frequency">Frequency</string>
+    <string name="route_optional">Route (Optional)</string>
+
 </resources>

@@ -319,6 +319,7 @@
                                     android:id="@+id/rbDiagnosisPrimary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
                                     android:checked="true"
                                     android:fontFamily="@font/lato_regular"
                                     android:includeFontPadding="false"
@@ -334,6 +335,7 @@
                                     android:id="@+id/rbDiagnosisSecondary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
                                     android:fontFamily="@font/lato_regular"
                                     android:includeFontPadding="false"
                                     android:text="@string/secondary"
@@ -363,10 +365,12 @@
                                     android:fontFamily="@font/lato_regular"
                                     android:includeFontPadding="false"
                                     android:text="@string/provisiona"
+                                    android:paddingVertical="5dp"
                                     android:textAppearance="@style/RobotoTextViewStyle"
                                     android:textSize="14sp" />
 
                                 <Space
+
                                     android:layout_width="8dp"
                                     android:layout_height="wrap_content" />
 
@@ -374,6 +378,7 @@
                                     android:id="@+id/rbDiagnosisConfirmed"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
                                     android:fontFamily="@font/lato_regular"
                                     android:includeFontPadding="false"
                                     android:text="@string/confirmed"
@@ -496,7 +501,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="Amount">
+                                android:hint="@string/amount">
 
                                 <EditText
                                     android:id="@+id/etMedicationAmount"
@@ -532,7 +537,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="Frequency">
+                                android:hint="@string/frequency">
 
                                 <AutoCompleteTextView
                                     android:id="@+id/etMedicationFreq"
@@ -546,7 +551,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="Route (Optional)">
+                                android:hint="@string/route_optional">
 
                                 <AutoCompleteTextView
                                     android:id="@+id/etMedicationRoute"
