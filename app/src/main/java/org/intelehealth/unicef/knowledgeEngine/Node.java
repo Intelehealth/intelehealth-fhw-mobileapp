@@ -1238,7 +1238,7 @@ public class Node implements Serializable {
         textInput.setTitle(R.string.question_text_input);
         View view = View.inflate(context, R.layout.multiline_edit_text_view, null);
         final EditText dialogEditText = view.findViewById(R.id.etvMoreInfo);
-        textInput.setView(dialogEditText);
+        textInput.setView(view);
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

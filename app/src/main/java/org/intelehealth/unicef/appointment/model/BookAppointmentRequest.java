@@ -6,6 +6,9 @@ import java.io.Serializable;
 
 public class BookAppointmentRequest implements Serializable {
 
+    @SerializedName("appointmentId")
+    private int appointmentId;
+
     @SerializedName("slotDay")
     private String slotDay;
 
@@ -161,5 +164,13 @@ public class BookAppointmentRequest implements Serializable {
 
     public void setHwUUID(String hwUUID) {
         this.hwUUID = hwUUID;
+    }
+
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
     }
 }

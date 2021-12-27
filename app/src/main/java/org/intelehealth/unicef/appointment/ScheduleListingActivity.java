@@ -54,6 +54,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
     private String mSelectedEndDate = "";
     SessionManager sessionManager;
     private RecyclerView rvSlots;
+    int appointmentId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         setContentView(R.layout.activity_schedule_listing);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.appointment_booking_title);
+        appointmentId = getIntent().getIntExtra("appointmentId", 0);
         visitUuid = getIntent().getStringExtra("visitUuid");
         patientUuid = getIntent().getStringExtra("patientUuid");
         patientName = getIntent().getStringExtra("patientName");
@@ -160,6 +162,9 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     private void bookAppointment(SlotInfo slotInfo) {
         BookAppointmentRequest request = new BookAppointmentRequest();
+        if (appointmentId != 0) {
+            request.setAppointmentId(appointmentId);
+        }
         request.setSlotDay(slotInfo.getSlotDay());
         request.setSlotDate(slotInfo.getSlotDate());
         request.setSlotDuration(slotInfo.getSlotDuration());
@@ -178,19 +183,21 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         request.setHwUUID(new SessionManager(ScheduleListingActivity.this).getProviderID()); // user id / healthworker id
 
         String baseurl = "https://" + new SessionManager(this).getServerUrl() + ":3004";
+        String url = baseurl + (appointmentId == 0 ? "/api/appointment/bookAppointment" : "/api/appointment/rescheduleAppointment");
         ApiClientAppointment.getInstance(baseurl).getApi()
-                .bookAppointment(request)
+                .bookAppointment(url, request)
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                         AppointmentDetailsResponse appointmentDetailsResponse = response.body();
                         if (!appointmentDetailsResponse.isStatus()) {
-                            Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
+                            setResult(RESULT_OK);
+                            finish();
                         }
-                        setResult(RESULT_OK);
-                        finish();
+
                     }
 
                     @Override
@@ -222,11 +229,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                                 AppointmentInfo appointmentInfo = appointmentDAO.getAppointmentByVisitId(visitUuid);
                                 if (appointmentInfo != null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                                    CancelRequest(appointmentInfo, slotInfo);
-
-                                } else {
-                                    bookAppointment(slotInfo);
+                                    cleanOldVisit(appointmentInfo, slotInfo);
                                 }
+                                bookAppointment(slotInfo);
+
                             }
                         });
                         rvSlots.setAdapter(slotListingAdapter);
@@ -245,6 +251,22 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     }
 
+    /**
+     * need for cleaning old appointment form local db for same visit
+     * @param appointmentInfo
+     * @param slotInfo
+     */
+    public void cleanOldVisit(AppointmentInfo appointmentInfo, SlotInfo slotInfo) {
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
+        bookAppointment(slotInfo);
+    }
+
+    /**
+     * Not required
+     * @param appointmentInfo
+     * @param slotInfo
+     */
     public void CancelRequest(AppointmentInfo appointmentInfo, SlotInfo slotInfo) {
         CancelRequest request = new CancelRequest();
         request.setVisitUuid(appointmentInfo.getVisitUuid());

@@ -588,6 +588,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         .putExtra("visitUuid", visitUuid)
                         .putExtra("patientUuid", patientUuid)
                         .putExtra("patientName", patientName)
+                        .putExtra("appointmentId", mAppointmentId)
                         .putExtra("openMrsId", patient.getOpenmrs_id())
                         .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
                 );
@@ -4149,7 +4150,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
-
+ private  int mAppointmentId = 0;
     private void getAppointmentDetails(String visitUUID) {
         Log.v("VisitSummary", "getAppointmentDetails");
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
@@ -4164,11 +4165,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             mInfoAppointmentBookingTextView.setVisibility(View.GONE);
                             mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
                             mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
+                            mAppointmentId = 0;
                         } else {
                             //-------------------insert into local db--------------------
                             try {
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
                                 appointmentDAO.insert(mAppointmentDetailsResponse.getData());
+                                mAppointmentId = mAppointmentDetailsResponse.getData().getId();
 
                                 mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
                                 mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
