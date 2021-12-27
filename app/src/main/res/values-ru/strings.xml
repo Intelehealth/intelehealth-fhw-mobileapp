@@ -198,6 +198,7 @@
     <string name="visit_summary_follow_up_reminder" translatable="false">Напомните пациенту дату последующего наблюдения: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Пожалуйста, сначала загрузите информацию, прежде чем пытаться завершить визит.</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">Пожалуйста, загрузите сначала, прежде чем пытаться дать рецепт.</string>
+    <string name = "visit_summary_prescription_already_given">Рецепт уже выдан. Пожалуйста, скачайте рецепт.</string>
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Выберите диагностический тест</string>

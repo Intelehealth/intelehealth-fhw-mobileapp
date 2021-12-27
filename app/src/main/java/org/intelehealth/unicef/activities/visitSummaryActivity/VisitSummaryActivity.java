@@ -973,9 +973,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 SyncUtils syncUtils = new SyncUtils();
                                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                                 if (isSynced) {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                            getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    isSynedFlag = "1";
                                     //
                                     showVisitID();
+
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
                                     isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
                                     if (isVisitSpecialityExists)
@@ -1702,8 +1705,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
             visitView.setText("XXXX" + hideVisitUUID);
-            btnSignSubmit.setEnabled(true);
-            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
         return visitView.getText().toString();
@@ -1737,13 +1738,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String hideVisitUUID = visitUUID;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
-
-                btnSignSubmit.setEnabled(true);
-                btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 visitView.setText(getResources().getString(R.string.visit_not_uploaded));
-                btnSignSubmit.setEnabled(false);
-                btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
         } else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
@@ -3702,6 +3698,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
             return;
         }*/
 
+        // If Visit is not uplaoded...
+        if (isSynedFlag.equalsIgnoreCase("0")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_upload_reminder_prescription),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Visit is uploaded but Prescription is already given...
+        if(!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             startvisitnoteApiCall();
         } else {
@@ -3999,12 +4011,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 //disable the Start Visit Note button if the prescription is already given...
                 if (hasPrescription.equalsIgnoreCase("true")) {
-                    btnSignSubmit.setEnabled(false);
-                    btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
                 }
                 else {
-                    btnSignSubmit.setEnabled(true);
-                    btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 }
                 //end
 
@@ -4067,12 +4075,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         //disable the Start Visit Note button if the prescription is already given...
         if (hasPrescription.equalsIgnoreCase("true")) {
-            btnSignSubmit.setEnabled(false);
-            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
         }
         else {
-            btnSignSubmit.setEnabled(true);
-            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
         //end
     }
