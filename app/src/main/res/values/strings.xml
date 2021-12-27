@@ -196,7 +196,7 @@
     <string name="visit_summary_follow_up_date" translatable="false">Follow Up Date</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Please remind the patient of their follow up date: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Please upload first before attempting to end the visit.</string>
-
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Choose a Diagnostic Test</string>
@@ -745,4 +745,5 @@
     <string name="add_diagnosis">Add Diagnosis</string>
     <string name="startVisitNote">Start Visit Note</string>
     <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
+    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
 </resources>

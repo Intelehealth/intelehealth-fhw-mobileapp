@@ -843,6 +843,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
+            btnSignSubmit.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -992,28 +993,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
                 } else {
-                    TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError(getString(R.string.please_select_specialization_msg));
-                    t.setTextColor(Color.RED);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.generic_ok),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
+                    showSelectSpeciliatyErrorDialog();
                 }
 
             }
@@ -1653,6 +1633,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
         doQuery();
     }
 
+    private void showSelectSpeciliatyErrorDialog() {
+        TextView t = (TextView) speciality_spinner.getSelectedView();
+        t.setError(getString(R.string.please_select_specialization_msg));
+        t.setTextColor(Color.RED);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.generic_ok),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    }
+
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.
      * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
@@ -1698,6 +1702,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             String hideVisitUUID = visitUUID;
             hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
             visitView.setText("XXXX" + hideVisitUUID);
+            btnSignSubmit.setEnabled(true);
+            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
 
         return visitView.getText().toString();
@@ -1731,8 +1737,13 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 String hideVisitUUID = visitUUID;
                 hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
                 visitView.setText("XXXX" + hideVisitUUID);
+
+                btnSignSubmit.setEnabled(true);
+                btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             } else {
                 visitView.setText(getResources().getString(R.string.visit_not_uploaded));
+                btnSignSubmit.setEnabled(false);
+                btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.divider));
             }
         } else {
             if (visitUuid != null && !visitUuid.isEmpty()) {
@@ -3675,6 +3686,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
         // and multiple Start Visit Note encounters wont br created.
 
+        //check if data is uploaded to backend...
+      /*  if(visitUUID == null && visitUUID.isEmpty()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+            alertDialogBuilder.setMessage(VisitSummaryActivity.this.getString(R.string.visit_summary_upload_reminder_prescription));
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+            return;
+        }*/
+
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             startvisitnoteApiCall();
         } else {
@@ -3977,6 +4004,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 }
                 else {
                     btnSignSubmit.setEnabled(true);
+                    btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 }
                 //end
 
@@ -4044,6 +4072,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         else {
             btnSignSubmit.setEnabled(true);
+            btnSignSubmit.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         }
         //end
     }

@@ -35,6 +35,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -475,16 +476,11 @@ public class PrescriptionActivity extends AppCompatActivity {
         followupList = new ArrayList<>();
         ObsDAO obsDAOFollowup = new ObsDAO();
         followupList = obsDAOFollowup.fetchAllObsPrescData(encounterVisitNote, FOLLOW_UP_VISIT, "true");
-        if(followupList.size() > 0)
-            btnFollowUp.setVisibility(View.GONE);
-        else
-            btnFollowUp.setVisibility(View.VISIBLE);
         followupPrescAdapter = new FollowupPresAdapter(presContext, followupList);
         RecyclerView.LayoutManager folllowupmanager = new LinearLayoutManager(
                 PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);
         followupRecyclerView.setLayoutManager(folllowupmanager);
         followupRecyclerView.setAdapter(followupPrescAdapter);
-
         EditText etFollowUpDate = findViewById(R.id.etFollowUpDate);
         assignDatePicker(etFollowUpDate);
         EditText etFollowUpRemark = findViewById(R.id.etFollowUpRemark);
@@ -499,11 +495,19 @@ public class PrescriptionActivity extends AppCompatActivity {
                     String result = etFollowUpDate.getText().toString();
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
                         result += ", Remarks: " + etFollowUpRemark.getText();
-                 //   addResult(llFollowUpResult, result);
-                  //  setObsData(encounterUuidAdultIntial, FOLLOW_UP_VISIT, result);
-                    etFollowUpDate.setText("");
-                    etFollowUpRemark.setText("");
-                    uploadPrescriptionData(result, FOLLOW_UP_VISIT);
+
+                    if(followupPrescAdapter.getItemCount() > 0) {
+                        Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.morethanonefollowupnotallowed),
+                                Toast.LENGTH_SHORT).show();
+                        etFollowUpDate.setText("");
+                        etFollowUpRemark.setText("");
+                        return;
+                    }
+                    else {
+                        etFollowUpDate.setText("");
+                        etFollowUpRemark.setText("");
+                        uploadPrescriptionData(result, FOLLOW_UP_VISIT);
+                    }
 
                 }
                 else {
@@ -628,9 +632,6 @@ public class PrescriptionActivity extends AppCompatActivity {
                         setObsData(uuid, CONCEPTUUID, data);
                         updateRecyclerView(CONCEPTUUID, uuid, data, encounterVisitNote);
                         isuploadPrescription = true;
-
-                        if(CONCEPTUUID == FOLLOW_UP_VISIT)
-                            btnFollowUp.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -668,10 +669,6 @@ public class PrescriptionActivity extends AppCompatActivity {
             case FOLLOW_UP_VISIT:
                 followupList.add(new PrescDataModel(uuid, data, encounterVisitNote, conceptuuid));
                 followupPrescAdapter.notifyDataSetChanged();
-                if(followupList.size() > 0)
-                    btnFollowUp.setVisibility(View.GONE);
-                else
-                    btnFollowUp.setVisibility(View.VISIBLE);
                 break;
             default:
                 // do nothing...
