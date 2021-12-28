@@ -751,4 +751,7 @@
     <string name="amount">Amount</string>
     <string name="frequency">Frequency</string>
     <string name="route_optional">Route (Optional)</string>
+    <string name="reason_optional">Reason (Optional)</string>
+    <string name="choose_a_date">Choose a date</string>
+    <string name="follow_up_remark">Follow up remark</string>
 </resources>

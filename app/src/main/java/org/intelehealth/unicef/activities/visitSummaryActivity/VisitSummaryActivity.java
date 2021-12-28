@@ -3712,8 +3712,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
             return;
         }
 
-
-
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             startvisitnoteApiCall();
         } else {

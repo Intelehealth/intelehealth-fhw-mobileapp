@@ -602,7 +602,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Reason (Optional)">
+                            android:hint="@string/reason_optional">
 
                             <AutoCompleteTextView
                                 android:id="@+id/etMedicationReason"
@@ -894,7 +894,7 @@
                                 android:focusable="false"
                                 android:fontFamily="@font/lato_regular"
                                 android:freezesText="true"
-                                android:hint="Choose a date"
+                                android:hint="@string/choose_a_date"
                                 android:imeOptions="actionUnspecified"
                                 android:inputType=""
                                 android:maxLines="1"
@@ -913,7 +913,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_regular"
-                                android:hint="Follow up remark"
+                                android:hint="@string/follow_up_remark"
                                 android:imeOptions="actionNext"
                                 android:inputType="textEmailAddress"
                                 android:maxLines="1"

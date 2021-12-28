@@ -2138,7 +2138,7 @@
         <item>DNA PCR</item>
         <item>DO NOT DRINK ALCOHOL</item>
         <item>DO NOT EAT RAW ONION, TOMATO, LETTUCE, OR LENTIL</item>
-        <item>DO NOT SLEEP AT NOON-ମାଧ୍ୟାନରେ ସୁଅ ନାହିଁ</item>
+        <item>DO NOT SLEEP AT NOON</item>
         <item>DO NOT SMOKE BIDIS OR CIGARETTES</item>
         <item>DOCTOR</item>
         <item>DOCTOR CODE</item>
@@ -2208,14 +2208,12 @@
         <item>DYSMENORRHOEA</item>
         <item>DYSPEPSIA</item>
         <item>DYSPHAGIA</item>
-        <item>Dysphagia</item>
-        <item>Dysphagie</item>
         <item>dyspnoe</item>
         <item>Dystonia</item>
         <item>Dystonie</item>
         <item>DYSURIA</item>
         <item>Dysurie</item>
-    <item>E COLI</item>
+        <item>E COLI</item>
         <item>E HISTOLYTICA</item>
         <item>Each</item>
         <item>Ear diagnoses</item>
@@ -2235,13 +2233,13 @@
         <item>ÉCOULEMENT DE L\'URÈTRE</item>
         <item>Ecoulement urétral</item>
         <item>ECZEMA</item>
-    <item>EDC</item>
+        <item>EDC</item>
         <item>EDEMA</item>
         <item>EDEMA LEFT LOWER EXTREMITY</item>
         <item>Edema nos</item>
         <item>EDEMA RIGHT LOWER EXTREMITY</item>
         <item>EDEMA, LEGS</item>
-    <item>EFAVIRENZ</item>
+        <item>EFAVIRENZ</item>
         <item>EFAVIRENZ ARV</item>
         <item>EFAVIRENZ COMMENT</item>
         <item>EFAVIRENZ DISCONTINUATION1</item>
@@ -2280,7 +2278,6 @@
         <item>EMTRIVA</item>
         <item>ENALAPRIL</item>
         <item>encefalocele</item>
-        <item>encefalocoele</item>
         <item>Encephalocele</item>
         <item>ENCEPHALOPATHY</item>
         <item>Enema</item>
@@ -2365,7 +2362,7 @@
         <item>ETHIZIDE</item>
         <item>EUBIOZ</item>
         <item>EVENING</item>
-     <item>Every 12 hours</item>
+        <item>Every 12 hours</item>
         <item>Every 2 hours</item>
         <item>Every 24 hours</item>
         <item>Every 3 hours</item>
@@ -2406,7 +2403,7 @@
         <item>EYE INFECTIONS</item>
         <item>EYE OINTMENT, TETRACYCLINE</item>
         <item>EYE PROBLEM OTHER</item>
-    <item>FABOLIFE</item>
+        <item>FABOLIFE</item>
         <item>FACILITY CODE</item>
         <item>FAILURE TO THRIVE</item>
         <item>FALSE</item>
@@ -2428,12 +2425,9 @@
         <item>FANSIDAR</item>
         <item>FAnsidar</item>
         <item>FANSIDAR INJECTION</item>
-        <item>FANSIDAR SYROP</item>
         <item>FANSIDAR SYRUP</item>
-        <item>FANSIDAR SYSRUP</item>
         <item>FAringitis aguda</item>
         <item>FARIZYM FORTE</item>
-        <item>FASIGIN</item>
         <item>FASIGYN</item>
         <item>FAST BREATHING</item>
         <item>FASTNAC</item>
@@ -2457,29 +2451,20 @@
         <item>FEEDING PLAN</item>
         <item>Feeding problems in newborn</item>
         <item>FEFOL</item>
-        <item>FEFOL</item>
-        <item>FEFOL SYRUP</item>
         <item>FEFOL SYRUP</item>
         <item>FELCOM</item>
-        <item>FELCOM</item>
-        <item>FELDEX</item>
         <item>FELDEX</item>
         <item>FEMALE STERILIZATION</item>
         <item>FERROUS SULFATE</item>
         <item>FERROUS SULFATE AND FOLIC ACID</item>
         <item>FERROUS SULPHATE</item>
         <item>FERRUM B SYRUP</item>
-        <item>FERRUM B SYRUP</item>
         <item>FETAL HEMOGLOBIN</item>
         <item>FEVER</item>
-        <item>Fever</item>
         <item>FEVER NOS</item>
         <item>FEVER OF UNKNOWN ORIGIN</item>
-        <item>Fever of unknown origin</item>
-        <item>FEVER PANEL: PYREXIA OF UNKNOWN ORIGIN VIRAL/BACTERIAL/PARASITIC</item>
         <item>FEVER PANEL: PYREXIA OF UNKNOWN ORIGIN VIRAL/BACTERIAL/PARASITIC</item>
         <item>FEW</item>
-        <item>FHG</item>
         <item>FHG</item>
         <item>fiebre</item>
         <item>fiebre de origen desconocido</item>
@@ -2493,27 +2478,17 @@
         <item>Fish</item>
         <item>FIVE TO SIX</item>
         <item>FIXX 100MG</item>
-        <item>FIXX 100MG</item>
-        <item>FIXX 200MG</item>
         <item>FIXX 200MG</item>
         <item>FIXX SYRUP 100MG</item>
-        <item>FIXX SYRUP 100MG</item>
-        <item>FIXX SYRUP 200MG</item>
         <item>FIXX SYRUP 200MG</item>
         <item>FLAGYL</item>
-        <item>FLAGYL</item>
         <item>FLAGYL INJECTION</item>
-        <item>FLAGYL INJECTION</item>
-        <item>FLAGYL SYRUP</item>
         <item>FLAGYL SYRUP</item>
         <item>FLAT WART</item>
         <item>Flatulence, Eructation and Gas Pain</item>
         <item>FLAVOCIP</item>
-        <item>FLAVOCIP</item>
         <item>flebitis y tromboflebitis</item>
         <item>FLEXON MR</item>
-        <item>FLEXON MR</item>
-        <item>FLOX  O 200MG</item>
         <item>FLOX  O 200MG</item>
         <item>FLOXACILLIN</item>
         <item>FLUCLOXACILLIN</item>
@@ -2528,7 +2503,6 @@
         <item>Fluid ounce</item>
         <item>Fluid ounce(s)</item>
         <item>FLUNARIN</item>
-        <item>FLUNARIN</item>
         <item>FLUPHENAZINE</item>
         <item>Flushing</item>
         <item>FLUXOCILLIN</item>
@@ -2537,12 +2511,10 @@
         <item>FOCAL WEAKNESS</item>
         <item>FOLACIN</item>
         <item>FOLATE</item>
-        <item>FOLATE</item>
         <item>FOLIC ACID</item>
         <item>FOLLICULITIS</item>
         <item>Follow up visit</item>
         <item>FOOD POISONING</item>
-        <item>FOOT X-RAY</item>
         <item>FOOT XRAY</item>
         <item>FOREIGN BODY</item>
         <item>FORM  EAR DISCHARGE</item>
@@ -2586,8 +2558,6 @@
         <item>FRICTION RUB RML</item>
         <item>FRIEND</item>
         <item>FTC</item>
-        <item>FTC</item>
-        <item>FULL HEMOGRAM</item>
         <item>FULL HEMOGRAM</item>
         <item>Functional disorder of intestine, NEC</item>
         <item>Functional intestinal disorders, other</item>
@@ -2596,8 +2566,6 @@
         <item>FUNGAL INFECTION</item>
         <item>FUNGAL INFECTION NOS</item>
         <item>FUNGAL INFECTION SKIN</item>
-        <item>FUNGAL INFECTION SKIN</item>
-        <item>FUNGAL SKIN INFECTION</item>
         <item>FUNGAL SKIN INFECTION</item>
         <item>FUNGICIDIN</item>
         <item>FUNTIME</item>
@@ -2607,13 +2575,9 @@
         <item>FURUNCULOSIS</item>
         <item>Fyèv</item>
         <item>GABBRORAL</item>
-        <item>GABBRORAL</item>
         <item>GABBRORAL SYRUP</item>
-        <item>GABBRORAL SYRUP</item>
-        <item>GABBRORAL TABS</item>
         <item>GABBRORAL TABS</item>
         <item>GAIT</item>
-        <item>gal</item>
         <item>Gal</item>
         <item>Gale</item>
         <item>Gallon</item>
@@ -2623,34 +2587,22 @@
         <item>Gastrit</item>
         <item>Gastrite</item>
         <item>GASTRITIS</item>
-        <item>Gastritis</item>
-        <item>gastritis</item>
         <item>Gastritis, nos</item>
-        <item>GASTRIUM</item>
-        <item>GASTRIUM</item>
         <item>GASTRIUM</item>
         <item>GASTRO ENTÉRITE</item>
         <item>gastro-oesofagale reflux</item>
         <item>Gastroanterit</item>
         <item>GASTROENTÉRITE</item>
         <item>GASTROENTERITIS</item>
-        <item>GASTROENTERITIS</item>
-        <item>GASTROENTERITIS</item>
-        <item>gastroenteritis</item>
-        <item>gastroenteritis</item>
         <item>gastroenteritis bacteriana</item>
         <item>Gastroesophageal reflux</item>
         <item>GASTROESOPHAGEAL REFLUX DISEASE</item>
-        <item>Gastroesophageal reflux disease</item>
         <item>Gastrointestinal Irritation</item>
         <item>GASTROINTESTINAL SYMPTOMS</item>
         <item>GC PCR</item>
-        <item>GC PCR</item>
-        <item>GC PCR QUAL</item>
         <item>GC PCR QUAL</item>
         <item>GELLULE</item>
         <item>Genacote</item>
-        <item>GENEGESIC ZX</item>
         <item>GENEGESIC ZX</item>
         <item>General and unspecified diagnoses</item>
         <item>GENERAL BODYACHE</item>
@@ -2669,8 +2621,6 @@
         <item>GENTAMYCIN</item>
         <item>GENTIAN VIOLET</item>
         <item>GER</item>
-        <item>GER</item>
-        <item>GERD</item>
         <item>GERD</item>
         <item>GESTATION</item>
         <item>GESTATION AT BIRTH</item>
@@ -2679,16 +2629,12 @@
         <item>GI upset</item>
         <item>Giảm thể tích máu</item>
         <item>GIARDIA</item>
-        <item>GIARDIA</item>
         <item>GIARDIA LAMBLIA</item>
         <item>Gingivitis and periodontal diseases</item>
         <item>GLEVO 250MG</item>
-        <item>GLEVO 250MG</item>
-        <item>GLEVO 500MG</item>
         <item>GLEVO 500MG</item>
         <item>GLU</item>
         <item>GLUCOSE</item>
-        <item>GLUCOSE POS</item>
         <item>GLUCOSE POS</item>
         <item>GLUCOSE POSITIVE</item>
         <item>glucosuria</item>
@@ -2697,26 +2643,19 @@
         <item>Glycosuria</item>
         <item>gm</item>
         <item>GNRS</item>
-        <item>GNRs</item>
         <item>GOITER</item>
         <item>GOITRE</item>
         <item>GONOCOCCAL PCR QUAL</item>
-        <item>gonorrea</item>
         <item>GONORRHEA</item>
-        <item>Gonorrhea</item>
         <item>GONORRHEA PCR</item>
         <item>GONORRHEA PCR QUAL</item>
         <item>Gonorrhée</item>
-        <item>GONORRHOEA</item>
-        <item>GONORRHOEA</item>
         <item>GORD (gastro-oesophageal reflux disease)</item>
         <item>GPCS</item>
         <item>GPRS</item>
         <item>GRABACIN POWDER</item>
         <item>Gram</item>
         <item>GRAM +VE RODS</item>
-        <item>GRAM +VE RODS</item>
-        <item>GRAM -VE RODS</item>
         <item>GRAM -VE RODS</item>
         <item>GRAM NEGATIVE RODS</item>
         <item>GRAM POSITIVE RODS</item>
@@ -2724,21 +2663,16 @@
         <item>GRANDPARENT</item>
         <item>GRANULAR CELLS</item>
         <item>granuloma inguinal</item>
-        <item>Granuloma inguinale</item>
         <item>granuloma inguinale</item>
-        <item>Gratèl</item>
         <item>Gratèl</item>
         <item>GRAVIDA</item>
         <item>Grossesse multiple</item>
         <item>GROSSESSE, FAUSSE COUCHE</item>
         <item>GUARDING</item>
         <item>GUD</item>
-        <item>GUD</item>
         <item>Gum</item>
         <item>Gum(s)</item>
         <item>GURGLE</item>
-        <item>GUTRITE</item>
-        <item>GUTRITE</item>
         <item>GUTRITE</item>
         <item>Hạ cam mềm</item>
         <item>HAART</item>
@@ -2750,42 +2684,36 @@
         <item>HAIJULIKANI</item>
         <item>HALF</item>
         <item>HALF A TABLET</item>
-        <item>HALF A TABLET</item>
-        <item>HALF HR BEFORE BREAKFAST</item>
         <item>HALF HR BEFORE BREAKFAST</item>
         <item>HALF HR BEFORE DINNER</item>
-        <item>HALF HR BEFORE DINNER</item>
         <item>HALFAN SYRUP</item>
-        <item>HALFAN SYRUP</item>
-        <item>HALFAN TABS</item>
         <item>HALFAN TABS</item>
         <item>Halfprin</item>
         <item>hallazgo relacionado con el descenso de peso</item>
         <item>hallazgos positivos en cultivos serológicos Y/O virales para el virus de la inmunodeficiencia humana</item>
         <item>HALOFANTRINE</item>
-        <item>HAND X-RAY</item>
         <item>HAND XRAY</item>
         <item>HANSEN\'S DISEASE</item>
         <item>HANSENOSIS</item>
         <item>HB</item>
-        <item>HB</item>
+
         <item>HBA1C</item>
-        <item>HBA1C</item>
+
         <item>HC</item>
-        <item>HC</item>
+
         <item>HCT</item>
-        <item>HCT</item>
+
         <item>HCTZ</item>
         <item>HDL</item>
-        <item>HDL</item>
+
         <item>HEAD CIRCUMFERENCE</item>
         <item>HEAD CT</item>
         <item>HEAD INJURY</item>
         <item>HEAD NECK</item>
         <item>HEAD NECK COMMENT</item>
         <item>HEADACHE</item>
-        <item>HEADACHE</item>
-        <item>Headache</item>
+
+
         <item>HEALTH CARE PROVIDER</item>
         <item>HEALTH CENTER HOSPITALS</item>
         <item>HEAPTIC ULTRASOUND</item>
@@ -2795,23 +2723,23 @@
         <item>HEART COMMENT</item>
         <item>HEART RATE</item>
         <item>Heart rate</item>
-        <item>HEARTBURN</item>
+
         <item>HEARTBURN</item>
         <item>Heartline</item>
         <item>HEENT COMMENT</item>
         <item>HEENT EXAM FINDINGS</item>
         <item>HEIGHT (CM)</item>
-        <item>Height (cm)</item>
+
         <item>Helminth Infection</item>
         <item>HELMINTHIASE</item>
         <item>HELMINTHIASIS</item>
-        <item>Helminthiasis</item>
-        <item>helminthiasis</item>
+
+
         <item>helmintiasis intestinal</item>
         <item>HEMATOCRIT</item>
         <item>HEMATURIA</item>
-        <item>Hematuria</item>
-        <item>hematuria</item>
+
+
         <item>Hématurie</item>
         <item>HEMIPARESIS</item>
         <item>Hemochron</item>
@@ -2827,11 +2755,11 @@
         <item>Hémorragie</item>
         <item>Hémorragie du début de la grossesse</item>
         <item>Hemorrhage</item>
-        <item>HEMORRHAGE ANTEPARTUM</item>
+
         <item>HEMORRHAGE ANTEPARTUM</item>
         <item>Hemorrhage in early pregnancy</item>
         <item>HEMORRHAGE POSTPARTUM</item>
-        <item>Hemorrhage postpartum</item>
+
         <item>Hemorrhagic diarrhea</item>
         <item>Hemorrhoids</item>
         <item>Hémorroïde</item>
@@ -2864,7 +2792,7 @@
         <item>HEPATIC DISEASE COMMENT</item>
         <item>Hepatic toxicity</item>
         <item>HEPATITIS</item>
-        <item>HEPATITIS</item>
+
         <item>HEPATITIS A</item>
         <item>HEPATITIS A VACCINATION</item>
         <item>HEPATITIS B</item>
@@ -2872,19 +2800,19 @@
         <item>HEPATITIS B TEST (OD) - QUANTITATIVE</item>
         <item>HEPATITIS B TEST - QUALITATIVE</item>
         <item>HEPATITIS B VACCINATION</item>
-        <item>HEPATITIS B VACCINATION</item>
+
         <item>HEPATITIS B VAX NO.1</item>
         <item>HEPATITIS B VAX NO.2</item>
-        <item>HEPATITIS B VAX NO.2</item>
+
         <item>HEPATITIS B VAX NO.3</item>
-        <item>HEPATITIS B VAX NO.3</item>
+
         <item>HEPATITIS C</item>
         <item>HEPATITIS C TEST (CUT-OFF OD)</item>
         <item>HEPATITIS C TEST (OD) - QUANTITATIVE</item>
         <item>HEPATITIS C TEST - QUALITATIVE</item>
         <item>HEPATITIS NOS</item>
         <item>hepatitis viral crónica</item>
-        <item>HEPATOMEGALY</item>
+
         <item>HEPATOMEGALY</item>
         <item>Hepatomegaly or splenomegaly, NEC</item>
         <item>Hepatomegaly or splenomegaly, not classified elsewhere</item>
@@ -2897,7 +2825,7 @@
         <item>herpes simple</item>
         <item>herpes simple genital</item>
         <item>Herpes Simplex</item>
-        <item>Herpes simplex</item>
+
         <item>HERPES SIMPLEX VIRUS POLYMERASE CHAIN REACTION</item>
         <item>HERPES SIMPLEX VIRUS POLYMERASE CHAIN REACTION, QUALITATIVE</item>
         <item>HERPES SIMPLEX VIRUS SEROLOGY, QUANTITATIVE</item>
@@ -2907,17 +2835,17 @@
         <item>Herpes simplex, nos</item>
         <item>Herpes sinh dục</item>
         <item>HERPES ZOSTER</item>
-        <item>Herpes Zoster</item>
-        <item>herpes zoster</item>
-        <item>Herpes Zoster</item>
+
+
+
         <item>HETRAZAN 100MG</item>
-        <item>HETRAZAN 100MG</item>
+
         <item>HETRAZAN 50MG</item>
-        <item>HETRAZAN 50MG</item>
+
         <item>HFP</item>
         <item>HGB</item>
-        <item>HGB</item>
-        <item>HGB</item>
+
+
         <item>HGM</item>
         <item>HIB</item>
         <item>High blood pressure</item>
@@ -2943,15 +2871,15 @@
         <item>HIV DISCLOSURE TO ANYONE</item>
         <item>HIV DISCLOSURE TO ANYONE, SPECIFIC</item>
         <item>HIV disease resulting in other specified diseases</item>
-        <item>HIV DNA PCR</item>
+
         <item>HIV DNA PCR</item>
         <item>HIV DNA POLYMERASE CHAIN REACTION</item>
         <item>HIV DNA POLYMERASE CHAIN REACTION, QUALITATIVE</item>
-        <item>HIV EIA (CUT-OFF OD) QUANT</item>
+
         <item>HIV EIA (CUT-OFF OD) QUANT</item>
         <item>HIV EIA QUAL</item>
-        <item>HIV EIA QUAL</item>
-        <item>HIV EIA QUANT</item>
+
+
         <item>HIV EIA QUANT</item>
         <item>HIV ELISA (CUT-OFF) QUANT</item>
         <item>HIV ELISA QUAL</item>
@@ -2961,10 +2889,10 @@
         <item>HIV ENZYME IMMUNOASSAY, QUANTITATIVE</item>
         <item>HIV EXPOSURE</item>
         <item>HIV INFECTED</item>
-        <item>HIV PCR Qual</item>
+
         <item>HIV PCR QUAL</item>
         <item>HIV POS</item>
-        <item>HIV POS</item>
+
         <item>HIV QUAL</item>
         <item>HIV RAPID 1 QUAL</item>
         <item>HIV RAPID 2 QUAL</item>
@@ -2972,7 +2900,7 @@
         <item>HIV RAPID TEST 2, QUALITATIVE</item>
         <item>HIV resulting in infectious or parasitic disease</item>
         <item>HIV STAGE, HIGHEST - PEDS</item>
-        <item>HIV STAGING  - CANDIDIASIS, ORORESPIRATORY TRACT</item>
+
         <item>HIV STAGING  - CANDIDIASIS, ORORESPIRATORY TRACT</item>
         <item>HIV STAGING - ADULT HERPES ZOSTER</item>
         <item>HIV STAGING - ADULT SHINGLES</item>
@@ -3023,13 +2951,11 @@
         <item>HIV VIRAL LOAD</item>
         <item>HIV WB BANDS</item>
         <item>HIV WB QUAL</item>
-        <item>HIV WB QUAL</item>
         <item>HIV WESTERN BLOT BANDS</item>
         <item>HIV WESTERN BLOT, QUALITATIVE</item>
         <item>Hives</item>
         <item>HMG CoA reductase inhibitors</item>
         <item>Ho</item>
-        <item>HOCKER</item>
         <item>HOCKER</item>
         <item>hoesten</item>
         <item>Hội chứng ruột kích thích</item>
@@ -3047,31 +2973,28 @@
         <item>HOSPITALIZATION LAST VISIT DESC</item>
         <item>HOSPITALIZATION LAST VISIT NUMBER</item>
         <item>HOSPITALIZED PREVIOUS YEAR</item>
-        <item>HOSPITALIZED SINCE LAST VISIT</item>
+
         <item>HOSPITALIZED SINCE LAST VISIT</item>
         <item>hourly</item>
         <item>Hours</item>
         <item>HOUSEHOLD MEMBER ENR</item>
         <item>HPV</item>
         <item>HR</item>
-        <item>HR</item>
-        <item>HR</item>
-        <item>HR</item>
         <item>Hrs</item>
+
         <item>HSM</item>
-        <item>HSM</item>
-        <item>HSV CUTOFF %</item>
+
         <item>HSV CUTOFF PERCENTAGE</item>
         <item>HSV PCR</item>
-        <item>HSV PCR</item>
+
         <item>HSV PCR QUAL</item>
-        <item>HSV PCR QUAL</item>
+
         <item>HSV QUAL</item>
         <item>HSV QUANT</item>
         <item>HSV SER QUANT</item>
         <item>HSV TEST</item>
         <item>HT</item>
-        <item>HT</item>
+
         <item>HTA</item>
         <item>HTN</item>
         <item>HTN (hypertension)</item>
@@ -3086,19 +3009,19 @@
         <item>Huyết áp cao</item>
         <item>HVS TEST</item>
         <item>HYCOMYCIN EYE DROPS</item>
-        <item>HYCOMYCIN EYE DROPS</item>
+
         <item>HYDRALAZINE</item>
         <item>HYDRALAZINE INJECTION</item>
-        <item>HYDRALAZINE INJECTION</item>
+
         <item>HYDRALAZINE TABLETS</item>
-        <item>HYDRALAZINE TABLETS</item>
+
         <item>HYDROCHLOROTHIAZIDE</item>
         <item>HYDROCORTISONE</item>
         <item>HYDROCORTISONE CREAM</item>
         <item>HYDROCORTISONE EYE DROPS</item>
         <item>HYDROCORTISONE OINTMENT</item>
-        <item>HYDROCORTISONE OINTMENT</item>
-        <item>HYDROCORTISONE OINTMENT</item>
+
+
         <item>HYDROCORTIZONE EYE DROPS</item>
         <item>HYDRODIURIL</item>
         <item>HYDROGEN PEROXIDE</item>
@@ -3107,15 +3030,15 @@
         <item>HYOSCINE BUTYLBROMIDE</item>
         <item>HYPERACIDITY</item>
         <item>HYPEREMESIS GRAVIDARUM</item>
-        <item>Hyperglycaemia</item>
+
         <item>hyperglycaemia</item>
-        <item>hyperglycemia</item>
-        <item>Hyperglycémie</item>
+
+
         <item>hypertensie van de moeder</item>
         <item>hypertensieve hartaandoening</item>
         <item>HYPERTENSION</item>
-        <item>HYPERTENSION</item>
-        <item>Hypertension</item>
+
+
         <item>Hypertension artérielle</item>
         <item>Hypertension essentielle</item>
         <item>Hypertension secondaire</item>
@@ -3125,7 +3048,7 @@
         <item>Hypothermia of newborn</item>
         <item>hypothermie van de pasgeborene</item>
         <item>Hypovolaemia</item>
-        <item>Hypovolemia</item>
+
         <item>Hypovolemic</item>
         <item>Hypovolémique</item>
         <item>HYSTERECTOMY</item>
@@ -3133,13 +3056,13 @@
         <item>IBS</item>
         <item>IBS (irritable bowel syndrome)</item>
         <item>IBUGESIC 200MG</item>
-        <item>IBUGESIC 200MG</item>
+
         <item>IBUGESIC 400MG</item>
-        <item>IBUGESIC 400MG</item>
+
         <item>IBUGESIC 600MG</item>
-        <item>IBUGESIC 600MG</item>
+
         <item>IBUGESIC PLUS</item>
-        <item>IBUGESIC PLUS</item>
+
         <item>IBUPROFEN</item>
         <item>ICPC cardiovascular diagnoses</item>
         <item>ICPC dental diagnoses</item>
@@ -3164,12 +3087,12 @@
         <item>ICTERIC SCLERA</item>
         <item>ictericia</item>
         <item>ICTERUS</item>
-        <item>icterus</item>
+
         <item>IDA</item>
-        <item>IDA</item>
+
         <item>IDV</item>
-        <item>IDV</item>
-        <item>IDV</item>
+
+
         <item>Igipimo cy\'umuriro (celcius)</item>
         <item>ILOSONE</item>
         <item>ILOTYCIN</item>
@@ -3183,10 +3106,10 @@
         <item>IMMUNIZATIONS ORDERED</item>
         <item>IMMUNIZATIONS UP TO DATE</item>
         <item>IMODIUM</item>
-        <item>IMODIUM</item>
+
         <item>Impression clinique</item>
         <item>Impyiko</item>
-        <item>IMUTREX</item>
+
         <item>IMUTREX</item>
         <item>in</item>
         <item>In both ears</item>
@@ -3200,13 +3123,12 @@
         <item>Inconnu</item>
         <item>Incontinent of urine</item>
         <item>INDERAL</item>
-        <item>INDERAL</item>
+
         <item>INDEX WOMAN MTCT</item>
         <item>INDIFFERENT</item>
         <item>INDIGESTION</item>
-        <item>INDIGESTION</item>
         <item>INDINAVIR</item>
-        <item>INDINAVIR</item>
+
         <item>INDIVIDUALS15 AND OVER</item>
         <item>INDOCID</item>
         <item>INDOCIN</item>
@@ -3216,7 +3138,7 @@
         <item>INFANT FORMULA</item>
         <item>INFANT NVP</item>
         <item>INFANTILE PARALYSIS</item>
-        <item>Infantile paralysis</item>
+
         <item>infección amebiásica</item>
         <item>infección de la piel</item>
         <item>infección de las vías genitourinarias en el embarazo</item>
@@ -3238,7 +3160,7 @@
         <item>Infection of Skin</item>
         <item>Infection of teeth or gums</item>
         <item>INFECTION SKIN</item>
-        <item>INFECTION SKIN</item>
+
         <item>Infection urinaire</item>
         <item>infestación por Sarcoptes scabiei, variedad hominis</item>
         <item>Infestation by Sarcoptes Scabiei Var Hominis</item>
@@ -3246,7 +3168,7 @@
         <item>Inflammation of the Covering of the Brain and Spinal Cord</item>
         <item>Infumorph</item>
         <item>INGUINAL</item>
-        <item>INGUINAL</item>
+
         <item>INH</item>
         <item>INH PROPHYLAXIS</item>
         <item>Inhalation</item>
@@ -3264,10 +3186,10 @@
         <item>INJECTED CONJUCTIVA</item>
         <item>INJECTED THROAT</item>
         <item>INJECTED TYMPANIC MEMBRANE</item>
-        <item>INJECTION</item>
+
         <item>INJECTION</item>
         <item>INJECTION VALIUM</item>
-        <item>INJECTION VALIUM</item>
+
         <item>INJURY</item>
         <item>INJURY NOS</item>
         <item>INJURY OF UNSPECIFIED BODY REGION</item>
@@ -3275,7 +3197,7 @@
         <item>INPATIENT CARE OR HOSPITALIZATION</item>
         <item>INSOMNIA</item>
         <item>INSULIN LENTE</item>
-        <item>INSULIN LENTE</item>
+
         <item>INSULIN, LENTE</item>
         <item>INSULIN, REGULAR</item>
         <item>Intermenstrual bleeding - irregular</item>
@@ -3309,16 +3231,16 @@
         <item>Iritasyon gastro-entestinal</item>
         <item>Iritasyon gastro-entestinal</item>
         <item>IRON DEFICIENCY ANEMIA</item>
-        <item>IRON DEFICIENCY ANEMIA</item>
+
         <item>Irregular intermenstrual bleeding</item>
         <item>IRRITABILITY</item>
         <item>IRRITABLE</item>
-        <item>IRRITABLE</item>
+
         <item>Irritable bowel syndrome</item>
         <item>irritación gastrointestinal</item>
         <item>Irritation gastro-intestinale</item>
         <item>Iseru</item>
-        <item>ISONIAZID</item>
+
         <item>ISONIAZID</item>
         <item>ISONIAZID COMMENT</item>
         <item>ISONIAZID CURRENT</item>
@@ -3328,9 +3250,9 @@
         <item>ISONIAZID SIG</item>
         <item>ISONIAZID START STOP DATE</item>
         <item>ITCHING</item>
-        <item>ITCHING</item>
-        <item>Itching</item>
-        <item>Itching</item>
+
+
+
         <item>Itikè</item>
         <item>ITRACONAZOLE</item>
         <item>IU</item>
@@ -3339,60 +3261,60 @@
         <item>IV</item>
         <item>IYCF OR MILK COUNSEL EVER</item>
         <item>JAUNDICE</item>
-        <item>Jaundice</item>
+
         <item>Jeraha</item>
         <item>JOINT PAIN</item>
-        <item>JOINT PAINS</item>
+
         <item>JOINT SWELLING</item>
         <item>Jou</item>
         <item>Jours</item>
         <item>JSV ADVICE</item>
         <item>JSV Advice Set</item>
         <item>JSV MEDICATIONS</item>
-        <item>JSV MEDICATIONS</item>
-        <item>JSV MEDICATIONS</item>
+
+
         <item>JSV TESTS</item>
-        <item>JSV TESTS</item>
+
         <item>K</item>
         <item>Kadian</item>
         <item>Kafeyin</item>
         <item>KALETRA</item>
-        <item>KALETRA</item>
+
         <item>kamata</item>
         <item>KAPOSI SARCOMA</item>
-        <item>KAPOSI SARCOMA</item>
-        <item>KAPOSI SARCOMA</item>
+
+
         <item>KAPOSI SARCOMA - OLD</item>
         <item>KAPOSI SARCOMA ORAL</item>
-        <item>KAPOSI\'S SARCOMA</item>
+
         <item>KARNOFSKY PERFORMANCE SCORE</item>
         <item>kase lezo tro bone</item>
         <item>kè bwile</item>
         <item>Keep Alert</item>
         <item>KENACORT</item>
-        <item>KETANOV 10MG</item>
+
         <item>KETANOV 10MG</item>
         <item>KETOCONAZOLE</item>
         <item>KETRAX SYRUP</item>
-        <item>KETRAX SYRUP</item>
+
         <item>KETRAX TABLETS</item>
-        <item>KETRAX TABLETS</item>
+
         <item>KEXID</item>
-        <item>KEXID</item>
+
         <item>kg</item>
         <item>Khó nuốt</item>
         <item>Khó thở</item>
         <item>KIFAFA</item>
         <item>Kikohozi</item>
-        <item>Kilogram</item>
+
         <item>Kilogram(s)</item>
         <item>KINETO DP</item>
-        <item>KINETO DP</item>
+
         <item>Kit</item>
-        <item>Kit(s)</item>
+
         <item>Klas eparinn</item>
         <item>KNEE JERK</item>
-        <item>KNEE JOINT X-RAY PA AND LATERAL VIEW</item>
+
         <item>KNEE JOINT X-RAY PA AND LATERAL VIEW</item>
         <item>KNEE, ARTHRITIS</item>
         <item>Kodeyinn</item>
@@ -3416,11 +3338,9 @@
         <item>Kushindwa kumeza kitu chakula,kutokana na vidonda au ugonjwa</item>
         <item>Kutokwa damu isivyo kawaida</item>
         <item>Kuvimba sehemu za mwili kwa kujaa maji</item>
-        <item>Kwashiorkor</item>
+
         <item>kwashiorkor</item>
-        <item>kwashiorkor</item>
-        <item>Kwashiorkor</item>
-        <item>Kwashiorkor</item>
+
         <item>kwashiorkor marásmico</item>
         <item>Kwatèrnèr</item>
         <item>L</item>
@@ -3432,7 +3352,7 @@
         <item>Laboprin</item>
         <item>Labor and delivery complicated by intrapartum hemorrhage</item>
         <item>LABOR PAIN</item>
-        <item>LABOR PAIN, FALSE</item>
+
         <item>LABOR PAIN, FALSE</item>
         <item>Laboratory evidence of HIV</item>
         <item>Laboratory evidence of human immunodeficiency virus</item>
@@ -3441,7 +3361,7 @@
         <item>laceración perineal durante el parto</item>
         <item>LACERATION</item>
         <item>LACTATE</item>
-        <item>LACTATE</item>
+
         <item>LACTATE DEHYDROGENASE</item>
         <item>LACTIC ACID</item>
         <item>LACTIC DEHYDROGENASE</item>
@@ -3463,13 +3383,13 @@
         <item>Lansoprazole 15 OR 30 mg</item>
         <item>Laraj</item>
         <item>LARGACTIL</item>
-        <item>LARGACTIL</item>
+
         <item>LARIAM</item>
-        <item>LARIAM</item>
+
         <item>LAROXYL TABS</item>
-        <item>LAROXYL TABS</item>
+
         <item>LARYNGITIS</item>
-        <item>LASIX</item>
+
         <item>LASIX</item>
         <item>LAST CHILD AGE</item>
         <item>LAST NAME</item>
@@ -3477,25 +3397,25 @@
         <item>Latèks</item>
         <item>LATERAL</item>
         <item>Latex</item>
-        <item>Latex</item>
+
         <item>Lậu</item>
         <item>LAVAZYME</item>
-        <item>LAVAZYME</item>
-        <item>LAVAZYME</item>
+
+
         <item>LAVAZYME CAP</item>
-        <item>LAVAZYME CAP</item>
-        <item>LAVAZYME CAP</item>
+
+
         <item>LD</item>
         <item>LDH</item>
-        <item>LDH</item>
+
         <item>LDL</item>
-        <item>LDL</item>
+
         <item>Le changement de l\'état mental</item>
         <item>LEARNING PROBLEMS</item>
         <item>LEFT</item>
         <item>LEFT ARM</item>
         <item>Left ear administration</item>
-        <item>Left eye administration</item>
+
         <item>LEFT LEG</item>
         <item>LEFT LOWER EXTREMITY</item>
         <item>LEFT LOWER LOBE</item>
@@ -3506,9 +3426,9 @@
         <item>LEFT VENTRICULAR LIFT</item>
         <item>LEG SWELLING</item>
         <item>LEG ULCERS</item>
-        <item>LEG ULCERS</item>
+
         <item>LEG X-RAY</item>
-        <item>LEG XRAY</item>
+
         <item>LÉGER</item>
         <item>LEGS</item>
         <item>LEIOMYOSARCOMA</item>
@@ -3519,8 +3439,8 @@
         <item>lepra</item>
         <item>Lèpre</item>
         <item>LEPROSY</item>
-        <item>LEPROSY</item>
-        <item>Leprosy</item>
+
+
         <item>Les statines</item>
         <item>lesión superficial en el hombro y miembro superior</item>
         <item>lesión traumática superficial de cabeza</item>
@@ -3528,35 +3448,35 @@
         <item>LESS THAN 30 MINUTES</item>
         <item>LESS THAN MONTHLY</item>
         <item>LEUKEMIA</item>
-        <item>LEUKEMIA</item>
+
         <item>LEUKOCYTE COUNT</item>
         <item>LEVAMISOLE</item>
         <item>LEVANT</item>
         <item>LEVANT 15MG</item>
-        <item>LEVANT 15MG</item>
+
         <item>LEVANT 30MG</item>
-        <item>LEVANT 30MG</item>
+
         <item>LEVAQUIN</item>
-        <item>LEVAQUIN</item>
+
         <item>Levius</item>
         <item>LEVODAY 500MG</item>
         <item>LEVOFLOX</item>
-        <item>LEVOFLOX</item>
+
         <item>LEVOFLOXACIN</item>
-        <item>LFTS</item>
+
         <item>LFTS</item>
         <item>LGV (lymphogranuloma venereum)</item>
         <item>LIDOCAINE AND HYDROCORTISONE</item>
         <item>LIFESTYLE/HABITS</item>
-        <item>LIFESTYLE/HABITS</item>
+
         <item>LIMP</item>
         <item>LINCOMYCIN</item>
         <item>linfogranuloma venéreo</item>
         <item>LINGULA</item>
         <item>LIPASE</item>
-        <item>LIPASE</item>
+
         <item>LIPID PANEL</item>
-        <item>LIPID PROFILE</item>
+
         <item>LIPID PROFILE</item>
         <item>LIPIDS</item>
         <item>LIQUIDE CÉPHALO-RACHIDIEN</item>
@@ -3565,18 +3485,16 @@
         <item>Litecoat Aspirin</item>
         <item>Liter</item>
         <item>LIVER FUNCTION TEST: BILIRUBIN AND LIVER ENZYMES (SGOT/SGPT/SAKP)</item>
-        <item>LIVER FUNCTION TEST: BILIRUBIN AND LIVER ENZYMES (SGOT/SGPT/SAKP)</item>
+
         <item>LIVER FUNCTION TESTS</item>
         <item>LIVER PANEL</item>
-        <item>LIVER SIZE</item>
+
         <item>LIVER SIZE</item>
         <item>LIVERIL  CAPS/SUS</item>
-        <item>LIVERIL CAPS SUS</item>
-        <item>LIVERIL CAPS SUS</item>
         <item>LIVING WITH PARTNER</item>
         <item>LLE</item>
         <item>LLL</item>
-        <item>LLQ</item>
+
         <item>LLQ</item>
         <item>Loạn nhịp tim</item>
         <item>LOBAR PNEUMONIA</item>
@@ -3584,7 +3502,7 @@
         <item>Loét bao tử</item>
         <item>Lok-Pak-N</item>
         <item>LOOGIE</item>
-        <item>LOOGIE</item>
+
         <item>loose bowel movement</item>
         <item>loose bowels</item>
         <item>LOPERAMIDE</item>
@@ -3602,24 +3520,24 @@
         <item>Low Dose ASA</item>
         <item>LOW-DENSITY LIPOPROTEIN CHOLESTEROL</item>
         <item>LOWER EXTREMITIES</item>
-        <item>Lozenge</item>
+
         <item>Lozenge(s)</item>
         <item>LRTI</item>
         <item>Lucidex</item>
         <item>LUE</item>
         <item>LUL</item>
         <item>LUMBAGO</item>
-        <item>LUMBAGO</item>
+
         <item>LUMBOSACCRAL SPINE X-RAY PA AND LATERAL VIEW</item>
-        <item>LUMBOSACCRAL SPINE X-RAY PA AND LATERAL VIEW</item>
+
         <item>LUPIVON</item>
-        <item>LUPIVON</item>
-        <item>LUPIVON</item>
+
+
         <item>LUPIZOLE</item>
         <item>LUPIZOLE 15MG</item>
-        <item>LUPIZOLE 15MG</item>
+
         <item>LUPIZOLE 30MG</item>
-        <item>LUPIZOLE 30MG</item>
+
         <item>LV HEAVE</item>
         <item>LV LIFT</item>
         <item>lymfadenopathie</item>
@@ -3631,8 +3549,8 @@
         <item>LYMPH NODES COMMENT</item>
         <item>Lymphadénopathie</item>
         <item>LYMPHADENOPATHY</item>
-        <item>LYMPHADENOPATHY</item>
-        <item>Lymphadenopathy</item>
+
+
         <item>LYMPHOCYTE COUNT</item>
         <item>LYMPHOCYTE SUBSET PANEL</item>
         <item>LYMPHOCYTES</item>
@@ -3647,9 +3565,9 @@
         <item>MACULOPAPULAR</item>
         <item>MAGNESIUM TRISILICATE</item>
         <item>MAHACEF 100MG</item>
-        <item>MAHACEF 100MG</item>
+
         <item>MAHACEF 200MG</item>
-        <item>MAHACEF 200MG</item>
+
         <item>Major Puerperal Infection, Postpartum</item>
         <item>Mal de tête</item>
         <item>Maladi ou trape nan fe bagay</item>
@@ -3661,22 +3579,21 @@
         <item>Maladies de la pulpe et des tissus périapicaux</item>
         <item>MALAISE</item>
         <item>MALARIA</item>
-        <item>MALARIA</item>
-        <item>Malaria</item>
-        <item>Malaria</item>
+
+
         <item>MALARIA - ANTIGEN/ANTOBODY/PARASITE DETECTION</item>
-        <item>MALARIA - ANTIGEN/ANTOBODY/PARASITE DETECTION</item>
+
         <item>Malaria confirmed with minor digestive symptoms</item>
         <item>Malaria confirmées</item>
         <item>MALARIA R/O</item>
         <item>Malaria sevère</item>
         <item>Malaria severe</item>
-        <item>MALARIA, CLINICAL</item>
+
         <item>MALARIA, CLINICAL</item>
         <item>Malaria, confirmed</item>
         <item>MALARIA, MILD</item>
         <item>MALARIA, PRESUMED</item>
-        <item>MALARIA, PRESUMED</item>
+
         <item>MALARIA, RULE OUT</item>
         <item>MALARIA, SEVERE</item>
         <item>MALARIAL SMEAR</item>
@@ -3706,31 +3623,30 @@
         <item>Maumivu wakati wa kukojoa</item>
         <item>mcg</item>
         <item>MCH</item>
-        <item>MCH</item>
+
         <item>MCHC</item>
-        <item>MCHC</item>
+
         <item>MCM</item>
-        <item>MCV</item>
+
         <item>MCV</item>
         <item>MEAN CELL HEMOGLOBIN CONCENTRATION</item>
         <item>MEAN CORPUSCULAR HEMOGLOBIN</item>
         <item>MEAN CORPUSCULAR VOLUME</item>
         <item>MEAN PLATELET VOLUME</item>
         <item>MEASLES</item>
-        <item>MEASLES</item>
-        <item>MEASLES</item>
+
         <item>MEASLES VACCINATION</item>
         <item>MEBENDAZOLE</item>
         <item>MEBRIN AZ</item>
-        <item>MEBRIN AZ</item>
+
         <item>MEBRIN –AZ</item>
         <item>Med Aspirin</item>
         <item>MED HX COMMENT</item>
         <item>MEDICAL ADVICE</item>
-        <item>MEDICAL ADVICE</item>
+
         <item>MEDICAL EXAMINATION, ROUTINE</item>
         <item>MEDICAL HISTORY</item>
-        <item>MEDICAL HISTORY</item>
+
         <item>MEDICAL RECORD OBSERVATIONS</item>
         <item>MEDICATION HISTORY</item>
         <item>MEDICATION ORDERS</item>
@@ -3741,16 +3657,16 @@
         <item>MEDROXYPROGESTERONE ACETATE</item>
         <item>MEFLOQUINE</item>
         <item>MEFTAL 500MG</item>
-        <item>MEFTAL 500MG</item>
+
         <item>MEFTAL SPAS TAB SUS</item>
-        <item>MEFTAL SPAS TAB SUS</item>
+
         <item>MEFTAL SPAS – TAB/SUS</item>
         <item>MEMORY PROBLEMS</item>
         <item>Menenjit</item>
-        <item>Méningite</item>
+
         <item>MENINGITIS</item>
-        <item>Meningitis</item>
-        <item>meningitis</item>
+
+
         <item>MENINGITIS, BACTERIAL</item>
         <item>MENINGITIS, CRYPTOCOCCAL</item>
         <item>MENINGITIS, NOS</item>
@@ -3758,26 +3674,26 @@
         <item>MENSTRUAL DYSFUNCTION</item>
         <item>MENSTRUATING</item>
         <item>Mental Disorder</item>
-        <item>MENTAL DISORDERS</item>
+
         <item>MENTAL HEALTH SERVICES</item>
         <item>MENTAL ILLNESS</item>
         <item>MENTAL ILLNESS COMMENT</item>
         <item>Mental or behavioral disorder due to alcohol or illicit drug use</item>
         <item>Mental status change</item>
-        <item>MEq</item>
+
         <item>MEqs</item>
         <item>Meses</item>
         <item>Mesure de la circonférence brachiale</item>
         <item>Mesure du périmètre brachial (MPB)</item>
         <item>Mệt mỏi</item>
         <item>Metabolic disorder</item>
+
         <item>METAKELFIN</item>
-        <item>METAKELFIN</item>
         <item>METAKELFIN TABLETS</item>
-        <item>METAKELFIN TABLETS</item>
-        <item>METAKELFIN TABLETS</item>
+
+
         <item>METFAL 250MG</item>
-        <item>METFAL 250MG</item>
+
         <item>METHOD OF BIRTH CONTROL</item>
         <item>METHOD OF DELIVERY</item>
         <item>METHOD OF DELIVERY OTHER</item>
@@ -3785,12 +3701,12 @@
         <item>METHOD OF HIV EXPOSURE</item>
         <item>METHYLDOPA</item>
         <item>METOCLOPRAMIDE</item>
-        <item>Metric drop</item>
+
         <item>Metric drop(s)</item>
         <item>METROGYL COMPOUND</item>
-        <item>METROGYL COMPOUND</item>
+
         <item>METRON DF</item>
-        <item>METRON DF</item>
+
         <item>METRONIDAZOLE</item>
         <item>mg</item>
         <item>mg/m2</item>
@@ -3801,25 +3717,25 @@
         <item>microcéfalo</item>
         <item>Microcéphalie</item>
         <item>Microcephalus</item>
-        <item>Microgram</item>
+
         <item>Microgram(s)</item>
         <item>MID CLAVICULAR LINE</item>
-        <item>MID-UPPER ARM CIRCUMFERENCE</item>
+
         <item>MID-UPPER ARM CIRCUMFERENCE</item>
         <item>MIDAXILLARY</item>
         <item>MIDDLE NAME</item>
         <item>MIGRIL</item>
-        <item>MIGRIL</item>
+
         <item>Mikwòb Enfeksyon</item>
         <item>Mild</item>
         <item>Mild to moderate</item>
         <item>Milk product</item>
         <item>Milk protein</item>
-        <item>Milliequivalent</item>
+
         <item>Milliequivalent(s)</item>
         <item>Milligram</item>
         <item>Milligram per meter squared</item>
-        <item>Milligram per meter2</item>
+
         <item>Milliliter</item>
         <item>Million units</item>
         <item>miltip jestasyon</item>
@@ -3828,7 +3744,7 @@
         <item>Minihep Calcium</item>
         <item>Minitabs</item>
         <item>MINOR CUTANEOUS MANIFESTATIONS</item>
-        <item>Minutes</item>
+
         <item>MINUTES</item>
         <item>Miscarriage</item>
         <item>MISSED ABORTION</item>
@@ -3866,21 +3782,21 @@
         <item>MISSED TB TO ILL</item>
         <item>MISSED TB VOMITED</item>
         <item>MIST-ANTACIDS</item>
-        <item>MIST-ANTACIDS</item>
+
         <item>MIXED FEEDING</item>
-        <item>MIXED FEEDING</item>
-        <item>MIXED FEEDING</item>
+
+
         <item>mL</item>
         <item>MMM</item>
         <item>MOD</item>
-        <item>MODECATE INJECTION</item>
+
         <item>MODECATE INJECTION</item>
         <item>Moderate</item>
         <item>Moderate to severe</item>
         <item>MODÉRÉ</item>
-        <item>Modere</item>
+
         <item>MOFAX</item>
-        <item>MOFAX</item>
+
         <item>MOI TEACHING AND REFERRAL HOSPITAL</item>
         <item>Mois</item>
         <item>Moisissure</item>
@@ -3888,22 +3804,22 @@
         <item>MOLLUSCUM CONTAGIOSUM</item>
         <item>MONOCYTES</item>
         <item>MONOCYTES (%) - MICROSCOPIC EXAM</item>
-        <item>MONOS</item>
+
         <item>MONOS</item>
         <item>MONTH OF CURRENT GESTATION</item>
-        <item>MONTHLY</item>
+
         <item>Monthly</item>
         <item>MONTHLY OR LESS</item>
-        <item>MONTHS</item>
+
         <item>Months</item>
         <item>Morcap SR</item>
         <item>MORE THAN TWO DOSES</item>
         <item>MOREASE</item>
         <item>MOREASE 135MG</item>
-        <item>MOREASE 135MG</item>
+
         <item>Morfinn</item>
         <item>Morphine</item>
-        <item>Morphine</item>
+
         <item>MOSORIOT CATCHMENT AREA</item>
         <item>MOST</item>
         <item>MOTHER</item>
@@ -3937,19 +3853,19 @@
         <item>MOTHER3 TC POST DOSE</item>
         <item>MOTHER3 TC POST TX WEEKS</item>
         <item>MOTHER3 TC POSTPARTUM</item>
+
         <item>MOTILE BACTERIA</item>
-        <item>MOTILE BACTERIA</item>
-        <item>MOTILIUM</item>
+
         <item>MOTILIUM</item>
         <item>MOTOR VEHICLE ACCIDENT</item>
         <item>Moule</item>
         <item>MOUTH SORES</item>
         <item>MOXIFLOXACIN</item>
         <item>MOXIKIND CV</item>
-        <item>MOXIKIND CV</item>
+
         <item>MP TEST</item>
         <item>MPV</item>
-        <item>MPV</item>
+
         <item>MRCT PLUS ID</item>
         <item>MRGO (Maladie reflux gastroesophageal)</item>
         <item>MS Contin</item>
@@ -3972,9 +3888,9 @@
         <item>MTRHID</item>
         <item>MU</item>
         <item>MUAC</item>
-        <item>MUAC</item>
-        <item>MUAC</item>
-        <item>MUAC</item>
+
+
+
         <item>MUCAINE</item>
         <item>MUCOCUTANEOUS EXAM FINDINGS</item>
         <item>Mũi</item>
@@ -3992,7 +3908,7 @@
         <item>MURMUR DIASTOLIC DECRESCENDO</item>
         <item>MURMUR DIASTOLIC RUMBLE GRADE</item>
         <item>MURMUR HSM</item>
-        <item>MURMUR HSM</item>
+
         <item>MURMUR HSM GRADE</item>
         <item>MURMUR LLSB</item>
         <item>MURMUR SEM</item>
@@ -4025,22 +3941,22 @@
         <item>MXL brand of morphine sulfate</item>
         <item>MYALGIA</item>
         <item>Myalgia</item>
-        <item>Myalgie</item>
+
         <item>Myalji</item>
         <item>MYCELEX</item>
-        <item>MYCELEX</item>
+
         <item>MYCOBACTERIUM TUBERCULOSIS, EXTRAPULMONARY</item>
         <item>Myèl pike</item>
         <item>NA</item>
-        <item>NA</item>
+
         <item>NALIDIXIC ACID</item>
         <item>Não</item>
         <item>NASACORT</item>
-        <item>NASACORT</item>
+
         <item>Nasal</item>
         <item>Nasal administration</item>
         <item>NASAL BLOCKAGE</item>
-        <item>NASAL BLOCKAGE</item>
+
         <item>NASAL DISCHARGE</item>
         <item>NASAL OBSTRUCTION</item>
         <item>Nasal route of administration</item>
@@ -4051,15 +3967,15 @@
         <item>NAUSEA DURATION</item>
         <item>navelbloeding na de geboorte</item>
         <item>Ne sait pas</item>
-        <item>Neb</item>
+
         <item>Neb(s)</item>
-        <item>Nebulizer</item>
+
         <item>Nebulizer(s)</item>
         <item>NECK PAINS</item>
         <item>NECK STIFFNESS</item>
         <item>NECK SUPPLE</item>
         <item>NEG</item>
-        <item>NEG</item>
+
         <item>NEGATIVE</item>
         <item>NEGGRAM</item>
         <item>NEISSERIA GONORRHOEAE POLYMERASE CHAIN REACTION</item>
@@ -4081,7 +3997,7 @@
         <item>NELFINAVIR STOP DATE</item>
         <item>NELFINAVIRP MTCT</item>
         <item>NELTOLON</item>
-        <item>NELTOLON</item>
+
         <item>Nemoni</item>
         <item>Neonatal conjunctivitis</item>
         <item>NEONATAL INFECTION</item>
@@ -4100,9 +4016,9 @@
         <item>Neurological diagnoses</item>
         <item>NEUTROPHILS</item>
         <item>NEUTROPHILS (%) - MICROSCOPIC EXAM</item>
-        <item>NEUTROSEC (TABLET</item>
+
         <item>NEUTROSEC TABLET</item>
-        <item>NEUTROSEC TABLET</item>
+
         <item>NEVER</item>
         <item>NEVER MARRIED</item>
         <item>NEVIRAPINE</item>
@@ -4123,7 +4039,7 @@
         <item>NEW COMPLAINTS</item>
         <item>NEW WHO/CDC STAGING CRITERIA MET</item>
         <item>NEWBORN ANTIRETROVIRAL USE</item>
-        <item>NEXIUM</item>
+
         <item>NEXIUM</item>
         <item>NFV</item>
         <item>NG tube administration</item>
@@ -4132,18 +4048,16 @@
         <item>Nhiễm trùng da</item>
         <item>Nhiễm trùng tiểu</item>
         <item>Nicholas Favre disease</item>
-        <item>NIDAQUIN D</item>
+
         <item>NIDAQUIN D</item>
         <item>NIFEDIPINE</item>
         <item>NIGHT SWEATS</item>
         <item>NIZAROL</item>
-        <item>NIZORAL</item>
+
         <item>NIZORAL TABS</item>
-        <item>NIZORAL TABS</item>
+
         <item>NO</item>
-        <item>No</item>
-        <item>No</item>
-        <item>No</item>
+
         <item>No Doz</item>
         <item>No Doz Maximum Strength</item>
         <item>NO KNOWN RISK FACTORS</item>
@@ -4151,7 +4065,7 @@
         <item>No. of times</item>
         <item>NOCARDIOSIS</item>
         <item>Non</item>
-        <item>Non</item>
+
         <item>Non stéroïdiens agent anti-inflammatoire classe de médicaments</item>
         <item>NON-AMPATH</item>
         <item>Non-coded diagnosis</item>
@@ -4161,13 +4075,13 @@
         <item>NONE</item>
         <item>Nonsteroidal anti-inflammatory agent drug class</item>
         <item>Nonsteroidal anti-inflammatory drug</item>
-        <item>NORBID</item>
+
         <item>NORBID</item>
         <item>NORFLOXACIN</item>
         <item>NORFLOXACIN TABLETS</item>
         <item>NORMAL</item>
         <item>NORMAXICILLIN</item>
-        <item>NORMAXICILLIN</item>
+
         <item>NOROXIN</item>
         <item>NORVIR</item>
         <item>Norwich Aspirin</item>
@@ -4179,9 +4093,9 @@
         <item>Nốt phỏng</item>
         <item>NOTES</item>
         <item>NOVA M</item>
-        <item>NOVA M</item>
+
         <item>NOVADOM C</item>
-        <item>NOVADOM C</item>
+
         <item>NSAIDs</item>
         <item>Ntabizi</item>
         <item>Nu-Seals Aspirin</item>
@@ -4197,23 +4111,23 @@
         <item>NUMBER OF WIVES</item>
         <item>NUMBNESS</item>
         <item>Nuốt khó</item>
-        <item>NUROKIND G</item>
+
         <item>NUROKIND G</item>
         <item>Nutritional Edema with Dyspigmentation of Skin and Hair</item>
         <item>Nutritional Marasmus</item>
         <item>NUTRITIONAL SUPPORT</item>
         <item>Nutritional, endocrine and metabolic diagnoses</item>
-        <item>NVP</item>
+
         <item>NVP</item>
         <item>NVP PRIOR TO DELIVERY</item>
         <item>Nyinginezo</item>
         <item>NYSTATIN</item>
         <item>NYSTATIN DROPS</item>
-        <item>NYSTATIN DROPS</item>
+
         <item>NYSTATIN PESSORIAL</item>
-        <item>NYSTATIN PESSORIAL</item>
+
         <item>NYSTATIN SUPPOSITORY</item>
-        <item>NYSTATIN SUPPOSITORY</item>
+
         <item>O</item>
         <item>Ợ hơi gây đau</item>
         <item>O NEGATIVE</item>
@@ -4227,7 +4141,7 @@
         <item>OD (once daily)</item>
         <item>OD administration</item>
         <item>OE</item>
-        <item>OEDEMA</item>
+
         <item>Oedema</item>
         <item>OEDÈME</item>
         <item>Oeufs</item>
@@ -4254,9 +4168,9 @@
         <item>OLIGURIA</item>
         <item>OM</item>
         <item>OMEPRAZOLE</item>
+
         <item>OMNIX 100MG</item>
-        <item>OMNIX 100MG</item>
-        <item>OMNIX 200MG</item>
+
         <item>OMNIX 200MG</item>
         <item>OMS</item>
         <item>OMS brand of Morphine Sulfate</item>
@@ -4294,16 +4208,16 @@
         <item>Oral administration</item>
         <item>ORAL CANDIDIASIS</item>
         <item>ORAL CONTRACEPTION</item>
-        <item>ORAL HAIRY LEUKOPLAKIA</item>
+
         <item>ORAL HAIRY LEUKOPLAKIA</item>
         <item>ORAL KAPOSI SARCOMA</item>
         <item>ORAL POLIO VACCINATION</item>
         <item>ORAL POLIO VAX NO.0</item>
-        <item>ORAL POLIO VAX NO.0</item>
+
         <item>ORAL POLIO VAX NO.1</item>
+
         <item>ORAL POLIO VAX NO.2</item>
-        <item>ORAL POLIO VAX NO.2</item>
-        <item>ORAL POLIO VAX NO.3</item>
+
         <item>ORAL POLIO VAX NO.3</item>
         <item>ORAL REHYDRATION SALTS</item>
         <item>Oral route of administration</item>
@@ -4335,9 +4249,9 @@
         <item>ORS</item>
         <item>OS</item>
         <item>OS administration</item>
-        <item>OTHER</item>
+
         <item>Other</item>
-        <item>OTHER</item>
+
         <item>OTHER AND UNSPECIFIED CONVULSIONS</item>
         <item>OTHER ANTIRETROVIRAL DRUG</item>
         <item>OTHER ARV</item>
@@ -4352,7 +4266,7 @@
         <item>OTHER DISCONTINUATION2</item>
         <item>OTHER DISCONTINUED</item>
         <item>Other disease of hard tissue of teeth</item>
-        <item>OTHER DRUGS</item>
+
         <item>OTHER DRUGS</item>
         <item>OTHER FAMILY MEMBER</item>
         <item>OTHER FEEDS</item>
@@ -4360,7 +4274,7 @@
         <item>OTHER HIV CONDITIONS DESC</item>
         <item>OTHER HOUSEHOLD MEMBER</item>
         <item>OTHER MEDICATION</item>
-        <item>OTHER NON-CODED</item>
+
         <item>OTHER NON-CODED</item>
         <item>Other Noninfectious Disorders of Lymphatic Channels</item>
         <item>OTHER PAST</item>
@@ -4368,10 +4282,10 @@
         <item>OTHER PHYSICAL EXAM COMMENT</item>
         <item>OTHER PHYSICAL EXAM DESC</item>
         <item>OTHER PRESENT</item>
-        <item>OTHER PROBLEMS</item>
+
         <item>OTHER PROBLEMS</item>
         <item>OTHER REFERRAL</item>
-        <item>OTHER SERVICES</item>
+
         <item>OTHER SERVICES</item>
         <item>OTHER SPEC</item>
         <item>Other Specified Dermatomycoses</item>
@@ -4404,12 +4318,12 @@
         <item>OTITE EXTERNE</item>
         <item>OTITIS EXTERNA</item>
         <item>Otitis externa</item>
-        <item>otitis externa</item>
+
         <item>OTITIS MEDIA</item>
-        <item>Otitis media</item>
-        <item>otitis media</item>
+
+
         <item>OTORRHEA</item>
-        <item>OTORRHEA</item>
+
         <item>Otro no codificado</item>
         <item>OU</item>
         <item>OU administration</item>
@@ -4425,13 +4339,13 @@
         <item>OVERALL DRUG ADHERENCE IN LAST MONTH</item>
         <item>OVUM</item>
         <item>OXALGIN D 25MG</item>
-        <item>OXALGIN D 25MG</item>
+
         <item>OXALGIN DP</item>
-        <item>OXALGIN DP</item>
+
         <item>OXALGIN DSP</item>
         <item>OXALGIN DSP</item>
         <item>OXALGIN SR 100MG</item>
-        <item>OXALGIN SR 100MG</item>
+
         <item>OXALGIN –D(25)</item>
         <item>OXALGIN –SR (100)</item>
         <item>OXALGIN-DP</item>
@@ -4442,50 +4356,50 @@
         <item>P23</item>
         <item>PACKED CELL VOLUME</item>
         <item>Packets</item>
-        <item>Pad</item>
+
         <item>Pad(s)</item>
         <item>PAID</item>
-        <item>PAID</item>
+
         <item>PAIN, LOWER EXTREMITIES</item>
         <item>PAINFUL SWALLOWING</item>
-        <item>PAINFUL SWALLOWING</item>
+
         <item>PAINIL (100mg)</item>
-        <item>PAINIL 100MG</item>
-        <item>PAINIL 100MG</item>
+
+
         <item>Palaprin Forte</item>
         <item>PALE CONJUNCTIVA</item>
         <item>PALENESS</item>
         <item>PALLOR</item>
         <item>Paludisme</item>
         <item>Paludismo</item>
-        <item>PAN-D</item>
-        <item>PAN-D</item>
+
+
         <item>PAN-D</item>
         <item>PANADOL</item>
-        <item>PANADOL</item>
+
         <item>PANADUR INJECTION</item>
         <item>PANTOCID 20MG</item>
-        <item>PANTOCID 20MG</item>
+
         <item>PANTOCID 40MG</item>
-        <item>PANTOCID 40MG</item>
+
         <item>PANTODAC 20MG</item>
-        <item>PANTODAC 20MG</item>
+
         <item>PANTODAC 40MG</item>
-        <item>PANTODAC 40MG</item>
+
         <item>PANTOPRAZOLE</item>
         <item>PAP SMEAR</item>
-        <item>PAP SMEAR</item>
+
         <item>PAP TEST</item>
         <item>PAPANICOLAOU SMEAR</item>
-        <item>PAPANICOLAOU SMEAR</item>
+
         <item>PAPULAR</item>
         <item>PAPULAR PRURITIC ERUPTION</item>
         <item>PARACETAMOL</item>
         <item>PARACETAMOL SYRUP</item>
-        <item>PARACETAMOL SYRUP</item>
+
         <item>PARAPAS</item>
-        <item>PARAPAS</item>
-        <item>PARAPAS</item>
+
+
         <item>PARAPHIMOSIS</item>
         <item>parasitismo intestinal</item>
         <item>Parasitose intestinale</item>
@@ -4524,20 +4438,6 @@
         <item>PATIENT HAD SEX IN LAST 6MO</item>
         <item>PATIENT HOSPITALIZED</item>
         <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
-        <item>PATIENT ID</item>
         <item>PATIENT MULTIPLE SEXUAL PARTNERS</item>
         <item>PATIENT PAYS</item>
         <item>PATIENT RELATION TO MTCT WOMAN</item>
@@ -4551,17 +4451,16 @@
         <item>Paynocil</item>
         <item>PBML</item>
         <item>PCP</item>
-        <item>PCP</item>
-        <item>PCP</item>
+
         <item>PCP - OLD</item>
         <item>PCP PROPHYLAXIS ADHERENCE IN PAST WEEK</item>
         <item>PCP PROPHYLAXIS DRUGS</item>
         <item>PCP PROPHYLAXIS PLAN</item>
         <item>PCP PROPHYLAXIS STARTED</item>
         <item>PCT</item>
-        <item>PCT</item>
+
         <item>PCV</item>
-        <item>PDW</item>
+
         <item>PDW</item>
         <item>Peanuts</item>
         <item>Pèdi pwa</item>
@@ -4572,25 +4471,25 @@
         <item>PELLAGRA</item>
         <item>PELVIC INFLAMMATORY DISEASE</item>
         <item>PELVIC ULTRASOUND</item>
-        <item>PELVIC ULTRASOUND</item>
+
         <item>PELVIS X-RAY</item>
-        <item>PELVIS XRAY</item>
+
         <item>PENICILLIN</item>
         <item>Penicillin drug class</item>
-        <item>PENICILLIN INJECTION</item>
+
         <item>PENICILLIN INJECTION</item>
         <item>PENICILLIN V (ORAL) TABS</item>
-        <item>PENICILLIN V (ORAL) TABS</item>
+
         <item>PENICILLIN V SYRUP</item>
-        <item>PENICILLIN V SYRUP</item>
-        <item>Pénicillines</item>
+
+
         <item>Penicillins</item>
-        <item>Penisilinn</item>
+
         <item>PEPFLUX</item>
         <item>PEPFLUX MUCAINE</item>
-        <item>PEPFLUX MUCAINE</item>
+
         <item>PEPTIC ULCER</item>
-        <item>Peptic ulcer</item>
+
         <item>Peptic ulcer disease</item>
         <item>PEPTIC ULCER NOS</item>
         <item>peptisch ulcus</item>
@@ -4612,7 +4511,7 @@
         <item>peso (kg)</item>
         <item>Peumonie</item>
         <item>PEURPERAL FEVER</item>
-        <item>Peurperal fever</item>
+
         <item>PGL</item>
         <item>PHARYNGITIS</item>
         <item>PHARYNGITIS NOS</item>
@@ -4625,11 +4524,11 @@
         <item>Phỏng</item>
         <item>Phù mạch</item>
         <item>PHYSICAL EXAMINATION</item>
-        <item>PHYSICAL EXAMINATION</item>
+
         <item>Physical injury</item>
         <item>Physical trauma</item>
         <item>PID</item>
-        <item>PID</item>
+
         <item>PIH</item>
         <item>PILLS</item>
         <item>PILLS TAKEN LAST7 DAYS</item>
@@ -4642,48 +4541,48 @@
         <item>Piqûres d\'abeilles</item>
         <item>Piqûres de guêpe</item>
         <item>PIRICAM</item>
-        <item>PIRICAM</item>
+
         <item>PIRITON</item>
-        <item>PIRITON</item>
+
         <item>PIRITON SYRUP</item>
-        <item>PIRITON SYRUP</item>
+
         <item>PIRITON TABS</item>
-        <item>PIRITON TABS</item>
+
         <item>PIROX</item>
-        <item>PIROX</item>
+
         <item>Pistach</item>
-        <item>Pistache</item>
+
         <item>PL EFFUSION</item>
         <item>PLAN COMMENT</item>
         <item>PLANE WART</item>
         <item>PLASIL</item>
-        <item>PLASIL</item>
+
         <item>PLASMA</item>
-        <item>Plasma</item>
+
         <item>PLATELET DISTRIBUTION WIDTH</item>
         <item>PLATELETCRIT</item>
         <item>PLATELETS</item>
-        <item>Platet</item>
+
         <item>PLEURAL EFFUSION</item>
         <item>PLEURITIC</item>
         <item>PLTS</item>
-        <item>PLTS</item>
+
         <item>PMI AX</item>
         <item>PMI DISPLACED</item>
         <item>PMI EPIGASTRIC</item>
-        <item>PMI EPIGASTRIC</item>
+
         <item>PMI MCL</item>
         <item>PMI PS</item>
         <item>PML</item>
-        <item>PML</item>
+
         <item>PMNS</item>
         <item>PNEUMOCYSTIC CARINII PNEUMONIA</item>
         <item>PNEUMOCYSTIC CARINII PNEUMONIA PROPHYLACTIC DRUGS</item>
         <item>PNEUMONIA</item>
-        <item>PNEUMONIA</item>
-        <item>Pneumonia</item>
+
+
         <item>PNEUMONIA BRONCHIAL</item>
-        <item>PNEUMONIA BRONCHIAL</item>
+
         <item>PNEUMONIA NOS</item>
         <item>PNEUMONIA, LOBAR</item>
         <item>PNEUMONIA, TUBERCULOUS</item>
@@ -4692,7 +4591,7 @@
         <item>POIDS (KG)</item>
         <item>POISONING NOS</item>
         <item>POISONING, FOOD</item>
-        <item>POISONING, FOOD</item>
+
         <item>Poisson</item>
         <item>pole</item>
         <item>Polèn</item>
@@ -4701,82 +4600,81 @@
         <item>Polio</item>
         <item>POLIO VACCINATION</item>
         <item>POLIO VAX NO.0</item>
-        <item>POLIO VAX NO.0</item>
+
         <item>POLIO VAX NO.1</item>
-        <item>POLIO VAX NO.1</item>
+
         <item>POLIO VAX NO.2</item>
-        <item>POLIO VAX NO.2</item>
+
         <item>POLIO VAX NO.3</item>
-        <item>POLIO VAX NO.3</item>
+
         <item>poliomielitis aguda</item>
         <item>Poliomyélite</item>
         <item>Poliomyélite, suspectés</item>
         <item>POLIOMYELITIS</item>
-        <item>Poliomyelitis</item>
+
         <item>Poliomyelitis, suspected</item>
         <item>Pollen</item>
-        <item>Pollen</item>
+
         <item>Polydactylie</item>
-        <item>Polydactyly</item>
+
         <item>POLYMENORRHEA</item>
         <item>POLYMORPHONUCLEAR CELLS</item>
         <item>Polyomyelit</item>
         <item>POLYS</item>
-        <item>POLYS</item>
+
         <item>POOR APPETITE</item>
         <item>POOR SAMPLE QUALITY</item>
         <item>POOR WT GAIN</item>
-        <item>POOR WT GAIN</item>
+
         <item>POOR WT GAIN TIME</item>
         <item>porciones retenidas de placenta Y/O membranas sin hemorragia</item>
         <item>POS</item>
-        <item>POS</item>
+
         <item>POSITIVE</item>
         <item>Positive Serological and/or Viral Culture Findings for Human Immunodeficiency Virus</item>
         <item>Post-traumatic stress disorder</item>
         <item>POSTERIOR</item>
-        <item>POSTERIOR</item>
+
         <item>postMI</item>
         <item>Postnatal infection</item>
         <item>POSTPARTUM</item>
         <item>postpartum bloeding</item>
-        <item>Postpartum haemorrhage</item>
+
         <item>POSTPARTUM HEMORRHAGE</item>
-        <item>POSTPARTUM HEMORRHAGE</item>
-        <item>Postpartum Hemorrhage</item>
+
         <item>POTASSIUM</item>
         <item>Pouls</item>
         <item>Pousantaj respiratwa</item>
         <item>Poussière</item>
         <item>Pousyè</item>
-        <item>POWDER</item>
+
         <item>POWDER</item>
         <item>PPE</item>
-        <item>PPE</item>
+
         <item>PPF</item>
-        <item>PPF</item>
+
         <item>PPH (Postpartum Hemorrhage)</item>
         <item>PR</item>
         <item>PREDNISOLONE</item>
         <item>PREDNISONE</item>
         <item>PREECLAMPSIA</item>
         <item>PREGNANCY</item>
-        <item>PREGNANCY</item>
+
         <item>PREGNANCY OUTCOME</item>
         <item>PREGNANCY STATUS</item>
         <item>PREGNANCY TEST</item>
-        <item>PREGNANCY TEST</item>
+
         <item>Pregnancy, childbearing and family planning diagnoses</item>
         <item>PREGNANCY, ECTOPIC</item>
         <item>PREGNANCY, HYPERTENSION ASSOCIATED</item>
         <item>PREGNANCY, MISCARRIAGE</item>
-        <item>Pregnancy, miscarriage</item>
+
         <item>PREGNANCY, TERMINATION</item>
         <item>PREGNANCY-INDUCED HYPERTENSION</item>
         <item>Premature rupture of membranes</item>
         <item>Prensipal</item>
         <item>PRESCRIPTION</item>
-        <item>PRESCRIPTION</item>
+
         <item>Presenting Complaints</item>
         <item>PRESSION DIASTOLIQUE</item>
         <item>PRESSION SYSTOLIQUE</item>
@@ -4804,7 +4702,7 @@
         <item>PROBLEM ADDED</item>
         <item>PROBLEM COMMENT</item>
         <item>PROBLEM LIST</item>
-        <item>PROBLEM LIST</item>
+
         <item>PROBLEM RESOLVED</item>
         <item>Problem severity</item>
         <item>problema de alimentación en el recién nacido</item>
@@ -4814,20 +4712,20 @@
         <item>PRODUCTIVE COUGH QUALITY</item>
         <item>Produits laitiers</item>
         <item>PROEBENECID</item>
-        <item>PROEBENECID</item>
+
         <item>PROGRESSIVE MULTIFOCAL LEUKOENCEPHALOPATHY</item>
         <item>PROGUANIL</item>
         <item>PROLIXIN</item>
         <item>PROM (premature rupture of membranes)</item>
         <item>PROPANOLOL</item>
-        <item>PROPRANOLOL</item>
+
         <item>PROTEIN POS</item>
         <item>Protéines du lait</item>
         <item>PROTOGUT</item>
         <item>PROTOGUT 15MG</item>
-        <item>PROTOGUT 15MG</item>
+
         <item>PROTOGUT 30MG</item>
-        <item>PROTOGUT 30MG</item>
+
         <item>PROTONIX</item>
         <item>Protozoal intestinal diseases, other</item>
         <item>Protozoan infection, NEC</item>
@@ -4845,7 +4743,7 @@
         <item>Pruritus</item>
         <item>PSEUDOEPHEDRINE AND TRIPOLIDINE</item>
         <item>PSQ</item>
-        <item>PSQ</item>
+
         <item>PSYCHIATRIC</item>
         <item>PSYCHIATRIC COMMENT</item>
         <item>Psychiatric disorder</item>
@@ -4860,13 +4758,13 @@
         <item>PT PAYS FOR WORK UP RX</item>
         <item>PTB</item>
         <item>PTSD (post-traumatic stress disorder)</item>
-        <item>PUD</item>
+
         <item>PUD</item>
         <item>Puerperal complications</item>
         <item>PUERPERAL SEPSIS</item>
         <item>Puerperal sepsis</item>
         <item>Puerperal septicemia</item>
-        <item>Puff</item>
+
         <item>Puff(s)</item>
         <item>pulmonale bloeding</item>
         <item>Pulmonary hemorrhage</item>
@@ -4876,7 +4774,7 @@
         <item>PULMONARY TUBERCULOSIS</item>
         <item>Pulp and periapical tissue disease</item>
         <item>PULSE</item>
-        <item>Pulse</item>
+
         <item>PULSUS</item>
         <item>PULSUS PARADOXUS</item>
         <item>PUO</item>
@@ -4884,7 +4782,7 @@
         <item>PURULENT</item>
         <item>PURULENT DISCHARGE</item>
         <item>PUS CELLS</item>
-        <item>PUS CELLS</item>
+
         <item>PV</item>
         <item>Pwa (kg)</item>
         <item>Pwason</item>
@@ -4896,7 +4794,7 @@
         <item>PYRIDOXINE</item>
         <item>PYRIMETHAMINE / SULFADOXINE</item>
         <item>PYRODEX</item>
-        <item>PYRODEX</item>
+
         <item>q12h</item>
         <item>q1h</item>
         <item>q24h</item>
@@ -4927,53 +4825,51 @@
         <item>QUINAPRIL</item>
         <item>QUININE</item>
         <item>QUININE INJECTION</item>
-        <item>QUININE INJECTION</item>
+
         <item>QUININE SYRUP</item>
-        <item>QUININE SYRUP</item>
+
         <item>R/O</item>
-        <item>R/O</item>
+
         <item>RABIES</item>
-        <item>Rabies</item>
+
         <item>RABIES VACCINATION</item>
         <item>RACHITIS</item>
-        <item>RACHITIS</item>
+
         <item>RACIPER</item>
         <item>RACIPER 20MG</item>
-        <item>RACIPER 20MG</item>
+
         <item>RACIPER 40MG</item>
-        <item>RACIPER 40MG</item>
+
         <item>RACIPER D</item>
-        <item>RACIPER D</item>
-        <item>RACIPER-D</item>
+
         <item>RADIATES INTO AXILLA</item>
         <item>RADIATES INTO NECK</item>
         <item>Rage</item>
         <item>Ragweed</item>
         <item>RANITIDINE</item>
-        <item>RANITIDINE</item>
+
         <item>Rapi-Ject</item>
         <item>RAPID BREATHING</item>
-        <item>RAPID BREATHING</item>
+
         <item>RAPID BREATHING TIME</item>
         <item>Rapportée par le patient</item>
         <item>RASH</item>
-        <item>Rash</item>
-        <item>RASH</item>
-        <item>RASH</item>
+
+
+
         <item>RASH ALLERGIC</item>
-        <item>RASH ALLERGIC</item>
-        <item>RASH ALLERGIC</item>
+
         <item>RASH, SEPTIC</item>
         <item>RAXIM 100MG</item>
-        <item>RAXIM 100MG</item>
+
         <item>RAXIM 200MG</item>
-        <item>RAXIM 200MG</item>
+
         <item>RB CELLS</item>
-        <item>RB CELLS</item>
+
         <item>RBC</item>
-        <item>RBCS</item>
-        <item>RBCS</item>
-        <item>RDW</item>
+
+
+
         <item>RDW</item>
         <item>Reaction to severe stress, and adjustment disorder</item>
         <item>REACTIVE</item>
@@ -4989,7 +4885,7 @@
         <item>REASON TUBERCULOSIS PROPHYLAXIS STOPPED</item>
         <item>REASON TUBERCULOSIS TREATMENT STOPPED</item>
         <item>REBOUND</item>
-        <item>REBOUND</item>
+
         <item>Rectal administration</item>
         <item>Rectally</item>
         <item>RECTOVAGINAL FISTULA</item>
@@ -5006,23 +4902,23 @@
         <item>REFERRAL OTHER SPEC</item>
         <item>REFERRALS ORDERED</item>
         <item>REFLUX FORTE GEL</item>
-        <item>REFLUX FORTE GEL</item>
-        <item>REFLUX FORTE GEL</item>
+
+
         <item>Reflux Gatro-Oesophagien</item>
         <item>REFUSAL TO FEED</item>
         <item>REFUSAL TO FEED DURATION</item>
         <item>REGIMEN FAILURE</item>
         <item>REGRESSED MILESTONES</item>
         <item>REGULAR INSULIN</item>
-        <item>REGULAR INSULIN</item>
+
         <item>RELATIONHIP TO MTCT WOMAN</item>
         <item>RELAXYL SPRAY</item>
-        <item>RELAXYL SPRAY</item>
+
         <item>RELCER</item>
         <item>REMOVE DIAGNOSIS</item>
         <item>RENAL DISEASE</item>
         <item>RENAL DISEASE COMMENT</item>
-        <item>REQUESTED TESTS</item>
+
         <item>REQUESTED TESTS</item>
         <item>Rescudose</item>
         <item>RESEARCH</item>
@@ -5038,8 +4934,8 @@
         <item>Respiratory tract route</item>
         <item>RESTARTED BREAST FEED</item>
         <item>RESULT</item>
-        <item>RESULT</item>
-        <item>RESULT</item>
+
+
         <item>Retained placenta or membranes, without Hemorrhage</item>
         <item>retención de orina</item>
         <item>Rétention d\'urine</item>
@@ -5047,7 +4943,7 @@
         <item>RETICS (%)</item>
         <item>RETICULOCYTES (%)</item>
         <item>RETROVIR</item>
-        <item>RETROVIR</item>
+
         <item>RETURN VISIT DATE</item>
         <item>RETURN VISIT MONTHS</item>
         <item>RETURN VISIT WEEKS</item>
@@ -5062,20 +4958,20 @@
         <item>REVIVE</item>
         <item>REVIVE (product)</item>
         <item>Revive brand of caffeine</item>
+
         <item>RHD</item>
-        <item>RHD</item>
-        <item>Rheumatic fever with cardiac involvement</item>
+
         <item>Rheumatic fever with heart involvement</item>
         <item>Rheumatic fever without cardiac involvement</item>
-        <item>Rheumatic fever without heart involvement</item>
+
         <item>RHEUMATIC HEART DISEASE</item>
-        <item>RHEUMATISM</item>
+
         <item>RHEUMATISM</item>
         <item>RHEUMATOID ARTHRITIS</item>
         <item>RHEUMATOID FACTOR/ANTI-NUCLEAR FACTOR/HLA B27</item>
-        <item>RHEUMATOID FACTOR/ANTI-NUCLEAR FACTOR/HLA B27</item>
+
         <item>RHINITIS, ALLERGIC</item>
-        <item>RHINITIS, ALLERGIC</item>
+
         <item>RHK Advice</item>
         <item>RHK current complaint</item>
         <item>RHK DIAGNOSIS</item>
@@ -5091,16 +4987,16 @@
         <item>RHK Previous Prescription</item>
         <item>RHK Relationship</item>
         <item>RHK TESTS</item>
-        <item>RHK tests</item>
+
         <item>RHOMBERG</item>
         <item>RHONCHI</item>
-        <item>RHONCHI</item>
+
         <item>RHYTHM</item>
         <item>RHYTHM METHOD</item>
         <item>RICKETS</item>
-        <item>RICKETS</item>
-        <item>RICKETS</item>
-        <item>RICKETS</item>
+
+
+
         <item>Ridiprin</item>
         <item>RIFAFOUR</item>
         <item>RIFAMPICIN</item>
@@ -5155,14 +5051,14 @@
         <item>roundworm infection</item>
         <item>Routes of administration</item>
         <item>ROUTINE, MEDICAL EXAMINATION</item>
-        <item>ROUTINE, MEDICAL EXAMINATION</item>
+
         <item>Roxanol</item>
         <item>Roxanol UD</item>
         <item>Roxanol-T</item>
         <item>RR</item>
-        <item>RR</item>
+
         <item>RTA</item>
-        <item>RTA</item>
+
         <item>RTA</item>
         <item>RTI</item>
         <item>Ruban adhésif</item>
@@ -5170,27 +5066,27 @@
         <item>RUE</item>
         <item>RUL</item>
         <item>RULE OUT</item>
-        <item>RULE-OUT</item>
-        <item>RULE-OUT</item>
+
+
         <item>RUNNING NOSE</item>
         <item>ruptura prematura de membranas</item>
         <item>RUPTURE OF MEMBRANES MORE THAN 4 HOURS</item>
         <item>Rupture prématurée des membranes</item>
         <item>RUQ</item>
-        <item>RUQ</item>
+
         <item>RV HEAVE</item>
         <item>RV LIFT</item>
         <item>RX DC</item>
-        <item>RX DC</item>
+
         <item>RX DC TOX</item>
-        <item>RX DC TOX</item>
+
         <item>RX FREQ</item>
-        <item>RX FREQ</item>
+
         <item>RX STRENGTH</item>
-        <item>RX STRENGTH</item>
+
         <item>Rythme respiratoire</item>
         <item>S/W/D</item>
-        <item>S/W/D</item>
+
         <item>S1 INCREASED</item>
         <item>S1 SINGLE</item>
         <item>S1 SPLIT</item>
@@ -5199,62 +5095,57 @@
         <item>S2 LOUD P2</item>
         <item>S2 LOUD P2</item>
         <item>S2 PARADOXICAL SPLIT</item>
-        <item>S2 PARADOXICAL SPLIT</item>
+
         <item>S2 SINGLE</item>
-        <item>S2 SINGLE</item>
+
         <item>S2 SOFT A2</item>
         <item>S2 SPLIT</item>
         <item>S3 GALLOP</item>
-        <item>S3 GALLOP</item>
+
         <item>S4 GALLOP</item>
         <item>SACHET</item>
-        <item>SACHET</item>
+
         <item>SACHETS</item>
         <item>Saignement</item>
         <item>Saignement post partum</item>
         <item>SALBUTAMOL</item>
         <item>SALBUTAMOL INHALER</item>
         <item>SALBUTAMOL SYRUP</item>
-        <item>SALBUTAMOL SYRUP</item>
+
         <item>SALBUTAMOL TABS</item>
-        <item>SALBUTAMOL TABS</item>
+
         <item>SALICYLIC ACID OINT</item>
         <item>Sán máng</item>
         <item>San nan pipi</item>
         <item>Sang Total</item>
         <item>sangrado intermenstrual irregular</item>
         <item>SAO2</item>
-        <item>SaO2</item>
+
         <item>sarampión</item>
         <item>Saturation d\'oxygène dans le sang</item>
         <item>SBP</item>
-        <item>SBP</item>
-        <item>SBP</item>
-        <item>SBP</item>
+
         <item>SCABIES</item>
-        <item>Scabies</item>
+
         <item>SCALP RINGWORM</item>
         <item>SCALY</item>
         <item>SCHEDULED VISIT</item>
         <item>SCHISTOSOMIASE</item>
-        <item>SCHISTOSOMIASIS</item>
-        <item>SCHISTOSOMIASIS</item>
-        <item>SCHISTOSOMIASIS</item>
-        <item>SCHISTOSOMIASIS</item>
+        >
         <item>SCHIZOPHRENIA</item>
-        <item>Schizophrenia</item>
-        <item>Schizophrénie</item>
+
+
         <item>SCHOOL YEARS COMPLETED</item>
         <item>SCLERAL ICTERUS</item>
-        <item>SCLERIC ICTERIC</item>
+
         <item>Scoop</item>
         <item>Scoop(s)</item>
         <item>Scoopful</item>
         <item>SCOPOLAMINE</item>
         <item>SCORBUTUS</item>
+
         <item>SCURVY</item>
-        <item>SCURVY</item>
-        <item>Secondaire</item>
+
         <item>Secondary</item>
         <item>Secondary hypertension</item>
         <item>Seconds</item>
@@ -5263,33 +5154,33 @@
         <item>SED RATE</item>
         <item>Sefalosporin</item>
         <item>SEIZURE</item>
-        <item>Seizure</item>
+
         <item>SEIZURES</item>
         <item>SELF</item>
         <item>SELF PAY</item>
         <item>SEM</item>
         <item>Semanas</item>
         <item>SENILE DEMENTIA</item>
-        <item>SENILE DEMENTIA</item>
+
         <item>SENILE PSYCHOSIS</item>
         <item>SEPARATED</item>
         <item>SEPSIS NEONATAL</item>
-        <item>SEPSIS NEONATAL</item>
+
         <item>SEPTIC LESIONS</item>
         <item>septicemia puerperal</item>
         <item>Septicémie puerpérale</item>
         <item>SEPTRIN</item>
-        <item>SEPTRIN</item>
+
         <item>SEPTRIN SYRUP</item>
-        <item>SEPTRIN SYRUP</item>
+
         <item>Sequelae of cerebrovascular disease</item>
-        <item>SERUM</item>
+
         <item>Serum</item>
         <item>SERUM ALBUMIN</item>
-        <item>SERUM ALBUMIN AND GLOBULIN</item>
+
         <item>SERUM ALBUMIN AND GLOBULIN</item>
         <item>SERUM CALCIUM</item>
-        <item>SERUM CALCIUM</item>
+
         <item>SERUM CARBON DIOXIDE</item>
         <item>SERUM CHLORIDE</item>
         <item>SERUM CO2</item>
@@ -5298,28 +5189,28 @@
         <item>SERUM GLUCOSE</item>
         <item>SERUM GLUTAMIC-OXALOACETIC TRANSAMINASE</item>
         <item>SERUM GLUTAMIC-PYRUVIC TRANSAMINASE</item>
-        <item>SERUM IRON AND VIT. B12</item>
+
         <item>SERUM IRON AND VIT. B12</item>
         <item>SERUM LACTATE</item>
         <item>SERUM LIPASE</item>
         <item>SERUM POTASSIUM</item>
         <item>SERUM SODIUM</item>
-        <item>SERUM SODIUM AND POTASSIUM</item>
+
         <item>SERUM SODIUM AND POTASSIUM</item>
         <item>SERUM URIC ACID</item>
-        <item>SERUM URIC ACID</item>
+
         <item>SERUM VIT. D3</item>
-        <item>SERUM VIT. D3</item>
+
         <item>SERVICES</item>
         <item>SERVICES ORDERED</item>
         <item>SERVICES OTHER</item>
-        <item>SES</item>
+
         <item>SES</item>
         <item>SESCODE</item>
         <item>Sevè</item>
         <item>SEVEN TO NINE</item>
         <item>Severe</item>
-        <item>SÉVÈRE</item>
+
         <item>SEVERITY</item>
         <item>Sevredol</item>
         <item>SEX</item>
@@ -5328,42 +5219,41 @@
         <item>Sexually transmitted disease</item>
         <item>SEXUALLY TRANSMITTED DISEASE UNSPECIFIED</item>
         <item>SGOT</item>
-        <item>SGOT</item>
+
         <item>SGPT</item>
-        <item>SGPT</item>
+
         <item>SHARP SENSATION</item>
         <item>Shellfish</item>
         <item>Shellfish (dietary)</item>
         <item>Shigellosis</item>
-        <item>shigelosis</item>
+
         <item>SHINGLES</item>
         <item>Shock</item>
-        <item>shock</item>
+
         <item>SHORTNESS OF BREATH</item>
-        <item>Shortness of breath</item>
+
         <item>SHORTNESS OF BREATH AT REST</item>
         <item>SHORTNESS OF BREATH DURATION</item>
         <item>SHORTNESS OF BREATH WITH EXERTION</item>
         <item>SHOULDER DISLOCATION</item>
-        <item>SHOULDER JOINT X-RAY PA AND LATERAL VIEW</item>
+
         <item>SHOULDER JOINT X-RAY PA AND LATERAL VIEW</item>
         <item>SHOULDER X-RAY</item>
-        <item>SHOULDER XRAY</item>
+
         <item>Sí</item>
-        <item>Sì</item>
-        <item>SIBELIUM</item>
+
         <item>SIBELIUM</item>
         <item>SIBLING HIV INFECTED</item>
         <item>sífilis</item>
-        <item>Sifilis</item>
-        <item>SIG</item>
+
+
         <item>SIG</item>
         <item>SIGN SYMPTOM OTHER DESC</item>
         <item>SIGN SYMPTOM OTHER1</item>
         <item>SIGN SYMPTOM YES NO</item>
         <item>SILVER SULFADIAZINE</item>
         <item>SILVEREX CREAM</item>
-        <item>SILVEREX CREAM</item>
+
         <item>Sim</item>
         <item>síncope y colapso</item>
         <item>Single event</item>
@@ -5380,14 +5270,14 @@
         <item>Skin infection</item>
         <item>SKIN INFECTION NOS</item>
         <item>SKIN INFECTION, FUNGAL</item>
-        <item>SKIN INFECTION, FUNGAL</item>
+
         <item>Skin rash</item>
         <item>SKULL XRAY</item>
         <item>Sloprin</item>
         <item>SNAKE ANTI-VENIN</item>
         <item>SNEEZING</item>
         <item>SOB</item>
-        <item>SOB</item>
+
         <item>SOB (Shortness of Breath)</item>
         <item>SOB AT REST</item>
         <item>SOB DURATION</item>
@@ -5400,15 +5290,14 @@
         <item>SODIUM</item>
         <item>SOFT TISSUE INJURY</item>
         <item>SOFTOVAC</item>
-        <item>SOFTOVAC</item>
-        <item>SOFTOVAC</item>
+
         <item>Soja</item>
         <item>Solprin</item>
         <item>SOLUBLE INSULIN</item>
         <item>SOLUBLE INSULIN</item>
         <item>SORBILINE</item>
-        <item>SORBILINE</item>
-        <item>SORBILINE</item>
+
+
         <item>Sốt</item>
         <item>Sốt không rõ nguyên nhân</item>
         <item>Sốt rét nặng</item>
@@ -5417,13 +5306,11 @@
         <item>Soya</item>
         <item>Soya bean</item>
         <item>SPARACID</item>
-        <item>SPARACID</item>
-        <item>SPARACID</item>
+
         <item>SPASMINDON</item>
-        <item>SPASMINDON</item>
-        <item>SPASMINDON</item>
+
         <item>SPASMINDON DPS</item>
-        <item>SPASMINDON DPS</item>
+
         <item>SPASMINDON –DPS</item>
         <item>Spastic colon</item>
         <item>Specified bacterial disease, other</item>
@@ -5432,25 +5319,24 @@
         <item>SPECTOMYCIN</item>
         <item>Spina Bifida</item>
         <item>SPINE X-RAY</item>
-        <item>SPINE XRAY</item>
+
         <item>SPIT</item>
-        <item>SPIT</item>
+
         <item>SPLEEN SIZE</item>
         <item>SPLENOMEGALY</item>
-        <item>SPLENOMEGALY</item>
-        <item>SPLENOMEGALY</item>
+
         <item>SPLINTING</item>
         <item>SpO2</item>
-        <item>SpO2</item>
+
         <item>SPONDLOSIS</item>
-        <item>SPONDLOSIS</item>
+
         <item>SPONDYLOSIS</item>
         <item>Spontaneous abortion</item>
         <item>SPONTANEOUS VAGINAL DELIVERY</item>
         <item>SPONTREL</item>
-        <item>SPONTREL</item>
+
         <item>SPORANOX</item>
-        <item>SPORANOX</item>
+
         <item>SPOUSE AWARE HIV</item>
         <item>SPOUSE DEAD</item>
         <item>SPOUSE DIED</item>
@@ -5458,11 +5344,11 @@
         <item>SPOUSE YEAR OF DEATH FROM HIV</item>
         <item>SPOUSES PARTNER SUSPECTED HIV+</item>
         <item>SPRAIN MR</item>
-        <item>SPRAIN MR</item>
+
         <item>Spray</item>
         <item>Spray(s)</item>
         <item>SPUTUM</item>
-        <item>Sputum</item>
+
         <item>SPUTUM FOR ACID FAST BACILLI</item>
         <item>SPUTUM FOR AFB</item>
         <item>St. Joseph Adult Chewable Aspirin</item>
@@ -5478,8 +5364,8 @@
         <item>START INH</item>
         <item>START SEPTRIN</item>
         <item>STARZYME</item>
-        <item>STARZYME</item>
-        <item>STARZYME</item>
+
+
         <item>Stat Awake</item>
         <item>Statins</item>
         <item>STAVUDINE</item>
@@ -5507,12 +5393,12 @@
         <item>STI</item>
         <item>STI (sexually transmitted infection)</item>
         <item>STI,FEMALES</item>
-        <item>STI,MALES</item>
+
         <item>STI,MALES</item>
         <item>STIFF NECK</item>
         <item>Sting of bee</item>
         <item>STOCRIN</item>
-        <item>STOCRIN</item>
+
         <item>stool</item>
         <item>STOOL EXAM</item>
         <item>STOOL MICROSCOPY</item>
@@ -5525,48 +5411,47 @@
         <item>Streptococcus or staphylococcus as the cause of disease</item>
         <item>STREPTOMYCIN</item>
         <item>STREPTOMYCIN CURRENT</item>
-        <item>STREPTOMYCIN INJECTION</item>
+
         <item>STREPTOMYCIN INJECTION</item>
         <item>STREPTOMYCIN TABLETS</item>
-        <item>STREPTOMYCIN TABLETS</item>
+
         <item>Strongyloides infection</item>
         <item>strongyloidiasis</item>
         <item>STRUMA</item>
         <item>STUGERON</item>
-        <item>STUGERON</item>
-        <item>STUGERON</item>
+
+
         <item>STUGIL</item>
-        <item>STUGIL</item>
-        <item>STUGIL</item>
+
+
         <item>STY</item>
-        <item>STY</item>
+
         <item>STYE</item>
         <item>Subcutaneous</item>
         <item>Subcutaneous administration</item>
         <item>Subcutaneous route of administration</item>
         <item>Subdermal</item>
         <item>SUBMANDIBULAR</item>
-        <item>SUBMANDIBULAR</item>
+
         <item>SubQ</item>
         <item>SUBSCAPULAR</item>
         <item>SUBSTERNAL</item>
         <item>SUCRASE</item>
-        <item>SUCRASE</item>
-        <item>SUCRASE</item>
+
+
         <item>SUDHINOL</item>
-        <item>SUDHINOL</item>
-        <item>SUDHINOL</item>
+
+
         <item>SUGAR</item>
-        <item>SUGAR</item>
+
         <item>Sulfa drugs</item>
         <item>SULFADOXINE</item>
         <item>SULFADOXINE AND PYRIMETHAMINE</item>
-        <item>SULFADOXINE AND PYRIMETHAMINE</item>
-        <item>SULFADOXINE AND PYRIMETHAMINE</item>
+
         <item>SULFALENE AND PYRAMETHAMINE</item>
         <item>Sulfamides</item>
         <item>Sulfonamid</item>
-        <item>Sulfonamide</item>
+
         <item>Sulfonamide drug class</item>
         <item>Sulfonamides</item>
         <item>SULPHUR OINTMENT</item>
@@ -5584,18 +5469,18 @@
         <item>Suppository</item>
         <item>Suppository(ies)</item>
         <item>SUPRACLAVICULAR</item>
-        <item>SUPRACLAVICULAR</item>
+
         <item>SUPRAPUBIC</item>
         <item>SUPRAPUBIC TAP</item>
         <item>SUPRAX</item>
-        <item>SUPRAX</item>
+
         <item>SURGERY</item>
         <item>SUSPECT HIV CAUSED FATHER DEATH</item>
         <item>SUSPECT HIV CAUSED MOTHER DEATH</item>
         <item>SUSPECTED PAST HIV EXPOSURE</item>
         <item>SUSTIVA</item>
         <item>SUSTIVE</item>
-        <item>SUSTIVE</item>
+
         <item>Suy dinh dưỡng thể teo đét và thể phù</item>
         <item>Suyễn</item>
         <item>SVD</item>
@@ -5605,13 +5490,13 @@
         <item>Symptom involving urinary system</item>
         <item>SYMPTOMATIC</item>
         <item>SYNALGESIC</item>
-        <item>SYNALGESIC</item>
-        <item>SYNALGESIC</item>
+
+
         <item>Syncope and collapse</item>
         <item>SYNOVITIS</item>
         <item>SYPHILIS</item>
-        <item>Syphilis</item>
-        <item>Syphilis</item>
+
+
         <item>SYPHILIS QUALITATIVE (TPHA)</item>
         <item>SYPHILIS TEST (TPHA)</item>
         <item>SYPHILIS TEST (TPHA) IN TITRE</item>
@@ -5620,16 +5505,16 @@
         <item>Syringe</item>
         <item>Syringe(s)</item>
         <item>SYRUP</item>
-        <item>SYRUP</item>
+
         <item>SYSTOLIC</item>
-        <item>SYSTOLIC</item>
+
         <item>SYSTOLIC BLOOD PRESSURE</item>
-        <item>Systolic blood pressure</item>
+
         <item>SYSTOLIC EJECTION MURMUR</item>
         <item>T H/S RATIO</item>
         <item>T PEN</item>
         <item>T VAGINALIS</item>
-        <item>T VAGINALIS</item>
+
         <item>T\'PEN</item>
         <item>T-PEN</item>
         <item>T-PMTCT</item>
@@ -5642,7 +5527,7 @@
         <item>TACHYPNEA DURATION</item>
         <item>Taeniasis</item>
         <item>TAGAMYCIN</item>
-        <item>TAGAMYCIN</item>
+
         <item>Taille (CM)</item>
         <item>Tâm thần phân liệt</item>
         <item>Tăng huyết áp</item>
@@ -5655,7 +5540,7 @@
         <item>Tansyon systolik</item>
         <item>TAUX RESPIRATOIRE</item>
         <item>TB</item>
-        <item>TB</item>
+
         <item>TB ADENITIS</item>
         <item>TB COMMENT</item>
         <item>TB CURRENT TREATMENT TYPE</item>
@@ -5665,7 +5550,7 @@
         <item>TB FURTHER WORK UP</item>
         <item>TB MEDS MISSED</item>
         <item>TB PCR</item>
-        <item>TB PCR</item>
+
         <item>TB PNEUMONIA</item>
         <item>TB PROPHYLAXIS</item>
         <item>TB PROPHYLAXIS ADHERENCE</item>
@@ -5673,26 +5558,26 @@
         <item>TB SKIN TEST</item>
         <item>TB TX COMPLETED YRS</item>
         <item>TBILI</item>
-        <item>TBILI</item>
+
         <item>Tbsp</item>
         <item>TCO2</item>
         <item>TD</item>
         <item>TD BOOSTER</item>
         <item>TDF</item>
         <item>TDF FORTE</item>
-        <item>TDF FORTE</item>
+
         <item>Teaspoon</item>
         <item>Teaspoon(s)</item>
         <item>TEGRETOL</item>
-        <item>TEGRETOL</item>
+
         <item>TELEMEDICINE DIAGNOSIS</item>
         <item>TEMP (C)</item>
-        <item>TEMP (C)</item>
-        <item>TEMP (C)</item>
-        <item>Temp (C)</item>
+
+
+
         <item>TEMPERATURE (C)</item>
-        <item>Temperature (C)</item>
-        <item>TEMPÉRATURE (C)</item>
+
+
         <item>TEMPORAL ANSWERS</item>
         <item>TEMPORAL WASTING</item>
         <item>TEN OR MORE</item>
@@ -5700,7 +5585,7 @@
         <item>TENSION ARTÉRIELLE DIASTOLIQUE</item>
         <item>TENSION ARTÉRIELLE SYSTOLIQUE</item>
         <item>TEO</item>
-        <item>TEO</item>
+
         <item>Tep adezif</item>
         <item>Tertiaire</item>
         <item>Tertiary</item>
@@ -5708,29 +5593,29 @@
         <item>TESTS ORDERED</item>
         <item>Tèt Fè Mal</item>
         <item>Tétanos</item>
-        <item>tétanos</item>
-        <item>Tetanòs</item>
+
+
         <item>tétanos del neonato</item>
         <item>Tetanos neonatal</item>
         <item>Tetanosi</item>
         <item>Tetanus</item>
-        <item>tetanus</item>
+
         <item>TETANUS BOOSTER</item>
         <item>Tetanus neonatorum</item>
-        <item>tetanus neonatorum</item>
+
         <item>TETANUS TOXOID</item>
         <item>TETRACYCLINE</item>
-        <item>TETRACYCLINE EYE OINTMENT</item>
+
         <item>TETRACYCLINE EYE OINTMENT</item>
         <item>TETRADOX 100MG</item>
-        <item>TETRADOX 100MG</item>
+
         <item>Text of encounter note</item>
         <item>TG</item>
-        <item>TG</item>
+
         <item>Therapy Bayer</item>
         <item>Thiếu máu</item>
         <item>THIGH, FRONT</item>
-        <item>THORACIC SPINE X-RAY PA AND LATERAL VIEW</item>
+
         <item>THORACIC SPINE X-RAY PA AND LATERAL VIEW</item>
         <item>Threadworm infection</item>
         <item>Three times a day</item>
@@ -5755,15 +5640,15 @@
         <item>THROMBOCYTOPENIA</item>
         <item>THROMBOPENIA</item>
         <item>THRUSH</item>
-        <item>THRUSH</item>
-        <item>THRUSH</item>
-        <item>THRUSH</item>
+
+
+
         <item>Thuốc ức chế men chuyển</item>
-        <item>THYROID FUNCTION TEST (T3 /T4/TSH)</item>
+
         <item>THYROID FUNCTION TEST (T3 /T4/TSH)</item>
         <item>THYROID NODULE</item>
         <item>THYROMEGALY</item>
-        <item>THYROMEGALY</item>
+
         <item>THYROMEGALY DIFFUSE ENLARGEMENT</item>
         <item>THYROMEGALY MULTINODULAR</item>
         <item>THYROMEGALY SINGLE NODULE</item>
@@ -5787,25 +5672,25 @@
         <item>TINEA CAPITIS</item>
         <item>TINEA CORPORIS</item>
         <item>TINEA VERSICOLOR</item>
-        <item>TINEA VERSICOLOR</item>
+
         <item>Tình trạng gầy ốm</item>
         <item>Tình trạng gầy ốm dinh dưỡng</item>
         <item>TINIBA DF</item>
         <item>TINIBA DF</item>
         <item>TINIDAZOLE</item>
-        <item>TINIDAZOLE</item>
+
         <item>TINIDIL</item>
-        <item>TINIDIL</item>
+
         <item>Tirikomonasi</item>
         <item>TM DULL</item>
-        <item>TM DULL</item>
-        <item>TM DULL</item>
+
+
         <item>TM INJECTED</item>
-        <item>TM INJECTED</item>
+
         <item>TM SCLEROSIS</item>
-        <item>TM SCLEROSIS</item>
+
         <item>TOBITIL</item>
-        <item>TOBITIL</item>
+
         <item>TOFRANIL</item>
         <item>TONE ABN</item>
         <item>TONSIL ENLARGED</item>
@@ -5840,18 +5725,18 @@
         <item>TOXOPLASMOSIS</item>
         <item>TOXOPLASMOSIS, CENTRAL NERVOUS SYSTEM</item>
         <item>TPHA</item>
-        <item>TPHA</item>
+
         <item>TPHA QUAL</item>
         <item>TPHA QUALITATIVE</item>
         <item>TPMTCT</item>
         <item>TRACHEA DEVIATED</item>
         <item>Trachoma</item>
-        <item>Trachome</item>
+
         <item>trachoom</item>
         <item>tracoma</item>
         <item>Trầm cảm</item>
         <item>Transdermal</item>
-        <item>Transdermal</item>
+
         <item>Transdermal administration</item>
         <item>TRANSFER CARE TO OTHER CENTER</item>
         <item>TRANSPORT PROBLEMS</item>
@@ -5876,8 +5761,8 @@
         <item>TRIAMCINALONE</item>
         <item>TRIBE</item>
         <item>TRICAINE MPS</item>
-        <item>TRICAINE MPS</item>
-        <item>TRICAINE MPS</item>
+
+
         <item>TRICEPS</item>
         <item>TRICH PCR</item>
         <item>TRICH PCR QUAL</item>
@@ -5888,13 +5773,13 @@
         <item>TRICHOMONAS PCR</item>
         <item>TRICHOMONAS PCR QUAL</item>
         <item>TRICHOMONAS VAGINALIS</item>
-        <item>TRICHOMONAS VAGINALIS</item>
+
         <item>TRICHOMONAS VAGINALIS POLYMERASE CHAIN REACTION</item>
         <item>TRICHOMONAS VAGINALIS POLYMERASE CHAIN REACTION, QUALITATIVE</item>
         <item>Trichomoniase</item>
         <item>Trichomoniasis</item>
-        <item>Trichuriasis</item>
-        <item>trichuriasis</item>
+
+
         <item>TRIG</item>
         <item>TRIGLYCERIDES</item>
         <item>TRIHEXYPHENIDYL</item>
@@ -5904,22 +5789,22 @@
         <item>TRIOMUNE-30</item>
         <item>TRIOMUNE-40</item>
         <item>TRIPLE PEN INJECTION</item>
-        <item>TRIPLE PEN INJECTION</item>
+
         <item>TRIPLE RX FOR HELICOBACTER</item>
         <item>triquiasis</item>
         <item>TRIZIVIR</item>
         <item>Troche</item>
         <item>Troche(s)</item>
         <item>TROPHOZOITE</item>
-        <item>TROPONIN - T</item>
+
         <item>TROPONIN - T</item>
         <item>Trouble de stress post-traumatique</item>
         <item>TRUE</item>
         <item>Tsp</item>
         <item>TT1</item>
-        <item>TT1</item>
+
         <item>TT2</item>
-        <item>TT2</item>
+
         <item>Tube</item>
         <item>Tube(s)</item>
         <item>TUBERCULIN SKIN TEST</item>
@@ -5942,9 +5827,9 @@
         <item>TUMOUR</item>
         <item>TURBO</item>
         <item>TV PCR</item>
-        <item>TV PCR</item>
+
         <item>TV PCR QUAL</item>
-        <item>TV PCR QUAL</item>
+
         <item>Twazyèm</item>
         <item>Twice a day</item>
         <item>Twice a day after meals</item>
@@ -5976,11 +5861,11 @@
         <item>ugonjwa wa pumu</item>
         <item>Ugonjwa wa tumbo unaoambatana na kuharisha na kutapika</item>
         <item>ULCER DUODENAL</item>
-        <item>ULCER DUODENAL</item>
+
         <item>ULCER GASTRIC</item>
-        <item>ULCER GASTRIC</item>
+
         <item>ULCER PEPTIC NOS</item>
-        <item>ULCER PEPTIC NOS</item>
+
         <item>úlcera péptica</item>
         <item>úlcera por presión</item>
         <item>Ulcère de décubitus</item>
@@ -6005,7 +5890,7 @@
         <item>Unit(s)</item>
         <item>Units of duration</item>
         <item>UNKNOWN</item>
-        <item>Unknown</item>
+
         <item>UNKNOWN ANTIRETROVIRAL DRUG</item>
         <item>UNKNOWN COMMENT</item>
         <item>UNKNOWN DISCONTINUATION1</item>
@@ -6029,18 +5914,18 @@
         <item>Upungufu wa damu mwilini</item>
         <item>UREA</item>
         <item>UREA AND CREATININE TEST</item>
-        <item>UREA AND CREATININE TEST</item>
+
         <item>URETHRAL</item>
         <item>URETHRAL DISCHARGE</item>
-        <item>Urethral discharge</item>
+
         <item>URETHRAL DISCHARGE DURATION</item>
-        <item>URETHRITIS</item>
+
         <item>URETHRITIS</item>
         <item>Urethritis or urethral syndrome</item>
         <item>Urethrorrhoea</item>
         <item>URI</item>
         <item>URIMAX D</item>
-        <item>URIMAX D</item>
+
         <item>URINALYSIS</item>
         <item>URINARY ALBUMIN</item>
         <item>Urinary bladder inflammation</item>
@@ -6048,19 +5933,19 @@
         <item>Urinary retention</item>
         <item>Urinary symptoms</item>
         <item>URINARY TRACT INFECTION</item>
-        <item>Urinary tract infection</item>
+
         <item>Urine</item>
         <item>Urine abnormality</item>
         <item>URINE MICROALBUMINURIA</item>
-        <item>URINE MICROALBUMINURIA</item>
+
         <item>URINE MICROSCOPY</item>
         <item>URINE PREGNANCY TEST</item>
         <item>urine-incontinentie</item>
         <item>URINE: ROUTINE AND MICROSCOPIC ANC CULTURE</item>
-        <item>URINE: ROUTINE AND MICROSCOPIC ANC CULTURE</item>
+
         <item>urineretentie</item>
         <item>UROGENITAL</item>
-        <item>UROGENITAL</item>
+
         <item>UROGENITAL COMMENT</item>
         <item>UROGENITAL EXAM FINDINGS</item>
         <item>UROGENITAL SWAB</item>
@@ -6069,13 +5954,13 @@
         <item>UTI</item>
         <item>UTI (urinary tract infection)</item>
         <item>UTIBID</item>
-        <item>UTIBID</item>
+
         <item>uzito</item>
         <item>Uzito katika kilogram</item>
         <item>VACCINATIONS</item>
         <item>Vaginal administration</item>
         <item>VAGINAL CANDIDIASIS</item>
-        <item>VAGINAL CANDIDIASIS</item>
+
         <item>VAGINAL DISCHARGE</item>
         <item>VAGINAL DISCHARGE DURATION</item>
         <item>Vaginally</item>
@@ -6083,20 +5968,19 @@
         <item>VALACYCLOVIR</item>
         <item>VALIUM</item>
         <item>VALIUM INJECTION</item>
-        <item>VALIUM INJECTION</item>
         <item>Valomag</item>
         <item>VALTREX</item>
         <item>Vàng da</item>
         <item>varicela</item>
         <item>VARICELLA</item>
-        <item>Varicella</item>
-        <item>varicella</item>
+
+
         <item>Varicelle</item>
         <item>VARICOSE LEG ULCERS</item>
         <item>VARICOSE VEINS</item>
         <item>VARICOSE VEINS WITH ULCERATION</item>
         <item>Varisèl</item>
-        <item>VASOGRAIN</item>
+
         <item>VASOGRAIN</item>
         <item>Vasomotor or allergic rhinitis</item>
         <item>VASOTEC</item>
@@ -6104,30 +5988,30 @@
         <item>VDRL TITRE</item>
         <item>vejiga: incontinente</item>
         <item>VELOZ D</item>
-        <item>VELOZ D</item>
+
         <item>VELOZ –D</item>
         <item>VENOUS STASIS</item>
         <item>VENTOLIN</item>
-        <item>VENTOLIN</item>
+
         <item>VENTOLIN INHALER</item>
-        <item>VENTOLIN INHALER</item>
+
         <item>VER ROND</item>
         <item>Verdadeiro</item>
         <item>Verdadero</item>
         <item>VERGO</item>
-        <item>VERGO</item>
-        <item>VERGO</item>
+
+
         <item>vermoeidheid</item>
         <item>VERMOX</item>
-        <item>VERMOX</item>
+
         <item>VERNAVO</item>
-        <item>VERNAVO</item>
-        <item>VERNAVO</item>
+
+
         <item>Vero</item>
         <item>VERRUCA PLANUS</item>
         <item>verrugas venéreas</item>
         <item>VERTIZINE D</item>
-        <item>VERTIZINE D</item>
+
         <item>VERTIZINE-D</item>
         <item>Verv</item>
         <item>VERY LOW DENSITY LIPOPROTEIN</item>
@@ -6136,7 +6020,7 @@
         <item>Vial</item>
         <item>Vial(s)</item>
         <item>VIDEX</item>
-        <item>VIDEX</item>
+
         <item>Viêm bàng quang</item>
         <item>Viêm bao tử</item>
         <item>Viêm bọng đái</item>
@@ -6152,9 +6036,9 @@
         <item>Viêm tai ngoài</item>
         <item>VILLAGE</item>
         <item>VIOXX</item>
-        <item>VIOXX</item>
+
         <item>VIRACEPT</item>
-        <item>VIRACEPT</item>
+
         <item>Viral and other specified intestinal infection</item>
         <item>Viral conjunctivitis</item>
         <item>VIRAL LOAD</item>
@@ -6162,22 +6046,22 @@
         <item>VIRAL LOAD, QUAL</item>
         <item>virale conjunctivitis</item>
         <item>VIRAMUNE</item>
-        <item>VIRAMUNE</item>
+
         <item>VIREAD</item>
-        <item>VIREAD</item>
+
         <item>VIRUS DE L\'IMMUNODÉFICIENCE HUMAINE</item>
         <item>VISCO GEL</item>
-        <item>VISCO GEL</item>
-        <item>VISCO GEL</item>
+
+
         <item>VISION DIFFICULTIES</item>
         <item>Visit Diagnoses</item>
         <item>Visit Dx</item>
         <item>VISIT NUMBER</item>
-        <item>VISIT NUMBER</item>
-        <item>VISIT NUMBER</item>
-        <item>VISIT NUMBER</item>
-        <item>VISIT NUMBER</item>
-        <item>VISIT NUMBER</item>
+
+
+
+
+
         <item>VISIT TYPE</item>
         <item>Visite Diagnostic</item>
         <item>VITAL SIGNS</item>
@@ -6186,17 +6070,14 @@
         <item>VITAMIN C DEFICIENCY</item>
         <item>VITAMIN D DEFICIENCY</item>
         <item>VITAZYME CAPS</item>
-        <item>VITAZYME CAPS</item>
-        <item>VITAZYME CAPS</item>
+
         <item>VITAZYME LIQ</item>
-        <item>VITAZYME LIQ</item>
-        <item>VITAZYME LIQ</item>
+
         <item>Vivarin</item>
         <item>VIVOGESIC MR</item>
-        <item>VIVOGESIC MR</item>
+
         <item>VIVOGESIC PLUS</item>
-        <item>VIVOGESIC PLUS</item>
-        <item>VIVOGESIC PLUS</item>
+
         <item>VLDL</item>
         <item>VLDL-CHOLESTEROL</item>
         <item>voedingsprobleem bij pasgeborene</item>
@@ -6206,10 +6087,10 @@
         <item>VOMITING</item>
         <item>VOMITING CONTINUOUS</item>
         <item>VOMITING DURATION</item>
-        <item>VOVERAN D 50MG</item>
+
         <item>VOVERAN D 50MG</item>
         <item>VOVERAN EMULGEL</item>
-        <item>VOVERAN EMULGEL</item>
+
         <item>VOVERAN – D (50)</item>
         <item>Vrai</item>
         <item>Vre</item>
@@ -6219,28 +6100,26 @@
         <item>Wakespan</item>
         <item>wastani au Kadiri</item>
         <item>WASTING SYNDROME</item>
-        <item>WASTING SYNDROME</item>
+
         <item>Waykup</item>
         <item>WBC</item>
-        <item>WBC</item>
-        <item>WBC</item>
+
+
         <item>WBCS</item>
         <item>WEAKNESS</item>
-        <item>WEAKNESS</item>
+
         <item>WEANED</item>
         <item>WEEKLY</item>
-        <item>Weekly</item>
+
         <item>WEEKS</item>
-        <item>Weeks</item>
+
         <item>WEIGHT (KG)</item>
-        <item>Weight (kg)</item>
+
         <item>WEIGHT CHANGE</item>
         <item>WEIGHT GAIN</item>
         <item>WEIGHT GAIN</item>
         <item>WEIGHT LOSS</item>
-        <item>Weight loss</item>
-        <item>WEIGHT LOSS</item>
-        <item>WEIGHT LOSS</item>
+
         <item>WESTERGREN SED RATE</item>
         <item>WH OSTAGE</item>
         <item>Wheal</item>
@@ -6249,7 +6128,7 @@
         <item>when required</item>
         <item>WHITE</item>
         <item>WHITE BLOOD CELLS</item>
-        <item>WHITE CELLS</item>
+
         <item>WHITE CELLS</item>
         <item>WHITFIELD OINTMENT</item>
         <item>WHO HIV - CHRONIC DIARRHEA</item>
@@ -6275,59 +6154,59 @@
         <item>WHO STAGE 4 PEDS</item>
         <item>WHOLE BLOOD</item>
         <item>Whole blood sample</item>
-        <item>WHOLEBLOOD</item>
+
         <item>WHOOPING COUGH</item>
-        <item>WHOOPING COUGH</item>
+
         <item>Wi</item>
         <item>WIDAL TEST</item>
         <item>WIDAL TEST (TYPHOID FEVER)</item>
-        <item>WIDAL TEST (TYPHOID FEVER)</item>
+
         <item>WIDOWED</item>
         <item>Worms</item>
         <item>WORMS NOS</item>
-        <item>WORMS NOS</item>
-        <item>Worms NOS</item>
+
+
         <item>WORMS, INTESTINAL</item>
-        <item>WORMS, INTESTINAL</item>
-        <item>WORMS, INTESTINAL</item>
+
+
         <item>Wotè (cm)</item>
         <item>WOUND DRESSING</item>
         <item>WOUND NOS</item>
         <item>WOUND, CUT</item>
         <item>WOUND, DEEP</item>
         <item>WOUND, PIERCE</item>
-        <item>WOUND, PIERCE</item>
+
         <item>WOUND, PRICK</item>
         <item>WOUND, SEPTIC</item>
         <item>WT</item>
-        <item>WT</item>
+
         <item>WYGESIC</item>
-        <item>WYGESIC</item>
-        <item>WYGESIC</item>
+
+
         <item>X-RAY ABDOMEN</item>
-        <item>X-RAY ABDOMEN</item>
+
         <item>X-RAY ARM</item>
-        <item>X-RAY ARM</item>
+
         <item>X-RAY CHEST</item>
-        <item>X-RAY CHEST</item>
+
         <item>X-RAY FOOT</item>
-        <item>X-RAY FOOT</item>
+
         <item>X-RAY HAND</item>
-        <item>X-RAY HAND</item>
+
         <item>X-RAY HEAD</item>
-        <item>X-RAY HEAD</item>
+
         <item>X-RAY LEG</item>
-        <item>X-RAY LEG</item>
+
         <item>X-RAY OTHER</item>
-        <item>X-RAY OTHER</item>
+
         <item>X-RAY PELVIS</item>
-        <item>X-RAY PELVIS</item>
+
         <item>X-RAY SHOULDER</item>
-        <item>X-RAY SHOULDER</item>
+
         <item>X-RAY SKULL</item>
-        <item>X-RAY SKULL</item>
+
         <item>X-RAY SPINE</item>
-        <item>X-RAY SPINE</item>
+
         <item>X-RAY, ABDOMEN</item>
         <item>X-RAY, ARM</item>
         <item>X-RAY, CHEST</item>
@@ -6340,7 +6219,7 @@
         <item>X-RAY, SKULL</item>
         <item>X-RAY, SPINE</item>
         <item>XANAX</item>
-        <item>XANAX</item>
+
         <item>XRAY ARM</item>
         <item>XRAY FOOT</item>
         <item>XRAY HAND</item>
@@ -6355,13 +6234,13 @@
         <item>Years</item>
         <item>YEARS OF SCHOOL COMPLETED</item>
         <item>YEAST</item>
-        <item>YEAST</item>
+
         <item>YEAST CELLS</item>
         <item>Yego</item>
         <item>YELLOW FEVER VACCINATION</item>
         <item>YELLOW JACK</item>
         <item>YES</item>
-        <item>Yes</item>
+
         <item>yrs</item>
         <item>YSP Aspirin</item>
         <item>ZADY 500MG</item>
@@ -6370,27 +6249,27 @@
         <item>ZANTAC</item>
         <item>ZANTAC TABLETS</item>
         <item>ZDV</item>
-        <item>ZDV</item>
+
         <item>Ze</item>
         <item>ZENFLOX 100MG</item>
-        <item>ZENFLOX 100MG</item>
+
         <item>ZENFLOX 100MG SUS</item>
-        <item>ZENFLOX 100MG SUS</item>
+
         <item>ZENFLOX 200MG</item>
-        <item>ZENFLOX 200MG</item>
+
         <item>ZENFLOX 200MG SUS</item>
-        <item>ZENFLOX 200MG SUS</item>
+
         <item>ZENFLOX 4000MG SUS</item>
-        <item>ZENFLOX 4000MG SUS</item>
+
         <item>ZENFLOX OZ TAB SUS</item>
-        <item>ZENFLOX OZ TAB SUS</item>
+
         <item>ZENTEL</item>
         <item>ZENTEL 400 SUS 200MG 5ML</item>
-        <item>ZENTEL 400 SUS 200MG 5ML</item>
+
         <item>ZENTEL TABLETS</item>
-        <item>ZENTEL TABLETS</item>
+
         <item>ZERIT</item>
-        <item>ZERIT</item>
+
         <item>ZERO</item>
         <item>Zero-Order Release</item>
         <item>ZIAGEN</item>
@@ -6408,48 +6287,48 @@
         <item>ZIDOVUDINE START DATE</item>
         <item>ZIDOVUDINE STOP DATE</item>
         <item>ZIDOVUDINEP MTCT</item>
-        <item>ZIEHL NIELSEN STAIN</item>
+
         <item>ZIEHL NIELSEN STAIN</item>
         <item>ZILEE 250MG</item>
-        <item>ZILEE 250MG</item>
+
+
         <item>ZILEE 500MG</item>
-        <item>ZILEE 500MG</item>
         <item>ZINETAC</item>
-        <item>ZINETAC</item>
-        <item>ZINETAC</item>
+
+
         <item>ZIPANT</item>
         <item>ZIPANT 20MG</item>
-        <item>ZIPANT 20MG</item>
+
         <item>ZIPANT 40MG</item>
-        <item>ZIPANT 40MG</item>
+
         <item>ZIPANT DSR</item>
-        <item>ZIPANT DSR</item>
+
         <item>ZIPANT – DS</item>
         <item>ZITHROMAX</item>
         <item>ZN STAIN</item>
-        <item>ZN STAIN</item>
-        <item>ZN STAIN</item>
+
+
         <item>ZOA FORTE</item>
-        <item>ZOA FORTE</item>
+
         <item>Zomorph</item>
         <item>Zona</item>
         <item>ZONE MR</item>
-        <item>ZONE MR</item>
+
         <item>ZORAN</item>
-        <item>ZORAN</item>
-        <item>ZORAN</item>
+
+
         <item>Zorprin</item>
         <item>ZOVANTA D</item>
-        <item>ZOVANTA D</item>
+
         <item>ZOVANTA –D</item>
         <item>ZOVIRAX</item>
-        <item>ZOVIRAX</item>
+
         <item>ZUPAR</item>
-        <item>ZUPAR</item>
+
         <item>ZYCOLCHIN</item>
-        <item>ZYCOLCHIN</item>
+
         <item>ZYLORIC</item>
-        <item>ZYLORIC</item>
+
         <item>ZYNCET</item>
         <item>ZYRTEC</item>
         <!-- Russian Translations -->
