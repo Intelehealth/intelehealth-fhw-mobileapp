@@ -204,7 +204,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         Button btnSignSubmit = findViewById(R.id.btnSignSubmit);
 
         //diagnosis
-       // LinearLayout llDiagnosisResult = findViewById(R.id.llDiagnosisResult);
+        // LinearLayout llDiagnosisResult = findViewById(R.id.llDiagnosisResult);
         diagnosisRecyclerView = findViewById(R.id.diagnosisRecyclerView);
         diagnosisList = new ArrayList<>();
         ObsDAO obsDAODiagnosis = new ObsDAO();
@@ -232,9 +232,9 @@ public class PrescriptionActivity extends AppCompatActivity {
                     RadioButton checked2 = findViewById(rgDiagnosis2.getCheckedRadioButtonId());
                     if (checked1 != null && checked2 != null) {
                         String result = String.format("%s:%s & %s", etDiagnosis.getText(), checked1.getText(), checked2.getText());
-                        Log.v("diag", "diag: "+ result);
-                      //  addResult(llDiagnosisResult, result);
-                       // setObsData(encounterUuidAdultIntial, TELEMEDICINE_DIAGNOSIS, result);
+                        Log.v("diag", "diag: " + result);
+                        //  addResult(llDiagnosisResult, result);
+                        // setObsData(encounterUuidAdultIntial, TELEMEDICINE_DIAGNOSIS, result);
                         etDiagnosis.setText("");
                         rgDiagnosis1.clearCheck();
                         rgDiagnosis2.clearCheck();
@@ -242,8 +242,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                         // Api call will upload this piece of data...
                         uploadPrescriptionData(result, TELEMEDICINE_DIAGNOSIS);
                     }
-                }
-                else {
+                } else {
                     etDiagnosis.setError(getResources().getString(R.string.error_field_required));
                     return;
                 }
@@ -252,7 +251,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
 
         //meds
-      //  LinearLayout llMedsResult = findViewById(R.id.llMedsResult);
+        //  LinearLayout llMedsResult = findViewById(R.id.llMedsResult);
         medicationRecyclerView = findViewById(R.id.medicationRecyclerView);
         medicationList = new ArrayList<>();
         ObsDAO obsDAOMedication = new ObsDAO();
@@ -277,7 +276,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         etMedicationUnitTabSyrup.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.weight_units)));
         etMedicationUnitTabSyrup.setThreshold(1);
 
-       // EditText etMedicationFreq = findViewById(R.id.etMedicationFreq);
+        // EditText etMedicationFreq = findViewById(R.id.etMedicationFreq);
         AutoCompleteTextView etMedicationFreq = findViewById(R.id.etMedicationFreq);
         etMedicationFreq.setAdapter(new ArrayAdapter(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.frequency)));
         etMedicationFreq.setThreshold(1);
@@ -299,13 +298,13 @@ public class PrescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(etMedication.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationStrength.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationUnit.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationAmount.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationUnitTabSyrup.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationFreq.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationDuration.getText().toString())
-                        &&!TextUtils.isEmpty(etMedicationUnitsDays.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationStrength.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationUnit.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationAmount.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationUnitTabSyrup.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationFreq.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationDuration.getText().toString())
+                        && !TextUtils.isEmpty(etMedicationUnitsDays.getText().toString())
                 ) {
                     etMedication.setError(null);
                     etMedicationStrength.setError(null);
@@ -317,64 +316,63 @@ public class PrescriptionActivity extends AppCompatActivity {
                     etMedicationUnitsDays.setError(null);
 
                     String result = String.format("%s: %s %s %s %s %s %s %s for %s %s %s"
-                            ,etMedication.getText()
-                            ,etMedicationStrength.getText()
-                            ,etMedicationUnit.getText()
-                            ,etMedicationAmount.getText()
-                            ,etMedicationUnitTabSyrup.getText()
-                            ,etMedicationFreq.getText()
-                            ,etMedicationRoute.getText()
-                            ,etMedicationReason.getText()
-                            ,etMedicationDuration.getText()
-                            ,etMedicationUnitsDays.getText()
-                            ,etMedicationInstructions.getText()
-                            );
-                 //   addResult(llMedsResult, result);
-                   // setObsData(encounterUuidAdultIntial, JSV_MEDICATIONS, result);
-                            etMedication.setText("");
-                            etMedicationStrength.setText("");
-                            etMedicationUnit.setText("");
-                            etMedicationAmount.setText("");
-                            etMedicationUnitTabSyrup.setText("");
-                            etMedicationFreq.setText("");
-                            etMedicationRoute.setText("");
-                            etMedicationReason.setText("");
-                            etMedicationDuration.setText("");
-                            etMedicationUnitsDays.setText("");
-                            etMedicationInstructions.setText("");
+                            , etMedication.getText()
+                            , etMedicationStrength.getText()
+                            , etMedicationUnit.getText()
+                            , etMedicationAmount.getText()
+                            , etMedicationUnitTabSyrup.getText()
+                            , etMedicationFreq.getText()
+                            , etMedicationRoute.getText()
+                            , etMedicationReason.getText()
+                            , etMedicationDuration.getText()
+                            , etMedicationUnitsDays.getText()
+                            , etMedicationInstructions.getText()
+                    );
+                    //   addResult(llMedsResult, result);
+                    // setObsData(encounterUuidAdultIntial, JSV_MEDICATIONS, result);
+                    etMedication.setText("");
+                    etMedicationStrength.setText("");
+                    etMedicationUnit.setText("");
+                    etMedicationAmount.setText("");
+                    etMedicationUnitTabSyrup.setText("");
+                    etMedicationFreq.setText("");
+                    etMedicationRoute.setText("");
+                    etMedicationReason.setText("");
+                    etMedicationDuration.setText("");
+                    etMedicationUnitsDays.setText("");
+                    etMedicationInstructions.setText("");
 
-                            uploadPrescriptionData(result, JSV_MEDICATIONS);
-                }
-                else {
-                    if(TextUtils.isEmpty(etMedication.getText().toString())) {
+                    uploadPrescriptionData(result, JSV_MEDICATIONS);
+                } else {
+                    if (TextUtils.isEmpty(etMedication.getText().toString())) {
                         etMedication.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationStrength.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationStrength.getText().toString())) {
                         etMedicationStrength.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationUnit.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationUnit.getText().toString())) {
                         etMedicationUnit.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationAmount.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationAmount.getText().toString())) {
                         etMedicationAmount.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationUnitTabSyrup.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationUnitTabSyrup.getText().toString())) {
                         etMedicationUnitTabSyrup.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationFreq.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationFreq.getText().toString())) {
                         etMedicationFreq.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationDuration.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationDuration.getText().toString())) {
                         etMedicationDuration.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
-                    if(TextUtils.isEmpty(etMedicationUnitsDays.getText().toString())) {
+                    if (TextUtils.isEmpty(etMedicationUnitsDays.getText().toString())) {
                         etMedicationUnitsDays.setError(getResources().getString(R.string.error_field_required));
                         return;
                     }
@@ -383,7 +381,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
 
         //test
-       // LinearLayout llTestResult = findViewById(R.id.llTestResult);
+        // LinearLayout llTestResult = findViewById(R.id.llTestResult);
         testRecyclerView = findViewById(R.id.testRecyclerView);
         testList = new ArrayList<>();
         ObsDAO obsDAOTest = new ObsDAO();
@@ -405,12 +403,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etTest.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     etTest.setError(null);
-                  //  addResult(llTestResult, result);
-                  //  setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
+                    //  addResult(llTestResult, result);
+                    //  setObsData(encounterUuidAdultIntial, REQUESTED_TESTS, result);
                     etTest.setText("");
                     uploadPrescriptionData(result, REQUESTED_TESTS);
-                }
-                else {
+                } else {
                     etTest.setError(getResources().getString(R.string.error_field_required));
                     return;
                 }
@@ -418,7 +415,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         });
 
         //advice
-       // LinearLayout llAdviceResult = findViewById(R.id.llAdviceResult);
+        // LinearLayout llAdviceResult = findViewById(R.id.llAdviceResult);
         adviceRecyclerView = findViewById(R.id.adviceRecyclerView);
         adviceList = new ArrayList<>();
         ObsDAO obsDAOAdvice = new ObsDAO();
@@ -440,12 +437,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 String result = etAdviceRefer.getText().toString();
                 if (!TextUtils.isEmpty(result)) {
                     etAdviceRefer.setError(null);
-                  //  addResult(llAdviceResult, result);
-                   // setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
+                    //  addResult(llAdviceResult, result);
+                    // setObsData(encounterUuidAdultIntial, MEDICAL_ADVICE, result);
                     etAdviceRefer.setText("");
                     uploadPrescriptionData(result, MEDICAL_ADVICE);
-                }
-                else {
+                } else {
                     etAdviceRefer.setError(getResources().getString(R.string.error_field_required));
                     return;
                 }
@@ -470,7 +466,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         });*/
 
         //follow up
-      //  LinearLayout llFollowUpResult = findViewById(R.id.llFollowUpResult);
+        //  LinearLayout llFollowUpResult = findViewById(R.id.llFollowUpResult);
         btnFollowUp = findViewById(R.id.btnFollowUp);
         followupRecyclerView = findViewById(R.id.followupRecyclerView);
         followupList = new ArrayList<>();
@@ -491,26 +487,24 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(etFollowUpDate.getText().toString())) {
                     etFollowUpDate.setError(null);
-                   // llFollowUpResult.removeAllViews();
+                    // llFollowUpResult.removeAllViews();
                     String result = etFollowUpDate.getText().toString();
                     if (!TextUtils.isEmpty(etFollowUpRemark.getText()))
                         result += ", Remarks: " + etFollowUpRemark.getText();
 
-                    if(followupPrescAdapter.getItemCount() > 0) {
+                    if (followupPrescAdapter.getItemCount() > 0) {
                         Toast.makeText(PrescriptionActivity.this, getResources().getString(R.string.morethanonefollowupnotallowed),
                                 Toast.LENGTH_SHORT).show();
                         etFollowUpDate.setText("");
                         etFollowUpRemark.setText("");
                         return;
-                    }
-                    else {
+                    } else {
                         etFollowUpDate.setText("");
                         etFollowUpRemark.setText("");
                         uploadPrescriptionData(result, FOLLOW_UP_VISIT);
                     }
 
-                }
-                else {
+                } else {
                     etFollowUpDate.setError(getResources().getString(R.string.error_field_required));
                     return;
                 }
@@ -524,7 +518,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
                 String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
                 visitCompleteStatus = getVisitCompleteDataModel();
-               // String encoded = sessionManager.getEncoded();
+                // String encoded = sessionManager.getEncoded();
                 String encoded = base64Utils.encoded("sysnurse", "Nurse123");
 
                 ApiInterface apiService = ApiClient.createService(ApiInterface.class);
@@ -545,7 +539,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
                             @Override
                             public void onError(@NonNull Throwable e) {
-                                Log.e("pres", "signandsubmit: "+ e);
+                                Log.e("pres", "signandsubmit: " + e);
                             }
 
                             @Override
@@ -610,13 +604,13 @@ public class PrescriptionActivity extends AppCompatActivity {
         datamodel.setEncounterType(ENCOUNTER_VISIT_COMPLETE);
         datamodel.setObs(obList);
 
-        Log.v("presbody", "newsubmit: "+ new Gson().toJson(datamodel));
+        Log.v("presbody", "newsubmit: " + new Gson().toJson(datamodel));
         return datamodel;
     }
 
     private boolean uploadPrescriptionData(String data, String CONCEPTUUID) {
         isuploadPrescription = false;
-       // String encoded = sessionManager.getEncoded();
+        // String encoded = sessionManager.getEncoded();
         String encoded = base64Utils.encoded("sysnurse", "Nurse123");
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         ObsPrescription prescription = getObsPrescription(AppConstants.dateAndTimeUtils.currentDateTime(), data, CONCEPTUUID);
@@ -700,19 +694,25 @@ public class PrescriptionActivity extends AppCompatActivity {
         //DOB is set using an AlertDialog
         // Locale.setDefault(Locale.ENGLISH);
 
-        DatePickerDialog mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year, monthOfYear, dayOfMonth);
-                String format = simpleDateFormat.format(calendar.getTime());
-                etFollowUpDate.setText(format);
-            }
-        }, mDOBYear, mDOBMonth, mDOBDay);
+        DatePickerDialog mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        SimpleDateFormat simpleDateFormat = null;
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.forLanguageTag(appLanguage));
+                        } else {
+                            simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                        }
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, monthOfYear, dayOfMonth);
+                        String format = simpleDateFormat.format(calendar.getTime());
+                        etFollowUpDate.setText(format);
+                    }
+                }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
-       // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        // mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
         mDOBPicker.getDatePicker().setMinDate(System.currentTimeMillis() - 10000); // So that in Followup all the dates from today and future will be enabled to be selected.
         etFollowUpDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -746,8 +746,7 @@ public class PrescriptionActivity extends AppCompatActivity {
      * @param uuid
      * @param conceptUid
      * @param value
-     * @return
-     * This function will add in the local db of obs table the value that user entered so that we can then use it for Delete operation...
+     * @return This function will add in the local db of obs table the value that user entered so that we can then use it for Delete operation...
      */
     boolean setObsData(String uuid, String conceptUid, String value) {
         boolean isInserted = false;
@@ -796,7 +795,7 @@ public class PrescriptionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
         }
