@@ -208,7 +208,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         diagnosisRecyclerView = findViewById(R.id.diagnosisRecyclerView);
         diagnosisList = new ArrayList<>();
         ObsDAO obsDAODiagnosis = new ObsDAO();
-        diagnosisList = obsDAODiagnosis.fetchAllObsPrescData(encounterVisitNote, TELEMEDICINE_DIAGNOSIS, "true");
+        diagnosisList = obsDAODiagnosis.fetchAllObsPrescData(encounterVisitNote, TELEMEDICINE_DIAGNOSIS, "TRUE");
         diagnosisPrescAdapter = new DiagnosisPrescAdapter(presContext, diagnosisList);
         RecyclerView.LayoutManager diagnosismanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -255,7 +255,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicationRecyclerView = findViewById(R.id.medicationRecyclerView);
         medicationList = new ArrayList<>();
         ObsDAO obsDAOMedication = new ObsDAO();
-        medicationList = obsDAOMedication.fetchAllObsPrescData(encounterVisitNote, JSV_MEDICATIONS, "true");
+        medicationList = obsDAOMedication.fetchAllObsPrescData(encounterVisitNote, JSV_MEDICATIONS, "TRUE");
         medicationPrescAdapter = new MedicationPrescAdapter(presContext, medicationList);
         RecyclerView.LayoutManager medicationmanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -385,7 +385,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         testRecyclerView = findViewById(R.id.testRecyclerView);
         testList = new ArrayList<>();
         ObsDAO obsDAOTest = new ObsDAO();
-        testList = obsDAOTest.fetchAllObsPrescData(encounterVisitNote, REQUESTED_TESTS, "true");
+        testList = obsDAOTest.fetchAllObsPrescData(encounterVisitNote, REQUESTED_TESTS, "TRUE");
         testPrescAdapter = new TestPrescAdapter(presContext, testList);
         RecyclerView.LayoutManager testmanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -419,7 +419,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         adviceRecyclerView = findViewById(R.id.adviceRecyclerView);
         adviceList = new ArrayList<>();
         ObsDAO obsDAOAdvice = new ObsDAO();
-        adviceList = obsDAOAdvice.fetchAllObsPrescData(encounterVisitNote, MEDICAL_ADVICE, "true");
+        adviceList = obsDAOAdvice.fetchAllObsPrescData(encounterVisitNote, MEDICAL_ADVICE, "TRUE");
         advicePrescAdapter = new AdvicePrescAdapter(presContext, adviceList);
         RecyclerView.LayoutManager advicemanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -471,7 +471,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         followupRecyclerView = findViewById(R.id.followupRecyclerView);
         followupList = new ArrayList<>();
         ObsDAO obsDAOFollowup = new ObsDAO();
-        followupList = obsDAOFollowup.fetchAllObsPrescData(encounterVisitNote, FOLLOW_UP_VISIT, "true");
+        followupList = obsDAOFollowup.fetchAllObsPrescData(encounterVisitNote, FOLLOW_UP_VISIT, "TRUE");
         followupPrescAdapter = new FollowupPresAdapter(presContext, followupList);
         RecyclerView.LayoutManager folllowupmanager = new LinearLayoutManager(
                 PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);

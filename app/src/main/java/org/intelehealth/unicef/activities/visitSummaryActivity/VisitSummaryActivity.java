@@ -3706,11 +3706,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         // Visit is uploaded but Prescription is already given...
-        if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
+       /* if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
             Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
                     Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
 
         if (visitnoteencounteruuid.equalsIgnoreCase("")) {
             startvisitnoteApiCall();
