@@ -227,10 +227,7 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                             public void onSelect(SlotInfo slotInfo) {
                                 //------before reschedule need to cancel appointment----
                                 AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                AppointmentInfo appointmentInfo = appointmentDAO.getAppointmentByVisitId(visitUuid);
-                                if (appointmentInfo != null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                                    cleanOldVisit(appointmentInfo, slotInfo);
-                                }
+                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
                                 bookAppointment(slotInfo);
 
                             }
@@ -251,43 +248,4 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
 
     }
 
-    /**
-     * need for cleaning old appointment form local db for same visit
-     * @param appointmentInfo
-     * @param slotInfo
-     */
-    public void cleanOldVisit(AppointmentInfo appointmentInfo, SlotInfo slotInfo) {
-        AppointmentDAO appointmentDAO = new AppointmentDAO();
-        appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
-        bookAppointment(slotInfo);
-    }
-
-    /**
-     * Not required
-     * @param appointmentInfo
-     * @param slotInfo
-     */
-    public void CancelRequest(AppointmentInfo appointmentInfo, SlotInfo slotInfo) {
-        CancelRequest request = new CancelRequest();
-        request.setVisitUuid(appointmentInfo.getVisitUuid());
-        request.setId(appointmentInfo.getId());
-        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
-        ApiClientAppointment.getInstance(baseurl).getApi()
-                .cancelAppointment(request)
-                .enqueue(new Callback<CancelResponse>() {
-                    @Override
-                    public void onResponse(Call<CancelResponse> call, retrofit2.Response<CancelResponse> response) {
-                        CancelResponse cancelResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAppointmentByVisitId(appointmentInfo.getVisitUuid());
-                        bookAppointment(slotInfo);
-                    }
-
-                    @Override
-                    public void onFailure(Call<CancelResponse> call, Throwable t) {
-                        Log.v("onFailure", t.getMessage());
-                        Toast.makeText(ScheduleListingActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 }

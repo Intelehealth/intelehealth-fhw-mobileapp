@@ -4152,6 +4152,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
  private  int mAppointmentId = 0;
     private void getAppointmentDetails(String visitUUID) {
+        mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+        mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
         Log.v("VisitSummary", "getAppointmentDetails");
         String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
         ApiClientAppointment.getInstance(baseurl).getApi()
@@ -4159,7 +4161,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 .enqueue(new Callback<AppointmentDetailsResponse>() {
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        if(response==null || response.body() == null) return;
                         mAppointmentDetailsResponse = response.body();
+                        if(!mAppointmentDetailsResponse.isStatus()){
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
                         if (mAppointmentDetailsResponse.getData() == null) {
                             mCancelAppointmentBookingTextView.setVisibility(View.GONE);
                             mInfoAppointmentBookingTextView.setVisibility(View.GONE);
