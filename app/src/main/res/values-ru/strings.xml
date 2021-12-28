@@ -749,8 +749,11 @@
     <string name="submit">Представлять на рассмотрение</string>
     <string name="add_meds">Добавить лекарства</string>
     <string name="add_diagnosis">Добавить диагноз</string>
-    <string name="amount">Amount</string>
-    <string name="frequency">Frequency</string>
-    <string name="route_optional">Route (Optional)</string>
+    <string name="amount">Количество</string>
+    <string name="frequency">Частота</string>
+    <string name="route_optional">Маршрут (необязательно)</string>
+    <string name="reason_optional">Причина (необязательно)</string>
+    <string name="choose_a_date">Выберите дату</string>
+    <string name="follow_up_remark">Следующее замечание</string>
 
 </resources>
