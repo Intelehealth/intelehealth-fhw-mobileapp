@@ -198,7 +198,7 @@ public class SetupActivity extends AppCompatActivity {
                 mUrlField.showDropDown();
             }
         });
-        mUrlField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       /* mUrlField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -209,9 +209,9 @@ public class SetupActivity extends AppCompatActivity {
                     isLocationFetched = false;
                     mEmailView.setError(null);
 
-            /*LocationArrayAdapter adapter = new LocationArrayAdapter
+            *//*LocationArrayAdapter adapter = new LocationArrayAdapter
                     (SetupActivity.this, new ArrayList<String>());
-            mDropdownLocation.setAdapter(adapter);*/
+            mDropdownLocation.setAdapter(adapter);*//*
 
                     if (!selectedURL.trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
                         if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
@@ -232,7 +232,7 @@ public class SetupActivity extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -297,8 +297,8 @@ public class SetupActivity extends AppCompatActivity {
 
             }
         });
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
+        //DialogUtils dialogUtils = new DialogUtils();
+        //dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
         if(!mUrlField.getText().toString().trim().isEmpty() ||
                 !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
@@ -349,8 +349,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-//                mHandler.removeCallbacksAndMessages(null);
-//                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
+                mHandler.removeCallbacksAndMessages(null);
+                mHandler.postDelayed(userStoppedTyping, 1500); // 1.5 second
 
 
             }
@@ -873,7 +873,6 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onNext(@NonNull District_Sanch_Village district_sanch_village) {
                             if (!district_sanch_village.getChildLocations().isEmpty()) {
-
 
                                 if (location_wise.equalsIgnoreCase("State")) {
                                     customProgressDialog.dismiss();
