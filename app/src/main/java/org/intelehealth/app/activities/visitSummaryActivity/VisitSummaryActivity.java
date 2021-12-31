@@ -1839,11 +1839,25 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
             @Override
             public void onClick(View v) {
                 try {
+                    //-----------provided medicine by healthworker string----------------------
+                    VisitAttributeListDAO visitAttributeListDAO=new VisitAttributeListDAO();
+                    String medicineprovided_value = visitAttributeListDAO.getVisitAttributesList_medicineProvideVisit(visitUuid);
+
                     medicineList=new String[pre_medicineList.size()];
                     isCheckedMedicineList=new boolean[pre_medicineList.size()];
                     for(int i=0;i<pre_medicineList.size();i++){
                         medicineList[i]=pre_medicineList.get(i);
+                        if (medicineprovided_value != null) {
+                            String[] providedmedicineArr =medicineprovided_value.split(",");
+                            List<String> medList = new ArrayList<>(Arrays.asList(providedmedicineArr));
+                            if(medList.contains(pre_medicineList.get(i))){
+                                isCheckedMedicineList[i]=true;
+                            }else{
+                                isCheckedMedicineList[i]=false;
+                            }
+                        }else{
                         isCheckedMedicineList[i]=true;
+                        }
                     }
                     multiCheckBoxesDialog();
                 } catch (Exception e) {
@@ -1870,10 +1884,33 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                String provided_medicine="";
                 for (int i = 0; i < medicineList.length; i++) {
                     if  (isCheckedMedicineList[i]) {
-                        Toast.makeText(getApplicationContext(), medicineList[i], Toast.LENGTH_LONG).show();
+                        provided_medicine= provided_medicine+","+medicineList[i];
+                        //Toast.makeText(getApplicationContext(), medicineList[i], Toast.LENGTH_LONG).show();
                     }
+                }
+
+                if(provided_medicine.length()!=0) {
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    boolean isUpdateVisitDone = false;
+                    try {
+                        if (!isVisitSpecialityExists) {
+                            isUpdateVisitDone = speciality_attributes
+                                    .insertVisitMedicineProvidedAttributes(visitUuid, provided_medicine);
+                        }
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                    }
+
+                    /*if (NetworkConnection.isOnline(getApplication())) {
+                        SyncDAO syncDAO = new SyncDAO();
+                        SyncUtils syncUtils = new SyncUtils();
+                        boolean isSynced = syncUtils.syncForeground("visitSummary");
+                    }*/
                 }
             }
         });
