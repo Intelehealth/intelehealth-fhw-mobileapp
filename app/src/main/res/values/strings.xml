@@ -728,6 +728,7 @@
     <string name="appointment_for">Appointment For</string>
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
+
     <string name="doctor_appointments">Doctor Appointments</string>
     <string name="slot_info">Slot info</string>
     <string name="appointment_booked">Appointment Booked</string>
@@ -737,4 +738,7 @@
     <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
     <string name="appointment_booked_successfully">Appointment booked successfully!</string>
     <string name="appointment_booked_failed">Appointment booked failed!</string>
+    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
+    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
+    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
 </resources>

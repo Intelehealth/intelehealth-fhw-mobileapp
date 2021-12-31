@@ -142,6 +142,7 @@ import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -4235,15 +4236,22 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 .cancelAppointment(request)
                                 .enqueue(new Callback<CancelResponse>() {
                                     @Override
-                                    public void onResponse(Call<CancelResponse> call, retrofit2.Response<CancelResponse> response) {
+                                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                                        if(response.body() == null) return;
                                         CancelResponse cancelResponse = response.body();
-                                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                        //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
-                                        //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                                        appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                        //}
-                                        Toast.makeText(VisitSummaryActivity.this, cancelResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                        getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                                        if(cancelResponse.isStatus()) {
+                                            AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                            //}
+
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                                        }else{
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+
+                                        }
                                     }
 
                                     @Override

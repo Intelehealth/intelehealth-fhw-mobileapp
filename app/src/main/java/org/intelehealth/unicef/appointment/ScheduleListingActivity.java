@@ -190,8 +190,10 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
                     @Override
                     public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
                         AppointmentDetailsResponse appointmentDetailsResponse = response.body();
-                        if (!appointmentDetailsResponse.isStatus()) {
+
+                        if (appointmentDetailsResponse==null || !appointmentDetailsResponse.isStatus()) {
                             Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_failed), Toast.LENGTH_SHORT).show();
+                            getSlots();
                         } else {
                             Toast.makeText(ScheduleListingActivity.this, getString(R.string.appointment_booked_successfully), Toast.LENGTH_SHORT).show();
                             setResult(RESULT_OK);

@@ -1473,6 +1473,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress1(StringUtils.getValue(mAddress1EditText.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2EditText.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCityAutoCompleteTextView.getText().toString()));
+            if(StringUtils.getValue(mPostalEditText.getText().toString()).length()!=6){
+                mPostalEditText.setError(getString(R.string.postal_code_invalid_txt));
+                mPostalEditText.requestFocus();
+                return;
+            } else {
+                mStateEditText.setError(null);
+            }
             patientdto.setPostalcode(StringUtils.getValue(mPostalEditText.getText().toString()));
 //            patientdto.setCountry(StringUtils.getValue(mCountrySpinner.getSelectedItem().toString()));
             patientdto.setCountry(StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
