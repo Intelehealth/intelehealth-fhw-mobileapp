@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -10,9 +11,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +24,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
@@ -38,10 +43,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,8 +87,10 @@ import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.exception.DAOException;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -143,6 +152,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     String profileImage1 = "";
     SessionManager sessionManager = null;
     Patient patient_new = new Patient();
+    TextView phoneView;
 
     EncounterDTO encounterDTO = new EncounterDTO();
     PatientsDAO patientsDAO = new PatientsDAO();
@@ -526,7 +536,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         TextView casteView = findViewById(R.id.textView_caste);
         TextView economic_statusView = findViewById(R.id.textView_economic_status);
         TextView education_statusView = findViewById(R.id.textView_education_status);
-        TextView phoneView = findViewById(R.id.textView_phone);
+        phoneView = findViewById(R.id.textView_phone);
         TextView sdwView = findViewById(R.id.textView_SDW);
         TableRow sdwRow = findViewById(R.id.tableRow_SDW);
         TextView occuView = findViewById(R.id.textView_occupation);
@@ -534,6 +544,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         TableRow economicRow = findViewById(R.id.tableRow_Economic_Status);
         TableRow educationRow = findViewById(R.id.tableRow_Education_Status);
         TableRow casteRow = findViewById(R.id.tableRow_Caste);
+        ImageView whatsapp_no = findViewById(R.id.whatsapp_no);
+        ImageView calling = findViewById(R.id.calling);
 
         TextView medHistView = findViewById(R.id.textView_patHist);
         TextView famHistView = findViewById(R.id.textView_famHist);
@@ -1195,6 +1207,33 @@ public class PatientDetailActivity extends AppCompatActivity {
             pastMedicalHistory(medHistView, patientUuid, encounterAdultIntials);
             pastVisits(patientUuid);
         }
+
+        whatsapp_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumberWithCountryCode = "+91" + phoneView.getText().toString();
+//                String message =
+//                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
+//                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
+                String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
+                        + getString(R.string.and_i_be_assisting_you);
+
+                startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(
+                                String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                                        phoneNumberWithCountryCode, message))));
+            }
+        });
+
+        //mobile calling is supported...
+        calling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL); //ACTION_DIAL: doesnt requires permission...
+                intent.setData(Uri.parse("tel:" + phoneView.getText().toString()));
+                startActivity(intent);
+            }
+        });
     }
 
     public void profilePicDownloaded() {
@@ -1699,4 +1738,5 @@ public class PatientDetailActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
 }
