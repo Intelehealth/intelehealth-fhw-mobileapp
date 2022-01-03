@@ -527,6 +527,7 @@
     <string name="languages">भाषए</string>
     <string name="change_languages">भाषा बदलें</string>
     <string name="current_language">सेलेक्टेड भाषा</string>
+
     <string name="protocols_downloaded_successfully">प्रोटोकॉल सफलतापूर्वक डाउनलोड!</string>
     <string name="no_protocols_found">कोई प्रोटोकॉल नहीं मिला</string>
     <string name="unable_to_get_proper_response">प्रोटोकॉल डाउनलोड करने में समस्या थी, कृपया सिस्टम व्यवस्थापक से संपर्क करें!</string>
@@ -675,8 +676,6 @@
     <string name="sync_failed">ऐप सिंक विफल! बाद में पुन: प्रयास करें।</string>
     <string name="no_network_sync">आप इंटरनेट से कनेक्ट नहीं हैं। बाद में पुन: प्रयास करें।</string>
     <string name="app_sync">ऐप सिंक किया जा रहा है..</string>
-
-
 
 <!--    Strings for special Check-->
     <string name="str_check_Odisha">Odisha</string>

@@ -7,13 +7,17 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.LocaleList;
 import android.os.StrictMode;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +28,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -54,6 +59,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -189,7 +195,7 @@ public class SetupActivity extends AppCompatActivity {
 //        spinner_sanch.setEnabled(false);
 //        spinner_village.setEnabled(false);
 
-        isOnline();
+        //isOnline();
 
 //        MyReceiver = new NetworkChangeListener() {
 //            @Override
@@ -1644,4 +1650,35 @@ public class SetupActivity extends AppCompatActivity {
         Log.e("DOWNLOAD", "isSTARTED");
 
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(setLocale(newBase));
+    }
+    public Context setLocale(Context context) {
+        SessionManager sessionManager1 = new SessionManager(context);
+        String appLanguage = sessionManager1.getAppLanguage();
+//        Locale locale = new Locale(appLanguage);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        Resources res = context.getResources();
+        Configuration conf = res.getConfiguration();
+        Locale locale = new Locale(appLanguage);
+        Locale.setDefault(locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            conf.setLocale(locale);
+            context.createConfigurationContext(conf);
+        }
+        DisplayMetrics dm = res.getDisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(new LocaleList(locale));
+        } else {
+            conf.locale = locale;
+        }
+        res.updateConfiguration(conf, dm);
+        return context;
+    }
+
 }

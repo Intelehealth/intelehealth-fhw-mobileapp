@@ -563,7 +563,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >What is the reason for your visit?</string>
+    <string name="what_is_the_reason_for_your_visit">What is the reason for your visit?</string>
     <string name="swipe_down_to_return">Swipe Down for previous / Up for next</string>
     <string name="swipe_up">Swipe to Up for Next</string>
     <string name="swipe_down">Swipe to Down for previous</string>
@@ -630,6 +630,7 @@
     <string name="download_prescription_first_before_sharing">Download prescription first before sharing</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*I (Health Worker) confirm that I have read out the privacy notice and consent to the patient.</string>
     <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="enter_9_digits">Enter 9 digits</string>
     <string name="please_read_out_privacy_consent_first">Please read out the Privacy Consent first.</string>
     <string name="view_print">View/Print</string>
     <string name="refresh">Refresh</string>
@@ -652,6 +653,7 @@
     <string name="per_Year">per Year</string>
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+
     //setup activity
     <string name="setup_internet_available">A strong Internet connection is required for setup.</string>
     <string name="setup_internet_not_available">You are not connected to the Internet.</string>
@@ -691,4 +693,54 @@
     <string name="sync_failed">Sync Failed! Please try again later.</string>
     <string name="no_network_sync">You are not connected to the internet. Please try again later.</string>
     <string name="app_sync">Syncing App..</string>
+
+    <string name="saving_captured_image">Saving Captured Image...</string>
+    <string name="alert_message_for_discard_visit">New started visit will be not saved!</string>
+
+    //Language Screen
+    <string name="choose_lang_title">Choose your Language</string>
+    <string name="save_button">Save</string>
+    <string name="selectLanguageToast">Please select Language</string>
+    <string name="config_not_found_alert_message">No config attribute found</string>
+    <string name="error_login_title">Error Login</string>
+    <string name="config_file_error">config file error</string>
+    <string name="internet_connected_txt">Connected to Internet!</string>
+    <string name="not_connected_txt">Not connected to Internet!</string>
+    <string name="config_error">Config Error</string>
+
+    <string name="notification_message"></string>
+    <string name="ticker_text">Looking for new task</string>
+    <string name="identification_screen_prompt_citizen_id">Citizen ID(*)</string>
+    <string name="citizen_id_validation_message">Please enter 14 digits Citizen ID</string>
+    <string name="country_matching_String_forIndia">India</string>
+    <string name="country_matching_String_forPhilippines">Philippines</string>
+    <string name="country_matching_String_forKyrgyzstan">Kyrgyzstan</string>
+    <!--Prescription-->
+    <string name="prescription_age">Age</string>
+    <string name="prescription_gender">Gender</string>
+    <string name="prescription_address_contact">Address and Contact</string>
+    <string name="prescription_patient_id">Patient Id</string>
+    <string name="prescription_date_of_visit">Date of visit</string>
+    <string name="prescription_vitals">Vitals</string>
+    <string name="prescription_rr">Respiratory Rate</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">Blood Pressure</string>
+    <string name="prescription_bmi">BMI</string>
+    <string name="prescription_wt">Weight(kg)</string>
+    <string name="prescription_ht">Height(cm)</string>
+    <string name="prescription_pre_comp">Presenting complaint(s)</string>
+    <string name="prescription_diagnosis">Diagnosis</string>
+    <string name="prescription_med_plan">Medication(s) plan</string>
+    <string name="prescription_rec_investigation">Recommended Investigation(s)</string>
+    <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_follow_up_date">Follow Up Date</string>
+    <string name="prescription_temp_c">Temperature (C) : </string>
+    <string name="prescription_temp_f">Temperature (F) : </string>
+
+    <string name="intro_text_1">
+        Telemedicine app makes specialist doctor consultations available to the rural populations coming to primary healthcare . It helps in saving patients from traveling miles for healthcare.
+        \n\n
+        Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
+    </string>
+
 </resources>
