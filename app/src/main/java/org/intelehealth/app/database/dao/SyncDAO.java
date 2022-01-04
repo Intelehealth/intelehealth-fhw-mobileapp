@@ -231,10 +231,9 @@ public class SyncDAO {
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
 //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
 //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
+                        } else if (fromActivity.equalsIgnoreCase("visitsummarymedicineprovide")){
+                            Toast.makeText(context, context.getString(R.string.provided_medicine_upload_msg), Toast.LENGTH_LONG).show();
                         }
-//                        else {
-//                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-//                        }
                     } else {
 //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
 
@@ -244,10 +243,9 @@ public class SyncDAO {
                             Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
                         } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
                             Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
+                        }else if (fromActivity.equalsIgnoreCase("visitsummarymedicineprovide")){
+                            Toast.makeText(context, context.getString(R.string.provided_medicine_upload_msg), Toast.LENGTH_LONG).show();
                         }
-//                        else {
-//                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
-//                        }
                         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
                     }

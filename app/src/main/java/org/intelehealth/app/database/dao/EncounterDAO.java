@@ -328,7 +328,6 @@ public class EncounterDAO {
         } finally {
             db.endTransaction();
 
-
         }
 
         return isUpdated;

@@ -6,11 +6,14 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import java.util.List;
 import java.util.UUID;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
+import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
@@ -76,6 +79,20 @@ public class VisitAttributeListDAO {
             }
 
             if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("443d91e7-3897-4307-a549-787da32e241e"))
+            {
+                createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+                if(createdRecordsCount != -1)
+                {
+                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                }
+                else
+                {
+                    Log.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
+                }
+            }
+
+            if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase("ba1e259f-8911-439d-abde-fb6c24c1e3c2"))
             {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
@@ -172,7 +189,7 @@ public class VisitAttributeListDAO {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT value FROM tbl_visit_attribute WHERE visit_uuid = ? AND + visit_attribute_type_uuid = ?",
-                new String[]{VISITUUID,"a0b1ad31-5b79-462d-9fef-7c4bf80cded2"});
+                new String[]{VISITUUID,"ba1e259f-8911-439d-abde-fb6c24c1e3c2"});
 
         if(cursor.getCount() != 0)
         {
@@ -290,7 +307,7 @@ public class VisitAttributeListDAO {
             values.put("uuid", UUID.randomUUID().toString()); //as per patient attributes uuid generation.
             values.put("visit_uuid", visitUuid);
             values.put("value", medicineprovide);
-            values.put("visit_attribute_type_uuid", "a0b1ad31-5b79-462d-9fef-7c4bf80cded2");
+            values.put("visit_attribute_type_uuid", "ba1e259f-8911-439d-abde-fb6c24c1e3c2");
             values.put("voided", "0");
             values.put("sync", "0");
 
@@ -313,5 +330,26 @@ public class VisitAttributeListDAO {
 
         Log.d("isInserted", "isInserted: "+isInserted);
         return isInserted;
+    }
+
+    public void updateVisitMedicineProvidedAttributes(String visitUuid, String medicineprovide) throws
+            DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("value", medicineprovide);
+            db.update("tbl_visit_attribute",
+                    values,
+                    "visit_uuid = ? AND " + " visit_attribute_type_uuid = ?",
+                    new String[]{visitUuid, "ba1e259f-8911-439d-abde-fb6c24c1e3c2"});
+            db.setTransactionSuccessful();
+        } catch (SQLException sql) {
+            Logger.logD("tbl_visit_attribute", "tbl_visit_attribute" + sql.getMessage());
+            FirebaseCrashlytics.getInstance().recordException(sql);
+            throw new DAOException(sql.getMessage());
+        } finally {
+            db.endTransaction();
+        }
     }
 }

@@ -748,6 +748,7 @@
     <string name="no_presc_available">No Prescription Available</string>
     <string name="printing">Printing...</string>
 
-    <string name="provided_medicine_dialog_title">Choose Provided Medicine</string>
+    <string name="provided_medicine_dialog_title">Select Medicine</string>
+    <string name="provided_medicine_upload_msg">Provided Medicine Uploaded Successfully</string>
 
 </resources>

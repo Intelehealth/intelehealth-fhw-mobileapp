@@ -1847,7 +1847,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                     isCheckedMedicineList=new boolean[pre_medicineList.size()];
                     for(int i=0;i<pre_medicineList.size();i++){
                         medicineList[i]=pre_medicineList.get(i);
-                        if (medicineprovided_value != null) {
+                        if (medicineprovided_value != null && !medicineprovided_value.equalsIgnoreCase("EMPTY")) {
                             String[] providedmedicineArr =medicineprovided_value.split(",");
                             List<String> medList = new ArrayList<>(Arrays.asList(providedmedicineArr));
                             if(medList.contains(pre_medicineList.get(i))){
@@ -1856,7 +1856,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                                 isCheckedMedicineList[i]=false;
                             }
                         }else{
-                        isCheckedMedicineList[i]=true;
+                            isCheckedMedicineList[i]=true;
                         }
                     }
                     multiCheckBoxesDialog();
@@ -1887,31 +1887,43 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 String provided_medicine="";
                 for (int i = 0; i < medicineList.length; i++) {
                     if  (isCheckedMedicineList[i]) {
-                        provided_medicine= provided_medicine+","+medicineList[i];
+                        if(i==0 || provided_medicine.length()==0) {
+                            provided_medicine = medicineList[i];
+                        }else{
+                            provided_medicine = provided_medicine + "," + medicineList[i];
+                        }
                         //Toast.makeText(getApplicationContext(), medicineList[i], Toast.LENGTH_LONG).show();
                     }
                 }
 
-                if(provided_medicine.length()!=0) {
+                //if(provided_medicine.length()!=0) {
                     VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
                     boolean isUpdateVisitDone = false;
                     try {
+                        isVisitSpecialityExists = providemedicine_row_exist_check(visitUuid);
                         if (!isVisitSpecialityExists) {
                             isUpdateVisitDone = speciality_attributes
                                     .insertVisitMedicineProvidedAttributes(visitUuid, provided_medicine);
+                        }else{
+                            speciality_attributes
+                                    .updateVisitMedicineProvidedAttributes(visitUuid, provided_medicine);
                         }
+
+                        VisitsDAO visitsDAO = new VisitsDAO();
+                        visitsDAO.updateVisitSync(visitUuid,"0");
+
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     } catch (DAOException e) {
                         e.printStackTrace();
                         Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
                     }
 
-                    /*if (NetworkConnection.isOnline(getApplication())) {
-                        SyncDAO syncDAO = new SyncDAO();
+                    if (NetworkConnection.isOnline(getApplication())) {
+                        Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
                         SyncUtils syncUtils = new SyncUtils();
-                        boolean isSynced = syncUtils.syncForeground("visitSummary");
-                    }*/
-                }
+                        boolean isSynced = syncUtils.syncForeground("visitsummarymedicineprovide");
+                    }
+              //  }
             }
         });
 
@@ -2063,6 +2075,25 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
                 new String[]{uuid, "443d91e7-3897-4307-a549-787da32e241e"});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
+    }
+
+    private boolean providemedicine_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
+                new String[]{uuid, "ba1e259f-8911-439d-abde-fb6c24c1e3c2"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
