@@ -58,12 +58,14 @@ public class TodayPatientActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     RecyclerView mTodayPatientList;
    MaterialAlertDialogBuilder dialogBuilder;
+   String userRole;
 
     private ArrayList<String> listPatientUUID = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
+        userRole = sessionManager.getChwrole();
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -148,16 +150,17 @@ public class TodayPatientActivity extends AppCompatActivity {
 
 
     private void doQuery() {
+        EncounterDAO encounterDAO = new EncounterDAO();
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender " +
-                "FROM tbl_visit a, tbl_patient b  " +
-                "WHERE a.patientuuid = b.uuid " +
-                "AND a.startdate LIKE '" + currentDate + "T%'   " +
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.first_name, b.middle_name, b.last_name, b.date_of_birth,b.openmrs_id, b.gender, c.uuid as encounteruuid, c.encounter_type_uuid as encountertype " +
+                "FROM tbl_visit a, tbl_patient b, tbl_encounter c " +
+                "WHERE a.patientuuid = b.uuid AND a.uuid = c.visituuid AND encountertype = ? " +
+                "AND a.startdate LIKE '" + currentDate + "T%' " +
                 "GROUP BY a.uuid ORDER BY a.patientuuid ASC";
         Logger.logD(TAG, query);
-        final Cursor cursor = db.rawQuery(query, null);
+        final Cursor cursor = db.rawQuery(query,  new String[]{"67a71486-1a54-468f-ac3e-7091a9a79584"});
 
         try {
             if (cursor != null) {
@@ -175,10 +178,10 @@ public class TodayPatientActivity extends AppCompatActivity {
                                     cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                                     cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
                                     StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")))),
-                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")));
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("encounteruuid")), null);
                             model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                            todayPatientList.add(model
-                            );
+                            todayPatientList.add(model);
                         } catch (DAOException e) {
                             e.printStackTrace();
                         }
@@ -195,7 +198,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             for (TodayPatientModel todayPatientModel : todayPatientList)
                 Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name());
 
-            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
+            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, userRole);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
             mTodayPatientList.setLayoutManager(linearLayoutManager);
            /* mTodayPatientList.addItemDecoration(new
@@ -378,7 +381,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 //display filter query code on list menu
                 Logger.logD(TAG, "onclick" + i);
-                doQueryWithProviders(selectedItems);
+//                doQueryWithProviders(selectedItems);
             }
         });
 
@@ -397,7 +400,9 @@ public class TodayPatientActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this,alertDialog);
     }
 
-    private void doQueryWithProviders(List<String> providersuuids) {
+    //commenting out function as not required for this project: Nishita
+
+    /*private void doQueryWithProviders(List<String> providersuuids) {
         List<TodayPatientModel> todayPatientList = new ArrayList<>();
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
@@ -446,7 +451,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             for (TodayPatientModel todayPatientModel : todayPatientList)
                 Log.i(TAG, todayPatientModel.getFirst_name() + " " + todayPatientModel.getLast_name());
 
-            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID);
+            TodayPatientAdapter mTodayPatientAdapter = new TodayPatientAdapter(todayPatientList, TodayPatientActivity.this, listPatientUUID, userRole);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(TodayPatientActivity.this);
             mTodayPatientList.setLayoutManager(linearLayoutManager);
             mTodayPatientList.addItemDecoration(new
@@ -461,7 +466,7 @@ public class TodayPatientActivity extends AppCompatActivity {
             });
         }
 
-    }
+    }*/
 
 
     private void endAllVisit() {

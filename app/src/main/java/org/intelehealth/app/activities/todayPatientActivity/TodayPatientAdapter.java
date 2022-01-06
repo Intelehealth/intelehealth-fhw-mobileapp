@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.complaintNodeActivity.ComplaintNodeActivity;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity;
+import org.intelehealth.app.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.models.TodayPatientModel;
@@ -42,16 +44,22 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     interface OnActionListener {
         void onEndVisitClicked(TodayPatientModel todayPatientModel, boolean hasPrescription);
     }
+
     private OnActionListener actionListener;
     List<TodayPatientModel> todayPatientModelList;
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<String> listPatientUUID;
+    String userRole;
+    boolean vitalsPresent = false, complaintPresent = false;
+    SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
 
-    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID) {
+
+    public TodayPatientAdapter(List<TodayPatientModel> todayPatientModelList, Context context, ArrayList<String> _listPatientUUID, String userRole) {
         this.todayPatientModelList = todayPatientModelList;
         this.context = context;
         this.listPatientUUID = _listPatientUUID;
+        this.userRole = userRole;
     }
 
     @Override
@@ -79,7 +87,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
 //        String body = context.getString(R.string.identification_screen_prompt_age) + " " + age;
         Spanned body = Html.fromHtml(context.getString(R.string.identification_screen_prompt_age) + " <b>" + age + " (" + StringUtils.getLocaleGender(context, todayPatientModel.getGender()) + ")</b>");
 
-        if (todayPatientModel.getSync().equalsIgnoreCase("0")){
+        if (todayPatientModel.getSync().equalsIgnoreCase("0")) {
             holder.getTv_not_uploaded().setVisibility(View.VISIBLE);
             holder.getTv_not_uploaded().setText(context.getResources().getString(R.string.visit_not_uploaded));
             holder.getTv_not_uploaded().setBackgroundColor(context.getResources().getColor(R.color.lite_red));
@@ -97,29 +105,37 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             holder.getIndicatorTextView().setText(R.string.closed);
             holder.getIndicatorTextView().setBackgroundColor(Color.RED);
         }
-        View.OnClickListener listener = new View.OnClickListener() {
+
+        if(todayPatientModel.getEncounterVitals()!=null) {
+            if (checkDBForVitals(db, todayPatientModel.getEncounterVitals())) {
+                if(vitalsPresent == false && userRole.equals("Clinician"))
+                {
+                    holder.tv_vitals_info.setVisibility(View.VISIBLE);
+                    holder.btnVisitDetails.setText("Add Vitals");
+                }
+            }
+        }
+            View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent visitSummary = new Intent(context, VisitSummaryActivity.class);
                 String patientUuid = todayPatientModel.getPatientuuid();
 
                 String patientSelection = "uuid = ?";
                 String[] patientArgs = {patientUuid};
                 String[] patientColumns = {"first_name", "middle_name", "last_name", "gender",
                         "date_of_birth",};
-                SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
                 Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
                 String visit_id = "";
 
-                String end_date="",dob = "", mGender = "", patientName = "";
+                String end_date = "", dob = "", mGender = "", patientName = "";
                 float float_ageYear_Month = 0;
                 if (idCursor.moveToFirst()) {
                     do {
                         mGender = idCursor.getString(idCursor.getColumnIndexOrThrow("gender"));
                         patientName = idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")) + " " +
                                 idCursor.getString(idCursor.getColumnIndexOrThrow("last_name"));
-                        dob=idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
+                        dob = idCursor.getString((idCursor.getColumnIndexOrThrow("date_of_birth")));
                     } while (idCursor.moveToNext());
                 }
                 idCursor.close();
@@ -167,26 +183,41 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                     past_visit = true;
                 }
 
-                float_ageYear_Month=DateAndTimeUtils.getFloat_Age_Year_Month(dob);
+                float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(dob);
 
-                visitSummary.putExtra("visitUuid", visit_id);
-                visitSummary.putExtra("patientUuid", patientUuid);
-                visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
-                visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
-                visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
-                visitSummary.putExtra("name", patientName);
-                visitSummary.putExtra("gender", mGender);
-                visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                visitSummary.putExtra("tag", "");
-                visitSummary.putExtra("pastVisit", past_visit);
+//                Intent visitSummary = new Intent(context, VisitSummaryActivity.class);
 
-                if (holder.ivPriscription.getTag().equals("1")) {
-                    visitSummary.putExtra("hasPrescription", "true");
-                } else {
-                    visitSummary.putExtra("hasPrescription", "false");
+                if (checkDBForRecord(db, encountervitalsLocal, encounterlocalAdultintial)) {
+                    Intent visitSummary;
+                    if (userRole.equals("Clinician") && vitalsPresent == false) {
+                        visitSummary = new Intent(context, VitalsActivity.class);
+                    }
+                    else if (userRole.equals("Nurse") && complaintPresent == false)
+                        visitSummary = new Intent(context, ComplaintNodeActivity.class);
+                    else if (end_date != null && !end_date.isEmpty())
+                        visitSummary = new Intent(context, VisitSummaryActivity.class);
+                    else
+                        visitSummary = new Intent(context, VisitSummaryActivity.class);
+
+
+                    visitSummary.putExtra("visitUuid", visit_id);
+                    visitSummary.putExtra("patientUuid", patientUuid);
+                    visitSummary.putExtra("encounterUuidVitals", encountervitalsLocal);
+                    visitSummary.putExtra("encounterUuidAdultIntial", encounterlocalAdultintial);
+                    visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterlocalAdultintial);
+                    visitSummary.putExtra("name", patientName);
+                    visitSummary.putExtra("gender", mGender);
+                    visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    visitSummary.putExtra("tag", "");
+                    visitSummary.putExtra("pastVisit", past_visit);
+
+                    if (holder.ivPriscription.getTag().equals("1")) {
+                        visitSummary.putExtra("hasPrescription", "true");
+                    } else {
+                        visitSummary.putExtra("hasPrescription", "false");
+                    }
+                    context.startActivity(visitSummary);
                 }
-                context.startActivity(visitSummary);
-
                 /*String patientStatus = "returning";
                 Intent intent = new Intent(context, PatientDetailActivity.class);
                 intent.putExtra("patientUuid", todayPatientModel.getPatientuuid());
@@ -252,6 +283,47 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         }
     }
 
+    private boolean checkDBForRecord(SQLiteDatabase db, String encounterVitalslocal, String encounterAdultIntialslocal) {
+        String query = "SELECT encounteruuid FROM tbl_obs WHERE encounteruuid = ? OR encounteruuid = ?";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterVitalslocal, encounterAdultIntialslocal});
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    String encounterType = searchCursor.getString(searchCursor.getColumnIndexOrThrow("encounteruuid"));
+                    if (encounterType.equals(encounterVitalslocal))
+                        vitalsPresent = true;
+                    else
+                        complaintPresent = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+        return true;
+    }
+
+    private boolean checkDBForVitals(SQLiteDatabase db, String encounterVitalslocal) {
+        String query = "SELECT encounteruuid FROM tbl_obs WHERE encounteruuid = ? ";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{encounterVitalslocal});
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    String encounterType = searchCursor.getString(searchCursor.getColumnIndexOrThrow("encounteruuid"));
+                    if (encounterType.equals(encounterVitalslocal))
+                        vitalsPresent = true;
+                    else
+                        complaintPresent = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+        return true;
+    }
+
+
     @Override
     public int getItemViewType(int position) {
         return position;
@@ -269,7 +341,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
         private TextView indicatorTextView;
         private View rootView;
         private ImageView ivPriscription;
-        private TextView tv_not_uploaded;
+        private TextView tv_not_uploaded, tv_vitals_info;
         Button btnEndVisit, btnVisitDetails;
         TextView tvAgeGender;
 
@@ -283,6 +355,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             btnEndVisit = itemView.findViewById(R.id.btn_end_visit);
             btnVisitDetails = itemView.findViewById(R.id.btn_visit_details);
             tvAgeGender = itemView.findViewById(R.id.tv_age_gender);
+            tv_vitals_info = itemView.findViewById(R.id.tv_vitals_info);
             rootView = itemView;
         }
 

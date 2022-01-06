@@ -138,7 +138,7 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
-
+    ArrayList<String> user_roles;
     //    private BroadcastReceiver MyReceiver = null;
     //CoordinatorLayout coordinatorLayout;
     HashMap<String, String> hashMap1, hashMap2/*, hashMap3*/, hashMap4;
@@ -158,6 +158,7 @@ public class SetupActivity extends AppCompatActivity {
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
         mSetUpLocation = new ArrayList<>();
+        user_roles = new ArrayList<>();
        // coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -1351,6 +1352,12 @@ public class SetupActivity extends AppCompatActivity {
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                for(int i=0; i<loginModel.getUser().getRoles().size();i++)
+                    user_roles.add(loginModel.getUser().getRoles().get(i).getDisplay());
+                if(user_roles.contains("Clinician"))
+                    sessionManager.setChwrole("Clinician");
+                else
+                    sessionManager.setChwrole("Nurse");
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
                 if (authencated) {

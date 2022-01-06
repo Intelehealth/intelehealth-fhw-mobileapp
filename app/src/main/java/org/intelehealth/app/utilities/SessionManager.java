@@ -19,6 +19,7 @@ public class SessionManager {
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String CHWNAME = "chwname";
+    private static final String CHWROLE = "chwrole";
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
     private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
@@ -146,6 +147,15 @@ public class SessionManager {
 
     public void setCreatorID(String creatorID) {
         editor.putString(CREATOR_ID, creatorID);
+        editor.commit();
+    }
+
+    public String getChwrole() {
+        return pref.getString(CHWROLE, "");
+    }
+
+    public void setChwrole(String chwrole) {
+        editor.putString(CHWROLE, chwrole);
         editor.commit();
     }
 

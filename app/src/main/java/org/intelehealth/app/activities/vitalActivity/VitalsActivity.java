@@ -60,6 +60,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
+    private String userRole;
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
@@ -104,7 +105,7 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-
+        userRole = sessionManager.getChwrole();
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
@@ -1065,7 +1066,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        if (intentTag != null && intentTag.equals("edit")) {
+        if ((intentTag != null && intentTag.equals("edit")) || userRole!=null && userRole.equals("Clinician")) {
             try {
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
