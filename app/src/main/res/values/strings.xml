@@ -747,4 +747,7 @@
     <string name="no_presc_available">No Prescription Available</string>
     <string name="printing">Printing...</string>
 
+    //HIH-84
+    <string name="vitals_not_present">Vitals Not Present</string>
+    <string name="add_vitals">Add Vitals</string>
 </resources>

@@ -111,7 +111,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 if(vitalsPresent == false && userRole.equals("Clinician"))
                 {
                     holder.tv_vitals_info.setVisibility(View.VISIBLE);
-                    holder.btnVisitDetails.setText("Add Vitals");
+                    holder.btnVisitDetails.setText(R.string.add_vitals);
                 }
             }
         }

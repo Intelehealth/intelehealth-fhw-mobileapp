@@ -73,7 +73,7 @@
                         android:textStyle="italic"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        android:text="Vitals Not Present"
+                        android:text="@string/vitals_not_present"
                         android:fontFamily="@font/lato_regular" />
 
                     <View
