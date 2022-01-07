@@ -672,23 +672,25 @@ public class PatientDetailActivity extends AppCompatActivity {
         //english = en
         //hindi = hi
         //education
-        if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-            education_statusView.setText("नहीं दिया गया");
-        } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
-                sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-            education_statusView.setText(patient_new.getEducation_level());
-        } else {
-            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                String education = switch_hi_education_edit(patient_new.getEducation_level());
-                education_statusView.setText(education);
-            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+        if (patient_new.getEducation_level() != null){
+            if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                education_statusView.setText("नहीं दिया गया");
+            } else if (patient_new.getEducation_level().equalsIgnoreCase("Not provided") &&
+                    sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 education_statusView.setText(patient_new.getEducation_level());
             } else {
-                education_statusView.setText(patient_new.getEducation_level());
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                    String education = switch_hi_education_edit(patient_new.getEducation_level());
+                    education_statusView.setText(education);
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                    education_statusView.setText(patient_new.getEducation_level());
+                } else {
+                    education_statusView.setText(patient_new.getEducation_level());
+                }
+                // education_statusView.setText(patient_new.getEducation_level());
             }
-            // education_statusView.setText(patient_new.getEducation_level());
-        }
+    }
 
         //economic
         if(patient_new.getEconomic_status()!=null) {
