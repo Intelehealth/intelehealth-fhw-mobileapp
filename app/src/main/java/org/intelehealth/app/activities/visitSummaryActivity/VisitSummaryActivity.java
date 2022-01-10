@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -75,6 +76,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -85,6 +87,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.protobuf.Internal;
 import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
 import com.rt.printerlibrary.bean.UsbConfigBean;
 import com.rt.printerlibrary.bean.WiFiConfigBean;
@@ -114,10 +117,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -166,6 +171,10 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
     private WebView mWebView;
     private LinearLayout mLayout;
+    List<String> pre_medicineList=new ArrayList<>();
+    String[] medicineList = null;//{"C", "C++", "Java", "Python", "C#"};
+    boolean[] isCheckedMedicineList =null;
+    //boolean[] isCheckedMedicineList = new boolean[medicineList.size()]; //{true, true, true, true, true};
 
     String mHeight, mWeight, mBMI, mBP, mPulse, mTemp, mSPO2, mresp, mBlood, mSugarRandom, mHemoglobin,
             mSugarFasting, mSugarAfterMeal;
@@ -270,7 +279,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
-    CardView card_print, card_share;
+    CardView card_print, card_share, card_givenmedicine;
 
     TextView diagnosisTextView;
     TextView prescriptionTextView;
@@ -609,6 +618,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
+        card_givenmedicine = findViewById(R.id.card_givenmedicine);
+
         diagnosisCard = findViewById(R.id.cardView_diagnosis);
         prescriptionCard = findViewById(R.id.cardView_rx);
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
@@ -622,7 +633,6 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
-
         /*tv_device_selected = findViewById(R.id.tv_device_selected);
         btn_connect = findViewById(R.id.btn_connect);
         pb_connect = findViewById(R.id.pb_connect);
@@ -1825,7 +1835,107 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
             }
         });
 
+        card_givenmedicine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    //-----------provided medicine by healthworker string----------------------
+                    VisitAttributeListDAO visitAttributeListDAO=new VisitAttributeListDAO();
+                    String medicineprovided_value = visitAttributeListDAO.getVisitAttributesList_medicineProvideVisit(visitUuid);
+
+                    medicineList=new String[pre_medicineList.size()];
+                    isCheckedMedicineList=new boolean[pre_medicineList.size()];
+                    for(int i=0;i<pre_medicineList.size();i++){
+                        medicineList[i]=pre_medicineList.get(i);
+                        if (medicineprovided_value != null && !medicineprovided_value.equalsIgnoreCase("EMPTY")) {
+                            String[] providedmedicineArr =medicineprovided_value.split(",");
+                            List<String> medList = new ArrayList<>(Arrays.asList(providedmedicineArr));
+                            if(medList.contains(pre_medicineList.get(i))){
+                                isCheckedMedicineList[i]=true;
+                            }else{
+                                isCheckedMedicineList[i]=false;
+                            }
+                        }else{
+                            isCheckedMedicineList[i]=true;
+                        }
+                    }
+                    multiCheckBoxesDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
         doQuery();
+    }
+
+    public void multiCheckBoxesDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.provided_medicine_dialog_title));
+        builder.setMultiChoiceItems(medicineList, isCheckedMedicineList, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                isCheckedMedicineList[which] = isChecked;
+            }
+        });
+
+        builder.setPositiveButton(getResources().getString(R.string.generic_ok) ,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                String provided_medicine="";
+                for (int i = 0; i < medicineList.length; i++) {
+                    if  (isCheckedMedicineList[i]) {
+                        if(i==0 || provided_medicine.length()==0) {
+                            provided_medicine = medicineList[i];
+                        }else{
+                            provided_medicine = provided_medicine + "," + medicineList[i];
+                        }
+                        //Toast.makeText(getApplicationContext(), medicineList[i], Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                //if(provided_medicine.length()!=0) {
+                    VisitAttributeListDAO speciality_attributes = new VisitAttributeListDAO();
+                    boolean isUpdateVisitDone = false;
+                    try {
+                        isVisitSpecialityExists = providemedicine_row_exist_check(visitUuid);
+                        if (!isVisitSpecialityExists) {
+                            isUpdateVisitDone = speciality_attributes
+                                    .insertVisitMedicineProvidedAttributes(visitUuid, provided_medicine);
+                        }else{
+                            speciality_attributes
+                                    .updateVisitMedicineProvidedAttributes(visitUuid, provided_medicine);
+                        }
+
+                        VisitsDAO visitsDAO = new VisitsDAO();
+                        visitsDAO.updateVisitSync(visitUuid,"0");
+
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                        Log.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+                    }
+
+                    if (NetworkConnection.isOnline(getApplication())) {
+                        Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+                        SyncUtils syncUtils = new SyncUtils();
+                        boolean isSynced = syncUtils.syncForeground("visitsummarymedicineprovide");
+                    }
+              //  }
+            }
+        });
+
+        builder.setNegativeButton(getResources().getString(R.string.generic_cancel) ,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
 //    private void doConnect() {
@@ -1965,6 +2075,25 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
                 new String[]{uuid, "443d91e7-3897-4307-a549-787da32e241e"});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
+    }
+
+    private boolean providemedicine_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
+                new String[]{uuid, "ba1e259f-8911-439d-abde-fb6c24c1e3c2"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -3592,7 +3721,6 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
 
                 medHistory = patHistory.getValue();
 
-
                 medHistory = medHistory.replace("\"", "");
                 medHistory = medHistory.replace("\n", "");
                 do {
@@ -3757,9 +3885,18 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
+                    card_givenmedicine.setVisibility(View.VISIBLE);
                 }
                 prescriptionTextView.setText(rxReturned);
                 //checkForDoctor();
+                //--------ready dialog for medicine given by HW----------
+                if(!value.isEmpty()){
+                    if(value.contains(":")) {
+                        String[] medicine = value.split(":");
+                        pre_medicineList.add(medicine[0]);
+                    }
+                }
+
                 break;
             }
             case UuidDictionary.MEDICAL_ADVICE: {
@@ -4116,6 +4253,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                     if (!prescriptionTextView.getText().toString().trim().isEmpty())
                         body = body + getString(R.string.visit_summary_rx) + ":" +
                                 prescriptionTextView.getText().toString() + "\n";
+                    //card_givenmedicine----setDialog adapter string------
                 }
                 if (medicalAdviceCard.getVisibility() == View.VISIBLE) {
                     if (!medicalAdviceTextView.getText().toString().trim().isEmpty())
@@ -4210,7 +4348,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                     rxReturned = "";
                     prescriptionTextView.setText("");
                     prescriptionCard.setVisibility(View.GONE);
-
+                    card_givenmedicine.setVisibility(View.GONE);
                 }
                 if (!adviceReturned.isEmpty()) {
                     adviceReturned = "";
