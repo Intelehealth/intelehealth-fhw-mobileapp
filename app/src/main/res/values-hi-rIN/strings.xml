@@ -740,4 +740,8 @@
     <string name="no_presc_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है</string>
     <string name="printing">मुद्रण...</string>
 
+    <string name="visit_summary_button_medicinegiven" translatable="false">दी गई दवा</string>
+    <string name="provided_medicine_dialog_title">प्रदान की गई दवा चुनें</string>
+    <string name="provided_medicine_upload_msg">प्रदान की गई दवा सफलतापूर्वक अपलोड कर दी गई है</string>
+
 </resources>

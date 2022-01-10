@@ -1015,7 +1015,9 @@ public class HomeActivity extends AppCompatActivity {
                     .subscribe(new DisposableObserver<DownloadMindMapRes>() {
                         @Override
                         public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
+                            if (customProgressDialog != null && customProgressDialog.isShowing()) {
+                                customProgressDialog.dismiss();
+                            }
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
@@ -1031,7 +1033,9 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
+                            if (customProgressDialog != null && customProgressDialog.isShowing()) {
+                                customProgressDialog.dismiss();
+                            }
                             Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
                         }
 

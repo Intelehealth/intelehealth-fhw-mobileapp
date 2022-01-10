@@ -29,7 +29,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:contentDescription="@string/chat_fab"
-        android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+        app:srcCompat="@drawable/ic_baseline_chat_bubble_outline_24" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

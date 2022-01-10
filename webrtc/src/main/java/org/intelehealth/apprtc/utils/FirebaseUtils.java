@@ -50,7 +50,7 @@ public class FirebaseUtils {
             });
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                     7 * 1000,
-                    3,
+                    1,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(jsonObjectRequest);
         } catch (JSONException e) {
