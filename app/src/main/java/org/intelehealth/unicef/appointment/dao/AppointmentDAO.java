@@ -145,4 +145,14 @@ public class AppointmentDAO {
         db.endTransaction();
         //db.close();
     }
+
+    public void deleteAllAppointments() {
+        Log.v(TAG, "deleteAllAppointments ");
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        db.delete("tbl_appointments", null, null);
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        //db.close();
+    }
 }

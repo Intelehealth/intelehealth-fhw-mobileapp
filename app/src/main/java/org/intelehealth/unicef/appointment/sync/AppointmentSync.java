@@ -31,6 +31,7 @@ public class AppointmentSync {
                         if (response.body() == null) return;
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
+                        appointmentDAO.deleteAllAppointments();
                         for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
                             try {
