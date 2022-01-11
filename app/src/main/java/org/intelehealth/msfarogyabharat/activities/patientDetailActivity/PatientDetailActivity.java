@@ -1531,6 +1531,8 @@ public class PatientDetailActivity extends AppCompatActivity {
     }
 
     void showAlert(int messageRes) {
+        if (isFinishing())
+            return;
         MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
         alertDialogBuilder.setMessage(messageRes);
         alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
