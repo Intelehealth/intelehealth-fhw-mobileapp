@@ -18,6 +18,11 @@ public class UuidDictionary {
     public static final String TEMPERATURE = "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String RESPIRATORY = "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
     public static final String SPO2 = "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    public static final String HEMOGLOBIN = "33b241d6-3e9d-443e-9572-f38ecb1e752a";
+    public static final String SUGARLEVELRANDOM = "95cf1d31-21dc-4fae-96fd-d1dd9455914f";
+    public static final String SUGARLEVELFASTING = "5d407bb5-3085-4631-b47e-8abb14df372e";
+    public static final String SUGARLEVELAFTERMEAL = "ced96191-6064-4e2b-80b0-bed2fd37e047";
+    public static final String BLOODGROUP = "a170929e-9e23-4689-98ed-074c0c4792bb";
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
