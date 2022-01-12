@@ -12,8 +12,9 @@ public class FollowUpModel {
     String visit_speciality;
     String followup_date;
     String sync;
+    String followUpType;
 
-    public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String visit_speciality, String followup_date, String sync) {
+    public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String visit_speciality, String followup_date, String sync, String followUpType) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.openmrs_id = openmrs_id;
@@ -24,6 +25,7 @@ public class FollowUpModel {
         this.visit_speciality = visit_speciality;
         this.followup_date = followup_date;
         this.sync = sync;
+        this.followUpType = followUpType;
     }
 
     public FollowUpModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String followup_date, String sync) {
@@ -118,4 +120,11 @@ public class FollowUpModel {
         this.sync = sync;
     }
 
+    public String getFollowUpType() {
+        return followUpType;
+    }
+
+    public void setFollowUpType(String followUpType) {
+        this.followUpType = followUpType;
+    }
 }
