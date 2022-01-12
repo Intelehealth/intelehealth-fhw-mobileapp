@@ -740,4 +740,7 @@
     <string name="no_presc_available">कोई प्रिस्क्रिप्शन उपलब्ध नहीं है</string>
     <string name="printing">मुद्रण...</string>
 
+    //HIH-84
+    <string name="vitals_not_present">नब्ज मौजूद नहीं है</string>
+    <string name="add_vitals">नब्ज दर्ज करे</string>
 </resources>

@@ -19,11 +19,13 @@ public class SessionManager {
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String CHWNAME = "chwname";
+    private static final String CHWROLE = "chwrole";
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
     private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
     private static final String KEY_PREF_LOCATION_UUID = "locationuuid";
     private static final String KEY_PREF_LOCATION_NAME = "locationname";
+    private static final String KEY_PREF_STATE_LOCATION_NAME = "statelocationname";
     private static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
     private static final String LICENSE_KEY = "licensekey";
     private static final String DATE = "date";
@@ -149,6 +151,15 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getChwrole() {
+        return pref.getString(CHWROLE, "");
+    }
+
+    public void setChwrole(String chwrole) {
+        editor.putString(CHWROLE, chwrole);
+        editor.commit();
+    }
+
     public String getChwname() {
         return pref.getString(CHWNAME, "");
     }
@@ -173,6 +184,15 @@ public class SessionManager {
 
     public void setLocationName(String locationName) {
         editor.putString(KEY_PREF_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getStateLocationName() {
+        return pref.getString(KEY_PREF_STATE_LOCATION_NAME, "");
+    }
+
+    public void setStateLocationName(String statelocationName) {
+        editor.putString(KEY_PREF_STATE_LOCATION_NAME, statelocationName);
         editor.commit();
     }
 

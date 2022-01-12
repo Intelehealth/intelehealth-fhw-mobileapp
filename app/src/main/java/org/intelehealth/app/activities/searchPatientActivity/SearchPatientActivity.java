@@ -67,6 +67,8 @@ public class SearchPatientActivity extends AppCompatActivity {
     private String TAG = SearchPatientActivity.class.getSimpleName();
     private SQLiteDatabase db;
     FloatingActionButton new_patient;
+    String userRole;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // Get the intent, verify the action and get the query
         sessionManager = new SessionManager(this);
+        userRole = sessionManager.getChwrole();
         String language = sessionManager.getAppLanguage();
         //In case of crash still the app should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
@@ -100,6 +103,13 @@ public class SearchPatientActivity extends AppCompatActivity {
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
         new_patient = findViewById(R.id.new_patient);
+
+        if (!userRole.isEmpty() && userRole.equalsIgnoreCase("Clinician")) {
+            new_patient.setVisibility(View.GONE);
+        } else {
+            new_patient.setVisibility(View.VISIBLE);
+        }
+
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);

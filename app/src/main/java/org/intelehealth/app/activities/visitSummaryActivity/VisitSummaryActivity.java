@@ -272,6 +272,13 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     CardView followUpDateCard;
     CardView card_print, card_share;
 
+    CardView complaintCV;
+    CardView physExamCV;
+    CardView patHistCV;
+    CardView famHistCV;
+    CardView additionalDocCV;
+
+
     TextView diagnosisTextView;
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
@@ -325,6 +332,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     private String hasPrescription = "";
     private boolean isRespiratory = false;
     String appLanguage;
+
+    String userRole;
 
   /*  TextView tv_device_selected;
     Button btn_connect;
@@ -502,6 +511,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         if (!appLanguage.equalsIgnoreCase("")) {
             setLocale(appLanguage);
         }
+        userRole = sessionManager.getChwrole();
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             patientUuid = intent.getStringExtra("patientUuid");
@@ -619,9 +629,25 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         mDoctorName = findViewById(R.id.doctor_details);
         frameLayout_doctor = findViewById(R.id.frame_doctor);
         frameLayout_doctor.setVisibility(View.GONE);
-
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        complaintCV = findViewById(R.id.cardView_complaint);
+        physExamCV = findViewById(R.id.cardView_physexam);
+        patHistCV = findViewById(R.id.cardView_pathist);
+        famHistCV = findViewById(R.id.cardView_famhist);
+        additionalDocCV = findViewById(R.id.additional_document_images);
+        downloadButton = findViewById(R.id.button_download);
+
+        if (!userRole.isEmpty() && userRole.equalsIgnoreCase("Clinician")) {
+            complaintCV.setVisibility(View.GONE);
+            physExamCV.setVisibility(View.GONE);
+            patHistCV.setVisibility(View.GONE);
+            famHistCV.setVisibility(View.GONE);
+            additionalDocCV.setVisibility(View.GONE);
+            downloadButton.setVisibility(View.GONE);
+            card_print.setVisibility(View.GONE);
+            card_share.setVisibility(View.GONE);
+        }
 
         /*tv_device_selected = findViewById(R.id.tv_device_selected);
         btn_connect = findViewById(R.id.btn_connect);
@@ -904,7 +930,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         editMedHist = findViewById(R.id.imagebutton_edit_pathist);
         editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
         uploadButton = findViewById(R.id.button_upload);
-        downloadButton = findViewById(R.id.button_download);
+
 
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
         onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
@@ -4433,7 +4459,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
 
 
     private void addDownloadButton() {
-        if (!downloadButton.isEnabled()) {
+        if (!downloadButton.isEnabled() && !userRole.equals("Clinician")) {
             downloadButton.setEnabled(true);
             downloadButton.setVisibility(View.VISIBLE);
         }
