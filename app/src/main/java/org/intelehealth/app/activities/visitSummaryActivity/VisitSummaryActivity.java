@@ -3818,6 +3818,19 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 //checkForDoctor();
                 break;
             }
+            case UuidDictionary.REFERRAL_PATIENT: {
+                if (!testsReturned.isEmpty()) {
+                    testsReturned = testsReturned + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    testsReturned = Node.bullet + " " + value;
+                }
+                if (requestedTestsCard.getVisibility() != View.VISIBLE) {
+                    requestedTestsCard.setVisibility(View.VISIBLE);
+                }
+                requestedTestsTextView.setText(testsReturned);
+                //checkForDoctor();
+                break;
+            }
             case UuidDictionary.ADDITIONAL_COMMENTS: {
 
                 additionalCommentsCard.setVisibility(View.GONE);
