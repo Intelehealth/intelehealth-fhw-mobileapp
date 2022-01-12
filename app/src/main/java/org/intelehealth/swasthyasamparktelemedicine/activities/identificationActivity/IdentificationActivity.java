@@ -3288,7 +3288,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean push = syncDAO.pushDataApi();
-                boolean pushImage = imagesPushDAO.patientProfileImagesPush();
+                //boolean pushImage = imagesPushDAO.patientProfileImagesPush();
 
             }
 
@@ -4334,7 +4334,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 SyncDAO syncDAO = new SyncDAO();
                 ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
                 boolean ispush = syncDAO.pushDataApi();
-                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
+//                boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
 
 //                if (ispush)
 //                    AppConstants.notificationUtils.DownloadDone(getString(R.string.patient_data_upload), "" + patientdto.getFirst_name() + "" + patientdto.getLast_name() + "'s data upload complete.", 2, getApplication());
