@@ -193,7 +193,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                         visitSummary = new Intent(context, VitalsActivity.class);
                     }
                     else if (userRole.equals("Nurse") && complaintPresent == false)
-                        visitSummary = new Intent(context, ComplaintNodeActivity.class);
+                        visitSummary = new Intent(context, VitalsActivity.class);
                     else if (end_date != null && !end_date.isEmpty())
                         visitSummary = new Intent(context, VisitSummaryActivity.class);
                     else
@@ -208,7 +208,7 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                     visitSummary.putExtra("name", patientName);
                     visitSummary.putExtra("gender", mGender);
                     visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-                    visitSummary.putExtra("tag", "");
+                    visitSummary.putExtra("tag", "today");
                     visitSummary.putExtra("pastVisit", past_visit);
 
                     if (holder.ivPriscription.getTag().equals("1")) {
@@ -284,6 +284,8 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
     }
 
     private boolean checkDBForRecord(SQLiteDatabase db, String encounterVitalslocal, String encounterAdultIntialslocal) {
+        vitalsPresent = false;
+        complaintPresent = false;
         String query = "SELECT encounteruuid FROM tbl_obs WHERE encounteruuid = ? OR encounteruuid = ?";
         final Cursor searchCursor = db.rawQuery(query, new String[]{encounterVitalslocal, encounterAdultIntialslocal});
         if (searchCursor.moveToFirst()) {
@@ -357,6 +359,8 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
             tvAgeGender = itemView.findViewById(R.id.tv_age_gender);
             tv_vitals_info = itemView.findViewById(R.id.tv_vitals_info);
             rootView = itemView;
+            if(userRole.equals("Clinician"))
+                btnEndVisit.setVisibility(View.GONE);
         }
 
         public TextView getHeadTextView() {

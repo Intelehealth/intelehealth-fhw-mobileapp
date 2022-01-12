@@ -750,4 +750,6 @@
     //HIH-84
     <string name="vitals_not_present">Vitals Not Present</string>
     <string name="add_vitals">Add Vitals</string>
+    <string name="vitals_for_pathologist">Vitals can be submitted by Pathologists. \nDo you want to continue entering vitals?</string>
+    <string name="continue_button">Continue</string>
 </resources>

@@ -25,6 +25,7 @@ public class SessionManager {
     private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
     private static final String KEY_PREF_LOCATION_UUID = "locationuuid";
     private static final String KEY_PREF_LOCATION_NAME = "locationname";
+    private static final String KEY_PREF_STATE_LOCATION_NAME = "statelocationname";
     private static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
     private static final String LICENSE_KEY = "licensekey";
     private static final String DATE = "date";
@@ -183,6 +184,15 @@ public class SessionManager {
 
     public void setLocationName(String locationName) {
         editor.putString(KEY_PREF_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getStateLocationName() {
+        return pref.getString(KEY_PREF_STATE_LOCATION_NAME, "");
+    }
+
+    public void setStateLocationName(String statelocationName) {
+        editor.putString(KEY_PREF_STATE_LOCATION_NAME, statelocationName);
         editor.commit();
     }
 

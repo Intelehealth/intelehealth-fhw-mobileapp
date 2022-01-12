@@ -310,7 +310,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
                 // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
 
-                Intent intent2 = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
+                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
                 String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
                 intent2.putExtra("patientUuid", patientUuid);
 
@@ -982,7 +982,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     if (userRole.equals("Clinician") && vitalsPresent == false)
                         visitSummary = new Intent(PatientDetailActivity.this, VitalsActivity.class);
                     else if (userRole.equals("Nurse") && complaintPresent == false)
-                        visitSummary = new Intent(PatientDetailActivity.this, ComplaintNodeActivity.class);
+                        visitSummary = new Intent(PatientDetailActivity.this, VitalsActivity.class);
                     else if (end_datetime != null && !end_datetime.isEmpty())
                         visitSummary = new Intent(PatientDetailActivity.this, VisitSummaryActivity.class);
                     else
