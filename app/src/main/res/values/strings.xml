@@ -747,4 +747,7 @@
     <string name="no_presc_available">No Prescription Available</string>
     <string name="printing">Printing...</string>
 
+    //HIH-85
+    <string name="referral_patient">Referral Patient</string>
+
 </resources>
