@@ -61,6 +61,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -76,6 +77,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.apprtc.ChatActivity;
@@ -89,6 +91,12 @@ import org.intelehealth.unicef.activities.physcialExamActivity.PhysicalExamActiv
 import org.intelehealth.unicef.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.appointment.ScheduleListingActivity;
+import org.intelehealth.unicef.appointment.api.ApiClientAppointment;
+import org.intelehealth.unicef.appointment.dao.AppointmentDAO;
+import org.intelehealth.unicef.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.unicef.appointment.model.CancelRequest;
+import org.intelehealth.unicef.appointment.model.CancelResponse;
 import org.intelehealth.unicef.database.dao.EncounterDAO;
 import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
@@ -132,9 +140,14 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class VisitSummaryActivity extends AppCompatActivity {
 
     private static final String TAG = VisitSummaryActivity.class.getSimpleName();
+    private static final int SCHEDULE_LISTING_INTENT = 2001;
     private WebView mWebView;
     private LinearLayout mLayout;
 
@@ -307,6 +320,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         mCHWname = findViewById(R.id.chw_details);
         mCHWname.setText(sessionManager.getChwname()); //session manager provider
+        mCHWname.setText(getChwName(visitUuid));
         //Added Prescription Title from config.Json dynamically through sharedPreferences
         prescriptionHeader1 = sharedPreferences.getString("prescriptionTitle1", "");
         prescriptionHeader2 = sharedPreferences.getString("prescriptionTitle2", "");
@@ -437,6 +451,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         super.attachBaseContext(LocaleHelper.updateLocale(newBase, new SessionManager(newBase).getAppLanguage()));
     }
 
+    private TextView mDoctorAppointmentBookingTextView;
+    private TextView mCancelAppointmentBookingTextView;
+    private TextView mInfoAppointmentBookingTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -542,7 +559,44 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
         });
 
-//we can remove by data binding
+        //we can remove by data binding
+        mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
+        mCancelAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingCancel);
+        mInfoAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingInfo);
+        mCancelAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelAppointment();
+            }
+        });
+        mDoctorAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doQuery();
+                if (speciality_selected == null
+                        || speciality_selected.isEmpty()
+                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
+                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
+                ) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (isSynedFlag.equalsIgnoreCase("0")) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivityForResult(new Intent(VisitSummaryActivity.this, ScheduleListingActivity.class)
+                        .putExtra("visitUuid", visitUuid)
+                        .putExtra("patientUuid", patientUuid)
+                        .putExtra("patientName", patientName)
+                        .putExtra("appointmentId", mAppointmentId)
+                        .putExtra("openMrsId", patient.getOpenmrs_id())
+                        .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
+                );
+
+
+            }
+        });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
@@ -1623,6 +1677,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
+        getAppointmentDetails(visitUuid);
     }
 
     /**
@@ -1648,6 +1703,35 @@ public class VisitSummaryActivity extends AppCompatActivity {
         return isExists;
     }
 
+
+    private String getChwName(String visitUuid) {
+        String providerUuid = "";
+        String providerIDSelection = "visituuid = ?";
+        String[] providerIDArgs = {visitUuid};
+        final Cursor providerIDCursor = db.query("tbl_encounter", null, providerIDSelection, providerIDArgs, null, null, null);
+        if (providerIDCursor != null && providerIDCursor.moveToFirst() && providerIDCursor.getCount() > 0) {
+            providerIDCursor.moveToFirst();
+            providerUuid = providerIDCursor.getString(providerIDCursor.getColumnIndexOrThrow("provider_uuid"));
+        }
+        if (providerIDCursor != null) providerIDCursor.close();
+        String chw_name = getProviderName(providerUuid);
+        return chw_name;
+    }
+
+    private String getProviderName(String providerUuid) {
+        String chw_name = sessionManager.getChwname();
+        String providerIDSelection = "uuid = ?";
+        String[] providerIDArgs = {providerUuid};
+        final Cursor providerIDCursor = db.query("tbl_provider", null, providerIDSelection, providerIDArgs, null, null, null);
+        if (providerIDCursor != null && providerIDCursor.moveToFirst() && providerIDCursor.getCount() > 0) {
+            providerIDCursor.moveToFirst();
+            chw_name = providerIDCursor.getString(providerIDCursor.getColumnIndexOrThrow("given_name")) + " " +
+                    providerIDCursor.getString(providerIDCursor.getColumnIndexOrThrow("family_name"));
+        }
+        if (providerIDCursor != null) providerIDCursor.close();
+
+        return chw_name;
+    }
 
     private String convertCtoF(String temperature) {
 
@@ -2073,27 +2157,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
             //if(sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
-           // {
-                if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
-                }
-           // }else {
-                else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+            // {
+            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+            }
+            // }else {
+            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
-                 } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
-           // }
+            // }
         }
         String font_face = "<style>" +
                 "                @font-face {" +
@@ -2437,25 +2521,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-           // if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
-                }
-          //  } else {
-                else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
-                } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                    fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
-                }
-          //  }
+            // if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+            }
+            //  } else {
+            else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+            }
+            //  }
         }
         String font_face = "<style>" +
                 "                @font-face {" +
@@ -3477,33 +3561,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
     ClsDoctorDetails objClsDoctorDetails;
 
     private void parseDoctorDetails(String dbValue) {
-        Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
-        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+        try {
+            Gson gson = new Gson();
+            objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
+            Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
 
-        String doctorSign = "";
-        String doctrRegistartionNum = "";
-        // String docDigitallySign = "";
-        String doctorDetailStr = "";
-        if (objClsDoctorDetails != null) {
-            //  docDigitallySign = "Digitally Signed By";
+            String doctorSign = "";
+            String doctrRegistartionNum = "";
+            // String docDigitallySign = "";
+            String doctorDetailStr = "";
+            if (objClsDoctorDetails != null) {
+                //  docDigitallySign = "Digitally Signed By";
 //            mDoctorName.setVisibility(View.VISIBLE);
 //            mDoctorTitle.setVisibility(View.VISIBLE);
-            frameLayout_doctor.setVisibility(View.VISIBLE);
+                frameLayout_doctor.setVisibility(View.VISIBLE);
 
-            doctorSign = objClsDoctorDetails.getTextOfSign();
+                doctorSign = objClsDoctorDetails.getTextOfSign();
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
-                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
-                    // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
-                    "</div>";
+                doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+                doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                        "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+                        "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
+                        (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
+                        + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                        // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                        "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
+                        "</div>";
 
-            mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+                mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
         }
     }
 
@@ -3577,7 +3665,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         callBroadcastReceiver();
 
-
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
         ArrayList<File> fileList = new ArrayList<File>();
@@ -3606,6 +3693,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            File dir = new File(path);
 //            deleteRecursive(dir);
 //        }
+        // load the appointment details
+       // getAppointmentDetails(visitUuid);
     }
 
 //    public static void deleteRecursive(File fileOrDirectory) {
@@ -4061,5 +4150,134 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    private AppointmentDetailsResponse mAppointmentDetailsResponse;
+ private  int mAppointmentId = 0;
+    private void getAppointmentDetails(String visitUUID) {
+        mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+        mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
+        Log.v("VisitSummary", "getAppointmentDetails");
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getAppointmentDetails(visitUUID)
+                .enqueue(new Callback<AppointmentDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        if(response==null || response.body() == null) return;
+                        mAppointmentDetailsResponse = response.body();
+                        if(!mAppointmentDetailsResponse.isStatus()){
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                        if (mAppointmentDetailsResponse.getData() == null) {
+                            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+                            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+                            mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
+                            mAppointmentId = 0;
+                        } else {
+                            //-------------------insert into local db--------------------
+                            try {
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                appointmentDAO.insert(mAppointmentDetailsResponse.getData());
+                                mAppointmentId = mAppointmentDetailsResponse.getData().getId();
 
+                                mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
+                                mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
+                                        org.intelehealth.unicef.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(mContext).getAppLanguage()) + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotTime()
+                                );
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        checkAndDisplayAppointment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                        checkAndDisplayAppointment();
+                    }
+                });
+
+    }
+
+    private void checkAndDisplayAppointment() {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        boolean isCompletedOrExited = false;
+        try {
+            isCompletedOrExited = encounterDAO.isCompletedOrExited(visitUuid);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (isCompletedOrExited) {
+            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+            mDoctorAppointmentBookingTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private void cancelAppointment() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
+                //set positive button
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        CancelRequest request = new CancelRequest();
+                        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
+                        request.setId(mAppointmentDetailsResponse.getData().getId());
+                        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+                        ApiClientAppointment.getInstance(baseurl).getApi()
+                                .cancelAppointment(request)
+                                .enqueue(new Callback<CancelResponse>() {
+                                    @Override
+                                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                                        if(response.body() == null) return;
+                                        CancelResponse cancelResponse = response.body();
+                                        if(cancelResponse.isStatus()) {
+                                            AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                            //}
+
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                                        }else{
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                                        Log.v("onFailure", t.getMessage());
+                                    }
+                                });
+                    }
+                })
+                //set negative button
+                .setNegativeButton(mContext.getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SCHEDULE_LISTING_INTENT){
+            getAppointmentDetails(visitUuid);
+        }
+    }
 }
