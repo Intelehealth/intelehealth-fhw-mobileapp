@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
@@ -284,6 +285,27 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setSelected(true);
             } else {
                 currentNode.getOption(groupPosition).setUnselected();
+            }
+
+            Node rootNode = currentNode.getOption(groupPosition);
+            if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
+                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+
+                    }
+                }
+            }
+            Log.v(TAG, "rootNode - " + new Gson().toJson(rootNode));
+            if (!rootNode.isMultiChoice() || (rootNode.isMultiChoice() && question.isExcludedFromMultiChoice() && question.isSelected())) {
+                for (int i = 0; i < rootNode.getOptionsList().size(); i++) {
+                    Node childNode = rootNode.getOptionsList().get(i);
+                    if (!childNode.getId().equals(question.getId())) {
+                        currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
+                    }
+                }
+
             }
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
