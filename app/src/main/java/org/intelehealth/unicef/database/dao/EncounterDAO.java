@@ -7,22 +7,21 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.intelehealth.unicef.utilities.Logger;
-import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.models.dto.EncounterDTO;
 import org.intelehealth.unicef.models.dto.ObsDTO;
+import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.UuidDictionary;
 import org.intelehealth.unicef.utilities.exception.DAOException;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class EncounterDAO {
 
@@ -63,7 +62,7 @@ public class EncounterDAO {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            Log.d("VALUES:","VALUES: "+values);
+            Log.d("VALUES:", "VALUES: " + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -125,7 +124,7 @@ public class EncounterDAO {
         //Distinct keyword is used to remove all duplicate records.
         Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
-        Log.d("RAINBOW: ","RAINBOW: "+idCursor.getCount());
+        Log.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterDTO = new EncounterDTO();
@@ -133,9 +132,9 @@ public class EncounterDAO {
                 encounterDTO.setVisituuid(idCursor.getString(idCursor.getColumnIndexOrThrow("visituuid")));
                 encounterDTO.setEncounterTypeUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_type_uuid")));
                 encounterDTO.setProvideruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
-                Log.d("ENCO","ENCO_PROV: "+idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
+                Log.d("ENCO", "ENCO_PROV: " + idCursor.getString(idCursor.getColumnIndexOrThrow("provider_uuid")));
                 encounterDTO.setEncounterTime(idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
-                Log.d("ENCO","ENCO_TIME: "+idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
+                Log.d("ENCO", "ENCO_TIME: " + idCursor.getString(idCursor.getColumnIndexOrThrow("encounter_time")));
                 encounterDTO.setVoided(idCursor.getInt(idCursor.getColumnIndexOrThrow("voided")));
                 encounterDTO.setPrivacynotice_value(idCursor.getString(idCursor.getColumnIndexOrThrow("privacynotice_value")));
                 encounterDTOList.add(encounterDTO);
@@ -146,7 +145,7 @@ public class EncounterDAO {
         db.endTransaction();
 
         Gson gson = new Gson();
-        Log.d("ENC_GSON: ","ENC_GSON: "+gson.toJson(encounterDTOList));
+        Log.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
@@ -240,7 +239,7 @@ public class EncounterDAO {
             encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
             encounterDTO.setSyncd(false);
             encounterDTO.setProvideruuid(sessionManager.getProviderID());
-            Log.d("DTO","DTOdao: "+ encounterDTO.getProvideruuid());
+            Log.d("DTO", "DTOdao: " + encounterDTO.getProvideruuid());
 
             encounterDAO.createEncountersToDB(encounterDTO);
 
@@ -281,7 +280,6 @@ public class EncounterDAO {
     }
 
 
-
     public boolean updateEncounterModifiedDate(String encounterUuid) throws DAOException {
         boolean isUpdated = true;
         Logger.logD("encounterdao", "update encounter date and time" + encounterUuid + "" + AppConstants.dateAndTimeUtils.currentDateTime());
@@ -307,13 +305,14 @@ public class EncounterDAO {
 
         return isUpdated;
     }
+
     public void deleteByVisitUUID(String visitUuid) throws DAOException {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
 
         try {
-            db.delete("tbl_encounter","visituuid = ?",new String[] {visitUuid});
+            db.delete("tbl_encounter", "visituuid = ?", new String[]{visitUuid});
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -323,6 +322,7 @@ public class EncounterDAO {
         }
 
     }
+
     public EncounterDTO getEncounterByVisitUUID(String visitUUID) {
 
         SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -348,5 +348,30 @@ public class EncounterDAO {
         db.close();
 
         return encounterDTO;
+    }
+
+    public boolean isCompletedOrExited(String visitUUID) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+            // ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"
+            //ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30"
+
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_encounter where visituuid = ? and encounter_type_uuid in ('629a9d0b-48eb-405e-953d-a5964c88dc30','bd1fbfaa-f5fb-4ebd-b75c-564506fc309e') ", new String[]{visitUUID}); // ENCOUNTER_PATIENT_EXIT_SURVEY
+            EncounterDTO encounterDTO = new EncounterDTO();
+            if (idCursor.getCount() != 0) {
+                return true;
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return false;
     }
 }

@@ -19,17 +19,19 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.intelehealth.apprtc.ChatActivity;
+import org.intelehealth.apprtc.CompleteActivity;
 import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.utilities.OfflineLogin;
-import org.intelehealth.apprtc.ChatActivity;
-import org.intelehealth.apprtc.CompleteActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 
 /**
@@ -100,7 +102,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         }
                     }
                 }
-
 
 
                 in.putExtra("roomId", roomId);
@@ -249,6 +250,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
 
-        notificationManager.notify(1, notificationBuilder.build());
+        notificationManager.notify(createRandomCode(7), notificationBuilder.build());
+    }
+
+    public int createRandomCode(int codeLength) {
+        char[] chars = "1234567890".toCharArray();
+        StringBuilder sb = new StringBuilder();
+        Random random = new SecureRandom();
+        for (int i = 0; i < codeLength; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            sb.append(c);
+        }
+        return Integer.parseInt(sb.toString());
     }
 }

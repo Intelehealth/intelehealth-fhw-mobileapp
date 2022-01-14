@@ -314,14 +314,27 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             Node groupNode = mGroupNode.getOption(mGroupPos);
             if (groupNode == null) return;
 
+
             if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected()) || (groupNode.getText().equalsIgnoreCase("जुड़े लक्षण") && thisNode.isNoSelected()) || thisNode.isSelected()) {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
+                if (thisNode.getInputType().equalsIgnoreCase("camera")) {
+                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_white, 0, 0, 0);
+                } else {
+                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                }
             } else {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
                 //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
                 //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
+                if (thisNode.getInputType().equalsIgnoreCase("camera")) {
+                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_photo_camera_24_blue, 0, 0, 0);
+                } else {
+                    itemViewHolder.mChipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+
+                }
             }
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override

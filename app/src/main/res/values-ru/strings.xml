@@ -6,7 +6,7 @@
     <string name="hint_required" translatable="false">Обязательно</string>
     <string name="hint_optional" translatable="false">Необязательно</string>
     <string name="tag_optional" translatable="false">необязательно</string>
-    <string name="generic_ok">OK</string>
+    <string name="generic_ok">Ладно</string>
     <string name="generic_cancel">Отменить</string>
     <string name="generic_yes">Да</string>
     <string name="generic_no">Нет</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-<!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
+    <!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
     <string name="title_activity_login" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="prompt_email" translatable="false">Имя пользователя</string>
     <string name="prompt_password" translatable="false">Пароль</string>
@@ -273,7 +273,7 @@
     <string name="permission_camera_never_askagain" translatable="false">Разрешение доступа к камере было отклонено и больше не будет запрашиваться.</string>
     <string name="button_allow" translatable="false">Разрешить</string>
     <string name="button_deny" translatable="false">Запретить</string>
-    <string name="button_ok" translatable="false">OK</string>
+    <string name="button_ok" translatable="false">Ладно</string>
     <string name="button_cancel" translatable="false">Отменить</string>
     <string name="picture_taken" translatable="false">Снимок сделан</string>
     <string name="switch_flash" translatable="false">Переключить вспышку</string>
@@ -482,7 +482,7 @@
     <string name="end_all_visit">Завершить все посещения</string>
     <string name="filter_by_creator">Фильтр по создателю</string>
     <string name="planet_name">Название планеты</string>
-    <string name="ok">OK</string>
+    <string name="ok">Ладно</string>
     <string name="cancel">Отменить</string>
     <string name="unable_to_end">Невозможно закончить</string>
     <string name="upload_before_end_visit_active"> Посещения. Пожалуйста, загрузите посещение перед попыткой его завершения.</string>
@@ -591,7 +591,7 @@
     <string name="economic_values_missing">Экономические показатели отсутствуют</string>
     <string name="education_values_missing">Отсутствуют показатели образования</string>
     <string name="intelehealth_a_telemedicine_platform">Телемед KG - Приложение - это приложение по телемедицине, которое объединяет медицинских работников труднодоступных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
-<!--    <string name="intelehealth_name">Intelehealth</string>-->
+    <!--    <string name="intelehealth_name">Intelehealth</string>-->
     <string name="intelehealth_name">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="Ayu_name">Айя</string>
     <string name="close_button">Закрыть</string>
@@ -717,4 +717,29 @@
  \n\n
  Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>
+    <!--appointment module strings -->
+    <string name="book_appointment">Записаться на Прием</string>
+    <string name="reschedule_appointment">Перенесите Встречу</string>
+    <string name="appointment_booking_confirmation_txt">Вы уверены, что хотите забронировать это время?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Вы уверены, что хотите отменить встречу?</string>
+    <string name="cancel_appointment">Отменить встречу</string>
+    <string name="slot_empty_message">Записаться на прием невозможно</string>
+    <string name="appointment_empty_message">У Вас нету назначенных встреч!</string>
+    <string name="appointment_listing_title">Список назначенных встреч</string>
+    <string name="appointment_booking_title">Запись на прием</string>
+    <string name="appointment_for">Прием Для</string>
+    <string name="please_select_appointment_slot">Пожалуйста, выберите время для приема</string>
+    <string name="please_select_speciality">Пожалуйста, выберите специальность!</string>
+
+    <string name="doctor_appointments">Запись к врачу</string>
+    <string name="slot_info">Информация о слоте</string>
+    <string name="appointment_booked">Назначение забронировано</string>
+    <string name="minutes_txt">минут</string>
+    <string name="please_upload_visit">Пожалуйста, загрузите визит перед записью на прием.</string>
+    <string name="appointment_booked_successfully">Встреча успешно забронирована!</string>
+    <string name="appointment_booked_failed">Назначение не выполнено!</string>
+    <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
+    <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
+    <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
+
 </resources>

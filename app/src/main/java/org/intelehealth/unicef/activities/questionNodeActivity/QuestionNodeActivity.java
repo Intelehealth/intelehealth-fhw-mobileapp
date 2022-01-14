@@ -391,7 +391,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     intent.putExtra("tag", intentTag);
 
                     Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-                    Log.d(TAG, TAG+" - selectedExams - "+selectedExams);
+                    Log.d(TAG, TAG + " - selectedExams - " + selectedExams);
                     sessionManager.setVisitSummary(patientUuid, selectedExams);
 
                     startActivityForResult(intent, INTENT_FOR_PHY_EXAM);
@@ -631,7 +631,23 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
         // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
         //language ui
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            String a = currentNode.formQuestionAnswer(0);
+            Log.d("tag", a);
+            alertDialogBuilder.setMessage(Html.fromHtml(
+                    currentNode.formQuestionAnswer(0)
+                            .replace("Question not answered", getString(R.string.question_not_answered))
+                            .replace("Patient reports -", getString(R.string.patient_reports) + "-")
+                            .replace("Patient denies -", getString(R.string.patient_denies) + "-")
+                            .replace("Hours", getString(R.string.hour)).replace("Days", getString(R.string.days))
+                            .replace("Weeks", "Недели").replace("Months", getString(R.string.months))
+                            .replace("Years", getString(R.string.years))
+                            .replace("times per hour", getString(R.string.per_Hour))
+                            .replace("time per day", getString(R.string.per_Day))
+                            .replace("times per week", getString(R.string.per_Hour))
+                            .replace("times per month", getString(R.string.per_Month))
+                            .replace("times per year", getString(R.string.per_Year)) ));
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             String a = currentNode.formQuestionAnswer(0);
             Log.d("tag", a);
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)

@@ -152,7 +152,7 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
             TextView chip_yes;
                 TextView chip_No;
                 TextView symp;
-                LinearLayout linearLayout;
+                //LinearLayout linearLayout;
 
 
             public ItemViewHolder(@NonNull View itemView) {
@@ -160,7 +160,7 @@ public class AssociatedSysAdapter extends RecyclerView.Adapter<AssociatedSysAdap
                 symp = itemView.findViewById(R.id.symp);
                 chip_No = itemView.findViewById(R.id.chip_no);
                 chip_yes = itemView.findViewById(R.id.chip_yes);
-                linearLayout=itemView.findViewById(R.id.LL_associated);
+                //linearLayout=itemView.findViewById(R.id.LL_associated);
             }
         }
 

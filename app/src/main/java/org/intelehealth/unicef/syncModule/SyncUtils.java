@@ -7,6 +7,7 @@ import androidx.work.WorkManager;
 
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.appointment.sync.AppointmentSync;
 import org.intelehealth.unicef.database.dao.ImagesPushDAO;
 import org.intelehealth.unicef.database.dao.SyncDAO;
 import org.intelehealth.unicef.utilities.Logger;
@@ -16,8 +17,10 @@ public class SyncUtils {
 
 
     private static final String TAG = SyncUtils.class.getSimpleName();
+
     /**
      * This method will be responsible for initial sync/setup
+     *
      * @param fromActivity
      */
     public void initialSync(String fromActivity) {
@@ -26,8 +29,11 @@ public class SyncUtils {
         Logger.logD(TAG, "Pull Started");
         syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
         Logger.logD(TAG, "Pull ended");
+        // sync data
+        AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
 
     }
+
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
@@ -90,7 +96,7 @@ public class SyncUtils {
         imagesPushDAO.patientProfileImagesPush();
 
 //        imagesPushDAO.obsImagesPush();
-        
+
         /*
          * Handler is added for pushing image in sync foreground
          * to fix the issue of Phy exam and additional images not showing up sometimes
