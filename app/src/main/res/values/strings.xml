@@ -754,4 +754,9 @@
     <string name="reason_optional">Reason (Optional)</string>
     <string name="choose_a_date">Choose a date</string>
     <string name="follow_up_remark">Follow up remark</string>
+
+    //UK-62
+    <string name="what_to_do_next">What do you wish to do next?</string>
+    <string name="sign_submit">Sign and Submit</string>
+    <string name="edit_presc">Edit Prescription</string>
 </resources>

@@ -1,8 +1,12 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
 import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_PROVIDER;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.OBS_DOCTORDETAILS;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -112,6 +116,7 @@ import org.intelehealth.unicef.models.dto.RTCConnectionDTO;
 import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.Ob;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.services.DownloadService;
@@ -149,6 +154,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -269,6 +275,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
     Base64Utils base64Utils = new Base64Utils();
+
+    EndVisitEncounterPrescription visitCompleteStatus;
+
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -491,6 +500,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
+
+
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -583,6 +594,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+
+        if(getVisitCompleteStatus(visitUuid))
+            btnSignSubmit.setVisibility(View.GONE);
+
 
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -1634,6 +1649,41 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
+    }
+
+    private boolean getVisitCompleteStatus(String visitUuid) {
+        boolean visitCompleteStatus = false;
+        String visitComplete = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")).equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                    visitComplete = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        if (encounterCursor != null) {
+            encounterCursor.close();
+        }
+        if(!visitComplete.equalsIgnoreCase(""))
+        {
+            String[] columns = {"value", " conceptuuid"};
+            String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+            String[] visitArgs = {visitComplete, "0", "TRUE"}; // so that the deleted values dont come in the presc.
+            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+            if (visitCursor.moveToFirst()) {
+                do {
+                    visitCompleteStatus = true; //if visit complete encounter is present...
+                } while (visitCursor.moveToNext());
+            }
+            visitCursor.close();
+
+        }
+        return visitCompleteStatus;
     }
 
     private void showSelectSpeciliatyErrorDialog() {
@@ -3706,36 +3756,159 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         // Visit is uploaded but Prescription is already given...
-       /* if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
-            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }*/
+       if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
 
-        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
-            startvisitnoteApiCall();
-        } else {
-            Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
-            visitSummary.putExtra("visitUuid", visitUUID);
-            visitSummary.putExtra("patientUuid", patientUuid);
-            visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
-            visitSummary.putExtra("encounterUuidVitals", encounterVitals);
-            visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
-            visitSummary.putExtra("name", patientName);
-            visitSummary.putExtra("gender", genderView.getText());
-            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-            visitSummary.putExtra("tag", intentTag);
-            visitSummary.putExtra("pastVisit", isPastVisit);
-            if (hasPrescription.equalsIgnoreCase("true")) {
-                visitSummary.putExtra("hasPrescription", "true");
-            } else {
-                visitSummary.putExtra("hasPrescription", "false");
-            }
-            startActivity(visitSummary);
-        }
+           MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+           alertDialogBuilder.setMessage(getResources().getString(R.string.what_to_do_next));
+           alertDialogBuilder.setNegativeButton(getResources().getString(R.string.sign_and_submit), new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   markVisitComplete();
+               }
+           });
+           alertDialogBuilder.setPositiveButton(getResources().getString(R.string.edit_presc), new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   dialog.dismiss();
+                   startPrescActivity();
+               }
+           });
+           AlertDialog alertDialog = alertDialogBuilder.create();
+           alertDialog.show();
+           Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+           pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+           pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+           Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+           nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+           nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+           IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+       }
+       else {
+           if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+               startvisitnoteApiCall();
+           } else {
+               startPrescActivity();
+           }
+       }
 
     }
+
+    private void startPrescActivity() {
+        Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+        visitSummary.putExtra("visitUuid", visitUUID);
+        visitSummary.putExtra("patientUuid", patientUuid);
+        visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
+        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+        visitSummary.putExtra("name", patientName);
+        visitSummary.putExtra("gender", genderView.getText());
+        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+        visitSummary.putExtra("tag", intentTag);
+        visitSummary.putExtra("pastVisit", isPastVisit);
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            visitSummary.putExtra("hasPrescription", "true");
+        } else {
+            visitSummary.putExtra("hasPrescription", "false");
+        }
+        startActivity(visitSummary);
+    }
+
+    private void markVisitComplete() {
+        // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        visitCompleteStatus = getVisitCompleteDataModel();
+        // String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
+
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<ResponseBody> responseBodyObservable = apiService.OBS_SIGNANDSUBMIT_STATUS(
+                url, visitCompleteStatus, "Basic " + encoded);
+        responseBodyObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull ResponseBody responseBody) {
+                        // status is received...
+                        SyncUtils syncUtils = new SyncUtils();
+                        syncUtils.syncForeground("downloadPrescription");
+                        showDialogForHomeScreen();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("pres", "signandsubmit: " + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("pres", "signandsubmitcomplete: ");
+                    }
+                });
+    }
+
+    private void showDialogForHomeScreen() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.prescGivenSuccessfully);
+        alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private EndVisitEncounterPrescription getVisitCompleteDataModel() {
+        ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+        doctorDetails.setWhatsapp("7005308163");
+        doctorDetails.setPhoneNumber("7005308163");
+        doctorDetails.setFontOfSign("Pacifico");
+        doctorDetails.setName("Demo doctor1");
+        doctorDetails.setSpecialization("Neurologist");
+        doctorDetails.setTextOfSign("Dr. Demo 1");
+
+        String drDetails = new Gson().toJson(doctorDetails);
+        List<Ob> obList = new ArrayList<>();
+        Ob ob = new Ob();
+        ob.setConcept(OBS_DOCTORDETAILS);
+        ob.setValue(drDetails);
+        Log.v("drdetail", "drdetail: " + drDetails);
+        obList.add(ob);
+
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+        encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
+        encounterProvider.setProvider(ENCOUNTER_DR_PROVIDER); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUuid);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_COMPLETE);
+        datamodel.setObs(obList);
+
+        Log.v("presbody", "newsubmit: " + new Gson().toJson(datamodel));
+        return datamodel;
+    }
+
 
     public void startvisitnoteApiCall() {
         String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
@@ -4007,6 +4180,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //checks if prescription is downloaded and if so then sets the icon color.
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+                    btnSignSubmit.setText("Edit Prescription");
                 }
                 //disable the Start Visit Note button if the prescription is already given...
                 if (hasPrescription.equalsIgnoreCase("true")) {
@@ -4070,6 +4244,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //checks if prescription is downloaded and if so then sets the icon color.
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+            btnSignSubmit.setText("Edit Prescription");
         }
         //disable the Start Visit Note button if the prescription is already given...
         if (hasPrescription.equalsIgnoreCase("true")) {
