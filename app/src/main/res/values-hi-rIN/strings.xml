@@ -73,6 +73,7 @@
     <string name="menu_option_settings">सेट्टिंग्स</string>
     <string name="menu_option_end_of_day">दिन के अंत मे</string>
     <string name="menu_option_logout">लॉग आउट</string>
+    <string name="menu_option_hw_profile" translatable="false">उपयोगकर्ता प्रोफ़ाइल</string>
 
 
     //Identification Screen
@@ -675,4 +676,13 @@
     <string name="and_enter_your_patient_id">" और अपनी रोगी आईडी दर्ज करें - "</string>
 
     <string name="identification_screen_prompt_village">गांव *</string>
+
+    //----------hw profile strings--------------------
+    <string name="hw_location">स्थान</string>
+    <string name="hw_name">नाम</string>
+    <string name="hw_totalpatient" translatable="false">रोगी पंजीकृत</string>
+    <string name="hw_completeconsultation" translatable="false">पूर्ण परामर्श</string>
+    <string name="hw_visitprogress" translatable="false">विज़िट्स प्रोग्रेस</string>
+    <string name="hw_visits" translatable="false">टोटल विज़िट्स</string>
+
 </resources>

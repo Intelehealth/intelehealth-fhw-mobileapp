@@ -73,6 +73,7 @@
     <string name="menu_option_settings" translatable="false">Settings</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
+    <string name="menu_option_hw_profile" translatable="false">User Profile</string>
 
 
     //Identification Screen
@@ -677,4 +678,13 @@
     <string name="warning_app_update">Please update the app to the latest version.</string>
 
     <string name="identification_screen_prompt_village">Village *</string>
+
+    //----------hw profile strings--------------------
+    <string name="hw_location">Location</string>
+    <string name="hw_name" translatable="false">Name</string>
+    <string name="hw_totalpatient" translatable="false">Patients Registered</string>
+    <string name="hw_completeconsultation" translatable="false">Completed Consultations</string>
+    <string name="hw_visitprogress" translatable="false">Visit Progress</string>
+    <string name="hw_visits" translatable="false">Total Visits</string>
+
 </resources>

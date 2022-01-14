@@ -11,6 +11,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -29,16 +31,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalarogya.models.dto.PatientDTO;
+import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +56,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -116,12 +126,17 @@ public class HomeActivity extends AppCompatActivity {
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
 
+    DrawerLayout mDrawerLayout;
+    NavigationView navView;
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.main_home_activity);
+        //setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -143,7 +158,7 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        checkAppVer();  //auto-update feature.
+        //checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
@@ -279,8 +294,10 @@ public class HomeActivity extends AppCompatActivity {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
 
-
         showProgressbar();
+
+        mDrawerLayout = findViewById(R.id.drawer);
+        navView = findViewById(R.id.navView);
     }
 
     //function for handling the video library feature...
@@ -386,6 +403,12 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
+            case R.id.userProfileOption:
+                //------slider menu option-----
+                mDrawerLayout.openDrawer(navView);
+
+                return true;
+
             case R.id.settingsOption:
                 settings();
                 return true;
@@ -563,11 +586,77 @@ public class HomeActivity extends AppCompatActivity {
         //registerReceiver(syncBroadcastReceiver, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-                && Locale.getDefault().toString().equals("en")) {
+//        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
+//                && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
-        }
+//        }
+        getHw_Information();
+
         super.onResume();
+    }
+
+    public void getHw_Information(){
+
+        TextView hw_name_value=(TextView)findViewById(R.id.hw_name_value);
+        TextView hw_gender_value=(TextView)findViewById(R.id.hw_gender_value);
+        TextView hw_location_value=(TextView)findViewById(R.id.hw_location_value);
+
+        TextView hw_patientregister_value=(TextView)findViewById(R.id.hw_patientregister_value);
+        TextView hw_visits_value=(TextView)findViewById(R.id.hw_visits_value);
+        TextView hw_completeconsultaion_value=(TextView)findViewById(R.id.hw_completeconsultaion_value);
+        TextView hw_visitprogress_value=(TextView)findViewById(R.id.hw_visitprogress_value);
+        HashMap<String,Integer> hw_details= getHwDetails();
+
+        hw_name_value.setText(": "+sessionManager.getChwname());
+        hw_location_value.setText(": "+sessionManager.getLocationName());
+        hw_patientregister_value.setText(hw_details.get("patientregistered")+"");
+        hw_visits_value.setText(hw_details.get("totalvisits")+"");
+        hw_completeconsultaion_value.setText(hw_details.get("completeconsultation")+"");
+        hw_visitprogress_value.setText(hw_details.get("visitinprogress")+"");
+    }
+
+    public HashMap<String, Integer> getHwDetails(){
+        HashMap<String, Integer> hw_detial=new HashMap<>();
+        int totalpatinet=0, totalactivevisit=0, totalvisit=0,totalcompletevisit=0 ;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        String table = "tbl_patient";
+        Cursor patientCursor = db.rawQuery("SELECT * FROM " + table, null);
+        table="tbl_visit";
+        Cursor visitCursor = db.rawQuery("SELECT enddate FROM " + table, null);
+
+        try {
+            if(patientCursor!=null){
+             totalpatinet=patientCursor.getCount();
+            }
+            patientCursor.close();
+            if(visitCursor!=null){
+                totalvisit=visitCursor.getCount();
+                if (totalvisit != 0) {
+                    while (visitCursor.moveToNext()) {
+                        if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"))!=null){
+                            totalcompletevisit=totalcompletevisit+1;
+                        }else{
+                            totalactivevisit=totalactivevisit+1;
+                        }
+                    }
+                }
+            }
+            visitCursor.close();
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }finally {
+            if(db != null && db.inTransaction()){
+                db.endTransaction();
+            }
+        }
+        hw_detial.put("patientregistered",totalpatinet);
+        hw_detial.put("totalvisits",totalvisit);
+        hw_detial.put("visitinprogress",totalactivevisit);
+        hw_detial.put("completeconsultation",totalcompletevisit);
+
+        return hw_detial;
     }
 
     @Override
@@ -789,6 +878,7 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -845,6 +935,5 @@ public class HomeActivity extends AppCompatActivity {
         );
 
     }
-
 
 }
