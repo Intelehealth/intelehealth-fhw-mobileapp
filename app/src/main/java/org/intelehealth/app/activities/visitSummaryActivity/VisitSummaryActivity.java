@@ -3885,7 +3885,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
-                    card_givenmedicine.setVisibility(View.VISIBLE);
+                    //card_givenmedicine.setVisibility(View.VISIBLE);
                 }
                 prescriptionTextView.setText(rxReturned);
                 //checkForDoctor();
