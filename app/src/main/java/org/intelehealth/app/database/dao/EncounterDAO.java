@@ -56,6 +56,7 @@ public class EncounterDAO {
 
             values.put("uuid", encounter.getUuid());
             values.put("visituuid", encounter.getVisituuid());
+            values.put("encounter_time", encounter.getEncounterTime());
             values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
             values.put("provider_uuid", encounter.getProvideruuid());
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
