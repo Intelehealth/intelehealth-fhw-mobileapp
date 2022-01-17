@@ -293,7 +293,6 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     Node childNode = rootNode.getOptionsList().get(i);
                     if (childNode.isSelected() && childNode.isExcludedFromMultiChoice()) {
                         currentNode.getOption(groupPosition).getOptionsList().get(i).setUnselected();
-
                     }
                 }
             }
@@ -609,6 +608,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 assoSympObj.put("display-ru", "У вас есть следующие симптомы?");
                 assoSympObj.put("pos-condition", "c.");
                 assoSympObj.put("neg-condition", "s.");
+                assoSympObj.put("multi-choice", true);
                 assoSympArr.put(0, assoSympObj);
                 finalAssoSympObj.put("id", "ID_844006222");
                 finalAssoSympObj.put("text", "Associated symptoms");
