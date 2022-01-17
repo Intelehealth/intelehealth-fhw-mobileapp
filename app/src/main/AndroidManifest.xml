@@ -42,6 +42,15 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
         <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"></activity>
 
+        <activity
+            android:name=".appointment.AppointmentListingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".appointment.ScheduleListingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
         <receiver
             android:name=".utilities.RTCMessageReceiver"
             android:enabled="true"

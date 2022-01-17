@@ -31,6 +31,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -80,6 +81,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.appointment.ScheduleListingActivity;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.app.appointment.model.CancelRequest;
+import org.intelehealth.app.appointment.model.CancelResponse;
 import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -135,6 +142,10 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -535,6 +546,45 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
 //we can remove by data binding
+
+        //we can remove by data binding
+        mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
+        mCancelAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingCancel);
+        mInfoAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingInfo);
+        mCancelAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelAppointment();
+            }
+        });
+        mDoctorAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doQuery();
+                if (speciality_selected == null
+                        || speciality_selected.isEmpty()
+                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
+                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
+                ) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (isSynedFlag.equalsIgnoreCase("0")) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivityForResult(new Intent(VisitSummaryActivity.this, ScheduleListingActivity.class)
+                        .putExtra("visitUuid", visitUuid)
+                        .putExtra("patientUuid", patientUuid)
+                        .putExtra("patientName", patientName)
+                        .putExtra("appointmentId", mAppointmentId)
+                        .putExtra("openMrsId", patient.getOpenmrs_id())
+                        .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
+                );
+
+
+            }
+        });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
@@ -4122,5 +4172,141 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    private AppointmentDetailsResponse mAppointmentDetailsResponse;
+    private  int mAppointmentId = 0;
+    private TextView mDoctorAppointmentBookingTextView;
+    private TextView mCancelAppointmentBookingTextView;
+    private TextView mInfoAppointmentBookingTextView;
 
+    private static final int SCHEDULE_LISTING_INTENT = 2001;
+
+    private void getAppointmentDetails(String visitUUID) {
+        mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+        mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
+        Log.v("VisitSummary", "getAppointmentDetails");
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getAppointmentDetails(visitUUID)
+                .enqueue(new Callback<AppointmentDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        if(response==null || response.body() == null) return;
+                        mAppointmentDetailsResponse = response.body();
+                        if(!mAppointmentDetailsResponse.isStatus()){
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                        if (mAppointmentDetailsResponse.getData() == null) {
+                            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+                            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+                            mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
+                            mAppointmentId = 0;
+                        } else {
+                            //-------------------insert into local db--------------------
+                            try {
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                appointmentDAO.insert(mAppointmentDetailsResponse.getData());
+                                mAppointmentId = mAppointmentDetailsResponse.getData().getId();
+
+                                mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
+                                mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
+                                        org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotTime()
+                                );
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        checkAndDisplayAppointment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                        checkAndDisplayAppointment();
+                    }
+                });
+
+    }
+
+    private void checkAndDisplayAppointment() {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        boolean isCompletedOrExited = false;
+        try {
+            isCompletedOrExited = encounterDAO.isCompletedOrExited(visitUuid);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (isCompletedOrExited) {
+            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+            mDoctorAppointmentBookingTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private void cancelAppointment() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
+                //set positive button
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        CancelRequest request = new CancelRequest();
+                        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
+                        request.setId(mAppointmentDetailsResponse.getData().getId());
+                        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+                        ApiClientAppointment.getInstance(baseurl).getApi()
+                                .cancelAppointment(request)
+                                .enqueue(new Callback<CancelResponse>() {
+                                    @Override
+                                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                                        if(response.body() == null) return;
+                                        CancelResponse cancelResponse = response.body();
+                                        if(cancelResponse.isStatus()) {
+                                            AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                            //}
+
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                                        }else{
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                                        Log.v("onFailure", t.getMessage());
+                                    }
+                                });
+                    }
+                })
+                //set negative button
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SCHEDULE_LISTING_INTENT){
+            getAppointmentDetails(visitUuid);
+        }
+    }
 }
