@@ -387,7 +387,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 //            country1 = obj.getString("mCountry");
 //            state = obj.getString("mState");
-            country1 = sessionManager.getAppLanguage().equals("ru") ? "Кыргызстан" : "Kyrgyzstan";
+            country1 = patient1!=null ? patient1.getCountry():"";
+            country1 = country1==null || country1.isEmpty() ? sessionManager.getAppLanguage().equals("ru") ? "Кыргызстан" : "Kyrgyzstan" : country1;
             if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("Индия")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
                 ((TextView) findViewById(R.id.country_code_tv)).setText("+91");
