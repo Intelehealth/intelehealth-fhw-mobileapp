@@ -355,18 +355,23 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
 
                     String toInsert = node.getText() + " : " + familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
-                    toInsert = toInsert.replaceAll(" - ", ", ");
+                    //toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
+                    toInsert = toInsert.replaceAll(" : ", " <br/> ");
+                    toInsert = toInsert.replaceAll(" - ", " : ");
                     if (StringUtils.right(toInsert, 2).equals(", ")) {
                         toInsert = toInsert.substring(0, toInsert.length() - 2);
                     }
-                    toInsert = toInsert + ".<br/>";
+                    toInsert = toInsert+ ".<br/>";
+                    toInsert = toInsert.replaceAll("\\. ","<br/>");
+                    toInsert = toInsert.replaceAll("\\. ","");
                     insertionList.add(toInsert);
 
                     if (node.getOptionsList() != null) {
                         for (Node node1 : node.getOptionsList()) {
                             if (node1.isSelected()) {
-                                val = val + Node.bullet + node1.findDisplay() + " - ";
+                                //val = val + Node.bullet + node1.findDisplay() + " - ";
+                                val = val + Node.bullet + node1.findDisplay() + " : ";
                                 if (node1.getOptionsList() != null) {
                                     for (Node node2 : node1.getOptionsList()) {
                                         if (node2.isSelected()) {
@@ -381,14 +386,17 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                         val = val + Node.bullet + node.findDisplay();
                     }
 
-                    String toInsertDisplay = node.findDisplay() + " : " + val;
+                    String toInsertDisplay = node.findDisplay() + " <br/> " + val;
                     toInsertDisplay = toInsertDisplay.replaceAll(Node.bullet, "");
                     toInsertDisplay = toInsertDisplay.replaceAll(" - ", ", ");
+                    //toInsertDisplay = toInsertDisplay.replaceAll(" - ", " : ");
                     toInsertDisplay = toInsertDisplay.replaceAll(", ." + "<br/>", ". ");
                     if (StringUtils.right(toInsertDisplay, 2).equals(", ")) {
                         toInsertDisplay = toInsertDisplay.substring(0, toInsertDisplay.length() - 2);
                     }
-                    toInsertDisplay = toInsertDisplay + ".<br/>";
+                    toInsertDisplay = toInsertDisplay.trim() + ".<br/>";
+                    toInsertDisplay = toInsertDisplay.replaceAll("\\. "," <br/>");
+                    //toInsertDisplay = toInsertDisplay.replaceAll("\\.<br>","");
                     displayList.add(toInsertDisplay);
                 }
             }
