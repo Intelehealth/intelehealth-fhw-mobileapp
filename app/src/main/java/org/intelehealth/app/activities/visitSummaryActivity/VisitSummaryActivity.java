@@ -4884,13 +4884,13 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                do {
                    String encountertime = encCursor.getString(encCursor.getColumnIndex("encounter_time"));
                    String oldFormat = "yyyy-MM-dd hh:mm:ss";
-                   String newFormat = "dd MMM yyyy hh:mm aa";
+                   String newFormat = "dd-MMM-yyyy, hh:mm aa";
 
                    SimpleDateFormat sdf1 = new SimpleDateFormat(oldFormat,Locale.ENGLISH);
                    SimpleDateFormat sdf2 = new SimpleDateFormat(newFormat,Locale.ENGLISH);
                    try {
                        System.out.println(sdf2.format(sdf1.parse(encountertime)));
-                       heading2 = heading2 + "<br/>Date/Time: " + sdf2.format(sdf1.parse(encountertime));
+                       heading2 = heading2 + "<br/>" + sdf2.format(sdf1.parse(encountertime));
                    } catch (ParseException e) {
                        // TODO Auto-generated catch block
                        e.printStackTrace();
