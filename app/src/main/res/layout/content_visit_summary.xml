@@ -1024,16 +1024,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/doctor_details_cardview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/padding_card"
-                android:layout_marginBottom="@dimen/padding_card"
-                app:cardCornerRadius="@dimen/card_corner_radius"
-                app:cardElevation="2dp"
-                app:cardUseCompatPadding="true">
+    <androidx.cardview.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/doctor_details_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_card"
+        android:layout_marginBottom="@dimen/padding_card"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1510,6 +1511,23 @@
              android:textAlignment="center"
              android:textColor="@android:color/white"
              android:textSize="20sp" />-->
+
+
+        <Button
+             android:id="@+id/btnSignSubmit"
+             style="@style/SelectableItemBackground"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="@color/colorPrimary"
+             android:fontFamily="@font/lato_bold"
+             android:foreground="?android:attr/selectableItemBackground"
+             android:gravity="center"
+             android:text="@string/startVisitNote"
+             android:layout_marginVertical="16dp"
+             android:onClick="signAndSubmit"
+             android:textAlignment="center"
+             android:textColor="@android:color/white"
+             android:textSize="20sp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

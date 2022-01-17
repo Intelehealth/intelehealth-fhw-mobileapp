@@ -1,5 +1,5 @@
 
-package org.intelehealth.unicef.models.uploadSurvey;
+package org.intelehealth.unicef.models.prescriptionUpload;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
