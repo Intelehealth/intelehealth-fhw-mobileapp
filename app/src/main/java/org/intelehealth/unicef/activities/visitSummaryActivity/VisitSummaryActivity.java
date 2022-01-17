@@ -2112,6 +2112,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String advice_web = "";
         /*if (medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
                 medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {*/
+
         String advice_doctor__ = medicalAdviceTextView.getText().toString()
                 .replace("Start Audio Call with Doctor", "Start Audio Call with Doctor_")
                 .replace("Start WhatsApp Call with Doctor", "Start WhatsApp Call with Doctor_");
