@@ -6,7 +6,7 @@ import android.content.Intent;
 
 public abstract class NetworkChangeListener extends BroadcastReceiver {
 
-    // Default no-args constructor added to avoid bug of no-instance exception
+    // Default no-args constructor added to avoid bug of no-instance exception - Prajwal
     public NetworkChangeListener() {
 
     }
