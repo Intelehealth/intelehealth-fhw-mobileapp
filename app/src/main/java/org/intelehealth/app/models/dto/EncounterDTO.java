@@ -14,9 +14,9 @@ public class EncounterDTO {
     @SerializedName("encounter_type_uuid")
     @Expose
     private String encounterTypeUuid;
-    @SerializedName("encounter_time")
+    @SerializedName("encountertime")
     @Expose
-    private String encounterTime;
+    private String encountertime;
     @SerializedName("provider_uuid")
     @Expose
     private String provideruuid;
@@ -73,11 +73,11 @@ public class EncounterDTO {
     }
 
     public String getEncounterTime() {
-        return encounterTime;
+        return encountertime;
     }
 
-    public void setEncounterTime(String encounterTime) {
-        this.encounterTime = encounterTime;
+    public void setEncounterTime(String encountertime) {
+        this.encountertime = encountertime;
     }
 
     public String getProvideruuid() {
