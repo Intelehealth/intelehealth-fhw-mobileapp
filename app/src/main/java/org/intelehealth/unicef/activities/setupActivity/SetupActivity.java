@@ -200,7 +200,8 @@ public class SetupActivity extends AppCompatActivity {
             @Override
             protected void onNetworkChange(String[] status) {
                 Snackbar.make(coordinatorLayout, status[0], Snackbar.LENGTH_SHORT)
-                        .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) : getResources().getColor(R.color.green3))
+                        .setBackgroundTint(Integer.parseInt(status[1]) == 0 ? getResources().getColor(R.color.red) :
+                                getResources().getColor(R.color.green3))
                         .setTextColor(getResources().getColor(R.color.white)).show();
             }
         };

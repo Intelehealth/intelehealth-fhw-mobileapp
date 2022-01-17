@@ -30,6 +30,7 @@ import org.intelehealth.unicef.activities.loginActivity.LoginActivity;
 import org.intelehealth.unicef.dataMigration.SmoothUpgrade;
 import org.intelehealth.unicef.services.firebase_services.TokenRefreshUtils;
 import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.NetworkConnection;
 import org.intelehealth.unicef.utilities.SessionManager;
 
 import java.util.List;
@@ -56,9 +57,13 @@ public class SplashActivity extends AppCompatActivity {
             config.locale = locale;
             getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         }
-        // refresh the fcm token
-        TokenRefreshUtils.refreshToken(this);
-        initFirebaseRemoteConfig();
+
+        // If during refreshing/initiating firebase token; if internet is off in that case the non-fatal event was observed - Prajwal
+        if (NetworkConnection.isOnline(getApplication())) {
+            // refresh the fcm token
+            TokenRefreshUtils.refreshToken(this);
+            initFirebaseRemoteConfig();
+        }
     }
 
     private void initFirebaseRemoteConfig() {
