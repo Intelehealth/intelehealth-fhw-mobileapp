@@ -347,11 +347,11 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             fhistory = "";
         }
 
-        String val = "";
+        String val = "", val_insert="";
         if (familyHistoryMap.anySubSelected()) {
             for (Node node : familyHistoryMap.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = node.generateLanguage();
+                    /*String familyString = node.generateLanguage();
 
                     String toInsert = node.getText() + " : " + familyString;
                     toInsert = toInsert.replaceAll(Node.bullet, "");
@@ -364,26 +364,40 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     }
                     toInsert = toInsert+ ".<br/>";
                     toInsert = toInsert.replaceAll("\\. ","<br/>");
-                    toInsert = toInsert.replaceAll("\\. ","");
-                    insertionList.add(toInsert);
+                    toInsert = toInsert.replaceAll(": \\.",":");
+                    insertionList.add(toInsert);*/
 
                     if (node.getOptionsList() != null) {
                         for (Node node1 : node.getOptionsList()) {
                             if (node1.isSelected()) {
                                 //val = val + Node.bullet + node1.findDisplay() + " - ";
                                 val = val + Node.bullet + node1.findDisplay() + " : ";
+                                val_insert=val_insert + Node.bullet + node1.getLanguage() + " : ";
                                 if (node1.getOptionsList() != null) {
                                     for (Node node2 : node1.getOptionsList()) {
                                         if (node2.isSelected()) {
-                                            val = val + node2.findDisplay() + " - ";
+                                           if(!node2.findDisplay().contains("[")) {
+                                               val = val + node2.findDisplay() + " - ";
+                                               val_insert=val_insert + node2.getLanguage() + " - ";
+                                           }else{
+                                               //if(node2.getLanguage().length()!=0){
+                                               val = val + node2.getLanguage() + " - ";
+                                               val_insert=val_insert + node2.getLanguage() + " - ";
+                                               /*}else{
+                                                   val = val + node2.getLanguage() + " - ";
+                                                   val_insert=val_insert + node2.getLanguage() + " - ";
+                                               }*/
+                                           }
                                         }
                                     }
                                 }
                                 val = val + ".<br/>";
+                                val_insert=val_insert + ".<br/>";
                             }
                         }
                     } else {
                         val = val + Node.bullet + node.findDisplay();
+                        val_insert=val_insert + Node.bullet + node.getLanguage();
                     }
 
                     String toInsertDisplay = node.findDisplay() + " <br/> " + val;
@@ -394,10 +408,25 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     if (StringUtils.right(toInsertDisplay, 2).equals(", ")) {
                         toInsertDisplay = toInsertDisplay.substring(0, toInsertDisplay.length() - 2);
                     }
-                    toInsertDisplay = toInsertDisplay.trim() + ".<br/>";
-                    toInsertDisplay = toInsertDisplay.replaceAll("\\. "," <br/>");
-                    //toInsertDisplay = toInsertDisplay.replaceAll("\\.<br>","");
+                    //toInsertDisplay = toInsertDisplay.trim() + ".<br/>";
+                    toInsertDisplay = toInsertDisplay.replaceAll(": \\.",":<br/>");
+                    toInsertDisplay = toInsertDisplay.replaceAll("\\. ","<br/>");
+                    toInsertDisplay = toInsertDisplay.replaceAll("<br/><br/>","<br/>");
                     displayList.add(toInsertDisplay);
+
+                    String toInsert = node.getText() + " <br/> " + val_insert;
+                    toInsert = toInsert.replaceAll(Node.bullet, "");
+                    toInsert = toInsert.replaceAll(" - ", ", ");
+                    //toInsertDisplay = toInsertDisplay.replaceAll(" - ", " : ");
+                    toInsert = toInsert.replaceAll(", ." + "<br/>", ". ");
+                    if (StringUtils.right(toInsert, 2).equals(", ")) {
+                        toInsert = toInsert.substring(0, toInsert.length() - 2);
+                    }
+                    //toInsertDisplay = toInsertDisplay.trim() + ".<br/>";
+                    toInsert = toInsert.replaceAll(": \\.",":<br/>");
+                    toInsert = toInsert.replaceAll("\\. ","<br/>");
+                    toInsert = toInsert.replaceAll("<br/><br/>","<br/>");
+                    insertionList.add(toInsert);
                 }
             }
         }
@@ -424,10 +453,10 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
         }
 
         if (intentTag != null && intentTag.equals("edit")) {
-            if (!insertion.isEmpty() && !insertion.contains(":.") && !insertion.contains(": <br/>")) {
+            if (!insertion.isEmpty() && !insertion.contains(":.") && !insertion.contains(": <br/>") && !insertion.endsWith("? <br/> ")) {
                 ConfirmationDialog(insertion, displayStr);
             } else {
-                if (insertion.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>")){
+                if (insertion.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>") || insertion.endsWith("? <br/> ")){
                     insertion="";
                     updateDatabase(insertion);
                 }else{
@@ -457,10 +486,10 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                     fhistory = fhistory + "";
                     fhistoryDisplayStr = fhistoryDisplayStr + "";
                 }
-                if (!fhistory.isEmpty() && !insertion.contains(":.") && !insertion.contains(": <br/>")) {
+                if (!fhistory.isEmpty() && !insertion.contains(":.") && !insertion.contains(": <br/>") && !insertion.endsWith("? <br/> ")) {
                     ConfirmationDialog(fhistory, fhistoryDisplayStr);
                 } else {
-                    if (fhistory.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>")) {
+                    if (fhistory.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>") || insertion.endsWith("? <br/> ")) {
                         fhistory="";
                     }
 
@@ -469,10 +498,10 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
                 }
                 // insertDb(fhistory);
             } else {
-                if (!insertion.isEmpty() && !insertion.contains(":.") && !insertion.contains(": <br/>")) {
+                if (!insertion.isEmpty() && !insertion.contains(":.") && !insertion.contains(": <br/>") && !insertion.endsWith("? <br/> ")) {
                     ConfirmationDialog(insertion, displayStr);
                 } else {
-                    if (fhistory.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>")) {
+                    if (fhistory.isEmpty() || insertion.contains(":.") || insertion.contains(": <br/>") || insertion.endsWith("? <br/> ")) {
                         insertion="";
                     }
                     insertDb(insertion);
