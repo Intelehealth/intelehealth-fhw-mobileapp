@@ -742,6 +742,7 @@
     <string name="postal_code_invalid_txt">Please enter valid postal code</string>
     <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
     <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
+    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
     <string name="have_you_spoken_with_the_patient_directly">Have you spoken with the patient directly?</string>
     <string name="patient_interaction">Patient Interaction</string>
 

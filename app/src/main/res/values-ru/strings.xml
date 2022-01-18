@@ -780,5 +780,6 @@
     <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
     <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
     <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
+    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
 
 </resources>
