@@ -3758,6 +3758,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Visit is uploaded but Prescription is already given...
        if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
 
+           //get from encountertbl from the encounter
+           EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+           visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+
            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
            alertDialogBuilder.setMessage(getResources().getString(R.string.what_to_do_next));
            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.sign_and_submit), new DialogInterface.OnClickListener() {
