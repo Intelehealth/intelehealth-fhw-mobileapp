@@ -4461,15 +4461,17 @@ todo not mandatory
             }
 */
             //10. type of marriage
-            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = type_marriage_spinner;
-                cancel = true;
-                return;
-            }
+            //todo not mandatory
+
+//            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
+//                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
+//                errorText.setError("");
+//                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//                focusView = type_marriage_spinner;
+//                cancel = true;
+//                return;
+//            }
 
            /*
             todo not mandatory
@@ -6367,16 +6369,16 @@ todo not mandatory
                 return;
             }*/
 
-            //10. type of marriage
-            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
-                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
-                errorText.setError("");
-                errorText.setTextColor(Color.RED);//just to highlight that this is an error
-                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
-                focusView = type_marriage_spinner;
-                cancel = true;
-                return;
-            }
+//            //10. type of marriage
+//            if (type_marriage_spinner.getSelectedItemPosition() == 0) {
+//                TextView errorText = (TextView) type_marriage_spinner.getSelectedView();
+//                errorText.setError("");
+//                errorText.setTextColor(Color.RED);//just to highlight that this is an error
+//                errorText.setText(getString(R.string.error_field_required));//changes the selected item text to this
+//                focusView = type_marriage_spinner;
+//                cancel = true;
+//                return;
+//            }
 
           /*
             todo not mandatory
