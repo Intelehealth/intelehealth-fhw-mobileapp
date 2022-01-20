@@ -507,7 +507,6 @@ public class PrescriptionActivity extends AppCompatActivity {
                 responseBodyObservable
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-
                         .subscribe(new DisposableObserver<ResponseBody>() {
                             @Override
                             public void onNext(@NonNull ResponseBody responseBody) {
@@ -554,6 +553,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     }
 
     private EndVisitEncounterPrescription getVisitCompleteDataModel() {
+        // For now it was added static values...need to discuss with team how we are going to send this data.
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
         doctorDetails.setWhatsapp("7005308163");
         doctorDetails.setPhoneNumber("7005308163");
