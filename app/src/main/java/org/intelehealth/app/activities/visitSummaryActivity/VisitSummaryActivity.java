@@ -216,6 +216,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     String diagnosisReturned = "";
     String rxReturned = "";
     String testsReturned = "";
+    String referralReturned = "";
     String adviceReturned = "";
     String doctorName = "";
     String additionalReturned = "";
@@ -268,6 +269,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     CardView prescriptionCard;
     CardView medicalAdviceCard;
     CardView requestedTestsCard;
+    CardView requestedReferralCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
     CardView card_print, card_share;
@@ -276,6 +278,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
     TextView prescriptionTextView;
     TextView medicalAdviceTextView;
     TextView requestedTestsTextView;
+    TextView requestedReferralsTextView;
     TextView additionalCommentsTextView;
     TextView followUpDateTextView;
     //added checkbox flag .m
@@ -613,6 +616,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         prescriptionCard = findViewById(R.id.cardView_rx);
         medicalAdviceCard = findViewById(R.id.cardView_medical_advice);
         requestedTestsCard = findViewById(R.id.cardView_tests);
+        requestedReferralCard = findViewById(R.id.cardView_referrals);
         additionalCommentsCard = findViewById(R.id.cardView_additional_comments);
         followUpDateCard = findViewById(R.id.cardView_follow_up_date);
         mDoctorTitle = findViewById(R.id.title_doctor);
@@ -770,6 +774,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         prescriptionTextView = findViewById(R.id.textView_content_rx);
         medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
         requestedTestsTextView = findViewById(R.id.textView_content_tests);
+        requestedReferralsTextView = findViewById(R.id.textView_content_referrals);
         additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
         followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
 
@@ -2432,7 +2437,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
 //            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
 //                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
 //            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-//                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita.ttf');";
 //            }
 //        }
 //        String font_face = "<style>" +
@@ -2796,7 +2801,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
 //            } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
 //                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
 //            }else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
-//                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+//                fontFamilyFile = "src: url('file:///android_asset/fonts/Almondita.ttf');";
 //            }
 //        }
 //        String font_face = "<style>" +
@@ -3818,6 +3823,19 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 //checkForDoctor();
                 break;
             }
+            case UuidDictionary.REQUESTED_REFERRALS: {
+                if (!referralReturned.isEmpty()) {
+                    referralReturned = referralReturned + "\n\n" + Node.bullet + " " + value;
+                } else {
+                    referralReturned = Node.bullet + " " + value;
+                }
+                if (requestedReferralCard.getVisibility() != View.VISIBLE) {
+                    requestedReferralCard.setVisibility(View.VISIBLE);
+                }
+                requestedReferralsTextView.setText(referralReturned);
+                //checkForDoctor();
+                break;
+            }
             case UuidDictionary.ADDITIONAL_COMMENTS: {
 
                 additionalCommentsCard.setVisibility(View.GONE);
@@ -3840,7 +3858,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 } else {
                     followUpDate = value;
                 }
-                if (followUpDateCard.getVisibility() != View.VISIBLE) {
+                if (followUpDateCard.getVisibility() != View.VISIBLE && !value.contains("tag: Referral")) {
                     followUpDateCard.setVisibility(View.VISIBLE);
                 }
                 followUpDateTextView.setText(followUpDate);
@@ -4222,6 +4240,13 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                     requestedTestsTextView.setText("");
                     requestedTestsCard.setVisibility(View.GONE);
                 }
+
+                if (!referralReturned.isEmpty()) {
+                    referralReturned = "";
+                    requestedReferralsTextView.setText("");
+                    requestedReferralCard.setVisibility(View.GONE);
+                }
+
 //                if (!additionalReturned.isEmpty()) {
 //                    additionalReturned = "";
 //                    additionalCommentsTextView.setText("");
@@ -4705,6 +4730,9 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         String tests_web = stringToWeb_sms(testsReturned.trim().replace("\n\n", "\n")
                 .replace(Node.bullet, ""));
 
+        String referral_web = stringToWeb_sms(referralReturned.trim().replace("\n\n", "\n")
+                .replace(Node.bullet, ""));
+
         String advice_web = stringToWeb_sms(medicalAdvice_string.trim().replace("\n\n", "\n"));
         Log.d("Hyperlink", "hyper_print: " + advice_web);
 
@@ -4844,6 +4872,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                                 "%s </b><br>" +
                                 "<b id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s) <br>" +
                                 "%s " + "</b><br>" +
+                                "<b id=\"referral_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Referral <br>" +
+                                "%s " + "</b><br>" +
                                 "<b id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Advice <br>" +
                                 "%s" + "</b><br>" +
                                 "<b id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date <br>" +
@@ -4873,6 +4903,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                         !diagnosis_web.isEmpty() ? diagnosis_web : stringToWeb_sms("Not Provided"),
                         !rx_web.isEmpty() ? rx_web : stringToWeb_sms("Not Provided"),
                         !tests_web.isEmpty() ? tests_web : stringToWeb_sms("Not Provided"),
+                        !referral_web.isEmpty() ? referral_web : stringToWeb_sms("Not Provided"),
                         !advice_web.isEmpty() ? advice_web : stringToWeb_sms("Not Provided"),
                         !followUp_web.isEmpty() ? followUp_web : stringToWeb_sms("Not Provided"),
                         !doctor_web.isEmpty() ? doctor_web : stringToWeb_sms("Not Provided"));

@@ -189,7 +189,8 @@
     <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
     <string name="visit_summary_diagnosis" translatable="false">Diagnosis</string>
     <string name="visit_summary_advice" translatable="false">Medical Advice</string>
-    <string name="visit_summary_tests_prescribed" translatable="false">Tests/Referrals</string>
+    <string name="visit_summary_tests_prescribed" translatable="false">Tests</string>
+    <string name="visit_summary_referrals_prescribed" translatable="false">Referrals</string>
     <string name="visit_summary_additional_comments" translatable="false">Additional Comments</string>
     <string name="visit_summary_heading_name" translatable="false">Name</string>
     <string name="visit_summary_heading_id" translatable="false">ID</string>
