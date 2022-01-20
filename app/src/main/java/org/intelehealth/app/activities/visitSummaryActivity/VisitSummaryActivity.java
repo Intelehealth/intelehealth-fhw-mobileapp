@@ -942,7 +942,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 SyncUtils syncUtils = new SyncUtils();
                                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                                 if (isSynced) {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                            getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    isSynedFlag = "1";
                                     //
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
@@ -950,7 +952,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     if (isVisitSpecialityExists)
                                         speciality_spinner.setEnabled(false);
                                 } else {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " +
+                                            getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
                                 }
                                 uploaded = true;
@@ -962,28 +965,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
                 } else {
-                    TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError(getString(R.string.please_select_specialization_msg));
-                    t.setTextColor(Color.RED);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.generic_ok),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
+                    showSelectSpeciliatyErrorDialog();
                 }
 
             }
@@ -3974,8 +3956,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
                 String visitnote = "";
                 EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? ";
-                String[] encounterIDArgs = {visitUuid};
+                String encounterIDSelection = "visituuid = ? AND voided = ?";
+                String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
@@ -4021,8 +4003,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     followUpDateCard.setVisibility(View.GONE);
                 }
                 String[] columns = {"value", " conceptuuid"};
-                String visitSelection = "encounteruuid = ? and voided!='1'";
-                String[] visitArgs = {visitnote};
+                String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+                String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor.moveToFirst()) {
                     do {
@@ -4062,8 +4044,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void downloadPrescriptionDefault() {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ?";
-        String[] encounterIDArgs = {visitUuid};
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"}; // so that the deleted values dont come in the presc.
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
@@ -4075,8 +4057,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         encounterCursor.close();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' ";
-        String[] visitArgs = {visitnote};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -4234,6 +4216,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void showSelectSpeciliatyErrorDialog() {
+        TextView t = (TextView) speciality_spinner.getSelectedView();
+        t.setError(getString(R.string.please_select_specialization_msg));
+        t.setTextColor(Color.RED);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.generic_ok),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     }
 
     public class DownloadPrescriptionService extends BroadcastReceiver {
