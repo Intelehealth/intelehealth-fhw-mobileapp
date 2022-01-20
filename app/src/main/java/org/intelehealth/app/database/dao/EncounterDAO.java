@@ -355,4 +355,24 @@ public class EncounterDAO {
         return encounterUuid;
     }
 
+    public void insertStartVisitNoteEncounterToDb(String encounter, String visitUuid) throws DAOException {
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        ContentValues values = new ContentValues();
+        try {
+            values.put("uuid", encounter);
+            values.put("visituuid", visitUuid);
+            values.put("encounter_type_uuid", ENCOUNTER_VISIT_NOTE);
+            values.put("sync", "true");
+
+            db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+
 }

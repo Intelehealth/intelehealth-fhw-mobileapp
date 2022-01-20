@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -81,6 +84,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.activities.prescription.PrescriptionActivity;
+import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Base64Utils;
@@ -92,7 +99,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -140,7 +146,9 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
 public class VisitSummaryActivity extends AppCompatActivity {
@@ -3731,21 +3739,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // and multiple Start Visit Note encounters wont br created.
 
         //check if data is uploaded to backend...
-      /*  if(visitUUID == null && visitUUID.isEmpty()) {
-            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
-            alertDialogBuilder.setMessage(VisitSummaryActivity.this.getString(R.string.visit_summary_upload_reminder_prescription));
-            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
-            return;
-        }*/
-
         // If Visit is not uplaoded...
         if (isSynedFlag.equalsIgnoreCase("0")) {
             Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_upload_reminder_prescription),
@@ -3804,7 +3797,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         try {
                             EncounterDAO encounterDAO_ = new EncounterDAO();
                             encounterDAO_.insertStartVisitNoteEncounterToDb(encounter, visitUuid);
-                            ;
 
                         } catch (DAOException e) {
                             e.printStackTrace();
@@ -3842,6 +3834,24 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 });
     }
 
+    private EndVisitEncounterPrescription getEndVisitDataModel() {
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+
+        encounterProvider.setEncounterRole(ENCOUNTER_ROLE); // Constant
+        encounterProvider.setProvider(sessionManager1.getProviderID()); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUUID);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_NOTE);
+
+        Log.v("presbody", "new: " + new Gson().toJson(datamodel));
+        return datamodel;
+    }
 
     public class NetworkChangeReceiver extends BroadcastReceiver {
 
