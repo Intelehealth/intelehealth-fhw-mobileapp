@@ -40,6 +40,7 @@ public class FollowUpPatientActivity extends AppCompatActivity {
     TextView msg;
     private SQLiteDatabase db;
     int limit = Integer.MAX_VALUE, offset = 0;
+    int referral = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +108,12 @@ public class FollowUpPatientActivity extends AppCompatActivity {
         if (searchCursor.moveToFirst()) {
             do {
                 try {
+                    String followUpString = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value"));
                     String followUpDate = searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")).substring(0, 10);
+                    if(followUpString.contains("tag: Referral"))
+                        referral = 1;
+                    else
+                        referral = 0;
                     Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
                     Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
                     int value = followUp.compareTo(currentD);
@@ -122,7 +128,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("value")),
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
+                                referral));
                     } else if (value == 0) {
                         modelList.add(new FollowUpModel(
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
@@ -134,7 +141,8 @@ public class FollowUpPatientActivity extends AppCompatActivity {
                                 StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
                                 searchCursor.getString(searchCursor.getColumnIndexOrThrow("speciality")),
                                 "null",
-                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                                searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync")),
+                                referral));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

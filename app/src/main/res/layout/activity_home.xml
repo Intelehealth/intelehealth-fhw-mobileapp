@@ -323,7 +323,6 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_follow_up"
                         android:layout_width="0dp"
-                        android:visibility="gone"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"

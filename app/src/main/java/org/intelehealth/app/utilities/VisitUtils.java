@@ -16,9 +16,10 @@ public class VisitUtils {
     public static void endVisit(Context activityContext, String visitUUID, String patientUuid, String followUpDate, String encounterVitals, String encounterUuidAdultIntial, String state, String patientName, String intentTag) {
         //end visit
         if (visitUUID != null && !visitUUID.isEmpty()) {
-            if (followUpDate != null && !followUpDate.isEmpty()) {
+            if (followUpDate != null && !followUpDate.isEmpty() && !followUpDate.contains("tag: Referral")) {
+                String followUp = followUpDate.substring(0,10);
                 MaterialAlertDialogBuilder followUpAlert = new MaterialAlertDialogBuilder(activityContext);
-                followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder) + followUpDate);
+                followUpAlert.setMessage(activityContext.getString(R.string.visit_summary_follow_up_reminder) + followUp);
                 followUpAlert.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
