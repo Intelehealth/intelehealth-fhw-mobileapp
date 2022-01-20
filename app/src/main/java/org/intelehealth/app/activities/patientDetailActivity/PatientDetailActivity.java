@@ -1216,7 +1216,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 //                        getString(R.string.hello_my_name_is) + " " + sessionManager.getChwname() + " " +
 //                                /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
                 String message = getString(R.string.hello_my_name_is) + sessionManager.getChwname()
-                        + getString(R.string.and_i_be_assisting_you);
+                        + getString(R.string.i_need_assistance);
 
                 startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(

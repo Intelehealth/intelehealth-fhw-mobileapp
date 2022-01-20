@@ -1,5 +1,7 @@
 package org.intelehealth.app.database.dao;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -334,5 +336,23 @@ public class EncounterDAO {
         return isUpdated;
     }
 
+    public String getStartVisitNoteEncounterByVisitUUID(String visitUUID) {
+        String encounterUuid = "";
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        Cursor idCursor = db.rawQuery("SELECT uuid FROM tbl_encounter where visituuid = ? AND encounter_type_uuid = ? AND sync = ?",
+                new String[]{visitUUID, ENCOUNTER_VISIT_NOTE, "true"});
+        if (idCursor.getCount() != 0) {
+            while (idCursor.moveToNext()) {
+                encounterUuid = idCursor.getString(idCursor.getColumnIndexOrThrow("uuid"));
+            }
+        }
+        idCursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+
+        return encounterUuid;
+    }
 
 }

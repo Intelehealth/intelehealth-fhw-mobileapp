@@ -31,6 +31,7 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -80,6 +81,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -135,6 +139,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -248,6 +255,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
+    EndVisitEncounterPrescription endVisitEncounterPrescription;
+    String visitnoteencounteruuid = "";
+    Button btnSignSubmit;
+    Base64Utils base64Utils = new Base64Utils();
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
@@ -551,6 +562,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        btnSignSubmit = findViewById(R.id.btnSignSubmit);
+
+        //get from encountertbl from the encounter
+        EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+        visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -788,6 +804,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
+            btnSignSubmit.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -3637,6 +3654,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     public void onResume() // register the receiver here
     {
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+            EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
         if (downloadPrescriptionService == null) {
             registerDownloadPrescription();
         }
@@ -3697,6 +3720,126 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadPrescriptionService = null;
         }
         isReceiverRegistered = false;
+    }
+
+    public void signAndSubmit(View view) {
+        endVisitApiCall();
+    }
+
+    private void endVisitApiCall() {
+        // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
+        // and multiple Start Visit Note encounters wont br created.
+
+        //check if data is uploaded to backend...
+      /*  if(visitUUID == null && visitUUID.isEmpty()) {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+            alertDialogBuilder.setMessage(VisitSummaryActivity.this.getString(R.string.visit_summary_upload_reminder_prescription));
+            alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+            return;
+        }*/
+
+        // If Visit is not uplaoded...
+        if (isSynedFlag.equalsIgnoreCase("0")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_upload_reminder_prescription),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Visit is uploaded but Prescription is already given...
+        if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+            startvisitnoteApiCall();
+        } else {
+            Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+            visitSummary.putExtra("visitUuid", visitUUID);
+            visitSummary.putExtra("patientUuid", patientUuid);
+            visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
+            visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+            visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+            visitSummary.putExtra("name", patientName);
+            visitSummary.putExtra("gender", genderView.getText());
+            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+            visitSummary.putExtra("tag", intentTag);
+            visitSummary.putExtra("pastVisit", isPastVisit);
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                visitSummary.putExtra("hasPrescription", "true");
+            } else {
+                visitSummary.putExtra("hasPrescription", "false");
+            }
+            startActivity(visitSummary);
+        }
+    }
+
+    public void startvisitnoteApiCall() {
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        endVisitEncounterPrescription = getEndVisitDataModel();
+        //  String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
+
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<EndVisitResponseBody> resultsObservable = apiService.END_VISIT_RESPONSE_BODY_OBSERVABLE
+                (url, endVisitEncounterPrescription, "Basic " + encoded);
+        resultsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<EndVisitResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull EndVisitResponseBody endVisitResponseBody) {
+                        String encounter = endVisitResponseBody.getUuid(); // Use this uuid for pres obs api body.
+
+                        try {
+                            EncounterDAO encounterDAO_ = new EncounterDAO();
+                            encounterDAO_.insertStartVisitNoteEncounterToDb(encounter, visitUuid);
+                            ;
+
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+                        visitSummary.putExtra("visitUuid", visitUUID);
+                        visitSummary.putExtra("patientUuid", patientUuid);
+                        visitSummary.putExtra("startVisitNoteApiEncounterResponse", encounter);
+                        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+                        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+                        visitSummary.putExtra("name", patientName);
+                        visitSummary.putExtra("gender", genderView.getText());
+                        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        visitSummary.putExtra("tag", intentTag);
+                        visitSummary.putExtra("pastVisit", isPastVisit);
+                        if (hasPrescription.equalsIgnoreCase("true")) {
+                            visitSummary.putExtra("hasPrescription", "true");
+                        } else {
+                            visitSummary.putExtra("hasPrescription", "false");
+                        }
+                        startActivity(visitSummary);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("err", "sd: " + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("err", "sd");
+                    }
+                });
     }
 
 
