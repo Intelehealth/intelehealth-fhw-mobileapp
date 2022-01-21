@@ -756,4 +756,8 @@
     <string name="choose_a_date">Выберите дату</string>
     <string name="follow_up_remark">Следующее замечание</string>
 
+    //UK-62
+    <string name="what_to_do_next">Что вы хотите сделать дальше?</string>
+    <string name="sign_submit">Подпишите и отправьте</string>
+    <string name="edit_presc">Редактировать Рецепт</string>
 </resources>

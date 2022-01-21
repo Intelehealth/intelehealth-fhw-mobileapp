@@ -756,7 +756,7 @@
     <string name="follow_up_remark">Follow up remark</string>
 
     //UK-62
-    <string name="what_to_do_next">Что вы хотите сделать дальше?</string>
-    <string name="sign_submit">Подпишите и отправьте</string>
-    <string name="edit_presc">Редактировать Рецепт</string>
+    <string name="what_to_do_next">What do you wish to do next?</string>
+    <string name="sign_submit">Sign and Submit</string>
+    <string name="edit_presc">Edit Prescription</string>
 </resources>
