@@ -4184,7 +4184,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //checks if prescription is downloaded and if so then sets the icon color.
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-                    btnSignSubmit.setText("Edit Prescription");
+                    btnSignSubmit.setText(getResources().getString(R.string.edit_presc));
                 }
                 //disable the Start Visit Note button if the prescription is already given...
                 if (hasPrescription.equalsIgnoreCase("true")) {
@@ -4248,7 +4248,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //checks if prescription is downloaded and if so then sets the icon color.
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
-            btnSignSubmit.setText("Edit Prescription");
+            btnSignSubmit.setText(getResources().getString(R.string.edit_presc));
         }
         //disable the Start Visit Note button if the prescription is already given...
         if (hasPrescription.equalsIgnoreCase("true")) {
