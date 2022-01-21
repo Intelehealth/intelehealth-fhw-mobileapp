@@ -2307,7 +2307,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+//            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
