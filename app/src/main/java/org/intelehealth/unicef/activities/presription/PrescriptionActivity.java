@@ -420,6 +420,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         adviceList = new ArrayList<>();
         ObsDAO obsDAOAdvice = new ObsDAO();
         adviceList = obsDAOAdvice.fetchAllObsPrescData(encounterVisitNote, MEDICAL_ADVICE, "TRUE");
+        adviceList.remove(0);  // this is done because the first advice is that href text which we dont want to show to the murse on prescription.
         advicePrescAdapter = new AdvicePrescAdapter(presContext, adviceList);
         RecyclerView.LayoutManager advicemanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
