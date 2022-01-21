@@ -783,7 +783,7 @@
     <string name="am_i_speaking_with_the_survivor_or_am_i_speaking_with_someone_who_is_calling_on_behalf_of_the_survivor">Am I speaking with the survivor or am I speaking with someone who is calling on behalf of the survivor?*</string>
     <string name="what_is_a_good_phone_number_to_reach_the_survivor">What is a good phone number to reach the survivor?</string>
     <string name="enter_phone_number">Enter Phone number</string>
-    <string name="was_the_survivor_ever_married">Was the survivor ever married?</string>
+    <string name="was_the_survivor_ever_married">Was the survivor ever married?*</string>
     <string name="what_was_age_at_the_time_of_first_marriage">What was age at the time of (first) marriage?</string>
     <string name="enter_age">Enter age</string>
     <string name="what_was_the_type_of_marriage">What was the type of marriage?</string>
