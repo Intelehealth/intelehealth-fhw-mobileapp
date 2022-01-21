@@ -2,9 +2,12 @@ package org.intelehealth.app.activities.patientSurveyActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,9 +22,12 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.intelehealth.app.R;
@@ -154,6 +160,26 @@ public class PatientSurveyActivity extends AppCompatActivity {
     }
 
     private void uploadSurvey() {
+        String newFollowUpDate = "";
+        String originalStartFollowUp = getStartDate(patientUuid);
+        if(!originalStartFollowUp.isEmpty() && !originalStartFollowUp.equals("")) {
+            String originalStartDate = originalStartFollowUp.substring(0,10);
+            boolean followUpSchedule = getComplaintData(visitUuid);
+            String visitStartDate = getCurrentVisitStartDate(visitUuid).substring(0, 10);
+            int no_of_days = getDatesBetween(originalStartDate, visitStartDate);
+            if (no_of_days < 20 && followUpSchedule) {
+                try {
+                    Date visitStart = new SimpleDateFormat("yyyy-MM-dd").parse(visitStartDate);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(visitStart);
+                    cal.add(Calendar.DATE, 7);
+                    Date modifiedDate = cal.getTime();
+                    newFollowUpDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(modifiedDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 //        ENCOUNTER_PATIENT_EXIT_SURVEY
 
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -196,6 +222,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setValue(mComments.getText().toString());
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
         obsDTOList.add(obsDTO);
+        if (!newFollowUpDate.equals("") && !newFollowUpDate.isEmpty()) {
+            obsDTO = new ObsDTO();
+            obsDTO.setUuid(UUID.randomUUID().toString());
+            obsDTO.setEncounteruuid(uuid);
+            obsDTO.setValue(newFollowUpDate + " " + "tag: Referral");
+            obsDTO.setConceptuuid(UuidDictionary.FOLLOW_UP_VISIT);
+            obsDTOList.add(obsDTO);
+        }
         try {
             obsDAO.insertObsToDb(obsDTOList);
         } catch (DAOException e) {
@@ -204,6 +238,73 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
 //      AppConstants.notificationUtils.DownloadDone("Upload survey", "Survey uploaded", 3, PatientSurveyActivity.this);
 
+    }
+
+    private int getDatesBetween(String originalStartDate, String visitStartDate) {
+        int no_of_days = 0;
+        try {
+            Date originalStart = new SimpleDateFormat("yyyy-MM-dd").parse(originalStartDate);
+            Date visitStart = new SimpleDateFormat("yyyy-MM-dd").parse(visitStartDate);
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(visitStart.getTime() - originalStart.getTime());
+            no_of_days = c.get(Calendar.DAY_OF_MONTH) - 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return no_of_days;
+    }
+
+    private String getCurrentVisitStartDate(String visitUuid) {
+        String startDate = "";
+        String query = "SELECT * FROM tbl_visit WHERE uuid = ?";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{visitUuid});
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    startDate = searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+        return startDate;
+    }
+
+    private boolean getComplaintData(String visitUuid) {
+        boolean scheduleFollowUp = false;
+        String query = "SELECT d.uuid, d.visituuid, o.value FROM tbl_encounter d, tbl_obs o WHERE d.visituuid = ? AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND o.value LIKE '%No,but will visit%'";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{visitUuid, UuidDictionary.CURRENT_COMPLAINT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    scheduleFollowUp = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+        searchCursor.close();
+        return scheduleFollowUp;
+    }
+
+    private String getStartDate(String patientuuid) {
+        String startDate = "";
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, o.value FROM tbl_visit a, tbl_encounter d, tbl_obs o WHERE a.patientuuid = ? AND a.enddate is NOT NULL AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?  AND o.value  LIKE '%tag: Referral%' GROUP BY a.uuid ORDER BY a.startdate ASC LIMIT 1";
+        final Cursor searchCursor = db.rawQuery(query, new String[]{patientuuid, UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        if (searchCursor.moveToFirst()) {
+            do {
+                try {
+                    startDate = searchCursor.getString(searchCursor.getColumnIndexOrThrow("startdate"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } while (searchCursor.moveToNext());
+        }
+        searchCursor.close();
+
+        return startDate;
     }
 
     public String fiveMinutesAgo(String timeStamp) throws ParseException {
