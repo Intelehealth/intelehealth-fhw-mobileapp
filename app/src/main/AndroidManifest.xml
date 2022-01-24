@@ -40,7 +40,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute, LockedOrientationActivity">
-        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity"></activity>
+        <activity
+            android:name=".activities.prescription.PrescriptionActivity"
+            android:configChanges="uiMode"
+            android:label="@string/prescription"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activities.chooseLanguageActivity.ChooseLanguageActivity" />
 
         <activity
             android:name=".appointment.AppointmentListingActivity"

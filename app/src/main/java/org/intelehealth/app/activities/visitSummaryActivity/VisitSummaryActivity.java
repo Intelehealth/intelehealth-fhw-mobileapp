@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -87,6 +90,13 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
 import org.intelehealth.app.appointment.model.CancelRequest;
 import org.intelehealth.app.appointment.model.CancelResponse;
+import org.intelehealth.app.activities.prescription.PrescriptionActivity;
+import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -95,7 +105,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -146,6 +155,11 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -259,6 +273,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
+    EndVisitEncounterPrescription endVisitEncounterPrescription;
+    String visitnoteencounteruuid = "";
+    Button btnSignSubmit;
+    Base64Utils base64Utils = new Base64Utils();
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
@@ -601,6 +619,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        btnSignSubmit = findViewById(R.id.btnSignSubmit);
+
+        //get from encountertbl from the encounter
+        EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+        visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -838,6 +861,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
+            btnSignSubmit.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -967,7 +991,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 SyncUtils syncUtils = new SyncUtils();
                                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                                 if (isSynced) {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                            getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    isSynedFlag = "1";
                                     //
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
@@ -975,7 +1001,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     if (isVisitSpecialityExists)
                                         speciality_spinner.setEnabled(false);
                                 } else {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " +
+                                            getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
                                 }
                                 uploaded = true;
@@ -987,28 +1014,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
                 } else {
-                    TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError(getString(R.string.please_select_specialization_msg));
-                    t.setTextColor(Color.RED);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.generic_ok),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
+                    showSelectSpeciliatyErrorDialog();
                 }
 
             }
@@ -3688,6 +3694,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     public void onResume() // register the receiver here
     {
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+            EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
         if (downloadPrescriptionService == null) {
             registerDownloadPrescription();
         }
@@ -3750,6 +3762,128 @@ public class VisitSummaryActivity extends AppCompatActivity {
         isReceiverRegistered = false;
     }
 
+    public void signAndSubmit(View view) {
+        endVisitApiCall();
+    }
+
+    private void endVisitApiCall() {
+        // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
+        // and multiple Start Visit Note encounters wont br created.
+
+        //check if data is uploaded to backend...
+        // If Visit is not uplaoded...
+        if (isSynedFlag.equalsIgnoreCase("0")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_upload_reminder_prescription),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Visit is uploaded but Prescription is already given...
+        if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+            startvisitnoteApiCall();
+        } else {
+            Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+            visitSummary.putExtra("visitUuid", visitUUID);
+            visitSummary.putExtra("patientUuid", patientUuid);
+            visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
+            visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+            visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+            visitSummary.putExtra("name", patientName);
+            visitSummary.putExtra("gender", genderView.getText());
+            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+            visitSummary.putExtra("tag", intentTag);
+            visitSummary.putExtra("pastVisit", isPastVisit);
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                visitSummary.putExtra("hasPrescription", "true");
+            } else {
+                visitSummary.putExtra("hasPrescription", "false");
+            }
+            startActivity(visitSummary);
+        }
+    }
+
+    public void startvisitnoteApiCall() {
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        endVisitEncounterPrescription = getEndVisitDataModel();
+        //  String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
+
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<EndVisitResponseBody> resultsObservable = apiService.END_VISIT_RESPONSE_BODY_OBSERVABLE
+                (url, endVisitEncounterPrescription, "Basic " + encoded);
+        resultsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<EndVisitResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull EndVisitResponseBody endVisitResponseBody) {
+                        String encounter = endVisitResponseBody.getUuid(); // Use this uuid for pres obs api body.
+
+                        try {
+                            EncounterDAO encounterDAO_ = new EncounterDAO();
+                            encounterDAO_.insertStartVisitNoteEncounterToDb(encounter, visitUuid);
+
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+                        visitSummary.putExtra("visitUuid", visitUUID);
+                        visitSummary.putExtra("patientUuid", patientUuid);
+                        visitSummary.putExtra("startVisitNoteApiEncounterResponse", encounter);
+                        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+                        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+                        visitSummary.putExtra("name", patientName);
+                        visitSummary.putExtra("gender", genderView.getText());
+                        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        visitSummary.putExtra("tag", intentTag);
+                        visitSummary.putExtra("pastVisit", isPastVisit);
+                        if (hasPrescription.equalsIgnoreCase("true")) {
+                            visitSummary.putExtra("hasPrescription", "true");
+                        } else {
+                            visitSummary.putExtra("hasPrescription", "false");
+                        }
+                        startActivity(visitSummary);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("err", "sd: " + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("err", "sd");
+                    }
+                });
+    }
+
+    private EndVisitEncounterPrescription getEndVisitDataModel() {
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+
+        encounterProvider.setEncounterRole(ENCOUNTER_ROLE); // Constant
+        encounterProvider.setProvider(sessionManager1.getProviderID()); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUUID);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_NOTE);
+
+        Log.v("presbody", "new: " + new Gson().toJson(datamodel));
+        return datamodel;
+    }
 
     public class NetworkChangeReceiver extends BroadcastReceiver {
 
@@ -3872,8 +4006,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
                 String visitnote = "";
                 EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? ";
-                String[] encounterIDArgs = {visitUuid};
+                String encounterIDSelection = "visituuid = ? AND voided = ?";
+                String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
@@ -3919,8 +4053,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     followUpDateCard.setVisibility(View.GONE);
                 }
                 String[] columns = {"value", " conceptuuid"};
-                String visitSelection = "encounteruuid = ? and voided!='1'";
-                String[] visitArgs = {visitnote};
+                String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+                String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor.moveToFirst()) {
                     do {
@@ -3960,8 +4094,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void downloadPrescriptionDefault() {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ?";
-        String[] encounterIDArgs = {visitUuid};
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"}; // so that the deleted values dont come in the presc.
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
@@ -3973,8 +4107,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         encounterCursor.close();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' ";
-        String[] visitArgs = {visitnote};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -4132,6 +4266,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void showSelectSpeciliatyErrorDialog() {
+        TextView t = (TextView) speciality_spinner.getSelectedView();
+        t.setError(getString(R.string.please_select_specialization_msg));
+        t.setTextColor(Color.RED);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.generic_ok),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     }
 
     public class DownloadPrescriptionService extends BroadcastReceiver {
