@@ -103,6 +103,7 @@ import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
 import org.intelehealth.unicef.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.unicef.database.dao.ProviderDAO;
 import org.intelehealth.unicef.database.dao.RTCConnectionDAO;
 import org.intelehealth.unicef.database.dao.SyncDAO;
 import org.intelehealth.unicef.database.dao.VisitAttributeListDAO;
@@ -3776,7 +3777,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.sign_and_submit), new DialogInterface.OnClickListener() {
                @Override
                public void onClick(DialogInterface dialog, int which) {
-                   markVisitComplete();
+                   try {
+                       markVisitComplete();
+                   } catch (DAOException e) {
+                       e.printStackTrace();
+                   }
                }
            });
            alertDialogBuilder.setPositiveButton(getResources().getString(R.string.edit_presc), new DialogInterface.OnClickListener() {
@@ -3830,7 +3835,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         startActivity(visitSummary);
     }
 
-    private void markVisitComplete() {
+    private void markVisitComplete() throws DAOException {
         // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
         String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
         visitCompleteStatus = getVisitCompleteDataModel();
@@ -3887,14 +3892,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    private EndVisitEncounterPrescription getVisitCompleteDataModel() {
-        ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+    private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
+       /* ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
         doctorDetails.setWhatsapp("7005308163");
         doctorDetails.setPhoneNumber("7005308163");
         doctorDetails.setFontOfSign("Pacifico");
         doctorDetails.setName("Demo doctor1");
         doctorDetails.setSpecialization("Neurologist");
-        doctorDetails.setTextOfSign("Dr. Demo 1");
+        doctorDetails.setTextOfSign("Dr. Demo 1");*/
+
+        ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+        ProviderDAO providerDAO = new ProviderDAO();
+        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+        doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
+        doctorDetails.setName("Dr. " + providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        doctorDetails.setSpecialization("Family Doctor");
+        doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
 
         String drDetails = new Gson().toJson(doctorDetails);
         List<Ob> obList = new ArrayList<>();
