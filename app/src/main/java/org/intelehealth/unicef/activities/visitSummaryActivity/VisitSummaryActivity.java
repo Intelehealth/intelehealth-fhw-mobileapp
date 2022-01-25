@@ -4120,7 +4120,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         } catch (DAOException e) {
             e.printStackTrace();
-        } catch (NullPointerException e) {
+        } catch (Exception e) { //changing NullpointerException to Exception as for some devices its throwing IllegalArgumentCrash
             Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
