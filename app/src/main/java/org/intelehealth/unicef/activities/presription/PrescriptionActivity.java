@@ -585,7 +585,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         ProviderDAO providerDAO = new ProviderDAO();
         Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
         doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
-        doctorDetails.setName("Dr. " + providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         doctorDetails.setSpecialization("Family Doctor");
         doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
@@ -603,7 +603,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         List<EncounterProvider> encounterProviderList = new ArrayList<>();
         EncounterProvider encounterProvider = new EncounterProvider();
         encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
-        encounterProvider.setProvider(ENCOUNTER_DR_PROVIDER); // user setup app provider
+        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
         encounterProviderList.add(encounterProvider);
 
         EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
