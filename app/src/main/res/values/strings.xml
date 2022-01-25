@@ -726,6 +726,7 @@
     <string name="prescription_pulse">Pulse(bpm)</string>
     <string name="prescription_bp">Blood Pressure</string>
     <string name="prescription_bmi">BMI</string>
+
     <string name="prescription_wt">Weight(kg)</string>
     <string name="prescription_ht">Height(cm)</string>
     <string name="prescription_pre_comp">Presenting complaint(s)</string>
@@ -786,6 +787,7 @@
     <string name="additional_instruction">Additional Instruction</string>
     <string name="recommended_tests">Recommended Tests</string>
     <string name="test">Test</string>
+
     <string name="advice_or_refer_patient">Advice or Refer Patient</string>
     <string name="notes">Notes</string>
     <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>
@@ -799,6 +801,7 @@
     <string name="add_meds">Add Meds</string>
     <string name="add_diagnosis">Add Diagnosis</string>
     <string name="startVisitNote">Start Visit Note</string>
+
     <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
     <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
     <string name="amount">Amount</string>
@@ -809,5 +812,8 @@
     <string name="follow_up_remark">Follow up remark</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
     <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

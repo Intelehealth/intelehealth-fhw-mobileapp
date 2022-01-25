@@ -210,8 +210,8 @@
     <string name="visit_update">ଯାତ୍ରା ଅପ୍ଡ଼େଟ୍ କରିବା</string>
     <string name="visit_summary_medical_history">ଚିକସତ୍ା ଇଚ୍ଛିହାସ</string>
     <string name="visit_summary_edit_vitals">ପଣ ପ୍ରମୂଖ ସ୍କନିରୁ ପ୍ରମୂଖ କରିପାରିବେ</string>
-    <string name="generic_yes">"ହଁ "</string>
-    <string name="generic_no">"ନା "</string>
+    <string name="generic_yes">"ହଁ"</string>
+    <string name="generic_no">"ନ "</string>
     <string name="hint_required">ଜରୁରୀ </string>
     <string name="generic_back">ପଛକୁ ଯାନ୍ତୁ </string>
     <string name="generic_update">"ଅପଡେଟ "</string>
@@ -501,7 +501,7 @@
     <string name="view_print">ଦେଖନ୍ତୁ/ପ୍ରିଣ୍ଟ କରନ୍ତୁ</string>
     <string name="refresh">ରିଫ୍ରେଶ୍</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, Intelehealth ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ |"</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="and_enter_your_patient_id">"ଏବଂ ଆପଣଙ୍କ ରୋଗୀ ଆଇଡି ପ୍ରବେଶ କରନ୍ତୁ - "</string>
     <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
     <string name="no_family_member_registered">କ Family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
     <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
@@ -532,7 +532,7 @@
     <string name="take_photo">ଫଟୋ ନିଅନ୍ତୁ </string>
     <string name="choose_from_gallery">ଗ୍ୟାଲେରୀରୁ ବାଛନ୍ତୁ</string>
     <string name="additional_doc_image_picker_title">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ ଯୋଡନ୍ତୁ!</string>
-    <string name = "change_languages">ଭାଷା ପରିବର୍ତ୍ତନ</string>
+    <string name="change_languages">ଭାଷା ପରିବର୍ତ୍ତନ</string>
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
 
     <string name="app_reset_toast">ଆପ୍ ପୁନ et ସେଟ୍ ହୋଇଛି !</string>
@@ -546,9 +546,9 @@
     <string name="title_follow_up">ପରିଦର୍ଶନଗୁଡିକ ଅନୁସରଣ କରନ୍ତୁ </string>
     <string name="location">ଅବସ୍ଥାନ</string>
 
-    <string name = "sync_failed"> ସିଙ୍କ ବିଫଳ ହେଲା! ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
-    <string name = "no_network_sync"> ଆପଣ ଇଣ୍ଟରନେଟ୍ ସହିତ ସଂଯୁକ୍ତ ନୁହଁନ୍ତି | ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
-    <string name = "app_sync"> ସିଙ୍କ୍ ଆପ୍ .. </string>
+    <string name="sync_failed"> ସିଙ୍କ ବିଫଳ ହେଲା! ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
+    <string name="no_network_sync"> ଆପଣ ଇଣ୍ଟରନେଟ୍ ସହିତ ସଂଯୁକ୍ତ ନୁହଁନ୍ତି | ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
+    <string name="app_sync"> ସିଙ୍କ୍ ଆପ୍ .. </string>
 
     <string name="book_appointment">Book Appointment</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
@@ -563,17 +563,85 @@
     <string name="please_select_appointment_slot">Please select appointment slot</string>
     <string name="please_select_speciality">Please select speciality!</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
-    <string name="slot_info">Slot info</string>
-    <string name="appointment_booked">Appointment Booked</string>
-    <string name="minutes_txt">minutes</string>
-    <string name="booked_txt">booked</string>
-    <string name="cancelled_txt">cancelled</string>
-    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
-    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
-    <string name="appointment_booked_failed">Appointment booked failed!</string>
-    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
-    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
-    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
 
+    <string name="doctor_appointments">ଡାକ୍ତର ନିଯୁକ୍ତ</string>
+    <string name="slot_info">ସ୍ଲଟ୍ ସୂଚନା</string>
+    <string name="appointment_booked">ନିଯୁକ୍ତି ବୁକ୍</string>
+    <string name="minutes_txt">ମିନିଟ୍</string>
+    <string name="booked_txt">ବୁକ୍ ହୋଇଛି</string>
+    <string name="cancelled_txt">ବାତିଲ</string>
+    <string name="please_upload_visit">ନିଯୁକ୍ତିକୁ ବୁକିଂ କରିବା ପୂର୍ବରୁ ଦୟାକରି ଭ୍ରମଣକୁ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="appointment_booked_successfully">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବୁକ୍ ହୋଇଛି!</string>
+    <string name="appointment_booked_failed">ନିଯୁକ୍ତି ବୁକ୍ ହୋଇଥିବା ବିଫଳ!</string>
+    <string name="postal_code_invalid_txt">ଦୟାକରି ବ valid ଧ ଡାକ କୋଡ୍</string>
+    <string name="failed_to_cancel_appointment">ନିଯୁକ୍ତିକୁ ବାତିଲ କରିବାରେ ବିଫଳ!</string>
+    <string name="appointment_cancelled_success_txt">ନିଯୁକ୍ତି ସଫଳତାର ସହିତ ବାତିଲ ହେଲା!</string>
+
+    <string name="prescription_age">ୟସ</string>
+    <string name="prescription_gender">ଲିଙ୍ଗ</string>
+    <string name="prescription_address_contact">ଠିକଣା ଏବଂ ଯୋଗାଯୋଗ</string>
+    <string name="prescription_patient_id">ରୋଗୀ Id</string>
+    <string name="prescription_date_of_visit">ପରିଦର୍ଶନ ତାରିଖ </string>
+    <string name="prescription_vitals">ମହତ୍ତ୍</string>
+    <string name="prescription_rr">ଶ୍ ir ାସକ୍ରିୟା ହାର</string>
+    <string name="prescription_pulse">ପଲ୍ସ (bpm)</string>
+    <string name="prescription_bp">ରକ୍ତଚାପ</string>
+    <string name="prescription_bmi">BMI</string>
+
+
+    <string name="prescription_wt">ଓଜନ (କିଗ୍ରା)</string>
+    <string name="prescription_ht">ଉଚ୍ଚତା (cm)</string>
+    <string name="prescription_pre_comp">ଅଭିଯୋଗ (ଗୁଡିକ)</string>
+    <string name="prescription_diagnosis">ନିଦାନ</string>
+    <string name="prescription_med_plan">ଷଧ (ଗୁଡିକ) ଯୋଜନା</string>
+    <string name="prescription_rec_investigation">ସୁପାରିଶ କରାଯାଇଥିବା ଅନୁସନ୍ଧାନ (ଗୁଡିକ)</string>
+    <string name="prescription_general_advice">ସାଧାରଣ ଉପଦେଶ</string>
+    <string name="prescription_follow_up_date">ଅନୁସରଣ ତାରିଖ</string>
+    <string name="prescription_temp_c">ତାପମାତ୍ରା (C):</string>
+    <string name="prescription_temp_f">ତାପମାତ୍ରା (F):</string>
+
+    <string name = "diagnosis">ନିଦାନ</string>
+    <string name = "primary"> ପ୍ରାଥମିକ</string>
+    <string name = "secondary">ଦ୍ିତୀୟ</string>
+    <string name = "provisiona">ଅସ୍ଥାୟୀ</string>
+    <string name = "confirmed">ନିଶ୍ଚିତ</string>
+    <string name = "recommended_medication">ସୁପାରିଶ କରାଯାଇଥିବା ଷଧ</string>
+    <string name = "medication">ଷଧ</string>
+    <string name = "strength">ଶକ୍ତ</string>
+    <string name = "units">ଏକକ (ଯଥା: mg)</string>
+    <string name = "units_tab">ୟୁନିଟ୍ (ଯଥା: ଟ୍ୟାବ୍ / ସିରପ୍)</string>
+    <string name = "for_duration">ଅବଧି ପାଇଁ</string>
+    <string name = "units_eg_days_weeks_etc">ୟୁନିଟ୍ (ଯଥା: ଦିନ / ସପ୍ତାହ / ଇତ୍ୟାଦି)</string>
+    <string name = "additional_instruction">ଅତିରିକ୍ତ ନିର୍ଦ୍ଦେଶ</string>
+    <string name = "recommended_tests">ସୁପାରିଶ କରାଯାଇଥିବା ପରୀକ୍ଷା</string>
+    <string name = "test">ପରୀକ୍ଷା</string>
+    <string name = "advice_or_refer_patient">ଉପଦେଶ କିମ୍ବା ରୋଗୀକୁ ଅନୁସରଣ କରନ୍ତ</string>
+    <string name = "notes">ଟିପ୍ପଣୀ</string>
+    <string name = "notes_not_shared_with_the_patient">ଟିପ୍ପଣୀ (ରୋଗୀ ସହିତ ଅଂଶୀଦାର ନୁହେଁ)</string>
+    <string name = "follow_up">ଅନୁସରଣ କରନ୍ତୁ</string>
+    <string name = "sign_and_submit">ସାଇନ୍ ଏବଂ ଦାଖଲ</string>
+    <string name = "add_test">ପରୀକ୍ଷା ଯୋଡନ୍ତୁ</string>
+    <string name = "add_advice">ଉପଦେଶ ଯୋଡନ୍ତୁ</string>
+    <string name = "add_note">ଟିପ୍ପଣୀ ଯୋଡନ୍ତୁ</string>
+    <string name = "schedule_a_follow_up">ଏକ ଅନୁସରଣ କାର୍ଯ୍ୟସୂଚୀ</string>
+    <string name = "submit">ଦାଖଲ</string>
+    <string name = "add_meds">ମେଡସ୍ ଯୋଡନ୍ତୁ</string>
+    <string name = "add_diagnosis">ନିଦାନ ଯୋଡନ୍ତୁ</string>
+    <string name = "startVisitNote">ଟିପ୍ପଣୀ ପରିଦର୍ଶନ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name = "prescGivenSuccessfully">ଧନ୍ୟବାଦ! ପ୍ରେସକ୍ରିପସନ୍ ସଫଳତାର ସହିତ</string>
+    <string name = "morethanonefollowupnotallowed">ଦୟାକରି ଏକ ସମୟରେ କେବଳ ଗୋଟିଏ ଅନୁସରଣ ପ୍ରଦାନ କରନ୍ତୁ</string>
+    <string name = "amount">ପରିମାଣ</string>
+    <string name = "frequency">ଫ୍ରିକ୍ୱେନ୍ସି</string>
+    <string name = "route_optional">ମାର୍ଗ (ବ tion କଳ୍ପିକ)</string>
+    <string name = "reason_optional">କାରଣ (ବ tion କଳ୍ପିକ)</string>
+    <string name = "choose_a_date">ଏକ ତାରିଖ ବାଛନ୍ତୁ</string>
+    <string name = "follow_up_remark">ଟିପ୍ପଣୀ</string>
+    <string name = "visit_summary_upload_reminder_prescription" translatable = "false">ପ୍ରେସକ୍ରିପସନ୍ ଦେବାକୁ ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name = "visit_summary_prescription_already_given">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ପ୍ରଦାନ କରାଯାଇଛି | ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
+
+
+    <string name = "yes">ହଁ</string>
+    <string name = "no">ନା லை</string>
+
+    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>
 </resources>

@@ -756,30 +756,32 @@
     <string name="choose_a_date">Выберите дату</string>
     <string name="follow_up_remark">Следующее замечание</string>
 
-    <string name="book_appointment">Book Appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
-    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
+    <string name="book_appointment">Записаться на прием</string>
+    <string name="reschedule_appointment">Перенести встречу</string>
+    <string name="appointment_booking_confirmation_txt">Вы уверены, что хотите забронировать этот слот?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Вы уверены, что хотите отменить встречу?</string>
+    <string name="cancel_appointment">Отменить встречу</string>
+    <string name="slot_empty_message">Время встречи недоступно для выбранной даты и специальности!</string>
+    <string name="appointment_empty_message">У вас нет назначенной встречи!</string>
+    <string name="appointment_listing_title">Список встреч</string>
+    <string name="appointment_booking_title">Запись на прием</string>
+    <string name="appointment_for">Встреча для</string>
+    <string name="please_select_appointment_slot">Выберите время встречи</string>
+    <string name="please_select_speciality">Пожалуйста, выберите специальность!</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
-    <string name="slot_info">Slot info</string>
-    <string name="appointment_booked">Appointment Booked</string>
-    <string name="minutes_txt">minutes</string>
-    <string name="booked_txt">booked</string>
-    <string name="cancelled_txt">cancelled</string>
-    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
-    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
-    <string name="appointment_booked_failed">Appointment booked failed!</string>
-    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
-    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
-    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
+    <string name="doctor_appointments">Назначения врача</string>
+    <string name="slot_info">Информация о слоте</string>
+    <string name="appointment_booked">Встреча забронирована</string>
+    <string name="minutes_txt">минуты</string>
+    <string name="booked_txt">забронировано</string>
+    <string name="cancelled_txt">отменено</string>
+    <string name="please_upload_visit">Пожалуйста, сначала загрузите информацию о посещении, прежде чем записываться на прием.</string>
+    <string name="appointment_booked_successfully">Встреча успешно забронирована!</string>
+    <string name="appointment_booked_failed">Встреча не забронирована!</string>
+    <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
+    <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
+    <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
 
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>
