@@ -1641,8 +1641,8 @@ public class IdentificationActivity extends AppCompatActivity {
             //displaying error if calculated age is negative
             if (resday < 0 || resmonth < 0 || resyear < 0) {
                 Toast.makeText(this, "Current Date must be greater than Date of Birth", Toast.LENGTH_LONG).show();
-                    mDOB.setError(getString(R.string.identification_screen_error_dob));
-                    mAge.setError(getString(R.string.identification_screen_error_age));
+                mDOB.setError(getString(R.string.identification_screen_error_dob));
+                mAge.setError(getString(R.string.identification_screen_error_age));
             } else {
                 // t1.setText("Age: " + resyear + " years /" + resmonth + " months/" + resday + " days");
 
@@ -2067,7 +2067,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         } else {
-                countryText.setError(null);
+            countryText.setError(null);
         }
 
 
@@ -2077,7 +2077,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         } else {
-                autocompleteState.setError(null);
+            autocompleteState.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
@@ -2307,7 +2307,13 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress2(StringUtils.getValue(mAddress2.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCity.getText().toString()));
             patientdto.setPostalcode(StringUtils.getValue(mPostal.getText().toString()));
-//            patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+
+            try {
+                patientdto.setCountry(StringUtils.getValue(mCountry.getSelectedItem().toString()));
+            } catch (NullPointerException exception) {
+                exception.printStackTrace();
+            }
+
             patientdto.setPatientPhoto(mCurrentPhotoPath);
 //          patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setStateprovince(StringUtils.getValue(autocompleteState.getText().toString()));
@@ -2858,7 +2864,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         } else {
-                countryText.setError(null);
+            countryText.setError(null);
         }
 
 
@@ -2868,7 +2874,7 @@ public class IdentificationActivity extends AppCompatActivity {
             cancel = true;
             return;
         } else {
-                autocompleteState.setError(null);
+            autocompleteState.setError(null);
         }
 
         // TODO: Add validations for all Spinners here...
