@@ -685,10 +685,8 @@
      <string name="str_check_Philippines">फिलीपींस</string>
 
     //Follow-up Visits
-    <string name="title_follow_up">फॉलो अप विज़िट</string>
     <string name="title_follow_reminder">फॉलो अप विजिट रिमाइंडर</string>
     <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
-    <string name="due_on">नियत तारीख:</string>
 
 
     <string name="loading_more">और लोड हो रहा है...</string>
