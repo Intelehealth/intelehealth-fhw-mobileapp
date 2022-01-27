@@ -53,6 +53,7 @@ import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
@@ -497,9 +498,19 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
                 String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
-                visitCompleteStatus = getVisitCompleteDataModel();
+//                visitCompleteStatus = getVisitCompleteDataModel();
                 // String encoded = sessionManager.getEncoded();
+
+                try {
+                    visitCompleteStatus = getVisitCompleteDataModel();
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
                 String encoded = base64Utils.encoded("sysnurse", "Nurse123");
+
+
+
+
 
                 ApiInterface apiService = ApiClient.createService(ApiInterface.class);
                 Observable<ResponseBody> responseBodyObservable = apiService.OBS_SIGNANDSUBMIT_STATUS(
@@ -552,15 +563,26 @@ public class PrescriptionActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    private EndVisitEncounterPrescription getVisitCompleteDataModel() {
+    private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
         // For now it was added static values...need to discuss with team how we are going to send this data.
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
-        doctorDetails.setWhatsapp("7005308163");
-        doctorDetails.setPhoneNumber("7005308163");
-        doctorDetails.setFontOfSign("Pacifico");
-        doctorDetails.setName("Demo doctor1");
-        doctorDetails.setSpecialization("Neurologist");
-        doctorDetails.setTextOfSign("Dr. Demo 1");
+
+//        doctorDetails.setWhatsapp("7005308163");
+//        doctorDetails.setPhoneNumber("7005308163");
+//        doctorDetails.setFontOfSign("Pacifico");
+//        doctorDetails.setName("Demo doctor1");
+//        doctorDetails.setSpecialization("Neurologist");
+//        doctorDetails.setTextOfSign("Dr. Demo 1");
+
+        ProviderDAO providerDAO = new ProviderDAO();
+        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+        doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
+        doctorDetails.setName("Dr. " + providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        doctorDetails.setSpecialization("Family Doctor");
+        doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
+        // doctorDetails.setWhatsapp("7005308163");
+        // doctorDetails.setPhoneNumber("7005308163");
 
         String drDetails = new Gson().toJson(doctorDetails);
         List<Ob> obList = new ArrayList<>();
