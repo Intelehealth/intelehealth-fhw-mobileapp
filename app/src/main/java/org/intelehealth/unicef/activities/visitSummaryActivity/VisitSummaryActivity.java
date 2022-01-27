@@ -2158,8 +2158,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            //if(sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
-            // {
+
             if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
@@ -2169,7 +2168,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
             }
-            // }else {
+
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
@@ -2179,8 +2178,33 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
-            // }
         }
+
+        //webapp
+        if (objClsDoctorDetailsRemote != null && objClsDoctorDetailsRemote.getFontOfSign() != null) {
+
+            if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+            }
+
+            else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+            }
+
+        }
+        //webapp - end
         String font_face = "<style>" +
                 "                @font-face {" +
                 "                    font-family: \"MyFont\";" +
@@ -2190,25 +2214,109 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String doctorSign = "";
         String doctrRegistartionNum = "";
-        // String docDigitallySign = "";
         String doctorDetailStr = "";
+
         if (objClsDoctorDetails != null) {
-            //  docDigitallySign = "Digitally Signed By";
-            doctorSign = objClsDoctorDetails.getTextOfSign();
+
+            if(objClsDoctorDetailsRemote != null) {
+                // Webapp + In-app presc = both...
+
+                 doctorDetailStr = "<div style = \"width:100%%;float:right\">\n" +
+                    " <div style=\"text-align:right;margin-top:0px;float:left;width:80%%\">\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">"+ objClsDoctorDetailsRemote.getTextOfSign() +"</span>\n" +
+                    " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 62px;\">"+ objClsDoctorDetailsRemote.getName() +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 83px;\">"+ objClsDoctorDetailsRemote.getSpecialization() +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                    " <br>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                    " </div>\n" +
 
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
-                    //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
-                    "</div>";
+                    " <div style=\"text-align:left;margin-top:0px;float:right;width:15%%\">\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">"+ objClsDoctorDetails.getTextOfSign() +"</span>\n" +
+                    " \n" +
+                    " <div style=\"text-align:left;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getName() +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getSpecialization() +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                    " <br>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    "\n" +
+                    " </div>";
 
-//            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
+            }
+            else {
+                // objsClsDetails - Only In-app Prescription...
+
+                doctorDetailStr = "<div>\n" +
+                        " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                        " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + objClsDoctorDetails.getTextOfSign()+ "</span>\n" +
+                        " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                        " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getName() + "</span>\n" +
+                        " <br>\n" +
+                        " \n" +
+                        " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getSpecialization() + "</span>\n" +
+                        " <br>\n" +
+                        " \n" +
+                        " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                        " <br>\n" +
+                        " </div>\n" +
+                        " \n" +
+                        " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                        " </div>\n" +
+                        " </div>";
+            }
+
+
+
+//            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null
+//                    || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
+//                    //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+//                    "</div>";
+
         }
+        else {
+            // Only Webapp prescription...
+            doctorDetailStr = "<div>\n" +
+                    " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + objClsDoctorDetailsRemote.getTextOfSign()+ "</span>\n" +
+                    " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetailsRemote.getName() + "</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetailsRemote.getSpecialization() + "</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                    " <br>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                    " </div>\n" +
+                    " </div>";
+
+        }
+
         if (isRespiratory) {
             String htmlDocument =
                     String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -2222,10 +2330,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s | " + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_ht) + ": %s | " + getResources().getString(R.string.prescription_wt) + ": %s | " + getResources().getString(R.string.prescription_bmi) + ": %s | " + getResources().getString(R.string.prescription_bp) + ": %s | " + getResources().getString(R.string.prescription_pulse) + ": %s | %s | " + getResources().getString(R.string.prescription_rr) + ": %s |  %s </p><br>" +
-                                   /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_pre_comp) + "</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_diagnosis) + "</p></b></u>" +
@@ -2238,11 +2342,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    doctorDetailStr +
+
+
+                                   /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
+                                    doctorDetailStr
+                                    /*+
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
-                                    "</div>"
+                                    "</div>"*/
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
@@ -2259,10 +2366,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s | " + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_ht) + ": %s | " + getResources().getString(R.string.prescription_wt) + ": %s | " + getResources().getString(R.string.prescription_bmi) + ": %s | " + getResources().getString(R.string.prescription_bp) + ": %s | " + getResources().getString(R.string.prescription_pulse) + ": %s | %s | " + getResources().getString(R.string.prescription_rr) + ": %s |  %s  </p><br>" +
-                                    /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_pre_comp) + "</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_diagnosis) + "</p></b></u>" +
@@ -2275,11 +2378,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    doctorDetailStr +
+
+                                   /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +*/
+                                    doctorDetailStr /*+
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
-                                    "</div>"
+                                    "</div>"*/
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
@@ -3611,7 +3715,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
             Log.v("sign", "sign: "+ doctorDetailStr);
         }
-        else {
+        else if(objClsDoctorDetailsRemote != null) {
             frameLayout_doctor.setVisibility(View.VISIBLE);
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
