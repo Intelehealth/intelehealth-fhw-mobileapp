@@ -668,4 +668,113 @@
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
     <string name = "change_languages">ಭಾಷೆಗಳನ್ನು ಬದಲಿಸಿ</string>
+
+    <string name="loading_more">ಇನ್ನಷ್ಟು ಲೋಡ್ ಆಗುತ್ತಿದೆ...</string>
+    <string name="warning_app_update">ದಯವಿಟ್ಟು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗೆ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ನವೀಕರಿಸಿ.</string>
+    <string name="due_on">ಅಂತಿಮ ದಿನಾಂಕ:</string>
+    <string name="title_follow_up">ಭೇಟಿಗಳನ್ನು ಅನುಸರಿಸಿ</string>
+    <string name="location">ಸ್ಥಳ</string>
+
+
+    //----------reset app strings-------------
+    <string name="reset_app">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಸಿ</string>
+    <string name="app_reset_toast">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಕೆಯನ್ನು ಮಾಡಲಾಗಿದೆ!</string>
+    <string name="resetting_app_dialog">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಸಲಾಗುತ್ತಿದೆ</string>
+    <string name="sure_to_reset_app">ನೀವು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
+
+<!--    //ಅಪ್ಲಿಕೇಶನ್ ಕಾರ್ಯವನ್ನು ಮರುಹೊಂದಿಸಿ-->
+    <string name="sync_failed">ಸಿಂಕ್ ವಿಫಲವಾಗಿದೆ! ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="no_network_sync">ನೀವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="app_sync">ಅಪ್ಲಿಕೇಶನ್ ಸಿಂಕ್ ಮಾಡಲಾಗುತ್ತಿದೆ..</string>
+
+    <string name="location_setup">ಸೆಟಪ್ ಸ್ಥಳ - </string>
+
+
+    <string name="book_appointment">ಪುಸ್ತಕ ನೇಮಕಾತಿ</string>
+    <string name="reschedule_appointment">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಅನ್ನು ಮರುಹೊಂದಿಸಿ</string>
+    <string name="appointment_booking_confirmation_txt">ನೀವು ಈ ಸ್ಲಾಟ್ ಅನ್ನು ಬುಕ್ ಮಾಡಲು ಖಚಿತವಾಗಿರುವಿರಾ?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">ನೀವು ಅಪಾಯಿಂಟ್ ಮೆಂಟ್ ರದ್ದು ಮಾಡುವುದು ಖಚಿತವೇ?</string>
+    <string name="cancel_appointment">ನೇಮಕಾತಿ ರದ್ದುಗೊಳಿಸು</string>
+    <string name="slot_empty_message">ಆಯ್ಕೆ ಮಾಡಿದ ದಿನಾಂಕ ಮತ್ತು ವಿಶೇಷತೆಗಾಗಿ ನೇಮಕಾತಿ ಸ್ಲಾಟ್ ಲಭ್ಯವಿಲ್ಲ!</string>
+    <string name="appointment_empty_message">ನೀವು ಯಾವುದೇ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಹೊಂದಿಲ್ಲ!</string>
+    <string name="appointment_listing_title">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಪಟ್ಟಿ</string>
+    <string name="appointment_booking_title">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕಿಂಗ್</string>
+    <string name="appointment_for">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌</string>
+    <string name="please_select_appointment_slot">ದಯವಿಟ್ಟು ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಸ್ಲಾಟ್ ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="please_select_speciality">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
+
+    <string name="doctor_appointments">ವೈದ್ಯರ ನೇಮಕಾತಿಗಳು</string>
+    <string name="slot_info">ಸ್ಲಾಟ್ ಮಾಹಿತಿ</string>
+    <string name="appointment_booked">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕ್ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="minutes_txt">ನಿಮಿಷಗಳು</string>
+    <string name="booked_txt">ಬುಕ್ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="cancelled_txt">ರದ್ದು ಮಾಡಲಾಗಿದೆ</string>
+    <string name="please_upload_visit">ದಯವಿಟ್ಟು ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಕಾಯ್ದಿರಿಸುವ ಮೊದಲು ಭೇಟಿಯನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.</string>
+    <string name="appointment_booked_successfully">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಬುಕ್ ಮಾಡಲಾಗಿದೆ!</string>
+    <string name="appointment_booked_failed">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಬುಕ್ ಮಾಡಿರುವುದು ವಿಫಲವಾಗಿದೆ!</string>
+    <string name="postal_code_invalid_txt">ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಪೋಸ್ಟಲ್ ಕೋಡ್ ನಮೂದಿಸಿ</string>
+    <string name="failed_to_cancel_appointment">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ರದ್ದುಗೊಳಿಸಲು ವಿಫಲವಾಗಿದೆ!</string>
+    <string name="appointment_cancelled_success_txt">ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ!</string>
+    <string name="diagnosis">ರೋಗನಿರ್ಣಯ</string>
+    <string name="primary">ಪ್ರಾಥಮಿಕ</string>
+    <string name="secondary">ಸೆಕೆಂಡರಿ</string>
+    <string name="provisiona">ತಾತ್ಕಾಲಿಕ</string>
+    <string name="confirmed">ದೃಢೀಕರಿಸಲಾಗಿದೆ</string>
+    <string name="recommended_medication">ಶಿಫಾರಸು ಮಾಡಿದ ಔಷಧಿ</string>
+    <string name="medication">ಔಷಧಿ</string>
+    <string name="strength">ಶಕ್ತಿ</string>
+    <string name="units">ಘಟಕಗಳು (ಉದಾ: mg)</string>
+    <string name="units_tab">ಘಟಕಗಳು (ಉದಾ: ಟ್ಯಾಬ್/ಸಿರಪ್)</string>
+    <string name="for_duration">ಅವಧಿಗಾಗಿ</string>
+    <string name="units_eg_days_weeks_etc">ಘಟಕಗಳು (ಉದಾ: ದಿನಗಳು/ವಾರಗಳು/ಇತ್ಯಾದಿ.)</string>
+    <string name="additional_instruction">ಹೆಚ್ಚುವರಿ ಸೂಚನೆ</string>
+    <string name="recommended_tests">ಶಿಫಾರಸು ಮಾಡಲಾದ ಪರೀಕ್ಷೆಗಳು</string>
+    <string name="test">ಪರೀಕ್ಷೆ</string>
+    <string name="advice_or_refer_patient">ಸಲಹೆ ಅಥವಾ ರೋಗಿಯನ್ನು ಉಲ್ಲೇಖಿಸಿ</string>
+    <string name="notes">ಟಿಪ್ಪಣಿಗಳು</string>
+    <string name="notes_not_shared_with_the_patient">ಟಿಪ್ಪಣಿಗಳು (ರೋಗಿಯೊಂದಿಗೆ ಹಂಚಿಕೊಂಡಿಲ್ಲ)</string>
+    <string name="follow_up">ಫಾಲೋ ಅಪ್</string>
+    <string name="sign_and_submit">ಸಹಿ ಮಾಡಿ ಮತ್ತು ಸಲ್ಲಿಸಿ</string>
+    <string name="add_test">ಪರೀಕ್ಷೆಯನ್ನು ಸೇರಿಸಿ</string>
+    <string name="add_advice">ಸಲಹೆ ಸೇರಿಸಿ</string>
+    <string name="add_note">ಟಿಪ್ಪಣಿ ಸೇರಿಸಿ</string>
+    <string name="schedule_a_follow_up">ಅನುಸರಣೆಯನ್ನು ನಿಗದಿಪಡಿಸಿ</string>
+    <string name="submit">ಸಲ್ಲಿಸು</string>
+    <string name="add_meds">ಮೆಡ್ಸ್ ಸೇರಿಸಿ</string>
+    <string name="add_diagnosis">ರೋಗನಿರ್ಣಯವನ್ನು ಸೇರಿಸಿ</string>
+    <string name="startVisitNote">ಆರಂಭಿಕ ಭೇಟಿ ಟಿಪ್ಪಣಿ</string>
+    <string name="prescGivenSuccessfully">ಧನ್ಯವಾದಗಳು! ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ನೀಡಲಾಗಿದೆ</string>
+    <string name="morethanonefollowupnotallowed">ದಯವಿಟ್ಟು ಒಂದು ಬಾರಿಗೆ ಕೇವಲ ಒಂದು ಫಾಲೋಅಪ್ ಅನ್ನು ಒದಗಿಸಿ.</string>
+    <string name="amount">ಮೊತ್ತ</string>
+    <string name="frequency">ಆವರ್ತನ</string>
+    <string name="route_optional">ಮಾರ್ಗ (ಐಚ್ಛಿಕ)</string>
+    <string name="reason_optional">ಕಾರಣ (ಐಚ್ಛಿಕ)</string>
+    <string name="choose_a_date">ದಿನಾಂಕವನ್ನು ಆರಿಸಿ</string>
+    <string name="follow_up_remark">ಫಾಲೋ ಅಪ್ ಟೀಕೆ</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ನೀಡಲು ಪ್ರಯತ್ನಿಸುವ ಮೊದಲು ದಯವಿಟ್ಟು ಮೊದಲು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ.</string>
+    <string name="visit_summary_prescription_already_given">ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಅನ್ನು ಈಗಾಗಲೇ ಒದಗಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.</string>
+
+    <string name="prescription_age">ವಯಸ್ಸು</string>
+    <string name="prescription_gender">ಲಿಂಗ</string>
+    <string name="prescription_address_contact">ವಿಳಾಸ ಮತ್ತು ಸಂಪರ್ಕ</string>
+    <string name="prescription_patient_id">ರೋಗಿ ಐಡಿ</string>
+    <string name="prescription_date_of_visit">ಭೇಟಿಯ ದಿನಾಂಕ</string>
+    <string name="prescription_vitals">ವೈಟಲ್ಸ್</string>
+    <string name="prescription_rr">ಉಸಿರಾಟ ದರ</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">ರಕ್ತದೊತ್ತಡ</string>
+    <string name="prescription_bmi">BMI</string>
+    <string name="prescription_wt">ತೂಕ(ಕೆಜಿ)</string>
+    <string name="prescription_ht">ಎತ್ತರ(ಸೆಂ)</string>
+    <string name="prescription_pre_comp">ದೂರು(ಗಳನ್ನು) ಪ್ರಸ್ತುತಪಡಿಸಲಾಗುತ್ತಿದೆ</string>
+    <string name="prescription_diagnosis">ರೋಗನಿರ್ಣಯ</string>
+    <string name="prescription_med_plan">ಔಷಧಿ(ಗಳು) ಯೋಜನೆ</string>
+    <string name="prescription_rec_investigation">ಶಿಫಾರಸು ಮಾಡಿದ ತನಿಖೆ(ಗಳು)</string>
+    <string name="prescription_general_advice">ಸಾಮಾನ್ಯ ಸಲಹೆ</string>
+    <string name="prescription_follow_up_date">ಫಾಲೋ ಅಪ್ ದಿನಾಂಕ</string>
+    <string name="prescription_temp_c">ತಾಪಮಾನ (C) : </string>
+    <string name="prescription_temp_f">ತಾಪಮಾನ (F) : </string>
+
+    <string name="yes">ಹೌದು</string>
+    <string name="no">ನೋಲೈ</string>
 </resources>

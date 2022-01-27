@@ -661,6 +661,11 @@
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तावेज़ जोड़ें!</string>
     <string name="something_went_wrong">कुछ गलत हो गया। कृपया समर्थन से संपर्क करें</string>
 
+
+    <string name="warning_app_update">कृपया ऐप को नवीनतम संस्करण में अपडेट करें।</string>
+    <string name="due_on">नियत तारीख:</string>
+    <string name="title_follow_up">फॉलो अप विज़िट</string>
+    <string name="location">स्थान</string>
     //--------------reset app strings------------------------
     <string name="app_reset_toast">ऐप रीसेट हो गया!</string>
     <string name="sure_to_reset_app">क्या आप ऐप रीसेट करना चाहते हैं?</string>
@@ -685,4 +690,131 @@
     <string name="title_follow_up_reminder_desc">नमस्कार, कुछ अनुवर्ती मुलाकातें लंबित हैं, कृपया अनुवर्ती कार्रवाई करें।</string>
     <string name="due_on">नियत तारीख:</string>
 
+
+    <string name="loading_more">और लोड हो रहा है...</string>
+
+    <string name = "book_appointment">बुक अपॉइंटमेंट</string>
+    <string name = "reschedule_appointment"> पुनर्निर्धारित अपॉइंटमेंट</string>
+    <string name="appointment_booking_confirmation_txt">क्या आप इस स्लॉट को बुक करने के लिए सुनिश्चित हैं?</string>
+    <string name = "appointment_booking_cancel_confirmation_txt">क्या आप निश्चित रूप से अपॉइंटमेंट रद्द करना चाहते हैं?</string>
+    <string name = "cancel_appointment">नियुक्ति रद्द करें</string>
+    <string name="slot_empty_message">चयनित तिथि और विशेषता के लिए अपॉइंटमेंट स्लॉट उपलब्ध नहीं है!</string>
+    <string name = "appointment_empty_message">आपके पास कोई अपॉइंटमेंट नहीं है!</string>
+    <string name = "appointment_listing_title">अपॉइंटमेंट लिस्टिंग</string>
+    <string name = "appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
+    <string name = "appointment_for">नियुक्ति</string>
+    <string name = "please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट चुनें</string>
+    <string name = "please_select_speciality">कृपया विशेषता चुनें!</string>
+
+
+
+
+
+
+    <string name = "doctor_appointments">डॉक्टर अपॉइंटमेंट</string>
+    <string name = "slot_info">स्लॉट जानकारी</string>
+    <string name = "appointment_booked">अपॉइंटमेंट बुक किया गया</string>
+    <string name = "minutes_txt">मिनट</string>
+    <string name = "booked_txt">बुक किया गया</string>
+    <string name = "cancelled_txt">रद्द किया गया</string>
+    <string name = "please_upload_visit">कृपया अपॉइंटमेंट बुक करने से पहले विज़िट अपलोड करें।</string>
+    <string name = "appointment_booked_successfully">अपॉइंटमेंट सफलतापूर्वक बुक हो गया!</string>
+    <string name="appointment_booked_failed">अपॉइंटमेंट बुक करना विफल रहा!</string>
+    <string name = "postal_code_invalid_txt">कृपया मान्य पोस्टल कोड दर्ज करें</string>
+    <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करने में विफल!</string>
+    <string name = "appointment_cancelled_success_txt">नियुक्ति सफलतापूर्वक रद्द कर दी गई थी!</string>
+
+
+    <string name="diagnosis">निदान</string>
+    <string name="primary">प्राथमिक</string>
+    <string name="secondary">माध्यमिक</string>
+    <string name="provisiona">अनंतिम</string>
+    <string name="confirmed">पुष्टि की गई</string>
+    <string name="recommended_medication">अनुशंसित दवा</string>
+    <string name="medication">दवा</string>
+    <string name="strength">ताकत</string>
+    <string name="units">इकाइयाँ (जैसे: मिलीग्राम)</string>
+<!--    <string name="units_tab">Units (eg: Tab/Syrup)</string>-->
+<!--    <string name="for_duration">For Duration</string>-->
+<!--    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>-->
+<!--    <string name="additional_instruction">Additional Instruction</string>-->
+<!--    <string name="recommended_tests">Recommended Tests</string>-->
+    <string name="test">परीक्षा</string>
+<!--    <string name="advice_or_refer_patient">Advice or Refer Patient</string>-->
+    <string name="notes">नोट्स</string>
+<!--    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>-->
+<!--    <string name="follow_up">Follow Up</string>-->
+<!--    <string name="sign_and_submit">Sign and Submit</string>-->
+<!--    <string name="add_test">Add Test</string>-->
+<!--    <string name="add_advice">Add Advice</string>-->
+<!--    <string name="add_note">Add Note</string>-->
+<!--    <string name="schedule_a_follow_up">Schedule a follow up</string>-->
+<!--    <string name="submit">Submit</string>-->
+<!--    <string name="add_meds">Add Meds</string>-->
+<!--    <string name="add_diagnosis">Add Diagnosis</string>-->
+<!--    <string name="startVisitNote">Start Visit Note</string>-->
+<!--    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>-->
+<!--    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>-->
+    <string name="amount">राशि</string>
+    <string name="frequency">फ़्रीक्वेंसी</string>
+<!--    <string name="route_optional">Route (Optional)</string>-->
+<!--    <string name="reason_optional">Reason (Optional)</string>-->
+<!--    <string name="choose_a_date">Choose a date</string>-->
+<!--    <string name="follow_up_remark">Follow up remark</string>-->
+<!--    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>-->
+<!--    <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>-->
+
+
+<string name = "units_tab">इकाइयाँ (जैसे: Tab/Syrup)</string>
+<string name = "for_duration">अवधि के लिए</string>
+<string name = "units_eg_days_weeks_etc">इकाइयाँ (जैसे: दिन/सप्ताह/आदि)</string>
+<string name = "additional_instruction">अतिरिक्त निर्देश</string>
+<string name="recommended_tests">अनुशंसित परीक्षण</string>
+<string name = "advice_or_refer_patient">रोगी को सलाह या संदर्भ दें</string>
+
+<string name="notes_not_shared_with_the_patient">नोट्स (रोगी के साथ साझा नहीं किए गए)</string>
+<string name = "follow_up">फ़ॉलो अप करें</string>
+<string name = "sign_and_submit">हस्ताक्षर करें और सबमिट करें</string>
+<string name = "add_test">परीक्षा जोड़ें</string>
+<string name = "add_advice">सलाह जोड़ें</string>
+<string name = "add_note">नोट जोड़ें</string>
+<string name="schedule_a_follow_up">एक अनुवर्ती शेड्यूल करें</string>
+<string name = "submit">सबमिट करें</string>
+<string name = "add_meds">मेड्स जोड़ें</string>
+<string name="add_diagnosis">निदान जोड़ें</string>
+<string name = "startVisitNote"> विज़िट नोट प्रारंभ करें</string>
+<string name = "prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन सफलतापूर्वक दिया गया है</string>
+<string name="morethanonefollowupnotallowed">कृपया एक बार में केवल एक ही फॉलोअप प्रदान करें।</string>
+
+
+    <string name = "prescription_age">आयु</string>
+    <string name = "prescription_gender">लिंग</string>
+    <string name = "prescription_address_contact">पता और संपर्क</string>
+    <string name = "prescription_patient_id">रोगी आईडी</string>
+    <string name = "prescription_date_of_visit">विज़िट की तिथि</string>
+    <string name = "prescription_vitals">महत्वपूर्ण</string>
+    <string name = "prescription_rr">श्वसन दर</string>
+    <string name = "prescription_pulse">पल्स (बीपीएम)</string>
+    <string name = "prescription_bp">रक्तचाप</string>
+    <string name = "prescription_bmi">BMI</string>
+    <string name = "prescription_wt">वजन (किलो)</string>
+    <string name = "prescription_ht">ऊंचाई(सेमी)</string>
+    <string name = "prescription_pre_comp">शिकायत प्रस्तुत करना</string>
+    <string name = "prescription_diagnosis">निदान</string>
+    <string name = "prescription_med_plan">दवा (योजनाएं) योजना</string>
+    <string name = "prescription_rec_investigation">अनुशंसित जांच(s)</string>
+    <string name = "prescription_general_advice">सामान्य सलाह</string>
+    <string name = "prescription_follow_up_date">फॉलो अप डेट</string>
+    <string name = "prescription_temp_c">तापमान (C): </string>
+    <string name = "prescription_temp_f">तापमान (F): </string>
+
+<string name = "route_Optional">रूट (वैकल्पिक)</string>
+<string name = "reason_Optional">कारण (वैकल्पिक)</string>
+<string name = "choose_a_date">एक तारीख चुनें</string>
+<string name="follow_up_remark">अनुवर्ती टिप्पणी</string>
+<string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया नुस्खे देने का प्रयास करने से पहले पहले अपलोड करें।</string>
+<string name = "visit_summary_prescription_already_given">प्रिस्क्रिप्शन पहले ही दिया जा चुका है। कृपया नुस्खा डाउनलोड करें।</string>
+
+    <string name="yes">हां</string>৷
+    <string name="no">नहीं</string>
 </resources>

@@ -561,6 +561,14 @@
     <string name="txt_additional_info">అదనపు సమాచారం</string>
     <string name="medical_advice">వైద్య సలహా</string>
 
+
+
+
+    <string name="loading_more">మరింత లోడ్ అవుతోంది...</string>
+    <string name="warning_app_update">దయచేసి యాప్‌ని తాజా వెర్షన్‌కి అప్‌డేట్ చేయండి.</string>
+    <string name="due_on">గడువు తేది:</string>
+    <string name="title_follow_up">ఫాలో అప్ సందర్శనలు</string>
+    <string name="location">స్థానం</string>
     <!--    Strings for special Check-->
     <string name="str_check_Odisha">ఒడిశా</string>
     <string name="str_check_Bukidnon">బుకిడ్నాన్</string>
@@ -568,4 +576,102 @@
     <string name="str_check_UnitedStates">సంయుక్త రాష్ట్రాలు</string>
     <string name="str_check_Philippines">ఫిలిప్పీన్స్</string>
     <string name = "change_languages">భాషలను మార్చండి</string>
+    <string name="speciality_cardview_title">ప్రత్యేకత</string>
+
+    <string name="location_setup">స్థానం సెటప్ - </string>
+    //----------reset app strings-------------
+    <string name="reset_app">యాప్‌ని రీసెట్ చేయండి</string>
+    <string name="app_reset_toast">యాప్ రీసెట్ పూర్తయింది!</string>
+    <string name="resetting_app_dialog">యాప్‌ని రీసెట్ చేస్తోంది</string>
+    <string name="sure_to_reset_app">మీరు ఖచ్చితంగా యాప్‌ని రీసెట్ చేయాలనుకుంటున్నారా?</string>
+
+
+    <string name="book_appointment">పుస్తక అపాయింట్‌మెంట్</string>
+    <string name="reschedule_appointment">అపాయింట్‌మెంట్‌ని రీషెడ్యూల్ చేయండి</string>
+    <string name="appointment_booking_confirmation_txt">మీరు ఖచ్చితంగా ఈ స్లాట్‌ను బుక్ చేస్తారా?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">మీరు అపాయింట్‌మెంట్‌ని ఖచ్చితంగా రద్దు చేస్తారా?</string>
+    <string name="cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయి</string>
+    <string name="slot_empty_message">ఎంచుకున్న తేదీ మరియు ప్రత్యేకత కోసం అపాయింట్‌మెంట్ స్లాట్ అందుబాటులో లేదు!</string>
+    <string name="appointment_empty_message">మీకు ఎలాంటి అపాయింట్‌మెంట్ లేదు!</string>
+    <string name="appointment_listing_title">అపాయింట్‌మెంట్ జాబితా</string>
+    <string name="appointment_booking_title">అపాయింట్‌మెంట్ బుకింగ్</string>
+    <string name="appointment_for">అపాయింట్‌మెంట్</string>
+    <string name="please_select_appointment_slot">దయచేసి అపాయింట్‌మెంట్ స్లాట్‌ని ఎంచుకోండి</string>
+    <string name="please_select_speciality">దయచేసి ప్రత్యేకతను ఎంచుకోండి!</string>
+
+    <string name="doctor_appointments">డాక్టర్ నియామకాలు</string>
+<string name="slot_info">స్లాట్ సమాచారం</string>
+<string name="appointment_booked">అపాయింట్‌మెంట్ బుక్ చేయబడింది</string>
+<string name="minutes_txt">నిమిషాలు</string>
+<string name="booked_txt">బుక్ చేయబడింది</string>
+<string name="cancelled_txt">రద్దు చేయబడింది</string>
+<string name="please_upload_visit">దయచేసి అపాయింట్‌మెంట్ బుకింగ్ చేయడానికి ముందు సందర్శనను అప్‌లోడ్ చేయండి.</string>
+<string name="appointment_booked_successfully">అపాయింట్‌మెంట్ విజయవంతంగా బుక్ చేయబడింది!</string>
+<string name="appointment_booked_failed">అపాయింట్‌మెంట్ బుక్ చేయడం విఫలమైంది!</string>
+<string name="postal_code_invalid_txt">దయచేసి చెల్లుబాటు అయ్యే పోస్టల్ కోడ్‌ని నమోదు చేయండి</string>
+<string name="failed_to_cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయడంలో విఫలమైంది!</string>
+<string name="appointment_cancelled_success_txt">అపాయింట్‌మెంట్ విజయవంతంగా రద్దు చేయబడింది!</string>
+
+    <string name="prescription_age">వయస్సు</string>
+    <string name="prescription_gender">లింగం</string>
+    <string name="prescription_address_contact">చిరునామా మరియు సంప్రదింపు</string>
+    <string name="prescription_patient_id">రోగి ID</string>
+    <string name="prescription_date_of_visit">సందర్శన తేదీ</string>
+    <string name="prescription_vitals">ప్రాధాన్యాలు</string>
+    <string name="prescription_rr">శ్వాస రేటు</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">రక్తపోటు</string>
+    <string name="prescription_bmi">BMI</string>
+
+    <string name="prescription_wt">బరువు(kg)</string>
+    <string name="prescription_ht">ఎత్తు(సెం.మీ.)</string>
+    <string name="prescription_pre_comp">ఫిర్యాదు(లు) సమర్పిస్తోంది</string>
+    <string name="prescription_diagnosis">నిర్ధారణ</string>
+    <string name="prescription_med_plan">ఔషధ(లు) ప్రణాళిక</string>
+    <string name="prescription_rec_investigation">సిఫార్సు చేయబడిన పరిశోధన(లు)</string>
+    <string name="prescription_general_advice">సాధారణ సలహా</string>
+    <string name="prescription_follow_up_date">ఫాలో అప్ తేదీ</string>
+    <string name="prescription_temp_c">ఉష్ణోగ్రత (C) : </string>
+    <string name="prescription_temp_f">ఉష్ణోగ్రత (F) : </string>
+
+    <string name="diagnosis">నిర్ధారణ</string>
+    <string name="primary">ప్రాధమిక</string>
+    <string name="secondary">సెకండరీ</string>
+    <string name="provisiona">తాత్కాలిక</string>
+    <string name="confirmed">ధృవీకరించబడింది</string>
+    <string name="recommended_medication">సిఫార్సు చేయబడిన మందులు</string>
+    <string name="medication">మందు</string>
+    <string name="strength">బలం</string>
+    <string name="units">యూనిట్లు (ఉదా: mg)</string>
+    <string name="units_tab">యూనిట్‌లు (ఉదా: ట్యాబ్/సిరప్)</string>
+    <string name="for_duration">వ్యవధి కోసం</string>
+    <string name="units_eg_days_weeks_etc">యూనిట్‌లు (ఉదా: రోజులు/వారాలు/మొదలైనవి)</string>
+    <string name="additional_instruction">అదనపు సూచన</string>
+    <string name="recommended_tests">సిఫార్సు చేయబడిన పరీక్షలు</string>
+    <string name="test">పరీక్ష</string>
+    <string name="advice_or_refer_patient">సలహా లేదా రోగిని సూచించండి</string>
+    <string name="notes">గమనికలు</string>
+    <string name="notes_not_shared_with_the_patient">గమనికలు (రోగితో భాగస్వామ్యం చేయబడలేదు)</string>
+    <string name="follow_up">ఫాలో అప్</string>
+    <string name="sign_and_submit">సంతకం చేసి సమర్పించండి</string>
+    <string name="add_test">పరీక్షను జోడించు</string>
+    <string name="add_advice">సలహా జోడించు</string>
+    <string name="add_note">గమనికని జోడించు</string>
+    <string name="schedule_a_follow_up">ఫాలో అప్‌ని షెడ్యూల్ చేయండి</string>
+    <string name="submit">సమర్పించు</string>
+    <string name="add_meds">మెడ్‌లను జోడించు</string>
+    <string name="add_diagnosis">రోగ నిర్ధారణను జోడించు</string>
+    <string name="startVisitNote">సందర్శన గమనికను ప్రారంభించు</string>
+    <string name="prescGivenSuccessfully">ధన్యవాదాలు! ప్రిస్క్రిప్షన్ విజయవంతంగా ఇవ్వబడింది</string>
+    <string name="morethanonefollowupnotallowed">దయచేసి ఒకేసారి ఒక ఫాలోఅప్‌ను మాత్రమే అందించండి.</string>
+    <string name="amount">మొత్తం</string>
+    <string name="frequency">ఫ్రీక్వెన్సీ</string>
+    <string name="route_optional">మార్గం (ఐచ్ఛికం)</string>
+    <string name="reason_optional">కారణం (ఐచ్ఛికం)</string>
+    <string name="choose_a_date">తేదీని ఎంచుకోండి</string>
+    <string name="follow_up_remark">ఫాలో అప్ రిమార్క్</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">ప్రిస్క్రిప్షన్ ఇవ్వడానికి ప్రయత్నించే ముందు దయచేసి ముందుగా అప్‌లోడ్ చేయండి.</string>
+    <string name="visit_summary_prescription_already_given">ప్రిస్క్రిప్షన్ ఇప్పటికే అందించబడింది. దయచేసి ప్రిస్క్రిప్షన్‌ని డౌన్‌లోడ్ చేయండి.</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
 </resources>

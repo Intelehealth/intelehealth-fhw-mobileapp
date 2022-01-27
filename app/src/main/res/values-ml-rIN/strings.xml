@@ -398,12 +398,13 @@
     <string name="prescription_downloaded">പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്തിരിക്കുന്നു</string>
     <string name="downloading_prescription">" പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്യുകയാണ്"</string>
     <string name="visit_data_failed">സന്ദർശന ഡാറ്റ പരാജയപ്പെട്ടിരിക്കുന്നു</string>
-    <string name="patient_data_failed">" രോഗിയുടെ ഡാറ്റാ പരാജയപ്പെട്ടിരിക്കുന്നു"</string>
+    <string name="patient_data_failed">രോഗിയുടെ ഡാറ്റാ പരാജയപ്പെട്ടിരിക്കുന്നു</string>
     <string name="privacy_notice_title">പ്രൈവസി നോട്ടീസ്</string>
-    <string name="no_data_active_patients">" ഈ ആരോഗ്യ പ്രവർത്തകന്‍റെ രോഗികളുടെ രേഖകളൊന്നും കണ്ടെത്തിയില്ല."</string>
-    <string name="syncing_visitDialog">" റിഫ്രഷ് ചെയ്തുകൊണ്ടിരിക്കുന്നു"</string>
+    <string name="no_data_active_patients">ഈ ആരോഗ്യ പ്രവർത്തകന്‍റെ രോഗികളുടെ രേഖകളൊന്നും കണ്ടെത്തിയില്ല.</string>
+    <string name="syncing_visitDialog">റിഫ്രഷ് ചെയ്തുകൊണ്ടിരിക്കുന്നു</string>
     <string name="successfully_synced_notif">വിജയകരമായി റിഫ്രഷ് ചെയ്തിരിക്കുന്നു</string>
     <string name="languages">ഭാഷകൾ</string>
+    <string name="change_languages">ഭാഷകൾ മാറ്റുക</string>
     <string name="current_language">ഇപ്പോഴത്തെ ഭാഷ</string>
     <string name="protocols_downloaded_successfully">പ്രോട്ടോകോൾ സക്സസ്ഫുൾ ആയി ഡൗൺലോഡ് ചെയ്തിരിക്കുന്നു</string>
     <string name="no_protocols_found">" പ്രോട്ടോകോൾസ് ഒന്നും കാണുന്നില്ല"</string>
@@ -411,43 +412,43 @@
     <string name="last_synced">അവസാനം റിഫ്രഷ് ചെയ്തത്</string>
     <string name="today_visits">ഇന്നത്തെ സന്ദർശനങ്ങൾ</string>
     <string name="active_visits">സജീവമായിട്ടുള്ള സന്ദർശനങ്ങൾ</string>
-    <string name="day">" ദിവസം"</string>
+    <string name="day">ദിവസം</string>
     <string name="minute">മിനിറ്റ്</string>
-    <string name="hour">" മണിക്കൂർ"</string>
+    <string name="hour">മണിക്കൂർ</string>
     <string name="s">എസ്</string>
-    <string name="ago">" മുൻപ്"</string>
+    <string name="ago">മുൻപ്</string>
     <string name="successfully_synced">വിജയകരമായി റിഫ്രഷ് ചെയ്തിരിക്കുന്നു</string>
     <string name="visit_not_uploaded">വിസിറ്റ് അപ്ലോഡ് ചെയ്തിട്ടില്ല</string>
-    <string name="upload_started">" അപ്‌ലോഡ് ചെയ്യുകയാണ്..."</string>
-    <string name="visit_uploaded_successfully">" സന്ദർശനം വിജയകരമായി അപ്‌ലോഡ് ചെയ്തിരിക്കുന്നു"</string>
-    <string name="visit_uploaded_failed">" ഇൻറർനെറ്റ് ലഭ്യമാകുമ്പോൾ അപ്ലോഡ് ചെയ്യുന്നതാണ്"</string>
-    <string name="visitID">" സന്ദർശന ഐഡി"</string>
+    <string name="upload_started">അപ്‌ലോഡ് ചെയ്യുകയാണ്...</string>
+    <string name="visit_uploaded_successfully">സന്ദർശനം വിജയകരമായി അപ്‌ലോഡ് ചെയ്തിരിക്കുന്നു</string>
+    <string name="visit_uploaded_failed">ഇൻറർനെറ്റ് ലഭ്യമാകുമ്പോൾ അപ്ലോഡ് ചെയ്യുന്നതാണ്</string>
+    <string name="visitID">സന്ദർശന ഐഡി</string>
     <string name="end_visit_msg">സന്ദർശനം അവസാനിപ്പിക്കണമെന്ന് നിങ്ങള്‍ക്ക് ഉറപ്പാണോ?</string>
-    <string name="prescription_not_downloaded_check_internet">" പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്തിട്ടില്ല ഇൻറർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക"</string>
+    <string name="prescription_not_downloaded_check_internet">പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്തിട്ടില്ല ഇൻറർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക</string>
     <string name="privacy_reject_toast">സമ്മതമില്ലാതെ നിങ്ങൾക്ക് രോഗിയെ രജിസ്റ്റർ ചെയ്യാൻ സാധ്യമല്ല</string>
     <string name="not_answered">ഉത്തരം നല്‍കിയിട്ടില്ല</string>
-    <string name="new_update_available">" പുതിയ അപ്ഡേറ്റ് ലഭ്യമാണ്"</string>
-    <string name="update_app_note">" പുതിയ സൗകര്യങ്ങളുമായി പുതിയ വേർഷൻ ലഭ്യമാണ്, ദയവായി ആപ്പ് അപ്ഡേറ്റ് ചെയ്യുക"</string>
-    <string name="update">" അപ്ഡേറ്റ്"</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">" \"ഹലോ ഇൻടെലിഹെൽത്ത് ഉപയോഗിക്കുന്നതിന് നന്ദി. പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്യുന്നതിനായി ഇവിടെ ക്ലിക്ക് ചെയ്യുക\""</string>
-    <string name="and_enter_your_patient_id">" \"പിന്നെ നിങ്ങളുടെ രോഗി ഐഡി നല്‍കുക\""</string>
-    <string name="what_is_the_reason_for_your_visit">" നിങ്ങളുടെ സന്ദർശനത്തിന് കാരണമെന്താണ്? "</string>
+    <string name="new_update_available">പുതിയ അപ്ഡേറ്റ് ലഭ്യമാണ്</string>
+    <string name="update_app_note">പുതിയ സൗകര്യങ്ങളുമായി പുതിയ വേർഷൻ ലഭ്യമാണ്, ദയവായി ആപ്പ് അപ്ഡേറ്റ് ചെയ്യുക</string>
+    <string name="update">അപ്ഡേറ്റ്</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">ഹലോ ഇൻടെലിഹെൽത്ത് ഉപയോഗിക്കുന്നതിന് നന്ദി. പ്രിസ്ക്രിപ്ഷൻ ഡൗൺലോഡ് ചെയ്യുന്നതിനായി ഇവിടെ ക്ലിക്ക് ചെയ്യുക</string>
+    <string name="and_enter_your_patient_id">പിന്നെ നിങ്ങളുടെ രോഗി ഐഡി നല്‍കുക</string>
+    <string name="what_is_the_reason_for_your_visit">നിങ്ങളുടെ സന്ദർശനത്തിന് കാരണമെന്താണ്?</string>
     <string name="swipe_down_to_return">മുൻപുള്ളതിനായി താഴേക്ക് സ്വൈപ്പ് ചെയ്യുക/അടുത്തതിന് മുകളിലേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>
     <string name="swipe_up">അടുത്തതിന് മുകളിലേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>
     <string name="swipe_down">മുൻപുള്ളതിനായി താഴേക്ക് സ്വൈപ്പ് ചെയ്യുക</string>
     <string name="have_symptom">" താങ്കൾക്ക് ഈ രോഗലക്ഷണം ഉണ്ടോ?"</string>
     <string name="personal_information">വ്യക്തിഗത വിവരം</string>
     <string name="address_details">വിലാസത്തിന്‍റെ വിശദാംശങ്ങൾ</string>
-    <string name="txt_others">" മറ്റുള്ളവർ"</string>
+    <string name="txt_others">മറ്റുള്ളവർ</string>
     <string name="do_you_need_help_please_contact_us">നിങ്ങൾക്ക് സഹായം ആവശ്യമുണ്ടോ? ദയവായി ഞങ്ങളെ കോൺടാക്ട് ചെയ്യുക!</string>
     <string name="whatsapp_helpline">WhatsApp ഹെൽപ്പ് ലൈൻ</string>
     <string name="Whatsapp_Help_Cardview">" ഹെൽപ്പ്"</string>
-    <string name="skip">" സ്കിപ്പ്"</string>
+    <string name="skip">സ്കിപ്പ്</string>
     <string name="start">സ്റ്റാർട്ട്</string>
     <string name="who_is_this_napplication_for">ആർക്കുവേണ്ടിയാണ് ഈ ആപ്ലിക്കേഷൻ</string>
-    <string name="custom_setup">" സെറ്റപ്പ്"</string>
-    <string name="demo_version">" ഡെമോ വേർഷൻ"</string>
-    <string name="sample_text">" സാമ്പിൾ ടെക്സ്റ്റ്"</string>
+    <string name="custom_setup">സെറ്റപ്പ്</string>
+    <string name="demo_version">ഡെമോ വേർഷൻ</string>
+    <string name="sample_text">സാമ്പിൾ ടെക്സ്റ്റ്</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha ഓണ്‍പ്ലസ് 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">പ്രായം: പതിനൊന്ന് വയസ്സ്, അഞ്ചാം മാസം</string>
     <string name="active_defaultTag">" സജീവം"</string>
@@ -541,10 +542,111 @@
     <string name="setup_internet_not_available">നിങ്ങൾ ഇന്റർനെറ്റിലേക്ക് കണക്റ്റുചെയ്‌തിട്ടില്ല.</string>
     <string name="generic_info">വിവരം!</string>
 
-    <string name="take_photo">ഫോട്ടോ എടുക്കുക</string>
-    <string name="choose_from_gallery">ഗാലറിയിൽ നിന്ന് തിരഞ്ഞെടുക്കുക</string>
-    <string name="additional_doc_image_picker_title">അധിക പ്രമാണങ്ങൾ ചേർക്കുക!</string>
-    <string name = "change_languages">ഭാഷകൾ മാറ്റുക</string>
+    <string name="reset_app">ആപ്പ് പുനഃസജ്ജമാക്കുക</string>
+    <string name="app_reset_toast">ആപ്പ് റീസെറ്റ് പൂർത്തിയായി!</string>
+    <string name="resetting_app_dialog">ആപ്പ് പുനഃസജ്ജമാക്കുന്നു</string>
+    <string name="sure_to_reset_app">ആപ്പ് റീസെറ്റ് ചെയ്യണമെന്ന് തീർച്ചയാണോ?</string>
+
+    //ആപ്പ് പ്രവർത്തനം പുനഃസജ്ജമാക്കുക
+    <string name="sync_failed">സമന്വയം പരാജയപ്പെട്ടു! ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="no_network_sync">നിങ്ങൾ ഇന്റർനെറ്റിലേക്ക് കണക്‌റ്റ് ചെയ്‌തിട്ടില്ല. ദയവായി പിന്നീട് വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="app_sync">ആപ്പ് സമന്വയിപ്പിക്കുന്നു..</string>
+
+    <string name="location_setup">സജ്ജീകരണ സ്ഥാനം -</string>
+
+
+    <string name="book_appointment">ബുക്ക് അപ്പോയിന്റ്മെന്റ്</string>
+    <string name="reschedule_appointment">അപ്പോയ്‌മെന്റ് വീണ്ടും ഷെഡ്യൂൾ ചെയ്യുക</string>
+    <string name="appointment_booking_confirmation_txt">നിങ്ങൾക്ക് ഈ സ്ലോട്ട് ബുക്ക് ചെയ്യുമെന്ന് തീർച്ചയാണോ?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">നിങ്ങൾക്ക് അപ്പോയിന്റ്മെന്റ് റദ്ദാക്കുമെന്ന് ഉറപ്പാണോ?</string>
+    <string name="cancel_appointment">അപ്പോയിന്റ്മെന്റ് റദ്ദാക്കുക</string>
+    <string name="slot_empty_message">തിരഞ്ഞെടുത്ത തീയതിക്കും സ്പെഷ്യാലിറ്റിക്കും അപ്പോയിന്റ്മെന്റ് സ്ലോട്ട് ലഭ്യമല്ല!</string>
+    <string name="appointment_empty_message">നിങ്ങൾക്ക് അപ്പോയിന്റ്മെന്റ് ഒന്നുമില്ല!</string>
+    <string name="appointment_listing_title">അപ്പോയിന്റ്മെന്റ് ലിസ്റ്റിംഗ്</string>
+    <string name="appointment_booking_title">അപ്പോയിന്റ്മെന്റ് ബുക്കിംഗ്</string>
+    <string name="appointment_for">ഇതിനായുള്ള അപ്പോയിന്റ്മെന്റ്</string>
+    <string name="please_select_appointment_slot">ദയവായി അപ്പോയിന്റ്മെന്റ് സ്ലോട്ട് തിരഞ്ഞെടുക്കുക</string>
+    <string name="please_select_speciality">ദയവായി സ്പെഷ്യാലിറ്റി തിരഞ്ഞെടുക്കുക!</string>
+
+    <string name="doctor_appointments">ഡോക്ടർ നിയമനങ്ങൾ</string>
+    <string name="slot_info">സ്ലോട്ട് വിവരം</string>
+    <string name="appointment_booked">അപ്പോയിന്റ്മെന്റ് ബുക്ക് ചെയ്തു</string>
+    <string name="minutes_txt">മിനിറ്റുകൾ</string>
+    <string name="booked_txt">ബുക്ക് ചെയ്തു</string>
+    <string name="cancelled_txt">റദ്ദാക്കി</string>
+    <string name="please_upload_visit">അപ്പോയിന്റ്മെന്റ് ബുക്ക് ചെയ്യുന്നതിന് മുമ്പ് ദയവായി ആദ്യം സന്ദർശനം അപ്‌ലോഡ് ചെയ്യുക.</string>
+    <string name="appointment_booked_successfully">അപ്പോയിന്റ്മെന്റ് ബുക്ക് ചെയ്തു!</string>
+    <string name="appointment_booked_failed">ബുക്ക് ചെയ്‌ത അപ്പോയിന്റ്മെന്റ് പരാജയപ്പെട്ടു!</string>
+    <string name="postal_code_invalid_txt">ദയവായി സാധുവായ തപാൽ കോഡ് നൽകുക</string>
+    <string name="failed_to_cancel_appointment">അപ്പോയിന്റ്മെന്റ് റദ്ദാക്കുന്നതിൽ പരാജയപ്പെട്ടു!</string>
+    <string name="appointment_cancelled_success_txt">അപ്പോയിന്റ്മെന്റ് വിജയകരമായി റദ്ദാക്കി!</string>
+
+    <string name="prescription_age">പ്രായം</string>
+    <string name="prescription_gender">ലിംഗഭേദം</string>
+    <string name="prescription_address_contact">വിലാസവും കോൺടാക്‌റ്റും</string>
+    <string name="prescription_patient_id">രോഗിയുടെ ഐഡി</string>
+    <string name="prescription_date_of_visit">സന്ദർശിച്ച തീയതി</string>
+    <string name="prescription_vitals">വൈറ്റലുകൾ</string>
+    <string name="prescription_rr">ശ്വസന നിരക്ക്</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">രക്തസമ്മർദ്ദം</string>
+    <string name="prescription_bmi">BMI</string>
+    <string name="prescription_wt">ഭാരം(കിലോ)</string>
+    <string name="prescription_ht">ഉയരം(സെ.മീ.)</string>
+    <string name="prescription_pre_comp">പരാതി(കൾ) അവതരിപ്പിക്കുന്നു</string>
+    <string name="prescription_diagnosis">രോഗനിർണ്ണയം</string>
+    <string name="prescription_med_plan">മരുന്ന്(ങ്ങൾ) പ്ലാൻ</string>
+    <string name="prescription_rec_investigation">ശുപാർശ ചെയ്‌ത അന്വേഷണം(കൾ)</string>
+    <string name="prescription_general_advice">പൊതു ഉപദേശം</string>
+    <string name="prescription_follow_up_date">ഫോളോ അപ്പ് തീയതി</string>
+    <string name="prescription_temp_c">താപനില (C) : </string>
+    <string name="prescription_temp_f">താപനില (F) : </string>
+
+
+    <string name="diagnosis">രോഗനിർണ്ണയം</string>
+    <string name="primary">പ്രാഥമിക</string>
+    <string name="secondary">ദ്വിതീയം</string>
+    <string name="provisiona">താൽക്കാലികം</string>
+    <string name="confirmed">സ്ഥിരീകരിച്ചു</string>
+    <string name="recommended_medication">ശുപാർശ ചെയ്‌ത മരുന്ന്</string>
+    <string name="medication">മരുന്ന്</string>
+    <string name="strength">ശക്തി</string>
+    <string name="units">യൂണിറ്റുകൾ (ഉദാ: mg)</string>
+    <string name="units_tab">യൂണിറ്റുകൾ (ഉദാ: ടാബ്/സിറപ്പ്)</string>
+    <string name="for_duration">കാലത്തേക്ക്</string>
+    <string name="units_eg_days_weeks_etc">യൂണിറ്റുകൾ (ഉദാ: ദിവസങ്ങൾ/ആഴ്‌ചകൾ/മുതലായവ)</string>
+    <string name="additional_instruction">അധിക നിർദ്ദേശം</string>
+    <string name="recommended_tests">ശുപാർശ ചെയ്‌ത ടെസ്റ്റുകൾ</string>
+    <string name="test">ടെസ്റ്റ്</string>
+    <string name="advice_or_refer_patient">രോഗിയെ ഉപദേശിക്കുക അല്ലെങ്കിൽ റഫർ ചെയ്യുക</string>
+    <string name="notes">കുറിപ്പുകൾ</string>
+    <string name="notes_not_shared_with_the_patient">കുറിപ്പുകൾ (രോഗിയുമായി പങ്കിട്ടിട്ടില്ല)</string>
+    <string name="follow_up">ഫോളോ അപ്പ്</string>
+    <string name="sign_and_submit">ഒപ്പ് ചെയ്ത് സമർപ്പിക്കുക</string>
+    <string name="add_test">ടെസ്റ്റ് ചേർക്കുക</string>
+    <string name="add_advice">ഉപദേശം ചേർക്കുക</string>
+    <string name="add_note">കുറിപ്പ് ചേർക്കുക</string>
+    <string name="schedule_a_follow_up">ഒരു ഫോളോ അപ്പ് ഷെഡ്യൂൾ ചെയ്യുക</string>
+    <string name="submit">സമർപ്പിക്കുക</string>
+    <string name="add_meds">മെഡുകൾ ചേർക്കുക</string>
+    <string name="add_diagnosis">രോഗനിർണയം ചേർക്കുക</string>
+    <string name="startVisitNote">സന്ദർശന കുറിപ്പ് ആരംഭിക്കുക</string>
+    <string name="prescGivenSuccessfully">നന്ദി! കുറിപ്പടി വിജയകരമായി നൽകി</string>
+    <string name="morethanonefollowupnotallowed">ദയവായി ഒരു സമയം ഒരു ഫോളോഅപ്പ് മാത്രം നൽകുക.</string>
+    <string name="amount">തുക</string>
+    <string name="frequency">frequency</string>
+    <string name="route_optional">റൂട്ട് (ഓപ്ഷണൽ)</string>
+    <string name="reason_optional">കാരണം (ഓപ്ഷണൽ)</string>
+    <string name="choose_a_date">ഒരു തീയതി തിരഞ്ഞെടുക്കുക</string>
+    <string name="follow_up_remark">ഫോളോ അപ്പ് പരാമർശം</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">കുറിപ്പ് നൽകാൻ ശ്രമിക്കുന്നതിന് മുമ്പ് ദയവായി ആദ്യം അപ്‌ലോഡ് ചെയ്യുക.</string>
+    <string name="visit_summary_prescription_already_given">പ്രിസ്‌ക്രിപ്ഷൻ ഇതിനകം നൽകിയിട്ടുണ്ട്. ദയവായി കുറിപ്പടി ഡൗൺലോഡ് ചെയ്യുക.</string>
+<!--    <string name="title_follow_up">Follow Up Visits</string>-->
+    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>
+    <string name="yes">അതെ</string>
+    <string name="no">ഇല്ല</string>
+
+
 </resources>
 
 

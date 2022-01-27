@@ -558,5 +558,106 @@
     <string name="please_select_specialization_msg">தயவு செய்து தனித்துறைப்பாட்டைத் தேர்ந்தெடுக்கவும்</string>
     <string name="chat_fab">இன்னுரையாடல் ஃபேப்</string>
     <string name="visit_closed">வருகை மூடப்பட்டது</string>
+    <string name="title_follow_up">பின்தொடரவும்</string>
+
+    <string name="change_languages">மொழிகளை மாற்றவும்</string>
+    <string name="location_setup">இருப்பிட அமைப்பு - </string>
+    //----------reset app strings-------------
+    <string name="reset_app">பயன்பாட்டை மீட்டமைக்கவும்</string>
+    <string name="app_reset_toast">பயன்பாட்டு மீட்டமைப்பு முடிந்தது!</string>
+    <string name="resetting_app_dialog">ஆப்ஸை மீட்டமைக்கிறது</string>
+    <string name="sure_to_reset_app">நிச்சயமாக ஆப்ஸை மீட்டமைக்க விரும்புகிறீர்களா?</string>
+
+
+    <string name="book_appointment">புத்தக நியமனம்</string>
+    <string name="reschedule_appointment">அப்பயிண்ட்மெண்ட்டை மறுஅட்டவணை செய்</string>
+    <string name="appointment_booking_confirmation_txt">நிச்சயமாக இந்த ஸ்லாட்டை முன்பதிவு செய்கிறீர்களா?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">நிச்சயமாக அப்பாயிண்ட்மெண்ட்டை ரத்து செய்கிறீர்களா?</string>
+    <string name="cancel_appointment">அப்பாயிண்ட்மெண்ட்டை ரத்துசெய்</string>
+    <string name="slot_empty_message">தேர்ந்தெடுக்கப்பட்ட தேதி மற்றும் சிறப்புக்கு அப்பாயிண்ட்மெண்ட் ஸ்லாட் கிடைக்கவில்லை!</string>
+    <string name="appointment_empty_message">உங்களுக்கு எந்த சந்திப்பும் இல்லை!</string>
+    <string name="appointment_listing_title">அப்பயிண்ட்மெண்ட் பட்டியல்</string>
+    <string name="appointment_booking_title">அப்பயிண்ட்மெண்ட் முன்பதிவு</string>
+    <string name="appointment_for">இதற்கான நியமனம்</string>
+    <string name="please_select_appointment_slot">தயவுசெய்து அப்பாயிண்ட்மெண்ட் ஸ்லாட்டைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="please_select_speciality">தயவுசெய்து நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்!</string>
+
+    <string name="doctor_appointments">டாக்டர் நியமனங்கள்</string>
+    <string name="slot_info">ஸ்லாட் தகவல்</string>
+    <string name="appointment_booked">அபாயின்ட்மெண்ட் முன்பதிவு செய்யப்பட்டது</string>
+    <string name="minutes_txt">நிமிடங்கள்</string>
+    <string name="booked_txt">முன்பதிவு செய்யப்பட்டது</string>
+    <string name="cancelled_txt">ரத்துசெய்யப்பட்டது</string>
+    <string name="please_upload_visit">அப்பயிண்ட்மெண்ட் முன்பதிவு செய்வதற்கு முன் முதலில் வருகையைப் பதிவேற்றவும்.</string>
+    <string name="appointment_booked_successfully">அப்பாயிண்ட்மெண்ட் வெற்றிகரமாக பதிவு செய்யப்பட்டது!</string>
+    <string name="appointment_booked_failed">முன்பதிவு செய்த நியமனம் தோல்வியடைந்தது!</string>
+    <string name="postal_code_invalid_txt">சரியான அஞ்சல் குறியீட்டை உள்ளிடவும்</string>
+    <string name="failed_to_cancel_appointment">அப்பயிண்ட்மெண்ட்டை ரத்து செய்ய முடியவில்லை!</string>
+    <string name="appointment_cancelled_success_txt">அப்பயிண்ட்மெண்ட் வெற்றிகரமாக ரத்து செய்யப்பட்டது!</string>
+
+    <string name="diagnosis">நோயறிதல்</string>
+    <string name="primary">முதன்மை</string>
+    <string name="secondary">இரண்டாம் நிலை</string>
+    <string name="provisiona">தற்காலிக</string>
+    <string name="confirmed">உறுதிப்படுத்தப்பட்டது</string>
+    <string name="recommended_medication">பரிந்துரைக்கப்பட்ட மருந்து</string>
+    <string name="medication">மருந்து</string>
+    <string name="strength">வலிமை</string>
+    <string name="units">அலகுகள் (எ.கா: mg)</string>
+    <string name="units_tab">அலகுகள் (எ.கா: Tab/Syrup)</string>
+    <string name="for_duration">காலத்திற்கு</string>
+    <string name="units_eg_days_weeks_etc">அலகுகள் (எ.கா: நாட்கள்/வாரங்கள்/முதலியன.)</string>
+    <string name="additional_instruction">கூடுதல் அறிவுறுத்தல்</string>
+    <string name="recommended_tests">பரிந்துரைக்கப்பட்ட சோதனைகள்</string>
+    <string name="test">சோதனை</string>
+    <string name="advice_or_refer_patient">ஆலோசனை அல்லது நோயாளியைப் பரிந்துரைக்கவும்</string>
+    <string name="notes">குறிப்புகள்</string>
+    <string name="notes_not_shared_with_the_patient">குறிப்புகள் (நோயாளியுடன் பகிரப்படவில்லை)</string>
+    <string name="follow_up">Follow Up</string>
+    <string name="sign_and_submit">கையொப்பமிட்டு சமர்ப்பிக்கவும்</string>
+    <string name="add_test">சோதனையைச் சேர்</string>
+    <string name="add_advice">அறிவுரையைச் சேர்</string>
+    <string name="add_note">குறிப்பைச் சேர்</string>
+    <string name="schedule_a_follow_up">ஒரு பின்தொடர்தலை திட்டமிடு</string>
+    <string name="submit">சமர்ப்பி</string>
+    <string name="add_meds">மருந்துகளைச் சேர்</string>
+    <string name="add_diagnosis">கண்டறிதலைச் சேர்</string>
+    <string name="startVisitNote">வருகைக் குறிப்பைத் தொடங்கு</string>
+    <string name="prescGivenSuccessfully">நன்றி! மருந்துச் சீட்டு வெற்றிகரமாக வழங்கப்பட்டது</string>
+    <string name="morethanonefollowupnotallowed">தயவுசெய்து ஒரு நேரத்தில் ஒரு பின்தொடர்தலை மட்டும் வழங்கவும்.</string>
+    <string name="amount">தொகை</string>
+    <string name="frequency">அதிர்வெண்</string>
+    <string name="route_optional">பாதை (விரும்பினால்)</string>
+    <string name="reason_optional">காரணம் (விரும்பினால்)</string>
+    <string name="choose_a_date">தேதியைத் தேர்வுசெய்க</string>
+    <string name="follow_up_remark">பின்தொடர்தல் கருத்து</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">மருந்து கொடுக்க முயற்சிக்கும் முன் முதலில் பதிவேற்றவும்.</string>
+    <string name="visit_summary_prescription_already_given">மருந்து ஏற்கனவே வழங்கப்பட்டுள்ளது. மருந்துச் சீட்டைப் பதிவிறக்கவும்.</string>
+
+    <string name="prescription_age">வயது</string>
+    <string name="prescription_gender">பாலினம்</string>
+    <string name="prescription_address_contact">முகவரி மற்றும் தொடர்பு</string>
+    <string name="prescription_patient_id">நோயாளி ஐடி</string>
+    <string name="prescription_date_of_visit">பார்வையின் தேதி</string>
+    <string name="prescription_vitals">வைட்டல்ஸ்</string>
+    <string name="prescription_rr">சுவாச விகிதம்</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">இரத்த அழுத்தம்</string>
+    <string name="prescription_bmi">BMI</string>
+
+    <string name="prescription_wt">எடை(கிலோ)</string>
+    <string name="prescription_ht">உயரம்(செமீ)</string>
+    <string name="prescription_pre_comp">புகார்(களை) வழங்குதல்</string>
+    <string name="prescription_diagnosis">கண்டறிதல்</string>
+    <string name="prescription_med_plan">மருந்து(கள்) திட்டம்</string>
+    <string name="prescription_rec_investigation">பரிந்துரைக்கப்பட்ட விசாரணை(கள்)</string>
+    <string name="prescription_general_advice">பொது ஆலோசனை</string>
+    <string name="prescription_follow_up_date">பின்தொடரும் தேதி</string>
+    <string name="prescription_temp_c">வெப்பநிலை (C) : </string>
+    <string name="prescription_temp_f">வெப்பநிலை (F) : </string>
+
+    <string name="yes">ஆம்</string>
+    <string name="no">இல்லை</string>
 
 </resources>
+

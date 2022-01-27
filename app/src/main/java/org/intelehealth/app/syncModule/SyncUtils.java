@@ -7,6 +7,7 @@ import androidx.work.WorkManager;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.sync.AppointmentSync;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.utilities.Logger;
@@ -26,7 +27,8 @@ public class SyncUtils {
         Logger.logD(TAG, "Pull Started");
         syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
         Logger.logD(TAG, "Pull ended");
-
+        // sync data
+        AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
     }
     public void syncBackground() {
         SyncDAO syncDAO = new SyncDAO();
