@@ -3560,45 +3560,72 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    ClsDoctorDetails objClsDoctorDetails;
+    ClsDoctorDetails objClsDoctorDetails, objClsDoctorDetailsRemote;
 
-    private void parseDoctorDetails(String dbValue) {
+    private void parseDoctorDetails(String dbValue, String dbValueEdit) {
         Gson gson = new Gson();
-        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
-        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class); // InApp
+        objClsDoctorDetailsRemote = gson.fromJson(dbValueEdit, ClsDoctorDetails.class); //  Remote
+        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails + "\n" + objClsDoctorDetailsRemote);
 
-        String doctorSign = "";
-        String doctrRegistartionNum = "";
-        // String docDigitallySign = "";
         String doctorDetailStr = "";
         if (objClsDoctorDetails != null) {
-            //  docDigitallySign = "Digitally Signed By";
-//            mDoctorName.setVisibility(View.VISIBLE);
-//            mDoctorTitle.setVisibility(View.VISIBLE);
             frameLayout_doctor.setVisibility(View.VISIBLE);
-
-            doctorSign = objClsDoctorDetails.getTextOfSign();
-
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+            if(objClsDoctorDetailsRemote != null) {
+                 doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                   /* "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
-                    +*/
                     (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
                     objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
+                    objClsDoctorDetails.getRegistrationNumber() : "") +
+                    "</div>" + "<br>" +
 
-                    // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-
+                         // edit dr details...
+                         "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getName()) ? objClsDoctorDetailsRemote.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getSpecialization()) ?
+                            objClsDoctorDetailsRemote.getSpecialization() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
+                         objClsDoctorDetailsRemote.getRegistrationNumber() : "") +
+                    "</div>";
+            }
+            else {
+                 doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
+                    objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
                     "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
                     objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
+            }
 
             mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+            Log.v("sign", "sign: "+ doctorDetailStr);
+        }
+        else {
+            frameLayout_doctor.setVisibility(View.VISIBLE);
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getName()) ? objClsDoctorDetailsRemote.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getSpecialization()) ?
+                            objClsDoctorDetailsRemote.getSpecialization() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
+        objClsDoctorDetailsRemote.getRegistrationNumber() : "") +
+                    "</div>";
+
+            mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+            Log.v("sign", "sign: "+ doctorDetailStr);
         }
     }
 
@@ -3904,10 +3931,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
         ProviderDAO providerDAO = new ProviderDAO();
         Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+
         doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
         doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
-        doctorDetails.setSpecialization("Family Doctor");
+        doctorDetails.setSpecialization("Family doctor");
         doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+
         Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
 
         String drDetails = new Gson().toJson(doctorDetails);
@@ -4435,21 +4464,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void downloadDoctorDetails() {
-        String visitnote = "";
+        String visitnote = "", visitnote_edit = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
-        String encounter_type_uuid_comp = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";// make the encounter_type_uuid as constant later on.
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        String encounter_type_uuid_comp = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"; // make the encounter_type_uuid as constant later on.
+        String encountertypeuuid_remotePrescription = "a85f96d1-1246-4263-bfd0-00780c27a018";
+
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs,
+                null, null, null);
+
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
-                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor
+                        .getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid")); // Sign and Submit encounter
+                }
+                else if(encountertypeuuid_remotePrescription.equalsIgnoreCase(encounterCursor.getString(encounterCursor
+                        .getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote_edit = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
             } while (encounterCursor.moveToNext());
 
         }
         encounterCursor.close();
+
+        String result = "";
+        String dbValue = "", dbValueRemotePresc = "";
+        // sign and submit
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided!='1' ";
         String[] visitArgs = {visitnote};
@@ -4457,12 +4499,28 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (visitCursor.moveToFirst()) {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+               // parseDoctorDetails(dbValue);
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
+
+        // edit presc
+        String[] columnsedit = {"value", " conceptuuid"};
+        String visitSelectionedit = "encounteruuid = ? and voided!='1' ";
+        String[] visitArgsedit = {visitnote_edit};
+        Cursor visitCursoredit = db.query("tbl_obs", columnsedit, visitSelectionedit, visitArgsedit, null, null, null);
+        if (visitCursoredit.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursoredit.getString(visitCursoredit.getColumnIndex("conceptuuid"));
+                dbValueRemotePresc = visitCursoredit.getString(visitCursoredit.getColumnIndex("value"));
+
+            } while (visitCursoredit.moveToNext());
+        }
+        visitCursoredit.close();
+
+        // call to fetch doctor details...
+        parseDoctorDetails(dbValue, dbValueRemotePresc);
+
     }
-
-
 }

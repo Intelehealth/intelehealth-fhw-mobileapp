@@ -586,7 +586,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
         doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
         doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
-        doctorDetails.setSpecialization("Family Doctor");
+        doctorDetails.setSpecialization("Family doctor");
         doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
         // doctorDetails.setWhatsapp("7005308163");
