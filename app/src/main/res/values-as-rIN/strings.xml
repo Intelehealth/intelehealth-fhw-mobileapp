@@ -375,7 +375,7 @@
     <string name="unable_to_get_proper_response">প্রোটোকল ডাউনলোড কৰোতে সমস্যা হৈছিল, দয়া কৰি চিস্টেম ব্যৱস্হাপকৰ নগত যোগাযোগ কৰা</string>
     <string name="last_synced">সর্বশেষ ৰিফ্রেশ -</string>
     <string name="today_visits">আজিৰ দর্শন</string>
-    <string name="location_setup">Setup Location - </string>
+    <string name="location_setup">অৱস্থান ছেটআপ কৰক - </string>
     <string name="active_visits">সক্রিয় দর্শন</string>
     <string name="day">দিন</string>
     <string name="hour">ঘন্টা</string>

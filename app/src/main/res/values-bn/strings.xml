@@ -655,6 +655,7 @@
     <string name="follow_up_remark">ফলো আপ মন্তব্য</string>
     <string name="visit_summary_upload_reminder_prescription" translatable="false">প্রেসক্রিপশন দেওয়ার চেষ্টা করার আগে অনুগ্রহ করে প্রথমে আপলোড করুন৷</string>
     <string name="visit_summary_prescription_already_given"> প্রেসক্রিপশন আগেই দেওয়া হয়েছে। অনুগ্রহ করে প্রেসক্রিপশন ডাউনলোড করুন৷</string>
-    <string name="yes">হ্যাঁ</string>৷
+    <string name="yes">হ্যাঁ</string>
     <string name="no">না</string>
+
 </resources>

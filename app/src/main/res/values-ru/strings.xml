@@ -781,7 +781,14 @@
     <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
     <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
     <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
+    <string name="location_setup">Место установки - </string>
+    <string name="title_follow_up">Последующие визиты</string>
 
+    <string name="reset_app">Сбросить приложение</string>
+    <string name="app_reset_toast">Сброс приложения выполнен!</string>
+    <string name="resetting_app_dialog">Сброс приложения</string>
+    <string name="sure_to_reset_app">Вы уверены, что хотите сбросить настройки приложения?</string>
+    <string name="change_languages">Изменить язык</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
 </resources>
