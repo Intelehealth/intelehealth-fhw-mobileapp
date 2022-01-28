@@ -95,7 +95,7 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
-
+    private boolean isSuccess = true;
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
 
@@ -328,8 +328,8 @@ public class CameraActivity extends AppCompatActivity {
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mCameraView != null) {
-                        mFab.setEnabled(false); //app crashing on multi clicks
+                    if (mCameraView != null && isSuccess == true) {
+                        isSuccess = false; //need to keep a track so that multi clicks can be avoided
                         mCameraView.takePicture();
                     }
                 }
