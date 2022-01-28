@@ -2216,6 +2216,47 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String doctrRegistartionNum = "";
         String doctorDetailStr = "";
 
+        String doctorSpecialization = "";
+        String doctorSpecializationRemote = "";
+
+        if(objClsDoctorDetails != null) {
+            doctorSpecialization = objClsDoctorDetails.getSpecialization();
+            if(!doctorSpecialization.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecialization.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecialization = "Инфекционист";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecialization = "Невролог";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecialization = "Семейный врач";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecialization = "Педиатр";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecialization = "Неонатолог";
+                    }
+                }
+            }
+        }
+
+        if(objClsDoctorDetailsRemote != null) {
+            doctorSpecializationRemote = objClsDoctorDetailsRemote.getSpecialization();
+            if(!doctorSpecializationRemote.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecializationRemote.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecializationRemote = "Инфекционист";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecializationRemote = "Невролог";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecializationRemote = "Семейный врач";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecializationRemote = "Педиатр";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecializationRemote = "Неонатолог";
+                    }
+                }
+            }
+        }
+
         if (objClsDoctorDetails != null) {
 
             if(objClsDoctorDetailsRemote != null) {
@@ -2223,12 +2264,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                  doctorDetailStr = "<div style = \"width:100%%;float:right\">\n" +
                     " <div style=\"text-align:right;margin-top:0px;float:left;width:80%%\">\n" +
-                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">"+ objClsDoctorDetailsRemote.getTextOfSign() +"</span>\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 80px;\">"+ objClsDoctorDetailsRemote.getTextOfSign() +"</span>\n" +
                     " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
                     " <span style=\"font-size:12pt; color:#212121;padding: 62px;\">"+ objClsDoctorDetailsRemote.getName() +"</span>\n" +
                     " <br>\n" +
                     " \n" +
-                    " <span style=\"font-size:12pt; color:#212121;padding: 83px;\">"+ objClsDoctorDetailsRemote.getSpecialization() +"</span>\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 83px;\">"+ doctorSpecializationRemote +"</span>\n" +
                     " <br>\n" +
                     " \n" +
                     " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
@@ -2246,7 +2287,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getName() +"</span>\n" +
                     " <br>\n" +
                     " \n" +
-                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getSpecialization() +"</span>\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ doctorSpecialization +"</span>\n" +
                     " <br>\n" +
                     " \n" +
                     " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
@@ -2270,7 +2311,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getName() + "</span>\n" +
                         " <br>\n" +
                         " \n" +
-                        " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getSpecialization() + "</span>\n" +
+                        " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ doctorSpecialization + "</span>\n" +
                         " <br>\n" +
                         " \n" +
                         " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
@@ -2281,19 +2322,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         " </div>\n" +
                         " </div>";
             }
-
-
-
-//            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null
-//                    || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-//                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
-//                    //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
-//                    "</div>";
-
         }
         else {
             // Only Webapp prescription...
@@ -2304,7 +2332,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetailsRemote.getName() + "</span>\n" +
                     " <br>\n" +
                     " \n" +
-                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetailsRemote.getSpecialization() + "</span>\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ doctorSpecializationRemote + "</span>\n" +
                     " <br>\n" +
                     " \n" +
                     " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
@@ -3673,14 +3701,55 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails + "\n" + objClsDoctorDetailsRemote);
 
         String doctorDetailStr = "";
+        String doctorSpecialization = "";
+        String doctorSpecializationRemote = "";
+
+        if(objClsDoctorDetails != null) {
+            doctorSpecialization = objClsDoctorDetails.getSpecialization();
+            if(!doctorSpecialization.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecialization.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecialization = "Инфекционист";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecialization = "Невролог";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecialization = "Семейный врач";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecialization = "Педиатр";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecialization = "Неонатолог";
+                    }
+                }
+            }
+        }
+
+        if(objClsDoctorDetailsRemote != null) {
+            doctorSpecializationRemote = objClsDoctorDetailsRemote.getSpecialization();
+            if(!doctorSpecializationRemote.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecializationRemote.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecializationRemote = "Инфекционист";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecializationRemote = "Невролог";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecializationRemote = "Семейный врач";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecializationRemote = "Педиатр";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecializationRemote = "Неонатолог";
+                    }
+                }
+            }
+        }
+
         if (objClsDoctorDetails != null) {
             frameLayout_doctor.setVisibility(View.VISIBLE);
             if(objClsDoctorDetailsRemote != null) {
                  doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
-                    objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecialization) ?
+                            doctorSpecialization : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
                     "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
@@ -3691,8 +3760,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                          "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getName()) ? objClsDoctorDetailsRemote.getName() : "") + "</span><br>" +
-                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getSpecialization()) ?
-                            objClsDoctorDetailsRemote.getSpecialization() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecializationRemote) ?
+                            doctorSpecializationRemote : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
                     "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
@@ -3703,8 +3772,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                  doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                    (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
-                    objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecialization) ?
+                            doctorSpecialization : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
                     "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
@@ -3720,8 +3789,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getName()) ? objClsDoctorDetailsRemote.getName() : "") + "</span><br>" +
-                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getSpecialization()) ?
-                            objClsDoctorDetailsRemote.getSpecialization() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecializationRemote) ?
+                            doctorSpecializationRemote : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
                     (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
                     "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
