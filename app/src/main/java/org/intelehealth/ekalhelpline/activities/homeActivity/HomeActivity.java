@@ -812,15 +812,16 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        super.onResume();
+        checkAppVer();  //auto-update feature.
+
         //IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         //registerReceiver(syncBroadcastReceiver, filter);
-        checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-                && Locale.getDefault().toString().equals("en")) {
-//            lastSyncAgo.setText(CalculateAgoTime());
-        }
-        super.onResume();
+//        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
+//                && Locale.getDefault().toString().equals("en")) {
+////            lastSyncAgo.setText(CalculateAgoTime());
+//        }
     }
 
     @Override

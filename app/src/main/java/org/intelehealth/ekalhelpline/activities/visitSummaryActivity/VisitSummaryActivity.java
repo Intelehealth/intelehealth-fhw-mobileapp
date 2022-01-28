@@ -2148,7 +2148,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (mComplaint.contains("Associated symptoms")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3);
+                 try { mComplaint = mComplaint.substring(0, compla.indexOf("Associated symptoms") - 3); }
+                catch (StringIndexOutOfBoundsException e)
+                { e.printStackTrace(); }
             }
         } else {
 
@@ -2157,7 +2159,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (mComplaint.contains("जुड़े लक्षण")) {
             String[] cc = StringUtils.split(mComplaint, Node.bullet_arrow);
             for (String compla : cc) {
-                mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3);
+                try { mComplaint = mComplaint.substring(0, compla.indexOf("जुड़े लक्षण") - 3); }
+                catch (StringIndexOutOfBoundsException e) { e.printStackTrace(); }
             }
         } else {
 
@@ -3394,7 +3397,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //       int i =  webView.getContentHeight();
         // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+        PrintManager printManager = (PrintManager) getApplicationContext().getSystemService(Context.PRINT_SERVICE); //context changed to application context to avoid activity finish crashes: By Nishita
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
