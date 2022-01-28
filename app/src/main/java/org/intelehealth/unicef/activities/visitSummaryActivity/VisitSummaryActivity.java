@@ -1,8 +1,12 @@
 package org.intelehealth.unicef.activities.visitSummaryActivity;
 
 import static org.intelehealth.unicef.utilities.StringUtils.ru__or_dob;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_PROVIDER;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_DR_ROLE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.unicef.utilities.UuidDictionary.OBS_DOCTORDETAILS;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -107,6 +111,7 @@ import org.intelehealth.unicef.database.dao.ImagesDAO;
 import org.intelehealth.unicef.database.dao.ObsDAO;
 import org.intelehealth.unicef.database.dao.PatientsDAO;
 import org.intelehealth.unicef.database.dao.ProviderAttributeLIstDAO;
+import org.intelehealth.unicef.database.dao.ProviderDAO;
 import org.intelehealth.unicef.database.dao.RTCConnectionDAO;
 import org.intelehealth.unicef.database.dao.SyncDAO;
 import org.intelehealth.unicef.database.dao.VisitAttributeListDAO;
@@ -120,6 +125,7 @@ import org.intelehealth.unicef.models.dto.RTCConnectionDTO;
 import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitEncounterPrescription;
 import org.intelehealth.unicef.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.unicef.models.prescriptionUpload.Ob;
 import org.intelehealth.unicef.networkApiCalls.ApiClient;
 import org.intelehealth.unicef.networkApiCalls.ApiInterface;
 import org.intelehealth.unicef.services.DownloadService;
@@ -161,6 +167,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -282,6 +289,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
     Base64Utils base64Utils = new Base64Utils();
+
+    EndVisitEncounterPrescription visitCompleteStatus;
+
 
     public static final String FILTER = "io.intelehealth.client.activities.visit_summary_activity.REQUEST_PROCESSED";
 
@@ -508,6 +518,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 physicalExams.addAll(selectedExams);
             }
         }
+
+
         registerBroadcastReceiverDynamically();
         registerDownloadPrescription();
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -637,6 +649,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
         btnSignSubmit = findViewById(R.id.btnSignSubmit);
+
+        if(getVisitCompleteStatus(visitUuid))
+            btnSignSubmit.setVisibility(View.GONE);
+
 
         //get from encountertbl from the encounter
         EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
@@ -1691,6 +1707,41 @@ public class VisitSummaryActivity extends AppCompatActivity {
         getAppointmentDetails(visitUuid);
     }
 
+    private boolean getVisitCompleteStatus(String visitUuid) {
+        boolean visitCompleteStatus = false;
+        String visitComplete = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")).equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                    visitComplete = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        if (encounterCursor != null) {
+            encounterCursor.close();
+        }
+        if(!visitComplete.equalsIgnoreCase(""))
+        {
+            String[] columns = {"value", " conceptuuid"};
+            String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+            String[] visitArgs = {visitComplete, "0", "TRUE"}; // so that the deleted values dont come in the presc.
+            Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+            if (visitCursor.moveToFirst()) {
+                do {
+                    visitCompleteStatus = true; //if visit complete encounter is present...
+                } while (visitCursor.moveToNext());
+            }
+            visitCursor.close();
+
+        }
+        return visitCompleteStatus;
+    }
+
     private void showSelectSpeciliatyErrorDialog() {
         TextView t = (TextView) speciality_spinner.getSelectedView();
         t.setError(getString(R.string.please_select_specialization_msg));
@@ -2192,8 +2243,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         // Generate an HTML document on the fly:
         String fontFamilyFile = "";
         if (objClsDoctorDetails != null && objClsDoctorDetails.getFontOfSign() != null) {
-            //if(sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
-            // {
+
             if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
@@ -2203,7 +2253,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
             }
-            // }else {
+
             else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
@@ -2213,8 +2263,33 @@ public class VisitSummaryActivity extends AppCompatActivity {
             } else if (objClsDoctorDetails.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
-            // }
         }
+
+        //webapp
+        if (objClsDoctorDetailsRemote != null && objClsDoctorDetailsRemote.getFontOfSign() != null) {
+
+            if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("caveat")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Caveat.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("cormorant")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Cormorant.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("pacifico")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Pacifico.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("robotoItalic")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Robotoltalic.ttf');";
+            }
+
+            else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+            } else if (objClsDoctorDetailsRemote.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
+                fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
+            }
+
+        }
+        //webapp - end
         String font_face = "<style>" +
                 "                @font-face {" +
                 "                    font-family: \"MyFont\";" +
@@ -2224,25 +2299,137 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         String doctorSign = "";
         String doctrRegistartionNum = "";
-        // String docDigitallySign = "";
         String doctorDetailStr = "";
-        if (objClsDoctorDetails != null) {
-            //  docDigitallySign = "Digitally Signed By";
-            doctorSign = objClsDoctorDetails.getTextOfSign();
 
+        String doctorSpecialization = "";
+        String doctorSpecializationRemote = "";
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
-                    //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
-                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
-                    "</div>";
-
-//            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
+        if(objClsDoctorDetails != null) {
+            doctorSpecialization = objClsDoctorDetails.getSpecialization();
+            if(!doctorSpecialization.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecialization.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecialization = "Инфекционист";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecialization = "Невролог";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecialization = "Семейный врач";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecialization = "Педиатр";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecialization = "Неонатолог";
+                    }
+                }
+            }
         }
+
+        if(objClsDoctorDetailsRemote != null) {
+            doctorSpecializationRemote = objClsDoctorDetailsRemote.getSpecialization();
+            if(!doctorSpecializationRemote.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecializationRemote.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecializationRemote = "Инфекционист";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecializationRemote = "Невролог";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecializationRemote = "Семейный врач";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecializationRemote = "Педиатр";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecializationRemote = "Неонатолог";
+                    }
+                }
+            }
+        }
+
+        if (objClsDoctorDetails != null) {
+
+            if(objClsDoctorDetailsRemote != null) {
+                // Webapp + In-app presc = both...
+
+                 doctorDetailStr = "<div style = \"width:100%%;float:right\">\n" +
+                    " <div style=\"text-align:right;margin-top:0px;float:left;width:80%%\">\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 80px;\">"+ objClsDoctorDetailsRemote.getTextOfSign() +"</span>\n" +
+                    " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 62px;\">"+ objClsDoctorDetailsRemote.getName() +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 83px;\">"+ doctorSpecializationRemote +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                    " <br>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                    " </div>\n" +
+
+
+                    " <div style=\"text-align:left;margin-top:0px;float:right;width:15%%\">\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">"+ objClsDoctorDetails.getTextOfSign() +"</span>\n" +
+                    " \n" +
+                    " <div style=\"text-align:left;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getName() +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ doctorSpecialization +"</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                    " <br>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    "\n" +
+                    " </div>";
+
+            }
+            else {
+                // objsClsDetails - Only In-app Prescription...
+
+                doctorDetailStr = "<div>\n" +
+                        " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                        " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + objClsDoctorDetails.getTextOfSign()+ "</span>\n" +
+                        " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                        " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetails.getName() + "</span>\n" +
+                        " <br>\n" +
+                        " \n" +
+                        " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ doctorSpecialization + "</span>\n" +
+                        " <br>\n" +
+                        " \n" +
+                        " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                        " <br>\n" +
+                        " </div>\n" +
+                        " \n" +
+                        " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                        " </div>\n" +
+                        " </div>";
+            }
+        }
+        else if(objClsDoctorDetailsRemote != null) {
+            // Only Webapp prescription...
+            doctorDetailStr = "<div>\n" +
+                    " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + objClsDoctorDetailsRemote.getTextOfSign()+ "</span>\n" +
+                    " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ objClsDoctorDetailsRemote.getName() + "</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt; color:#212121;padding: 0px;\">"+ doctorSpecializationRemote + "</span>\n" +
+                    " <br>\n" +
+                    " \n" +
+                    " <span style=\"font-size:12pt;color:#212121;padding: 0px;\"></span>\n" +
+                    " <br>\n" +
+                    " </div>\n" +
+                    " \n" +
+                    " <p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\"></p>\n" +
+                    " </div>\n" +
+                    " </div>";
+
+        }
+
         if (isRespiratory) {
             String htmlDocument =
                     String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" +
@@ -2256,10 +2443,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s | " + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_ht) + ": %s | " + getResources().getString(R.string.prescription_wt) + ": %s | " + getResources().getString(R.string.prescription_bmi) + ": %s | " + getResources().getString(R.string.prescription_bp) + ": %s | " + getResources().getString(R.string.prescription_pulse) + ": %s | %s | " + getResources().getString(R.string.prescription_rr) + ": %s |  %s </p><br>" +
-                                   /* "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_pre_comp) + "</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_diagnosis) + "</p></b></u>" +
@@ -2272,11 +2455,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
-                                    doctorDetailStr +
+
+
+                                   /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +*/
+                                    doctorDetailStr
+                                    /*+
                                     "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" +
-                                    "</div>"
+                                    "</div>"*/
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
@@ -2293,10 +2479,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_patient_id) + ": %s | " + getResources().getString(R.string.prescription_date_of_visit) + ": %s </p><br>" +
                                     "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">" + getResources().getString(R.string.prescription_vitals) + "</p></b>" +
                                     "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_ht) + ": %s | " + getResources().getString(R.string.prescription_wt) + ": %s | " + getResources().getString(R.string.prescription_bmi) + ": %s | " + getResources().getString(R.string.prescription_bp) + ": %s | " + getResources().getString(R.string.prescription_pulse) + ": %s | %s | " + getResources().getString(R.string.prescription_rr) + ": %s |  %s  </p><br>" +
-                                    /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
-                                    "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
-                                    "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
-                                    "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" +*/
                                     "<b><p id=\"complaints_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_pre_comp) + "</p></b>" +
                                     para_open + "%s" + para_close + "<br><br>" +
                                     "<u><b><p id=\"diagnosis_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_diagnosis) + "</p></b></u>" +
@@ -2309,11 +2491,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     "%s<br>" +
                                     "<u><b><p id=\"follow_up_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">" + getResources().getString(R.string.prescription_follow_up_date) + "</p></b></u>" +
                                     "%s<br>" +
-                                    "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
-                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +
-                                    doctorDetailStr +
+
+                                   /* "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                                    "<span style=\"font-size:20pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span><br>" +*/
+                                    doctorDetailStr /*+
                                     "<span style=\"font-size:12pt; margin-top:5px; padding: 0px;\">" + doctrRegistartionNum + "</span>" +
-                                    "</div>"
+                                    "</div>"*/
                             , heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "",
                             (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "",
                             /*pat_hist, fam_hist,*/ mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
@@ -3594,40 +3777,113 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
     }
 
-    ClsDoctorDetails objClsDoctorDetails;
+    ClsDoctorDetails objClsDoctorDetails, objClsDoctorDetailsRemote;
 
-    private void parseDoctorDetails(String dbValue) {
-        try {
-            Gson gson = new Gson();
-            objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class);
-            Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails);
+    private void parseDoctorDetails(String dbValue, String dbValueEdit) {
+        Gson gson = new Gson();
+        objClsDoctorDetails = gson.fromJson(dbValue, ClsDoctorDetails.class); // InApp
+        objClsDoctorDetailsRemote = gson.fromJson(dbValueEdit, ClsDoctorDetails.class); //  Remote
+        Log.e(TAG, "TEST VISIT: " + objClsDoctorDetails + "\n" + objClsDoctorDetailsRemote);
 
-            String doctorSign = "";
-            String doctrRegistartionNum = "";
-            // String docDigitallySign = "";
-            String doctorDetailStr = "";
-            if (objClsDoctorDetails != null) {
-                //  docDigitallySign = "Digitally Signed By";
-//            mDoctorName.setVisibility(View.VISIBLE);
-//            mDoctorTitle.setVisibility(View.VISIBLE);
-                frameLayout_doctor.setVisibility(View.VISIBLE);
+        String doctorDetailStr = "";
+        String doctorSpecialization = "";
+        String doctorSpecializationRemote = "";
 
-                doctorSign = objClsDoctorDetails.getTextOfSign();
-
-                doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
-                doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-                        "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                        "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
-                        (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
-                        + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
-                        // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                        "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
-                        "</div>";
-
-                mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+        if(objClsDoctorDetails != null) {
+            doctorSpecialization = objClsDoctorDetails.getSpecialization();
+            if(!doctorSpecialization.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecialization.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecialization = "Инфекционист";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecialization = "Невролог";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecialization = "Семейный врач";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecialization = "Педиатр";
+                    } else if (doctorSpecialization.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecialization = "Неонатолог";
+                    }
+                }
             }
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
+        }
+
+        if(objClsDoctorDetailsRemote != null) {
+            doctorSpecializationRemote = objClsDoctorDetailsRemote.getSpecialization();
+            if(!doctorSpecializationRemote.equalsIgnoreCase("")) {
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    if (doctorSpecializationRemote.equalsIgnoreCase("Infectionist")) {
+                        doctorSpecializationRemote = "Инфекционист";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neurologist")) {
+                        doctorSpecializationRemote = "Невролог";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Family doctor")) {
+                        doctorSpecializationRemote = "Семейный врач";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Pediatrician")) {
+                        doctorSpecializationRemote = "Педиатр";
+                    } else if (doctorSpecializationRemote.equalsIgnoreCase("Neonatologist")) {
+                        doctorSpecializationRemote = "Неонатолог";
+                    }
+                }
+            }
+        }
+
+        if (objClsDoctorDetails != null) {
+            frameLayout_doctor.setVisibility(View.VISIBLE);
+            if(objClsDoctorDetailsRemote != null) {
+                 doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecialization) ?
+                            doctorSpecialization : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
+                    objClsDoctorDetails.getRegistrationNumber() : "") +
+                    "</div>" + "<br>" +
+
+                         // edit dr details...
+                         "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getName()) ? objClsDoctorDetailsRemote.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecializationRemote) ?
+                            doctorSpecializationRemote : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
+                         objClsDoctorDetailsRemote.getRegistrationNumber() : "") +
+                    "</div>";
+            }
+            else {
+                 doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecialization) ?
+                            doctorSpecialization : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
+                    objClsDoctorDetails.getRegistrationNumber() : "") +
+                    "</div>";
+            }
+
+            mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+            Log.v("sign", "sign: "+ doctorDetailStr);
+        }
+        else if(objClsDoctorDetailsRemote != null) {
+            frameLayout_doctor.setVisibility(View.VISIBLE);
+            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getName()) ? objClsDoctorDetailsRemote.getName() : "") + "</span><br>" +
+                    (!TextUtils.isEmpty(doctorSpecializationRemote) ?
+                            doctorSpecializationRemote : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getEmailId()) ? "Email: " + objClsDoctorDetailsRemote.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetailsRemote.getRegistrationNumber()) ? "Registration No: " +
+        objClsDoctorDetailsRemote.getRegistrationNumber() : "") +
+                    "</div>";
+
+            mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
+            Log.v("sign", "sign: "+ doctorDetailStr);
         }
     }
 
@@ -3796,36 +4052,178 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         // Visit is uploaded but Prescription is already given...
-        if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
-            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
+       if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
 
-        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
-            startvisitnoteApiCall();
-        } else {
-            Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
-            visitSummary.putExtra("visitUuid", visitUUID);
-            visitSummary.putExtra("patientUuid", patientUuid);
-            visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
-            visitSummary.putExtra("encounterUuidVitals", encounterVitals);
-            visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
-            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
-            visitSummary.putExtra("name", patientName);
-            visitSummary.putExtra("gender", genderView.getText());
-            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
-            visitSummary.putExtra("tag", intentTag);
-            visitSummary.putExtra("pastVisit", isPastVisit);
-            if (hasPrescription.equalsIgnoreCase("true")) {
-                visitSummary.putExtra("hasPrescription", "true");
-            } else {
-                visitSummary.putExtra("hasPrescription", "false");
-            }
-            startActivity(visitSummary);
-        }
+           //get from encountertbl from the encounter
+           EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+           visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+
+           MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VisitSummaryActivity.this);
+           alertDialogBuilder.setMessage(getResources().getString(R.string.what_to_do_next));
+           alertDialogBuilder.setNegativeButton(getResources().getString(R.string.sign_and_submit), new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   try {
+                       markVisitComplete();
+                   } catch (DAOException e) {
+                       e.printStackTrace();
+                   }
+               }
+           });
+           alertDialogBuilder.setPositiveButton(getResources().getString(R.string.edit_presc), new DialogInterface.OnClickListener() {
+               @Override
+               public void onClick(DialogInterface dialog, int which) {
+                   dialog.dismiss();
+                   startPrescActivity();
+               }
+           });
+           AlertDialog alertDialog = alertDialogBuilder.create();
+           alertDialog.show();
+           Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+           pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+           pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+           Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+           nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+           nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+           IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
+       }
+       else {
+           if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+               startvisitnoteApiCall();
+           } else {
+               startPrescActivity();
+           }
+       }
 
     }
+
+    private void startPrescActivity() {
+        Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+        visitSummary.putExtra("visitUuid", visitUUID);
+        visitSummary.putExtra("patientUuid", patientUuid);
+        visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
+        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+        visitSummary.putExtra("name", patientName);
+        visitSummary.putExtra("gender", genderView.getText());
+        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+        visitSummary.putExtra("tag", intentTag);
+        visitSummary.putExtra("pastVisit", isPastVisit);
+        if (hasPrescription.equalsIgnoreCase("true")) {
+            visitSummary.putExtra("hasPrescription", "true");
+        } else {
+            visitSummary.putExtra("hasPrescription", "false");
+        }
+        startActivity(visitSummary);
+    }
+
+    private void markVisitComplete() throws DAOException {
+        // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        visitCompleteStatus = getVisitCompleteDataModel();
+        // String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
+
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<ResponseBody> responseBodyObservable = apiService.OBS_SIGNANDSUBMIT_STATUS(
+                url, visitCompleteStatus, "Basic " + encoded);
+        responseBodyObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+
+                .subscribe(new DisposableObserver<ResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull ResponseBody responseBody) {
+                        // status is received...
+                        SyncUtils syncUtils = new SyncUtils();
+                        syncUtils.syncForeground("downloadPrescription");
+                        showDialogForHomeScreen();
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("pres", "signandsubmit: " + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("pres", "signandsubmitcomplete: ");
+                    }
+                });
+    }
+
+    private void showDialogForHomeScreen() {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertdialogBuilder.setMessage(R.string.prescGivenSuccessfully);
+        alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(VisitSummaryActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        alertDialog.setCanceledOnTouchOutside(false);
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+    }
+
+    private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
+       /* ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+        doctorDetails.setWhatsapp("7005308163");
+        doctorDetails.setPhoneNumber("7005308163");
+        doctorDetails.setFontOfSign("Pacifico");
+        doctorDetails.setName("Demo doctor1");
+        doctorDetails.setSpecialization("Neurologist");
+        doctorDetails.setTextOfSign("Dr. Demo 1");*/
+
+        ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+        ProviderDAO providerDAO = new ProviderDAO();
+        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+
+        doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
+        doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        doctorDetails.setSpecialization("Family doctor");
+        doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+
+        Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
+
+        String drDetails = new Gson().toJson(doctorDetails);
+        List<Ob> obList = new ArrayList<>();
+        Ob ob = new Ob();
+        ob.setConcept(OBS_DOCTORDETAILS);
+        ob.setValue(drDetails);
+        Log.v("drdetail", "drdetail: " + drDetails);
+        obList.add(ob);
+
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+        encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
+        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUuid);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_COMPLETE);
+        datamodel.setObs(obList);
+
+        Log.v("presbody", "newsubmit: " + new Gson().toJson(datamodel));
+        return datamodel;
+    }
+
 
     public void startvisitnoteApiCall() {
         String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
@@ -4097,6 +4495,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 //checks if prescription is downloaded and if so then sets the icon color.
                 if (hasPrescription.equalsIgnoreCase("true")) {
                     ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+                    btnSignSubmit.setText(getResources().getString(R.string.edit_presc));
                 }
                 //disable the Start Visit Note button if the prescription is already given...
                 if (hasPrescription.equalsIgnoreCase("true")) {
@@ -4160,6 +4559,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //checks if prescription is downloaded and if so then sets the icon color.
         if (hasPrescription.equalsIgnoreCase("true")) {
             ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
+            btnSignSubmit.setText(getResources().getString(R.string.edit_presc));
         }
         //disable the Start Visit Note button if the prescription is already given...
         if (hasPrescription.equalsIgnoreCase("true")) {
@@ -4323,21 +4723,34 @@ public class VisitSummaryActivity extends AppCompatActivity {
     }
 
     private void downloadDoctorDetails() {
-        String visitnote = "";
+        String visitnote = "", visitnote_edit = "";
         EncounterDAO encounterDAO = new EncounterDAO();
         String encounterIDSelection = "visituuid = ? ";
         String[] encounterIDArgs = {visitUuid};
-        String encounter_type_uuid_comp = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";// make the encounter_type_uuid as constant later on.
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+        String encounter_type_uuid_comp = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e"; // make the encounter_type_uuid as constant later on.
+        String encountertypeuuid_remotePrescription = "a85f96d1-1246-4263-bfd0-00780c27a018";
+
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs,
+                null, null, null);
+
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
-                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor
+                        .getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid")); // Sign and Submit encounter
+                }
+                else if(encountertypeuuid_remotePrescription.equalsIgnoreCase(encounterCursor.getString(encounterCursor
+                        .getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote_edit = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                 }
             } while (encounterCursor.moveToNext());
 
         }
         encounterCursor.close();
+
+        String result = "";
+        String dbValue = "", dbValueRemotePresc = "";
+        // sign and submit
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided!='1' ";
         String[] visitArgs = {visitnote};
@@ -4345,13 +4758,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
         if (visitCursor.moveToFirst()) {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+               // parseDoctorDetails(dbValue);
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
-    }
 
+        // edit presc
+        String[] columnsedit = {"value", " conceptuuid"};
+        String visitSelectionedit = "encounteruuid = ? and voided!='1' ";
+        String[] visitArgsedit = {visitnote_edit};
+        Cursor visitCursoredit = db.query("tbl_obs", columnsedit, visitSelectionedit, visitArgsedit, null, null, null);
+        if (visitCursoredit.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursoredit.getString(visitCursoredit.getColumnIndex("conceptuuid"));
+                dbValueRemotePresc = visitCursoredit.getString(visitCursoredit.getColumnIndex("value"));
     private AppointmentDetailsResponse mAppointmentDetailsResponse;
  private  int mAppointmentId = 0;
     private void getAppointmentDetails(String visitUUID) {
@@ -4382,6 +4803,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 appointmentDAO.insert(mAppointmentDetailsResponse.getData());
                                 mAppointmentId = mAppointmentDetailsResponse.getData().getId();
 
+            } while (visitCursoredit.moveToNext());
+        }
+        visitCursoredit.close();
+
+        // call to fetch doctor details...
+        parseDoctorDetails(dbValue, dbValueRemotePresc);
+
+    }
                                 mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
                                 mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
                                 mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);

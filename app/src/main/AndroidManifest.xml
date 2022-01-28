@@ -54,6 +54,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
+            android:exported="true" />
             android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"
@@ -239,18 +240,14 @@
             android:label="@string/title_activity_setup"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
-            android:name="org.intelehealth.unicef.activities.presription.PrescriptionActivity"
+            android:name=".activities.presription.PrescriptionActivity"
             android:configChanges="uiMode"
             android:label="@string/prescription"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <!--        <service-->
-        <!--            android:name=".services.OnClearFromRecentService"-->
-        <!--            android:stopWithTask="false" />-->
-
+            android:theme="@style/AppTheme.NoActionBar" /> <!-- <service -->
+        <!-- android:name=".services.OnClearFromRecentService" -->
+        <!-- android:stopWithTask="false" /> -->
         <service
             android:name=".utilities.OpenMRSAccountAuthenticatorService"
             android:exported="false">

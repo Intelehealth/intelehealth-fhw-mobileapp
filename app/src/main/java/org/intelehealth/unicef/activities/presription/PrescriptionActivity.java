@@ -54,6 +54,7 @@ import org.intelehealth.unicef.activities.homeActivity.HomeActivity;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.database.dao.ObsDAO;
+import org.intelehealth.unicef.database.dao.ProviderDAO;
 import org.intelehealth.unicef.models.ClsDoctorDetails;
 import org.intelehealth.unicef.models.dto.ObsDTO;
 import org.intelehealth.unicef.models.prescriptionUpload.EncounterProvider;
@@ -208,7 +209,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         diagnosisRecyclerView = findViewById(R.id.diagnosisRecyclerView);
         diagnosisList = new ArrayList<>();
         ObsDAO obsDAODiagnosis = new ObsDAO();
-        diagnosisList = obsDAODiagnosis.fetchAllObsPrescData(encounterVisitNote, TELEMEDICINE_DIAGNOSIS, "true");
+        diagnosisList = obsDAODiagnosis.fetchAllObsPrescData(encounterVisitNote, TELEMEDICINE_DIAGNOSIS, "TRUE");
         diagnosisPrescAdapter = new DiagnosisPrescAdapter(presContext, diagnosisList);
         RecyclerView.LayoutManager diagnosismanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -255,7 +256,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         medicationRecyclerView = findViewById(R.id.medicationRecyclerView);
         medicationList = new ArrayList<>();
         ObsDAO obsDAOMedication = new ObsDAO();
-        medicationList = obsDAOMedication.fetchAllObsPrescData(encounterVisitNote, JSV_MEDICATIONS, "true");
+        medicationList = obsDAOMedication.fetchAllObsPrescData(encounterVisitNote, JSV_MEDICATIONS, "TRUE");
         medicationPrescAdapter = new MedicationPrescAdapter(presContext, medicationList);
         RecyclerView.LayoutManager medicationmanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -385,7 +386,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         testRecyclerView = findViewById(R.id.testRecyclerView);
         testList = new ArrayList<>();
         ObsDAO obsDAOTest = new ObsDAO();
-        testList = obsDAOTest.fetchAllObsPrescData(encounterVisitNote, REQUESTED_TESTS, "true");
+        testList = obsDAOTest.fetchAllObsPrescData(encounterVisitNote, REQUESTED_TESTS, "TRUE");
         testPrescAdapter = new TestPrescAdapter(presContext, testList);
         RecyclerView.LayoutManager testmanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -419,7 +420,9 @@ public class PrescriptionActivity extends AppCompatActivity {
         adviceRecyclerView = findViewById(R.id.adviceRecyclerView);
         adviceList = new ArrayList<>();
         ObsDAO obsDAOAdvice = new ObsDAO();
-        adviceList = obsDAOAdvice.fetchAllObsPrescData(encounterVisitNote, MEDICAL_ADVICE, "true");
+        adviceList = obsDAOAdvice.fetchAllObsPrescData(encounterVisitNote, MEDICAL_ADVICE, "TRUE");
+        if(adviceList.size()>0)
+        adviceList.remove(0);  // this is done because the first advice is that href text which we dont want to show to the murse on prescription.
         advicePrescAdapter = new AdvicePrescAdapter(presContext, adviceList);
         RecyclerView.LayoutManager advicemanager = new LinearLayoutManager(PrescriptionActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -471,7 +474,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         followupRecyclerView = findViewById(R.id.followupRecyclerView);
         followupList = new ArrayList<>();
         ObsDAO obsDAOFollowup = new ObsDAO();
-        followupList = obsDAOFollowup.fetchAllObsPrescData(encounterVisitNote, FOLLOW_UP_VISIT, "true");
+        followupList = obsDAOFollowup.fetchAllObsPrescData(encounterVisitNote, FOLLOW_UP_VISIT, "TRUE");
         followupPrescAdapter = new FollowupPresAdapter(presContext, followupList);
         RecyclerView.LayoutManager folllowupmanager = new LinearLayoutManager(
                 PrescriptionActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -517,7 +520,11 @@ public class PrescriptionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Here, prescription is given just need to pass the Visit Complete encounter to update the status of the visit on webapp...
                 String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
-                visitCompleteStatus = getVisitCompleteDataModel();
+                try {
+                    visitCompleteStatus = getVisitCompleteDataModel();
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
                 // String encoded = sessionManager.getEncoded();
                 String encoded = base64Utils.encoded("sysnurse", "Nurse123");
 
@@ -573,14 +580,17 @@ public class PrescriptionActivity extends AppCompatActivity {
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
-    private EndVisitEncounterPrescription getVisitCompleteDataModel() {
+    private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
-        doctorDetails.setWhatsapp("7005308163");
-        doctorDetails.setPhoneNumber("7005308163");
-        doctorDetails.setFontOfSign("Pacifico");
-        doctorDetails.setName("Demo doctor1");
-        doctorDetails.setSpecialization("Neurologist");
-        doctorDetails.setTextOfSign("Dr. Demo 1");
+        ProviderDAO providerDAO = new ProviderDAO();
+        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+        doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
+        doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        doctorDetails.setSpecialization("Family doctor");
+        doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
+        // doctorDetails.setWhatsapp("7005308163");
+        // doctorDetails.setPhoneNumber("7005308163");
 
         String drDetails = new Gson().toJson(doctorDetails);
         List<Ob> obList = new ArrayList<>();
@@ -593,7 +603,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         List<EncounterProvider> encounterProviderList = new ArrayList<>();
         EncounterProvider encounterProvider = new EncounterProvider();
         encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
-        encounterProvider.setProvider(ENCOUNTER_DR_PROVIDER); // user setup app provider
+        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
         encounterProviderList.add(encounterProvider);
 
         EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();

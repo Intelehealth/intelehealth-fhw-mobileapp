@@ -99,7 +99,8 @@ public class CallListenerBackgroundService extends Service {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance(AppConstants.getFirebaseRTDBUrl());
-        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() + new SessionManager(this).getProviderID() + "/VIDEO_CALL");
+        DatabaseReference myRef = database.getReference(AppConstants.getFirebaseRTDBRootRef() +
+                new SessionManager(this).getProviderID() + "/VIDEO_CALL");
         if (myRef != null)
             //myRef.setValue("Hello, World!");
             // Read from the database
