@@ -40,6 +40,7 @@ import org.intelehealth.unicef.R;
 import org.intelehealth.unicef.app.AppConstants;
 import org.intelehealth.unicef.app.IntelehealthApplication;
 import org.intelehealth.unicef.utilities.BitmapUtils;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -94,6 +95,7 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
+
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
 
@@ -109,18 +111,18 @@ public class CameraActivity extends AppCompatActivity {
 
         @Override
         public void onPictureTaken(CameraView cameraView, final byte[] data) {
-            findViewById(R.id.processing_tv).setVisibility(View.VISIBLE);
-            findViewById(R.id.take_picture).setVisibility(View.INVISIBLE);
-            Log.d(TAG, "onPictureTaken " + data.length);
-            Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
-                    .show();
-            //compressImageAndSave(data);
-            // check and correct the image rotation
             try {
-                Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
+                findViewById(R.id.processing_tv).setVisibility(View.VISIBLE);
+                findViewById(R.id.take_picture).setVisibility(View.INVISIBLE);
+                Log.d(TAG, "onPictureTaken " + data.length);
+                Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
+                        .show();
+                //compressImageAndSave(data);
+                // check and correct the image rotation
 
+                Bitmap bitmap = BitmapUtils.rotateImageIfRequired(data);
                 compressImageAndSave(bitmap);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
