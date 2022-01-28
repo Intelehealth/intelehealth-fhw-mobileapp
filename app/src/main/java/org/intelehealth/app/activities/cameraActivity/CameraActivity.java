@@ -94,6 +94,7 @@ public class CameraActivity extends AppCompatActivity {
     private String mDialogMessage = null;
     //Pass Custom File Path Using intent.putExtra(CameraActivity.SET_IMAGE_PATH, "Image Path");
     private String mFilePath = null;
+    private boolean fabClickFlag=true;
     private CameraView.Callback mCallback
             = new CameraView.Callback() {
 
@@ -133,7 +134,6 @@ public class CameraActivity extends AppCompatActivity {
                 if (mImageName == null) {
                     mImageName = "IMG";
                 }
-
 
                 String filePath = AppConstants.IMAGE_PATH + mImageName + ".jpg";
 
@@ -321,8 +321,9 @@ public class CameraActivity extends AppCompatActivity {
             mFab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mCameraView != null) {
+                    if (mCameraView != null && fabClickFlag==true) {
                         try {
+                            fabClickFlag=false;
                             Thread.sleep(500);
                             mCameraView.takePicture();
                         } catch (InterruptedException e) {

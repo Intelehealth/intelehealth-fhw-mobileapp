@@ -945,11 +945,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        try {
+       /* try {
             unregisterReceiver(syncBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private boolean keyVerified(String key) {
@@ -1259,7 +1259,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        try {
+            unregisterReceiver(syncBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
