@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -1268,9 +1269,7 @@ public class SetupActivity extends AppCompatActivity {
                                         if (URLUtil.isValidUrl(url_field)) {
                                             key = text.getText().toString().trim();
                                             licenseUrl = url.getText().toString().trim();
-
                                             sessionManager.setMindMapServerUrl(licenseUrl);
-
                                             if (keyVerified(key)) {
                                                 getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
                                                 alertDialog.dismiss();
@@ -1690,7 +1689,7 @@ public class SetupActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
+                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -1763,5 +1762,31 @@ public class SetupActivity extends AppCompatActivity {
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
         Log.e("DOWNLOAD", "isSTARTED");
 
+    }
+
+    public void showMindmapFailedAlert(){
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//      MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.protocol_download_failed_alertdialog));
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                r1.setChecked(true);
+                r2.setChecked(false);
+                sessionManager.setMindMapServerUrl(licenseUrl);
+                sessionManager.setLicenseKey(key);
+            }
+        });
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 }

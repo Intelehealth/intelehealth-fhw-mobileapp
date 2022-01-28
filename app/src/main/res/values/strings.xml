@@ -751,4 +751,6 @@
     <string name="provided_medicine_dialog_title">Select Medicine</string>
     <string name="provided_medicine_upload_msg">Provided Medicine Uploaded Successfully</string>
 
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
 </resources>
