@@ -3215,4 +3215,56 @@ public static String switch_ru_education(String val) {
         }
         return val;
     }
+
+    public static String getTranslatedDays(String val, String locale) {
+
+        if (locale.equalsIgnoreCase("ru")) {
+
+            switch (val) {
+                case "Sunday":
+                    val = "Воскресенье";
+                    break;
+                case "Monday":
+                    val = "понедельник";
+                    break;
+                case "Tuesday":
+                    val = "вторник";
+                    break;
+                case "Wednesday":
+                    val = "среда";
+                    break;
+
+                case "Thursday":
+                    val = "Четверг";
+                    break;
+                case "Friday":
+                    val = "Пятница";
+                    break;
+                case "Saturday":
+                    val = "Суббота";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }public static String getAppointmentBookStatus(String val, String locale) {
+
+        if (locale.equalsIgnoreCase("ru")) {
+
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "забронировано";
+                    break;
+                case "cancelled":
+                    val = "отменен";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+        return val;
+    }
 }
