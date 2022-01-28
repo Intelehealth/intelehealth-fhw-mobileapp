@@ -624,7 +624,17 @@
     <string name="failed_to_cancel_appointment">সাক্ষাৎকাৰ বাতিল কৰিবলৈ ব্যৰ্থ!</string>
     <string name="appointment_cancelled_success_txt">সাক্ষাৎকাৰ সফলতাৰে বাতিল কৰা হৈছিল!</string>
 
+    <string name="sync_failed">চিংক ব্যৰ্থ! অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
+    <string name="no_network_sync">আপুনি ইণ্টাৰনেটৰ সৈতে সংযোজিত নহয়। অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
+    <string name="app_sync">চিঙ্কিং এপ্প।।</string>
+    <string name="yes">হয়</string>
+    <string name="no">নহয়</string>
 
-<string name="yes">হয়</string>
-<string name="no">নহয়</string>
+    <string name="visit_closed">ভিজিট বন্ধ</string>
+    <string name="ok_close_now">ঠিক আছে, বন্ধ কৰক</string>
+    <string name="retry_again">পুনৰ চেষ্টা কৰক!</string>
+    <string name="type_to_search">Type to Search..</string>
+
+    <string name="gender_male">মালে</string>
+    <string name="gender_female">মহিলা</string>
 </resources>

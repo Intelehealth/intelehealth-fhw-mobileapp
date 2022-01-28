@@ -791,4 +791,9 @@
     <string name="change_languages">Изменить язык</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="sync_failed">Ошибка синхронизации! Повторите попытку позже.</string>
+    <string name="no_network_sync">Вы не подключены к Интернету. Повторите попытку позже.</string>
+    <string name="app_sync">Синхронизация приложения..</string>
+    <string name="type_to_search">Введите для поиска..</string>
+
 </resources>

@@ -777,4 +777,8 @@
 
     <string name="yes">ಹೌದು</string>
     <string name="no">ನೋಲೈ</string>
+    <string name="type_to_search">ಹುಡುಕಲು ಟೈಪ್ ಮಾಡಿ..</string>
+
+    <string name="gender_male">ಪುರುಷ</string>
+    <string name="gender_female">ಹೆಣ್ಣು</string>
 </resources>

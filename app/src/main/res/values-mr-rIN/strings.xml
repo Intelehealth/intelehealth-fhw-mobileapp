@@ -702,6 +702,7 @@
 
 
     <string name="location_setup">सेटअप स्थान - </string>
+    <string name="speciality_cardview_title">वैशिष्ट्यपूर्ण</string>
 
 
     <string name="doctor_appointments">डॉक्टर अपॉइंटमेंट्स</string>
@@ -789,6 +790,10 @@
     <string name = "prescription_follow_up_date"> फॉलो अप डेट</string>
     <string name = "prescription_temp_c">तापमान (C): </string>
     <string name="prescription_temp_f">तापमान (F): </string>
+    <string name="type_to_search">शोधण्यासाठी टाइप करा..</string>
 
+
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">स्त्री</string>
 
 </resources>

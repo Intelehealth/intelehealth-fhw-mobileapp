@@ -659,5 +659,16 @@
     <string name="yes">ஆம்</string>
     <string name="no">இல்லை</string>
 
+    <string name="take_photo">புகைப்படம் எடு</string>
+    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>
+    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்!</string>
+    <string name="something_went_wrong">ஏதோ தவறாகிவிட்டது. ஆதரவைத் தொடர்பு கொள்ளவும்</string>
+    <string name="sync_failed">ஒத்திசைவு தோல்வி! பிறகு முயற்சிக்கவும்.</string>
+    <string name="no_network_sync">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை. பிறகு முயற்சிக்கவும்.</string>
+    <string name="app_sync">ஆப்ஸை ஒத்திசைக்கிறது..</string>
+
+    <string name="type_to_search">தேட தட்டச்சு செய்யவும்..</string>
+
+
 </resources>
 

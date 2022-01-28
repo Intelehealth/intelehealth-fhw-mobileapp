@@ -127,9 +127,7 @@ public class AppointmentListingAdapter extends RecyclerView.Adapter<RecyclerView
             dayTextView = itemView.findViewById(R.id.tvDay);
             statusTextView = itemView.findViewById(R.id.tvStatus);
             doctorDetailsTextView = itemView.findViewById(R.id.tvDoctor);
-
         }
-
 
     }
 

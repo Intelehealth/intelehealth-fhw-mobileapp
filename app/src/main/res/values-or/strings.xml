@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ଆନ୍ତରିକତା</string>
     <string name="notification_title">Realtime sync is ON!</string>
     <string name="generic_the_flipping_word_next">ପରବତ୍ତର୍ତ୍ତୀ</string>
@@ -537,8 +537,8 @@
 
     <string name="app_reset_toast">ଆପ୍ ପୁନ et ସେଟ୍ ହୋଇଛି !</string>
     <string name="sure_to_reset_app">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଆପ୍ ପୁନ res ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି??</string>
-    <string name="resetting_app_dialog">ଆପ୍ ପୁନ et ସେଟ୍ କରୁଛି |</string>
-    <string name="reset_app">ଆପ୍ ପୁନ Res ସେଟ୍ କରନ୍ତୁ |</string>
+    <string name="resetting_app_dialog">ଆପ୍ ପୁନ et ସେଟ୍ କରୁଛି</string>
+    <string name="reset_app">ଆପ୍ ପୁନ ସେଟ୍ କରନ୍ତୁ</string>
 
     <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି ...</string>
     <string name="warning_app_update">ଦୟାକରି ଆପକୁ ସର୍ବଶେଷ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ.</string>
@@ -550,18 +550,8 @@
     <string name="no_network_sync"> ଆପଣ ଇଣ୍ଟରନେଟ୍ ସହିତ ସଂଯୁକ୍ତ ନୁହଁନ୍ତି | ଦୟାକରି ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ | </string>
     <string name="app_sync"> ସିଙ୍କ୍ ଆପ୍ .. </string>
 
-    <string name="book_appointment">Book Appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
-    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
+
+<!--    <string name="cancel_appointment">Cancel Appointment</string>-->
 
 
     <string name="doctor_appointments">ଡାକ୍ତର ନିଯୁକ୍ତ</string>
@@ -639,9 +629,22 @@
     <string name = "visit_summary_upload_reminder_prescription" translatable = "false">ପ୍ରେସକ୍ରିପସନ୍ ଦେବାକୁ ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
     <string name = "visit_summary_prescription_already_given">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ପ୍ରଦାନ କରାଯାଇଛି | ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
 
+    <string name = "book_appointment"> ବୁକ୍ ନିଯୁକ୍ତି </string>
+    <string name = "reschedule_appointment"> ପୁନ ched ନିର୍ଦ୍ଧାରଣ ନିଯୁକ୍ତି </string>
+    <string name = "appointment_booking_confirmation_txt"> ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
+    <string name = "appointment_booking_cancel_confirmation_txt"> ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
+    <string name = "cancel_appointment" tools:ignore="DuplicateDefinition">ନିଯୁକ୍ତି ବାତିଲ୍</string>
+    <string name = "slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନୁହେଁ!</string>
+    <string name = "appointment_empty_message"> ଆପଣଙ୍କର କ appointment ଣସି ନିଯୁକ୍ତି ନାହିଁ! </string>
+    <string name = "appointment_listing_title"> ନିଯୁକ୍ତି ତାଲିକା </string>
+    <string name = "appointment_booking_title"> ନିଯୁକ୍ତି ବୁକିଂ </string>
+    <string name = "appointment_for"> ନିଯୁକ୍ତି </string> ପାଇଁ |
+    <string name = "please_select_appointment_slot"> ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ </string> ଚୟନ କରନ୍ତୁ |
+    <string name = "please_select_speciality"> ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ! </string>
 
     <string name = "yes">ହଁ</string>
     <string name = "no">ନା லை</string>
+    <string name="type_to_search">ସନ୍ଧାନ ପାଇଁ ଟାଇପ୍ କରନ୍ତୁ ..</string>
 
-<!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->
+    <!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->
 </resources>

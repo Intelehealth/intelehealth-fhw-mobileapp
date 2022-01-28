@@ -3,6 +3,7 @@
     <string name="app_name">ઇન્ટેલહેલ્થ</string>
 
     //Generic
+
     <string name="generic_the_flipping_word_next">આગળ</string>
     <string name="hint_required">જરૂરી</string>
     <string name="hint_optional">વૈકલ્પિક</string>
@@ -40,7 +41,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-    <string name="title_activity_login">Intelehealth</string>
+    <string name="title_activity_login">ઇન્ટેલહેલ્થ</string>
     <string name="prompt_email">વપરાશકર્તા નામ</string>
     <string name="prompt_password">પાસવર્ડ</string>
     <string name="prompt_admin_password">એડમિન પાસવર્ડ</string>
@@ -690,7 +691,10 @@
 
     <string name="location_setup">સેટઅપ સ્થાન - </string>
 
-
+    <string name = "take_photo">ફોટો લો</string>
+    <string name="choose_from_gallery">ગેલેરીમાંથી પસંદ કરો</string>
+    <string name="additional_doc_image_picker_title">વધારાના દસ્તાવેજ ઉમેરો!</string>
+    <string name="something_went_wrong">કંઈક ખોટું થયું. કૃપા કરીને સમર્થનનો સંપર્ક કરો</string>
 
     <string name="doctor_appointments">ડોક્ટરની નિમણૂંક</string>
     <string name="slot_info">સ્લોટ માહિતી</string>
@@ -781,5 +785,11 @@
     <string name = "prescription_temp_f">તાપમાન (F): </string>
     <string name="yes">હા</string>
     <string name="no">ના</string>
+
+    <string name="sync_failed">સમન્વયન નિષ્ફળ થયું! કૃપા કરીને પછીથી ફરી પ્રયાસ કરો.</string>
+    <string name="no_network_sync">તમે ઇન્ટરનેટથી કનેક્ટેડ નથી. કૃપા કરીને પછીથી ફરી પ્રયાસ કરો.</string>
+    <string name="app_sync">એપ્લિકેશન સમન્વયિત કરી રહ્યું છે..</string>
+    <string name="type_to_search">શોધવા માટે ટાઇપ કરો..</string>
+
 
 </resources>

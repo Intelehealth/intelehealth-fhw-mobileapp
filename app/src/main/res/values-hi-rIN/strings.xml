@@ -789,7 +789,7 @@
     <string name = "prescription_rr">श्वसन दर</string>
     <string name = "prescription_pulse">पल्स (बीपीएम)</string>
     <string name = "prescription_bp">रक्तचाप</string>
-    <string name = "prescription_bmi">BMI</string>
+    <string name = "prescription_bmi">बीएमआई</string>
     <string name = "prescription_wt">वजन (किलो)</string>
     <string name = "prescription_ht">ऊंचाई(सेमी)</string>
     <string name = "prescription_pre_comp">शिकायत प्रस्तुत करना</string>
@@ -810,4 +810,5 @@
 
     <string name="yes">हां</string>৷
     <string name="no">नहीं</string>
+    <string name="type_to_search">खोजने के लिए लिखें..</string>
 </resources>

@@ -815,5 +815,6 @@
 
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="type_to_search">Type to Search..</string>
 
 </resources>

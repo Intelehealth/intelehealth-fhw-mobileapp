@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ఇంటెలిహెల్త్</string>
-    <string name="generic_coming_soon" translatable="false">" త్వరలో....."</string>
-    <string name="title_activity_login" translatable="false">" ఇంటెలిహెల్త్"</string>
-    <string name="prompt_email" translatable="false">" వినియోగదారు పేరు"</string>
+    <string name="generic_coming_soon" translatable="false">"త్వరలో....."</string>
+    <string name="title_activity_login" translatable="false">"ఇంటెలిహెల్త్"</string>
+    <string name="prompt_email" translatable="false">"వినియోగదారు పేరు"</string>
     <string name="prompt_password" translatable="false">పాస్‌వర్డ్</string>
-    <string name="prompt_admin_password" translatable="false">" అడ్మిన్ పాస్వర్డ్"</string>
+    <string name="prompt_admin_password" translatable="false">"అడ్మిన్ పాస్వర్డ్"</string>
     <string name="action_sign_in" translatable="false">ప్రవేశించండి/లాగ్ఇన్</string>
     <string name="action_sign_in_short" translatable="false">సైన్ ఇన్ చేయండి</string>
-    <string name="url_invalid" translatable="false">" మీ URL ను తనిఖీ చేయండి."</string>
+    <string name="url_invalid" translatable="false">"మీ URL ను తనిఖీ చేయండి."</string>
     <string name="prefix_invalid" translatable="false">వేరే ఉపసర్గను ఎంచుకోండి!</string>
     <string name="error_invalid_email" translatable="false">ఈ వినియోగదారు పేరు చెల్లదు</string>
     <string name="error_invalid_password" translatable="false">ఈ పాస్‌వర్డ్ చాలా చిన్నది</string>
@@ -17,14 +17,14 @@
     <string name="error_network" translatable="false">నెట్వర్క్ లోపం</string>
     <string name="error_location_not_selected" translatable="false">దయచేసి ఈ క్రింది స్థానాలలో విలువను ఎంచుకోండి</string>
     <string name="error_location_not_fetched" translatable="false">స్థానాలను పొందడం సాధ్యం కాలేదు</string>
-    <string name="permission_rationale" translatable="false">" ఇమెయిల్ పూర్తిలను అందించడానికి పరిచయాల అనుమతులు అవసరం."</string>
-    <string name="device_id" translatable="false">" పరికర ID:"</string>
-    <string name="cant_login_user" translatable="false">" లాగిన్ కాలేదా?"</string>
-    <string name="email_link" translatable="false">" దయచేసి మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి లేదా support@intelehealth.io కు ఇమెయిల్ పంపండి"</string>
-    <string name="contact_whatsapp">" మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి దయచేసి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి"</string>
-    <string name="title_home_screen" translatable="false">" హోమ్"</string>
-    <string name="button_new_pt">" కొత్త రోగి"</string>
-    <string name="button_find_pt" translatable="false">" రోగిని కనుగొనండి"</string>
+    <string name="permission_rationale" translatable="false">"ఇమెయిల్ పూర్తిలను అందించడానికి పరిచయాల అనుమతులు అవసరం."</string>
+    <string name="device_id" translatable="false">"పరికర ID:"</string>
+    <string name="cant_login_user" translatable="false">"లాగిన్ కాలేదా?"</string>
+    <string name="email_link" translatable="false">"దయచేసి మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి లేదా support@intelehealth.io కు ఇమెయిల్ పంపండి"</string>
+    <string name="contact_whatsapp">"మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి దయచేసి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి"</string>
+    <string name="title_home_screen" translatable="false">"హోమ్"</string>
+    <string name="button_new_pt">"కొత్త రోగి"</string>
+    <string name="button_find_pt" translatable="false">"రోగిని కనుగొనండి"</string>
     <string name="button_diagnostic_tests" translatable="false">" రోగనిర్ధారణ పరీక్షలు"</string>
     <string name="button_active_pt" translatable="false">" చురుకైన రోగులు"</string>
     <string name="menu_option_sync" translatable="false">" డేటాను రిఫ్రెష్ చేయండి"</string>
@@ -674,4 +674,13 @@
     <string name="visit_summary_prescription_already_given">ప్రిస్క్రిప్షన్ ఇప్పటికే అందించబడింది. దయచేసి ప్రిస్క్రిప్షన్‌ని డౌన్‌లోడ్ చేయండి.</string>
     <string name="yes">అవును</string>
     <string name="no">కాదు</string>
+
+    <string name="type_to_search">సెర్చ్ చేయడానికి టైప్ చేయండి..</string>
+
+    <string name="sync_failed">సమకాలీకరణ విఫలమైంది! దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="no_network_sync">మీరు ఇంటర్నెట్‌కి కనెక్ట్ చేయబడలేదు. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="app_sync">యాప్‌ని సమకాలీకరిస్తోంది..</string>
+
+    <string name="gender_male">పురుషుడు</string>
+    <string name="gender_female">స్త్రీ</string>
 </resources>

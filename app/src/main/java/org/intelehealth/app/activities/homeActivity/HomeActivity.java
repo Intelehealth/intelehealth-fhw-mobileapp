@@ -140,7 +140,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview,appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
 
     private void saveToken() {
@@ -308,6 +308,12 @@ public class HomeActivity extends AppCompatActivity {
 
         activeVisits_textview = findViewById(R.id.activeVisits_textview);
         activeVisits_textview.setText(R.string.active_visits);
+
+        followup_textview = findViewById(R.id.followUpVisittxt);
+        followup_textview.setText(R.string.title_follow_up);
+
+  appointment_textview = findViewById(R.id.appointment_textview);
+        appointment_textview.setText(R.string.doctor_appointments);
 
         videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
         videoLibrary_textview.setText(R.string.video_library);

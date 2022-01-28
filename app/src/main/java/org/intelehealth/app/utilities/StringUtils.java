@@ -171,21 +171,19 @@ public final class StringUtils {
             val = switch_kn_caste(val);
             val = switch_kn_economic(val);
             val = switch_kn_education(val);
-        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
             val = switch_ru_caste(val);
             val = switch_ru_economic(val);
             val = switch_ru_education(val);
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
             val = switch_gu_caste(val);
             val = switch_gu_economic(val);
             val = switch_gu_education(val);
-        } else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
             val = switch_bn_caste(val);
             val = switch_bn_economic(val);
             val = switch_bn_education(val);
-        }
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
             val = switch_ta_caste(val);
             val = switch_ta_economic(val);
             val = switch_ta_education(val);
@@ -217,7 +215,7 @@ public final class StringUtils {
         return val;
     }
 
-  public static String switch_kn_education_edit(String val) {
+    public static String switch_kn_education_edit(String val) {
         switch (val) {
             case "Illiterate":
                 val = "ಅಶಿಕ್ಷಿತ";
@@ -265,31 +263,29 @@ public final class StringUtils {
     }
 
 
-
-
-
-public static String switch_ru_education(String val) {
-    switch (val) {
-        case "Безграмотный":
-            val = "Illiterate";
-            break;
-        case "Начальный":
-            val = "Primary";
-            break;
-        case "Вторичный":
-            val = "Secondary";
-            break;
-        case "Высшее среднее":
-            val = "Higher Secondary";
-            break;
-        case "Выпускной и высшее":
-            val = "Graduation & Higher";
-            break;
-        default:
-            return val;
+    public static String switch_ru_education(String val) {
+        switch (val) {
+            case "Безграмотный":
+                val = "Illiterate";
+                break;
+            case "Начальный":
+                val = "Primary";
+                break;
+            case "Вторичный":
+                val = "Secondary";
+                break;
+            case "Высшее среднее":
+                val = "Higher Secondary";
+                break;
+            case "Выпускной и высшее":
+                val = "Graduation & Higher";
+                break;
+            default:
+                return val;
+        }
+        return val;
     }
-    return val;
-}
+
     public static String switch_gu_education_edit(String val) {
         switch (val) {
             case "Illiterate":
@@ -1014,6 +1010,7 @@ public static String switch_ru_education(String val) {
         }
         return val;
     }
+
     public static String switch_kn_economic(String val) {
         switch (val) {
             case "ಬಡತನ ರೇಖೆಯ ಮೇಲೆ":
@@ -1770,6 +1767,7 @@ public static String switch_ru_education(String val) {
 
         return mdob_text;
     }
+
     public static String en__ru_dob(String dob) { //English dob is replaced to Odiya text.
         String mdob_text = dob
                 .replace("January", "Январь")
@@ -1987,8 +1985,7 @@ public static String switch_ru_education(String val) {
                     .replace("നവംബർ", "November")
                     .replace("ഡിസംബർ", "December");
             return dob;
-        }
-        else if (locale.equalsIgnoreCase("kn")) {
+        } else if (locale.equalsIgnoreCase("kn")) {
             //kannad
             String dob = dobString
                     .replace("ಜನವರಿ", "January")
@@ -2004,8 +2001,7 @@ public static String switch_ru_education(String val) {
                     .replace("ನವೆಂಬರ್", "November")
                     .replace("ಡಿಸೆಂಬರ್", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("ta")) {
+        } else if (locale.equalsIgnoreCase("ta")) {
             //Bengali
             String dob = dobString
                     .replace("ஜனவரி", "January")
@@ -2021,8 +2017,7 @@ public static String switch_ru_education(String val) {
                     .replace("நவம்பர்", "November")
                     .replace("டிசம்பர்", "December");
             return dob;
-        }
-        else if(locale.equalsIgnoreCase("bn")) {
+        } else if (locale.equalsIgnoreCase("bn")) {
             //Bengali
             String dob = dobString
                     .replace("জানুয়ারী", "January")
@@ -2038,8 +2033,7 @@ public static String switch_ru_education(String val) {
                     .replace("নভেম্বর", "November")
                     .replace("ডিসেম্বর", "December");
             return dob;
-        }
-       else if (locale.equalsIgnoreCase("ru")) {
+        } else if (locale.equalsIgnoreCase("ru")) {
             String dob = dobString
                     //Russian
                     .replace("Январь", "January")
@@ -2055,9 +2049,7 @@ public static String switch_ru_education(String val) {
                     .replace("Ноябрь", "November")
                     .replace("Декабрь", "December");
             return dob;
-        }
-
-        else {
+        } else {
             return dobString;
         }
 
@@ -3218,8 +3210,243 @@ public static String switch_ru_education(String val) {
 
     public static String getTranslatedDays(String val, String locale) {
 
-        if (locale.equalsIgnoreCase("ru")) {
+        if (locale.equalsIgnoreCase("as")) {
+            switch (val) {
+                case "Sunday":
+                    val = "দেওবাৰ";
+                    break;
+                case "Monday":
+                    val = "সোমবাৰ";
+                    break;
+                case "Tuesday":
+                    val = "মংগলবাৰ";
+                    break;
+                case "Wednesday":
+                    val = "বুধবাৰ";
+                    break;
 
+                case "Thursday":
+                    val = "বৃহস্পতিবাৰ";
+                    break;
+                case "Friday":
+                    val = "শুক্ৰবাৰ";
+                    break;
+                case "Saturday":
+                    val = "শনিবাৰ";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+       else if (locale.equalsIgnoreCase("bn")) {
+            switch (val) {
+                case "Sunday":
+                    val = "রবিবার";
+                    break;
+                case "Monday":
+                    val = "সোমবার";
+                    break;
+                case "Tuesday":
+                    val = "মঙ্গলবার";
+                    break;
+                case "Wednesday":
+                    val = "বুধবার";
+                    break;
+
+                case "Thursday":
+                    val = "বৃহস্পতিবার";
+                    break;
+                case "Friday":
+                    val = "শুক্রবার";
+                    break;
+                case "Saturday":
+                    val = "শনিবার";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+       else if (locale.equalsIgnoreCase("gu")) {
+            switch (val) {
+                case "Sunday":
+                    val = "રવિવાર";
+                    break;
+                case "Monday":
+                    val = "સોમવાર";
+                    break;
+                case "Tuesday":
+                    val = "મંગળવારે";
+                    break;
+                case "Wednesday":
+                    val = "બુધવાર";
+                    break;
+
+                case "Thursday":
+                    val = "ગુરુવાર";
+                    break;
+                case "Friday":
+                    val = "શુક્રવાર";
+                    break;
+                case "Saturday":
+                    val = "શનિવાર";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+       else if (locale.equalsIgnoreCase("hi")) {
+            switch (val) {
+                case "Sunday":
+                    val = "रविवार";
+                    break;
+                case "Monday":
+                    val = "सोमवार";
+                    break;
+                case "Tuesday":
+                    val = "मंगलवार";
+                    break;
+                case "Wednesday":
+                    val = "बुधवार";
+                    break;
+
+                case "Thursday":
+                    val = "गुरूवार";
+                    break;
+                case "Friday":
+                    val = "शुक्रवार";
+                    break;
+                case "Saturday":
+                    val = "शनिवार";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+       else if (locale.equalsIgnoreCase("kn")) {
+            switch (val) {
+                case "Sunday":
+                    val = "ಭಾನುವಾರ";
+                    break;
+                case "Monday":
+                    val = "ಸೋಮವಾರ";
+                    break;
+                case "Tuesday":
+                    val = "ಮಂಗಳವಾರ";
+                    break;
+                case "Wednesday":
+                    val = "ಬುಧವಾರ";
+                    break;
+
+                case "Thursday":
+                    val = "ಗುರುವಾರ";
+                    break;
+                case "Friday":
+                    val = "ಶುಕ್ರವಾರ";
+                    break;
+                case "Saturday":
+                    val = "ಶನಿವಾರ";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+       else if (locale.equalsIgnoreCase("ml")) {
+            switch (val) {
+                case "Sunday":
+                    val = "ഞായറാഴ്ച";
+                    break;
+                case "Monday":
+                    val = "തിങ്കളാഴ്ച";
+                    break;
+                case "Tuesday":
+                    val = "ചൊവ്വാഴ്ച";
+                    break;
+                case "Wednesday":
+                    val = "ബുധനാഴ്ച";
+                    break;
+
+                case "Thursday":
+                    val = "വ്യാഴാഴ്ച";
+                    break;
+                case "Friday":
+                    val = "വെള്ളിയാഴ്ച";
+                    break;
+                case "Saturday":
+                    val = "ശനിയാഴ്ച";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+     else   if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Sunday":
+                    val = "रविवार";
+                    break;
+                case "Monday":
+                    val = "सोमवार";
+                    break;
+                case "Tuesday":
+                    val = "मंगळवार";
+                    break;
+                case "Wednesday":
+                    val = "बुधवार";
+                    break;
+
+                case "Thursday":
+                    val = "गुरुवार";
+                    break;
+                case "Friday":
+                    val = "शुक्रवार";
+                    break;
+                case "Saturday":
+                    val = "शनिवार";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+      else  if (locale.equalsIgnoreCase("or")) {
+            switch (val) {
+                case "Sunday":
+                    val = "ରବିବାର";
+                    break;
+                case "Monday":
+                    val = "ସୋମବାର";
+                    break;
+                case "Tuesday":
+                    val = "ମଙ୍ଗଳବାର";
+                    break;
+                case "Wednesday":
+                    val = "ବୁଧବାର";
+                    break;
+
+                case "Thursday":
+                    val = "ଗୁରୁବାର";
+                    break;
+                case "Friday":
+                    val = "ଶୁକ୍ରବାର";
+                    break;
+                case "Saturday":
+                    val = "ଶନିବାର";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
+      else  if (locale.equalsIgnoreCase("ru")) {
             switch (val) {
                 case "Sunday":
                     val = "Воскресенье";
@@ -3248,22 +3475,246 @@ public static String switch_ru_education(String val) {
             }
 
         }
-        return val;
-    }public static String getAppointmentBookStatus(String val, String locale) {
 
-        if (locale.equalsIgnoreCase("ru")) {
-
-            switch (val.toLowerCase()) {
-                case "booked":
-                    val = "забронировано";
+     else   if (locale.equalsIgnoreCase("ta")) {
+            switch (val) {
+                case "Sunday":
+                    val = "ஞாயிற்றுக்கிழமை";
                     break;
-                case "cancelled":
-                    val = "отменен";
+                case "Monday":
+                    val = "திங்கட்கிழமை";
+                    break;
+                case "Tuesday":
+                    val = "செவ்வாய்";
+                    break;
+                case "Wednesday":
+                    val = "புதன்";
+                    break;
+
+                case "Thursday":
+                    val = "வியாழன்";
+                    break;
+                case "Friday":
+                    val = "வெள்ளி";
+                    break;
+                case "Saturday":
+                    val = "சனிக்கிழமை";
                     break;
                 default:
                     return val;
             }
 
+        }
+         else if (locale.equalsIgnoreCase("te")) {
+
+            switch (val) {
+                case "Sunday":
+                    val = "ఆదివారం";
+                    break;
+                case "Monday":
+                    val = "సోమవారం";
+                    break;
+                case "Tuesday":
+                    val = "మంగళవారం";
+                    break;
+                case "Wednesday":
+                    val = "బుధవారం";
+                    break;
+
+                case "Thursday":
+                    val = "గురువారం";
+                    break;
+                case "Friday":
+                    val = "శుక్రవారం";
+                    break;
+                case "Saturday":
+                    val = "శనివారం";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+         else{ return val ;}
+        return val;
+    }
+
+    public static String getAppointmentBookStatus(String val, String locale) {
+
+        if (locale.equalsIgnoreCase("ru")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "забронировано";
+                    break;
+                case "canceled":
+                    val = "отменен";
+                    break;
+                case "visit closed":
+                    val = "отменен";
+                    break;
+                default:
+                    return val;
+            }
+        }
+        else if (locale.equalsIgnoreCase("as")) {
+
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "বুক কৰা হৈছে";
+                    break;
+                case "canceled":
+                    val = "বাতিল কৰা হৈছে";
+                    break;
+                case "visit closed":
+                    val = "সাক্ষাৎ বন্ধ";
+                    break;
+                default:
+                    return val;
+            }
+        }
+       else  if (locale.equalsIgnoreCase("bn")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "বুক করা";
+                    break;
+                case "canceled":
+                    val = "বাতিল";
+                    break;
+                case "visit closed":
+                    val = "পরিদর্শন বন্ধ";
+                    break;
+                default:
+                    return val;
+            }
+        }
+       else if (locale.equalsIgnoreCase("gu")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "બુક કરેલ";
+                    break;
+                case "canceled":
+                    val = "રદ કરેલ";
+                    break;
+                case "visit closed":
+                    val = "મુલાકાત બંધ";
+                    break;
+                default:
+                    return val;
+            }
+        }
+       else if (locale.equalsIgnoreCase("hi")) {
+
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "बुक";
+                    break;
+                case "canceled":
+                    val = "रद्द";
+                    break;
+                case "visit closed":
+                    val = "यात्रा बंद";
+                    break;
+                default:
+                    return val;
+            }
+        }
+      else  if (locale.equalsIgnoreCase("kn")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "ಬುಕ್ ಮಾಡಿದೆ";
+                    break;
+                case "canceled":
+                    val = "ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ";
+                    break;
+                case "visit closed":
+                    val = "ಭೇಟಿ ಮುಚ್ಚಲಾಗಿದೆ";
+                    break;
+                default:
+                    return val;
+            }
+        }
+      else  if (locale.equalsIgnoreCase("ml")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "ബുക്ക് ചെയ്തു";
+                    break;
+                case "canceled":
+                    val = "റദ്ദാക്കി";
+                    break;
+                case "visit closed":
+                    val = "സന്ദർശനം അടച്ചു";
+                    break;
+                default:
+                    return val;
+            }
+        }
+      else  if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "बुक केले";
+                    break;
+                case "canceled":
+                    val = "रद्द केले";
+                    break;
+                case "visit closed":
+                    val = "भेट बंद";
+                    break;
+                default:
+                    return val;
+            }
+        }
+      else  if (locale.equalsIgnoreCase("or")) {
+                switch (val.toLowerCase()) {
+
+
+                    case "booked":
+                        val = "ବୁକ୍ ହୋଇଛି";
+                        break;
+                    case "canceled":
+                        val = "ବାତିଲ";
+                        break;
+                    case "visit closed":
+                        val = "ପରିଦର୍ଶନ ବନ୍ଦ";
+                        break;
+                    default:
+                        return val;
+            }
+        }
+      else  if (locale.equalsIgnoreCase("ta")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "பதிவு செய்யப்பட்டது";
+                    break;
+                case "canceled":
+                    val = "ரத்து செய்யப்பட்டது";
+                    break;
+                case "visit closed":
+                    val = "வருகை மூடப்பட்டது";
+                    break;
+                default:
+                    return val;
+
+
+
+            }
+        }
+      else  if (locale.equalsIgnoreCase("te")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "బుక్ చేసుకున్నారు";
+                    break;
+                case "cancelled":
+                    val = "రద్దు";
+                    break;
+                case "visit closed":
+                    val = "సందర్శన మూసివేయబడింది";
+                    break;
+                default:
+                    return val;
+            }
+        }
+      else{
+          return val;
         }
         return val;
     }

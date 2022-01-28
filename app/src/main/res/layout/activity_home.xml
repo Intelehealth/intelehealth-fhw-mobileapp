@@ -330,6 +330,7 @@
                                 app:srcCompat="@drawable/ic_calendar" />
 
                             <TextView
+                                android:id="@+id/followUpVisittxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/iv_follow_up"

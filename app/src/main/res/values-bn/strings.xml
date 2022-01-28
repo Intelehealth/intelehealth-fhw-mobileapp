@@ -570,6 +570,11 @@
     <!--    <string name="location_setup">Setup Location - </string>-->
 
 
+
+    <string name = "take_photo">ফটো তুলুন</string>
+    <string name="choose_from_gallery">গ্যালারি থেকে চয়ন করুন</string>৷
+    <string name="additional_doc_image_picker_title">অতিরিক্ত নথি যোগ করুন!</string>
+    <string name="something_went_wrong">কিছু ​​ভুল হয়েছে৷ অনুগ্রহ করে সহায়তার সাথে যোগাযোগ করুন</string>
     <string name="book_appointment">বই অ্যাপয়েন্টমেন্ট</string>
     <string name="reschedule_appointment">অ্যাপয়েন্টমেন্ট পুনঃনির্ধারণ করুন</string>
     <string name="appointment_booking_confirmation_txt">আপনি কি এই স্লটটি বুক করার বিষয়ে নিশ্চিত?</string>
@@ -657,5 +662,9 @@
     <string name="visit_summary_prescription_already_given"> প্রেসক্রিপশন আগেই দেওয়া হয়েছে। অনুগ্রহ করে প্রেসক্রিপশন ডাউনলোড করুন৷</string>
     <string name="yes">হ্যাঁ</string>
     <string name="no">না</string>
+    <string name="sync_failed">সিঙ্ক ব্যর্থ হয়েছে! অনুগ্রহ করে পরে আবার চেষ্টা করুন৷</string>
+    <string name="no_network_sync">আপনি ইন্টারনেটের সাথে সংযুক্ত নন৷ অনুগ্রহ করে পরে আবার চেষ্টা করুন৷</string>
+    <string name="app_sync">অ্যাপ সিঙ্ক হচ্ছে..</string>
+    <string name="type_to_search">অনুসন্ধান করতে টাইপ করুন..</string>
 
 </resources>

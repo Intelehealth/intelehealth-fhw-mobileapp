@@ -564,20 +564,11 @@ public class PrescriptionActivity extends AppCompatActivity {
     }
 
     private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
-        // For now it was added static values...need to discuss with team how we are going to send this data.
         ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
-
-//        doctorDetails.setWhatsapp("7005308163");
-//        doctorDetails.setPhoneNumber("7005308163");
-//        doctorDetails.setFontOfSign("Pacifico");
-//        doctorDetails.setName("Demo doctor1");
-//        doctorDetails.setSpecialization("Neurologist");
-//        doctorDetails.setTextOfSign("Dr. Demo 1");
-
         ProviderDAO providerDAO = new ProviderDAO();
         Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
         doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
-        doctorDetails.setName("Dr. " + providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+        doctorDetails.setName(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         doctorDetails.setSpecialization("Family Doctor");
         doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
         Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
@@ -595,7 +586,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         List<EncounterProvider> encounterProviderList = new ArrayList<>();
         EncounterProvider encounterProvider = new EncounterProvider();
         encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
-        encounterProvider.setProvider(ENCOUNTER_DR_PROVIDER); // user setup app provider
+        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
         encounterProviderList.add(encounterProvider);
 
         EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
@@ -609,6 +600,55 @@ public class PrescriptionActivity extends AppCompatActivity {
         Log.v("presbody", "newsubmit: " + new Gson().toJson(datamodel));
         return datamodel;
     }
+
+
+//    private EndVisitEncounterPrescription getVisitCompleteDataModel() throws DAOException {
+//        // For now it was added static values...need to discuss with team how we are going to send this data.
+//        ClsDoctorDetails doctorDetails = new ClsDoctorDetails();
+//
+////        doctorDetails.setWhatsapp("7005308163");
+////        doctorDetails.setPhoneNumber("7005308163");
+////        doctorDetails.setFontOfSign("Pacifico");
+////        doctorDetails.setName("Demo doctor1");
+////        doctorDetails.setSpecialization("Neurologist");
+////        doctorDetails.setTextOfSign("Dr. Demo 1");
+//
+//        ProviderDAO providerDAO = new ProviderDAO();
+//        Log.v("chwname", "chwnam: "+ sessionManager.getChwname() + ", "+ sessionManager.getProviderID());
+//        doctorDetails.setFontOfSign("almondita"); // common signature for all the family doctor fonts.
+//        doctorDetails.setName("Dr. " + providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+//        doctorDetails.setSpecialization("Family Doctor");
+//        doctorDetails.setTextOfSign(providerDAO.getProviderGiven_Lastname(sessionManager.getProviderID()));
+//        Log.v("chwdetails", "chwdetails: " + new Gson().toJson(doctorDetails));
+//        // doctorDetails.setWhatsapp("7005308163");
+//        // doctorDetails.setPhoneNumber("7005308163");
+//
+//        String drDetails = new Gson().toJson(doctorDetails);
+//        List<Ob> obList = new ArrayList<>();
+//        Ob ob = new Ob();
+//        ob.setConcept(OBS_DOCTORDETAILS);
+//        ob.setValue(drDetails);
+//        Log.v("drdetail", "drdetail: " + drDetails);
+//        obList.add(ob);
+//
+//        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+//        EncounterProvider encounterProvider = new EncounterProvider();
+//        encounterProvider.setEncounterRole(ENCOUNTER_DR_ROLE); // Constant
+////        encounterProvider.setProvider(ENCOUNTER_DR_PROVIDER); // user setup app provider
+//        encounterProvider.setProvider(sessionManager.getProviderID()); // user setup app provider
+//        encounterProviderList.add(encounterProvider);
+//
+//        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+//        datamodel.setPatient(patientUuid);
+//        datamodel.setEncounterProviders(encounterProviderList);
+//        datamodel.setVisit(visitUuid);
+//        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+//        datamodel.setEncounterType(ENCOUNTER_VISIT_COMPLETE);
+//        datamodel.setObs(obList);
+//
+//        Log.v("presbody", "newsubmit: " + new Gson().toJson(datamodel));
+//        return datamodel;
+//    }
 
     private boolean uploadPrescriptionData(String data, String CONCEPTUUID) {
         isuploadPrescription = false;
