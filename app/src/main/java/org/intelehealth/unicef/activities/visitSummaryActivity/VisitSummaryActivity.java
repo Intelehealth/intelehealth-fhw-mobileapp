@@ -2323,7 +2323,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         " </div>";
             }
         }
-        else {
+        else if(objClsDoctorDetailsRemote != null) {
             // Only Webapp prescription...
             doctorDetailStr = "<div>\n" +
                     " <div style=\"text-align:right;margin-right:0px;margin-top:3px;\">\n" +
