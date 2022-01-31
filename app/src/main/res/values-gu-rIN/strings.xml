@@ -781,5 +781,6 @@
     <string name = "prescription_temp_f">તાપમાન (F): </string>
     <string name="yes">હા</string>
     <string name="no">ના</string>
+    <string name="type_to_search">Type to Search..</string>
 
 </resources>

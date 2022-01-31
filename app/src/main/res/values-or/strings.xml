@@ -642,6 +642,7 @@
 
     <string name = "yes">ହଁ</string>
     <string name = "no">ନା லை</string>
+    <string name="type_to_search">Type to Search..</string>
 
-<!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->
+    <!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->
 </resources>

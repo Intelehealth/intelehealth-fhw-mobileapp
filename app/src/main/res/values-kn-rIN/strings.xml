@@ -777,4 +777,5 @@
 
     <string name="yes">ಹೌದು</string>
     <string name="no">ನೋಲೈ</string>
+    <string name="type_to_search">Type to Search..</string>
 </resources>

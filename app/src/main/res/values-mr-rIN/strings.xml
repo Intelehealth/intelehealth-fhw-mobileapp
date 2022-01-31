@@ -790,5 +790,9 @@
     <string name = "prescription_temp_c">तापमान (C): </string>
     <string name="prescription_temp_f">तापमान (F): </string>
 
+    <string name="yes">होय</string>
+    <string name="no">नाही</string>
+    <string name="type_to_search">शोधण्यासाठी टाइप करा..</string>
+
 
 </resources>

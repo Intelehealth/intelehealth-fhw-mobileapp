@@ -3219,7 +3219,6 @@ public static String switch_ru_education(String val) {
     public static String getTranslatedDays(String val, String locale) {
 
         if (locale.equalsIgnoreCase("ru")) {
-
             switch (val) {
                 case "Sunday":
                     val = "Воскресенье";
@@ -3248,11 +3247,39 @@ public static String switch_ru_education(String val) {
             }
 
         }
+        else if (locale.equalsIgnoreCase("mr")) {
+            switch (val) {
+                case "Sunday":
+                    val = "रविवार";
+                    break;
+                case "Monday":
+                    val = "सोमवार";
+                    break;
+                case "Tuesday":
+                    val = "मंगळवार";
+                    break;
+                case "Wednesday":
+                    val = "बुधवार";
+                    break;
+                case "Thursday":
+                    val = "गुरुवार";
+                    break;
+                case "Friday":
+                    val = "शुक्रवार";
+                    break;
+                case "Saturday":
+                    val = "शनिवार";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
         return val;
-    }public static String getAppointmentBookStatus(String val, String locale) {
-
+    }
+    public static String getAppointmentBookStatus(String val, String locale) {
         if (locale.equalsIgnoreCase("ru")) {
-
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "забронировано";
@@ -3265,6 +3292,20 @@ public static String switch_ru_education(String val) {
             }
 
         }
+        else if (locale.equalsIgnoreCase("mr")) {
+            switch (val.toLowerCase()) {
+                case "booked":
+                    val = "बुक केले";
+                    break;
+                case "cancelled":
+                    val = "रद्द केले";
+                    break;
+                default:
+                    return val;
+            }
+
+        }
+
         return val;
     }
 }

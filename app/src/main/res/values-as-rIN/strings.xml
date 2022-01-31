@@ -627,4 +627,5 @@
 
 <string name="yes">হয়</string>
 <string name="no">নহয়</string>
+    <string name="type_to_search">Type to Search..</string>
 </resources>

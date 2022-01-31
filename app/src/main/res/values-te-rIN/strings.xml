@@ -674,4 +674,5 @@
     <string name="visit_summary_prescription_already_given">ప్రిస్క్రిప్షన్ ఇప్పటికే అందించబడింది. దయచేసి ప్రిస్క్రిప్షన్‌ని డౌన్‌లోడ్ చేయండి.</string>
     <string name="yes">అవును</string>
     <string name="no">కాదు</string>
+    <string name="type_to_search">Type to Search..</string>
 </resources>

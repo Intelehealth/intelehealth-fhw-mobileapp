@@ -657,4 +657,5 @@
     <string name="visit_summary_prescription_already_given"> প্রেসক্রিপশন আগেই দেওয়া হয়েছে। অনুগ্রহ করে প্রেসক্রিপশন ডাউনলোড করুন৷</string>
     <string name="yes">হ্যাঁ</string>৷
     <string name="no">না</string>
+    <string name="type_to_search">Type to Search..</string>
 </resources>

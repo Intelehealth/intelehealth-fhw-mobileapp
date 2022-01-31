@@ -658,6 +658,7 @@
 
     <string name="yes">ஆம்</string>
     <string name="no">இல்லை</string>
+    <string name="type_to_search">Type to Search..</string>
 
 </resources>
 
