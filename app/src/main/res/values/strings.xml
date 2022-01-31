@@ -679,9 +679,15 @@
     <string name="str_check_Philippines">Philippines</string>
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
-    <string name="due_on">Due Date:</string>
-    <string name="title_follow_up">Follow Up Visits</string>
     <string name="location">Location</string>
+
+    //Follow-up Visits
+    <string name="title_follow_up">Follow Up Visits</string>
+    <string name="title_follow_reminder">Follow up visit reminder</string>
+    <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
+    <string name="due_on">Due Date:</string>
+
+
 
     //----------reset app strings-------------
     <string name="reset_app">Reset App</string>
