@@ -24,7 +24,7 @@
     <string name="prompt_admin_password" translatable="false">நிர்வாகி கடவுச்சொல்</string>
     <string name="action_sign_in" translatable="false">உள்நுழைய</string>
     <string name="action_sign_in_short" translatable="false">உள்நுழைக</string>
-    <string name="url_invalid" translatable="false">உங்கள் URL ஐச் சரிபார்க்கவும்.</string>
+    <string name="url_invalid" translatable="false">உங்கள் உர்ல் ஐச் சரிபார்க்கவும்.</string>
     <string name="prefix_invalid" translatable="false">வேறு முன்னொட்டைத் தேர்ந்தெடுக்கவும்!</string>
     <string name="error_invalid_email" translatable="false">"இந்தப் பயனர்பெயர் தவறானது</string>
     <string name="error_invalid_password" translatable="false">இந்தக் கடவுச்சொல் மிகவும் சிறியது</string>
@@ -175,7 +175,7 @@
     <string name="pref_title_display_name" translatable="false">காட்சி பெயர்</string>
     <string name="pref_default_display_name">ஜான் ஸ்மித்</string>
     <string name="pref_header_data_sync">தரவு &amp; புதுப்பிக்கவும்</string>
-    <string name="pref_title_server_url" translatable="false">சேவையக URL</string>
+    <string name="pref_title_server_url" translatable="false">சேவையக உர்ல்</string>
     <string name="pref_title_id_prefix" translatable="false">இருப்பிட முன்னொட்டு</string>
     <string name="pref_header_notifications" translatable="false">அறிவிப்புகள்</string>
     <string name="pref_title_new_message_notifications" translatable="false">புதிய செய்தி அறிவிப்புகள்</string>
@@ -323,7 +323,7 @@
     <string name="patient_denies" translatable="false">நோயாளி மறுக்கிறார்</string>
     <string name="patient_reports" translatable="false">நோயாளி அறிக்கைகள்</string>
     <string name="associated_symptoms">தொடர்புடைய அறிகுறிகள்</string>
-    <string name="enter_server_url">சேவையக URL ஐ உள்ளிடவும்</string>
+    <string name="enter_server_url">சேவையக உர்ல் ஐ உள்ளிடவும்</string>
     <string name="invalid_url">தவறான வலைதள முகவரி</string>
     <string name="years">ஆண்டுகள்</string>
     <string name="months">மாதங்கள்</string>
@@ -339,7 +339,7 @@
     <string name="reject">நிராகரி</string>
     <string name="next">அடுத்தது</string>
     <string name="which_server_would_you_like_to_connect_to">எந்தச் சேவையகத்துடன் இணைக்க விரும்புகிறீர்கள்?</string>
-    <string name="enter_url">URL ஐ உள்ளிடவும்</string>
+    <string name="enter_url">உர்ல் ஐ உள்ளிடவும்</string>
     <string name="choose_a_location_to_login">உள்நுழைய இருப்பிடத்தைத் தேர்வுசெய்க</string>
     <string name="choose_an_option_for_protocols">நெறிமுறைகளுக்கு ஒரு விருப்பத்தைத் தேர்வுசெய்க</string>
     <string name="please_enter_your_username_and_password">உங்கள் பயனர்பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்</string>
@@ -349,7 +349,7 @@
     <string name="doctor">மருத்துவர் விவரங்கள்</string>
     <string name="health_worker">சுகாதாரப் பணியாளர்</string>
     <string name="priority">முன்னுரிமை</string>
-    <string name="server_url">சேவையக url</string>
+    <string name="server_url">சேவையக உர்ல்</string>
     <string name="sync">புதுப்பிப்பு</string>
     <string name="update_protocols">நெறிமுறைகளைப் புதுப்பிக்கவும்</string>
     <string name="end_all_visit">அனைத்து வருகையும் முடிவுக்கு</string>
@@ -456,8 +456,8 @@
     <string name="intelehealth_a_telemedicine_platform">இன்டெலிஹெல்த் என்பது கிராமப்புற மற்றும் தொலைதூரப் பகுதிகளில் உள்ள சுகாதார ஊழியர்களை தொலைதூர மருத்துவர்களுடன் இணைக்கும் ஒரு டெலிமெடிசின் பயன்பாடாகும், இதனால் அவர்கள் தங்கள் நோயாளிகளுக்கு உயர்தர சுகாதார சேவைகளை வழங்க முடியும்.</string>
     <string name="close_button">மூடவும்</string>
     <string name="device_ID">சாதன ஐடி:</string>
-    <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம URL ஐ உள்ளிடவும்</string>
-    <string name="please_enter_url_and_key">URL மற்றும் விசையை உள்ளிடவும்</string>
+    <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம உர்ல் ஐ உள்ளிடவும்</string>
+    <string name="please_enter_url_and_key">உர்ல் மற்றும் விசையை உள்ளிடவும்</string>
     <string name="please_enter_valid_license_key">செல்லுபடியாகும் உரிம விசையை உள்ளிடவும்</string>
     <string name="permission_denied">அனுமதி மறுக்கப்பட்டது \\ n</string>
     <string name="temperature_C">\"வெப்பநிலை (சி):\"</string>

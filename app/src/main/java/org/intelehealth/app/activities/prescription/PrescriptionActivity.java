@@ -132,6 +132,8 @@ public class PrescriptionActivity extends AppCompatActivity {
     boolean isuploadPrescription = false;
     Button btnFollowUp;
 
+
+    TextView txtDignosisHeading;
     @Override
     protected void attachBaseContext(Context newBase) {
         mContext = newBase;
@@ -177,6 +179,8 @@ public class PrescriptionActivity extends AppCompatActivity {
         context = getApplicationContext();
         presContext = PrescriptionActivity.this;
 
+        txtDignosisHeading=findViewById(R.id.txtDignosisHeading);
+        txtDignosisHeading.setText(getString(R.string.diagnosis));
         initUI();
     }
 

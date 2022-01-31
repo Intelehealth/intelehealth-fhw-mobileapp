@@ -13,14 +13,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dip">
+        android:paddingVertical="8dip"
+        android:paddingHorizontal="5dip">
 
         <TextView
             android:id="@+id/tv_patentName_openMRSID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingHorizontal="8dip"
+            android:paddingHorizontal="5dip"
             android:text="Mm Test15, 10V8N-1"
             android:textColor="@color/gray_6"
             android:textSize="14sp"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_patentName_openMRSID"
             android:gravity="center"
-            android:paddingHorizontal="8dip"
+            android:paddingHorizontal="5dip"
             android:text="18/12/2021 10:00 AM"
             android:textColor="@color/gray_4"
             android:textSize="12sp"
@@ -44,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDateTime"
             android:gravity="center"
-            android:paddingHorizontal="8dip"
+            android:paddingHorizontal="5dip"
             android:text="Saturday"
             android:textColor="@color/gray_4"
             android:textSize="12sp"
@@ -56,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDay"
             android:gravity="center"
-            android:paddingHorizontal="8dip"
+            android:paddingHorizontal="5dip"
             android:text="Demo doctor1 , Neurologist"
             android:textColor="@color/intro_next"
             android:textSize="14sp"
@@ -69,7 +70,7 @@
             android:layout_below="@+id/tvDay"
             android:layout_alignParentEnd="true"
             android:gravity="center"
-            android:paddingHorizontal="8dip"
+            android:paddingHorizontal="5dip"
             android:text="booked"
             android:textColor="@color/green_vectr"
             android:textSize="12sp"

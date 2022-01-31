@@ -45,7 +45,7 @@
     <string name="prompt_admin_password">ನಿರ್ವಹಣೆಯ ಗುಪ್ತಪದ</string>
     <string name="action_sign_in">ಲಾಗಿನ್ ಮಾಡಿ</string>
     <string name="action_sign_in_short">ಸೈನ್ ಇನ್ ಮಾಡಿ</string>
-    <string name="url_invalid">ನಿಮ್ಮ URL ಪರಿಶೀಲಿಸಿ.</string>
+    <string name="url_invalid">ನಿಮ್ಮ  ಯು.ಆರ್.ಎಲ್. ಪರಿಶೀಲಿಸಿ.</string>
     <string name="prefix_invalid">ಬೇರೆ ಪೂರ್ವಪ್ರತ್ಯಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
     <string name="error_invalid_email">ಈ ಬಳಕೆದಾರರ ಹೆಸರು ಅಮಾನ್ಯವಾಗಿದೆ</string>
     <string name="error_invalid_password">ಈ ಪಾಸ್‌ವರ್ಡ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ</string>
@@ -235,7 +235,7 @@
     <!-- Example settings for Data & syncBackground -->
     <string name="pref_header_data_sync">ಡೇಟಾ ಮತ್ತು ರಿಫ್ರೆಶ್ ಮಾಡಿ</string>
 
-    <string name="pref_title_server_url">ಸರ್ವರ್ URL</string>
+    <string name="pref_title_server_url">ಸರ್ವರ್  ಯು.ಆರ್.ಎಲ್.</string>
     <string name="pref_title_id_prefix">" ಸ್ಥಳ ಪೂರ್ವಪ್ರತ್ಯಯ"</string>
 
     <!-- Example settings for Notifications -->
@@ -439,9 +439,9 @@
     <string name="patient_reports">"ರೋಗಿಯು ವರದಿ ನಾಡಿಕೊಳ್ಳುತ್ತಾನೆ "</string>
 
     <string name="associated_symptoms">ಸಂಬಂದಿಸಿದ ಲಕ್ಷಣಗಳು</string>
-    <string name="enter_server_url">ಸರ್ವರ್ URL ಅನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_server_url">ಸರ್ವರ್  ಯು.ಆರ್.ಎಲ್. ಅನ್ನು ನಮೂದಿಸಿ</string>
     <string name="enter_license_key"><b>ಪರವಾನಗಿ ಕೀಲಿಯನ್ನು ನಮೂದಿಸಿ</b></string>
-    <string name="invalid_url">ಅಮಾನ್ಯ URL</string>
+    <string name="invalid_url">ಅಮಾನ್ಯ  ಯು.ಆರ್.ಎಲ್.</string>
     <string name="years">ವರ್ಷಗಳು</string>
     <string name="months">ತಿಂಗಳುಗಳು</string>
     <string name="please_wait_till_sync_is_completed">ರಿಫ್ರೆಶ್ ಪೂರ್ಣಗೊಳ್ಳುವವರೆಗೆ ದಯವಿಟ್ಟು ಕಾಯಿರಿ</string>
@@ -456,7 +456,7 @@
     <string name="reject">ತಿರಸ್ಕರಿಸಿ</string>
     <string name="next">ಮುಂದೆ</string>
     <string name="which_server_would_you_like_to_connect_to">ನೀವು ಯಾವ ಸರ್ವರ್‌ಗೆ ಸಂಪರ್ಕಿಸಲು ಬಯಸುತ್ತೀರಿ?</string>
-    <string name="enter_url">URL ಅನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_url"> ಯು.ಆರ್.ಎಲ್. ಅನ್ನು ನಮೂದಿಸಿ</string>
     <string name="choose_a_location_to_login">ಲಾಗಿನ್ ಮಾಡಲು ಸ್ಥಳವನ್ನು ಆರಿಸಿ</string>
     <string name="choose_an_option_for_protocols">ಪ್ರಟೋಕಾಲ್‌ಗಳಿಗಾಗಿ ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ</string>
     <string name="please_enter_your_username_and_password">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಬಳಕೆದಾರಹೆಸರು ಮತ್ತು ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ನಮೂದಿಸಿ</string>
@@ -466,7 +466,7 @@
     <string name="doctor">ವೈದ್ಯರ ವಿವರಗಳು</string>
     <string name="health_worker">ಆರೋಗ್ಯ ಕಾರ್ಯಕರ್ತ</string>
     <string name="priority">"ಆದ್ಯತೆ "</string>
-    <string name="server_url">ಸರ್ವರ್ URL</string>
+    <string name="server_url">ಸರ್ವರ್  ಯು.ಆರ್.ಎಲ್.</string>
     <string name="sync">ರಿಫ್ರೆಶ್ ಮಾಡಿ</string>
     <string name="update_protocols">ಪ್ರಟೋಕಾಲ್‌ಗಳನ್ನು ನವೀಕರಿಸಿ</string>
     <string name="end_all_visit">ಎಲ್ಲಾ ಭೇಟಿಯನ್ನು ಕೊನೆಗೊಳಿಸಿ</string>
@@ -487,7 +487,7 @@
     <string name="please_connect_to_internet">ದಯವಿಟ್ಟು ಇಂಟರ್ನೆಟ್ ನ ಸಂಪರ್ಕವನ್ನು ಹೊಂದಿರಿ</string>
     <string name="image_upload">ಇಮೇಜ್ ಅಪ್‌ಲೋಡ್</string>
     <string name="image_upload_failed">ಇಮೇಜ್ ಅಪ್ಲೋಡ್ ವಿಫಲವಾಗಿದೆ</string>
-    <string name="sure_to_exit">ನೀನು ನಿಜವಾಗಲೂ ಹೊರಗೆ ಹೂಗಬಯಸುತ್ತೀಯಾ?(EXIT)</string>
+    <string name="sure_to_exit">ನೀನು ನಿಜವಾಗಲೂ ಹೊರಗೆ ಹೂಗಬಯಸುತ್ತೀಯಾ?</string>
     <string name="sure_to_logout">ನೀವು ಲಾಗ್ ಔಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
     <string name="lastsync_normal">ಕೊನೆಯ ರಿಫ್ರೆಶ್</string>
     <string name="update_patient_identification">ರೋಗಿಯನ್ನು ನವೀಕರಿಸಿ</string>
@@ -582,12 +582,12 @@
     <string name="active_tag_patientDetail">ಸಕ್ರಿಯ</string>
     <string name="associated_symptoms_patientDetail">ಸಂಬಂದಿಸಿದ ಲಕ್ಷಣಗಳು</string>
     <string name="device_ID">ಸಾಧನದ ಐಡಿ:</string>
-    <string name="enter_valid_license_url">ಮಾನ್ಯತೆ ಹೊಂದಿದ ಪರವಾನಗಿ URL ಅನ್ನು ನಮೂದಿಸಿ (enter valid license URL)</string>
-    <string name="please_enter_url_and_key">ದಯವಿಟ್ಟು URL ಮತ್ತು ಕೀಲಿಯನ್ನು ನಮೂದಿಸಿ(enter URL and Key)</string>
+    <string name="enter_valid_license_url">ಮಾನ್ಯತೆ ಹೊಂದಿದ ಪರವಾನಗಿ ಅನ್ನು ನಮೂದಿಸಿ (ಮಾನ್ಯ ಪರವಾನಗಿ ಯುಆರ್ ಎಲ್ ನಮೂದಿಸಿ)</string>
+    <string name="please_enter_url_and_key">ದಯವಿಟ್ಟು ಮತ್ತು ಕೀಲಿಯನ್ನು ನಮೂದಿಸಿ(ಯುಆರ್ ಎಲ್ ಮತ್ತು ಕೀಲಿ ಯನ್ನು ನಮೂದಿಸಿ)</string>
     <string name="please_enter_valid_license_key">ದಯವಿಟ್ಟು ಮಾನ್ಯವಾದ ಪರವಾನಗಿ ಕೀಲಿಯನ್ನು ನಮೂದಿಸಿ( enter valid licence key )</string>
     <string name="permission_denied">ಅನುಮತಿ ನಿರಾಕರಿಸಲಾಗಿದೆ \\ n</string>
-    <string name="reject_permission_results">यदि आप अनुमति को अस्वीकार करते हैं,तो आप इस सेवा का उपयोग नहीं कर सकते| कृपया सेटिंग-> अनुमति पर चालू करें</string>
-    <string name="current_time">वर्तमान समय</string>
+    <string name="reject_permission_results">ನೀವು ಅನುಮತಿನಿರಾಕರಿಸಿದರೆ, ನೀವು ಈ ಸೇವೆಯನ್ನು ಬಳಸುವಂತಿಲ್ಲ| ದಯವಿಟ್ಟು ಸೆಟ್ಟಿಂಗ್ ಗಳನ್ನು ಆನ್ ಮಾಡಿ-> ಅನುಮತಿ</string>
+    <string name="current_time">ಪ್ರಸ್ತುತ ಸಮಯ</string>
     <string name="temperature_C">\"ತಾಪಮಾನ (ಸಿ):\"</string>
     <string name="temperature_F">\"ತಾಪಮಾನ (ಎಫ್):</string>
     <string name="no_history_family_found">ಕುಟುಂಬದಲ್ಲಿ ಅನಾರೋಗ್ಯದ ಇತಿಹಾಸವನ್ನು ಒದಗಿಸಲಾಗಿಲ್ಲ.</string>

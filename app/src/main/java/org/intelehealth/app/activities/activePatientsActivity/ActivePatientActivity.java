@@ -221,8 +221,8 @@ public class ActivePatientActivity extends AppCompatActivity {
                                 );
 
 
-                                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+//                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+//                                appointmentDAO.deleteAppointmentByVisitId(visitUuid);
                             }
                         });
                         AlertDialog alertDialog = alertDialogBuilder.show();

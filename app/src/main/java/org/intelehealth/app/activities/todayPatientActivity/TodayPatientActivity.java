@@ -337,10 +337,10 @@ public class TodayPatientActivity extends AppCompatActivity {
                             String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
                             ""
                     );
-                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+//                    AppointmentDAO appointmentDAO = new AppointmentDAO();
                     //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
                     //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+//                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
 
                 }
             });

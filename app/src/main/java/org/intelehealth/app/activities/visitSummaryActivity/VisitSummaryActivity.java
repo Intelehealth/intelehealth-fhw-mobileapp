@@ -437,8 +437,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     endVisit();
-                    AppointmentDAO appointmentDAO = new AppointmentDAO();
-                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+//                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+//                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();

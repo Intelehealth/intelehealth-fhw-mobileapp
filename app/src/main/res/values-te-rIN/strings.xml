@@ -8,7 +8,7 @@
     <string name="prompt_admin_password" translatable="false">"అడ్మిన్ పాస్వర్డ్"</string>
     <string name="action_sign_in" translatable="false">ప్రవేశించండి/లాగ్ఇన్</string>
     <string name="action_sign_in_short" translatable="false">సైన్ ఇన్ చేయండి</string>
-    <string name="url_invalid" translatable="false">"మీ URL ను తనిఖీ చేయండి."</string>
+    <string name="url_invalid" translatable="false">"మీ యుఆర్ ఎల్ ను తనిఖీ చేయండి."</string>
     <string name="prefix_invalid" translatable="false">వేరే ఉపసర్గను ఎంచుకోండి!</string>
     <string name="error_invalid_email" translatable="false">ఈ వినియోగదారు పేరు చెల్లదు</string>
     <string name="error_invalid_password" translatable="false">ఈ పాస్‌వర్డ్ చాలా చిన్నది</string>
@@ -298,8 +298,8 @@
     <string name="patient_denies" translatable="false">" రోగి ఖండించాడు"</string>
     <string name="patient_reports" translatable="false">" రోగి నివేదికలు"</string>
     <string name="associated_symptoms">" అనుబంధ లక్షణాలు"</string>
-    <string name="enter_server_url">" సర్వర్ URL ను నమోదు చేయండి"</string>
-    <string name="invalid_url">" చెల్లని URL"</string>
+    <string name="enter_server_url">" సర్వర్ యుఆర్ ఎల్ ను నమోదు చేయండి"</string>
+    <string name="invalid_url">" చెల్లని యుఆర్ ఎల్"</string>
     <string name="please_wait_till_sync_is_completed">" రిఫ్రెష్ పూర్తయ్యే వరకు వేచి ఉండండి"</string>
     <string name="patient_name">" రోగి పేరు"</string>
     <string name="son_daughter_wife_of">" కుమారుడు/ కుమార్తె / భార్య యొక్క "</string>
@@ -309,7 +309,7 @@
     <string name="caste">" కులం"</string>
     <string name="previous_visits">" మునుపటి సందర్శనలు"</string>
     <string name="which_server_would_you_like_to_connect_to">" మీరు ఏ సర్వర్‌కు కనెక్ట్ చేయాలనుకుంటున్నారు?"</string>
-    <string name="enter_url">" URL ను నమోదు చేయండి"</string>
+    <string name="enter_url">"యుఆర్ ఎల్ ను నమోదు చేయండి"</string>
     <string name="choose_a_location_to_login">" లాగిన్ చేయడానికి స్థానాన్ని ఎంచుకోండి"</string>
     <string name="choose_an_option_for_protocols">" ప్రోటోకాల్‌ల కోసం ఒక ఎంపికను ఎంచుకోండి"</string>
     <string name="please_enter_your_username_and_password">" దయచేసి మీ వినియోగదారు పేరు మరియు పాస్‌వర్డ్‌ను నమోదు చేయండి"</string>
@@ -319,7 +319,7 @@
     <string name="doctor">" డాక్టర్ వివరాలు"</string>
     <string name="health_worker">" ఆరోగ్య కార్య కర్త"</string>
     <string name="priority">" ప్రాధాన్యత"</string>
-    <string name="server_url">" సర్వర్ url"</string>
+    <string name="server_url">" సర్వర్ యుఆర్ ఎల్"</string>
     <string name="sync">" రిఫ్రెష్ చేయండి"</string>
     <string name="update_protocols">" ప్రోటోకాల్‌లను నవీకరించండి"</string>
     <string name="end_all_visit">" అన్ని సందర్శనలను ముగించండి"</string>
@@ -417,8 +417,8 @@
     <string name="intelehealth_name">" ఇంటెలిహెల్త్"</string>
     <string name="associated_symptoms_patientDetail">" అనుబంధ లక్షణాలు"</string>
     <string name="device_ID">" పరికర ఐడి:"</string>
-    <string name="enter_valid_license_url">" చెల్లుబాటు అయ్యే లైసెన్స్ Url ను నమోదు చేయండి"</string>
-    <string name="please_enter_url_and_key">" దయచేసి URL మరియు కీని నమోదు చేయండి"</string>
+    <string name="enter_valid_license_url">" చెల్లుబాటు అయ్యే లైసెన్స్ యుఆర్ ఎల్ ను నమోదు చేయండి"</string>
+    <string name="please_enter_url_and_key">" దయచేసి యుఆర్ ఎల్ మరియు కీని నమోదు చేయండి"</string>
     <string name="please_enter_valid_license_key">" దయచేసి చెల్లుబాటు అయ్యే లైసెన్స్ కీని నమోదు చేయండి"</string>
     <string name="permission_denied">" అనుమతి నిరాకరించబడింది \\ n"</string>
     <string name="temperature_C">" ఉష్ణోగ్రత (సి):"</string>
