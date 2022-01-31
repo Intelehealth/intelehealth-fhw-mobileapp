@@ -392,7 +392,7 @@
     <string name="new_update_available">নতুন আপডেট উপলব্ধ</string>
     <string name="update_app_note">নতুন বৈশিষ্ট্য নতুন বৈশিষ্ট্য সহ উপলব্ধ আছে এপচ(আবেদন) আপডেট কৰা</string>
     <string name="update">আপডেট</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"হ্যালো, ইনটেলহেলথ ব্যবহাৰৰ বাবে আপোনাক ধন্যবাদ। আপোনাৰ প্রেচক্রিপশন ডাউনলোড কৰোতে দয়া কৰি ইয়াত ক্লিক কৰা\"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"হ্যালো, টেলিকলার অ্যাপ ব্যবহাৰৰ বাবে আপোনাক ধন্যবাদ। আপোনাৰ প্রেচক্রিপশন ডাউনলোড কৰোতে দয়া কৰি ইয়াত ক্লিক কৰা\"</string>
     <string name="and_enter_your_patient_id">\"আৰু আপোনাৰ ৰোগীৰ আইডি লিখা -\"</string>
     <string name="what_is_the_reason_for_your_visit">আপোনাৰ দেখোৱা কাৰণ কি?</string>
     <string name="swipe_down_to_return">পৰবর্তী / পৰবর্তী পৰা তলত সোয়াইপ কৰা</string>
@@ -418,7 +418,7 @@
     <string name="i_need_assistance">আৰু আমাৰ কিছু সহযোগিতা দৰকাৰ।\"</string>
     <string name="economic_values_missing">অর্থনৈতিক মূল্যবোধ অনুপস্থিত</string>
     <string name="education_values_missing">শিক্ষাৰ মান অনুপস্থিত</string>
-    <string name="intelehealth_a_telemedicine_platform">একল আৰোগ্য হ\'ল এটা টেলিমেডিসিন আবেদনপত্ৰ যাৰ গাওঁ ও প্রত্যন্ত অঞ্চল স্বাস্থ্যকর্মীসকলৰ দূৰবর্তী চিকিত্সকৰ লগত সংযুক্ত কৰা যাতে তেওঁলোকে তেওঁলোকৰ ৰোগীসকলৰ পৰা উচ্চমানৰ স্বাস্থ্যসেৱা সৰবৰাহ কৰিব পাৰে।</string>
+    <string name="intelehealth_a_telemedicine_platform">টেলিকলার অ্যাপ হল একটি টেলিমেডিসিন অ্যাপ্লিকেশন ফর্ম যা গ্রামীণ এবং প্রত্যন্ত স্বাস্থ্যকর্মীদের দূরবর্তী চিকিত্সকদের সাথে সংযুক্ত করে যাতে তারা তাদের রোগীদের কাছ থেকে উচ্চ মানের স্বাস্থ্যসেবা সরবরাহ করতে পারে।</string>
     <string name="Ayu_name">আয়ু</string>
     <string name="close_button">বন্ধ</string>
     <string name="active_tag_patientDetail">" সক্রিয়"</string>
@@ -497,9 +497,9 @@
     <string name="select_speciality">বিশেষত্ব নিৰ্বাচন কৰক</string>
     <string name="setup_internet_available">ছেটআপৰ বাবে এটা শক্তিশালী ইণ্টাৰনেট সংযোগৰ প্ৰয়োজন।</string>
     <string name="setup_internet_not_available">আপুনি ইণ্টাৰনেটৰ সৈতে সংযোজিত নহয়।</string>
-    <string name="app_name" translatable="false">একল আৰোগ্য হেল্পলাইন</string>
-    <string name="title_activity_login" translatable="false">একল আৰোগ্য হেল্পলাইন</string>
-    <string name="intelehealth_name">একল আৰোগ্য হেল্পলাইন</string>
+    <string name="app_name" translatable="false">টেলিকলার অ্যাপ</string>
+    <string name="title_activity_login" translatable="false">টেলিকলার অ্যাপ</string>
+    <string name="intelehealth_name">টেলিকলার অ্যাপ</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">*আমি (কৰ্মকৰ্তা) নিশ্চিত হৈছি যে আমি ৰোগীৰ গোপনীয়তা বিজ্ঞপ্তি আৰু সম্মতিটো পঢ়িছি।</string>
     <string name="enter_license_key">লাইচেঞ্চ কি\' প্ৰবিষ্ট কৰক</string>
     <string name="weight_error">ওজন %1$s কিগ্ৰাতকৈ কম হ\'ব লাগে</string>
