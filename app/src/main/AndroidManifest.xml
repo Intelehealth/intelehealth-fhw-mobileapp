@@ -54,7 +54,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.privacyNoticeActivity.PrivacyNotice_Activity"
-            android:exported="true" />
+            android:exported="true"
             android:configChanges="uiMode"
             android:label="@string/title_activity_privacy_notice"
             android:screenOrientation="portrait"

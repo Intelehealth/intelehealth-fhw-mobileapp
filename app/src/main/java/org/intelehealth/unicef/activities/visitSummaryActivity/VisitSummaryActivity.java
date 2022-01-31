@@ -4772,8 +4772,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
-    private AppointmentDetailsResponse mAppointmentDetailsResponse;
-    private int mAppointmentId = 0;
+   /* private AppointmentDetailsResponse mAppointmentDetailsResponse;
+    private int mAppointmentId = 0;*/
 
     private void getAppointmentDetails(String visitUUID) {
         mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
