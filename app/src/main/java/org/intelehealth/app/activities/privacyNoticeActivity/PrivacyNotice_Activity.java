@@ -169,8 +169,8 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                 }
             }
             else if (current.toString().equals("mr")) {
-                String privacy_string = obj.getString("privacyNoticeText");
-//                String privacy_string = obj.getString("privacyNoticeText_Marathi");
+               // String privacy_string = obj.getString("privacyNoticeText");
+                String privacy_string = obj.getString("privacyNoticeText_Marathi");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
                     privacy_textview.setText(privacy_string);
