@@ -2,37 +2,37 @@
 
 
     <string-array name="language_names">
-        <item>हिंदी</item>
         <item>English</item>
+        <item>Marathi</item>
+        <!--<item>हिंदी</item>
         <item>ଓଡିଆ</item>
         <item>తెలుగు</item>
         <item>ગુજરાતી</item>
-        <item>Marathi</item>
         <item>Kannada</item>
         <item>Assamese</item>
         <item>Malyalam</item>
         <item>Russian</item>
-        <!--        <item>Cebuano</item>-->
         <item>বাংলা</item>
-        <item>தமிழ்</item>
+        <item>தமிழ்</item>-->
 <!--        <item>Cebuano</item>-->
+        <!--        <item>Cebuano</item>-->
     </string-array>
 
     <string-array name="language_values">
-        <item>hi</item>
         <item>en</item>
+        <item>mr</item>
+        <!--<item>hi</item>
         <item>or</item>
         <item>te</item>
         <item>gu</item>
-        <item>mr</item>
         <item>kn</item>
         <item>as</item>
         <item>ml</item>
         <item>ru</item>
-        <!--        <item>cb</item>-->
         <item>bn</item>
-        <item>ta</item>
+        <item>ta</item>-->
 <!--        <item>cb</item>-->
+        <!--        <item>cb</item>-->
     </string-array>
 
     <string-array name="speciality_values">
