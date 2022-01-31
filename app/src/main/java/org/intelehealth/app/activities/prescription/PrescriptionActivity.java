@@ -512,10 +512,6 @@ public class PrescriptionActivity extends AppCompatActivity {
                 }
                 String encoded = base64Utils.encoded("sysnurse", "Nurse123");
 
-
-
-
-
                 ApiInterface apiService = ApiClient.createService(ApiInterface.class);
                 Observable<ResponseBody> responseBodyObservable = apiService.OBS_SIGNANDSUBMIT_STATUS(
                         url, visitCompleteStatus, "Basic " + encoded);

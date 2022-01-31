@@ -1140,30 +1140,41 @@
                     android:entries="@array/speciality_values"
                     android:focusable="true" />
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/tvDoctorAppointmentBookingCancel"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginHorizontal="16dip"
                         android:background="@drawable/red_button_rounded"
                         android:fontFamily="@font/lato_bold"
-                        android:gravity="center_vertical"
-                        android:padding="12dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:paddingStart="5sp"
+                        android:paddingVertical="12sp"
+                        android:paddingEnd="12sp"
                         android:text="@string/cancel_appointment"
+
                         android:textColor="@color/white"
                         android:textSize="12sp"
+app:layout_constraintStart_toEndOf="@+id/gd"
                         android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvDoctorAppointmentBookingInfo"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dip"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/gd"
+                        android:paddingStart="12sp"
+                        android:paddingEnd="5sp"
+                        android:paddingVertical="12sp"
                         android:layout_toStartOf="@+id/tvDoctorAppointmentBookingCancel"
                         android:fontFamily="@font/lato_bold"
                         android:gravity="center_vertical"
@@ -1171,7 +1182,14 @@
                         android:textColor="@color/gray_5"
                         android:textSize="14sp"
                         android:visibility="gone" />
-                </RelativeLayout>
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent=".5"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <TextView
