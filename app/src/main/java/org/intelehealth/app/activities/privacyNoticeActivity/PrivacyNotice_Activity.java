@@ -104,109 +104,74 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
                 String privacy_string = obj.getString("privacyNoticeText_Odiya");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-
+                privacy_textview.setText(privacy_string);
             } else if (current.toString().equals("gu")) {
-//                String privacy_string = obj.getString("privacyNoticeText_Gujarati");
-                String privacy_string = obj.getString("privacyNoticeText");
+                String privacy_string = obj.getString("privacyNoticeText_Gujarati");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
+                privacy_textview.setText(privacy_string);
 
             } else if (current.toString().equals("bn")) { //Privacy notice support for Bengali
                 String privacy_string = obj.getString("privacyNoticeText_Bengali");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-            }
-            else if (current.toString().equals("hi")) { //Privacy notice support for Hindi
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("hi")) { //Privacy notice support for Hindi
                 String privacy_string = obj.getString("privacyNoticeText_Hindi");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-
-            } else if (current.toString().equals("ta")) {
-                String privacy_string = obj.getString("privacyNoticeText");
-//                String privacy_string = obj.getString("privacyNoticeText_Tamil");
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("ta")) { //privacy notice support for Tamil language
+                String privacy_string = obj.getString("privacyNoticeText_Tamil");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
+                privacy_textview.setText(privacy_string);
 
-            } else if (current.toString().equals("kn")) {          //Privacy text support for Kannada
-//                String privacy_string = obj.getString("privacyNoticeText");
+            } else if (current.toString().equals("kn")) { //Privacy text support for Kannada
                 String privacy_string = obj.getString("privacyNoticeText_Kannada");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-
-            }
-            else if (current.toString().equals("te")) {
-                String privacy_string = obj.getString("privacyNoticeText");
-//                String privacy_string = obj.getString("privacyNoticeText_Telugu");
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("te")) { //privacy notice support for Telugu language
+                String privacy_string = obj.getString("privacyNoticeText_Telugu");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-            }
-            else if (current.toString().equals("mr")) {
-                String privacy_string = obj.getString("privacyNoticeText");
-//                String privacy_string = obj.getString("privacyNoticeText_Marathi");
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("mr")) { //privacy notice support for Marathi language
+                String privacy_string = obj.getString("privacyNoticeText_Marathi");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-
-            }
-            //privacy notice support for Assamese language...
-            else if (current.toString().equals("as")) {
-                String privacy_string = obj.getString("privacyNoticeText");
-//                String privacy_string = obj.getString("privacyNoticeText_Assamese");
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("as")) { //privacy notice support for Assamese language...
+                String privacy_string = obj.getString("privacyNoticeText_Assamese");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-
-
-            } else if (current.toString().equals("ml")) {
-                //  todo
-                String privacy_string = obj.getString("privacyNoticeText");
-//                String privacy_string = obj.getString("privacyNoticeText_Hindi");
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("ml")) { // privacy notice support for Malayalam language
+                String privacy_string = obj.getString("privacyNoticeText_Malayalam");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
-                    privacy_textview.setText(privacy_string);
-                } else {
-                    privacy_textview.setText(privacy_string);
                 }
-
+                privacy_textview.setText(privacy_string);
+            } else if (current.toString().equals("ru")) { // privacy notice support for Russian language
+                String privacy_string = obj.getString("privacyNoticeText_Russian");
+                if (privacy_string.isEmpty()) {
+                    privacy_string = obj.getString("privacyNoticeText");
+                }
+                privacy_textview.setText(privacy_string);
             } else {
                 String privacy_string = obj.getString("privacyNoticeText");
                 privacy_textview.setText(privacy_string);
             }
-
             accept.setOnClickListener(this);
             reject.setOnClickListener(this);
 
