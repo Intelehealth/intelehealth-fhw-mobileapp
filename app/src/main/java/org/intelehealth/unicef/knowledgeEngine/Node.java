@@ -441,8 +441,8 @@ public class Node implements Serializable {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
 //        String locale = Locale.getDefault().getLanguage();
-        String locale = sessionManager.getAppLanguage();
-        Log.i(TAG, "findDisplay: locale - "+locale);
+        String locale = sessionManager.getCurrentLang();
+        Log.i(TAG, "findDisplay: eng");
 
         switch (locale) {
             case "en": {
@@ -493,7 +493,7 @@ public class Node implements Serializable {
                     Log.i(TAG, "findDisplay: cb ");
                     return display_russian;
                 } else {
-                    if (display == null || display.isEmpty()) {
+                    if (display == null || display.isEmpty() || display.equals("%")) {
                         Log.i(TAG, "findDisplay: ru txt");
                         return text;
                     } else {

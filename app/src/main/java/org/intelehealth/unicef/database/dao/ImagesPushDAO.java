@@ -3,23 +3,28 @@ package org.intelehealth.unicef.database.dao;
 import android.content.Intent;
 import android.util.Log;
 
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
+
+import org.intelehealth.apprtc.utils.SendMessageUtils;
+import org.intelehealth.unicef.app.AppConstants;
+import org.intelehealth.unicef.app.IntelehealthApplication;
+import org.intelehealth.unicef.models.ObsImageModel.ObsJsonResponse;
+import org.intelehealth.unicef.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.unicef.models.ObsImageModel.ObsPushDTOMain;
+import org.intelehealth.unicef.models.dto.RTCConnectionDTO;
+import org.intelehealth.unicef.models.patientImageModelRequest.PatientProfile;
+import org.intelehealth.unicef.utilities.Logger;
+import org.intelehealth.unicef.utilities.SessionManager;
+import org.intelehealth.unicef.utilities.UrlModifiers;
+import org.intelehealth.unicef.utilities.exception.DAOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.intelehealth.unicef.utilities.Logger;
-import org.intelehealth.unicef.utilities.SessionManager;
-import org.intelehealth.unicef.utilities.UrlModifiers;
-import org.intelehealth.unicef.app.AppConstants;
-import org.intelehealth.unicef.app.IntelehealthApplication;
-import org.intelehealth.unicef.models.ObsImageModel.ObsJsonResponse;
-import org.intelehealth.unicef.models.ObsImageModel.ObsPushDTO;
-import org.intelehealth.unicef.models.patientImageModelRequest.PatientProfile;
-import org.intelehealth.unicef.utilities.exception.DAOException;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,7 +39,6 @@ import okhttp3.ResponseBody;
 public class ImagesPushDAO {
     String TAG = ImagesPushDAO.class.getSimpleName();
     SessionManager sessionManager = null;
-
 
 
     public boolean patientProfileImagesPush() {
@@ -88,7 +92,8 @@ public class ImagesPushDAO {
         UrlModifiers urlModifiers = new UrlModifiers();
         ImagesDAO imagesDAO = new ImagesDAO();
         String url = urlModifiers.setObsImageUrl();
-        List<ObsPushDTO> obsImageJsons = new ArrayList<>();
+        Logger.logD(TAG, "url - " + url);
+        List<ObsPushDTOMain> obsImageJsons = new ArrayList<ObsPushDTOMain>();
         try {
             obsImageJsons = imagesDAO.getObsUnsyncedImages();
             Log.e(TAG, "image request model" + gson.toJson(obsImageJsons));
@@ -97,15 +102,21 @@ public class ImagesPushDAO {
         }
 
         int i = 0;
-        for (ObsPushDTO p : obsImageJsons) {
+        for (ObsPushDTOMain obsPushDTOMain : obsImageJsons) {
+            ObsPushDTO obsPushDTO = new ObsPushDTO();
+            obsPushDTO.setConcept(obsPushDTOMain.getConcept());
+            obsPushDTO.setEncounter(obsPushDTOMain.getEncounter());
+            obsPushDTO.setObsDatetime(obsPushDTOMain.getObsDatetime());
+            obsPushDTO.setUuid(obsPushDTOMain.getUuid());
+            obsPushDTO.setPerson(obsPushDTOMain.getPerson());
             //pass it like this
             File file = null;
-            file = new File(AppConstants.IMAGE_PATH + p.getUuid() + ".jpg");
+            file = new File(AppConstants.IMAGE_PATH + obsPushDTO.getUuid() + ".jpg");
             RequestBody requestFile = RequestBody.create(MediaType.parse("application/json"), file);
             // MultipartBody.Part is used to send also the actual file name
             MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
-            Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, p);
+            Observable<ObsJsonResponse> obsJsonResponseObservable = AppConstants.apiInterface.OBS_JSON_RESPONSE_OBSERVABLE(url, "Basic " + encoded, body, obsPushDTO);
             obsJsonResponseObservable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableObserver<ObsJsonResponse>() {
@@ -125,7 +136,25 @@ public class ImagesPushDAO {
                         public void onComplete() {
                             Logger.logD(TAG, "success");
                             try {
-                                imagesDAO.updateUnsyncedObsImages(p.getUuid());
+                                imagesDAO.updateUnsyncedObsImages(obsPushDTOMain.getUuid());
+                                // send messages after image upload
+                                RTCConnectionDAO rtcConnectionDAO = new RTCConnectionDAO();
+                                RTCConnectionDTO rtcConnectionDTO = rtcConnectionDAO.getByVisitUUID(obsPushDTOMain.getVisitUUID());
+                                if (rtcConnectionDTO != null) {
+                                    // send message in chat that new images uploaded for visit
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(rtcConnectionDTO.getConnectionInfo());
+                                        SendMessageUtils.postMessages(IntelehealthApplication.getAppContext(),
+                                                rtcConnectionDTO.getVisitUUID(),
+                                                obsPushDTOMain.getPatientName(),
+                                                jsonObject.getString("fromUUID"),
+                                                jsonObject.getString("toUUID"),
+                                                jsonObject.getString("patientUUID"), "New images uploaded for this visit."
+                                        );
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             } catch (DAOException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
                             }

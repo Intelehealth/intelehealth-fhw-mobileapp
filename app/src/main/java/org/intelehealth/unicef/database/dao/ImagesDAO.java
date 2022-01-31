@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.intelehealth.unicef.models.ObsImageModel.ObsPushDTOMain;
 import org.intelehealth.unicef.utilities.Base64Utils;
 import org.intelehealth.unicef.utilities.Logger;
 import org.intelehealth.unicef.utilities.UuidDictionary;
@@ -224,20 +225,22 @@ public class ImagesDAO {
         return patientProfiles;
     }
 
-    public List<ObsPushDTO> getObsUnsyncedImages() throws DAOException {
-        List<ObsPushDTO> obsImages = new ArrayList<>();
+    public List<ObsPushDTOMain> getObsUnsyncedImages() throws DAOException {
+        List<ObsPushDTOMain> obsImages = new ArrayList<ObsPushDTOMain>();
         SQLiteDatabase localdb = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         localdb.beginTransaction();
         try {
-            Cursor idCursor = localdb.rawQuery("select c.uuid as patientuuid,d.conceptuuid,a.uuid as encounteruuid,d.uuid as obsuuid,d.modified_date  from tbl_encounter a , tbl_visit b , tbl_patient c,tbl_obs d where a.visituuid=b.uuid and b.patientuuid=c.uuid and d.encounteruuid=a.uuid and (d.sync=0 or d.sync='false') and (d.conceptuuid=? or d.conceptuuid=?) and d.voided='0'", new String[]{UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
+            Cursor idCursor = localdb.rawQuery("select b.uuid as visitUUID, c.uuid as patientuuid, c.first_name as firstName,c.last_name as lastName,d.conceptuuid,a.uuid as encounteruuid,d.uuid as obsuuid,d.modified_date  from tbl_encounter a , tbl_visit b , tbl_patient c,tbl_obs d where a.visituuid=b.uuid and b.patientuuid=c.uuid and d.encounteruuid=a.uuid and (d.sync=0 or d.sync='false') and (d.conceptuuid=? or d.conceptuuid=?) and d.voided='0'", new String[]{UuidDictionary.COMPLEX_IMAGE_PE, UuidDictionary.COMPLEX_IMAGE_AD});
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
-                    ObsPushDTO obsPushDTO = new ObsPushDTO();
+                    ObsPushDTOMain obsPushDTO = new ObsPushDTOMain();
                     obsPushDTO.setConcept(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                     obsPushDTO.setEncounter(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                     obsPushDTO.setObsDatetime(idCursor.getString(idCursor.getColumnIndexOrThrow("modified_date")));
                     obsPushDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("obsuuid")));
                     obsPushDTO.setPerson(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
+                    obsPushDTO.setVisitUUID(idCursor.getString(idCursor.getColumnIndexOrThrow("visitUUID")));
+                    obsPushDTO.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("firstName"))+"\t"+idCursor.getString(idCursor.getColumnIndexOrThrow("lastName")));
                     obsImages.add(obsPushDTO);
                 }
             }

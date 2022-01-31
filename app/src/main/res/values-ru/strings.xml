@@ -784,6 +784,15 @@
     <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
     <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
     <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
-    <string name="answer_following_questions">Following are the compulsory questions, Please answer them.</string>
+
+    <string name="answer_following_questions">Ниже приведены обязательные вопросы, пожалуйста, ответьте на них.</string>
+    <string name="please_select_your_reschedule_reason">Пожалуйста, выберите причину переноса</string>
+    <string name="please_select_your_cancel_reason">Пожалуйста, выберите причину отмены</string>
+    <string name="doctor_is_not_available">Доктор недоступен</string>
+    <string name="patient_is_not_available">Пациент недоступен</string>
+    <string name="others">Другие</string>
+    <string name="please_enter_the_reason_details">Пожалуйста, введите детали причины</string>
+    <string name="save_amp_proceed">Сохранить и продолжить</string>
+    <string name="please_enter_reason_txt">Пожалуйста, укажите причину!</string>
 
 </resources>

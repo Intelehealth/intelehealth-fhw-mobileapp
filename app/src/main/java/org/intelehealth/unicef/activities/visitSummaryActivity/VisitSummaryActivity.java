@@ -8,6 +8,7 @@ import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_C
 import static org.intelehealth.unicef.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 import static org.intelehealth.unicef.utilities.UuidDictionary.OBS_DOCTORDETAILS;
 
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -50,6 +51,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -63,13 +65,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -145,7 +148,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -158,10 +160,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -4774,6 +4772,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    private AppointmentDetailsResponse mAppointmentDetailsResponse;
+    private int mAppointmentId = 0;
+
     private void getAppointmentDetails(String visitUUID) {
         mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
         mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
@@ -4849,37 +4850,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        CancelRequest request = new CancelRequest();
-                        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
-                        request.setId(mAppointmentDetailsResponse.getData().getId());
-                        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
-                        ApiClientAppointment.getInstance(baseurl).getApi()
-                                .cancelAppointment(request)
-                                .enqueue(new Callback<CancelResponse>() {
-                                    @Override
-                                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
-                                        if (response.body() == null) return;
-                                        CancelResponse cancelResponse = response.body();
-                                        if (cancelResponse.isStatus()) {
-                                            AppointmentDAO appointmentDAO = new AppointmentDAO();
-                                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
-                                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
-                                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
-                                            //}
-
-                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
-                                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
-                                        } else {
-                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
-
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<CancelResponse> call, Throwable t) {
-                                        Log.v("onFailure", t.getMessage());
-                                    }
-                                });
+                        askReason();
                     }
                 })
                 //set negative button
@@ -4893,6 +4864,89 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
     }
+
+    private void cancelAppointmentRequest(String reason) {
+        CancelRequest request = new CancelRequest();
+        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
+        request.setId(mAppointmentDetailsResponse.getData().getId());
+        request.setReason(reason);
+        request.setHwUUID(new SessionManager(VisitSummaryActivity.this).getProviderID()); // user id / healthworker id
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .cancelAppointment(request)
+                .enqueue(new Callback<CancelResponse>() {
+                    @Override
+                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                        if (response.body() == null) return;
+                        CancelResponse cancelResponse = response.body();
+                        if (cancelResponse.isStatus()) {
+                            AppointmentDAO appointmentDAO = new AppointmentDAO();
+                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                            //}
+
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                        } else {
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                    }
+                });
+    }
+
+
+    private void askReason() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.appointment_cancel_reason_view);
+
+        final TextView titleTextView = (TextView) dialog.findViewById(R.id.titleTv);
+        titleTextView.setText(getString(R.string.please_select_your_cancel_reason));
+        final EditText reasonEtv = dialog.findViewById(R.id.reasonEtv);
+        reasonEtv.setVisibility(View.GONE);
+        final RadioGroup optionsRadioGroup = dialog.findViewById(R.id.reasonRG);
+        optionsRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.rbR1) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.doctor_is_not_available));
+                } else if (checkedId == R.id.rbR2) {
+                    reasonEtv.setVisibility(View.GONE);
+                    reasonEtv.setText(getString(R.string.patient_is_not_available));
+                } else if (checkedId == R.id.rbR3) {
+                    reasonEtv.setText("");
+                    reasonEtv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        final TextView textView = dialog.findViewById(R.id.submitTV);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                String reason = reasonEtv.getText().toString().trim();
+                if (reason.isEmpty()) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_enter_reason_txt), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                cancelAppointmentRequest(reason);
+            }
+        });
+
+        dialog.show();
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
