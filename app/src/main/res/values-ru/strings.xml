@@ -796,4 +796,7 @@
     <string name="app_sync">Синхронизация приложения..</string>
     <string name="type_to_search">Введите для поиска..</string>
 
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">Протокол доступен, после чего загружается। Нажмите \'Да\', чтобы подтвердить загрузку протокола। Нажмите \'Нет\' для продолжения работы с демонстрационным протоколом।</string>
+
 </resources>

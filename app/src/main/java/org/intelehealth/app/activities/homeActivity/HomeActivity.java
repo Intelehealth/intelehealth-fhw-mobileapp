@@ -969,7 +969,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
+                                mTask = new DownloadMindMaps(context, mProgressDialog,"home");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
