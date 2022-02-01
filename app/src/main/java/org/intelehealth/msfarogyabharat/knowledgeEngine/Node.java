@@ -440,6 +440,31 @@ public class Node implements Serializable {
                     currentNode.setSelected(true);
                 }
 
+                if (node.optionsList != null && !node.optionsList.isEmpty() && node.isMultiChoice) {
+                    if(currentNode.isExcludedFromMultiChoice) {
+
+                        if(currentNode.isSelected()) {
+                            for (int i = 0; i < node.optionsList.size(); i++) {
+                                Node innerNode = node.optionsList.get(i);
+                                innerNode.setUnselected();
+                            }
+                            currentNode.setSelected(true);
+                        }
+                        else
+                            currentNode.setUnselected();
+
+                    }
+                    else
+                    {
+                        for (int i = 0; i < node.optionsList.size(); i++) {
+                            Node innerNode = node.optionsList.get(i);
+                            if(innerNode.isExcludedFromMultiChoice)
+                                innerNode.setUnselected();
+                        }
+                    }
+
+                }
+
                 if (node.getOption(position).getInputType() != null) {
                     subHandleQuestion(node.getOption(position), context, adapter, imagePath, imageName);
                 }
