@@ -375,7 +375,7 @@
     <string name="unable_to_get_proper_response">প্রোটোকল ডাউনলোড কৰোতে সমস্যা হৈছিল, দয়া কৰি চিস্টেম ব্যৱস্হাপকৰ নগত যোগাযোগ কৰা</string>
     <string name="last_synced">সর্বশেষ ৰিফ্রেশ -</string>
     <string name="today_visits">আজিৰ দর্শন</string>
-    <string name="location_setup">Setup Location - </string>
+    <string name="location_setup">অৱস্থান ছেটআপ কৰক - </string>
     <string name="active_visits">সক্রিয় দর্শন</string>
     <string name="day">দিন</string>
     <string name="hour">ঘন্টা</string>
@@ -531,4 +531,110 @@
     <string name="resetting_app_dialog">পুনৰ সংহতি কৰা হৈছে</string>
     <string name="sure_to_reset_app">আপুনি এপ্পৰিছেট কৰিব বিচৰাটো নিশ্চিতনে?</string>
 
+
+    <string name="book_appointment">বুক এপইণ্টমেণ্ট</string>
+    <string name="reschedule_appointment">পুনৰ নিৰ্ধাৰিত সাক্ষাৎকাৰ</string>
+    <string name="appointment_booking_confirmation_txt">আপুনি এই স্লটটো বুক কৰাটো নিশ্চিতনে?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">আপুনি সাক্ষাৎকাৰ বাতিল কৰাটো নিশ্চিতনে?</string>
+    <string name="cancel_appointment">বাতিল সাক্ষাৎকাৰ</string>
+    <string name="slot_empty_message">নিৰ্বাচিত তাৰিখ আৰু বিশেষত্বৰ বাবে এপইণ্টমেণ্ট স্লট উপলব্ধ নহয়!</string>
+    <string name="appointment_empty_message">আপোনাৰ কোনো এপইণ্টমেণ্ট নাই!</string>
+    <string name="appointment_listing_title">এপইণ্টমেণ্ট লিষ্টিং</string>
+    <string name="appointment_booking_title">এপইণ্টমেণ্ট বুকিং</string>
+    <string name="appointment_for">এপইণ্টমেণ্ট ফৰ</string>
+    <string name="please_select_appointment_slot">অনুগ্ৰহ কৰি সাক্ষাৎকাৰ ৰ খাপ বাছনি কৰক</string>
+    <string name="please_select_speciality">অনুগ্ৰহ কৰি বিশেষত্ব বাছনি কৰক!</string>
+
+
+    <string name="prescription_age">বয়স</string>
+    <string name="prescription_gender">লিঙ্গ</string>
+    <string name="prescription_address_contact">ঠিকনা আৰু যোগাযোগ</string>
+    <string name="prescription_patient_id">ৰোগী আইডি</string>
+    <string name="prescription_date_of_visit">সাক্ষাতৰ তাৰিখ</string>
+    <string name="prescription_vitals">ভাইটাল</string>
+    <string name="prescription_rr">ৰেস্পিৰেটৰী ৰেট</string>
+    <string name="prescription_pulse">পালচ(বিপিএম)</string>
+    <string name="prescription_bp">ৰক্তচাপ</string>
+    <string name="prescription_bmi">বিএমআই</string>
+
+    <string name="prescription_wt">ওজন(কিগ্ৰা)</string>
+    <string name="prescription_ht">উচ্চতা(ছেমি)</string>
+    <string name="prescription_pre_comp">অভিযোগ উপস্থাপন কৰা </string>
+    <string name="prescription_diagnosis">ৰোগ নিৰ্ণয়</string>
+    <string name="prescription_med_plan">ঔষধ(বোৰ) আঁচনি</string>
+    <string name="prescription_rec_investigation">অনুমোদিত অনুসন্ধান(বোৰ)</string>
+    <string name="prescription_general_advice">সাধাৰণ পৰামৰ্শ</string>
+    <string name="prescription_follow_up_date">ফলো আপ তাৰিখ</string>
+    <string name="prescription_temp_c">তাপমাত্ৰা (গ) :</string>
+    <string name="prescription_temp_f">তাপমাত্ৰা (এফ) :</string>
+
+    <string name="diagnosis">ৰোগ নিৰ্ণয়</string>
+    <string name="primary">প্ৰাথমিক</string>
+    <string name="secondary">মাধ্যমিক</string>
+    <string name="provisiona">অস্থায়ী</string>
+    <string name="confirmed">নিশ্চিত</string>
+    <string name="recommended_medication">অনুমোদিত ঔষধ</string>
+    <string name="medication">ঔষধ</string>
+    <string name="strength">শক্তি</string>
+    <string name="units">একক (যেনে: মিগ্ৰা)</string>
+    <string name="units_tab">ইউনিট (যেনে: টেব/চিৰাপ)</string>
+    <string name="for_duration">ম্যাদৰ বাবে</string>
+    <string name="units_eg_days_weeks_etc">ইউনিট (যেনে: দিন/সপ্তাহ/ইত্যাদি)</string>
+    <string name="additional_instruction">অতিৰিক্ত নিৰ্দেশনা</string>
+    <string name="recommended_tests">অনুমোদিত পৰীক্ষাসমূহ</string>
+    <string name="test">পৰীক্ষা</string>
+
+    <string name="advice_or_refer_patient">উপদেশ বা ৰোগীক চাওঁক</string>
+    <string name="notes">টোকা</string>
+    <string name="notes_not_shared_with_the_patient">টোকাট (ৰোগীৰ সৈতে ভাগ বতৰা কৰা হোৱা নাই)</string>
+    <string name="follow_up">ফলো আপ</string>
+    <string name="sign_and_submit">ছাইন আৰু চাবমিট</string>
+    <string name="add_test">এড টেষ্ট</string>
+    <string name="add_advice">উপদেশ যোগ কৰক</string>
+    <string name="add_note">যোগ টোকা</string>
+    <string name="schedule_a_follow_up">ফলো আপ অনুসূচীত কৰক</string>
+    <string name="submit"> দাখিল কৰক</string>
+    <string name="add_meds">মেডযোগ কৰক</string>
+    <string name="add_diagnosis">ৰোগ নিৰ্ণয় যোগ কৰক</string>
+    <string name="startVisitNote">আৰম্ভ কৰক সাক্ষাৎ টোকা</string>
+
+
+    <string name="prescGivenSuccessfully">ধন্যবাদ! প্ৰেছক্ৰিপচন সফলতাৰে দিয়া হয়</string>
+    <string name="morethanonefollowupnotallowed">অনুগ্ৰহ কৰি এবাৰত কেৱল এটা ফলোআপ প্ৰদান কৰক।</string>
+    <string name="amount">পৰিমাণ</string>
+    <string name="frequency">কম্পনাঙ্ক</string>
+    <string name="route_optional">পথ (বৈকল্পিক)</string>
+    <string name="reason_optional">যুক্তি (বৈকল্পিক)</string>
+    <string name="choose_a_date">তাৰিখ এটা বাছনি কৰক</string>
+    <string name="follow_up_remark">ফলো আপ মন্তব্য</string>
+    <string name="visit_summary_upload_reminder_prescription">অনুগ্ৰহ কৰি প্ৰেছক্ৰিপশ্বন দিয়াৰ চেষ্টা কৰাৰ আগতে প্ৰথমে আপলোড কৰক।</string>
+    <string name="visit_summary_prescription_already_given">প্ৰেছক্ৰিপচন ইতিমধ্যে প্ৰদান কৰা হৈছে। অনুগ্ৰহ কৰি প্ৰেছক্ৰিপচন ডাউনলোড কৰক।</string>
+
+
+    <string name="doctor_appointments">চিকিৎসকৰ সাক্ষাৎকাৰ</string>
+    <string name="slot_info">স্লট তথ্য</string>
+    <string name="appointment_booked">এপইণ্টমেণ্ট বুক কৰা হৈছে</string>
+    <string name="minutes_txt">মিনিট</string>
+    <string name="booked_txt">বুক কৰা হৈছে</string>
+    <string name="cancelled_txt">বাতিল কৰা হৈছে</string>
+    <string name="please_upload_visit">অনুগ্ৰহ কৰি এপইণ্টমেণ্ট বুক কৰাৰ আগতে প্ৰথমে সাক্ষাৎটো আপলোড কৰক।</string>
+    <string name="appointment_booked_successfully">এপইণ্টমেণ্ট সফলতাৰে বুক কৰা হৈছে!</string>
+    <string name="appointment_booked_failed">এপইণ্টমেণ্ট বুক কৰা হৈছে বিফল হৈছে!</string>
+    <string name="postal_code_invalid_txt">অনুগ্ৰহ কৰি বৈধ ডাক কোড প্ৰবিষ্ট কৰক</string>
+    <string name="failed_to_cancel_appointment">সাক্ষাৎকাৰ বাতিল কৰিবলৈ ব্যৰ্থ!</string>
+    <string name="appointment_cancelled_success_txt">সাক্ষাৎকাৰ সফলতাৰে বাতিল কৰা হৈছিল!</string>
+
+    <string name="sync_failed">চিংক ব্যৰ্থ! অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
+    <string name="no_network_sync">আপুনি ইণ্টাৰনেটৰ সৈতে সংযোজিত নহয়। অনুগ্ৰহ কৰি পিছত পুনৰ চেষ্টা কৰক।</string>
+    <string name="app_sync">চিঙ্কিং এপ্প।।</string>
+    <string name="yes">হয়</string>
+    <string name="no">নহয়</string>
+
+    <string name="visit_closed">ভিজিট বন্ধ</string>
+    <string name="ok_close_now">ঠিক আছে, বন্ধ কৰক</string>
+    <string name="retry_again">পুনৰ চেষ্টা কৰক!</string>
+    <string name="type_to_search">Type to Search..</string>
+
+    <string name="gender_male">মালে</string>
+    <string name="gender_female">মহিলা</string>
 </resources>

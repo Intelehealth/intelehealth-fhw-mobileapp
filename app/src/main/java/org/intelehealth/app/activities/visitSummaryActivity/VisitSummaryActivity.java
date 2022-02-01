@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.visitSummaryActivity;
 
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ROLE;
+import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,6 +34,8 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -80,6 +85,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.appointment.ScheduleListingActivity;
+import org.intelehealth.app.appointment.api.ApiClientAppointment;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
+import org.intelehealth.app.appointment.model.AppointmentDetailsResponse;
+import org.intelehealth.app.appointment.model.CancelRequest;
+import org.intelehealth.app.appointment.model.CancelResponse;
+import org.intelehealth.app.activities.prescription.PrescriptionActivity;
+import org.intelehealth.app.models.prescriptionUpload.EncounterProvider;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitEncounterPrescription;
+import org.intelehealth.app.models.prescriptionUpload.EndVisitResponseBody;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
+import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.apprtc.ChatActivity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -88,7 +106,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -135,6 +152,15 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -248,6 +274,10 @@ public class VisitSummaryActivity extends AppCompatActivity {
     TextView followUpDateTextView;
     //added checkbox flag .m
     CheckBox flag;
+    EndVisitEncounterPrescription endVisitEncounterPrescription;
+    String visitnoteencounteruuid = "";
+    Button btnSignSubmit;
+    Base64Utils base64Utils = new Base64Utils();
 
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
     Boolean isReceiverRegistered = false;
@@ -407,6 +437,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     endVisit();
+//                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+//                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();
@@ -535,6 +567,45 @@ public class VisitSummaryActivity extends AppCompatActivity {
         mLayout = findViewById(R.id.summary_layout);
         context = getApplicationContext();
 //we can remove by data binding
+
+        //we can remove by data binding
+        mDoctorAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBooking);
+        mCancelAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingCancel);
+        mInfoAppointmentBookingTextView = findViewById(R.id.tvDoctorAppointmentBookingInfo);
+        mCancelAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelAppointment();
+            }
+        });
+        mDoctorAppointmentBookingTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doQuery();
+                if (speciality_selected == null
+                        || speciality_selected.isEmpty()
+                        || "Select Specialization".equalsIgnoreCase(speciality_selected)
+                        || "Выберите специализацию".equalsIgnoreCase(speciality_selected)
+                ) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_select_speciality), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (isSynedFlag.equalsIgnoreCase("0")) {
+                    Toast.makeText(VisitSummaryActivity.this, getString(R.string.please_upload_visit), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startActivityForResult(new Intent(VisitSummaryActivity.this, ScheduleListingActivity.class)
+                        .putExtra("visitUuid", visitUuid)
+                        .putExtra("patientUuid", patientUuid)
+                        .putExtra("patientName", patientName)
+                        .putExtra("appointmentId", mAppointmentId)
+                        .putExtra("openMrsId", patient.getOpenmrs_id())
+                        .putExtra("speciality", speciality_selected) , SCHEDULE_LISTING_INTENT
+                );
+
+
+            }
+        });
         mAdditionalDocsRecyclerView = findViewById(R.id.recy_additional_documents);
         mPhysicalExamsRecyclerView = findViewById(R.id.recy_physexam);
 
@@ -551,6 +622,11 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        btnSignSubmit = findViewById(R.id.btnSignSubmit);
+
+        //get from encountertbl from the encounter
+        EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+        visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -788,6 +864,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             editMedHist.setVisibility(View.GONE);
             editAddDocs.setVisibility(View.GONE);
             uploadButton.setVisibility(View.GONE);
+            btnSignSubmit.setVisibility(View.GONE);
             invalidateOptionsMenu();
         } else {
             String visitIDorderBy = "startdate";
@@ -917,7 +994,9 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                 SyncUtils syncUtils = new SyncUtils();
                                 boolean isSynced = syncUtils.syncForeground("visitSummary");
                                 if (isSynced) {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload), getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                            getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity.this);
+                                    isSynedFlag = "1";
                                     //
                                     showVisitID();
                                     Log.d("visitUUID", "showVisitID: " + visitUUID);
@@ -925,7 +1004,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                     if (isVisitSpecialityExists)
                                         speciality_spinner.setEnabled(false);
                                 } else {
-                                    AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
+                                    AppConstants.notificationUtils.DownloadDone(patientName + " " +
+                                            getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
 
                                 }
                                 uploaded = true;
@@ -937,28 +1017,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                         AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity.this);
                     }
                 } else {
-                    TextView t = (TextView) speciality_spinner.getSelectedView();
-                    t.setError(getString(R.string.please_select_specialization_msg));
-                    t.setTextColor(Color.RED);
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
-                            .setMessage(getResources().getString(R.string.please_select_specialization_msg))
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.generic_ok),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                        }
-                                    });
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
-
-                    Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                    positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                    positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
+                    showSelectSpeciliatyErrorDialog();
                 }
 
             }
@@ -1686,6 +1745,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         });
 
         doQuery();
+        getAppointmentDetails(visitUuid);
     }
 
     /**
@@ -2193,15 +2253,25 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+//            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
+//                    //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+//                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+//                    "</div>";
+
+
+
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
                     //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
                     //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
                     getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
-
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
         if (isRespiratory) {
@@ -2542,12 +2612,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
 
-            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+//            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "";
+//            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
+//                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+//                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+//                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+//                    "</div>";
+
+
+            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
                     "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + objClsDoctorDetails.getName() + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + objClsDoctorDetails.getQualification() + ", " + objClsDoctorDetails.getSpecialization() + "</span><br>" +
-                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt; color:#212121;padding: 0px;\">" + "  " + (objClsDoctorDetails.getQualification() == null || objClsDoctorDetails.getQualification().equalsIgnoreCase("null") ? "" : objClsDoctorDetails.getQualification() + ", ") + objClsDoctorDetails.getSpecialization() + "</span><br>" +
+                    //  "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ?
+                    //  getString(R.string.dr_phone_number) + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+                    "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ?
+                    getString(R.string.dr_email) + objClsDoctorDetails.getEmailId() : "") + "</span><br>" +
                     "</div>";
 
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
@@ -3561,14 +3642,37 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             doctorSign = objClsDoctorDetails.getTextOfSign();
 
+//            doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+//            doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
+//                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+//                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
+//                    (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
+//                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+//                    // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
+//                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
+//                    "</div>";
+//
+//
+
+
+
             doctrRegistartionNum = !TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? getString(R.string.dr_registration_no) + objClsDoctorDetails.getRegistrationNumber() : "";
+
             doctorDetailStr = "<div style=\"text-align:right;margin-right:0px;margin-top:3px;\">" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
+                    "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getName()) ? objClsDoctorDetails.getName() : "") + "</span><br>" +
+                   /* "<span style=\"font-size:12pt; color:#448AFF;padding: 0px;\">" + "  " +
                     (!TextUtils.isEmpty(objClsDoctorDetails.getQualification()) ? objClsDoctorDetails.getQualification() : "") + ", "
-                    + (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ? objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+                    +*/
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getSpecialization()) ?
+                            objClsDoctorDetails.getSpecialization() : "") + "</span><br>" +
+
                     // "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getPhoneNumber()) ? "Phone Number: " + objClsDoctorDetails.getPhoneNumber() : "") + "</span><br>" +
-                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" + (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") + "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " + objClsDoctorDetails.getRegistrationNumber() : "") +
+
+                    "<span style=\"font-size:12pt;color:#448AFF;padding: 0px;\">" +
+                    (!TextUtils.isEmpty(objClsDoctorDetails.getEmailId()) ? "Email: " + objClsDoctorDetails.getEmailId() : "") +
+                    "</span><br>" + (!TextUtils.isEmpty(objClsDoctorDetails.getRegistrationNumber()) ? "Registration No: " +
+                    objClsDoctorDetails.getRegistrationNumber() : "") +
                     "</div>";
 
             mDoctorName.setText(Html.fromHtml(doctorDetailStr).toString().trim());
@@ -3637,6 +3741,12 @@ public class VisitSummaryActivity extends AppCompatActivity {
     @Override
     public void onResume() // register the receiver here
     {
+        //get from encountertbl from the encounter
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+            EncounterDAO encounterStartVisitNoteDAO = new EncounterDAO();
+            visitnoteencounteruuid = encounterStartVisitNoteDAO.getStartVisitNoteEncounterByVisitUUID(visitUuid);
+        }
+
         if (downloadPrescriptionService == null) {
             registerDownloadPrescription();
         }
@@ -3699,6 +3809,128 @@ public class VisitSummaryActivity extends AppCompatActivity {
         isReceiverRegistered = false;
     }
 
+    public void signAndSubmit(View view) {
+        endVisitApiCall();
+    }
+
+    private void endVisitApiCall() {
+        // If the value is present in the db, then pick only that value and not hit the api. This way, everytime an api call wont be hit
+        // and multiple Start Visit Note encounters wont br created.
+
+        //check if data is uploaded to backend...
+        // If Visit is not uplaoded...
+        if (isSynedFlag.equalsIgnoreCase("0")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_upload_reminder_prescription),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Visit is uploaded but Prescription is already given...
+        if (!isSynedFlag.equalsIgnoreCase("0") && hasPrescription.equalsIgnoreCase("true")) {
+            Toast.makeText(VisitSummaryActivity.this, getResources().getString(R.string.visit_summary_prescription_already_given),
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (visitnoteencounteruuid.equalsIgnoreCase("")) {
+            startvisitnoteApiCall();
+        } else {
+            Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+            visitSummary.putExtra("visitUuid", visitUUID);
+            visitSummary.putExtra("patientUuid", patientUuid);
+            visitSummary.putExtra("startVisitNoteApiEncounterResponse", visitnoteencounteruuid);
+            visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+            visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+            visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+            visitSummary.putExtra("name", patientName);
+            visitSummary.putExtra("gender", genderView.getText());
+            visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+            visitSummary.putExtra("tag", intentTag);
+            visitSummary.putExtra("pastVisit", isPastVisit);
+            if (hasPrescription.equalsIgnoreCase("true")) {
+                visitSummary.putExtra("hasPrescription", "true");
+            } else {
+                visitSummary.putExtra("hasPrescription", "false");
+            }
+            startActivity(visitSummary);
+        }
+    }
+
+    public void startvisitnoteApiCall() {
+        String url = "https://" + sessionManager.getServerUrl() + "/openmrs/ws/rest/v1/encounter";
+        endVisitEncounterPrescription = getEndVisitDataModel();
+        //  String encoded = sessionManager.getEncoded();
+        String encoded = base64Utils.encoded("sysnurse", "Nurse123");
+
+        ApiInterface apiService = ApiClient.createService(ApiInterface.class);
+        Observable<EndVisitResponseBody> resultsObservable = apiService.END_VISIT_RESPONSE_BODY_OBSERVABLE
+                (url, endVisitEncounterPrescription, "Basic " + encoded);
+        resultsObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<EndVisitResponseBody>() {
+                    @Override
+                    public void onNext(@NonNull EndVisitResponseBody endVisitResponseBody) {
+                        String encounter = endVisitResponseBody.getUuid(); // Use this uuid for pres obs api body.
+
+                        try {
+                            EncounterDAO encounterDAO_ = new EncounterDAO();
+                            encounterDAO_.insertStartVisitNoteEncounterToDb(encounter, visitUuid);
+
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent visitSummary = new Intent(VisitSummaryActivity.this, PrescriptionActivity.class);
+                        visitSummary.putExtra("visitUuid", visitUUID);
+                        visitSummary.putExtra("patientUuid", patientUuid);
+                        visitSummary.putExtra("startVisitNoteApiEncounterResponse", encounter);
+                        visitSummary.putExtra("encounterUuidVitals", encounterVitals);
+                        visitSummary.putExtra("encounterUuidAdultIntial", encounterUuidAdultIntial);
+                        visitSummary.putExtra("EncounterAdultInitial_LatestVisit", encounterUuidAdultIntial);
+                        visitSummary.putExtra("name", patientName);
+                        visitSummary.putExtra("gender", genderView.getText());
+                        visitSummary.putExtra("float_ageYear_Month", float_ageYear_Month);
+                        visitSummary.putExtra("tag", intentTag);
+                        visitSummary.putExtra("pastVisit", isPastVisit);
+                        if (hasPrescription.equalsIgnoreCase("true")) {
+                            visitSummary.putExtra("hasPrescription", "true");
+                        } else {
+                            visitSummary.putExtra("hasPrescription", "false");
+                        }
+                        startActivity(visitSummary);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("err", "sd: " + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.e("err", "sd");
+                    }
+                });
+    }
+
+    private EndVisitEncounterPrescription getEndVisitDataModel() {
+        List<EncounterProvider> encounterProviderList = new ArrayList<>();
+        EncounterProvider encounterProvider = new EncounterProvider();
+
+        encounterProvider.setEncounterRole(ENCOUNTER_ROLE); // Constant
+        encounterProvider.setProvider(sessionManager1.getProviderID()); // user setup app provider
+        encounterProviderList.add(encounterProvider);
+
+        EndVisitEncounterPrescription datamodel = new EndVisitEncounterPrescription();
+        datamodel.setPatient(patientUuid);
+        datamodel.setEncounterProviders(encounterProviderList);
+        datamodel.setVisit(visitUUID);
+        datamodel.setEncounterDatetime(AppConstants.dateAndTimeUtils.currentDateTime());
+        datamodel.setEncounterType(ENCOUNTER_VISIT_NOTE);
+
+        Log.v("presbody", "new: " + new Gson().toJson(datamodel));
+        return datamodel;
+    }
 
     public class NetworkChangeReceiver extends BroadcastReceiver {
 
@@ -3821,8 +4053,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
             if (visitsDAO.getDownloadedValue(visitUuid).equalsIgnoreCase("false") && uploaded) {
                 String visitnote = "";
                 EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? ";
-                String[] encounterIDArgs = {visitUuid};
+                String encounterIDSelection = "visituuid = ? AND voided = ?";
+                String[] encounterIDArgs = {visitUuid, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
                 Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
                 if (encounterCursor != null && encounterCursor.moveToFirst()) {
                     do {
@@ -3868,8 +4100,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     followUpDateCard.setVisibility(View.GONE);
                 }
                 String[] columns = {"value", " conceptuuid"};
-                String visitSelection = "encounteruuid = ? and voided!='1'";
-                String[] visitArgs = {visitnote};
+                String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+                String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
                 Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
                 if (visitCursor.moveToFirst()) {
                     do {
@@ -3909,8 +4141,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
     public void downloadPrescriptionDefault() {
         String visitnote = "";
         EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ?";
-        String[] encounterIDArgs = {visitUuid};
+        String encounterIDSelection = "visituuid = ? AND voided = ?";
+        String[] encounterIDArgs = {visitUuid, "0"}; // so that the deleted values dont come in the presc.
         Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
         if (encounterCursor != null && encounterCursor.moveToFirst()) {
             do {
@@ -3922,8 +4154,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
         encounterCursor.close();
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' ";
-        String[] visitArgs = {visitnote};
+        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
+        String[] visitArgs = {visitnote, "0", "TRUE"}; // so that the deleted values dont come in the presc.
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
@@ -4083,6 +4315,30 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
     }
 
+    private void showSelectSpeciliatyErrorDialog() {
+        TextView t = (TextView) speciality_spinner.getSelectedView();
+        t.setError(getString(R.string.please_select_specialization_msg));
+        t.setTextColor(Color.RED);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(VisitSummaryActivity.this)
+                .setMessage(getResources().getString(R.string.please_select_specialization_msg))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.generic_ok),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
+        positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    }
+
     public class DownloadPrescriptionService extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -4122,5 +4378,141 @@ public class VisitSummaryActivity extends AppCompatActivity {
         visitCursor.close();
     }
 
+    private AppointmentDetailsResponse mAppointmentDetailsResponse;
+    private  int mAppointmentId = 0;
+    private TextView mDoctorAppointmentBookingTextView;
+    private TextView mCancelAppointmentBookingTextView;
+    private TextView mInfoAppointmentBookingTextView;
 
+    private static final int SCHEDULE_LISTING_INTENT = 2001;
+
+    private void getAppointmentDetails(String visitUUID) {
+        mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+        mInfoAppointmentBookingTextView.setText(getString(R.string.please_wait));
+        Log.v("VisitSummary", "getAppointmentDetails");
+        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+        ApiClientAppointment.getInstance(baseurl).getApi()
+                .getAppointmentDetails(visitUUID)
+                .enqueue(new Callback<AppointmentDetailsResponse>() {
+                    @Override
+                    public void onResponse(Call<AppointmentDetailsResponse> call, retrofit2.Response<AppointmentDetailsResponse> response) {
+                        if(response==null || response.body() == null) return;
+                        mAppointmentDetailsResponse = response.body();
+                        if(!mAppointmentDetailsResponse.isStatus()){
+                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        }
+                        if (mAppointmentDetailsResponse.getData() == null) {
+                            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+                            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+                            mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                            mDoctorAppointmentBookingTextView.setText(getString(R.string.book_appointment));
+                            mAppointmentId = 0;
+                        } else {
+                            //-------------------insert into local db--------------------
+                            try {
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                appointmentDAO.insert(mAppointmentDetailsResponse.getData());
+                                mAppointmentId = mAppointmentDetailsResponse.getData().getId();
+
+                                mCancelAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mInfoAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setVisibility(View.VISIBLE);
+                                mDoctorAppointmentBookingTextView.setText(getString(R.string.reschedule_appointment));
+                                mInfoAppointmentBookingTextView.setText(getString(R.string.appointment_booked) + ":\n\n" +
+                                        org.intelehealth.app.utilities.StringUtils.getTranslatedDays(mAppointmentDetailsResponse.getData().getSlotDay(), new SessionManager(VisitSummaryActivity.this).getAppLanguage()) + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotDate() + "\n" +
+                                        mAppointmentDetailsResponse.getData().getSlotTime()
+                                );
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        checkAndDisplayAppointment();
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentDetailsResponse> call, Throwable t) {
+                        Log.v("onFailure", t.getMessage());
+                        checkAndDisplayAppointment();
+                    }
+                });
+
+    }
+
+    private void checkAndDisplayAppointment() {
+        EncounterDAO encounterDAO = new EncounterDAO();
+        boolean isCompletedOrExited = false;
+        try {
+            isCompletedOrExited = encounterDAO.isCompletedOrExited(visitUuid);
+        } catch (DAOException e) {
+            e.printStackTrace();
+        }
+        if (isCompletedOrExited) {
+            mCancelAppointmentBookingTextView.setVisibility(View.GONE);
+            mInfoAppointmentBookingTextView.setVisibility(View.GONE);
+            mDoctorAppointmentBookingTextView.setVisibility(View.GONE);
+        }
+    }
+
+    private void cancelAppointment() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage(getString(R.string.appointment_booking_cancel_confirmation_txt))
+                //set positive button
+                .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        CancelRequest request = new CancelRequest();
+                        request.setVisitUuid(mAppointmentDetailsResponse.getData().getVisitUuid());
+                        request.setId(mAppointmentDetailsResponse.getData().getId());
+                        String baseurl = "https://" + sessionManager.getServerUrl() + ":3004";
+                        ApiClientAppointment.getInstance(baseurl).getApi()
+                                .cancelAppointment(request)
+                                .enqueue(new Callback<CancelResponse>() {
+                                    @Override
+                                    public void onResponse(Call<CancelResponse> call, Response<CancelResponse> response) {
+                                        if(response.body() == null) return;
+                                        CancelResponse cancelResponse = response.body();
+                                        if(cancelResponse.isStatus()) {
+                                            AppointmentDAO appointmentDAO = new AppointmentDAO();
+                                            //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                                            //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+                                            appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+                                            //}
+
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.appointment_cancelled_success_txt), Toast.LENGTH_SHORT).show();
+                                            getAppointmentDetails(mAppointmentDetailsResponse.getData().getVisitUuid());
+                                        }else{
+                                            Toast.makeText(VisitSummaryActivity.this, getString(R.string.failed_to_cancel_appointment), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<CancelResponse> call, Throwable t) {
+                                        Log.v("onFailure", t.getMessage());
+                                    }
+                                });
+                    }
+                })
+                //set negative button
+                .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SCHEDULE_LISTING_INTENT){
+            getAppointmentDetails(visitUuid);
+        }
+    }
 }

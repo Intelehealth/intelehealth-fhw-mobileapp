@@ -16,15 +16,15 @@
 
         <TextView
             android:id="@+id/tvLocation"
-            tools:text="Location"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:visibility="gone"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            tools:text="Location" />
 
         <ScrollView
             android:id="@+id/scrollView"
@@ -90,8 +90,8 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_today_patient"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:background="@color/white"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="5dp"
@@ -108,8 +108,8 @@
                                 android:id="@+id/iv_today_patients"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:layout_marginTop="21dp"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginTop="21dp"
                                 android:contentDescription="TODO"
                                 app:srcCompat="@drawable/ic_calendar" />
 
@@ -117,29 +117,28 @@
                                 android:id="@+id/todaysVisits_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
                                 android:layout_below="@+id/iv_today_patients"
-                                android:text="@string/today_visits"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_medium"
-                                android:layout_marginTop="16dp"
-                                android:textAlignment="center"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="@font/lato_medium"
+                                android:includeFontPadding="false"
+                                android:text="@string/today_visits"
+                                android:textAlignment="center"
                                 android:textSize="19sp" />
 
                             <TextView
                                 android:id="@+id/tvTodayVisitsBadge"
                                 android:layout_width="wrap_content"
                                 android:layout_height="32dp"
-                                android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-
                                 android:layout_below="@+id/todaysVisits_textview"
+                                android:layout_alignParentBottom="true"
+
+                                android:layout_centerHorizontal="true"
 
                                 android:minWidth="32dp"
                                 android:textAlignment="center"
-                                android:textColor="@color/red"
-                                />
+                                android:textColor="@color/red" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -156,8 +155,8 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardview_active_patients"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:background="@color/white"
                         android:foreground="?android:attr/selectableItemBackground"
                         app:cardCornerRadius="5dp"
@@ -183,26 +182,26 @@
                                 android:id="@+id/activeVisits_textview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
                                 android:layout_below="@+id/iv_active_patients"
-                                android:text="@string/active_visits"
-                                android:includeFontPadding="false"
-                                android:fontFamily="@font/lato_medium"
-                                android:layout_marginTop="16dp"
-                                android:textAlignment="center"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="@font/lato_medium"
+                                android:includeFontPadding="false"
+                                android:text="@string/active_visits"
+                                android:textAlignment="center"
                                 android:textSize="19sp" />
 
                             <TextView
                                 android:id="@+id/tvActiveVisitsBadge"
-                                android:gravity="center"
-                                android:layout_centerHorizontal="true"
-                                android:layout_below="@+id/activeVisits_textview"
-                                android:textColor="@color/red"
-                                android:textAlignment="center"
                                 android:layout_width="wrap_content"
+                                android:layout_height="32dp"
+                                android:layout_below="@+id/activeVisits_textview"
+                                android:layout_centerHorizontal="true"
+                                android:gravity="center"
                                 android:minWidth="32dp"
-                                android:layout_height="32dp"/>
+                                android:textAlignment="center"
+                                android:textColor="@color/red" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -331,6 +330,7 @@
                                 app:srcCompat="@drawable/ic_calendar" />
 
                             <TextView
+                                android:id="@+id/followUpVisittxt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/iv_follow_up"
@@ -348,69 +348,122 @@
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/manualsyncbutton"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@color/white"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="16dp"
-                    app:cardCornerRadius="5dp"
-                    app:cardElevation="5dp"
-                    app:cardUseCompatPadding="true">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/manualsyncbutton"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:padding="16dp">
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="16dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true">
 
-                        <ImageView
-                            android:id="@+id/iv_sync"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_centerHorizontal="true"
-                            android:contentDescription="TODO"
-                            app:srcCompat="@drawable/ic_sync" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/iv_sync"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="16dp"
-                            android:orientation="horizontal">
+                            <ImageView
+                                android:id="@+id/iv_sync"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="TODO"
+                                app:srcCompat="@drawable/ic_sync" />
 
-                            <TextView
-                                android:id="@+id/lastsynctextview"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_margin="8dp"
-                                android:fontFamily="@font/lato_regular"
+                                android:layout_below="@id/iv_sync"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="16dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/lastsynctextview"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_margin="8dp"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:text="@string/lastsync"
+                                    android:textAlignment="center"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/lastsyncago"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:textSize="14sp"
+                                    android:visibility="gone"
+                                    tools:text="2 hours ago"
+                                    tools:visibility="visible" />
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardview_appointment"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="16dp"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="5dp"
+                        app:cardUseCompatPadding="true">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:id="@+id/iv_appointment"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:layout_centerHorizontal="true"
+                                android:contentDescription="TODO"
+                                app:srcCompat="@drawable/appointment_ic" />
+
+                            <TextView
+                                android:id="@+id/appointment_textview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/iv_appointment"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginTop="16dp"
+                                android:fontFamily="@font/lato_medium"
                                 android:includeFontPadding="false"
-                                android:text="@string/lastsync"
+                                android:paddingBottom="12dip"
+                                android:text="@string/doctor_appointments"
                                 android:textAlignment="center"
-                                android:textSize="14sp" />
+                                android:textSize="15sp" />
 
-                            <TextView
-                                android:id="@+id/lastsyncago"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:fontFamily="@font/lato_regular"
-                                android:includeFontPadding="false"
-                                android:textSize="14sp"
-                                android:visibility="gone"
-                                tools:text="2 hours ago"
-                                tools:visibility="visible" />
 
-                        </LinearLayout>
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
 
                 <!--<androidx.cardview.widget.CardView
                     android:id="@+id/cardview_home"

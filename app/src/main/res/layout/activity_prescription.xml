@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activities.setupActivity.SetupActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!--<include layout="@layout/content_setup" />-->
+    <LinearLayout
+        android:id="@+id/content_setup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="io.intelehealth.client.activities.setup_activity.SetupActivity"
+        tools:showIn="@layout/activity_setup">
+
+        <ScrollView
+            android:id="@+id/setup_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+
+                </androidx.cardview.widget.CardView>
+
+                <!--                    <androidx.cardview.widget.CardView-->
+                <!--                        android:id="@+id/cardview_locations"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_marginHorizontal="10dp"-->
+                <!--                        unicef:cardCornerRadius="10sp"-->
+                <!--                        android:layout_marginTop="15dp"-->
+                <!--                        unicef:cardElevation="5sp"-->
+                <!--                        unicef:cardPreventCornerOverlap="false">-->
+
+                <!--                        <LinearLayout-->
+                <!--                            android:layout_width="match_parent"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:orientation="vertical"-->
+                <!--                            android:padding="10dp">-->
+
+                <!--                            <TextView-->
+                <!--                                android:layout_width="match_parent"-->
+                <!--                                android:layout_height="wrap_content"-->
+                <!--                                android:ems="10"-->
+                <!--                                android:includeFontPadding="false"-->
+                <!--                                android:textSize="16sp"-->
+                <!--                                android:text="Locations"-->
+                <!--                                android:fontFamily="@font/lato_bold" />-->
+
+                <!--                            <android.widget.Space-->
+                <!--                                android:layout_width="match_parent"-->
+                <!--                                android:layout_height="10dp"/>-->
+
+                <!--                            <Spinner-->
+                <!--                                android:id="@+id/spinner_location"-->
+                <!--                                android:layout_width="match_parent"-->
+                <!--                                android:layout_height="wrap_content"-->
+                <!--                                android:nextFocusForward="@+id/demoMindmap"-->
+                <!--                                android:entries="@array/location"-->
+                <!--                                android:focusable="true"-->
+                <!--                                android:alpha="0.4"-->
+                <!--                                />-->
+
+                <!--                            <android.widget.Space-->
+                <!--                                android:layout_width="match_parent"-->
+                <!--                                android:layout_height="10dp"/>-->
+
+                <!--                            <Space-->
+                <!--                                android:layout_width="match_parent"-->
+                <!--                                android:layout_height="10dp" />-->
+
+                <!--                                <Spinner-->
+                <!--                                    android:id="@+id/spinner_state"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:nextFocusForward="@+id/spinner_district"-->
+                <!--                                    android:entries="@array/location_state"-->
+                <!--                                    android:alpha="0.4"-->
+                <!--                                    android:focusable="true"-->
+                <!--                                    />-->
+
+                <!--                                <android.widget.Space-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="10dp"/>-->
+
+                <!--                                <Spinner-->
+                <!--                                    android:id="@+id/spinner_district"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:nextFocusForward="@+id/spinner_sanch"-->
+                <!--                                    android:entries="@array/location_district"-->
+                <!--                                    android:focusable="true"-->
+                <!--                                    android:alpha="0.4"-->
+                <!--                                    />-->
+
+                <!--                                <android.widget.Space-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="10dp"/>-->
+
+                <!--                                <Spinner-->
+                <!--                                    android:id="@+id/spinner_sanch"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:nextFocusForward="@+id/spinner_village"-->
+                <!--                                    android:entries="@array/location_sanch"-->
+                <!--                                    android:focusable="true"-->
+                <!--                                    android:alpha="0.4"-->
+                <!--                                    />-->
+
+                <!--                                <android.widget.Space-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="10dp"/>-->
+
+                <!--                                <Spinner-->
+                <!--                                    android:id="@+id/spinner_village"-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="wrap_content"-->
+                <!--                                    android:nextFocusForward="@+id/demoMindmap"-->
+                <!--                                    android:entries="@array/location_village"-->
+                <!--                                    android:focusable="true"-->
+                <!--                                    android:alpha="0.4"-->
+                <!--                                    />-->
+
+                <!--                                <android.widget.Space-->
+                <!--                                    android:layout_width="match_parent"-->
+                <!--                                    android:layout_height="10dp"/>-->
+
+
+                <!--                        </LinearLayout>-->
+
+                <!--                    </androidx.cardview.widget.CardView>-->
+
+                <!-- <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginHorizontal="10dp"
+                     android:fontFamily="@font/lato_bold"
+                     android:includeFontPadding="false"
+                     android:text="@string/patient_interaction"
+                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                     android:textSize="16sp" />-->
+
+
+                <!--
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/cardview2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="10dp"
+                                    android:layout_marginTop="15dp"
+                                    app:cardCornerRadius="10sp"
+                                    app:cardElevation="5sp"
+                                    app:cardPreventCornerOverlap="false">
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:padding="10dp">
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:includeFontPadding="false"
+                                            android:text="@string/have_you_spoken_with_the_patient_directly"
+                                            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                                            android:textSize="16sp" />
+                                        <Space
+                                            android:layout_width="match_parent"
+                                            android:layout_height="10dp" />
+                                        <RadioGroup
+                                            android:id="@+id/rgCall"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content">
+                                            <RadioButton
+                                                android:id="@+id/rbCallYes"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:checked="true"
+                                                android:fontFamily="@font/lato_regular"
+                                                android:includeFontPadding="false"
+                                                android:text="@string/yes"
+                                                android:textAppearance="@style/RobotoTextViewStyle"
+                                                android:textSize="14sp" />
+                                            <RadioButton
+                                                android:id="@+id/rbCallNo"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/lato_regular"
+                                                android:includeFontPadding="false"
+                                                android:text="@string/no"
+                                                android:textAppearance="@style/RobotoTextViewStyle"
+                                                android:textSize="14sp" />
+                                        </RadioGroup>
+                                        <Button
+                                            android:id="@+id/btnCallSubmit"
+                                            style="@style/SelectableItemBackground"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="15dp"
+                                            android:layout_marginEnd="10dp"
+                                            android:background="@color/colorPrimary"
+                                            android:fontFamily="@font/lato_bold"
+                                            android:foreground="?android:attr/selectableItemBackground"
+                                            android:paddingHorizontal="12dp"
+                                            android:text="@string/submit"
+                                            android:textColor="@color/white" />
+                                        <LinearLayout
+                                            android:id="@+id/llCallResult"
+                                            android:layout_marginTop="8dp"
+                                            android:orientation="vertical"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"/>
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+                -->
+
+
+                <TextView
+
+                    android:id="@+id/txtDignosisHeading"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:ems="10"
+                    android:fontFamily="@font/lato_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/diagnosis"
+                    android:textSize="16sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etDiagnosis"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/diagnosis"
+                                android:imeOptions="actionNext"
+                                android:nextFocusForward="@id/etMedication"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <RadioGroup
+                                android:id="@+id/rgDiagnosis1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/rbDiagnosisPrimary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
+                                    android:checked="true"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:text="@string/primary"
+                                    android:textAppearance="@style/RobotoTextViewStyle"
+                                    android:textSize="14sp" />
+
+                                <Space
+                                    android:layout_width="8dp"
+                                    android:layout_height="wrap_content" />
+
+                                <RadioButton
+                                    android:id="@+id/rbDiagnosisSecondary"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:text="@string/secondary"
+                                    android:textAppearance="@style/RobotoTextViewStyle"
+                                    android:textSize="14sp" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <RadioGroup
+                                android:id="@+id/rgDiagnosis2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/rbDiagnosisProvisioanal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:checked="true"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:text="@string/provisiona"
+                                    android:paddingVertical="5dp"
+                                    android:textAppearance="@style/RobotoTextViewStyle"
+                                    android:textSize="14sp" />
+
+                                <Space
+
+                                    android:layout_width="8dp"
+                                    android:layout_height="wrap_content" />
+
+                                <RadioButton
+                                    android:id="@+id/rbDiagnosisConfirmed"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingVertical="5dp"
+                                    android:fontFamily="@font/lato_regular"
+                                    android:includeFontPadding="false"
+                                    android:text="@string/confirmed"
+                                    android:textAppearance="@style/RobotoTextViewStyle"
+                                    android:textSize="14sp" />
+                            </RadioGroup>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnAddDiagnosis"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:minHeight="45dp"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:background="@color/colorPrimary"
+                            android:paddingHorizontal="10dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:text="@string/add_diagnosis"
+                            android:textColor="@color/white" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/diagnosisRecyclerView"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/presc_selection_tab"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:ems="10"
+                    android:fontFamily="@font/lato_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/recommended_medication"
+                    android:textSize="16sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etMedication"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/medication"
+                                android:imeOptions="actionNext"
+                                android:nextFocusForward="@id/etTest"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/strength">
+
+                                <EditText
+                                    android:id="@+id/etMedicationStrength"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/units">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/etMedicationUnit"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/amount">
+
+                                <EditText
+                                    android:id="@+id/etMedicationAmount"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/units_tab">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/etMedicationUnitTabSyrup"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/frequency">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/etMedicationFreq"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/route_optional">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/etMedicationRoute"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/for_duration">
+
+                                <EditText
+                                    android:id="@+id/etMedicationDuration"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="numberDecimal"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="@string/units_eg_days_weeks_etc">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/etMedicationUnitsDays"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="14sp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/reason_optional">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etMedicationReason"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/additional_instruction">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etMedicationInstructions"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btnAddMeds"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:minHeight="45dp"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:background="@color/colorPrimary"
+                            android:paddingHorizontal="10dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:text="@string/add_meds"
+                            android:textColor="@color/white" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/medicationRecyclerView"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:ems="10"
+                    android:fontFamily="@font/lato_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/recommended_tests"
+                    android:textSize="16sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etTest"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/test"
+                                android:imeOptions="actionNext"
+                                android:nextFocusForward="@id/etAdviceRefer"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btnAddTest"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:minHeight="45dp"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:background="@color/colorPrimary"
+                            android:paddingHorizontal="10dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:text="@string/add_test"
+                            android:textColor="@color/white" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/testRecyclerView"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:ems="10"
+                    android:fontFamily="@font/lato_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/advice_or_refer_patient"
+                    android:textSize="16sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etAdviceRefer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/advice_or_refer_patient"
+                                android:imeOptions="actionNext"
+                                android:nextFocusForward="@id/etFollowUpDate"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btnAddAdvice"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:minHeight="45dp"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:background="@color/colorPrimary"
+                            android:paddingHorizontal="10dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:text="@string/add_advice"
+                            android:textColor="@color/white" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/adviceRecyclerView"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+
+                <!-- <TextView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginHorizontal="10dp"
+                     android:layout_marginTop="15dp"
+                     android:ems="10"
+                     android:fontFamily="@font/lato_bold"
+                     android:includeFontPadding="false"
+                     android:text="@string/notes"
+                     android:textSize="16sp" />
+                 <androidx.cardview.widget.CardView
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginHorizontal="10dp"
+                     android:layout_marginTop="15dp"
+                     app:cardCornerRadius="10sp"
+                     app:cardElevation="5sp"
+                     app:cardPreventCornerOverlap="false">
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                         android:padding="10dp">
+                         <com.google.android.material.textfield.TextInputLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content">
+                             <AutoCompleteTextView
+                                 android:id="@+id/etNotes"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="wrap_content"
+                                 android:fontFamily="@font/lato_regular"
+                                 android:hint="@string/notes_not_shared_with_the_patient"
+                                 android:imeOptions="actionNext"
+                                 android:inputType="textEmailAddress"
+                                 android:maxLines="1"
+                                 android:nextFocusForward="@id/password"
+                                 android:textSize="14sp" />
+                         </com.google.android.material.textfield.TextInputLayout>
+                         <Button
+                             android:id="@+id/btnAddNote"
+                             style="@style/SelectableItemBackground"
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="15dp"
+                             android:layout_marginEnd="10dp"
+                             android:background="@color/colorPrimary"
+                             android:fontFamily="@font/lato_bold"
+                             android:foreground="?android:attr/selectableItemBackground"
+                             android:paddingHorizontal="12dp"
+                             android:text="@string/add_note"
+                             android:textColor="@color/white" />
+                         <LinearLayout
+                             android:id="@+id/llNotesResult"
+                             android:layout_marginTop="8dp"
+                             android:orientation="vertical"
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"/>
+                     </LinearLayout>
+                 </androidx.cardview.widget.CardView>-->
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    android:ems="10"
+                    android:fontFamily="@font/lato_bold"
+                    android:includeFontPadding="false"
+                    android:text="@string/follow_up"
+                    android:textSize="16sp" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginTop="15dp"
+                    app:cardCornerRadius="10sp"
+                    app:cardElevation="5sp"
+                    app:cardPreventCornerOverlap="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/etFollowUpDate"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/event_icon"
+                                android:drawableLeft="@drawable/event_icon"
+                                android:drawablePadding="10dp"
+                                android:ems="10"
+                                android:focusable="false"
+                                android:fontFamily="@font/lato_regular"
+                                android:freezesText="true"
+                                android:hint="@string/choose_a_date"
+                                android:imeOptions="actionUnspecified"
+                                android:inputType=""
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/etFollowUpRemark"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_regular"
+                                android:hint="@string/follow_up_remark"
+                                android:imeOptions="actionNext"
+                                android:inputType="textEmailAddress"
+                                android:maxLines="1"
+                                android:nextFocusForward="@id/password"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <Button
+                            android:id="@+id/btnFollowUp"
+                            style="@style/SelectableItemBackground"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:minHeight="45dp"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:background="@color/colorPrimary"
+                            android:paddingHorizontal="10dp"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:text="@string/schedule_a_follow_up"
+                            android:textColor="@color/white" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/followupRecyclerView"
+                            android:layout_marginTop="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/btnSignSubmit"
+                    style="@style/SelectableItemBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/colorPrimary"
+                    android:fontFamily="@font/lato_bold"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="@string/sign_and_submit"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -568,4 +568,103 @@
 
 
     <!--    <string name="location_setup">Setup Location - </string>-->
+
+
+
+    <string name = "take_photo">ফটো তুলুন</string>
+    <string name="choose_from_gallery">গ্যালারি থেকে চয়ন করুন</string>৷
+    <string name="additional_doc_image_picker_title">অতিরিক্ত নথি যোগ করুন!</string>
+    <string name="something_went_wrong">কিছু ​​ভুল হয়েছে৷ অনুগ্রহ করে সহায়তার সাথে যোগাযোগ করুন</string>
+    <string name="book_appointment">বই অ্যাপয়েন্টমেন্ট</string>
+    <string name="reschedule_appointment">অ্যাপয়েন্টমেন্ট পুনঃনির্ধারণ করুন</string>
+    <string name="appointment_booking_confirmation_txt">আপনি কি এই স্লটটি বুক করার বিষয়ে নিশ্চিত?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">আপনি কি অ্যাপয়েন্টমেন্ট বাতিল করার বিষয়ে নিশ্চিত?</string>
+    <string name="cancel_appointment">অ্যাপয়েন্টমেন্ট বাতিল করুন</string>
+    <string name="slot_empty_message">নির্বাচিত তারিখ এবং বিশেষত্বের জন্য অ্যাপয়েন্টমেন্ট স্লট উপলব্ধ নয়!</string>
+    <string name="appointment_empty_message">আপনার কোনো অ্যাপয়েন্টমেন্ট নেই!</string>
+    <string name="appointment_listing_title">অ্যাপয়েন্টমেন্ট তালিকা</string>
+    <string name="appointment_booking_title">অ্যাপয়েন্টমেন্ট বুকিং</string>৷
+    <string name="appointment_for">এর জন্য অ্যাপয়েন্টমেন্ট</string>
+    <string name="please_select_appointment_slot">অনুগ্রহ করে অ্যাপয়েন্টমেন্ট স্লট নির্বাচন করুন</string>
+    <string name="please_select_speciality">দয়া করে বিশেষত্ব নির্বাচন করুন!</string>
+
+    <string name="doctor_appointments">ডাক্তার অ্যাপয়েন্টমেন্ট</string>
+    <string name="slot_info">স্লট তথ্য</string>
+    <string name="appointment_booked">অ্যাপয়েন্টমেন্ট বুক করা হয়েছে</string>
+    <string name="minutes_txt">মিনিট</string>
+    <string name="booked_txt">বুক করা হয়েছে</string>
+    <string name="cancelled_txt">বাতিল করা হয়েছে</string>
+    <string name="please_upload_visit">অ্যাপয়েন্টমেন্ট বুক করার আগে দয়া করে প্রথমে ভিজিট আপলোড করুন৷</string>
+    <string name="appointment_booked_successfully">অ্যাপয়েন্টমেন্ট সফলভাবে বুক করা হয়েছে!</string>
+    <string name="appointment_booked_failed">অ্যাপয়েন্টমেন্ট বুক করা ব্যর্থ হয়েছে!</string>
+    <string name="postal_code_invalid_txt">অনুগ্রহ করে বৈধ পোস্টাল কোড লিখুন</string>
+    <string name="failed_to_cancel_appointment">অ্যাপয়েন্টমেন্ট বাতিল করতে ব্যর্থ!</string>
+    <string name="appointment_cancelled_success_txt">অপয়েন্টমেন্টটি সফলভাবে বাতিল করা হয়েছে!</string>
+
+    <string name = "prescription_age">বয়স</string>
+    <string name = "prescription_gender">লিঙ্গ</string>
+    <string name="prescription_address_contact">ঠিকানা এবং যোগাযোগ</string>
+    <string name="prescription_patient_id">রোগীর আইডি</string>
+    <string name = "prescription_date_of_visit"> দেখার তারিখ</string>
+    <string name="prescription_vitals">ভিটালস</string>
+    <string name = "prescription_rr"> শ্বাস প্রশ্বাসের হার</string>
+    <string name = "prescription_pulse">পালস(bpm)</string>
+    <string name="prescription_bp">রক্তচাপ</string>
+    <string name = "prescription_bmi">BMI</string>
+    <string name="prescription_wt">ওজন (কেজি)</string>
+    <string name = "prescription_ht">উচ্চতা(সেমি)</string>
+    <string name = "prescription_pre_comp">অভিযোগ(গুলি) উপস্থাপন করা</string>
+    <string name="prescription_diagnosis">নির্ণয়</string>
+    <string name="prescription_med_plan">ঔষধ(গুলি) পরিকল্পনা</string>
+    <string name="prescription_rec_investigation">প্রস্তাবিত তদন্ত(গুলি)</string>
+    <string name = "prescription_general_advice">সাধারণ পরামর্শ</string>
+    <string name="prescription_follow_up_date">অনুসরণ করার তারিখ</string>
+    <string name = "prescription_temp_c">তাপমাত্রা (C): </string>
+    <string name = "prescription_temp_f">তাপমাত্রা (F): </string>
+
+    <string name = "diagnosis"> নির্ণয়</string>
+    <string name="primary">প্রাথমিক</string>
+    <string name = "secondary"> মাধ্যমিক</string>
+    <string name="provisiona">অস্থায়ী</string>
+    <string name = "confirmed">নিশ্চিত</string>
+    <string name="recommended_medication">প্রস্তাবিত ওষুধ</string>
+    <string name="medication">ঔষধ</string>
+    <string name = "strength">শক্তি</string>
+    <string name="units">ইউনিট (যেমন: mg)</string>
+    <string name="units_tab">ইউনিট (যেমন: ট্যাব/সিরাপ)</string>
+    <string name="for_duration">সময়কালের জন্য</string>
+    <string name="units_eg_days_weeks_etc">ইউনিট (যেমন: দিন/সপ্তাহ/ইত্যাদি)</string>
+    <string name = "additional_instruction">অতিরিক্ত নির্দেশ</string>
+    <string name="recommended_tests">প্রস্তাবিত পরীক্ষা</string>
+    <string name="test">পরীক্ষা</string>
+    <string name="advice_or_refer_patient">পরামর্শ বা রোগীকে রেফার করুন</string>
+    <string name="notes">নোট</string>
+    <string name="notes_not_shared_with_the_patient">নোট (রোগীর সাথে শেয়ার করা হয়নি)</string>
+    <string name="follow_up">অনুসরণ করুন</string>
+    <string name="sign_and_submit">সাইন করুন এবং জমা দিন</string>
+    <string name="add_test">পরীক্ষা যোগ করুন</string>
+    <string name = "add_advice">পরামর্শ যোগ করুন</string>
+    <string name="add_note">টীকা যোগ করুন</string>
+    <string name="schedule_a_follow_up">একটি ফলো আপের সময় নির্ধারণ করুন</string>৷
+    <string name="submit">জমা দিন</string>
+    <string name = "add_meds"> ওষুধ যোগ করুন</string>
+    <string name="add_diagnosis">নিদান যোগ করুন</string>
+    <string name="startVisitNote">শুরু ভিজিট নোট</string>
+    <string name="prescGivenSuccessfully">আপনাকে ধন্যবাদ! প্রেসক্রিপশন সফলভাবে দেওয়া হয়েছে</string>
+    <string name="morethanonefollowupnotallowed">অনুগ্রহ করে একবারে শুধুমাত্র একটি ফলোআপ প্রদান করুন৷</string>
+    <string name = "amount"> পরিমাণ</string>
+    <string name="frequency">ফ্রিকোয়েন্সি</string>
+    <string name = "route_optional"> রুট (ঐচ্ছিক)</string>
+    <string name = "reason_optional"> কারণ (ঐচ্ছিক)</string>
+    <string name="choose_a_date">একটি তারিখ চয়ন করুন</string>৷
+    <string name="follow_up_remark">ফলো আপ মন্তব্য</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">প্রেসক্রিপশন দেওয়ার চেষ্টা করার আগে অনুগ্রহ করে প্রথমে আপলোড করুন৷</string>
+    <string name="visit_summary_prescription_already_given"> প্রেসক্রিপশন আগেই দেওয়া হয়েছে। অনুগ্রহ করে প্রেসক্রিপশন ডাউনলোড করুন৷</string>
+    <string name="yes">হ্যাঁ</string>
+    <string name="no">না</string>
+    <string name="sync_failed">সিঙ্ক ব্যর্থ হয়েছে! অনুগ্রহ করে পরে আবার চেষ্টা করুন৷</string>
+    <string name="no_network_sync">আপনি ইন্টারনেটের সাথে সংযুক্ত নন৷ অনুগ্রহ করে পরে আবার চেষ্টা করুন৷</string>
+    <string name="app_sync">অ্যাপ সিঙ্ক হচ্ছে..</string>
+    <string name="type_to_search">অনুসন্ধান করতে টাইপ করুন..</string>
+
 </resources>

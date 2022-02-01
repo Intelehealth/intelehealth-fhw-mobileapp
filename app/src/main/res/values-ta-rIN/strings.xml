@@ -24,7 +24,7 @@
     <string name="prompt_admin_password" translatable="false">நிர்வாகி கடவுச்சொல்</string>
     <string name="action_sign_in" translatable="false">உள்நுழைய</string>
     <string name="action_sign_in_short" translatable="false">உள்நுழைக</string>
-    <string name="url_invalid" translatable="false">உங்கள் URL ஐச் சரிபார்க்கவும்.</string>
+    <string name="url_invalid" translatable="false">உங்கள் உர்ல் ஐச் சரிபார்க்கவும்.</string>
     <string name="prefix_invalid" translatable="false">வேறு முன்னொட்டைத் தேர்ந்தெடுக்கவும்!</string>
     <string name="error_invalid_email" translatable="false">"இந்தப் பயனர்பெயர் தவறானது</string>
     <string name="error_invalid_password" translatable="false">இந்தக் கடவுச்சொல் மிகவும் சிறியது</string>
@@ -175,7 +175,7 @@
     <string name="pref_title_display_name" translatable="false">காட்சி பெயர்</string>
     <string name="pref_default_display_name">ஜான் ஸ்மித்</string>
     <string name="pref_header_data_sync">தரவு &amp; புதுப்பிக்கவும்</string>
-    <string name="pref_title_server_url" translatable="false">சேவையக URL</string>
+    <string name="pref_title_server_url" translatable="false">சேவையக உர்ல்</string>
     <string name="pref_title_id_prefix" translatable="false">இருப்பிட முன்னொட்டு</string>
     <string name="pref_header_notifications" translatable="false">அறிவிப்புகள்</string>
     <string name="pref_title_new_message_notifications" translatable="false">புதிய செய்தி அறிவிப்புகள்</string>
@@ -323,7 +323,7 @@
     <string name="patient_denies" translatable="false">நோயாளி மறுக்கிறார்</string>
     <string name="patient_reports" translatable="false">நோயாளி அறிக்கைகள்</string>
     <string name="associated_symptoms">தொடர்புடைய அறிகுறிகள்</string>
-    <string name="enter_server_url">சேவையக URL ஐ உள்ளிடவும்</string>
+    <string name="enter_server_url">சேவையக உர்ல் ஐ உள்ளிடவும்</string>
     <string name="invalid_url">தவறான வலைதள முகவரி</string>
     <string name="years">ஆண்டுகள்</string>
     <string name="months">மாதங்கள்</string>
@@ -339,7 +339,7 @@
     <string name="reject">நிராகரி</string>
     <string name="next">அடுத்தது</string>
     <string name="which_server_would_you_like_to_connect_to">எந்தச் சேவையகத்துடன் இணைக்க விரும்புகிறீர்கள்?</string>
-    <string name="enter_url">URL ஐ உள்ளிடவும்</string>
+    <string name="enter_url">உர்ல் ஐ உள்ளிடவும்</string>
     <string name="choose_a_location_to_login">உள்நுழைய இருப்பிடத்தைத் தேர்வுசெய்க</string>
     <string name="choose_an_option_for_protocols">நெறிமுறைகளுக்கு ஒரு விருப்பத்தைத் தேர்வுசெய்க</string>
     <string name="please_enter_your_username_and_password">உங்கள் பயனர்பெயர் மற்றும் கடவுச்சொல்லை உள்ளிடவும்</string>
@@ -349,7 +349,7 @@
     <string name="doctor">மருத்துவர் விவரங்கள்</string>
     <string name="health_worker">சுகாதாரப் பணியாளர்</string>
     <string name="priority">முன்னுரிமை</string>
-    <string name="server_url">சேவையக url</string>
+    <string name="server_url">சேவையக உர்ல்</string>
     <string name="sync">புதுப்பிப்பு</string>
     <string name="update_protocols">நெறிமுறைகளைப் புதுப்பிக்கவும்</string>
     <string name="end_all_visit">அனைத்து வருகையும் முடிவுக்கு</string>
@@ -456,8 +456,8 @@
     <string name="intelehealth_a_telemedicine_platform">இன்டெலிஹெல்த் என்பது கிராமப்புற மற்றும் தொலைதூரப் பகுதிகளில் உள்ள சுகாதார ஊழியர்களை தொலைதூர மருத்துவர்களுடன் இணைக்கும் ஒரு டெலிமெடிசின் பயன்பாடாகும், இதனால் அவர்கள் தங்கள் நோயாளிகளுக்கு உயர்தர சுகாதார சேவைகளை வழங்க முடியும்.</string>
     <string name="close_button">மூடவும்</string>
     <string name="device_ID">சாதன ஐடி:</string>
-    <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம URL ஐ உள்ளிடவும்</string>
-    <string name="please_enter_url_and_key">URL மற்றும் விசையை உள்ளிடவும்</string>
+    <string name="enter_valid_license_url">செல்லுபடியாகும் உரிம உர்ல் ஐ உள்ளிடவும்</string>
+    <string name="please_enter_url_and_key">உர்ல் மற்றும் விசையை உள்ளிடவும்</string>
     <string name="please_enter_valid_license_key">செல்லுபடியாகும் உரிம விசையை உள்ளிடவும்</string>
     <string name="permission_denied">அனுமதி மறுக்கப்பட்டது \\ n</string>
     <string name="temperature_C">\"வெப்பநிலை (சி):\"</string>
@@ -569,4 +569,106 @@
     <string name="sure_to_reset_app">நிச்சயமாக ஆப்ஸை மீட்டமைக்க விரும்புகிறீர்களா?</string>
 
 
+    <string name="book_appointment">புத்தக நியமனம்</string>
+    <string name="reschedule_appointment">அப்பயிண்ட்மெண்ட்டை மறுஅட்டவணை செய்</string>
+    <string name="appointment_booking_confirmation_txt">நிச்சயமாக இந்த ஸ்லாட்டை முன்பதிவு செய்கிறீர்களா?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">நிச்சயமாக அப்பாயிண்ட்மெண்ட்டை ரத்து செய்கிறீர்களா?</string>
+    <string name="cancel_appointment">அப்பாயிண்ட்மெண்ட்டை ரத்துசெய்</string>
+    <string name="slot_empty_message">தேர்ந்தெடுக்கப்பட்ட தேதி மற்றும் சிறப்புக்கு அப்பாயிண்ட்மெண்ட் ஸ்லாட் கிடைக்கவில்லை!</string>
+    <string name="appointment_empty_message">உங்களுக்கு எந்த சந்திப்பும் இல்லை!</string>
+    <string name="appointment_listing_title">அப்பயிண்ட்மெண்ட் பட்டியல்</string>
+    <string name="appointment_booking_title">அப்பயிண்ட்மெண்ட் முன்பதிவு</string>
+    <string name="appointment_for">இதற்கான நியமனம்</string>
+    <string name="please_select_appointment_slot">தயவுசெய்து அப்பாயிண்ட்மெண்ட் ஸ்லாட்டைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="please_select_speciality">தயவுசெய்து நிபுணத்துவத்தைத் தேர்ந்தெடுக்கவும்!</string>
+
+    <string name="doctor_appointments">டாக்டர் நியமனங்கள்</string>
+    <string name="slot_info">ஸ்லாட் தகவல்</string>
+    <string name="appointment_booked">அபாயின்ட்மெண்ட் முன்பதிவு செய்யப்பட்டது</string>
+    <string name="minutes_txt">நிமிடங்கள்</string>
+    <string name="booked_txt">முன்பதிவு செய்யப்பட்டது</string>
+    <string name="cancelled_txt">ரத்துசெய்யப்பட்டது</string>
+    <string name="please_upload_visit">அப்பயிண்ட்மெண்ட் முன்பதிவு செய்வதற்கு முன் முதலில் வருகையைப் பதிவேற்றவும்.</string>
+    <string name="appointment_booked_successfully">அப்பாயிண்ட்மெண்ட் வெற்றிகரமாக பதிவு செய்யப்பட்டது!</string>
+    <string name="appointment_booked_failed">முன்பதிவு செய்த நியமனம் தோல்வியடைந்தது!</string>
+    <string name="postal_code_invalid_txt">சரியான அஞ்சல் குறியீட்டை உள்ளிடவும்</string>
+    <string name="failed_to_cancel_appointment">அப்பயிண்ட்மெண்ட்டை ரத்து செய்ய முடியவில்லை!</string>
+    <string name="appointment_cancelled_success_txt">அப்பயிண்ட்மெண்ட் வெற்றிகரமாக ரத்து செய்யப்பட்டது!</string>
+
+    <string name="diagnosis">நோயறிதல்</string>
+    <string name="primary">முதன்மை</string>
+    <string name="secondary">இரண்டாம் நிலை</string>
+    <string name="provisiona">தற்காலிக</string>
+    <string name="confirmed">உறுதிப்படுத்தப்பட்டது</string>
+    <string name="recommended_medication">பரிந்துரைக்கப்பட்ட மருந்து</string>
+    <string name="medication">மருந்து</string>
+    <string name="strength">வலிமை</string>
+    <string name="units">அலகுகள் (எ.கா: mg)</string>
+    <string name="units_tab">அலகுகள் (எ.கா: Tab/Syrup)</string>
+    <string name="for_duration">காலத்திற்கு</string>
+    <string name="units_eg_days_weeks_etc">அலகுகள் (எ.கா: நாட்கள்/வாரங்கள்/முதலியன.)</string>
+    <string name="additional_instruction">கூடுதல் அறிவுறுத்தல்</string>
+    <string name="recommended_tests">பரிந்துரைக்கப்பட்ட சோதனைகள்</string>
+    <string name="test">சோதனை</string>
+    <string name="advice_or_refer_patient">ஆலோசனை அல்லது நோயாளியைப் பரிந்துரைக்கவும்</string>
+    <string name="notes">குறிப்புகள்</string>
+    <string name="notes_not_shared_with_the_patient">குறிப்புகள் (நோயாளியுடன் பகிரப்படவில்லை)</string>
+    <string name="follow_up">Follow Up</string>
+    <string name="sign_and_submit">கையொப்பமிட்டு சமர்ப்பிக்கவும்</string>
+    <string name="add_test">சோதனையைச் சேர்</string>
+    <string name="add_advice">அறிவுரையைச் சேர்</string>
+    <string name="add_note">குறிப்பைச் சேர்</string>
+    <string name="schedule_a_follow_up">ஒரு பின்தொடர்தலை திட்டமிடு</string>
+    <string name="submit">சமர்ப்பி</string>
+    <string name="add_meds">மருந்துகளைச் சேர்</string>
+    <string name="add_diagnosis">கண்டறிதலைச் சேர்</string>
+    <string name="startVisitNote">வருகைக் குறிப்பைத் தொடங்கு</string>
+    <string name="prescGivenSuccessfully">நன்றி! மருந்துச் சீட்டு வெற்றிகரமாக வழங்கப்பட்டது</string>
+    <string name="morethanonefollowupnotallowed">தயவுசெய்து ஒரு நேரத்தில் ஒரு பின்தொடர்தலை மட்டும் வழங்கவும்.</string>
+    <string name="amount">தொகை</string>
+    <string name="frequency">அதிர்வெண்</string>
+    <string name="route_optional">பாதை (விரும்பினால்)</string>
+    <string name="reason_optional">காரணம் (விரும்பினால்)</string>
+    <string name="choose_a_date">தேதியைத் தேர்வுசெய்க</string>
+    <string name="follow_up_remark">பின்தொடர்தல் கருத்து</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">மருந்து கொடுக்க முயற்சிக்கும் முன் முதலில் பதிவேற்றவும்.</string>
+    <string name="visit_summary_prescription_already_given">மருந்து ஏற்கனவே வழங்கப்பட்டுள்ளது. மருந்துச் சீட்டைப் பதிவிறக்கவும்.</string>
+
+    <string name="prescription_age">வயது</string>
+    <string name="prescription_gender">பாலினம்</string>
+    <string name="prescription_address_contact">முகவரி மற்றும் தொடர்பு</string>
+    <string name="prescription_patient_id">நோயாளி ஐடி</string>
+    <string name="prescription_date_of_visit">பார்வையின் தேதி</string>
+    <string name="prescription_vitals">வைட்டல்ஸ்</string>
+    <string name="prescription_rr">சுவாச விகிதம்</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">இரத்த அழுத்தம்</string>
+    <string name="prescription_bmi">BMI</string>
+
+    <string name="prescription_wt">எடை(கிலோ)</string>
+    <string name="prescription_ht">உயரம்(செமீ)</string>
+    <string name="prescription_pre_comp">புகார்(களை) வழங்குதல்</string>
+    <string name="prescription_diagnosis">கண்டறிதல்</string>
+    <string name="prescription_med_plan">மருந்து(கள்) திட்டம்</string>
+    <string name="prescription_rec_investigation">பரிந்துரைக்கப்பட்ட விசாரணை(கள்)</string>
+    <string name="prescription_general_advice">பொது ஆலோசனை</string>
+    <string name="prescription_follow_up_date">பின்தொடரும் தேதி</string>
+    <string name="prescription_temp_c">வெப்பநிலை (C) : </string>
+    <string name="prescription_temp_f">வெப்பநிலை (F) : </string>
+
+    <string name="yes">ஆம்</string>
+    <string name="no">இல்லை</string>
+
+    <string name="take_photo">புகைப்படம் எடு</string>
+    <string name="choose_from_gallery">கேலரியில் இருந்து தேர்வு செய்யவும்</string>
+    <string name="additional_doc_image_picker_title">கூடுதல் ஆவணத்தைச் சேர்!</string>
+    <string name="something_went_wrong">ஏதோ தவறாகிவிட்டது. ஆதரவைத் தொடர்பு கொள்ளவும்</string>
+    <string name="sync_failed">ஒத்திசைவு தோல்வி! பிறகு முயற்சிக்கவும்.</string>
+    <string name="no_network_sync">நீங்கள் இணையத்துடன் இணைக்கப்படவில்லை. பிறகு முயற்சிக்கவும்.</string>
+    <string name="app_sync">ஆப்ஸை ஒத்திசைக்கிறது..</string>
+
+    <string name="type_to_search">தேட தட்டச்சு செய்யவும்..</string>
+
+
 </resources>
+

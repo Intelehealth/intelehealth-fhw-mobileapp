@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ఇంటెలిహెల్త్</string>
-    <string name="generic_coming_soon" translatable="false">" త్వరలో....."</string>
-    <string name="title_activity_login" translatable="false">" ఇంటెలిహెల్త్"</string>
-    <string name="prompt_email" translatable="false">" వినియోగదారు పేరు"</string>
+    <string name="generic_coming_soon" translatable="false">"త్వరలో....."</string>
+    <string name="title_activity_login" translatable="false">"ఇంటెలిహెల్త్"</string>
+    <string name="prompt_email" translatable="false">"వినియోగదారు పేరు"</string>
     <string name="prompt_password" translatable="false">పాస్‌వర్డ్</string>
-    <string name="prompt_admin_password" translatable="false">" అడ్మిన్ పాస్వర్డ్"</string>
+    <string name="prompt_admin_password" translatable="false">"అడ్మిన్ పాస్వర్డ్"</string>
     <string name="action_sign_in" translatable="false">ప్రవేశించండి/లాగ్ఇన్</string>
     <string name="action_sign_in_short" translatable="false">సైన్ ఇన్ చేయండి</string>
-    <string name="url_invalid" translatable="false">" మీ URL ను తనిఖీ చేయండి."</string>
+    <string name="url_invalid" translatable="false">"మీ యుఆర్ ఎల్ ను తనిఖీ చేయండి."</string>
     <string name="prefix_invalid" translatable="false">వేరే ఉపసర్గను ఎంచుకోండి!</string>
     <string name="error_invalid_email" translatable="false">ఈ వినియోగదారు పేరు చెల్లదు</string>
     <string name="error_invalid_password" translatable="false">ఈ పాస్‌వర్డ్ చాలా చిన్నది</string>
@@ -17,14 +17,14 @@
     <string name="error_network" translatable="false">నెట్వర్క్ లోపం</string>
     <string name="error_location_not_selected" translatable="false">దయచేసి ఈ క్రింది స్థానాలలో విలువను ఎంచుకోండి</string>
     <string name="error_location_not_fetched" translatable="false">స్థానాలను పొందడం సాధ్యం కాలేదు</string>
-    <string name="permission_rationale" translatable="false">" ఇమెయిల్ పూర్తిలను అందించడానికి పరిచయాల అనుమతులు అవసరం."</string>
-    <string name="device_id" translatable="false">" పరికర ID:"</string>
-    <string name="cant_login_user" translatable="false">" లాగిన్ కాలేదా?"</string>
-    <string name="email_link" translatable="false">" దయచేసి మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి లేదా support@intelehealth.io కు ఇమెయిల్ పంపండి"</string>
-    <string name="contact_whatsapp">" మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి దయచేసి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి"</string>
-    <string name="title_home_screen" translatable="false">" హోమ్"</string>
-    <string name="button_new_pt">" కొత్త రోగి"</string>
-    <string name="button_find_pt" translatable="false">" రోగిని కనుగొనండి"</string>
+    <string name="permission_rationale" translatable="false">"ఇమెయిల్ పూర్తిలను అందించడానికి పరిచయాల అనుమతులు అవసరం."</string>
+    <string name="device_id" translatable="false">"పరికర ID:"</string>
+    <string name="cant_login_user" translatable="false">"లాగిన్ కాలేదా?"</string>
+    <string name="email_link" translatable="false">"దయచేసి మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి లేదా support@intelehealth.io కు ఇమెయిల్ పంపండి"</string>
+    <string name="contact_whatsapp">"మీ పాస్‌వర్డ్‌ను రీసెట్ చేయడానికి దయచేసి మీ సిస్టమ్ అడ్మినిస్ట్రేటర్‌ను సంప్రదించండి"</string>
+    <string name="title_home_screen" translatable="false">"హోమ్"</string>
+    <string name="button_new_pt">"కొత్త రోగి"</string>
+    <string name="button_find_pt" translatable="false">"రోగిని కనుగొనండి"</string>
     <string name="button_diagnostic_tests" translatable="false">" రోగనిర్ధారణ పరీక్షలు"</string>
     <string name="button_active_pt" translatable="false">" చురుకైన రోగులు"</string>
     <string name="menu_option_sync" translatable="false">" డేటాను రిఫ్రెష్ చేయండి"</string>
@@ -298,8 +298,8 @@
     <string name="patient_denies" translatable="false">" రోగి ఖండించాడు"</string>
     <string name="patient_reports" translatable="false">" రోగి నివేదికలు"</string>
     <string name="associated_symptoms">" అనుబంధ లక్షణాలు"</string>
-    <string name="enter_server_url">" సర్వర్ URL ను నమోదు చేయండి"</string>
-    <string name="invalid_url">" చెల్లని URL"</string>
+    <string name="enter_server_url">" సర్వర్ యుఆర్ ఎల్ ను నమోదు చేయండి"</string>
+    <string name="invalid_url">" చెల్లని యుఆర్ ఎల్"</string>
     <string name="please_wait_till_sync_is_completed">" రిఫ్రెష్ పూర్తయ్యే వరకు వేచి ఉండండి"</string>
     <string name="patient_name">" రోగి పేరు"</string>
     <string name="son_daughter_wife_of">" కుమారుడు/ కుమార్తె / భార్య యొక్క "</string>
@@ -309,7 +309,7 @@
     <string name="caste">" కులం"</string>
     <string name="previous_visits">" మునుపటి సందర్శనలు"</string>
     <string name="which_server_would_you_like_to_connect_to">" మీరు ఏ సర్వర్‌కు కనెక్ట్ చేయాలనుకుంటున్నారు?"</string>
-    <string name="enter_url">" URL ను నమోదు చేయండి"</string>
+    <string name="enter_url">"యుఆర్ ఎల్ ను నమోదు చేయండి"</string>
     <string name="choose_a_location_to_login">" లాగిన్ చేయడానికి స్థానాన్ని ఎంచుకోండి"</string>
     <string name="choose_an_option_for_protocols">" ప్రోటోకాల్‌ల కోసం ఒక ఎంపికను ఎంచుకోండి"</string>
     <string name="please_enter_your_username_and_password">" దయచేసి మీ వినియోగదారు పేరు మరియు పాస్‌వర్డ్‌ను నమోదు చేయండి"</string>
@@ -319,7 +319,7 @@
     <string name="doctor">" డాక్టర్ వివరాలు"</string>
     <string name="health_worker">" ఆరోగ్య కార్య కర్త"</string>
     <string name="priority">" ప్రాధాన్యత"</string>
-    <string name="server_url">" సర్వర్ url"</string>
+    <string name="server_url">" సర్వర్ యుఆర్ ఎల్"</string>
     <string name="sync">" రిఫ్రెష్ చేయండి"</string>
     <string name="update_protocols">" ప్రోటోకాల్‌లను నవీకరించండి"</string>
     <string name="end_all_visit">" అన్ని సందర్శనలను ముగించండి"</string>
@@ -417,8 +417,8 @@
     <string name="intelehealth_name">" ఇంటెలిహెల్త్"</string>
     <string name="associated_symptoms_patientDetail">" అనుబంధ లక్షణాలు"</string>
     <string name="device_ID">" పరికర ఐడి:"</string>
-    <string name="enter_valid_license_url">" చెల్లుబాటు అయ్యే లైసెన్స్ Url ను నమోదు చేయండి"</string>
-    <string name="please_enter_url_and_key">" దయచేసి URL మరియు కీని నమోదు చేయండి"</string>
+    <string name="enter_valid_license_url">" చెల్లుబాటు అయ్యే లైసెన్స్ యుఆర్ ఎల్ ను నమోదు చేయండి"</string>
+    <string name="please_enter_url_and_key">" దయచేసి యుఆర్ ఎల్ మరియు కీని నమోదు చేయండి"</string>
     <string name="please_enter_valid_license_key">" దయచేసి చెల్లుబాటు అయ్యే లైసెన్స్ కీని నమోదు చేయండి"</string>
     <string name="permission_denied">" అనుమతి నిరాకరించబడింది \\ n"</string>
     <string name="temperature_C">" ఉష్ణోగ్రత (సి):"</string>
@@ -586,6 +586,101 @@
     <string name="sure_to_reset_app">మీరు ఖచ్చితంగా యాప్‌ని రీసెట్ చేయాలనుకుంటున్నారా?</string>
 
 
+    <string name="book_appointment">పుస్తక అపాయింట్‌మెంట్</string>
+    <string name="reschedule_appointment">అపాయింట్‌మెంట్‌ని రీషెడ్యూల్ చేయండి</string>
+    <string name="appointment_booking_confirmation_txt">మీరు ఖచ్చితంగా ఈ స్లాట్‌ను బుక్ చేస్తారా?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">మీరు అపాయింట్‌మెంట్‌ని ఖచ్చితంగా రద్దు చేస్తారా?</string>
+    <string name="cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయి</string>
+    <string name="slot_empty_message">ఎంచుకున్న తేదీ మరియు ప్రత్యేకత కోసం అపాయింట్‌మెంట్ స్లాట్ అందుబాటులో లేదు!</string>
+    <string name="appointment_empty_message">మీకు ఎలాంటి అపాయింట్‌మెంట్ లేదు!</string>
+    <string name="appointment_listing_title">అపాయింట్‌మెంట్ జాబితా</string>
+    <string name="appointment_booking_title">అపాయింట్‌మెంట్ బుకింగ్</string>
+    <string name="appointment_for">అపాయింట్‌మెంట్</string>
+    <string name="please_select_appointment_slot">దయచేసి అపాయింట్‌మెంట్ స్లాట్‌ని ఎంచుకోండి</string>
+    <string name="please_select_speciality">దయచేసి ప్రత్యేకతను ఎంచుకోండి!</string>
 
+    <string name="doctor_appointments">డాక్టర్ నియామకాలు</string>
+<string name="slot_info">స్లాట్ సమాచారం</string>
+<string name="appointment_booked">అపాయింట్‌మెంట్ బుక్ చేయబడింది</string>
+<string name="minutes_txt">నిమిషాలు</string>
+<string name="booked_txt">బుక్ చేయబడింది</string>
+<string name="cancelled_txt">రద్దు చేయబడింది</string>
+<string name="please_upload_visit">దయచేసి అపాయింట్‌మెంట్ బుకింగ్ చేయడానికి ముందు సందర్శనను అప్‌లోడ్ చేయండి.</string>
+<string name="appointment_booked_successfully">అపాయింట్‌మెంట్ విజయవంతంగా బుక్ చేయబడింది!</string>
+<string name="appointment_booked_failed">అపాయింట్‌మెంట్ బుక్ చేయడం విఫలమైంది!</string>
+<string name="postal_code_invalid_txt">దయచేసి చెల్లుబాటు అయ్యే పోస్టల్ కోడ్‌ని నమోదు చేయండి</string>
+<string name="failed_to_cancel_appointment">అపాయింట్‌మెంట్ రద్దు చేయడంలో విఫలమైంది!</string>
+<string name="appointment_cancelled_success_txt">అపాయింట్‌మెంట్ విజయవంతంగా రద్దు చేయబడింది!</string>
 
+    <string name="prescription_age">వయస్సు</string>
+    <string name="prescription_gender">లింగం</string>
+    <string name="prescription_address_contact">చిరునామా మరియు సంప్రదింపు</string>
+    <string name="prescription_patient_id">రోగి ID</string>
+    <string name="prescription_date_of_visit">సందర్శన తేదీ</string>
+    <string name="prescription_vitals">ప్రాధాన్యాలు</string>
+    <string name="prescription_rr">శ్వాస రేటు</string>
+    <string name="prescription_pulse">Pulse(bpm)</string>
+    <string name="prescription_bp">రక్తపోటు</string>
+    <string name="prescription_bmi">BMI</string>
+
+    <string name="prescription_wt">బరువు(kg)</string>
+    <string name="prescription_ht">ఎత్తు(సెం.మీ.)</string>
+    <string name="prescription_pre_comp">ఫిర్యాదు(లు) సమర్పిస్తోంది</string>
+    <string name="prescription_diagnosis">నిర్ధారణ</string>
+    <string name="prescription_med_plan">ఔషధ(లు) ప్రణాళిక</string>
+    <string name="prescription_rec_investigation">సిఫార్సు చేయబడిన పరిశోధన(లు)</string>
+    <string name="prescription_general_advice">సాధారణ సలహా</string>
+    <string name="prescription_follow_up_date">ఫాలో అప్ తేదీ</string>
+    <string name="prescription_temp_c">ఉష్ణోగ్రత (C) : </string>
+    <string name="prescription_temp_f">ఉష్ణోగ్రత (F) : </string>
+
+    <string name="diagnosis">నిర్ధారణ</string>
+    <string name="primary">ప్రాధమిక</string>
+    <string name="secondary">సెకండరీ</string>
+    <string name="provisiona">తాత్కాలిక</string>
+    <string name="confirmed">ధృవీకరించబడింది</string>
+    <string name="recommended_medication">సిఫార్సు చేయబడిన మందులు</string>
+    <string name="medication">మందు</string>
+    <string name="strength">బలం</string>
+    <string name="units">యూనిట్లు (ఉదా: mg)</string>
+    <string name="units_tab">యూనిట్‌లు (ఉదా: ట్యాబ్/సిరప్)</string>
+    <string name="for_duration">వ్యవధి కోసం</string>
+    <string name="units_eg_days_weeks_etc">యూనిట్‌లు (ఉదా: రోజులు/వారాలు/మొదలైనవి)</string>
+    <string name="additional_instruction">అదనపు సూచన</string>
+    <string name="recommended_tests">సిఫార్సు చేయబడిన పరీక్షలు</string>
+    <string name="test">పరీక్ష</string>
+    <string name="advice_or_refer_patient">సలహా లేదా రోగిని సూచించండి</string>
+    <string name="notes">గమనికలు</string>
+    <string name="notes_not_shared_with_the_patient">గమనికలు (రోగితో భాగస్వామ్యం చేయబడలేదు)</string>
+    <string name="follow_up">ఫాలో అప్</string>
+    <string name="sign_and_submit">సంతకం చేసి సమర్పించండి</string>
+    <string name="add_test">పరీక్షను జోడించు</string>
+    <string name="add_advice">సలహా జోడించు</string>
+    <string name="add_note">గమనికని జోడించు</string>
+    <string name="schedule_a_follow_up">ఫాలో అప్‌ని షెడ్యూల్ చేయండి</string>
+    <string name="submit">సమర్పించు</string>
+    <string name="add_meds">మెడ్‌లను జోడించు</string>
+    <string name="add_diagnosis">రోగ నిర్ధారణను జోడించు</string>
+    <string name="startVisitNote">సందర్శన గమనికను ప్రారంభించు</string>
+    <string name="prescGivenSuccessfully">ధన్యవాదాలు! ప్రిస్క్రిప్షన్ విజయవంతంగా ఇవ్వబడింది</string>
+    <string name="morethanonefollowupnotallowed">దయచేసి ఒకేసారి ఒక ఫాలోఅప్‌ను మాత్రమే అందించండి.</string>
+    <string name="amount">మొత్తం</string>
+    <string name="frequency">ఫ్రీక్వెన్సీ</string>
+    <string name="route_optional">మార్గం (ఐచ్ఛికం)</string>
+    <string name="reason_optional">కారణం (ఐచ్ఛికం)</string>
+    <string name="choose_a_date">తేదీని ఎంచుకోండి</string>
+    <string name="follow_up_remark">ఫాలో అప్ రిమార్క్</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">ప్రిస్క్రిప్షన్ ఇవ్వడానికి ప్రయత్నించే ముందు దయచేసి ముందుగా అప్‌లోడ్ చేయండి.</string>
+    <string name="visit_summary_prescription_already_given">ప్రిస్క్రిప్షన్ ఇప్పటికే అందించబడింది. దయచేసి ప్రిస్క్రిప్షన్‌ని డౌన్‌లోడ్ చేయండి.</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
+
+    <string name="type_to_search">సెర్చ్ చేయడానికి టైప్ చేయండి..</string>
+
+    <string name="sync_failed">సమకాలీకరణ విఫలమైంది! దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="no_network_sync">మీరు ఇంటర్నెట్‌కి కనెక్ట్ చేయబడలేదు. దయచేసి తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="app_sync">యాప్‌ని సమకాలీకరిస్తోంది..</string>
+
+    <string name="gender_male">పురుషుడు</string>
+    <string name="gender_female">స్త్రీ</string>
 </resources>

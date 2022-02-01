@@ -679,9 +679,15 @@
     <string name="str_check_Philippines">Philippines</string>
     <string name="loading_more">Loading more...</string>
     <string name="warning_app_update">Please update the app to the latest version.</string>
-    <string name="due_on">Due Date:</string>
-    <string name="title_follow_up">Follow Up Visits</string>
     <string name="location">Location</string>
+
+    //Follow-up Visits
+    <string name="title_follow_up">Follow Up Visits</string>
+    <string name="title_follow_reminder">Follow up visit reminder</string>
+    <string name="title_follow_up_reminder_desc">Hello, there are some follow up visits are pending, please do follow up.</string>
+    <string name="due_on">Due Date:</string>
+
+
 
     //----------reset app strings-------------
     <string name="reset_app">Reset App</string>
@@ -726,6 +732,7 @@
     <string name="prescription_pulse">Pulse(bpm)</string>
     <string name="prescription_bp">Blood Pressure</string>
     <string name="prescription_bmi">BMI</string>
+
     <string name="prescription_wt">Weight(kg)</string>
     <string name="prescription_ht">Height(cm)</string>
     <string name="prescription_pre_comp">Presenting complaint(s)</string>
@@ -742,5 +749,78 @@
         \n\n
         Telemedicine app allows Health Officers to collect detailed patient complaints and symptoms and generates a comprehensive clinical case history. The app also allows them to capture details of previous medications, diagnostics, prescriptions and treatment.
     </string>
+
+    <string name="book_appointment">Book Appointment</string>
+    <string name="reschedule_appointment">Reschedule Appointment</string>
+    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
+    <string name="cancel_appointment">Cancel Appointment</string>
+    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
+    <string name="appointment_empty_message">You don\'t have any appointment!</string>
+    <string name="appointment_listing_title">Appointment Listing</string>
+    <string name="appointment_booking_title">Appointment Booking</string>
+    <string name="appointment_for">Appointment For</string>
+    <string name="please_select_appointment_slot">Please select appointment slot</string>
+    <string name="please_select_speciality">Please select speciality!</string>
+
+    <string name="doctor_appointments">Doctor Appointments</string>
+    <string name="slot_info">Slot info</string>
+    <string name="appointment_booked">Appointment Booked</string>
+    <string name="minutes_txt">minutes</string>
+    <string name="booked_txt">booked</string>
+    <string name="cancelled_txt">cancelled</string>
+    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
+    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
+    <string name="appointment_booked_failed">Appointment booked failed!</string>
+    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
+    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
+    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
+    <string name="have_you_spoken_with_the_patient_directly">Have you spoken with the patient directly?</string>
+    <string name="patient_interaction">Patient Interaction</string>
+
+    <string name="diagnosis">Diagnosis</string>
+    <string name="primary">Primary</string>
+    <string name="secondary">Secondary</string>
+    <string name="provisiona">Provisional</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="recommended_medication">Recommended Medication</string>
+    <string name="medication">Medication</string>
+    <string name="strength">Strength</string>
+    <string name="units">Units (eg: mg)</string>
+    <string name="units_tab">Units (eg: Tab/Syrup)</string>
+    <string name="for_duration">For Duration</string>
+    <string name="units_eg_days_weeks_etc">Units (eg: Days/Weeks/etc.)</string>
+    <string name="additional_instruction">Additional Instruction</string>
+    <string name="recommended_tests">Recommended Tests</string>
+    <string name="test">Test</string>
+
+    <string name="advice_or_refer_patient">Advice or Refer Patient</string>
+    <string name="notes">Notes</string>
+    <string name="notes_not_shared_with_the_patient">Notes (not shared with the patient)</string>
+    <string name="follow_up">Follow Up</string>
+    <string name="sign_and_submit">Sign and Submit</string>
+    <string name="add_test">Add Test</string>
+    <string name="add_advice">Add Advice</string>
+    <string name="add_note">Add Note</string>
+    <string name="schedule_a_follow_up">Schedule a follow up</string>
+    <string name="submit">Submit</string>
+    <string name="add_meds">Add Meds</string>
+    <string name="add_diagnosis">Add Diagnosis</string>
+    <string name="startVisitNote">Start Visit Note</string>
+
+    <string name="prescGivenSuccessfully">Thank you! Prescription is given successfully</string>
+    <string name="morethanonefollowupnotallowed">Please provide only one Followup at a time.</string>
+    <string name="amount">Amount</string>
+    <string name="frequency">Frequency</string>
+    <string name="route_optional">Route (Optional)</string>
+    <string name="reason_optional">Reason (Optional)</string>
+    <string name="choose_a_date">Choose a date</string>
+    <string name="follow_up_remark">Follow up remark</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">Please upload first before attempting to give prescription.</string>
+    <string name="visit_summary_prescription_already_given">Prescription already provided. Please download prescription.</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="type_to_search">Type to Search..</string>
 
 </resources>

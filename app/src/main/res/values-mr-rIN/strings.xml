@@ -702,5 +702,99 @@
 
 
     <string name="location_setup">सेटअप स्थान - </string>
+    <string name="speciality_cardview_title">वैशिष्ट्यपूर्ण</string>
+
+
+    <string name="doctor_appointments">डॉक्टर अपॉइंटमेंट्स</string>
+    <string name="slot_info">स्लॉट माहिती</string>
+    <string name="appointment_booked">अपॉइंटमेंट बुक केली आहे</string>
+    <string name = "minutes_txt">मिनिटे</string>
+    <string name="booked_txt">बुक केले</string>
+    <string name="cancelled_txt">रद्द केले</string>
+    <string name="please_upload_visit">कृपया भेटीची बुकिंग करण्यापूर्वी प्रथम भेट अपलोड करा.</string>
+    <string name = "appointment_booked_successfully">नियोजित भेट यशस्वीरित्या बुक झाली!</string>
+    <string name="appointment_booked_failed">अपॉइंटमेंट बुक करण्यात अयशस्वी!</string>
+    <string name="postal_code_invalid_txt">कृपया वैध पोस्टल कोड प्रविष्ट करा</string>
+    <string name="failed_to_cancel_appointment">अपॉइंटमेंट रद्द करण्यात अयशस्वी!</string>
+    <string name="appointment_cancelled_success_txt">अपॉइंटमेंट यशस्वीरित्या रद्द करण्यात आली!</string>
+
+    <string name="book_appointment">पुस्तक भेट</string>
+    <string name="reschedule_appointment">अपॉइंटमेंट पुन्हा शेड्यूल करा</string>
+    <string name="appointment_booking_confirmation_txt">तुम्ही हा स्लॉट बुक करणार आहात का?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">तुम्हाला भेट रद्द करण्याची खात्री आहे का?</string>
+    <string name="cancel_appointment">अपॉइंटमेंट रद्द करा</string>
+    <string name="slot_empty_message">निवडलेल्या तारखेसाठी आणि विशेषतेसाठी अपॉइंटमेंट स्लॉट उपलब्ध नाही!</string>
+    <string name="appointment_empty_message">तुमच्याकडे कोणतीही भेट नाही!</string>
+    <string name="appointment_listing_title">अपॉइंटमेंट सूची</string>
+    <string name="appointment_booking_title">अपॉइंटमेंट बुकिंग</string>
+    <string name = "appointment_for"> साठी भेट</string>
+    <string name="please_select_appointment_slot">कृपया अपॉइंटमेंट स्लॉट निवडा</string>
+    <string name="please_select_speciality">कृपया स्पेशॅलिटी निवडा!</string>
+
+    <string name = "diagnosis">निदान</string>
+    <string name="primary">प्राथमिक</string>
+    <string name="secondary">दुय्यम</string>
+    <string name="provisiona">तात्पुरती</string>
+    <string name="confirmed">पुष्टी केली</string>
+    <string name="recommended_medication">शिफारस केलेले औषध</string>
+    <string name="medication">औषध</string>
+    <string name="strength">शक्ती</string>
+    <string name="units">युनिट्स (उदा: mg)</string>
+    <string name="units_tab">युनिट्स (उदा: टॅब/सिरप)</string>
+    <string name = "for_duration"> कालावधीसाठी</string>
+    <string name="units_eg_days_weeks_etc">युनिट्स (उदा. दिवस/आठवडे/इ.)</string>
+    <string name = "additional_instruction">अतिरिक्त सूचना</string>
+    <string name="recommended_tests">शिफारस केलेल्या चाचण्या</string>
+    <string name="test">चाचणी</string>
+    <string name="advice_or_refer_patient">पेशंटला सल्ला किंवा संदर्भ द्या</string>
+    <string name="notes">नोट्स</string>
+    <string name="notes_not_shared_with_the_patient">टिपा (रुग्णासोबत शेअर केलेल्या नाहीत)</string>
+    <string name = "follow_up"> फॉलो अप</string>
+    <string name="sign_and_submit">स्वाक्षरी करा आणि सबमिट करा</string>
+    <string name="add_test">चाचणी जोडा</string>
+    <string name="add_advice">सल्ला जोडा</string>
+    <string name="add_note">टीप जोडा</string>
+    <string name="schedule_a_follow_up">एक फॉलो अप शेड्यूल करा</string>
+    <string name="submit">सबमिट करा</string>
+    <string name = "add_meds"> औषध जोडा</string>
+    <string name = "add_diagnosis">निदान जोडा</string>
+    <string name="startVisitNote">प्रारंभ भेट टीप</string>
+    <string name="prescGivenSuccessfully">धन्यवाद! प्रिस्क्रिप्शन यशस्वीरित्या दिले आहे</string>
+    <string name="morethanonefollowupnotallowed">कृपया एका वेळी फक्त एक फॉलोअप प्रदान करा.</string>
+    <string name = "amount"> रक्कम</string>
+    <string name="frequency">वारंवारता</string>
+    <string name = "route_optional">मार्ग (पर्यायी)</string>
+    <string name = "reason_optional">कारण (पर्यायी)</string>
+    <string name="choose_a_date">तारीख निवडा</string>
+    <string name = "follow_up_remark"> फॉलो अप टिप्पणी</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">कृपया प्रिस्क्रिप्शन देण्याचा प्रयत्न करण्यापूर्वी प्रथम अपलोड करा.</string>
+    <string name="visit_summary_prescription_already_given">प्रिस्क्रिप्शन आधीच दिलेले आहे. कृपया प्रिस्क्रिप्शन डाउनलोड करा.</string>
+
+    <string name = "prescription_age">वय</string>
+    <string name="prescription_gender">लिंग</string>
+    <string name="prescription_address_contact">पत्ता आणि संपर्क</string>
+    <string name = "prescription_patient_id">रुग्ण आयडी</string>
+    <string name = "prescription_date_of_visit">भेटीची तारीख</string>
+    <string name = "prescription_vitals"> जीवनावश्यक गोष्टी</string>
+    <string name = "prescription_rr">श्वसन दर</string>
+    <string name = "prescription_pulse">पल्स(bpm)</string>
+    <string name="prescription_bp">रक्तदाब</string>
+    <string name = "prescription_bmi">BMI</string>
+    <string name = "prescription_wt">वजन(किलो)</string>
+    <string name = "prescription_ht">उंची(सेमी)</string>
+    <string name="prescription_pre_comp">तक्रार(त्या) सादर करणे</string>
+    <string name = "prescription_diagnosis">निदान</string>
+    <string name = "prescription_med_plan">औषध योजना</string>
+    <string name="prescription_rec_investigation">शिफारस केलेले तपास</string>
+    <string name = "prescription_general_advice">सामान्य सल्ला</string>
+    <string name = "prescription_follow_up_date"> फॉलो अप डेट</string>
+    <string name = "prescription_temp_c">तापमान (C): </string>
+    <string name="prescription_temp_f">तापमान (F): </string>
+    <string name="type_to_search">शोधण्यासाठी टाइप करा..</string>
+
+    <string name="yes">होय</string>
+    <string name="no">नाही</string>
+    <string name="gender_male">पुरुष</string>
+    <string name="gender_female">स्त्री</string>
 
 </resources>

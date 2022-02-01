@@ -63,6 +63,7 @@ import org.intelehealth.app.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.app.activities.todayPatientActivity.TodayPatientActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.AppointmentListingActivity;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.DownloadMindMapRes;
 import org.intelehealth.app.networkApiCalls.ApiClient;
@@ -139,13 +140,13 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview,appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
 
     private void saveToken() {
         Manager.getInstance().setBaseUrl("https://" + sessionManager.getServerUrl());
         // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID);
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
     }
 
     @Override
@@ -284,6 +285,13 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        findViewById(R.id.cardview_appointment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AppointmentListingActivity.class);
+                startActivity(intent);
+            }
+        });
         ((TextView) findViewById(R.id.tvLocation)).setText(String.format("%s: %s", getText(R.string.location), sessionManager.getLocationName()));
 
         tvTodayVisitsBadge = findViewById(R.id.tvTodayVisitsBadge);
@@ -300,6 +308,12 @@ public class HomeActivity extends AppCompatActivity {
 
         activeVisits_textview = findViewById(R.id.activeVisits_textview);
         activeVisits_textview.setText(R.string.active_visits);
+
+        followup_textview = findViewById(R.id.followUpVisittxt);
+        followup_textview.setText(R.string.title_follow_up);
+
+  appointment_textview = findViewById(R.id.appointment_textview);
+        appointment_textview.setText(R.string.doctor_appointments);
 
         videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
         videoLibrary_textview.setText(R.string.video_library);

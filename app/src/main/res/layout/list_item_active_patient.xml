@@ -47,6 +47,7 @@
                     android:fontFamily="@font/lato_bold"
                     android:includeFontPadding="false"
                     tools:text="Patient Name"
+                    android:maxLines="1"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <TextView
@@ -55,6 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     tools:text="10LAM-3"
+                    android:maxLines="1"
                     android:fontFamily="@font/lato_regular" />
 
                 <TextView
@@ -63,6 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     tools:text="24 years (Male)"
+                    android:maxLines="1"
                     android:fontFamily="@font/lato_regular" />
 
                 <View

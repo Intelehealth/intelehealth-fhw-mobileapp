@@ -39,6 +39,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
@@ -336,6 +337,11 @@ public class TodayPatientActivity extends AppCompatActivity {
                             String.format("%s %s", todayPatientModel.getFirst_name(), todayPatientModel.getLast_name()),
                             ""
                     );
+//                    AppointmentDAO appointmentDAO = new AppointmentDAO();
+                    //AppointmentInfo appointmentInfo=appointmentDAO.getAppointmentByVisitId(visitUuid);
+                    //if(appointmentInfo!=null && appointmentInfo.getStatus().equalsIgnoreCase("booked")) {
+//                    appointmentDAO.deleteAppointmentByVisitId(visitUuid);
+
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.show();

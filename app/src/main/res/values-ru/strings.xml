@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Intelehealth</string>
+    <string name="app_name" translatable="false">Телемед KG</string>
 
     //Generic
     <string name="generic_the_flipping_word_next" translatable="false">Далее</string>
@@ -39,7 +39,7 @@
     <string name="db_patient_id3" translatable="false">patient_identifier3</string>
 
     //Login Screen
-<!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
+    <!--    <string name="title_activity_login" translatable="false">Intelehealth</string>-->
     <string name="title_activity_login" translatable="false">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="prompt_email" translatable="false">Имя пользователя</string>
     <string name="prompt_password" translatable="false">Пароль</string>
@@ -145,7 +145,7 @@
 
     //Table Exam Screen
     <string name="title_activity_vitals" translatable="false">Показатели</string>
-    <string name="table_hw" translatable="false">Измерения тела</string>
+    <string name="table_hw" translatable="false">Параметры тела</string>
     <string name="table_height" translatable="false">Рост (см)</string>
     <string name="table_weight" translatable="false">Вес (кг)</string>
     <string name="table_bmi" translatable="false">ИМТ </string>
@@ -197,7 +197,8 @@
     <string name="visit_summary_follow_up_date" translatable="false">Дата последующего наблюдения</string>
     <string name="visit_summary_follow_up_reminder" translatable="false">Напомните пациенту дату последующего наблюдения: </string>
     <string name="visit_summary_upload_reminder" translatable="false">Пожалуйста, сначала загрузите информацию, прежде чем пытаться завершить визит.</string>
-
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">Пожалуйста, загрузите сначала, прежде чем пытаться дать рецепт.</string>
+    <string name="visit_summary_prescription_already_given">Рецепт уже выдан. Пожалуйста, скачайте рецепт.</string>
 
     //Diagnostic Tests Screen
     <string name="title_activity_diagnostic_tests_list" translatable="false">Выберите диагностический тест</string>
@@ -478,12 +479,11 @@
     <string name="priority">Приоритет</string>
     <string name="server_url">URL-ссылка сервера</string>
     <string name="sync">Обновить</string>
-    <string name="change_languages">Сменить языки</string>
     <string name="update_protocols">Обновить протоколы</string>
     <string name="end_all_visit">Завершить все посещения</string>
     <string name="filter_by_creator">Фильтр по создателю</string>
     <string name="planet_name">Название планеты</string>
-    <string name="ok">OK</string>
+    <string name="ok">В ПОРЯДКЕ</string>
     <string name="cancel">Отменить</string>
     <string name="unable_to_end">Невозможно закончить</string>
     <string name="upload_before_end_visit_active"> Посещения. Пожалуйста, загрузите посещение перед попыткой его завершения.</string>
@@ -556,7 +556,7 @@
     <string name="new_update_available">Доступно новое обновление</string>
     <string name="update_app_note">Доступна новая версия с новыми функциями, пожалуйста, обновите приложение.</string>
     <string name="update">Обновить</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Intelehealth. Чтобы загрузить рецепт, нажмите здесь "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Здравствуйте! Спасибо за использование Телемед KG. Чтобы загрузить рецепт, нажмите здесь "</string>
     <string name="and_enter_your_patient_id">" и введите свой идентификатор(ID) пациента - "</string>
 
 
@@ -591,8 +591,8 @@
     <string name="i_need_assistance">" и мне требуется помощь."</string>
     <string name="economic_values_missing">Экономические показатели отсутствуют</string>
     <string name="education_values_missing">Отсутствуют показатели образования</string>
-    <string name="intelehealth_a_telemedicine_platform">Intelehealth - Приложение - это приложение по телемедицине, которое объединяет медицинских работников труднодоступных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
-<!--    <string name="intelehealth_name">Intelehealth</string>-->
+    <string name="intelehealth_a_telemedicine_platform">Телемед KG - Приложение - это приложение по телемедицине, которое объединяет медицинских работников труднодоступных районах с удаленными врачами, чтобы они могли предоставлять своим пациентам высококачественные медицинские услуги.</string>
+    <!--    <string name="intelehealth_name">Intelehealth</string>-->
     <string name="intelehealth_name">Телемед КГ - ПРИЛОЖЕНИЕ</string>
     <string name="Ayu_name">Айя</string>
     <string name="close_button">Закрыть</string>
@@ -718,24 +718,82 @@
  \n\n
  Приложение телемедицины позволяет медицинским работникам собирать подробные жалобы и симптомы пациентов и создавать полную историю клинических случаев. Приложение также позволяет им фиксировать информацию о предыдущих лекарствах, диагностике, назначениях, рецептах и​​лечении."    </string>
     <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>
+    <string name="startVisitNote">Начать визитку</string>
+    <string name="prescGivenSuccessfully">Спасибо! Рецепт выдан успешно</string>
+    <string name="morethanonefollowupnotallowed">Пожалуйста, предоставляйте только одно наблюдение за раз.</string>
 
+    <string name="diagnosis">Диагностика</string>
+    <string name="primary">Начальный</string>
+    <string name="secondary">Вторичный</string>
+    <string name="provisiona">Предварительный</string>
+    <string name="confirmed">Подтвержденный</string>
+    <string name="recommended_medication">Рекомендуемое лекарство</string>
+    <string name="medication">Медикамент</string>
+    <string name="strength">Сила</string>
+    <string name="units">Единицы (например: мг)</string>
+    <string name="units_tab">Единицы (например: Таблетка / Сироп)</string>
+    <string name="for_duration">На длительность</string>
+    <string name="units_eg_days_weeks_etc">Единицы (например: дни / недели и т. Д.)</string>
+    <string name="additional_instruction">Дополнительная инструкция</string>
+    <string name="recommended_tests">Рекомендуемые тесты</string>
+    <string name="test">Контрольная работа</string>
+    <string name="advice_or_refer_patient">Посоветуйте или направьте пациента</string>
+    <string name="notes">Примечания</string>
+    <string name="notes_not_shared_with_the_patient">Примечания (не передаются пациенту)</string>
+    <string name="follow_up">Следовать за</string>
+    <string name="sign_and_submit">Войти и отправить</string>
+    <string name="add_test">Добавить тест</string>
+    <string name="add_advice">Добавить совет</string>
+    <string name="add_note">Добавить заметку</string>
+    <string name="schedule_a_follow_up">Запланировать продолжение</string>
+    <string name="submit">Представлять на рассмотрение</string>
+    <string name="add_meds">Добавить лекарства</string>
+    <string name="add_diagnosis">Добавить диагноз</string>
+    <string name="amount">Количество</string>
+    <string name="frequency">Частота</string>
+    <string name="route_optional">Маршрут (необязательно)</string>
+    <string name="reason_optional">Причина (необязательно)</string>
+    <string name="choose_a_date">Выберите дату</string>
+    <string name="follow_up_remark">Следующее замечание</string>
 
-    <string name="loading_more">Загрузка еще ...</string>
-<!--    <string name="warning_app_update">Пожалуйста, обновите приложение до последней версии.</string>-->
-    <string name="due_on">Срок:</string>
-    <string name="title_follow_up">Последующие посещения</string>
-    <string name="location">Место расположения</string>
+    <string name="book_appointment">Записаться на прием</string>
+    <string name="reschedule_appointment">Перенести встречу</string>
+    <string name="appointment_booking_confirmation_txt">Вы уверены, что хотите забронировать этот слот?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">Вы уверены, что хотите отменить встречу?</string>
+    <string name="cancel_appointment">Отменить встречу</string>
+    <string name="slot_empty_message">Время встречи недоступно для выбранной даты и специальности!</string>
+    <string name="appointment_empty_message">У вас нет назначенной встречи!</string>
+    <string name="appointment_listing_title">Список встреч</string>
+    <string name="appointment_booking_title">Запись на прием</string>
+    <string name="appointment_for">Встреча для</string>
+    <string name="please_select_appointment_slot">Выберите время встречи</string>
+    <string name="please_select_speciality">Пожалуйста, выберите специальность!</string>
 
-    <string name = "reset_app"> Сбросить приложение </string>
-    <string name = "app_reset_toast"> Сброс приложения завершен! </string>
-    <string name = "resetting_app_dialog"> Сброс приложения </string>
-    <string name = "sure_to_reset_app"> Вы действительно хотите сбросить настройки приложения? </string>
-
-    // Сбросить функциональность приложения
-    <string name = "sync_failed"> Ошибка синхронизации! Повторите попытку позже. </string>
-    <string name = "no_network_sync"> Вы не подключены к Интернету. Повторите попытку позже. </string>
-    <string name = "app_sync"> Приложение для синхронизации .. </string>
-
+    <string name="doctor_appointments">Назначения врача</string>
+    <string name="slot_info">Информация о слоте</string>
+    <string name="appointment_booked">Встреча забронирована</string>
+    <string name="minutes_txt">минуты</string>
+    <string name="booked_txt">забронировано</string>
+    <string name="cancelled_txt">отменено</string>
+    <string name="please_upload_visit">Пожалуйста, сначала загрузите информацию о посещении, прежде чем записываться на прием.</string>
+    <string name="appointment_booked_successfully">Встреча успешно забронирована!</string>
+    <string name="appointment_booked_failed">Встреча не забронирована!</string>
+    <string name="postal_code_invalid_txt">Пожалуйста, введите действительный почтовый индекс</string>
+    <string name="failed_to_cancel_appointment">Не удалось отменить встречу!</string>
+    <string name="appointment_cancelled_success_txt">Встреча успешно отменена!</string>
     <string name="location_setup">Место установки - </string>
+    <string name="title_follow_up">Последующие визиты</string>
+
+    <string name="reset_app">Сбросить приложение</string>
+    <string name="app_reset_toast">Сброс приложения выполнен!</string>
+    <string name="resetting_app_dialog">Сброс приложения</string>
+    <string name="sure_to_reset_app">Вы уверены, что хотите сбросить настройки приложения?</string>
+    <string name="change_languages">Изменить язык</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="sync_failed">Ошибка синхронизации! Повторите попытку позже.</string>
+    <string name="no_network_sync">Вы не подключены к Интернету. Повторите попытку позже.</string>
+    <string name="app_sync">Синхронизация приложения..</string>
+    <string name="type_to_search">Введите для поиска..</string>
 
 </resources>
