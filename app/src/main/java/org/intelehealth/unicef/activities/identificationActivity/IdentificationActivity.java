@@ -940,31 +940,36 @@ public class IdentificationActivity extends AppCompatActivity {
                             mAgeDays + getString(R.string.days);
                     mAgeEditText.setText(ageString);
 
+//                    Calendar calendar = Calendar.getInstance();
+//                    int curYear = calendar.get(Calendar.YEAR);
+//                    //int birthYear = curYear - yearPicker.getValue();
+//                    int birthYear = curYear - mAgeYears;
+//                    int curMonth = calendar.get(Calendar.MONTH);
+//                    //int birthMonth = curMonth - monthPicker.getValue();
+//                    int birthMonth = curMonth - mAgeMonths;
+//                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
+//                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
+//                    mDOBYear = birthYear;
+//                    mDOBMonth = birthMonth;
+//
+//                    if (birthDay < 0) {
+//                        mDOBDay = birthDay + totalDays - 1;
+//                        mDOBMonth--;
+//
+//                    } else {
+//                        mDOBDay = birthDay;
+//                    }
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.YEAR, -mAgeYears);
+                    cal.add(Calendar.MONTH, -mAgeMonths);
+                    cal.add(Calendar.DAY_OF_YEAR, -mAgeDays);
 
-                    Calendar calendar = Calendar.getInstance();
-                    int curYear = calendar.get(Calendar.YEAR);
-                    //int birthYear = curYear - yearPicker.getValue();
-                    int birthYear = curYear - mAgeYears;
-                    int curMonth = calendar.get(Calendar.MONTH);
-                    //int birthMonth = curMonth - monthPicker.getValue();
-                    int birthMonth = curMonth - mAgeMonths;
-                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
-                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
-                    mDOBYear = birthYear;
-                    mDOBMonth = birthMonth;
-
-                    if (birthDay < 0) {
-                        mDOBDay = birthDay + totalDays - 1;
-                        mDOBMonth--;
-
-                    } else {
-                        mDOBDay = birthDay;
-                    }
                     //   Locale.setDefault(Locale.ENGLISH);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
                             Locale.ENGLISH);
-                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
-                    String dobString = simpleDateFormat.format(dob.getTime());
+//                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
+
+                    String dobString = simpleDateFormat.format(cal.getTime());
                    /* if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                         mDOBEditText.setText(dob_text);
