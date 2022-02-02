@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ଆନ୍ତରିକତା</string>
-    <string name="notification_title">Realtime sync is ON!</string>
+    <string name="notification_title">ରିଅଲ ସିଙ୍କ୍ କରନ୍ତୁ ମ ସିଙ୍କ ଅନ୍ ଅଛି!</string>
     <string name="generic_the_flipping_word_next">ପରବତ୍ତର୍ତ୍ତୀ</string>
     <string name="button_ok">ଓକେ</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
@@ -491,7 +491,7 @@
     <string name="days">ଦନି</string>
     <string name="contact">ସଯାଗାସଯାଗ</string>
     <string name="row_patient_id" translatable="false">ରୋଗୀଙ୍କ ଆଇଡି:</string>
-    <string name="whatsapp_presc_toast">Select prescription PDF from file explorer - Internal storage/Intelehealth_PDF</string>
+    <string name="whatsapp_presc_toast">ଫାଇଲ୍ ଏକ୍ସପ୍ଲୋରରରୁ ପ୍ରେସକ୍ରିପସନ୍ ପିଡିଏଫ୍ ଚୟନ କରନ୍ତୁ - ଆଭ୍ୟନ୍ତରୀଣ ସଂରକ୍ଷଣ / ଇଣ୍ଟେଲିହେଲଥ୍lth_ପିଡିଏଫ୍</string>
     <string name="enter_mobile_number_to_share_prescription">ମୋବାଇଲ୍ ନମ୍ବର ପ୍ରବେଶ କର ଯେଉଁଥିରେ ଆପଣ ପ୍ରେସକ୍ରିପସନ୍ ଅଂଶୀଦାର କରିବାକୁ ଚାହୁଁଛନ୍ତି |</string>
     <string name="i_sevika_confirm_that_i_have_read_out_the_privacy_notice_and_consent_to_the_patient">* ମୁଁ (ସେଭିକା) ନିଶ୍ଚିତ କରେ ଯେ ମୁଁ ଗୋପନୀୟତା ନୋଟିସ୍ ପ the ିଛି ଏବଂ ରୋଗୀକୁ ସମ୍ମତି ଦେଇଛି |</string>
     <string name="enter_10_digits">10 ଅଙ୍କ ପ୍ରବେଶ କରନ୍ତୁ |</string>
@@ -500,8 +500,8 @@
     <string name="share">ଶେୟାର୍</string>
     <string name="view_print">ଦେଖନ୍ତୁ/ପ୍ରିଣ୍ଟ କରନ୍ତୁ</string>
     <string name="refresh">ରିଫ୍ରେଶ୍</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, Intelehealth ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ |"</string>
-    <string name="and_enter_your_patient_id">"ଏବଂ ଆପଣଙ୍କ ରୋଗୀ ଆଇଡି ପ୍ରବେଶ କରନ୍ତୁ - "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"ନମସ୍କାର, ଆନ୍ତରିକତା ବ୍ୟବହାର କରିଥିବାରୁ ଧନ୍ୟବାଦ | ଆପଣଙ୍କର ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରିବାକୁ ଦୟାକରି ଏଠାରେ କ୍ଲିକ୍ କରନ୍ତୁ |"</string>
+    <string name="and_enter_your_patient_id">" ଏବଂ ଆପଣଙ୍କ ରୋଗୀ ଆଇଡି ପ୍ରବେଶ କରନ୍ତୁ - "</string>
     <string name="family_member">ପରିବାର ସଦସ୍ୟ</string>
     <string name="no_family_member_registered">କ Family ଣସି ପରିବାର ସଦସ୍ୟ ପଞ୍ଜିକୃତ ହୋଇନାହାଁନ୍ତି</string>
     <string name="version_settings">ସଂସ୍କରଣ 1.3</string>
