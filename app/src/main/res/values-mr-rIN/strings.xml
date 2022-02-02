@@ -558,7 +558,7 @@
     <string name="update">अद्यतनित करा</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"नमस्कार, इंटेलेहेल्थ वापरल्याबद्दल धन्यवाद. आपले प्रिस्क्रिप्शन डाउनलोड करण्यासाठी कृपया येथे क्लिक करा"</string>
 
-    <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा -"</string>
+    <string name="and_enter_your_patient_id">" आणि तुमचा पेशंट आयडी एंटर करा - "</string>
 
     <!--New Ayu Related Changes-->
     <string name="what_is_the_reason_for_your_visit">आपल्या भेटीचे कारण काय आहे?</string>

@@ -160,7 +160,7 @@
     <string name="table_spo2">ଏସପିଓ ଦୁଇ (%)</string>
     <string name="table_hw">ଶରୀର ମାପ</string>
     <string name="tag_optional">ଇଚ୍ଛାଧିନ</string>
-    <string name="title_activity_additional_documents">ତିରକ୍ତ ଡ଼କୁ୍ଯମେଣ୍ଟସ୍ (ଦସ୍ତାବିଦ୍)</string>
+    <string name="title_activity_additional_documents">ଅତିରିକ୍ତ ଡକ୍ୟୁମେଣ୍ଟ୍ (ଦସ୍ତାବିଦ୍)</string>
     <string name="title_activity_complaint_node">" ଚୟନ କରିବା"</string>
     <string name="title_activity_complaint_questions">ସମସ୍ତ ପ୍ରଶ୍ନର ଉତ୍ତର</string>
     <string name="title_activity_complaint_select">ଭିଯୋଗ ଗୁଡ଼ିକ</string>
@@ -208,7 +208,7 @@
     <string name="visit_summary_patient_details">ରୋଗୀ ବିବରଣୀ</string>
     <string name="visit_summary_weight">ଓଜନ (କି.ଗ୍ରା)</string>
     <string name="visit_update">ଯାତ୍ରା ଅପ୍ଡ଼େଟ୍ କରିବା</string>
-    <string name="visit_summary_medical_history">ଚିକସତ୍ା ଇଚ୍ଛିହାସ</string>
+    <string name="visit_summary_medical_history">ଚିକିତ୍ସା ଇତିହାସ</string>
     <string name="visit_summary_edit_vitals">ପଣ ପ୍ରମୂଖ ସ୍କନିରୁ ପ୍ରମୂଖ କରିପାରିବେ</string>
     <string name="generic_yes">"ହଁ"</string>
     <string name="generic_no">"ନ "</string>
@@ -433,7 +433,7 @@
     <string name="choose_an_option_for_protocols">ସପ୍ରାସଟାକଲ୍ ପାଇଁଏକ ବକିଳ୍ପ ବାଛନ</string>
     <string name="please_enter_your_username_and_password">ଦୟାକରିନଜିର ୟୁଜରସନମ୍ ଓ ପାସୱାର୍ଡପ୍ରସବଶ କରନ</string>
     <string name="android_id">ଆଣ୍ଡ୍ରଏଡ୍ ଆଇର୍:ି</string>
-    <string name="doctor">ର୍ାକ୍ତରଙ୍କ ବବିରଣୀ</string>
+    <string name="doctor">ଡାକ୍ତର ବିବରଣୀ</string>
     <string name="server_url">ସଭଡର ୟୁଆରଏଲ</string>
     <string name="please_wait">ଦୟାକରିଅସପୋ କରନ୍ତୁ…</string>
     <string name="patient_data_upload">ସରାଗୀଙ୍କ ତଥ୍ୟ ଅପସଲାଡ</string>

@@ -424,7 +424,7 @@
     <string name="update_app_note">புதிய அம்சங்களுடன் புதிய பதிப்பு கிடைக்கிறது தயவுசெய்து பயன்பாட்டைப் புதுப்பிக்கவும்</string>
     <string name="update">புதுப்பிப்பு</string>
     <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">\"ஹலோ, இன்டெலிஹெல்த் பயன்படுத்தியதற்கு நன்றி. உங்கள் மருந்துகளைப் பதிவிறக்க இங்கே க்ளிக்க்ளிக் செய்க\"</string>
-    <string name="and_enter_your_patient_id">\"உங்கள் நோயாளி ஐடியை உள்ளிடவும் -\"</string>
+    <string name="and_enter_your_patient_id">" உங்கள் நோயாளி ஐடியை உள்ளிடவும் - "</string>
     <string name="what_is_the_reason_for_your_visit">உங்கள் வருகைக்கான காரணம் என்ன?</string>
     <string name="swipe_down_to_return">முந்தைய / அதற்கு அடுத்ததாக ஸ்வைப் செய்யவும்</string>
     <string name="swipe_up">அடுத்துக்கு மேலே ஸ்வைப் செய்யவும்</string>

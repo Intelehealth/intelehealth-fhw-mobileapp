@@ -594,8 +594,8 @@
     <string name="days">દિવસો</string>
     <string name="contact">સંપર્ક</string>
     <string name="has_a_new_prescription">એક નવું પ્રિસ્ક્રિપ્શન મળી ગયુ છે</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"હલો, ઇન્ટેલહેલ્થનો ઉપયોગ કરવા બદલ આભાર.તમારું પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરવા માટે અહિં ક્લિક કરો"</string>
-    <string name="and_enter_your_patient_id">"અને તમારી દરદી આઇડી લખો"</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"હલો, ઇન્ટેલહેલ્થનો ઉપયોગ કરવા બદલ આભાર.તમારું પ્રિસ્ક્રિપ્શન ડાઉનલોડ કરવા માટે અહિં ક્લિક કરો "</string>
+    <string name="and_enter_your_patient_id">" અને તમારી દરદી આઇડી લખો- "</string>
     <string name="whatsapp_presc_toast">ફાઇલ એક્સ્પ્લોરર-ઇન્ટર્નલ સ્ટોરેજ/ઇન્ટેલહેલ્થ_પીડીએફમાંથી પ્રિસ્ક્રિપ્શન પસંદ કરો</string>
 <!--    <string name="health_scheme_card">હેલ્થ સ્કીમ કાર્ડ*</string>-->
 <!--    <string name="mukhyamantri_amrutam_scheme">મુખ્યમંત્રી અમૃતમ્ યોજના</string>-->
