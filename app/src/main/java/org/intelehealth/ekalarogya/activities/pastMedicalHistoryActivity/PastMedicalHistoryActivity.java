@@ -400,7 +400,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
         } else {
             //if(patientHistoryMap.anySubSelected()){
             patientHistory = patientHistoryMap.generateLanguage();
-            if(!patientHistory.isEmpty() && !patientHistory.contains(" - <br/>")) {
+            if(patientHistory!=null && !patientHistory.isEmpty() && !patientHistory.contains(" - <br/>")) {
                 if (sessionManager.getCurrentLang().equalsIgnoreCase("hi")) {
                     patientHistoryHindi = patientHistoryMap.generateLanguage("hi");
                     ConfirmationDialog(patientHistory, patientHistoryHindi);
@@ -408,7 +408,7 @@ public class PastMedicalHistoryActivity extends AppCompatActivity implements Que
                     ConfirmationDialog(patientHistory, patientHistory);
                 }
             }else {
-                if (patientHistory.isEmpty() || patientHistory.contains(" - <br/>")) {
+                if (patientHistory==null || patientHistory.isEmpty() || patientHistory.contains(" - <br/>")) {
                     patientHistory="";
                     if (flag == true) { // only if OK clicked, collect this new info (old patient)
                         phistory = phistory + patientHistory; // only PMH updated

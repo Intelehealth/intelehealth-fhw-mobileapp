@@ -390,8 +390,8 @@ public class SyncDAO {
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
-//        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
-//        push only happen if any one data exists.
+//      String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
+//      push only happen if any one data exists.
         Logger.logD("url", url);
         if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
