@@ -962,7 +962,9 @@ public class IdentificationActivity extends AppCompatActivity {
                     Calendar cal = Calendar.getInstance();
                     cal.add(Calendar.YEAR, -mAgeYears);
                     cal.add(Calendar.MONTH, -mAgeMonths);
-                    cal.add(Calendar.DAY_OF_YEAR, -mAgeDays);
+                    cal.add(Calendar.DAY_OF_YEAR, -mAgeDays + 1);
+
+                    // have added one day because this method does not include today's day to calculate difference: By Nishita
 
                     //   Locale.setDefault(Locale.ENGLISH);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
