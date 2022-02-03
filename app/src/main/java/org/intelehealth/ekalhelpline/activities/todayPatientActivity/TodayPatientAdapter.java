@@ -196,14 +196,20 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                                 }
                             }
                         }
-                    } else {
+                    }
+                    else {
                         // Specilaity is not TLD Query and Agent Resolution
                         if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
                                 !todayPatient_Speciality.get(i).getVisit_speciality().equalsIgnoreCase("Agent Resolution")) {
 
                             if (holder.ivPriscription.getTag() != null && holder.ivPriscription.getTag().equals("1")) { //Prescription is Given
                                // do nothing //Prescription is GIVEN
-                            } else {
+                            }
+                            else if (todayPatient_Speciality.get(i).getVisit_speciality() != null &&
+                                    todayPatient_Speciality.get(i).getVisit_speciality().equalsIgnoreCase("Curiosity Resolution")) {
+                                holder.tld_query_tag.setVisibility(View.GONE);
+                            }
+                            else {
                                 holder.tld_query_tag.setText(R.string.doctor_visit_scheduled); //Prescription is NOT GIVEN
                                 holder.tld_query_tag.setTextColor(context.getResources().getColor(R.color.colorPrimary));
                                 holder.tld_query_tag.setBackgroundColor(context.getResources().getColor(R.color.tld_tag_bgcolor));
