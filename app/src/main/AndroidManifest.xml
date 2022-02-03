@@ -35,7 +35,6 @@
         android:roundIcon="@mipmap/ic_uninhibited_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activities.completedvisits.CompletedVisitsActivity"
