@@ -3397,7 +3397,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //       int i =  webView.getContentHeight();
         // Get a PrintManager instance
-        PrintManager printManager = (PrintManager) getApplicationContext().getSystemService(Context.PRINT_SERVICE); //context changed to application context to avoid activity finish crashes: By Nishita
+        PrintManager printManager = (PrintManager) VisitSummaryActivity.this.getSystemService(Context.PRINT_SERVICE); //context changed to application context to avoid activity finish crashes: By Nishita
 
         // Get a print adapter instance
         PrintDocumentAdapter printAdapter = webView.createPrintDocumentAdapter();
