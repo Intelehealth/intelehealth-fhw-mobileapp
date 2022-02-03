@@ -693,4 +693,6 @@
     <string name="text_new_visit">New Doctor Visit</string>
     <string name="text_new_advice">New Medical Advice</string>
     <string name="medical_advice">Medical Advice</string>
+    <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
+
 </resources>

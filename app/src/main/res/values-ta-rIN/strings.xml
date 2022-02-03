@@ -563,4 +563,6 @@
     <string name="complaint_dialog_title">அழைப்புக்கான காரணம்</string>
     <string name="visit_summary_complaint">அழைப்புக்கான காரணம்</string>
 
-</resources>
+
+    <string name="protocol_download_failed_alertdialog">நெறிமுறையைப் பதிவிறக்க முடியவில்லை. நெறிமுறை பதிவிறக்கத்தை மீண்டும் முயற்சிக்க \'ஆம்\' ஐ அழுத்தவும். டெமோ நெறிமுறைகளுடன் தொடர \'இல்லை\'</string>
+  </resources>

@@ -561,4 +561,6 @@
     <string name="complaint_dialog_title">కాల్ కారణం</string>
     <string name="visit_summary_complaint">కాల్ కారణం</string>
 
+    <string name="protocol_download_failed_alertdialog">ప్రోటోకాల్‌ను డౌన్‌లోడ్ చేయడం సాధ్యపడలేదు. ప్రోటోకాల్ డౌన్‌లోడ్‌ని మళ్లీ ప్రయత్నించడానికి \'అవును\' నొక్కండి. డెమో ప్రోటోకాల్‌లతో కొనసాగడానికి \'కాదు\'.</string>
+
 </resources>
