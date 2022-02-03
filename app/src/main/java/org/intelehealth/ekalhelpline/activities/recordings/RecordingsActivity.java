@@ -192,10 +192,13 @@ public class RecordingsActivity extends AppCompatActivity {
                         msg.setVisibility(View.GONE);
                     } else {
                         customProgressDialog.dismiss();
+                        msg.setVisibility(View.VISIBLE);
                         msg.setText(R.string.no_records_found);
                     }
                     recyclerView.setAdapter(new RecordingsAdapter(recordingList, RecordingsActivity.this));
                 } else {
+                    customProgressDialog.dismiss();
+                    msg.setVisibility(View.VISIBLE);
                     msg.setText(R.string.no_records_found);
                 }
             }

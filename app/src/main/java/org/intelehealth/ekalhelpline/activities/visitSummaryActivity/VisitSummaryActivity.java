@@ -1969,7 +1969,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(VisitSummaryActivity.this);
             alertDialog.setMessage(getResources().getString(R.string.wish_to_do_next));
             alertDialog.setCancelable(false);
-            alertDialog.setNegativeButton(getResources().getString(R.string.go_to_home),
+            alertDialog.setPositiveButton(getResources().getString(R.string.go_to_home),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -1978,12 +1978,6 @@ public class VisitSummaryActivity extends AppCompatActivity {
                             startActivity(i);
                         }
                     });
-            alertDialog.setPositiveButton(getResources().getString(R.string.save_and_continue), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int i) {
-                    dialog.dismiss();
-                }
-            });
             AlertDialog dialog = alertDialog.show();
             Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             positiveButton.setTextColor(context.getResources().getColor(R.color.colorPrimaryDark));

@@ -807,6 +807,9 @@
     <string name="doctor_resolved_comment">Doctor Resolution Resolved</string>
     <string name="reason_for_resolved">Select the reason for marking the visit as resolved</string>
     <string name="additional_comments">Additional Comments (if any)</string>
+    <string name="want_follow_up_text">Do you want to schedule a follow up?</string>
+    <string name="select_follow_up">Please select a follow-up date.</string>
+
 
 
 </resources>

@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.SearchRecentSuggestions;
 
 import androidx.annotation.NonNull;
@@ -71,6 +72,7 @@ public class SearchPatientActivity extends AppCompatActivity {
     FloatingActionButton new_patient;
     int limit = 20, offset = 0;
     boolean fullyLoaded = false;
+    Handler mHandler;
 
 
     @Override
@@ -104,6 +106,7 @@ public class SearchPatientActivity extends AppCompatActivity {
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         msg = findViewById(R.id.textviewmessage);
         recyclerView = findViewById(R.id.recycle);
+        mHandler = new Handler();
         LinearLayoutManager reLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(reLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -249,11 +252,18 @@ public class SearchPatientActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 Log.d("Hack", "in query text change");
-                SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
-                        SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
-                suggestions.clearHistory();
-                query = newText;
-                doQuery(newText);
+                mHandler.removeCallbacksAndMessages(null);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //Put your call to the server here (with mQueryString)
+                        SearchRecentSuggestions suggestions = new SearchRecentSuggestions(SearchPatientActivity.this,
+                                SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+                        suggestions.clearHistory();
+                        query = newText;
+                        doQuery(newText);
+                    }
+                }, 300);
                 return true;
             }
         });
@@ -277,6 +287,7 @@ public class SearchPatientActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
 
     /**

@@ -469,9 +469,14 @@ public class PatientsDAO {
 
 
         }
-        Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
-        IntelehealthApplication.getAppContext().startService(intent);
+        try {
+            Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
+            IntelehealthApplication.getAppContext().startService(intent);
+        }catch (IllegalStateException e){
+            e.printStackTrace();
+        }
         return isUpdated;
+
     }
 
     public List<PatientDTO> unsyncedPatients() throws DAOException {

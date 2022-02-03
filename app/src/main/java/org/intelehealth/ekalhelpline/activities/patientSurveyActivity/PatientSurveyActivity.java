@@ -4,6 +4,7 @@ import static org.intelehealth.ekalhelpline.utilities.StringUtils.switch_hi_endF
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -76,31 +77,33 @@ public class PatientSurveyActivity extends AppCompatActivity {
     EditText mComments;
 
     TextView mSkip;
-    TextView mSubmit;
+    TextView mSubmit, AR_Submit;
 
-    String rating = "0";
+    String rating = "0", ar_rating = "0";
     String comments;
 
     SessionManager sessionManager = null;
     String appLanguage;
 
     //Pre-defined note: By Nishita
+    Spinner followUpSpinner;
     Spinner notesSpinner;
     ArrayList<String> patientNoteList;
     ArrayAdapter<String> patientNoteAdapter;
     String noteText = "";
 
-    private RatingBar ratingBar;
+    private RatingBar ratingBar, AR_RatingBar;
 
     //Schedule Follow Up
-    TextView schedule_TV;
+    TextView schedule_TV, AR_scheduleTV, headingTV;
     String followUpDate = " ";
     DatePickerDialog datePicker;
     String visitType = " ";
     CardView noteSpinnerCV;
     TextView noteSpinnerTV;
-    LinearLayout additionalComLL;
+    LinearLayout additionalComLL, followUpLL, feedbackLL;
     EditText additionalCommET;
+    int array = R.array.yes_no;
 
     @Override
     public void onBackPressed() {
@@ -130,14 +133,22 @@ public class PatientSurveyActivity extends AppCompatActivity {
         }
         db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         context = getApplicationContext();
+        followUpLL = findViewById(R.id.followUpLL);
+        feedbackLL = findViewById(R.id.feedbackLL);
         noteSpinnerCV = findViewById(R.id.noteSpinnerCV);
         noteSpinnerTV = findViewById(R.id.textView4);
         additionalComLL = findViewById(R.id.additionalCommLL);
         additionalCommET = findViewById(R.id.additionalCommET);
+        followUpSpinner = findViewById(R.id.followUpSpinner);
         notesSpinner = findViewById(R.id.noteSpinner);
         patientNoteList = getPatientNoteList();
         patientNoteAdapter = new ArrayAdapter<>(PatientSurveyActivity.this, android.R.layout.simple_spinner_dropdown_item, patientNoteList);
         notesSpinner.setAdapter(patientNoteAdapter);
+        if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+            array = R.array.yes_no_hi;
+        ArrayAdapter<CharSequence> followUpAdapter = ArrayAdapter.createFromResource(this,array, android.R.layout.simple_spinner_dropdown_item);
+        followUpAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        followUpSpinner.setAdapter(followUpAdapter);
         mScaleButton1 = findViewById(R.id.button_scale_1);
         mScaleButton2 = findViewById(R.id.button_scale_2);
         mScaleButton3 = findViewById(R.id.button_scale_3);
@@ -146,10 +157,12 @@ public class PatientSurveyActivity extends AppCompatActivity {
         mComments = findViewById(R.id.editText_exit_survey);
         mSkip = findViewById(R.id.button_survey_skip);
         mSubmit = findViewById(R.id.button_survey_submit);
+        AR_Submit = findViewById(R.id.AR_survey_submit);
         ratingBar = findViewById(R.id.ratingBar);
+        AR_RatingBar = findViewById(R.id.AR_ratingBar);
         schedule_TV = findViewById(R.id.schedule_textView);
-
-
+        AR_scheduleTV = findViewById(R.id.AR_textView);
+        headingTV = findViewById(R.id.textView4);
         if(visitType.equals("curiosityResolution"))
         {
             mComments.setVisibility(View.GONE);
@@ -167,9 +180,21 @@ public class PatientSurveyActivity extends AppCompatActivity {
             schedule_TV.setText(getString(R.string.follow_up_already_scheduled) + " " + followUpDate);
         }
 
-        if(visitType.equalsIgnoreCase("Agent Resolution") || visitType.equalsIgnoreCase("follow-up"))
+        if(visitType.equalsIgnoreCase("Agent Resolution"))
         {
-            schedule_TV.setVisibility(View.VISIBLE);
+            followUpLL.setVisibility(View.VISIBLE);
+            feedbackLL.setVisibility(View.GONE);
+        }
+        else if (visitType.equalsIgnoreCase("follow-up"))
+        {
+            followUpLL.setVisibility(View.GONE);
+            feedbackLL.setVisibility(View.VISIBLE);
+            headingTV.setText(getString(R.string.exit_survey_select_spinner));
+            schedule_TV.setVisibility(View.GONE);
+        }
+        else
+        {
+            feedbackLL.setVisibility(View.VISIBLE);
         }
 
         // initialising the layout
@@ -180,33 +205,47 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                datePicker = new DatePickerDialog(PatientSurveyActivity.this, R.style.DialogTheme,new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
-                        calendar.set(Calendar.YEAR, year);
-                        calendar.set(Calendar.MONTH, month);
-                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        String myFormat = "dd-MM-yyyy"; //In which you need put here
-                        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
-                        schedule_TV.setText(getString(R.string.follow_up_scheduled_on) + " " + sdf.format(calendar.getTime()));
-                        followUpDate = sdf.format(calendar.getTime());
-                    }
-                },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                datePicker.getDatePicker().setMinDate(newCalendar.getTimeInMillis());
-                datePicker.show();
+                showDatePicker(calendar, newCalendar, "feedback");
             }
         });
 
+        AR_scheduleTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                showDatePicker(calendar, newCalendar, "followup");
+            }
+        });
+
+        followUpSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(followUpSpinner.getSelectedItem().equals("Yes") || followUpSpinner.getSelectedItem().equals("हाँ") )
+                { showDatePicker(calendar, newCalendar, "followup"); }
+                else if (followUpSpinner.getSelectedItem().equals("No") || followUpSpinner.getSelectedItem().equals("नहीं"))
+                {
+                    followUpLL.setVisibility(View.GONE);
+                    feedbackLL.setVisibility(View.VISIBLE);
+                    schedule_TV.setVisibility(View.GONE);
+                    followUpDate = " ";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         notesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     if(notesSpinner.getSelectedItem().equals("अन्य"))
-                            mComments.setVisibility(View.VISIBLE);
+                        mComments.setVisibility(View.VISIBLE);
                     else
                         mComments.setVisibility(View.GONE);
 
-                    if(notesSpinner.getSelectedItem().equals("टीएलडी बंद")){
+                    if(notesSpinner.getSelectedItem().equals("टीएलडी बंद") || visitType.equalsIgnoreCase("Agent Resolution") || visitType.equalsIgnoreCase("follow-up")){
                         schedule_TV.setVisibility(View.GONE);
                         followUpDate = " ";
                     }
@@ -220,7 +259,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
                     else
                         mComments.setVisibility(View.GONE);
 
-                    if(notesSpinner.getSelectedItem().equals("TLD Closed")) {
+                    if(notesSpinner.getSelectedItem().equals("TLD Closed") || visitType.equalsIgnoreCase("Agent Resolution")|| visitType.equalsIgnoreCase("follow-up")) {
                         schedule_TV.setVisibility(View.GONE);
                         followUpDate = " ";
                     }
@@ -258,6 +297,22 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
         resetScale();
 
+        AR_Submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ar_rating = String.valueOf(AR_RatingBar.getRating());
+                if(followUpSpinner.getSelectedItem().equals("Yes") && AR_scheduleTV.getVisibility()== View.GONE)
+                {
+                    Toast.makeText(PatientSurveyActivity.this,getString(R.string.select_follow_up),Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    uploadSurvey(ar_rating);
+                    endVisit();
+                }
+            }
+        });
+
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,7 +326,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
                 // validation for empty editText...
                 if(mComments.getVisibility() == View.VISIBLE &&
-                mComments.getText().toString().equalsIgnoreCase("")) {
+                        mComments.getText().toString().equalsIgnoreCase("")) {
                     mComments.setError(getResources().getString(R.string.error_field_required));
                     mComments.setFocusable(true);
                     mComments.setFocusableInTouchMode(true);
@@ -311,7 +366,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
                 if (rating != null && !TextUtils.isEmpty(rating) && !noteText.equalsIgnoreCase("") && (!noteText.equalsIgnoreCase("Select")))
                 {
                     Log.d(TAG, "Rating is " + rating);
-                    uploadSurvey();
+                    uploadSurvey(rating);
                     endVisit();
                 }
                 else if(notesSpinner.getVisibility()== View.VISIBLE && noteText.equalsIgnoreCase("Select"))
@@ -332,7 +387,14 @@ public class PatientSurveyActivity extends AppCompatActivity {
     {
         ArrayList<String> notes = new ArrayList<>();
         notes.add(getString(R.string.select));
-        if(visitType.equals("follow-up")|| visitType.equals("Agent Resolution"))
+        if(!visitType.equals("follow-up") && visitType.equals("Agent Resolution"))
+        {
+            notes.add(getString(R.string.issue_resolved));
+//            notes.add(getString(R.string.other_concern));
+//            notes.add(getString(R.string.unable_follow_up));
+            notes.add(getString(R.string.others));
+        }
+        else if (visitType.equals("follow-up"))
         {
             notes.add(getString(R.string.issue_resolved));
             notes.add(getString(R.string.other_concern));
@@ -364,7 +426,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
         rating = "0";
     }
 
-    private void uploadSurvey() {
+    private void uploadSurvey(String rating) {
 //        ENCOUNTER_PATIENT_EXIT_SURVEY
 
         EncounterDTO encounterDTO = new EncounterDTO();
@@ -473,5 +535,51 @@ public class PatientSurveyActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void showDatePicker(Calendar calendar, Calendar newCalendar, String type)
+    {
+        if(type.equalsIgnoreCase("followup"))
+        {
+            datePicker = new DatePickerDialog(PatientSurveyActivity.this, R.style.DialogTheme,new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    String myFormat = "dd-MM-yyyy"; //In which you need put here
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                    AR_scheduleTV.setVisibility(View.VISIBLE);
+                    AR_RatingBar.setVisibility(View.VISIBLE);
+                    AR_Submit.setVisibility(View.VISIBLE);
+                    AR_scheduleTV.setText(getString(R.string.follow_up_scheduled_on) + " " + sdf.format(calendar.getTime()));
+                    followUpDate = sdf.format(calendar.getTime());
+                }
+            },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            datePicker.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    followUpSpinner.setSelection(0);
+                }
+            });
+        }
+        else if(type.equalsIgnoreCase("feedback"))
+        {
+            datePicker = new DatePickerDialog(PatientSurveyActivity.this, R.style.DialogTheme,new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(android.widget.DatePicker view, int year, int month, int dayOfMonth) {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                    String myFormat = "dd-MM-yyyy"; //In which you need put here
+                    SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ENGLISH);
+                    schedule_TV.setText(getString(R.string.follow_up_scheduled_on) + " " + sdf.format(calendar.getTime()));
+                    followUpDate = sdf.format(calendar.getTime());
+                }
+            },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        }
+
+        datePicker.getDatePicker().setMinDate(newCalendar.getTimeInMillis());
+        datePicker.show();
+    }
 
 }
+
