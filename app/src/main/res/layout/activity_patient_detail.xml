@@ -1307,6 +1307,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal"
+                                android:visibility="gone"
                                 android:layout_marginTop="5dp"
                                 android:weightSum="4">
 
@@ -1532,6 +1533,7 @@
                                 android:layout_height="match_parent"
                                 android:orientation="horizontal"
                                 android:layout_marginTop="5dp"
+                                android:visibility="gone"
                                 android:weightSum="4">
 
                                 <EditText

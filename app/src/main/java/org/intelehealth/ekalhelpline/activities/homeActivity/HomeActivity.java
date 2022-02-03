@@ -53,7 +53,8 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.Closed_Visits_Activity;
+import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.ClosedVisitsActivity;
+import org.intelehealth.ekalhelpline.activities.completedvisits.CompletedVisitsActivity;
 import org.intelehealth.ekalhelpline.activities.completedvisits.Completed_Visits_Activity;
 import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
@@ -327,7 +328,7 @@ public class HomeActivity extends AppCompatActivity {
         c7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, Closed_Visits_Activity.class);
+                Intent intent = new Intent(HomeActivity.this, ClosedVisitsActivity.class);
                 startActivity(intent);
             }
         });
@@ -337,7 +338,7 @@ public class HomeActivity extends AppCompatActivity {
         c8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, Completed_Visits_Activity.class);
+                Intent intent = new Intent(HomeActivity.this, CompletedVisitsActivity.class);
                 startActivity(intent);
             }
         });
@@ -836,8 +837,8 @@ public class HomeActivity extends AppCompatActivity {
         String chwName = sessionManager1.getProviderID();
         long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
         long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
-        long closedPatientCount = Closed_Visits_Activity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
-        long completedPatientCount = Completed_Visits_Activity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long closedPatientCount = ClosedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long completedPatientCount = CompletedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
 
         if (followUpCount > 0) {

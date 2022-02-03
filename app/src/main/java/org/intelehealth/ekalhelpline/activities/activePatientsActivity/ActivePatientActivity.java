@@ -162,7 +162,7 @@ public class ActivePatientActivity extends AppCompatActivity {
             recyclerView.setVisibility(View.VISIBLE);
 
             List<ActivePatientModel> activePatientModels = doQuery(offset, chw_name);
-            activePatientModels = fetch_Prescription_Data(activePatientModels);
+//            activePatientModels = fetch_Prescription_Data(activePatientModels);
             List<ActivePatientModel> activeVisit_Speciality = activeVisits_Speciality(offset, chw_name); //get the speciality.
 
             mActivePatientAdapter = new ActivePatientAdapter(activePatientModels, ActivePatientActivity.this,

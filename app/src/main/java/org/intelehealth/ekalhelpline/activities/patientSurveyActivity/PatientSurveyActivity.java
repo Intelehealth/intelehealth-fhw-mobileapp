@@ -221,7 +221,10 @@ public class PatientSurveyActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(followUpSpinner.getSelectedItem().equals("Yes") || followUpSpinner.getSelectedItem().equals("हाँ") )
-                { showDatePicker(calendar, newCalendar, "followup"); }
+                {
+                    showDatePicker(calendar, newCalendar, "followup");
+                    noteText = "Yes";
+                }
                 else if (followUpSpinner.getSelectedItem().equals("No") || followUpSpinner.getSelectedItem().equals("नहीं"))
                 {
                     followUpLL.setVisibility(View.GONE);
@@ -506,7 +509,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
 
     public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
-        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
+        //as discussed with Sagar time changing to 10 minutes as the encounters not getting sync to server: By Nishita
+        long FIVE_MINS_IN_MILLIS = 10 * 60 * 1000;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long time = df.parse(timeStamp).getTime();
 

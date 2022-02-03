@@ -481,6 +481,7 @@
     <string name="update_protocols">Update Protocols</string>
     <string name="end_all_visit">Mark all visits as resolved</string>
     <string name="filter_by_creator">Filter by creator</string>
+    <string name="filter_by">Filter By:</string>
     <string name="planet_name">Planet Name</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -809,7 +810,6 @@
     <string name="additional_comments">Additional Comments (if any)</string>
     <string name="want_follow_up_text">Do you want to schedule a follow up?</string>
     <string name="select_follow_up">Please select a follow-up date.</string>
-
 
 
 </resources>

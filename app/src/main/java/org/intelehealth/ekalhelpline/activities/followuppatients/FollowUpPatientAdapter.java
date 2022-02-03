@@ -62,15 +62,23 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
 
             holder.bodyTextView.setText(body);
 
-            if(!patinet.getFollowup_date().equalsIgnoreCase("null")) {
+            if(patinet.getFollowUpType() == -1) {
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.lite_red));
                 holder.indicatorTextView.setText(context.getResources().getString(R.string.due_on) + " " + patinet.getFollowup_date().substring(0, 10));
             }
+            //commenting this as per Gobinda's instruction date should be visible instead of "Today" in all the cases.
+//            else if(patinet.getFollowUpType() == 0)
+//            {
+//                holder.linearLayout.setVisibility(View.VISIBLE);
+//                holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.green));
+//                holder.indicatorTextView.setText("Follow-Up Scheduled for Today");
+//            }
             else
             {
-                holder.linearLayout.setVisibility(View.GONE);
-                holder.indicatorTextView.setVisibility(View.GONE);
+                holder.linearLayout.setVisibility(View.VISIBLE);
+                holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.green));
+                holder.indicatorTextView.setText("Follow-Up Scheduled On: " + patinet.getFollowup_date().substring(0, 10));
             }
             if(patinet.getVisit_speciality().equalsIgnoreCase("TLD Query") || patinet.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
                     patinet.getVisit_speciality().contains("Gynecologist") || patinet.getVisit_speciality().contains("Ayurvedic Physician"))

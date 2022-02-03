@@ -102,7 +102,7 @@ public class FollowUpNotificationWorker extends Worker {
                             Date followUp = new SimpleDateFormat("dd-MM-yyyy").parse(followUpDate);
                             Date currentD = new SimpleDateFormat("dd-MM-yyyy").parse(currentDate);
                             int value = followUp.compareTo(currentD);
-                            if (value == -1 || value == 0) {
+                            if (value == -1 || value == 0 || value == 1) {
                                 count++;
                             }
                         } catch (Exception e) {
