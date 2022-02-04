@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+
 import com.google.gson.Gson;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -30,8 +31,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Toast;
 
 
+import org.intelehealth.msfarogyabharat.utilities.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -302,7 +305,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                 currentNode.getOption(groupPosition).setUnselected();
             }
 
-            if(!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
+            if (!currentNode.findDisplay().equalsIgnoreCase("Associated Symptoms")) {
                 //code added to handle multiple and single option selection.
                 Node rootNode = currentNode.getOption(groupPosition);
                 if (rootNode.isMultiChoice() && !question.isExcludedFromMultiChoice()) {
@@ -324,7 +327,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     }
                 }
             }
-          //  adapter.notifyDataSetChanged();
+            //  adapter.notifyDataSetChanged();
 
             if (!question.getInputType().isEmpty() && question.isSelected()) {
                 if (question.getInputType().equals("camera")) {
@@ -371,7 +374,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             String complaintString = currentNode.generateLanguage();
             String complaintStringHindi = currentNode.generateLanguage("hi");
 
-            if(complaintStringHindi.contains(", Pregnancy Week:") && complaintStringHindi.contains(" week")) {
+            if (complaintStringHindi != null && complaintStringHindi.contains(", Pregnancy Week:") && complaintStringHindi.contains(" week")) {
                 complaintStringHindi = complaintStringHindi
                         .replace("Pregnancy Week", "गर्भावस्था सप्ताह")
                         .replace("week", "हफ़्ते");
@@ -615,7 +618,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("সম্পৰ্কিত লক্ষণসমূহ")) ||
                     (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
-                    .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
+                            .equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (complaintsNodes.get(complaintIndex).getOptionsList().get(i).getText()
                     .equalsIgnoreCase("સંકળાયેલ લક્ષણો"))) {
 
                 optionsList.addAll(complaintsNodes.get(complaintIndex).getOptionsList().get(i).getOptionsList());
@@ -796,8 +799,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "દર અઠવાડિયે વખત")
                     .replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "વર્ષ દીઠ વખત")));
-        }
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
                     .replace("Question not answered", "প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই")
                     .replace("Patient reports -", "ৰোগীৰ প্ৰতিবেদন -")
@@ -825,7 +827,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "வாரத்திற்கு")
                     .replace("times per month", "ஒரு மாதத்திற்கு")
                     .replace("times per year", "வருடத்திற்கு")));
-        } 
+        }
         //Telugu Language Support...
         else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)
@@ -871,9 +873,7 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
                     .replace("times per week", "ആഴ്ചയിൽ തവണ")
                     .replace("times per month", "മാസത്തിൽ തവണ")
                     .replace("times per year", "വർഷത്തിൽ തവണ")));
-        }
-
-        else {
+        } else {
             alertDialogBuilder.setMessage(Html.fromHtml(currentNode.formQuestionAnswer(0)));
         }
 
