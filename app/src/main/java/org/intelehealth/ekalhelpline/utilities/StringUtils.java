@@ -771,6 +771,9 @@ public final class StringUtils {
     public static String switch_hi_caller_language (String val)
     {
         switch (val) {
+            case "Select":
+                val = "चुनिये";
+                break;
             case "English":
                 val = "अंग्रेज़ी";
                 break;
@@ -794,6 +797,9 @@ public final class StringUtils {
 
     public static String switch_hi_caller_language_edit(String val) {
         switch (val) {
+            case "चुनिये":
+                val = "Select";
+                break;
             case "अंग्रेज़ी":
                 val = "English";
                 break;
@@ -898,6 +904,9 @@ public final class StringUtils {
     }
     public static String switch_hi_callerRelation_edit(String val) {
         switch (val) {
+            case "चुनिये":
+                val = "Select";
+                break;
             case "रोगी स्वयं":
                 val = "Patient themselves";
                 break;
@@ -958,6 +967,9 @@ public final class StringUtils {
     }
     public static String switch_hi_numberRelation_edit(String val) {
         switch (val) {
+            case "चुनिये":
+                val = "Select";
+                break;
             case "रोगी स्वयं":
                 val = "Self";
                 break;
