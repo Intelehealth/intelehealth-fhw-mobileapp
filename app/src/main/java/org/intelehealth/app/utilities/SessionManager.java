@@ -51,6 +51,8 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
+    private static final String DISTRICTNAME = "DISTRICTNAME";
+    private static final String VILLAGENAME = "VILLAGENAME";
     private static final String COMPLAINT = "complaint_";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -164,6 +166,24 @@ public class SessionManager {
 
     public void setStateName(String stateName) {
         editor.putString(STATENAME, stateName);
+        editor.commit();
+    }
+
+    public String getDistrictName() {
+        return pref.getString(DISTRICTNAME, "");
+    }
+
+    public void setDistrictName(String districtName) {
+        editor.putString(DISTRICTNAME, districtName);
+        editor.commit();
+    }
+
+    public String getVillageName() {
+        return pref.getString(VILLAGENAME, "");
+    }
+
+    public void setVillageName(String villageName) {
+        editor.putString(VILLAGENAME, villageName);
         editor.commit();
     }
 
