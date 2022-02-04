@@ -536,11 +536,11 @@
     <string name="something_went_wrong">କିଛି ଭୁଲ ହୋଇ ଗଲା। ଦୟାକରି ଗ୍ରାହକ ସମର୍ଥନ ଦଳ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ |</string>
 
     <string name="app_reset_toast">ଆପ୍ ପୁନ et ସେଟ୍ ହୋଇଛି !</string>
-    <string name="sure_to_reset_app">ଆପଣ ନିଶ୍ଚିତ କି ଆପଣ ଆପ୍ ପୁନ res ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି??</string>
+    <string name="sure_to_reset_app">ଆପଣ ଆପ୍ପୁନଃସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
     <string name="resetting_app_dialog">ଆପ୍ ପୁନ et ସେଟ୍ କରୁଛି</string>
     <string name="reset_app">ଆପ୍ ପୁନ ସେଟ୍ କରନ୍ତୁ</string>
 
-    <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି ...</string>
+    <string name="loading_more">ଅଧିକ ଲୋଡ୍ କରୁଛି…</string>
     <string name="warning_app_update">ଦୟାକରି ଆପକୁ ସର୍ବଶେଷ ସଂସ୍କରଣକୁ ଅଦ୍ୟତନ କରନ୍ତୁ.</string>
     <string name="due_on">ଧାର୍ଯ୍ୟ ତାରିଖ:</string>
     <string name="title_follow_up">ପରିଦର୍ଶନଗୁଡିକ ଅନୁସରଣ କରନ୍ତୁ </string>
@@ -551,7 +551,7 @@
     <string name="app_sync"> ସିଙ୍କ୍ ଆପ୍ .. </string>
 
 
-<!--    <string name="cancel_appointment">Cancel Appointment</string>-->
+    <!--    <string name="cancel_appointment">Cancel Appointment</string>-->
 
 
     <string name="doctor_appointments">ଡାକ୍ତର ନିଯୁକ୍ତ</string>
@@ -590,60 +590,62 @@
     <string name="prescription_temp_c">ତାପମାତ୍ରା (C):</string>
     <string name="prescription_temp_f">ତାପମାତ୍ରା (F):</string>
 
-    <string name = "diagnosis">ନିଦାନ</string>
-    <string name = "primary"> ପ୍ରାଥମିକ</string>
-    <string name = "secondary">ଦ୍ିତୀୟ</string>
-    <string name = "provisiona">ଅସ୍ଥାୟୀ</string>
-    <string name = "confirmed">ନିଶ୍ଚିତ</string>
-    <string name = "recommended_medication">ସୁପାରିଶ କରାଯାଇଥିବା ଷଧ</string>
-    <string name = "medication">ଷଧ</string>
-    <string name = "strength">ଶକ୍ତ</string>
-    <string name = "units">ଏକକ (ଯଥା: mg)</string>
-    <string name = "units_tab">ୟୁନିଟ୍ (ଯଥା: ଟ୍ୟାବ୍ / ସିରପ୍)</string>
-    <string name = "for_duration">ଅବଧି ପାଇଁ</string>
-    <string name = "units_eg_days_weeks_etc">ୟୁନିଟ୍ (ଯଥା: ଦିନ / ସପ୍ତାହ / ଇତ୍ୟାଦି)</string>
-    <string name = "additional_instruction">ଅତିରିକ୍ତ ନିର୍ଦ୍ଦେଶ</string>
-    <string name = "recommended_tests">ସୁପାରିଶ କରାଯାଇଥିବା ପରୀକ୍ଷା</string>
-    <string name = "test">ପରୀକ୍ଷା</string>
-    <string name = "advice_or_refer_patient">ଉପଦେଶ କିମ୍ବା ରୋଗୀକୁ ଅନୁସରଣ କରନ୍ତ</string>
-    <string name = "notes">ଟିପ୍ପଣୀ</string>
-    <string name = "notes_not_shared_with_the_patient">ଟିପ୍ପଣୀ (ରୋଗୀ ସହିତ ଅଂଶୀଦାର ନୁହେଁ)</string>
-    <string name = "follow_up">ଅନୁସରଣ କରନ୍ତୁ</string>
-    <string name = "sign_and_submit">ସାଇନ୍ ଏବଂ ଦାଖଲ</string>
-    <string name = "add_test">ପରୀକ୍ଷା ଯୋଡନ୍ତୁ</string>
-    <string name = "add_advice">ଉପଦେଶ ଯୋଡନ୍ତୁ</string>
-    <string name = "add_note">ଟିପ୍ପଣୀ ଯୋଡନ୍ତୁ</string>
-    <string name = "schedule_a_follow_up">ଏକ ଅନୁସରଣ କାର୍ଯ୍ୟସୂଚୀ</string>
-    <string name = "submit">ଦାଖଲ</string>
-    <string name = "add_meds">ମେଡସ୍ ଯୋଡନ୍ତୁ</string>
-    <string name = "add_diagnosis">ନିଦାନ ଯୋଡନ୍ତୁ</string>
-    <string name = "startVisitNote">ଟିପ୍ପଣୀ ପରିଦର୍ଶନ ଆରମ୍ଭ କରନ୍ତୁ</string>
-    <string name = "prescGivenSuccessfully">ଧନ୍ୟବାଦ! ପ୍ରେସକ୍ରିପସନ୍ ସଫଳତାର ସହିତ</string>
-    <string name = "morethanonefollowupnotallowed">ଦୟାକରି ଏକ ସମୟରେ କେବଳ ଗୋଟିଏ ଅନୁସରଣ ପ୍ରଦାନ କରନ୍ତୁ</string>
-    <string name = "amount">ପରିମାଣ</string>
-    <string name = "frequency">ଫ୍ରିକ୍ୱେନ୍ସି</string>
-    <string name = "route_optional">ମାର୍ଗ (ବ tion କଳ୍ପିକ)</string>
-    <string name = "reason_optional">କାରଣ (ବ tion କଳ୍ପିକ)</string>
-    <string name = "choose_a_date">ଏକ ତାରିଖ ବାଛନ୍ତୁ</string>
-    <string name = "follow_up_remark">ଟିପ୍ପଣୀ</string>
-    <string name = "visit_summary_upload_reminder_prescription" translatable = "false">ପ୍ରେସକ୍ରିପସନ୍ ଦେବାକୁ ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
-    <string name = "visit_summary_prescription_already_given">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ପ୍ରଦାନ କରାଯାଇଛି | ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="diagnosis">ନିଦାନ</string>
+    <string name="primary"> ପ୍ରାଥମିକ</string>
+    <string name="secondary">ଦ୍ିତୀୟ</string>
+    <string name="provisiona">ଅସ୍ଥାୟୀ</string>
+    <string name="confirmed">ନିଶ୍ଚିତ</string>
+    <string name="recommended_medication">ସୁପାରିଶ କରାଯାଇଥିବା ଷଧ</string>
+    <string name="medication">ଷଧ</string>
+    <string name="strength">ଶକ୍ତ</string>
+    <string name="units">ଏକକ (ଯଥା: mg)</string>
+    <string name="units_tab">ୟୁନିଟ୍ (ଯଥା: ଟ୍ୟାବ୍ / ସିରପ୍)</string>
+    <string name="for_duration">ଅବଧି ପାଇଁ</string>
+    <string name="units_eg_days_weeks_etc">ୟୁନିଟ୍ (ଯଥା: ଦିନ / ସପ୍ତାହ / ଇତ୍ୟାଦି)</string>
+    <string name="additional_instruction">ଅତିରିକ୍ତ ନିର୍ଦ୍ଦେଶ</string>
+    <string name="recommended_tests">ସୁପାରିଶ କରାଯାଇଥିବା ପରୀକ୍ଷା</string>
+    <string name="test">ପରୀକ୍ଷା</string>
+    <string name="advice_or_refer_patient">ଉପଦେଶ କିମ୍ବା ରୋଗୀକୁ ଅନୁସରଣ କରନ୍ତ</string>
+    <string name="notes">ଟିପ୍ପଣୀ</string>
+    <string name="notes_not_shared_with_the_patient">ଟିପ୍ପଣୀ (ରୋଗୀ ସହିତ ଅଂଶୀଦାର ନୁହେଁ)</string>
+    <string name="follow_up">ଅନୁସରଣ କରନ୍ତୁ</string>
+    <string name="sign_and_submit">ସାଇନ୍ ଏବଂ ଦାଖଲ</string>
+    <string name="add_test">ପରୀକ୍ଷା ଯୋଡନ୍ତୁ</string>
+    <string name="add_advice">ଉପଦେଶ ଯୋଡନ୍ତୁ</string>
+    <string name="add_note">ଟିପ୍ପଣୀ ଯୋଡନ୍ତୁ</string>
+    <string name="schedule_a_follow_up">ଏକ ଅନୁସରଣ କାର୍ଯ୍ୟସୂଚୀ</string>
+    <string name="submit">ଦାଖଲ</string>
+    <string name="add_meds">ମେଡସ୍ ଯୋଡନ୍ତୁ</string>
+    <string name="add_diagnosis">ନିଦାନ ଯୋଡନ୍ତୁ</string>
+    <string name="startVisitNote">ଟିପ୍ପଣୀ ପରିଦର୍ଶନ ଆରମ୍ଭ କରନ୍ତୁ</string>
+    <string name="prescGivenSuccessfully">ଧନ୍ୟବାଦ! ପ୍ରେସକ୍ରିପସନ୍ ସଫଳତାର ସହିତ</string>
+    <string name="morethanonefollowupnotallowed">ଦୟାକରି ଏକ ସମୟରେ କେବଳ ଗୋଟିଏ ଅନୁସରଣ ପ୍ରଦାନ କରନ୍ତୁ</string>
+    <string name="amount">ପରିମାଣ</string>
+    <string name="frequency">ଫ୍ରିକ୍ୱେନ୍ସି</string>
+    <string name="route_optional">ମାର୍ଗ (ବ tion କଳ୍ପିକ)</string>
+    <string name="reason_optional">କାରଣ (ବ tion କଳ୍ପିକ)</string>
+    <string name="choose_a_date">ଏକ ତାରିଖ ବାଛନ୍ତୁ</string>
+    <string name="follow_up_remark">ଟିପ୍ପଣୀ</string>
+    <string name="visit_summary_upload_reminder_prescription" translatable="false">ପ୍ରେସକ୍ରିପସନ୍ ଦେବାକୁ ଚେଷ୍ଟା କରିବା ପୂର୍ବରୁ ଦୟାକରି ପ୍ରଥମେ ଅପଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="visit_summary_prescription_already_given">ପ୍ରେସକ୍ରିପସନ୍ ପୂର୍ବରୁ ପ୍ରଦାନ କରାଯାଇଛି | ଦୟାକରି ପ୍ରେସକ୍ରିପସନ୍ ଡାଉନଲୋଡ୍ କରନ୍ତୁ</string>
 
-    <string name = "book_appointment"> ବୁକ୍ ନିଯୁକ୍ତି </string>
-    <string name = "reschedule_appointment"> ପୁନ ched ନିର୍ଦ୍ଧାରଣ ନିଯୁକ୍ତି </string>
-    <string name = "appointment_booking_confirmation_txt"> ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
-    <string name = "appointment_booking_cancel_confirmation_txt"> ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
-    <string name = "cancel_appointment" tools:ignore="DuplicateDefinition">ନିଯୁକ୍ତି ବାତିଲ୍</string>
-    <string name = "slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନୁହେଁ!</string>
-    <string name = "appointment_empty_message"> ଆପଣଙ୍କର କ appointment ଣସି ନିଯୁକ୍ତି ନାହିଁ! </string>
-    <string name = "appointment_listing_title"> ନିଯୁକ୍ତି ତାଲିକା </string>
-    <string name = "appointment_booking_title"> ନିଯୁକ୍ତି ବୁକିଂ </string>
-    <string name = "appointment_for"> ନିଯୁକ୍ତି </string> ପାଇଁ |
-    <string name = "please_select_appointment_slot"> ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ </string> ଚୟନ କରନ୍ତୁ |
-    <string name = "please_select_speciality"> ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ! </string>
+    <string name="book_appointment"> ବୁକ୍ ନିଯୁକ୍ତି </string>
+    <string name="reschedule_appointment"> ପୁନ ched ନିର୍ଦ୍ଧାରଣ ନିଯୁକ୍ତି </string>
+    <string name="appointment_booking_confirmation_txt"> ଆପଣ ଏହି ସ୍ଲଟ୍ ବୁକ୍ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
+    <string name="appointment_booking_cancel_confirmation_txt"> ଆପଣ ନିଯୁକ୍ତି ବାତିଲ କରିବାକୁ ନିଶ୍ଚିତ କି? </string>
+    <string name="cancel_appointment" tools:ignore="DuplicateDefinition">ନିଯୁକ୍ତି ବାତିଲ୍</string>
+    <string name="slot_empty_message">ମନୋନୀତ ତାରିଖ ଏବଂ ବିଶେଷତା ପାଇଁ ନିଯୁକ୍ତି ସ୍ଲଟ୍ ଉପଲବ୍ଧ ନୁହେଁ!</string>
+    <string name="appointment_empty_message"> ଆପଣଙ୍କର କ appointment ଣସି ନିଯୁକ୍ତି ନାହିଁ! </string>
+    <string name="appointment_listing_title"> ନିଯୁକ୍ତି ତାଲିକା </string>
+    <string name="appointment_booking_title"> ନିଯୁକ୍ତି ବୁକିଂ </string>
+    <string name="appointment_for"> ନିଯୁକ୍ତି </string>
+    ପାଇଁ |
+    <string name="please_select_appointment_slot"> ଦୟାକରି ନିଯୁକ୍ତି ସ୍ଲଟ୍ </string>
+    ଚୟନ କରନ୍ତୁ |
+    <string name="please_select_speciality"> ଦୟାକରି ବିଶେଷତା ବାଛନ୍ତୁ! </string>
 
-    <string name = "yes">ହଁ</string>
-    <string name = "no">ନା லை</string>
+    <string name="yes">ହଁ</string>
+    <string name="no">ନା லை</string>
     <string name="type_to_search">ସନ୍ଧାନ ପାଇଁ ଟାଇପ୍ କରନ୍ତୁ ..</string>
 
     <!--    <string name="title_follow_up">ഫോളോ അപ്പ് സന്ദർശനങ്ങൾ</string>-->

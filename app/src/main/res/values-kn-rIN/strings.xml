@@ -6,7 +6,7 @@
     <string name="hint_required">ಅಗತ್ಯವಿದೆ</string>
     <string name="hint_optional">ಐಚ್ಛಿಕ</string>
     <string name="tag_optional">ಐಚ್ಛಿಕ</string>
-    <string name="generic_ok" >ಒಕೆ</string>
+    <string name="generic_ok">ಒಕೆ</string>
     <string name="generic_cancel">ರದ್ದುಮಾಡಿ</string>
     <string name="generic_yes">ಹೌದು</string>
     <string name="generic_no">ಇಲ್ಲ</string>
@@ -208,8 +208,8 @@
     <string name="header_medical_history">ಇತಿಹಾಸ</string>
     <string name="button_new_visit">ಹೊಸ ರೋಗಿಯ ಭೇಟಿಯನ್ನು ಪ್ರಾರಂಭಿಸಿ</string>
     <string name="header_previous_visits">ಹಿಂದಿನ ಭೇಟಿಗಳು</string>
-    <string name="header_patient_history">ರೋಗಿಯ ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
-    <string name="header_family_history">ಕುಟುಂಬದ  ವೈದ್ಯಕೀಯ ಇತಿಹಾಸ</string>
+    <string name="header_patient_history">ರೋಗಿಯ\nವೈದ್ಯಕೀಯ\nಇತಿಹಾಸ</string>
+    <string name="header_family_history">ಕುಟುಂಬದ\nವೈದ್ಯಕೀಯ\nಇತಿಹಾಸ</string>
     <string name="string_no_hist">ಅನಾರೋಗ್ಯದ ಇತಿಹಾಸವಿಲ್ಲ</string>
     <string name="row_patient_id">ರೋಗಿಯ ಐಡಿ</string>
     <string name="row_dob">ಹುಟ್ತಿದ ದಿನ</string>
@@ -545,7 +545,7 @@
 
 
     <!--New Ayu Related Changes-->
-    <string name="what_is_the_reason_for_your_visit" >ನಿಮ್ಮ ಭೇಟಿಗೆ ಕಾರಣವೇನು?</string>
+    <string name="what_is_the_reason_for_your_visit">ನಿಮ್ಮ ಭೇಟಿಗೆ ಕಾರಣವೇನು?</string>
     <string name="swipe_down_to_return">ಮುಂದೆ ಹೋಗಲು ಮೇಲಕ್ಕೆ ಮತ್ತು ಹಿಂದೆ ಹೋಗಲು ಕೆಳಗೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
     <string name="swipe_up">ಮುಂದಿನದಕ್ಕೆ ಮೇಲಕ್ಕೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
     <string name="swipe_down">ಹಿಂದಿನದಕ್ಕೆ ಕೆಳಗೆ ಸ್ವೈಪ್ ಮಾಡಿ</string>
@@ -667,7 +667,7 @@
     <string name="take_photo">ಭಾವಚಿತ್ರವನ್ನು ತೆಗಿರಿ</string>
     <string name="choose_from_gallery">ಗ್ಯಾಲರಿಯಿಂದ ಆರಿಸಿ</string>
     <string name="additional_doc_image_picker_title">ಹೆಚ್ಚುವರಿ ದಾಖಲೆಗಳನ್ನು ಸೇರಿಸಿ!</string>
-    <string name = "change_languages">ಭಾಷೆಗಳನ್ನು ಬದಲಿಸಿ</string>
+    <string name="change_languages">ಭಾಷೆಗಳನ್ನು ಬದಲಿಸಿ</string>
 
     <string name="loading_more">ಇನ್ನಷ್ಟು ಲೋಡ್ ಆಗುತ್ತಿದೆ...</string>
     <string name="warning_app_update">ದಯವಿಟ್ಟು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಗೆ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ನವೀಕರಿಸಿ.</string>
@@ -682,7 +682,7 @@
     <string name="resetting_app_dialog">ಅಪ್ಲಿಕೇಶನ್ ಮರುಹೊಂದಿಸಲಾಗುತ್ತಿದೆ</string>
     <string name="sure_to_reset_app">ನೀವು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
 
-<!--    //ಅಪ್ಲಿಕೇಶನ್ ಕಾರ್ಯವನ್ನು ಮರುಹೊಂದಿಸಿ-->
+    <!--    //ಅಪ್ಲಿಕೇಶನ್ ಕಾರ್ಯವನ್ನು ಮರುಹೊಂದಿಸಿ-->
     <string name="sync_failed">ಸಿಂಕ್ ವಿಫಲವಾಗಿದೆ! ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
     <string name="no_network_sync">ನೀವು ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
     <string name="app_sync">ಅಪ್ಲಿಕೇಶನ್ ಸಿಂಕ್ ಮಾಡಲಾಗುತ್ತಿದೆ..</string>

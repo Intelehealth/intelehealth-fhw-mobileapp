@@ -1,5 +1,18 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+import static org.intelehealth.app.utilities.StringUtils.getFullMonthName;
+
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
@@ -140,7 +153,7 @@ public class HomeActivity extends AppCompatActivity {
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView findPatients_textview, todaysVisits_textview,
-            activeVisits_textview,appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
+            activeVisits_textview, appointment_textview, followup_textview, videoLibrary_textview, help_textview, tvTodayVisitsBadge, tvActiveVisitsBadge;
     private ObjectAnimator syncAnimator;
 
     private void saveToken() {
@@ -155,6 +168,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.v(TAG, "onNewIntent");
         catchFCMMessageData();
     }
+
     private void catchFCMMessageData() {
         // get the chat notification click info
         if (getIntent().getExtras() != null) {
@@ -238,6 +252,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -312,7 +327,7 @@ public class HomeActivity extends AppCompatActivity {
         followup_textview = findViewById(R.id.followUpVisittxt);
         followup_textview.setText(R.string.title_follow_up);
 
-  appointment_textview = findViewById(R.id.appointment_textview);
+        appointment_textview = findViewById(R.id.appointment_textview);
         appointment_textview.setText(R.string.doctor_appointments);
 
         videoLibrary_textview = findViewById(R.id.videoLibrary_textview);
@@ -395,7 +410,8 @@ public class HomeActivity extends AppCompatActivity {
 
         ivSync = findViewById(R.id.iv_sync);
 
-        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+        setLastSyncTime(getString(R.string.last_synced) + "\n" + sessionManager.getLastSyncDateTime());
+//        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
         locationSetupTextView.setText(getString(R.string.location_setup) + " " + sessionManager.getLocationName());
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
@@ -447,7 +463,6 @@ public class HomeActivity extends AppCompatActivity {
 
         showProgressbar();
     }
-
 
 
     //function for handling the video library feature...
@@ -767,12 +782,10 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.restAppOption:
 
-                if((isNetworkConnected()))
-                {
+                if ((isNetworkConnected())) {
                     mResetSyncDialog.show();
                     boolean isSynced = syncUtils.syncForeground("home");
-                    if(isSynced)
-                    {
+                    if (isSynced) {
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
@@ -780,17 +793,13 @@ public class HomeActivity extends AppCompatActivity {
                                 showResetConfirmationDialog();
                             }
                         }, 3000);
-                    }
-                    else
-                    {
+                    } else {
                         mResetSyncDialog.dismiss();
                         DialogUtils dialogUtils = new DialogUtils();
                         dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
                     }
                     return true;
-                }
-                else
-                {
+                } else {
                     DialogUtils dialogUtils = new DialogUtils();
                     dialogUtils.showOkDialog(this, getString(R.string.error_network), getString(R.string.no_network_sync), getString(R.string.generic_ok));
                 }
@@ -1140,7 +1149,9 @@ public class HomeActivity extends AppCompatActivity {
                     showBadge();
                 }
             }
-            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+
+            setLastSyncTime(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+//            lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //          lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 
             if (syncAnimator != null && syncAnimator.getCurrentPlayTime() > 200) {
@@ -1251,10 +1262,12 @@ public class HomeActivity extends AppCompatActivity {
         try {
             File dir = context.getCacheDir();
             boolean success = deleteDir(dir);
-            if(success){
+            if (success) {
                 clearAppData();
             }
-        } catch (Exception e) { e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean deleteDir(File dir) {
@@ -1267,10 +1280,51 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
             return dir.delete();
-        } else if(dir!= null && dir.isFile()) {
+        } else if (dir != null && dir.isFile()) {
             return dir.delete();
         } else {
             return false;
+        }
+    }
+
+    private void setLastSyncTime(String dob) {
+        String convertedString = getFullMonthName(dob);
+
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            String sync_text = en__hi_dob(convertedString); //to show text of English into Hindi...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            String sync_text = en__or_dob(convertedString); //to show text of English into Odiya...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+            String sync_text = en__bn_dob(convertedString); //to show text of English into Odiya...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+            String sync_text = en__gu_dob(convertedString); //to show text of English into Gujarati...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+            String sync_text = en__te_dob(convertedString); //to show text of English into telugu...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            String sync_text = en__mr_dob(convertedString); //to show text of English into telugu...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            String sync_text = en__as_dob(convertedString); //to show text of English into telugu...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            String sync_text = en__ml_dob(convertedString); //to show text of English into telugu...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+            String sync_text = en__kn_dob(convertedString); //to show text of English into telugu...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+            String sync_text = en__ru_dob(convertedString); //to show text of English into Russian...
+            lastSyncTextView.setText(sync_text);
+        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+            String sync_text = en__ta_dob(convertedString); //to show text of English into Tamil...
+            lastSyncTextView.setText(sync_text);
+        } else {
+            lastSyncTextView.setText(dob);
         }
     }
 
@@ -1278,13 +1332,13 @@ public class HomeActivity extends AppCompatActivity {
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                Toast.makeText(getApplicationContext(),getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.app_reset_toast), Toast.LENGTH_LONG).show();
                 mRefreshProgressDialog.dismiss();
-                ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+                ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
             } else {
                 String packageName = getApplicationContext().getPackageName();
                 Runtime runtime = Runtime.getRuntime();
-                runtime.exec("pm clear "+packageName);
+                runtime.exec("pm clear " + packageName);
             }
 
         } catch (Exception e) {

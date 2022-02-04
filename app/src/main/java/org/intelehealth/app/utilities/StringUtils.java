@@ -1870,6 +1870,21 @@ public final class StringUtils {
         return dob_string;
     }
 
+    public static String getFullMonthName(String dobString) {
+        return dobString
+                .replace("Jan", "January")
+                .replace("Feb", "February")
+                .replace("Mar", "March")
+                .replace("Apr", "April")
+                .replace("Jun", "June")
+                .replace("Jul", "July")
+                .replace("Aug", "August")
+                .replace("Sept", "September")
+                .replace("Oct", "October")
+                .replace("Nov", "November")
+                .replace("Dec", "December");
+
+    }
 
     public static String hi_or_bn_en_noEdit(String dobString, String locale) {
 
@@ -3238,8 +3253,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-       else if (locale.equalsIgnoreCase("bn")) {
+        } else if (locale.equalsIgnoreCase("bn")) {
             switch (val) {
                 case "Sunday":
                     val = "রবিবার";
@@ -3267,8 +3281,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-       else if (locale.equalsIgnoreCase("gu")) {
+        } else if (locale.equalsIgnoreCase("gu")) {
             switch (val) {
                 case "Sunday":
                     val = "રવિવાર";
@@ -3296,8 +3309,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-       else if (locale.equalsIgnoreCase("hi")) {
+        } else if (locale.equalsIgnoreCase("hi")) {
             switch (val) {
                 case "Sunday":
                     val = "रविवार";
@@ -3325,8 +3337,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-       else if (locale.equalsIgnoreCase("kn")) {
+        } else if (locale.equalsIgnoreCase("kn")) {
             switch (val) {
                 case "Sunday":
                     val = "ಭಾನುವಾರ";
@@ -3354,9 +3365,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-
-       else if (locale.equalsIgnoreCase("ml")) {
+        } else if (locale.equalsIgnoreCase("ml")) {
             switch (val) {
                 case "Sunday":
                     val = "ഞായറാഴ്ച";
@@ -3384,9 +3393,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-
-     else   if (locale.equalsIgnoreCase("mr")) {
+        } else if (locale.equalsIgnoreCase("mr")) {
             switch (val) {
                 case "Sunday":
                     val = "रविवार";
@@ -3414,9 +3421,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-
-      else  if (locale.equalsIgnoreCase("or")) {
+        } else if (locale.equalsIgnoreCase("or")) {
             switch (val) {
                 case "Sunday":
                     val = "ରବିବାର";
@@ -3444,9 +3449,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-
-      else  if (locale.equalsIgnoreCase("ru")) {
+        } else if (locale.equalsIgnoreCase("ru")) {
             switch (val) {
                 case "Sunday":
                     val = "Воскресенье";
@@ -3474,9 +3477,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-
-     else   if (locale.equalsIgnoreCase("ta")) {
+        } else if (locale.equalsIgnoreCase("ta")) {
             switch (val) {
                 case "Sunday":
                     val = "ஞாயிற்றுக்கிழமை";
@@ -3504,8 +3505,7 @@ public final class StringUtils {
                     return val;
             }
 
-        }
-         else if (locale.equalsIgnoreCase("te")) {
+        } else if (locale.equalsIgnoreCase("te")) {
 
             switch (val) {
                 case "Sunday":
@@ -3534,8 +3534,9 @@ public final class StringUtils {
                     return val;
             }
 
+        } else {
+            return val;
         }
-         else{ return val ;}
         return val;
     }
 
@@ -3555,8 +3556,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-        else if (locale.equalsIgnoreCase("as")) {
+        } else if (locale.equalsIgnoreCase("as")) {
 
             switch (val.toLowerCase()) {
                 case "booked":
@@ -3571,8 +3571,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-       else  if (locale.equalsIgnoreCase("bn")) {
+        } else if (locale.equalsIgnoreCase("bn")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "বুক করা";
@@ -3586,8 +3585,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-       else if (locale.equalsIgnoreCase("gu")) {
+        } else if (locale.equalsIgnoreCase("gu")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "બુક કરેલ";
@@ -3601,8 +3599,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-       else if (locale.equalsIgnoreCase("hi")) {
+        } else if (locale.equalsIgnoreCase("hi")) {
 
             switch (val.toLowerCase()) {
                 case "booked":
@@ -3617,8 +3614,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-      else  if (locale.equalsIgnoreCase("kn")) {
+        } else if (locale.equalsIgnoreCase("kn")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "ಬುಕ್ ಮಾಡಿದೆ";
@@ -3632,8 +3628,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-      else  if (locale.equalsIgnoreCase("ml")) {
+        } else if (locale.equalsIgnoreCase("ml")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "ബുക്ക് ചെയ്തു";
@@ -3647,8 +3642,7 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-      else  if (locale.equalsIgnoreCase("mr")) {
+        } else if (locale.equalsIgnoreCase("mr")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "बुक केले";
@@ -3662,25 +3656,23 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-      else  if (locale.equalsIgnoreCase("or")) {
-                switch (val.toLowerCase()) {
+        } else if (locale.equalsIgnoreCase("or")) {
+            switch (val.toLowerCase()) {
 
 
-                    case "booked":
-                        val = "ବୁକ୍ ହୋଇଛି";
-                        break;
-                    case "canceled":
-                        val = "ବାତିଲ";
-                        break;
-                    case "visit closed":
-                        val = "ପରିଦର୍ଶନ ବନ୍ଦ";
-                        break;
-                    default:
-                        return val;
+                case "booked":
+                    val = "ବୁକ୍ ହୋଇଛି";
+                    break;
+                case "canceled":
+                    val = "ବାତିଲ";
+                    break;
+                case "visit closed":
+                    val = "ପରିଦର୍ଶନ ବନ୍ଦ";
+                    break;
+                default:
+                    return val;
             }
-        }
-      else  if (locale.equalsIgnoreCase("ta")) {
+        } else if (locale.equalsIgnoreCase("ta")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "பதிவு செய்யப்பட்டது";
@@ -3695,10 +3687,8 @@ public final class StringUtils {
                     return val;
 
 
-
             }
-        }
-      else  if (locale.equalsIgnoreCase("te")) {
+        } else if (locale.equalsIgnoreCase("te")) {
             switch (val.toLowerCase()) {
                 case "booked":
                     val = "బుక్ చేసుకున్నారు";
@@ -3712,9 +3702,8 @@ public final class StringUtils {
                 default:
                     return val;
             }
-        }
-      else{
-          return val;
+        } else {
+            return val;
         }
         return val;
     }
