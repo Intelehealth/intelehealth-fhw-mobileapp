@@ -590,6 +590,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
+                if(position<timeAdapter.getCount() && position!=0)
                 selectedSubscriptionTime = timeAdapter.getItem(position);
             }
 
@@ -639,14 +640,6 @@ public class PatientDetailActivity extends AppCompatActivity {
 
                                 SubscriptionStatus.UserData userData = body.userdata.get(0);
 
-                                if (!gender.equalsIgnoreCase(userData.genderselected)) {
-                                    SubscriptionStatus.UserData userData2 = null;
-                                    if (body.userdata.size() > 1) {
-                                        userData2 = body.userdata.get(1);
-                                    }
-                                    initSubscription2(gender,  allBuckets, userData2);
-                                }
-
                                 /* This feature change i.e. populating spinners on the basis of the agant's gender is done for Sprint2 release
                                 Hence the code changes were done keeping in mind the data for already exiting patients and this was the best suited approach found.
                                 //TODO:API response needs to be modified in order to handle several other cases conveniently in future.
@@ -667,19 +660,35 @@ public class PatientDetailActivity extends AppCompatActivity {
                                 timeAdapter = ArrayAdapter.createFromResource(PatientDetailActivity.this, preferred_time[0], android.R.layout.simple_spinner_dropdown_item);
                                 spinner_pref_time.setAdapter(timeAdapter);
 
-                                for (int i = 0; i < buckets.size(); i++) {
-                                    if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
-                                        spinner_pref_bucket.setSelection(i);
+//                                for (int i = 0; i < buckets.size(); i++) {
+//                                    if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
+//                                        spinner_pref_bucket.setSelection(i);
                                         if (!TextUtils.isEmpty(userData.slotselected) && TextUtils.isDigitsOnly(userData.slotselected)) {
                                                 int slotSelect = Integer.parseInt(userData.slotselected);
-                                                spinner_pref_time.setSelection(slotSelect); }
+                                                //This is being done as required from backend side by Satyadeep.
+                                                if(slotSelect == 3 && userData.genderselected.equalsIgnoreCase("F"))
+                                                    spinner_pref_time.setSelection(2);
+                                                else if(slotSelect == 2 && userData.genderselected.equalsIgnoreCase("F"))
+                                                    spinner_pref_time.setSelection(3);
+                                                else
+                                                    spinner_pref_time.setSelection(slotSelect);
+                                        }
 //                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
 //                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
 //                                                spinner_pref_time.setSelection(i1);
 //                                                break;
-                                        break;
+//                                        break;
+//                                    }
+//                                }
+
+                                if (body.userdata.size()>1 || !gender.equalsIgnoreCase(userData.genderselected)) {
+                                    SubscriptionStatus.UserData userData2 = null;
+                                    if (body.userdata.size() > 1) {
+                                        userData2 = body.userdata.get(1);
                                     }
+                                    initSubscription2(gender,  allBuckets, userData2);
                                 }
+
 
                                 updateSubscriptionUI(false, 0);
                                 findViewById(R.id.bucket_language).setVisibility(View.GONE);
@@ -721,7 +730,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 SubscriptionData data = new SubscriptionData();
                 data.gender = gender;
                 data.phonenumber = patient_new.getPhone_number();
-                data.bucketsubscribedto = selectedBucket;
+                data.bucketsubscribedto = 999;
                 data.slotselected = selectedSubscriptionTime.toString();
                 data.subscribedby = sessionManager.getProviderID();
                 data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language.getSelectedItemPosition()];
@@ -799,7 +808,8 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0)
                     return;
-                selectedSubscriptionTime2 = timeAdapter.getItem(position);
+                if(position<timeAdapter.getCount() && position!=0)
+                    selectedSubscriptionTime2 = timeAdapter.getItem(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -846,20 +856,26 @@ public class PatientDetailActivity extends AppCompatActivity {
             timeAdapter = ArrayAdapter.createFromResource(PatientDetailActivity.this, preferred_time[0], android.R.layout.simple_spinner_dropdown_item);
             spinner_pref_time2.setAdapter(timeAdapter);
 
-            for (int i = 0; i < buckets.size(); i++) {
-                if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
-                    spinner_pref_bucket2.setSelection(i);
+//            for (int i = 0; i < buckets.size(); i++) {
+//                if (buckets.get(i).bucketId == userData.bucketsubscribedto) {
+//                    spinner_pref_bucket2.setSelection(i);
                     if (!TextUtils.isEmpty(userData.slotselected) && TextUtils.isDigitsOnly(userData.slotselected)) {
                         int slotSelect = Integer.parseInt(userData.slotselected);
-                        spinner_pref_time2.setSelection(slotSelect);
+                        //This is being done as required from backend side by Satyadeep.
+                        if(slotSelect == 3 && userData.genderselected.equalsIgnoreCase("F"))
+                            spinner_pref_time2.setSelection(2);
+                        else if(slotSelect == 2 && userData.genderselected.equalsIgnoreCase("F"))
+                            spinner_pref_time2.setSelection(3);
+                        else
+                            spinner_pref_time2.setSelection(slotSelect);
                     }
 //                                        for (int i1 = 0; i1 < stringArray.length; i1++) {
 //                                            if (stringArray[i1].equalsIgnoreCase(userData.slotselected)) {
 //                                                spinner_pref_time.setSelection(i1);
 //                                                break;
-                    break;
-                }
-            }
+//                    break;
+//                }
+//            }
 
             updateSubscriptionUI(false, 1);
             findViewById(R.id.bucket_language2).setVisibility(View.GONE);
@@ -887,7 +903,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                 SubscriptionData data = new SubscriptionData();
                 data.gender = gender;
                 data.phonenumber = patient_new.getPhone_number();
-                data.bucketsubscribedto = selectedBucket2;
+                data.bucketsubscribedto = 999;
                 data.slotselected = selectedSubscriptionTime2.toString();
                 data.subscribedby = sessionManager.getProviderID();
                 data.language = getResources().getStringArray(R.array.language_values)[spinner_pref_language2.getSelectedItemPosition()];

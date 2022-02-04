@@ -472,7 +472,8 @@ public class PatientSurveyActivity extends AppCompatActivity {
         obsDTO.setValue(noteText);
         obsDTO.setConceptuuid(UuidDictionary.COMMENTS);
         obsDTOList.add(obsDTO);
-        if(!followUpDate.isEmpty() && !followUpDate.equalsIgnoreCase("")) {
+
+        if(!followUpDate.isEmpty() && !followUpDate.equalsIgnoreCase(" ")) {
             obsDTO = new ObsDTO();
             obsDTO.setUuid(UUID.randomUUID().toString());
             obsDTO.setEncounteruuid(uuid);
@@ -510,7 +511,7 @@ public class PatientSurveyActivity extends AppCompatActivity {
     public String fiveMinutesAgo(String timeStamp) throws ParseException {
 
         //as discussed with Sagar time changing to 10 minutes as the encounters not getting sync to server: By Nishita
-        long FIVE_MINS_IN_MILLIS = 10 * 60 * 1000;
+        long FIVE_MINS_IN_MILLIS = 5 * 60 * 1000;
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         long time = df.parse(timeStamp).getTime();
 

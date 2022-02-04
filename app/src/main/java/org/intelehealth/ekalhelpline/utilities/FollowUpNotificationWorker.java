@@ -35,6 +35,7 @@ public class FollowUpNotificationWorker extends Worker {
     private final String channelName = "intelehealth";
     private final int mId = 1;
     private static boolean scheduled;
+    SessionManager sessionManager = new SessionManager(getApplicationContext());
 
     public FollowUpNotificationWorker(Context ctx, WorkerParameters params) {
         super(ctx, params);
@@ -44,7 +45,7 @@ public class FollowUpNotificationWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        if (getFollowUpCount(db) > 0) {
+        if (getFollowUpCount(db, sessionManager.getProviderID()) > 0) {
             showNotification(getApplicationContext().getString(R.string.title_follow_reminder), getApplicationContext().getString(R.string.title_follow_up_reminder_desc), getApplicationContext());
         }
         scheduled = false;
@@ -87,13 +88,13 @@ public class FollowUpNotificationWorker extends Worker {
         scheduled = true;
     }
 
-    public static long getFollowUpCount(SQLiteDatabase db) {
+    public static long getFollowUpCount(SQLiteDatabase db, String chw_name) {
 
         int count = 0;
         Date cDate = new Date();
         String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(cDate);
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});
+        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND d.provider_uuid = ? AND o.conceptuuid = ? AND o.value is NOT NULL GROUP BY a.patientuuid";
+        final Cursor cursor = db.rawQuery(query, new String[]{chw_name, UuidDictionary.FOLLOW_UP_VISIT});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {

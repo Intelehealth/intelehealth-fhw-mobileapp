@@ -34,7 +34,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.IntentSender;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
@@ -813,16 +815,19 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        super.onResume();
-        checkAppVer();  //auto-update feature.
-
-        //IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
-        //registerReceiver(syncBroadcastReceiver, filter);
+        try {
+            //IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
+            //registerReceiver(syncBroadcastReceiver, filter);
+            checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
 //        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                && Locale.getDefault().toString().equals("en")) {
-////            lastSyncAgo.setText(CalculateAgoTime());
+//            lastSyncAgo.setText(CalculateAgoTime());
 //        }
+            super.onResume();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -835,7 +840,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void showFollowUpBadge() {
         String chwName = sessionManager1.getProviderID();
-        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb());
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long closedPatientCount = ClosedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long completedPatientCount = CompletedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
@@ -1087,62 +1092,62 @@ public class HomeActivity extends AppCompatActivity {
         BASE_URL = "https://" + sessionManager1.getServerUrl() + "/intelehealth/app_update.json";
         Log.v("app_update", "server url: " + BASE_URL);
 
-     //  ApiClient.changeApiBaseUrl(BASE_URL);
+        //  ApiClient.changeApiBaseUrl(BASE_URL);
         disposable.add(
                 (Disposable) AppConstants.apiInterface.checkAppUpdate(BASE_URL)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
-                    @Override
-                    public void onSuccess(CheckAppUpdateRes res) {
-                        int latestVersionCode = 0;
-                        if (!res.getLatestVersionCode().isEmpty()) {
-                            latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
-                            Log.v("app_update", "latest app version: " + Integer.toString(latestVersionCode));
-                        }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableSingleObserver<CheckAppUpdateRes>() {
+                            @Override
+                            public void onSuccess(CheckAppUpdateRes res) {
+                                int latestVersionCode = 0;
+                                if (!res.getLatestVersionCode().isEmpty()) {
+                                    latestVersionCode = Integer.parseInt(res.getLatestVersionCode());
+                                    Log.v("app_update", "latest app version: " + Integer.toString(latestVersionCode));
+                                }
 
-                        if (latestVersionCode > versionCode) {
-                            android.app.AlertDialog.Builder builder;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
-                            } else {
-                                builder = new android.app.AlertDialog.Builder(HomeActivity.this);
+                                if (latestVersionCode > versionCode) {
+                                    android.app.AlertDialog.Builder builder;
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        builder = new android.app.AlertDialog.Builder(HomeActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                                    } else {
+                                        builder = new android.app.AlertDialog.Builder(HomeActivity.this);
+                                    }
+
+
+                                    builder.setTitle(getResources().getString(R.string.new_update_available))
+                                            .setCancelable(false)
+                                            .setMessage(getResources().getString(R.string.update_app_note))
+                                            .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                                    try {
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                                    } catch (ActivityNotFoundException anfe) {
+                                                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                                    }
+
+                                                }
+                                            })
+
+                                            .setIcon(android.R.drawable.ic_dialog_alert)
+                                            .setCancelable(false);
+
+                                    Dialog dialog = builder.show();
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
+                                        TextView tv = (TextView) dialog.findViewById(textViewId);
+                                        tv.setTextColor(getResources().getColor(R.color.white));
+                                    }
+                                }
                             }
 
-
-                            builder.setTitle(getResources().getString(R.string.new_update_available))
-                                    .setCancelable(false)
-                                    .setMessage(getResources().getString(R.string.update_app_note))
-                                    .setPositiveButton(getResources().getString(R.string.update), new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                            }
-
-                                        }
-                                    })
-
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .setCancelable(false);
-
-                            Dialog dialog = builder.show();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                int textViewId = dialog.getContext().getResources().getIdentifier("android:id/alertTitle", null, null);
-                                TextView tv = (TextView) dialog.findViewById(textViewId);
-                                tv.setTextColor(getResources().getColor(R.color.white));
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.e("app_update", "" + e);
                             }
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("app_update", "" + e);
-                    }
-                })
+                        })
         );
 
     }
@@ -1160,19 +1165,16 @@ public class HomeActivity extends AppCompatActivity {
 
                 //check in result update is available
                 //if then proceed to update app
-                if(result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                        && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
-                {
-                    Log.e(TAG,"App update available");
+                if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                        && result.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                    Log.e(TAG, "App update available");
                     try {
-                        appUpdateManager.startUpdateFlowForResult(result,AppUpdateType.IMMEDIATE,HomeActivity.this,REQUEST_CODE);
+                        appUpdateManager.startUpdateFlowForResult(result, AppUpdateType.IMMEDIATE, HomeActivity.this, REQUEST_CODE);
                     } catch (IntentSender.SendIntentException e) {
                         e.printStackTrace();
                     }
-                }
-                else
-                {
-                    Log.e(TAG,"App update not available");
+                } else {
+                    Log.e(TAG, "App update not available");
                 }
             }
         });
@@ -1182,18 +1184,14 @@ public class HomeActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_CODE)
-        {
+        if (requestCode == REQUEST_CODE) {
             //Toast.makeText(HomeActivity.this,"Start download update",Toast.LENGTH_LONG).show();
-            if(resultCode != RESULT_OK)
-            {
-                Log.e(TAG,"App update process fail");
+            if (resultCode != RESULT_OK) {
+                Log.e(TAG, "App update process fail");
             }
-        }
-        else
-            Log.e(TAG,"App update REQUEST_CODE not matched");
+        } else
+            Log.e(TAG, "App update REQUEST_CODE not matched");
     }
-
 
 
 }

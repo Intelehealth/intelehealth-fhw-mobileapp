@@ -388,6 +388,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientID_edit = intent.getStringExtra("patientUuid");
                 patient1.setUuid(patientID_edit);
                 setscreen(patientID_edit);
+                autocompleteDistrict.setEnabled(true);
             }
             isMedicalAdvice = intent.getBooleanExtra(EXTRA_MEDICAL_ADVICE, false); //fetches the boolean value to know if its a doctor or medical advice...
         }
@@ -1558,6 +1559,44 @@ public class IdentificationActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+
+        autocompleteDistrict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                districtList.clear();
+                String selectedState = "";
+                if(autocompleteState!=null && !autocompleteState.getText().toString().isEmpty())
+                    selectedState = autocompleteState.getText().toString();
+                else
+                {
+                    autocompleteDistrict.setEnabled(false);
+                    Toast.makeText(IdentificationActivity.this,"Please select state first!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(selectedState!=""){
+                    try {
+                        JSONArray stateArray = json.getJSONArray("states");
+                        for (int i = 0; i < stateArray.length(); i++) {
+                            String state = stateArray.getJSONObject(i).getString("state");
+                            if (state.equalsIgnoreCase(selectedState)) {
+                                JSONObject districtObj = stateArray.getJSONObject(i);
+                                JSONArray districtArray = districtObj.getJSONArray("districts");
+                                for (int j = 0; j < districtArray.length(); j++) {
+                                    String district = districtArray.getJSONObject(j).getString("name");
+                                    districtList.add(district);
+                                }
+                                break;
+                            }
+                            ArrayAdapter<String> districtAdapter = new ArrayAdapter<String>(IdentificationActivity.this, android.R.layout.simple_list_item_1, districtList);
+                            autocompleteDistrict.setAdapter(districtAdapter);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -3193,7 +3232,6 @@ public class IdentificationActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-
         if (dob.equals("") || dob.toString().equals("")) {
             if (dob.after(today)) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
@@ -3285,7 +3323,6 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 */
-
         if (!mFirstName.getText().toString().equals("")
                 && !countryText.getText().toString().equals("") && !mCity.getText().toString().equals("") &&
                 !autocompleteState.getText().toString().equals("") && !autocompleteDistrict.getText().toString().equals("") && !mAge.getText().toString().equals("")
