@@ -91,6 +91,7 @@ public class Closed_Visits_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        binding = DataBindingUtil.setContentView(this, R.layout.activity_active_patient);
         setContentView(R.layout.activity_active_patient);
+        setTitle(getResources().getString(R.string.closed_visits_HomeScreen));
      //   setTitle(getString(R.string.title_activity_active_patient));
         mToolbar = findViewById(R.id.toolbar);
 

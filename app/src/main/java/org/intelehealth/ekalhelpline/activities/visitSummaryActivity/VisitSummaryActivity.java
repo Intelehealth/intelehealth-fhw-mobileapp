@@ -653,14 +653,14 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                                     if (!editText.getText().toString().equalsIgnoreCase("")) {
                                         //code to send via sms
-                                        String[] item = {"SMS", "Whatsapp"};
+                                        String[] item = {getResources().getString(R.string.sms_dialog), getResources().getString(R.string.whatsapp_dialog)};
                                         MaterialAlertDialogBuilder singlechoice = new MaterialAlertDialogBuilder
                                                 (VisitSummaryActivity.this, R.style.AlertDialogStyle);
-                                        singlechoice.setTitle("Select Choice");
+                                        singlechoice.setTitle(getResources().getString(R.string.select_choice));
                                         singlechoice.setCancelable(false);
                                         singlechoice.setSingleChoiceItems(item, 0,  null);
 
-                                        singlechoice.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        singlechoice.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 String selection = "";
@@ -677,9 +677,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
                                                 else if(selectedPosition == 1) {
                                                     // Whatsapp
                                                     String phoneNumber = "+91" + editText.getText().toString();
-                                                    String whatsappMessage = "Hello, Thank you for using Intelehealth. To Download your " +
-                                                            "prescription please click here " + whatsapp_url + " and enter your Patient " +
-                                                            "ID - " + idView.getText().toString();
+                                                    String whatsappMessage = getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here) + " " + whatsapp_url + " " + getResources().getString(R.string.and_enter_your_patient_id) + " " + idView.getText().toString();
 
                                                     startActivity(new Intent(Intent.ACTION_VIEW,
                                                             Uri.parse(

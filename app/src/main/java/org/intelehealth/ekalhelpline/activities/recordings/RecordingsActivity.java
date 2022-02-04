@@ -62,6 +62,7 @@ public class RecordingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recordings);
+        setTitle(getResources().getString(R.string.call_recordings));
         context = RecordingsActivity.this;
         customProgressDialog = new CustomProgressDialog(context);
         Toolbar toolbar = findViewById(R.id.toolbar);

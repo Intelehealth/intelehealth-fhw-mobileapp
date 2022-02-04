@@ -118,7 +118,7 @@ public class IVRCallResponseActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Call_Details_Response call_details_response) {
                         response = call_details_response;
-                        total_count_textview.setText(getResources().getString(R.string.total_calls) + call_details_response.getData().size());
+                        total_count_textview.setText(getResources().getString(R.string.total_calls) + " " + call_details_response.getData().size());
                         adapter = new IVRCallResponse_Adapter(context, response);
 
                         if (response.getData() != null) {

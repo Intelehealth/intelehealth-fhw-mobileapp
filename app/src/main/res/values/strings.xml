@@ -556,8 +556,8 @@
     <string name="new_update_available">New Update Available</string>
     <string name="update_app_note">New version is available with new features please update app</string>
     <string name="update">Update</string>
-    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">"Hello, Thank you for using Hello Saathi Helpline. To Download your prescription please click here "</string>
-    <string name="and_enter_your_patient_id">" and enter your Patient ID - "</string>
+    <string name="hello_thankyou_for_using_intelehealth_app_to_download_click_here">Hello, Thank you for using Hello Saathi Helpline. To Download your prescription please click here</string>
+    <string name="and_enter_your_patient_id">and enter your Patient ID - </string>
 
 
     <!--New Ayu Related Changes-->
@@ -731,7 +731,7 @@
     <string name="spinner_general_followUp">General Follow up</string>
     <string name="audio_stories_subscription">Audio Stories Subscription</string>
     <string name="stored_successfully">Stored Successfully</string>
-    <string name="total_calls">"Total Calls: "</string>
+    <string name="total_calls">Total Calls: </string>
     <string name="total_subs">"Total Subscriptions: "</string>
     <string name="call_to">"Call To: "</string>
     <string name="status">"Status: "</string>
@@ -810,6 +810,10 @@
     <string name="additional_comments">Additional Comments (if any)</string>
     <string name="want_follow_up_text">Do you want to schedule a follow up?</string>
     <string name="select_follow_up">Please select a follow-up date.</string>
+    <string name="sms_dialog">SMS</string>
+    <string name="whatsapp_dialog">Whatsapp</string>
+    <string name="select_choice">Select Choice</string>
+
 
 
 </resources>

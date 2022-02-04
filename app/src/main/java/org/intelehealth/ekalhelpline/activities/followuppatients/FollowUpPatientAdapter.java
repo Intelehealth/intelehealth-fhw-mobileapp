@@ -78,7 +78,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             {
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.linearLayout.setBackgroundColor(context.getResources().getColor(R.color.green));
-                holder.indicatorTextView.setText("Follow-Up Scheduled On: " + patinet.getFollowup_date().substring(0, 10));
+                holder.indicatorTextView.setText(context.getResources().getString(R.string.follow_up_scheduled_on) + " " + patinet.getFollowup_date().substring(0, 10));
             }
             if(patinet.getVisit_speciality().equalsIgnoreCase("TLD Query") || patinet.getVisit_speciality().equalsIgnoreCase("Curiosity Resolution") ||
                     patinet.getVisit_speciality().contains("Gynecologist") || patinet.getVisit_speciality().contains("Ayurvedic Physician"))
