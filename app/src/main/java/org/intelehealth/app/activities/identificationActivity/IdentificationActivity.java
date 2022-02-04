@@ -128,7 +128,7 @@ public class IdentificationActivity extends AppCompatActivity {
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
     private int mAgeDays = 0;
-    private String country1, state;
+    private String country1, state, district,village;
     PatientsDAO patientsDAO = new PatientsDAO();
     EditText mFirstName;
     EditText mMiddleName;
@@ -407,7 +407,10 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             country1 = obj.getString("mCountry");
-            state = obj.getString("mState");
+            //state = obj.getString("mState");
+            state = sessionManager.getStateName();
+            district=sessionManager.getDistrictName();
+            village=sessionManager.getVillageName();
 
             if (country1.equalsIgnoreCase("India")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNum);
@@ -600,9 +603,9 @@ public class IdentificationActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.state_error, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mState.setAdapter(stateAdapter);
+        mState.setEnabled(false);
 
         JSONObject json = loadJsonObjectFromAsset("state_district_tehsil.json");
-
 
         mCountry.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -632,8 +635,13 @@ public class IdentificationActivity extends AppCompatActivity {
                                 // setting state according database when user clicks edit details
                                 if (patientID_edit != null) {
                                     //mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                                    int pos = list_state.indexOf(String.valueOf(patient1.getState_province()));
-                                    mState.setSelection(pos);
+                                    if(list_state.contains(patient1.getState_province())) {
+                                        int pos = list_state.indexOf(String.valueOf(patient1.getState_province()));
+                                        mState.setSelection(pos);
+                                    }else if(list_state.contains(patient1.getState_province().replaceAll(" ",""))){
+                                        int pos = list_state.indexOf(patient1.getState_province().replaceAll(" ",""));
+                                        mState.setSelection(pos);
+                                    }
                                 } else {
                                     int pos = list_state.indexOf(state);
                                     mState.setSelection(pos);
@@ -740,8 +748,8 @@ public class IdentificationActivity extends AppCompatActivity {
                                     mDistrict.setSelection(0);
                                 }
                             } else {
-                                //int pos = list_district.indexOf(district);
-                                mDistrict.setSelection(0);
+                                int pos = list_district.indexOf(district);
+                                mDistrict.setSelection(pos);
                                 //mState.setSelection(stateAdapter.getPosition(state));
                             }
                         }
@@ -842,11 +850,11 @@ public class IdentificationActivity extends AppCompatActivity {
                                     }
                                 }
                             } else {
-                                //int pos = list_district.indexOf(village);
+                                int pos = list_village.indexOf(village);
                                 if (list_village.size() == 2) {
                                     mVillage.setSelection(1);
                                 } else {
-                                    mVillage.setSelection(0);
+                                    mVillage.setSelection(pos);
                                 }
                                 //mState.setSelection(stateAdapter.getPosition(state));
                             }
@@ -1640,6 +1648,7 @@ public class IdentificationActivity extends AppCompatActivity {
             }else {
                 patientdto.setCityvillage(mVillage.getSelectedItem().toString());
             }
+            patientdto.setDistrict(StringUtils.getValue(mDistrict.getSelectedItem().toString()));
 
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());

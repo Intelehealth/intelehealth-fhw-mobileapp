@@ -1379,6 +1379,8 @@ public class SetupActivity extends AppCompatActivity {
 
                                             //Storing State Name
                                             sessionManager.setStateName(selectedState);
+                                            sessionManager.setDistrictName(spinner_district.getSelectedItem().toString());
+                                            sessionManager.setVillageName(spinner_village.getSelectedItem().toString());
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
