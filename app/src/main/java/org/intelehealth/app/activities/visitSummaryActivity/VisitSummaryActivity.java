@@ -4884,6 +4884,8 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                if (encCursor.moveToFirst()) {
                    do {
                        String encountertime = encCursor.getString(encCursor.getColumnIndex("encounter_time"));
+                      if(encountertime!=null && !encountertime.isEmpty() && encountertime.length()>0)
+                      {
                        String oldFormat = "yyyy-MM-dd hh:mm:ss";
                        String newFormat = "dd-MMM-yyyy, hh:mm aa";
 
@@ -4896,7 +4898,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                            // TODO Auto-generated catch block
                            e.printStackTrace();
                        }
-
+                      }
                    } while (encCursor.moveToNext());
                }
                encCursor.close();
