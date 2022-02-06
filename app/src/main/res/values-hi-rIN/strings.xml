@@ -741,6 +741,10 @@
     <string name="printing">मुद्रण...</string>
 
     //HIH-84
-    <string name="vitals_not_present">नब्ज मौजूद नहीं है</string>
-    <string name="add_vitals">नब्ज दर्ज करे</string>
+    <string name="vitals_not_present">वाइटल मौजूद नहीं है</string>
+    <string name="add_vitals">वाइटल दर्ज करे</string>
+    <string name="vitals_for_pathologist">पैथोलॉजिस्ट द्वारा वाइटल जमा किए जा सकते हैं। \nक्या आप वाइटल डालना जारी रखना चाहते हैं?</string>
+    <string name="continue_button">जारी रखें</string>
+    //HIH-85
+    <string name="referral_patient">रेफरल रोगी</string>
 </resources>

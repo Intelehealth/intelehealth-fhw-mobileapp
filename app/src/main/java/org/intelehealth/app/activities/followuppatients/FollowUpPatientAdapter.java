@@ -16,6 +16,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -104,6 +105,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
         private TextView indicatorTextView;
         private View rootView;
         private ImageView ivPriscription;
+        private TextView referralTV;
 
 
         public Myholder(View itemView) {
@@ -115,6 +117,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
+            referralTV = itemView.findViewById(R.id.list_item_referral);
             rootView = itemView;
         }
 

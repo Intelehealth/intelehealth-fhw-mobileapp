@@ -753,4 +753,7 @@
     <string name="add_vitals">Add Vitals</string>
     <string name="vitals_for_pathologist">Vitals can be submitted by Pathologists. \nDo you want to continue entering vitals?</string>
     <string name="continue_button">Continue</string>
+    //HIH-85
+    <string name="referral_patient">Referral Patient</string>
+
 </resources>
