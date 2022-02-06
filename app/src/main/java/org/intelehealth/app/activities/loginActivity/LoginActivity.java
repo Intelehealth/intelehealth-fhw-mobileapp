@@ -36,6 +36,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -92,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     private long createdRecordsCount = 0;
     String provider_url_uuid;
     private Button mEmailSignInButton;
+    ArrayList<String> user_roles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
         context = LoginActivity.this;
         sessionManager = new SessionManager(context);
         cpd = new CustomProgressDialog(context);
-
+        user_roles = new ArrayList<>();
         setTitle(R.string.title_activity_login);
 
         offlineLogin = OfflineLogin.getOfflineLogin();
@@ -313,7 +315,12 @@ public class LoginActivity extends AppCompatActivity {
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
                 Log.d("SESSOO","SESSOO_PROVIDER: "+loginModel.getUser().getPerson().getUuid());
                 Log.d("SESSOO","SESSOO_PROVIDER_session: "+sessionManager.getProviderID());
-
+                for(int i=0; i<loginModel.getUser().getRoles().size();i++)
+                    user_roles.add(loginModel.getUser().getRoles().get(i).getDisplay());
+                if(user_roles.contains("Clinician"))
+                    sessionManager.setChwrole("Clinician");
+                else
+                    sessionManager.setChwrole("Nurse");
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(sessionManager.getServerUrl(), loginModel.getUser().getUuid());
                 if (authencated) {

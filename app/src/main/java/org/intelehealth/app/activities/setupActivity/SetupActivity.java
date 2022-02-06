@@ -138,13 +138,14 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
-
+    ArrayList<String> user_roles;
     //    private BroadcastReceiver MyReceiver = null;
     //CoordinatorLayout coordinatorLayout;
     HashMap<String, String> hashMap1, hashMap2/*, hashMap3*/, hashMap4;
     boolean value = false;
     String base_url;
     Map.Entry<String, String> village_name;
+    Map.Entry<String, String> state_name;
     int state_count = 0, district_count = 0/*, sanch_count = 0*/, village_count = 0;
     private String selectedState = "";
     List<String> mSetUpLocation;
@@ -158,6 +159,7 @@ public class SetupActivity extends AppCompatActivity {
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
         mSetUpLocation = new ArrayList<>();
+        user_roles = new ArrayList<>();
        // coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -392,6 +394,7 @@ public class SetupActivity extends AppCompatActivity {
                             // Do things with the list
                             if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
                                 state_uuid = entry.getKey();
+                                state_name = entry;
                             }
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "State");
@@ -404,6 +407,7 @@ public class SetupActivity extends AppCompatActivity {
                             // Do things with the list
                             if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
                                 state_uuid = entry.getKey();
+                                state_name = entry;
                             }
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "State");
@@ -418,6 +422,7 @@ public class SetupActivity extends AppCompatActivity {
                             // Do things with the list
                             if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
                                 state_uuid = entry.getKey();
+                                state_name = entry;
                             }
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "State");
@@ -794,9 +799,9 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d(TAG, "attempting setup");
             }*/
 
-            if (village_name != null) {
+            if (village_name != null && state_name!=null) {
                 String urlString = mUrlField.getText().toString();
-                TestSetup(urlString, email, password, admin_password, village_name);
+                TestSetup(urlString, email, password, admin_password, village_name, state_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -1320,7 +1325,7 @@ public class SetupActivity extends AppCompatActivity {
      * If successful cretes a new {@link Account}
      * If unsuccessful details are saved in SharedPreferences.
      */
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location, Map.Entry<String, String> state_location) {
 
         ProgressDialog progress;
 
@@ -1351,6 +1356,12 @@ public class SetupActivity extends AppCompatActivity {
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                for(int i=0; i<loginModel.getUser().getRoles().size();i++)
+                    user_roles.add(loginModel.getUser().getRoles().get(i).getDisplay());
+                if(user_roles.contains("Clinician"))
+                    sessionManager.setChwrole("Clinician");
+                else
+                    sessionManager.setChwrole("Nurse");
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
                 if (authencated) {
@@ -1370,6 +1381,7 @@ public class SetupActivity extends AppCompatActivity {
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
                                             sessionManager.setLocationName(location.getValue());
+                                            sessionManager.setStateLocationName(state_location.getValue());
                                             sessionManager.setLocationUuid(location.getKey());
                                             //  sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);

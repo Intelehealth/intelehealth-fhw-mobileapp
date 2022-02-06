@@ -139,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
     private ImageView ivSync;
-
+    String userRole;
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
@@ -155,7 +155,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-
+        userRole = sessionManager.getChwrole();
         catchFCMMessageData();
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -195,6 +195,12 @@ public class HomeActivity extends AppCompatActivity {
         c6 = findViewById(R.id.cardview_help_whatsapp);
         c7 = findViewById(R.id.cardview_follow_up);
 
+        if(!userRole.isEmpty() && userRole.equalsIgnoreCase("Clinician"))
+        {
+            c1.setVisibility(View.GONE);
+            c4.setVisibility(View.GONE);
+            c7.setVisibility(View.GONE);
+        }
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatients_textview);
         newPatient_textview.setText(R.string.new_patient);
