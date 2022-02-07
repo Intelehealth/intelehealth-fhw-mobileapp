@@ -21,4 +21,4 @@ salt.env
 .idea/
 /webrtc/build/
 /app/release/
-/app/src/main/assets/
+/app/src/main/assets

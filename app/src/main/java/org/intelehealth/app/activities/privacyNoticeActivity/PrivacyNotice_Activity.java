@@ -100,8 +100,8 @@ public class PrivacyNotice_Activity extends AppCompatActivity implements View.On
 //            SharedPreferences sharedPreferences = getSharedPreferences("CommonPrefs", Activity.MODE_PRIVATE);
 //            if(sharedPreferences.getAll().values().contains("cb"))
             Locale current = getResources().getConfiguration().locale;
-            if (current.toString().equals("or")) { //Privacy notice support for Odiya
-                String privacy_string = obj.getString("privacyNoticeText_Odiya");
+            if (current.toString().equals("or")) { //Privacy notice support for Oriya
+                String privacy_string = obj.getString("privacyNoticeText_Oriya");
                 if (privacy_string.isEmpty()) {
                     privacy_string = obj.getString("privacyNoticeText");
                 }

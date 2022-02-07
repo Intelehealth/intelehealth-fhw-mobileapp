@@ -281,7 +281,7 @@ public class PatientDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // before starting, we determine if it is new visit for a returning patient
                 // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
                 Date todayDate = new Date();
                 String thisDate = currentDate.format(todayDate);
 
@@ -1560,7 +1560,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                                     visitValue = visitValue.replaceAll("<b>", "");
                                     visitValue = visitValue.replaceAll("</b>", "");
                                 }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                                 try {
 
                                     Date formatted = currentDate.parse(date);
@@ -1573,7 +1573,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                         }
                         // Called when we select complaints but not select any sub knowledgeEngine inside that complaint
                         else {
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             try {
 
                                 Date formatted = currentDate.parse(date);
@@ -1586,7 +1586,7 @@ public class PatientDetailActivity extends AppCompatActivity {
                     }
                     // Called when we close org on vitals screen and Didn't select any complaints
                     else {
-                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                         try {
 
                             Date formatted = currentDate.parse(date);
