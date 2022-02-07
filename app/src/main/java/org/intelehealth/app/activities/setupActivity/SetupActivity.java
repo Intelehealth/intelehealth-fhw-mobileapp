@@ -1692,15 +1692,22 @@ public class SetupActivity extends AppCompatActivity {
                 dialogInterface.dismiss();
                 r1.setChecked(true);
                 r2.setChecked(false);
-                sessionManager.setMindMapServerUrl(licenseUrl);
-                sessionManager.setLicenseKey(key);
+                sessionManager.setLicenseKey("");
             }
         });
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                if (NetworkConnection.isOnline(SetupActivity.this)) {
+                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                }else {
+                    dialog.dismiss();
+                    r1.setChecked(true);
+                    r2.setChecked(false);
+                    sessionManager.setLicenseKey("");
+                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();
