@@ -16,6 +16,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -65,6 +66,13 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
                 holder.linearLayout.setVisibility(View.GONE);
                 holder.indicatorTextView.setVisibility(View.GONE);
             }
+            if(patinet.getReferral() == 1) {
+                holder.referralTV.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                holder.referralTV.setVisibility(View.GONE);
+            }
         }
 
         holder.ivPriscription.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_prescription_green));
@@ -92,21 +100,24 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
     class Myholder extends RecyclerView.ViewHolder {
 
         private LinearLayout linearLayout;
-        private TextView headTextView;
+        private TextView headTextView, referralTV;
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
         private ImageView ivPriscription;
+        private TextView referralTV;
 
 
         public Myholder(View itemView) {
             super(itemView);
 
             linearLayout = itemView.findViewById(R.id.dueDateLL);
+            referralTV = itemView.findViewById(R.id.referral_text_view);
             headTextView = itemView.findViewById(R.id.list_item_head_text_view);
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
+            referralTV = itemView.findViewById(R.id.list_item_referral);
             rootView = itemView;
         }
 

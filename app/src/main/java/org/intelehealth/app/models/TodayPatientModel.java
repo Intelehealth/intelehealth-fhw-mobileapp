@@ -13,8 +13,10 @@ public class TodayPatientModel {
     String phone_number;
     String sync;
     String gender;
+    String encounterVitals;
+    String encounterAdultInitials;
 
-    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync) {
+    public TodayPatientModel(String uuid, String patientuuid, String startdate, String enddate, String openmrs_id, String first_name, String middle_name, String last_name, String date_of_birth, String phone_number, String sync, String encounterVitals, String encounterAdultInitials) {
         this.uuid = uuid;
         this.patientuuid = patientuuid;
         this.startdate = startdate;
@@ -26,6 +28,8 @@ public class TodayPatientModel {
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
         this.sync = sync;
+        this.encounterVitals = encounterVitals;
+        this.encounterAdultInitials = encounterAdultInitials;
     }
 
     public String getUuid() {
@@ -122,5 +126,21 @@ public class TodayPatientModel {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getEncounterVitals() {
+        return encounterVitals;
+    }
+
+    public void setEncounterVitals(String encounterVitals) {
+        this.encounterVitals = encounterVitals;
+    }
+
+    public String getEncounterAdultInitials() {
+        return encounterAdultInitials;
+    }
+
+    public void setEncounterAdultInitials(String encounterAdultInitials) {
+        this.encounterAdultInitials = encounterAdultInitials;
     }
 }

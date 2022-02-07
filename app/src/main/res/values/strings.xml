@@ -189,7 +189,8 @@
     <string name="visit_summary_rx" translatable="false">Prescribed Medications</string>
     <string name="visit_summary_diagnosis" translatable="false">Diagnosis</string>
     <string name="visit_summary_advice" translatable="false">Medical Advice</string>
-    <string name="visit_summary_tests_prescribed" translatable="false">Tests/Referrals</string>
+    <string name="visit_summary_tests_prescribed" translatable="false">Tests</string>
+    <string name="visit_summary_referrals_prescribed" translatable="false">Referrals</string>
     <string name="visit_summary_additional_comments" translatable="false">Additional Comments</string>
     <string name="visit_summary_heading_name" translatable="false">Name</string>
     <string name="visit_summary_heading_id" translatable="false">ID</string>
@@ -747,6 +748,14 @@
     <string name="turn_on_bluetooth">Please Turn On Bluetooth</string>
     <string name="no_presc_available">No Prescription Available</string>
     <string name="printing">Printing...</string>
+
+    //HIH-84
+    <string name="vitals_not_present">Vitals Not Present</string>
+    <string name="add_vitals">Add Vitals</string>
+    <string name="vitals_for_pathologist">Vitals can be submitted by Pathologists. \nDo you want to continue entering vitals?</string>
+    <string name="continue_button">Continue</string>
+    //HIH-85
+    <string name="referral_patient">Referral Patient</string>
 
     <string name="provided_medicine_dialog_title">Select Medicine</string>
     <string name="provided_medicine_upload_msg">Provided Medicine Uploaded Successfully</string>

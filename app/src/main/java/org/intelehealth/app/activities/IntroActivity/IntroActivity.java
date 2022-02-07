@@ -34,6 +34,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.checkerframework.checker.units.qual.A;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
 import org.intelehealth.app.activities.setupActivity.SetupActivity;
@@ -80,6 +81,7 @@ public class IntroActivity extends AppCompatActivity {
     SessionManager sessionManager = null;
     String BASE_URL = "";
     private long createdRecordsCount = 0;
+    ArrayList<String> user_roles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +90,7 @@ public class IntroActivity extends AppCompatActivity {
 
         context = IntroActivity.this;
         sessionManager = new SessionManager(this);
-
+        user_roles = new ArrayList<>();
         BASE_URL = "https://demo.intelehealth.org/openmrs/ws/rest/v1/";
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -355,6 +357,12 @@ public class IntroActivity extends AppCompatActivity {
                 sessionManager.setSessionID(loginModel.getSessionId());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
                 UrlModifiers urlModifiers = new UrlModifiers();
+                for(int i=0; i<loginModel.getUser().getRoles().size();i++)
+                    user_roles.add(loginModel.getUser().getRoles().get(i).getDisplay());
+                if(user_roles.contains("Clinician"))
+                    sessionManager.setChwrole("Clinician");
+                else
+                    sessionManager.setChwrole("Nurse");
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
                 if (authencated) {
                     Observable<LoginProviderModel> loginProviderModelObservable = AppConstants.apiInterface.LOGIN_PROVIDER_MODEL_OBSERVABLE(url, "Basic " + encoded);
