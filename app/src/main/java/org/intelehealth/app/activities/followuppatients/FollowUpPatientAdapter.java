@@ -100,7 +100,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
     class Myholder extends RecyclerView.ViewHolder {
 
         private LinearLayout linearLayout;
-        private TextView headTextView, referralTV;
+        private TextView headTextView;
         private TextView bodyTextView;
         private TextView indicatorTextView;
         private View rootView;
@@ -117,7 +117,7 @@ public class FollowUpPatientAdapter extends RecyclerView.Adapter<FollowUpPatient
             bodyTextView = itemView.findViewById(R.id.list_item_body_text_view);
             indicatorTextView = itemView.findViewById(R.id.list_item_indicator_text_view);
             ivPriscription = itemView.findViewById(R.id.iv_prescription);
-            referralTV = itemView.findViewById(R.id.list_item_referral);
+            //referralTV = itemView.findViewById(R.id.list_item_referral);
             rootView = itemView;
         }
 
