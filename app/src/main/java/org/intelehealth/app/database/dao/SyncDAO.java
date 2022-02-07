@@ -371,6 +371,7 @@ public class SyncDAO {
         Gson gson = new Gson();
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        String request=gson.toJson(pushRequestApiCall);
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url" + url);
 //        String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
@@ -383,6 +384,7 @@ public class SyncDAO {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
                             Logger.logD(TAG, "success" + pushResponseApiCall);
+                            String res=gson.toJson(pushResponseApiCall);
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());

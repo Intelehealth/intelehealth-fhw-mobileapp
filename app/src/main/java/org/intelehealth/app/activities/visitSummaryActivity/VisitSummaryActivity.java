@@ -3885,7 +3885,7 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
                 Log.i(TAG, "parseData: rxfin" + rxReturned);
                 if (prescriptionCard.getVisibility() != View.VISIBLE) {
                     prescriptionCard.setVisibility(View.VISIBLE);
-                    card_givenmedicine.setVisibility(View.VISIBLE);
+                    //card_givenmedicine.setVisibility(View.VISIBLE);
                 }
                 prescriptionTextView.setText(rxReturned);
                 //checkForDoctor();
@@ -4878,28 +4878,32 @@ public class VisitSummaryActivity extends AppCompatActivity/* implements Printer
         SQLiteDatabase database = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
         database.beginTransaction();
        try {
-           Cursor encCursor = database.rawQuery("SELECT encounter_time FROM tbl_encounter where uuid = ? AND visituuid = ?", new String[]{encounterUuidAdultIntial, visitUUID});
-           //  Cursor encCursor = db.query("tbl_encounter", columns, encSelection, encArgs, null, null, null);
-           if (encCursor.moveToFirst()) {
-               do {
-                   String encountertime = encCursor.getString(encCursor.getColumnIndex("encounter_time"));
-                   String oldFormat = "yyyy-MM-dd hh:mm:ss";
-                   String newFormat = "dd-MMM-yyyy, hh:mm aa";
+           if(visitUuid!=null) {
+               Cursor encCursor = database.rawQuery("SELECT encounter_time FROM tbl_encounter where uuid = ? AND visituuid = ?", new String[]{encounterUuidAdultIntial, visitUuid});
+               //  Cursor encCursor = db.query("tbl_encounter", columns, encSelection, encArgs, null, null, null);
+               if (encCursor.moveToFirst()) {
+                   do {
+                       String encountertime = encCursor.getString(encCursor.getColumnIndex("encounter_time"));
+                      if(encountertime!=null && !encountertime.isEmpty() && encountertime.length()>0)
+                      {
+                       String oldFormat = "yyyy-MM-dd hh:mm:ss";
+                       String newFormat = "dd-MMM-yyyy, hh:mm aa";
 
-                   SimpleDateFormat sdf1 = new SimpleDateFormat(oldFormat,Locale.ENGLISH);
-                   SimpleDateFormat sdf2 = new SimpleDateFormat(newFormat,Locale.ENGLISH);
-                   try {
-                       System.out.println(sdf2.format(sdf1.parse(encountertime)));
-                       heading2 = heading2 + "<br/>" + sdf2.format(sdf1.parse(encountertime));
-                   } catch (ParseException e) {
-                       // TODO Auto-generated catch block
-                       e.printStackTrace();
-                   }
-
-               } while (encCursor.moveToNext());
+                       SimpleDateFormat sdf1 = new SimpleDateFormat(oldFormat, Locale.ENGLISH);
+                       SimpleDateFormat sdf2 = new SimpleDateFormat(newFormat, Locale.ENGLISH);
+                       try {
+                           System.out.println(sdf2.format(sdf1.parse(encountertime)));
+                           heading2 = heading2 + "<br/>" + sdf2.format(sdf1.parse(encountertime));
+                       } catch (ParseException e) {
+                           // TODO Auto-generated catch block
+                           e.printStackTrace();
+                       }
+                      }
+                   } while (encCursor.moveToNext());
+               }
+               encCursor.close();
+               database.setTransactionSuccessful();
            }
-           encCursor.close();
-           database.setTransactionSuccessful();
        }catch (SQLException e){
            e.printStackTrace();
        }finally {
