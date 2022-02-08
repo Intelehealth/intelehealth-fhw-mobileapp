@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.telecom.Call;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
@@ -43,6 +44,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -85,9 +87,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -109,12 +113,13 @@ public class IdentificationActivity extends AppCompatActivity {
     String patientID_edit;
     private int mDOBYear;
     private int mDOBMonth;
+    private int SelectedMonth;
     private int mDOBDay;
     private DatePickerDialog mDOBPicker;
     private int mAgeYears = 0;
     private int mAgeMonths = 0;
     private int mAgeDays = 0;
-    private String country1="", state="";
+    private String country1 = "", state = "";
     PatientsDAO patientsDAO = new PatientsDAO();
     EditText mCitizenIdEditText;
     EditText mFirstNameEditText;
@@ -387,8 +392,8 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 //            country1 = obj.getString("mCountry");
 //            state = obj.getString("mState");
-            country1 = patient1!=null ? patient1.getCountry():"";
-            country1 = country1==null || country1.isEmpty() ? sessionManager.getAppLanguage().equals("ru") ? "Кыргызстан" : "Kyrgyzstan" : country1;
+            country1 = patient1 != null ? patient1.getCountry() : "";
+            country1 = country1 == null || country1.isEmpty() ? sessionManager.getAppLanguage().equals("ru") ? "Кыргызстан" : "Kyrgyzstan" : country1;
             if (country1.equalsIgnoreCase("India") || country1.equalsIgnoreCase("Индия")) {
                 EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
                 ((TextView) findViewById(R.id.country_code_tv)).setText("+91");
@@ -581,7 +586,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         } else {
 
-         mCountrySpinner.setSelection(countryAdapter.getPosition(country1));
+            mCountrySpinner.setSelection(countryAdapter.getPosition(country1));
            /* mCountrySpinner.setSelection(countryAdapter.getPosition(StringUtils.getValue(mSwitch_Country_edit(country1,
                     sessionManager.getAppLanguage()))));*/
         }
@@ -611,7 +616,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 if (index != 0) {
                     String country = StringUtils.getValue(mSwitch_Country(mCountrySpinner.getSelectedItem().toString(),
                             sessionManager.getAppLanguage()));
-                    if (patient1 ==null || patient1.getCountry()==null || !patient1.getCountry().equalsIgnoreCase(country))
+                    if (patient1 == null || patient1.getCountry() == null || !patient1.getCountry().equalsIgnoreCase(country))
                         mPhoneNumEditText.setText("");
                     if (country.equalsIgnoreCase("India") || country.equalsIgnoreCase("Индия")) {
                         EditTextUtils.setEditTextMaxLength(10, mPhoneNumEditText); //+91 (XXXXX XXXXX)
@@ -789,7 +794,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 dob.set(year, monthOfYear, dayOfMonth);
                 String dobString = simpleDateFormat.format(dob.getTime());
                 dob_indexValue = monthOfYear; //fetching the inex value of month selected...
-
+                SelectedMonth = monthOfYear;
                 /*if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                     String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
                     mDOBEditText.setText(dob_text);
@@ -869,6 +874,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAgeDays + getResources().getString(R.string.days);
             mAgeEditText.setText(age);
         }
+
         mAgeEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -900,7 +906,26 @@ public class IdentificationActivity extends AppCompatActivity {
                 monthPicker.setMaxValue(12);
 
                 dayPicker.setMinValue(0);
-                dayPicker.setMaxValue(31);
+
+                if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.JANUARY ||
+                        Calendar.getInstance().get(Calendar.MONTH) == Calendar.MARCH || Calendar.getInstance().get(Calendar.MONTH) == Calendar.MAY ||
+                        Calendar.getInstance().get(Calendar.MONTH) == Calendar.JULY || Calendar.getInstance().get(Calendar.MONTH) == Calendar.AUGUST ||
+                        Calendar.getInstance().get(Calendar.MONTH) == Calendar.OCTOBER || Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+                    dayPicker.setMaxValue(31);
+
+//             }
+//                if (SelectedMonth == Calendar.JANUARY ||
+//                        SelectedMonth == Calendar.MARCH || SelectedMonth == Calendar.MAY ||
+//                        SelectedMonth == Calendar.JULY || SelectedMonth == Calendar.AUGUST ||
+//                        SelectedMonth == Calendar.OCTOBER || SelectedMonth == Calendar.DECEMBER) {
+//                    dayPicker.setMaxValue(31);
+
+                } else if (Calendar.getInstance().get(Calendar.MONTH) == Calendar.FEBRUARY) {
+                    dayPicker.setMaxValue(28);
+                } else {
+                    dayPicker.setMaxValue(30);
+                }
+
 
                 EditText yearText = yearPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
                 EditText monthText = monthPicker.findViewById(Resources.getSystem().getIdentifier("numberpicker_input", "id", "android"));
@@ -940,50 +965,54 @@ public class IdentificationActivity extends AppCompatActivity {
                             mAgeDays + getString(R.string.days);
                     mAgeEditText.setText(ageString);
 
-//                    Calendar calendar = Calendar.getInstance();
-//                    int curYear = calendar.get(Calendar.YEAR);
-//                    //int birthYear = curYear - yearPicker.getValue();
-//                    int birthYear = curYear - mAgeYears;
-//                    int curMonth = calendar.get(Calendar.MONTH);
-//                    //int birthMonth = curMonth - monthPicker.getValue();
-//                    int birthMonth = curMonth - mAgeMonths;
-//                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
-//                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
-//                    mDOBYear = birthYear;
-//                    mDOBMonth = birthMonth;
-//
-//                    if (birthDay < 0) {
-//                        mDOBDay = birthDay + totalDays - 1;
-//                        mDOBMonth--;
-//
-//                    } else {
-//                        mDOBDay = birthDay;
-//                    }
                     Calendar cal = Calendar.getInstance();
                     cal.add(Calendar.YEAR, -mAgeYears);
                     cal.add(Calendar.MONTH, -mAgeMonths);
-                    cal.add(Calendar.DAY_OF_YEAR, -mAgeDays + 1);
+//                    cal.add(Calendar.DAY_OF_YEAR, -mAgeDays);
+                    cal.add(Calendar.DAY_OF_YEAR, -mAgeDays+1);
 
                     // have added one day because this method does not include today's day to calculate difference: By Nishita
+                    Calendar calendar = Calendar.getInstance();
+                    int curYear = calendar.get(Calendar.YEAR);
+                    //int birthYear = curYear - yearPicker.getValue();
+                    int birthYear = curYear - mAgeYears;
+                    int curMonth = calendar.get(Calendar.MONTH);
+                    //int birthMonth = curMonth - monthPicker.getValue();
+                    int birthMonth = curMonth - mAgeMonths;
+                    //int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - dayPicker.getValue();
+                    int leafyearDiffrence = birthYear - curYear;
+                    Log.d("Month", "982>>>>" + birthMonth);
+                    Log.d("mAgeMonths", "982>>>>" + mAgeMonths);
+                    Log.d("leafyearDiffrence", "983>>>>" + leafyearDiffrence);
 
+//                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays-(leafyearDiffrence/4);
+//                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays-(leafyearDiffrence/4);
+                    int birthDay = calendar.get(Calendar.DAY_OF_MONTH) - mAgeDays;
+                    mDOBYear = birthYear;
+                    mDOBMonth = birthMonth;
+
+                    if (birthDay < 0) {
+                        mDOBDay = birthDay + totalDays - 1;
+//                        mDOBDay = birthDay + totalDays - 1;
+                        mDOBMonth--;
+
+                    } else {
+                        mDOBDay = birthDay;
+                    }
                     //   Locale.setDefault(Locale.ENGLISH);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy",
                             Locale.ENGLISH);
-//                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
+                    dob.set(mDOBYear, mDOBMonth, mDOBDay);
+//                    dob_indexValue = mDOBMonth;
 
                     String dobString = simpleDateFormat.format(cal.getTime());
-                   /* if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                        mDOBEditText.setText(dob_text);
-                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                        String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                        mDOBEditText.setText(dob_text);
-                    } else*/
+
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = ru__or_dob(dobString); //to show text of English into Odiya...
                         mDOBEditText.setText(dob_text);
                     } else {
                         mDOBEditText.setText(dobString);
+
                     }
 
 //                    mDOB.setText(dobString);
@@ -1009,6 +1038,22 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
         });
+    }
+
+    //    @RequiresApi(api = Build.VERSION_CODES.O)
+    private int getMonthNumber(String monthName) {
+        int monthNumber = 0;
+        try {
+            Calendar cal = Calendar.getInstance();
+            Date date = new SimpleDateFormat("MMMM", Locale.ENGLISH).parse(monthName);//put your month name in english here
+            cal.setTime(date);
+            monthNumber = cal.get(Calendar.MONTH);
+            System.out.println(monthNumber);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return monthNumber;
     }
 
     public String getYear(int syear, int smonth, int sday, int eyear, int emonth, int eday) {
@@ -1384,8 +1429,6 @@ public class IdentificationActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(IdentificationActivity.this, alertDialog);
 
             }
-
-
             Toast.makeText(IdentificationActivity.this, R.string.identification_screen_required_fields, Toast.LENGTH_LONG).show();
             return;
         }
@@ -1471,7 +1514,11 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
                         (StringUtils.getValue(dob)));
             } else {
+                int mUpdateFromAgeONly = getMonthNumber(dob_array[1]);
+      dob_indexValue=getMonthNumber(dob_array[1]);
+                Log.d("mAgeMonths", "1523>>>>" + mUpdateFromAgeONly);
                 String dob = StringUtils.hi_or__en_month(dob_indexValue);
+//                String dob = StringUtils.hi_or__en_month(dob_indexValue);
                 dob_array[1] = dob_array[1].replace(dob_array[1], dob);
                 String dob_value = dob_array[0] + " " + dob_array[1] + " " + dob_array[2];
                 patientdto.setDateofbirth(DateAndTimeUtils.getFormatedDateOfBirth
@@ -1481,7 +1528,7 @@ public class IdentificationActivity extends AppCompatActivity {
             patientdto.setAddress1(StringUtils.getValue(mAddress1EditText.getText().toString()));
             patientdto.setAddress2(StringUtils.getValue(mAddress2EditText.getText().toString()));
             patientdto.setCityvillage(StringUtils.getValue(mCityAutoCompleteTextView.getText().toString()));
-            if(StringUtils.getValue(mPostalEditText.getText().toString()).length()!=6){
+            if (StringUtils.getValue(mPostalEditText.getText().toString()).length() != 6) {
                 mPostalEditText.setError(getString(R.string.postal_code_invalid_txt));
                 mPostalEditText.requestFocus();
                 return;
@@ -1986,10 +2033,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
+
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
         String appLanguage = sessionManager1.getAppLanguage();
