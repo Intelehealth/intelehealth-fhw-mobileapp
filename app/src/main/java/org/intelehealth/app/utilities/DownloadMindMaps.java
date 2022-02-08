@@ -19,6 +19,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.setupActivity.SetupActivity;
 
 
 /**
@@ -29,11 +30,13 @@ import org.intelehealth.app.R;
 public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
 
     Context context;
+    String screenStr="";
 
     private final ProgressDialog mProgressDialog;
-    public DownloadMindMaps(Context _context, ProgressDialog mProgressDialog) {
+    public DownloadMindMaps(Context _context, ProgressDialog mProgressDialog, String screenStr) {
         this.context = _context;
         this.mProgressDialog = mProgressDialog;
+        this.screenStr=screenStr;
     }
 
 
@@ -112,8 +115,18 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Toast.makeText(context, s, Toast.LENGTH_LONG).show();
         mProgressDialog.dismiss();
+        if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
+            if(screenStr.equalsIgnoreCase("setup")){
+                ((SetupActivity)context).showMindmapFailedAlert();
+            }else if(screenStr.equalsIgnoreCase("home")){
+                SessionManager sessionManager=new SessionManager(context);
+                sessionManager.setLicenseKey("");
+                Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(context, s, Toast.LENGTH_LONG).show();
+        }
         //Check is there any existing mindmaps are present, if yes then delete.
         File mindMapZip = new File(context.getFilesDir().getAbsolutePath(), "mindmaps.zip");
         Log.e("MindMap Zip=", "" + mindMapZip.exists());
@@ -193,9 +206,6 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
                     String canonicalPath = fmd.getCanonicalPath();
                     if (!canonicalPath.startsWith(parentFolder)) {
                         // SecurityException
-                    }
-                    else{
-
                     }
                     continue;
                 }

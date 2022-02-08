@@ -823,4 +823,7 @@
     <string name="no">No</string>
     <string name="type_to_search">Type to Search..</string>
 
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">Unable to download the protocol. Press \'Yes\' to retry protocol download. \'No\' to continue with Demo protocols.</string>
+
 </resources>

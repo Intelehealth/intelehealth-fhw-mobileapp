@@ -667,4 +667,7 @@
     <string name="app_sync">অ্যাপ সিঙ্ক হচ্ছে..</string>
     <string name="type_to_search">অনুসন্ধান করতে টাইপ করুন..</string>
 
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">প্রোটোকলটি উপলব্ধ তারপর ডাউনলোড করা হয়। প্রোটোকল ডাউনলোডটি পুনরায় চালু করতে \'হ্যাঁ\' টিপুন। ডেমো প্রোটোকলের সাথে ধারাবাহিকতার জন্য \'না\' টিপুন।</string>
+
 </resources>

@@ -791,5 +791,7 @@
     <string name="app_sync">એપ્લિકેશન સમન્વયિત કરી રહ્યું છે..</string>
     <string name="type_to_search">શોધવા માટે ટાઇપ કરો..</string>
 
+    //----download protocol failed alert dialog-----------
+    <string name="protocol_download_failed_alertdialog">પ્રોટોકોલ ઉપલબ્ધ છે પછી ડાઉનલોડ થાય છે । પ્રોટોકોલ ડાઉનલોડ ફરીથી લખવા માટે \'હા\' દબાવો । ડેમો પ્રોટોકોલ સાથે સાતત્ય માટે \'ના\' દબાવો ।</string>
 
 </resources>
