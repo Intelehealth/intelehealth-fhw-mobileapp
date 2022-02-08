@@ -32,6 +32,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
 
+import org.intelehealth.ekalhelpline.models.AnswerResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -354,6 +355,23 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
      */
     private void fabClick() {
         nodeComplete = true;
+
+        AnswerResult answerResult = currentNode.checkAllRequiredAnswered();
+        if (!answerResult.result) {
+            // show alert dialog
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+            alertDialogBuilder.setMessage(answerResult.requiredStrings);
+            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                }
+            });
+            Dialog alertDialog = alertDialogBuilder.show();
+            Log.v(TAG, answerResult.requiredStrings);
+            return;
+        }
 
         if (!complaintConfirmed) {
             questionsMissing();

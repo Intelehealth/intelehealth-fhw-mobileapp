@@ -527,6 +527,7 @@
     <string name="Other">Other</string>
     <string name="mobile_number_search">\"Mobile number: \"</string>
     <string name="no_records_found">No records found</string>
+    <string name="answer_following_questions">Answer following Questions</string>
 
 
 </resources>
