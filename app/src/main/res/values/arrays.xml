@@ -1,5 +1,8 @@
 <resources>
 
+    <string-array name="select">
+        <item>Select</item>
+    </string-array>
 
     <string-array name="language_names">
         <item>हिंदी</item>
