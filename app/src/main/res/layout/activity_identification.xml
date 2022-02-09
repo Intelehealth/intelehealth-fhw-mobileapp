@@ -1082,7 +1082,7 @@
                     android:layout_height="10dp" />
 
                 <Spinner
-                    android:id="@+id/spinner_generally"
+                    android:id="@+id/spinner_primaryhealthprovider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/select"/>

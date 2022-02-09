@@ -816,4 +816,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+<!--    Roster Strings-->
+    <string name="select">Select</string>
 </resources>

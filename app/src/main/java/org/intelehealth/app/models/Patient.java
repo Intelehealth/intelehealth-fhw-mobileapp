@@ -22,6 +22,39 @@ public class Patient {
     private String education_level;
     private String caste;
     private String emergency;
+    // Roster
+    private String relationshiphoh;
+    private String maritualstatus;
+    private String phoneownership;
+    private String bpchecked;
+    private String sugarchecked;
+    private String hbtest;
+    private String bmi;
+    private String healthissuereported;
+    private String noepisodes;
+    private String primaryhealthprovider;
+    private String firstlocation;
+    private String referredto;
+    private String modetransport;
+    private String costtravel;
+    private String costconsult;
+    private String costmedicines;
+    private String scoreexperience;
+    private String timespregnant;
+    private String pasttwoyrs;
+    private String outcomepregnancy;
+    private String childalive;
+    private String yearsofpregnancy;
+    private String lastmonthspregnancy;
+    private String monthsofpregnancy;
+    private String placedelivery;
+    private String focalfacility;
+    private String singlemultiplebirth;
+    private String sexofbaby;
+    private String agediedbaby;
+    private String plannedpregnancy;
+    private String highriskpregnancy;
+    private String complications;
 
     public String getUuid() {
         return uuid;
@@ -189,5 +222,261 @@ public class Patient {
 
     public void setEmergency(String emergency) {
         this.emergency = emergency;
+    }
+
+    public String getRelationshiphoh() {
+        return relationshiphoh;
+    }
+
+    public void setRelationshiphoh(String relationshiphoh) {
+        this.relationshiphoh = relationshiphoh;
+    }
+
+    public String getMaritualstatus() {
+        return maritualstatus;
+    }
+
+    public void setMaritualstatus(String maritualstatus) {
+        this.maritualstatus = maritualstatus;
+    }
+
+    public String getPhoneownership() {
+        return phoneownership;
+    }
+
+    public void setPhoneownership(String phoneownership) {
+        this.phoneownership = phoneownership;
+    }
+
+    public String getBpchecked() {
+        return bpchecked;
+    }
+
+    public void setBpchecked(String bpchecked) {
+        this.bpchecked = bpchecked;
+    }
+
+    public String getSugarchecked() {
+        return sugarchecked;
+    }
+
+    public void setSugarchecked(String sugarchecked) {
+        this.sugarchecked = sugarchecked;
+    }
+
+    public String getHbtest() {
+        return hbtest;
+    }
+
+    public void setHbtest(String hbtest) {
+        this.hbtest = hbtest;
+    }
+
+    public String getBmi() {
+        return bmi;
+    }
+
+    public void setBmi(String bmi) {
+        this.bmi = bmi;
+    }
+
+    public String getHealthissuereported() {
+        return healthissuereported;
+    }
+
+    public void setHealthissuereported(String healthissuereported) {
+        this.healthissuereported = healthissuereported;
+    }
+
+    public String getNoepisodes() {
+        return noepisodes;
+    }
+
+    public void setNoepisodes(String noepisodes) {
+        this.noepisodes = noepisodes;
+    }
+
+    public String getPrimaryhealthprovider() {
+        return primaryhealthprovider;
+    }
+
+    public void setPrimaryhealthprovider(String primaryhealthprovider) {
+        this.primaryhealthprovider = primaryhealthprovider;
+    }
+
+    public String getFirstlocation() {
+        return firstlocation;
+    }
+
+    public void setFirstlocation(String firstlocation) {
+        this.firstlocation = firstlocation;
+    }
+
+    public String getReferredto() {
+        return referredto;
+    }
+
+    public void setReferredto(String referredto) {
+        this.referredto = referredto;
+    }
+
+    public String getModetransport() {
+        return modetransport;
+    }
+
+    public void setModetransport(String modetransport) {
+        this.modetransport = modetransport;
+    }
+
+    public String getCosttravel() {
+        return costtravel;
+    }
+
+    public void setCosttravel(String costtravel) {
+        this.costtravel = costtravel;
+    }
+
+    public String getCostconsult() {
+        return costconsult;
+    }
+
+    public void setCostconsult(String costconsult) {
+        this.costconsult = costconsult;
+    }
+
+    public String getCostmedicines() {
+        return costmedicines;
+    }
+
+    public void setCostmedicines(String costmedicines) {
+        this.costmedicines = costmedicines;
+    }
+
+    public String getScoreexperience() {
+        return scoreexperience;
+    }
+
+    public void setScoreexperience(String scoreexperience) {
+        this.scoreexperience = scoreexperience;
+    }
+
+    public String getTimespregnant() {
+        return timespregnant;
+    }
+
+    public void setTimespregnant(String timespregnant) {
+        this.timespregnant = timespregnant;
+    }
+
+    public String getPasttwoyrs() {
+        return pasttwoyrs;
+    }
+
+    public void setPasttwoyrs(String pasttwoyrs) {
+        this.pasttwoyrs = pasttwoyrs;
+    }
+
+    public String getOutcomepregnancy() {
+        return outcomepregnancy;
+    }
+
+    public void setOutcomepregnancy(String outcomepregnancy) {
+        this.outcomepregnancy = outcomepregnancy;
+    }
+
+    public String getChildalive() {
+        return childalive;
+    }
+
+    public void setChildalive(String childalive) {
+        this.childalive = childalive;
+    }
+
+    public String getYearsofpregnancy() {
+        return yearsofpregnancy;
+    }
+
+    public void setYearsofpregnancy(String yearsofpregnancy) {
+        this.yearsofpregnancy = yearsofpregnancy;
+    }
+
+    public String getLastmonthspregnancy() {
+        return lastmonthspregnancy;
+    }
+
+    public void setLastmonthspregnancy(String lastmonthspregnancy) {
+        this.lastmonthspregnancy = lastmonthspregnancy;
+    }
+
+    public String getMonthsofpregnancy() {
+        return monthsofpregnancy;
+    }
+
+    public void setMonthsofpregnancy(String monthsofpregnancy) {
+        this.monthsofpregnancy = monthsofpregnancy;
+    }
+
+    public String getPlacedelivery() {
+        return placedelivery;
+    }
+
+    public void setPlacedelivery(String placedelivery) {
+        this.placedelivery = placedelivery;
+    }
+
+    public String getFocalfacility() {
+        return focalfacility;
+    }
+
+    public void setFocalfacility(String focalfacility) {
+        this.focalfacility = focalfacility;
+    }
+
+    public String getSinglemultiplebirth() {
+        return singlemultiplebirth;
+    }
+
+    public void setSinglemultiplebirth(String singlemultiplebirth) {
+        this.singlemultiplebirth = singlemultiplebirth;
+    }
+
+    public String getSexofbaby() {
+        return sexofbaby;
+    }
+
+    public void setSexofbaby(String sexofbaby) {
+        this.sexofbaby = sexofbaby;
+    }
+
+    public String getAgediedbaby() {
+        return agediedbaby;
+    }
+
+    public void setAgediedbaby(String agediedbaby) {
+        this.agediedbaby = agediedbaby;
+    }
+
+    public String getPlannedpregnancy() {
+        return plannedpregnancy;
+    }
+
+    public void setPlannedpregnancy(String plannedpregnancy) {
+        this.plannedpregnancy = plannedpregnancy;
+    }
+
+    public String getHighriskpregnancy() {
+        return highriskpregnancy;
+    }
+
+    public void setHighriskpregnancy(String highriskpregnancy) {
+        this.highriskpregnancy = highriskpregnancy;
+    }
+
+    public String getComplications() {
+        return complications;
+    }
+
+    public void setComplications(String complications) {
+        this.complications = complications;
     }
 }
