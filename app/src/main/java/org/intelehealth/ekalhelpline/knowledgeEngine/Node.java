@@ -812,7 +812,9 @@ public class Node implements Serializable {
                         node.addLanguage(dialogEditText.getText().toString());
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
+                    node.setSelected(true);
                 } else {
+                    node.setSelected(false);
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -820,7 +822,7 @@ public class Node implements Serializable {
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                 }
-                node.setSelected(true);
+
                 adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
