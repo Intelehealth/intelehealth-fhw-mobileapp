@@ -88,11 +88,11 @@ public class SyncWorkManager extends Worker {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("unicef", "unicef", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("swasthyasamparktelemedicine", "swasthyasamparktelemedicine", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
 
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "unicef")
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "swasthyasamparktelemedicine")
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(task))
                 //.setContentText(task)
