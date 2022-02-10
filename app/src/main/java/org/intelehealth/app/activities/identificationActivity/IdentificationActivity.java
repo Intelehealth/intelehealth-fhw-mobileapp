@@ -634,6 +634,9 @@ public class IdentificationActivity extends AppCompatActivity {
             }
 
             // Edit of Roster Spinner
+            //Roaster
+            roaster_spinnerAdapter();
+            //Roaster
             editRosterQuestionsUIHandling();
 
         } else {
@@ -816,7 +819,9 @@ public class IdentificationActivity extends AppCompatActivity {
         });
 
         //Roaster
-        roaster_spinnerAdapter();
+        if (patientID_edit == null) {
+            roaster_spinnerAdapter();
+        }
         //Roaster
 
 
@@ -1158,6 +1163,7 @@ public class IdentificationActivity extends AppCompatActivity {
     }
 
     private void editRosterQuestionsUIHandling() {
+
         //Relations ship HOH
         if (patient1.getRelationshiphoh() != null && !patient1.getRelationshiphoh().equalsIgnoreCase("")) {
             String relationhoh_Transl = "";
@@ -1250,16 +1256,16 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //bmi
         if (patient1.getBmi() != null && !patient1.getBmi().equalsIgnoreCase("")) {
-            String bp_Transl = "";
+            String bmi_Transl = "";
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                bp_Transl = StringUtils.switch_as_caste_edit(patient1.getBmi());
+                bmi_Transl = StringUtils.switch_as_caste_edit(patient1.getBmi());
                 // TODO: Add switch case in StringUtils
             } else {
-                bp_Transl = patient1.getBmi();
+                bmi_Transl = patient1.getBmi();
             }
 
-            int spinner_position = adapter_bpchecked.getPosition(bp_Transl);
-            spinner_bpchecked.setSelection(spinner_position);
+            int spinner_position = adapter_bmi.getPosition(bmi_Transl);
+            spinner_bmi.setSelection(spinner_position);
         }
         //bmi
 
@@ -1562,7 +1568,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 adapter_bpchecked = ArrayAdapter.createFromResource(this,
                         bp_id, android.R.layout.simple_spinner_dropdown_item);
             }
-            spinner_phoneownership.setAdapter(adapter_bpchecked);
+            spinner_bpchecked.setAdapter(adapter_bpchecked);
 
         } catch (Exception e) {
             // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
@@ -2016,6 +2022,102 @@ public class IdentificationActivity extends AppCompatActivity {
                 }
                 if (name.equalsIgnoreCase("Son/wife/daughter")) {
                     patient1.setSdw(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("RelationshipStatusHOH")) {
+                    patient1.setRelationshiphoh(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("MaritualStatus")) {
+                    patient1.setMaritualstatus(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PhoneOwnership")) {
+                    patient1.setPhoneownership(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("BPchecked")) {
+                    patient1.setBpchecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Sugarchecked")) {
+                    patient1.setSugarchecked(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("HBtest")) {
+                    patient1.setHbtest(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("BMI")) {
+                    patient1.setBmi(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("HealthIssueReported")) {
+                    patient1.setHealthissuereported(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("NoofEpisodes")) {
+                    patient1.setNoepisodes(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PrimaryHealthProvider")) {
+                    patient1.setPrimaryhealthprovider(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("FirstLocation")) {
+                    patient1.setFirstlocation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ReferredTo")) {
+                    patient1.setReferredto(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ModeofTransport")) {
+                    patient1.setModetransport(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("CostofTravel")) {
+                    patient1.setCosttravel(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("CostofConsult")) {
+                    patient1.setCostconsult(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("CostofMedicines")) {
+                    patient1.setCostmedicines(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ScoreofExperience")) {
+                    patient1.setScoreexperience(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("NoOfTimesPregnant")) {
+                    patient1.setTimespregnant(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PregnanyPastTwoYears")) {
+                    patient1.setPasttwoyrs(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("OutcomeOfPregnancy")) {
+                    patient1.setOutcomepregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("ChildAlive")) {
+                    patient1.setChildalive(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("YearOfPregnant")) {
+                    patient1.setYearsofpregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("MonthPregnantLast")) {
+                    patient1.setLastmonthspregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("NoOfMonthsPregnant")) {
+                    patient1.setMonthsofpregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("FocalFacility")) {
+                    patient1.setFocalfacility(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("SingleMultipleBirth")) {
+                    patient1.setSinglemultiplebirth(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("SexOfBaby")) {
+                    patient1.setSexofbaby(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("BabyAgeDied")) {
+                    patient1.setAgediedbaby(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PlaceOfDelivery")) {
+                    patient1.setPlacedelivery(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("PregnancyPlanned")) {
+                    patient1.setPlannedpregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("HighRiskPregnancy")) {
+                    patient1.setHighriskpregnancy(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                if (name.equalsIgnoreCase("Complications")) {
+                    patient1.setComplications(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -3390,6 +3492,7 @@ public class IdentificationActivity extends AppCompatActivity {
         // TODO: Add filters
         edittext_noofepisodes = findViewById(R.id.edittext_noofepisodes);
         edittext_avgcosttravel = findViewById(R.id.edittext_avgcosttravel);
+        edittext_avgcostconsult = findViewById(R.id.edittext_avgcostconsult);
         edittext_avgcostmedicines = findViewById(R.id.edittext_avgcostmedicines);
         edittext_howmanytimmespregnant = findViewById(R.id.edittext_howmanytimmespregnant);
         edittext_yearofpregnancy = findViewById(R.id.edittext_yearofpregnancy);
