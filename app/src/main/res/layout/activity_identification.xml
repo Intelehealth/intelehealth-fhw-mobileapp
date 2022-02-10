@@ -861,7 +861,7 @@
                     android:id="@+id/spinner_whatisyourrelation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/relationshipHoH_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -889,7 +889,7 @@
                     android:id="@+id/spinner_maritualstatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/maritual_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -917,7 +917,7 @@
                     android:id="@+id/spinner_phoneownership"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/phoneownership_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -945,7 +945,7 @@
                     android:id="@+id/spinner_bpchecked"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/bp_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -973,7 +973,7 @@
                     android:id="@+id/spinner_sugarchecked"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/sugar_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1001,7 +1001,7 @@
                     android:id="@+id/spinner_hbchecked"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/hb_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1029,7 +1029,7 @@
                     android:id="@+id/spinner_bmi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/bmi_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1057,7 +1057,7 @@
                     android:id="@+id/spinner_healthissuereported"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/healthissuereported_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1085,7 +1085,7 @@
                     android:id="@+id/spinner_primaryhealthprovider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/primaryhealthprovider_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1113,7 +1113,7 @@
                     android:id="@+id/spinner_firstlocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/firstlocation_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1141,7 +1141,7 @@
                     android:id="@+id/spinner_referredto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/referredto_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1169,7 +1169,7 @@
                     android:id="@+id/spinner_modeoftransport"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/modetransport_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1221,7 +1221,7 @@
                     android:id="@+id/spinner_experiencerscore"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/select"/>
+                    android:entries="@array/scoreexperience_en"/>
 
                 <Space
                     android:layout_width="10dp"
@@ -1303,7 +1303,7 @@
                             android:id="@+id/spinner_pregnantpasttwoyrs"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/pasttwoyrs_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1331,7 +1331,7 @@
                             android:id="@+id/spinner_outcomepregnancy"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/outcomepregnancy_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1359,7 +1359,7 @@
                             android:id="@+id/spinner_childalive"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/childalive_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1405,7 +1405,7 @@
                             android:id="@+id/spinner_placeofdeliverypregnant"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/placedelivery_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1451,7 +1451,7 @@
                             android:id="@+id/spinner_sexofbaby"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/sexofbaby_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1479,7 +1479,7 @@
                             android:id="@+id/spinner_pregnancyplanned"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/pregnancyplanned_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1507,7 +1507,7 @@
                             android:id="@+id/spinner_pregnancyhighriskcase"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/highriskpregnancy_en"/>
 
                         <Space
                             android:layout_width="10dp"
@@ -1535,7 +1535,7 @@
                             android:id="@+id/spinner_pregnancycomplications"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:entries="@array/select"/>
+                            android:entries="@array/complications_en"/>
 
                         <Space
                             android:layout_width="10dp"

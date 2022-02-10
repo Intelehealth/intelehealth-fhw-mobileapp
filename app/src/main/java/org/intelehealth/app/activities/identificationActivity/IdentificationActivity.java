@@ -1278,6 +1278,10 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //healthissuereported
 
+        //no episodes
+        edittext_noofepisodes.setText(patient1.getNoepisodes());
+        //no episodes
+
         //primaryhealthprovider
         if (patient1.getPrimaryhealthprovider() != null && !patient1.getPrimaryhealthprovider().equalsIgnoreCase("")) {
             String primaryhealthprovider_Transl = "";
@@ -1338,6 +1342,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //modetransport
 
+        //EditText
+        edittext_avgcosttravel.setText(patient1.getCosttravel());
+        edittext_avgcostconsult.setText(patient1.getCostconsult());
+        edittext_avgcostmedicines.setText(patient1.getCostmedicines());
+        //EditText
+
         //scoreofexperience
         if (patient1.getScoreexperience() != null && !patient1.getScoreexperience().equalsIgnoreCase("")) {
             String scoreofexperience_Transl = "";
@@ -1352,6 +1362,10 @@ public class IdentificationActivity extends AppCompatActivity {
             spinner_experiencerscore.setSelection(spinner_position);
         }
         //scoreofexperience
+
+        // how many times
+        edittext_howmanytimmespregnant.setText(patient1.getTimespregnant());
+        // how many times
 
         //pasttwoyrs
         if (patient1.getPasttwoyrs() != null && !patient1.getPasttwoyrs().equalsIgnoreCase("")) {
@@ -1398,6 +1412,12 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //childalive
 
+        //EditText
+        edittext_yearofpregnancy.setText(patient1.getYearsofpregnancy());
+        edittext_monthspregnancylast.setText(patient1.getLastmonthspregnancy());
+        edittext_monthsbeingpregnant.setText(patient1.getMonthsofpregnancy());
+        //EditText
+
         //placedelivery
         if (patient1.getPlacedelivery() != null && !patient1.getPlacedelivery().equalsIgnoreCase("")) {
             String placedelivery_Transl = "";
@@ -1413,6 +1433,10 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //placedelivery
 
+        //focal
+        edittext_focalfacility.setText(patient1.getFocalfacility());
+        //focal
+
         //sexofbaby
         if (patient1.getSexofbaby() != null && !patient1.getSexofbaby().equalsIgnoreCase("")) {
             String sexofbaby_Transl = "";
@@ -1427,6 +1451,10 @@ public class IdentificationActivity extends AppCompatActivity {
             spinner_sexofbaby.setSelection(spinner_position);
         }
         //sexofbaby
+
+        //baby age died
+        edittext_babyagedied.setText(patient1.getAgediedbaby());
+        //baby age died
 
         //pregplanned
         if (patient1.getPlannedpregnancy() != null && !patient1.getPlannedpregnancy().equalsIgnoreCase("")) {
@@ -1480,7 +1508,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //Spinner - Start
         //Relationsship Spinner adapter
         try {
-            String relationshiphohLanguage = "relationshiphoh_" + sessionManager.getAppLanguage();
+            String relationshiphohLanguage = "relationshipHoH_" + sessionManager.getAppLanguage();
             int relationshiphoh_id = res.getIdentifier(relationshiphohLanguage, "array", getApplicationContext().getPackageName());
             if (relationshiphoh_id != 0) {
                 adapter_whatisyourrelation = ArrayAdapter.createFromResource(this,
@@ -1512,7 +1540,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //phone Spinner adapter
         try {
-            String phoneownerLanguage = "phoneowner_" + sessionManager.getAppLanguage();
+            String phoneownerLanguage = "phoneownership_" + sessionManager.getAppLanguage();
             int phoneowner_id = res.getIdentifier(phoneownerLanguage, "array", getApplicationContext().getPackageName());
             if (phoneowner_id != 0) {
                 adapter_phoneownership = ArrayAdapter.createFromResource(this,
@@ -1560,7 +1588,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //HB Spinner adapter
         try {
-            String hbLanguage = "bp_" + sessionManager.getAppLanguage();
+            String hbLanguage = "hb_" + sessionManager.getAppLanguage();
             int hb_id = res.getIdentifier(hbLanguage, "array", getApplicationContext().getPackageName());
             if (hb_id != 0) {
                 adapter_hbchecked = ArrayAdapter.createFromResource(this,
@@ -1592,7 +1620,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         //health issue Spinner adapter
         try {
-            String healthissueLanguage = "healthissue_" + sessionManager.getAppLanguage();
+            String healthissueLanguage = "healthissuereported_" + sessionManager.getAppLanguage();
             int healthissue_id = res.getIdentifier(healthissueLanguage, "array", getApplicationContext().getPackageName());
             if (healthissue_id != 0) {
                 adapter_healthissuereported = ArrayAdapter.createFromResource(this,
@@ -1640,7 +1668,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         // referred Spinner adapter
         try {
-            String referredLanguage = "referred_" + sessionManager.getAppLanguage();
+            String referredLanguage = "referredto_" + sessionManager.getAppLanguage();
             int referred_id = res.getIdentifier(referredLanguage, "array", getApplicationContext().getPackageName());
             if (referred_id != 0) {
                 adapter_referredto = ArrayAdapter.createFromResource(this,
@@ -1752,7 +1780,7 @@ public class IdentificationActivity extends AppCompatActivity {
 
         // sex of baby Spinner adapter
         try {
-            String sexbabyLanguage = "sexbaby_" + sessionManager.getAppLanguage();
+            String sexbabyLanguage = "sexofbaby_" + sessionManager.getAppLanguage();
             int sexbaby_id = res.getIdentifier(sexbabyLanguage, "array", getApplicationContext().getPackageName());
             if (sexbaby_id != 0) {
                 adapter_sexofbaby = ArrayAdapter.createFromResource(this,
@@ -2475,6 +2503,16 @@ public class IdentificationActivity extends AppCompatActivity {
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        //no episodes
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoofEpisodes"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_noofepisodes.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_noofepisodes.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //no episodes
+
         // primary health provider
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2511,6 +2549,36 @@ public class IdentificationActivity extends AppCompatActivity {
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        //cost travel
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofTravel"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcosttravel.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_avgcosttravel.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //cost travel
+
+        //cost consult
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofConsult"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostconsult.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_avgcostconsult.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //cost consult
+
+        //cost medicines
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofMedicines"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostmedicines.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_avgcostmedicines.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //cost medicines
+
         // score of experience
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2519,6 +2587,16 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_experiencerscore));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
+
+        //how many times pregnant
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoOfTimesPregnant"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_howmanytimmespregnant.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_howmanytimmespregnant.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //how many times
 
         // past two years
         patientAttributesDTO = new PatientAttributesDTO();
@@ -2547,6 +2625,36 @@ public class IdentificationActivity extends AppCompatActivity {
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        //year of pregnancy
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("YearOfPregnant"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_yearofpregnancy.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_yearofpregnancy.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //year of pregnancy
+
+        //months pregnant last
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("MonthPregnantLast"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_monthspregnancylast.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_monthspregnancylast.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //months pregnant last
+
+        //months pregnant
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoOfMonthsPregnant"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_monthsbeingpregnant.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_monthsbeingpregnant.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //months pregnant
+
         // place of delivery
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2556,6 +2664,16 @@ public class IdentificationActivity extends AppCompatActivity {
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        //focal facility
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FocalFacility"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_focalfacility.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_focalfacility.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //focal facility
+
         // sex of baby
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -2564,6 +2682,16 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_sexofbaby));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
+
+        //baby age died
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("BabyAgeDied"));
+        patientAttributesDTO.setValue(StringUtils.getValue(edittext_babyagedied.getText().toString()));
+        Log.d("HOH", "total family meme: " + edittext_babyagedied.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //baby age died
 
         // pregnancy planned
         patientAttributesDTO = new PatientAttributesDTO();
@@ -2665,6 +2793,14 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (edittext_noofepisodes.getText().toString().equalsIgnoreCase("") &&
+                edittext_noofepisodes.getText().toString().isEmpty()) {
+            edittext_noofepisodes.setError(getString(R.string.select));
+            focusView = edittext_noofepisodes;
+            cancel = true;
+            return;
+        }
+
         if (spinner_primaryhealthprovider.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_primaryhealthprovider.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2701,11 +2837,43 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (edittext_avgcosttravel.getText().toString().equalsIgnoreCase("") &&
+                edittext_avgcosttravel.getText().toString().isEmpty()) {
+            edittext_avgcosttravel.setError(getString(R.string.select));
+            focusView = edittext_avgcosttravel;
+            cancel = true;
+            return;
+        }
+
+        if (edittext_avgcostconsult.getText().toString().equalsIgnoreCase("") &&
+                edittext_avgcostconsult.getText().toString().isEmpty()) {
+            edittext_avgcostconsult.setError(getString(R.string.select));
+            focusView = edittext_avgcostconsult;
+            cancel = true;
+            return;
+        }
+
+        if (edittext_avgcostmedicines.getText().toString().equalsIgnoreCase("") &&
+                edittext_avgcostmedicines.getText().toString().isEmpty()) {
+            edittext_avgcostmedicines.setError(getString(R.string.select));
+            focusView = edittext_avgcostmedicines;
+            cancel = true;
+            return;
+        }
+
         if (spinner_experiencerscore.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_experiencerscore.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = spinner_experiencerscore;
+            cancel = true;
+            return;
+        }
+
+        if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
+                edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
+            edittext_howmanytimmespregnant.setError(getString(R.string.select));
+            focusView = edittext_howmanytimmespregnant;
             cancel = true;
             return;
         }
@@ -2737,6 +2905,30 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (edittext_yearofpregnancy.getText().toString().equalsIgnoreCase("") &&
+                edittext_yearofpregnancy.getText().toString().isEmpty()) {
+            edittext_yearofpregnancy.setError(getString(R.string.select));
+            focusView = edittext_yearofpregnancy;
+            cancel = true;
+            return;
+        }
+
+        if (edittext_monthspregnancylast.getText().toString().equalsIgnoreCase("") &&
+                edittext_monthspregnancylast.getText().toString().isEmpty()) {
+            edittext_monthspregnancylast.setError(getString(R.string.select));
+            focusView = edittext_monthspregnancylast;
+            cancel = true;
+            return;
+        }
+
+        if (edittext_monthsbeingpregnant.getText().toString().equalsIgnoreCase("") &&
+                edittext_monthsbeingpregnant.getText().toString().isEmpty()) {
+            edittext_monthsbeingpregnant.setError(getString(R.string.select));
+            focusView = edittext_monthsbeingpregnant;
+            cancel = true;
+            return;
+        }
+
         if (spinner_placeofdeliverypregnant.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_placeofdeliverypregnant.getSelectedView();
             t.setError(getString(R.string.select));
@@ -2746,11 +2938,27 @@ public class IdentificationActivity extends AppCompatActivity {
             return;
         }
 
+        if (edittext_focalfacility.getText().toString().equalsIgnoreCase("") &&
+                edittext_focalfacility.getText().toString().isEmpty()) {
+            edittext_focalfacility.setError(getString(R.string.select));
+            focusView = edittext_focalfacility;
+            cancel = true;
+            return;
+        }
+
         if (spinner_sexofbaby.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_sexofbaby.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = spinner_sexofbaby;
+            cancel = true;
+            return;
+        }
+
+        if (edittext_babyagedied.getText().toString().equalsIgnoreCase("") &&
+                edittext_babyagedied.getText().toString().isEmpty()) {
+            edittext_babyagedied.setError(getString(R.string.select));
+            focusView = edittext_babyagedied;
             cancel = true;
             return;
         }
@@ -3179,6 +3387,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //Roaster Spinner End
 
         // Roster EditText
+        // TODO: Add filters
         edittext_noofepisodes = findViewById(R.id.edittext_noofepisodes);
         edittext_avgcosttravel = findViewById(R.id.edittext_avgcosttravel);
         edittext_avgcostmedicines = findViewById(R.id.edittext_avgcostmedicines);
@@ -3191,7 +3400,5 @@ public class IdentificationActivity extends AppCompatActivity {
         edittext_babyagedied = findViewById(R.id.edittext_babyagedied);
         //Roster EditText
     }
-
-
 
 }

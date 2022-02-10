@@ -1617,4 +1617,215 @@
         <item>Заражение зубов или десен</item>
     </string-array>
 
+    <!--Roster-->
+    <string-array name="relationshipHoH_en">
+        <item>Select</item>
+        <item>HEAD OF THE HOUSEHOLD</item>
+        <item>SPOUSE</item>
+        <item>SON/DAUGHTER</item>
+        <item>SON/DAUGHTER IN LAW</item>
+        <item>GRANDCHILD</item>
+        <item>FATHER/MOTHER</item>
+        <item>FATHER/MOTHER-IN-LAW</item>
+        <item>BROTHER/SISTER</item>
+        <item>BROTHER/SISTER-IN-LAW</item>
+        <item>NIECE/NEPHEW</item>
+        <item>GRANDPARENT/GRAND PARENT-IN-LAW</item>
+        <item>OTHER RELATIVE</item>
+        <item>ADOPTED/FOSTER/STEPCHILD</item>
+        <item>DOMESTIC SERVANT</item>
+        <item>OTHER NOT RELATED</item>
+        <item>OTHER (SPECIFY)</item>
+        <item>NOT STATED</item>
+    </string-array>
+
+    <string-array name="maritual_en">
+        <item>Select</item>
+        <item>CURRENTLY MARRIED</item>
+        <item>MARRIED, GAUNA NOT PERFORMED</item>
+        <item>WIDOWED</item>
+        <item>DIVORCED</item>
+        <item>SEPARATED</item>
+        <item>DESERTED</item>
+        <item>NEVER MARRIED</item>
+    </string-array>
+
+    <string-array name="phoneownership_en">
+        <item>Select</item>
+        <item>NONE</item>
+        <item>SHARED</item>
+        <item>OWNS SMARTPHONE</item>
+        <item>OWNS FEATURE PHONE</item>
+    </string-array>
+
+    <string-array name="bp_en">
+        <item>Select</item>
+        <item>Never Checked</item>
+        <item>In past one week</item>
+        <item>Within last month</item>
+        <item>between one week to 3 months ago</item>
+        <item>between 3 months-6months ago</item>
+        <item>More than 6 months</item>
+    </string-array>
+
+    <string-array name="sugar_en">
+        <item>Select</item>
+        <item>Never Checked</item>
+        <item>In past one week</item>
+        <item>Within last month</item>
+        <item>between one week to 3 months ago</item>
+        <item>between 3 months-6months ago</item>
+        <item>More than 6 months</item>
+    </string-array>
+
+    <string-array name="hb_en">
+        <item>Select</item>
+        <item>Never Checked</item>
+        <item>In past one week</item>
+        <item>Within last month</item>
+        <item>between one week to 3 months ago</item>
+        <item>between 3 months-6months ago</item>
+        <item>More than 6 months</item>
+    </string-array>
+
+    <string-array name="bmi_en">
+        <item>Select</item>
+        <item>Never Checked</item>
+        <item>In past one week</item>
+        <item>Within last month</item>
+        <item>between one week to 3 months ago</item>
+        <item>between 3 months-6months ago</item>
+        <item>More than 6 months</item>
+    </string-array>
+
+    <string-array name="healthissuereported_en">
+        <item>Select</item>
+        <item>Fever</item>
+        <item>Cough/ Cold</item>
+        <item>Diarrhoea</item>
+        <item>Injury</item>
+        <item>Skin Issues</item>
+        <item>Eye /Vision issues</item>
+        <item>Joint/Bone pain</item>
+        <item>Others (Specify)</item>
+    </string-array>
+
+    <string-array name="primaryhealthprovider_en">
+        <item>Select</item>
+        <item>GOVERNMENT DOCTOR</item>
+        <item>PRIVATE DOCTOR</item>
+        <item>STAFF NURSE</item>
+        <item>ANM</item>
+        <item>ASHA</item>
+        <item>AWW</item>
+        <item>RMP</item>
+        <item>AYUSH DOCTOR</item>
+        <item>HOMEOPATH DOCTOR</item>
+        <item>TRADITIONAL HEALER/QUACK</item>
+        <item>Did not consult any Health Provider for this issue</item>
+        <item>OTHER (SPECIFY)</item>
+    </string-array>
+
+    <string-array name="firstlocation_en">
+        <item>Select</item>
+        <item>HOME</item>
+        <item>PRIVATE CLINIC</item>
+        <item>PHC</item>
+        <item>CHC</item>
+        <item>DH</item>
+        <item>PRIVATE HOSPITAL</item>
+        <item>AYUSH CENTER</item>
+        <item>PHARMACY</item>
+        <item>OTHERS (PLEASE SPECIFY)</item>
+    </string-array>
+
+    <string-array name="referredto_en">
+        <item>Select</item>
+        <item>NOT REFERRED</item>
+        <item>PRIVATE CLINIC</item>
+        <item>PHC</item>
+        <item>CHC</item>
+        <item>DH</item>
+        <item>PRIVATE HOSPITAL</item>
+        <item>AYUSH CENTER</item>
+        <item>OTHERS (PLEASE SPECIFY)</item>
+    </string-array>
+
+    <string-array name="modetransport_en">
+        <item>Select</item>
+        <item>WALKING</item>
+        <item>BUS</item>
+        <item>PRIVATE TAXI</item>
+        <item>SHUTTLE TAXI</item>
+        <item>AUTO</item>
+        <item>OWN VEHICLE</item>
+        <item>FRIENDS’/NEIGHBOURS’ VEHICLE</item>
+        <item>AMBULANCE</item>
+        <item>OTHERS (SPECIFY)</item>
+    </string-array>
+
+    <string-array name="scoreexperience_en">
+        <item>Select</item>
+        <item>Dissatisfied</item>
+        <item>Below Average</item>
+        <item>Average</item>
+        <item>Good</item>
+        <item>Very Good</item>
+    </string-array>
+
+    <string-array name="pasttwoyrs_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="outcomepregnancy_en">
+        <item>Select</item>
+        <item>BORN ALIVE</item>
+        <item>STILL BIRTH</item>
+        <item>INDUCED ABORTION (MTP)</item>
+        <item>MISCARRIAGE</item>
+        <item>CURRENTLY PREGNANT</item>
+    </string-array>
+
+    <string-array name="childalive_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="placedelivery_en">
+        <item>Select</item>
+        <item>HOME</item>
+        <item>SUB CEBTER</item>
+        <item>CHC/ CIVIL HOSPITAL AT BLOCK LEVEL</item>
+        <item>DISTRICT HOSPTIAL/ CIVIL HOSPITAL AT DISTRICT LEVEL</item>
+        <item>PRIVATE CLINIC</item>
+        <item>PRIVATE HOSPITAL</item>
+    </string-array>
+
+    <string-array name="sexofbaby_en">
+        <item>Select</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="pregnancyplanned_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="highriskpregnancy_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="complications_en">
+        <item>Select</item>
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
 </resources>
