@@ -812,7 +812,6 @@ public class Node implements Serializable {
         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 if (!dialogEditText.getText().toString().equalsIgnoreCase("")) {
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", dialogEditText.getText().toString()));
@@ -825,6 +824,9 @@ public class Node implements Serializable {
 
                     node.setSelected(false);
 
+                    node.setSelected(true);
+                } else {
+                    node.setSelected(false);
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                     } else {
@@ -835,6 +837,7 @@ public class Node implements Serializable {
 
                 }
 
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -858,6 +861,7 @@ public class Node implements Serializable {
                     }
                 }
                 node.setSelected(false);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.cancel();
             }

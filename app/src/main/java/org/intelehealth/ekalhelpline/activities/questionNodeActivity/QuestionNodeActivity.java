@@ -48,6 +48,7 @@ import org.intelehealth.ekalhelpline.utilities.StringUtils;
 import org.intelehealth.ekalhelpline.utilities.UuidDictionary;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
 import org.intelehealth.ekalhelpline.utilities.pageindicator.ScrollingPagerIndicator;
+import org.intelehealth.ekalhelpline.models.AnswerResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
