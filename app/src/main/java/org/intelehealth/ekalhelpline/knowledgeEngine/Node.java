@@ -820,12 +820,7 @@ public class Node implements Serializable {
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                     node.setSelected(true);
-                } else {
-
-                    node.setSelected(false);
-
-                    node.setSelected(true);
-                } else {
+                }  else {
                     node.setSelected(false);
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));

@@ -813,9 +813,6 @@
     <string name="others">अन्य</string>
     <string name="tld_closed_comment">टीएलडी बंद</string>
     <string name="tld_resolved_comment">टीएलडी समाधान</string>
-    <string name="mobile_number_search">"मोबाइल नंबर: "</string>
-    <string name="no_records_found">कोई रिकॉर्ड नहीं मिला</string>
-    <string name="answer_following_questions">Answer following Questions</string>
     <string name="doctor_closed_comment">डॉक्टर संकल्प बंद</string>
     <string name="doctor_resolved_comment">डॉक्टर संकल्प हल</string>
     <string name="reason_for_resolved">विज़िट को समाधान के रूप में चिह्नित करने का कारण चुनें</string>
