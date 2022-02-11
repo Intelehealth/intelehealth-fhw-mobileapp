@@ -213,8 +213,8 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
-//        rvFamilyMember = findViewById(R.id.rv_familymember);
-//        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
+        rvFamilyMember = findViewById(R.id.rv_familymember);
+        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
 
         ivPrescription = findViewById(R.id.iv_prescription);
