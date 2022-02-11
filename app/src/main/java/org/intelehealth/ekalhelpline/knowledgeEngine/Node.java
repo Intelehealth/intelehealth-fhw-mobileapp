@@ -1163,7 +1163,7 @@ public class Node implements Serializable {
                     //   node.setSelected(true);
                     //}
                 }
-
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
 
                 dialog.dismiss();
@@ -1188,6 +1188,7 @@ public class Node implements Serializable {
                     }
                 }
                 node.setSelected(false);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
 
@@ -1234,6 +1235,7 @@ public class Node implements Serializable {
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
                 node.setSelected(true);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
 
                 dialog.dismiss();
@@ -1242,6 +1244,9 @@ public class Node implements Serializable {
         areaDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -1284,6 +1289,7 @@ public class Node implements Serializable {
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
                 node.setSelected(true);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1291,6 +1297,9 @@ public class Node implements Serializable {
         rangeDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -1347,6 +1356,7 @@ public class Node implements Serializable {
                     //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
                 node.setSelected(true);
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1354,6 +1364,9 @@ public class Node implements Serializable {
         frequencyDialog.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -1455,6 +1468,7 @@ public class Node implements Serializable {
                 }
 
 
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -1473,6 +1487,7 @@ public class Node implements Serializable {
                 }
 
 
+                adapter.refreshChildAdapter();
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
