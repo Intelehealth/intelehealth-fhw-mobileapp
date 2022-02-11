@@ -2504,29 +2504,30 @@ public class IdentificationActivity extends AppCompatActivity {
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
             //House Hold Registration
-//            if (sessionManager.getHouseholdUuid().equals("")){
-//
-//                String HouseHold_UUID = UUID.randomUUID().toString();
-//                sessionManager.setHouseholdUuid(HouseHold_UUID);
-//
-//                patientAttributesDTO = new PatientAttributesDTO();
-//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//                patientAttributesDTO.setPatientuuid(uuid);
-//                patientAttributesDTO.setPersonAttributeTypeUuid
-//                        (patientsDAO.getUuidForAttribute("householdID"));
-//                patientAttributesDTO.setValue(HouseHold_UUID);
-//
-//            } else {
-//
-//                String HouseHold_UUID = sessionManager.getHouseholdUuid();
-//                patientAttributesDTO = new PatientAttributesDTO();
-//                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-//                patientAttributesDTO.setPatientuuid(uuid);
-//                patientAttributesDTO.setPersonAttributeTypeUuid
-//                        (patientsDAO.getUuidForAttribute("householdID"));
-//                patientAttributesDTO.setValue(HouseHold_UUID);
-//
-//            }
+            if (sessionManager.getHouseholdUuid().equals("")){
+
+                String HouseHold_UUID = UUID.randomUUID().toString();
+                sessionManager.setHouseholdUuid(HouseHold_UUID);
+
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("HouseHold"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+
+            } else {
+
+                String HouseHold_UUID = sessionManager.getHouseholdUuid();
+                patientAttributesDTO = new PatientAttributesDTO();
+                patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+                patientAttributesDTO.setPatientuuid(uuid);
+                patientAttributesDTO.setPersonAttributeTypeUuid
+                        (patientsDAO.getUuidForAttribute("HouseHold"));
+                patientAttributesDTO.setValue(HouseHold_UUID);
+
+            }
+            //House Hold Registration - End
 
             //Roster Values Insert Into DB
             insertedit_RosterValuesIntoLocalDB(patientAttributesDTO, patientAttributesDTOList);
@@ -3434,7 +3435,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("householdID"));
+                        (patientsDAO.getUuidForAttribute("HouseHold"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
             } else {
@@ -3444,7 +3445,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 patientAttributesDTO.setUuid(UUID.randomUUID().toString());
                 patientAttributesDTO.setPatientuuid(uuid);
                 patientAttributesDTO.setPersonAttributeTypeUuid
-                        (patientsDAO.getUuidForAttribute("householdID"));
+                        (patientsDAO.getUuidForAttribute("HouseHold"));
                 patientAttributesDTO.setValue(HouseHold_UUID);
 
             }
