@@ -209,16 +209,17 @@ public class IdentificationActivity extends AppCompatActivity {
     Spinner spinner_whatisyourrelation, spinner_maritualstatus, spinner_phoneownership, spinner_bpchecked, spinner_sugarchecked, spinner_hbchecked,
             spinner_bmi, spinner_healthissuereported, spinner_primaryhealthprovider, spinner_firstlocation, spinner_referredto, spinner_modeoftransport,
             spinner_experiencerscore, spinner_pregnantpasttwoyrs, spinner_outcomepregnancy, spinner_childalive, spinner_placeofdeliverypregnant,
-            spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications;
+            spinner_sexofbaby, spinner_pregnancyplanned, spinner_pregnancyhighriskcase, spinner_pregnancycomplications, spinner_singlemultiplebirths;
 
     ArrayAdapter<CharSequence> adapter_whatisyourrelation, adapter_maritualstatus, adapter_phoneownership, adapter_bpchecked, adapter_sugarchecked,
             adapter_hbchecked, adapter_bmi, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto,
             adapter_modeoftransport, adapter_experiencerscore, adapter_pregnantpasttwoyrs, adapter_outcomepregnancy, adapter_childalive,
-            adapter_placeofdeliverypregnant, adapter_sexofbaby, adapter_pregnancyplanned, adapter_pregnancyhighriskcase, adapter_pregnancycomplications;
+            adapter_placeofdeliverypregnant, adapter_sexofbaby, adapter_pregnancyplanned, adapter_pregnancyhighriskcase, adapter_pregnancycomplications,
+    adapter_singlemultiplebirths;
 
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
-            edittext_singlemultiplebirths, edittext_babyagedied;
+            edittext_babyagedied;
 
 
     @Override
@@ -1439,6 +1440,21 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //placedelivery
 
+        //Single/Multiple
+        if (patient1.getSinglemultiplebirth() != null && !patient1.getSinglemultiplebirth().equalsIgnoreCase("")) {
+            String singlemultiple_Transl = "";
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                singlemultiple_Transl = StringUtils.switch_as_caste_edit(patient1.getSinglemultiplebirth());
+                // TODO: Add switch case in StringUtils
+            } else {
+                singlemultiple_Transl = patient1.getSinglemultiplebirth();
+            }
+
+            int spinner_position = adapter_singlemultiplebirths.getPosition(singlemultiple_Transl);
+            spinner_singlemultiplebirths.setSelection(spinner_position);
+        }
+        //Single/Multiple
+
         //focal
         edittext_focalfacility.setText(patient1.getFocalfacility());
         //focal
@@ -1783,6 +1799,22 @@ public class IdentificationActivity extends AppCompatActivity {
             Logger.logE("Identification", "#648", e);
         }
         //place delivery spinner adapter
+
+        //single/multiple Spinner adapter
+        try {
+            String singlemultipleLanguage = "singlemultiplebirths_" + sessionManager.getAppLanguage();
+            int singlemultiple_id = res.getIdentifier(singlemultipleLanguage, "array", getApplicationContext().getPackageName());
+            if (singlemultiple_id != 0) {
+                adapter_singlemultiplebirths = ArrayAdapter.createFromResource(this,
+                        singlemultiple_id, android.R.layout.simple_spinner_dropdown_item);
+            }
+            spinner_singlemultiplebirths.setAdapter(adapter_singlemultiplebirths);
+
+        } catch (Exception e) {
+            // Toast.makeText(this, "BankAccount values are missing", Toast.LENGTH_SHORT).show();
+            Logger.logE("Identification", "#648", e);
+        }
+        //single/multiple spinner adapter
 
         // sex of baby Spinner adapter
         try {
@@ -2776,6 +2808,16 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTOList.add(patientAttributesDTO);
         //focal facility
 
+        // single/multiple
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(uuid);
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("SingleMultipleBirth"));
+        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_singlemultiplebirths));
+        //  Log.d("HOH", "Bankacc: " + spinner_singlemultiplebirths.getSelectedItem().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+        //singlemultiple
+
         // sex of baby
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
@@ -3036,6 +3078,15 @@ public class IdentificationActivity extends AppCompatActivity {
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
             focusView = spinner_placeofdeliverypregnant;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_singlemultiplebirths.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_singlemultiplebirths.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_singlemultiplebirths;
             cancel = true;
             return;
         }
@@ -3476,6 +3527,7 @@ public class IdentificationActivity extends AppCompatActivity {
         spinner_primaryhealthprovider = findViewById(R.id.spinner_primaryhealthprovider);
         spinner_firstlocation = findViewById(R.id.spinner_firstlocation);
         spinner_referredto = findViewById(R.id.spinner_referredto);
+        spinner_singlemultiplebirths = findViewById(R.id.spinner_singlemultiplebirths);
         spinner_modeoftransport = findViewById(R.id.spinner_modeoftransport);
         spinner_experiencerscore = findViewById(R.id.spinner_experiencerscore);
         spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
@@ -3499,7 +3551,6 @@ public class IdentificationActivity extends AppCompatActivity {
         edittext_monthspregnancylast = findViewById(R.id.edittext_monthspregnancylast);
         edittext_monthsbeingpregnant = findViewById(R.id.edittext_monthsbeingpregnant);
         edittext_focalfacility = findViewById(R.id.edittext_focalfacility);
-        edittext_singlemultiplebirths = findViewById(R.id.edittext_singlemultiplebirths);
         edittext_babyagedied = findViewById(R.id.edittext_babyagedied);
         //Roster EditText
     }

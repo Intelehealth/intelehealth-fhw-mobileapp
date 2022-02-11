@@ -1828,4 +1828,10 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="singlemultiplebirths_en">
+        <item>Select</item>
+        <item>Single</item>
+        <item>Multiple</item>
+    </string-array>
+
 </resources>

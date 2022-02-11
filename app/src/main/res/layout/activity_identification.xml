@@ -1424,11 +1424,39 @@
                             android:layout_height="wrap_content"
                             android:hint="Focal Facility for this pregnancy"/>
 
-                        <EditText
+                       <!-- <EditText
                             android:id="@+id/edittext_singlemultiplebirths"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="How many months have you been pregnant"/>
+                            android:hint="Was this a single/multiple births?"/>-->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/card_content_sub_text_size"
+                            android:paddingStart="5dp"
+                            android:text="Was this a single/multiple births?"/>
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp" />
+
+                        <Spinner
+                            android:id="@+id/spinner_singlemultiplebirths"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:entries="@array/singlemultiplebirths_en"/>
+
+                        <Space
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="10dp"
+                            android:background="?android:attr/listDivider"/>
+<!--                        single/multiple-->
 
                         <EditText
                             android:id="@+id/edittext_babyagedied"
