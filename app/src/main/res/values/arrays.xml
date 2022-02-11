@@ -94,7 +94,16 @@
         <item>Secondary</item>
         <item>Higher Secondary</item>
         <item>Graduation &amp; Higher</item>
+        <item>CANNOT READ OR WRITE</item>
+        <item>CAN READ AND WRITE</item>
+        <item>PRIMARY EDUCATION (TILL CLASS 5)</item>
+        <item>MIDDLE SCHOOL (6TH-8TH)</item>
+        <item>PASSED SECONDARY SCHOOL (CLASS 10TH BOARDS)</item>
+        <item>PASSED SENIOR SECONDARY SCHOOL (12TH BOARDS)</item>
+        <item>GRADUATE</item>
+        <item>POSTGRADUATE</item>
     </string-array>
+
     <string-array name="education_te">
         <item>ఎంచుకొను చదువు</item>
         <item>నిరక్షరాస్యులు</item>

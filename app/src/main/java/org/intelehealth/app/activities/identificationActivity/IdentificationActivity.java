@@ -171,6 +171,7 @@ public class IdentificationActivity extends AppCompatActivity {
     EditText mPostal;
     RadioButton mGenderM;
     RadioButton mGenderF;
+    RadioButton mGenderO;
     EditText mRelationship;
     EditText mOccupation;
     EditText countryText;
@@ -470,12 +471,27 @@ public class IdentificationActivity extends AppCompatActivity {
                 mGenderM.setChecked(true);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
+                if (mGenderO.isChecked())
+                    mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
-            } else {
+            } else if(patient1.getGender().equals("F")) {
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
+                if (mGenderO.isChecked())
+                    mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
+            }
+            else if (patient1.getGender().equals("O")) {
+                mGenderO.setChecked(true);
+                if (mGenderM.isChecked())
+                    mGenderM.setChecked(false);
+                if (mGenderF.isChecked())
+                    mGenderF.setChecked(false);
+                Log.v(TAG, "yes");
+            }
+            else {
+                // do nothing...
             }
 
         }
@@ -839,6 +855,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 onRadioButtonClicked(v);
             }
         });
+
+        mGenderO.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRadioButtonClicked(v);
+            }
+        });
+
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1962,6 +1986,11 @@ public class IdentificationActivity extends AppCompatActivity {
                     mGender = "F";
                 Log.v(TAG, "gender:" + mGender);
                 break;
+            case R.id.identification_gender_others:
+                if (checked)
+                    mGender = "O";
+                Log.v(TAG, "gender:" + mGender);
+                break;
         }
     }
 
@@ -2309,7 +2338,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -2334,7 +2364,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setError(getString(R.string.error_field_required));
             }
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -3227,7 +3257,8 @@ public class IdentificationActivity extends AppCompatActivity {
 
         if (!mFirstName.getText().toString().equals("") && !mLastName.getText().toString().equals("")
                 && !mCity.getText().toString().equals("") && !countryText.getText().toString().equals("") &&
-                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") && !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked())) {
+                !stateText.getText().toString().equals("") && !mDOB.getText().toString().equals("") &&
+                !mAge.getText().toString().equals("") && (mGenderF.isChecked() || mGenderM.isChecked() || mGenderO.isChecked())) {
 
             Log.v(TAG, "Result");
 
@@ -3252,7 +3283,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 mCity.setError(getString(R.string.error_field_required));
             }
 
-            if (!mGenderF.isChecked() && !mGenderM.isChecked()) {
+            if (!mGenderF.isChecked() && !mGenderM.isChecked() && !mGenderO.isChecked()) {
                 MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(IdentificationActivity.this);
                 alertDialogBuilder.setTitle(R.string.error);
                 alertDialogBuilder.setMessage(R.string.identification_screen_dialog_error_gender);
@@ -3496,6 +3527,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
+        mGenderO = findViewById(R.id.identification_gender_female);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
