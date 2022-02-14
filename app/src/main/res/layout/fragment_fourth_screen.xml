@@ -1,0 +1,740 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingStart="15sp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/cultivable_land_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/amount_of_cultivable_land_owned_by_household"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/cultivable_land_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cultivable_land_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/hectare"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/acre"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/bigha"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/gunta"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cultivable_land_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cultivable_land_radio_group"
+                android:layout_marginTop="10dp"
+                android:hint="@string/enter_the_no"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cultivable_land_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_annual_household_income_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cultivable_land_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/average_annual_household_income"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/average_annual_household_income_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/average_annual_household_income_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/zero_thirty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/thirty_fifty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/fifty_thousand_one_lakh"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/one_lakh_two_lakh_fifty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/more_than_two_lakh_fifty_thousand"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/monthly_food_expenditure_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/average_annual_household_income_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/monthly_expenditure_on_food"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/monthly_food_expenditure_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/monthly_food_expenditure_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/zero_fifteen_hundred"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/fifteen_twenty_five_hundred"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/twenty_five_hundred_five_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/five_ten_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/more_than_ten_thousand"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/annual_health_expenditure_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/monthly_food_expenditure_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/annual_household_expenditure_on_food"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/annual_health_expenditure_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/annual_health_expenditure_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/zero_five_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/five_thousand_one_ten_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/ten_thousand_one_twenty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/twenty_thousand_one_thirty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/greater_than_thirty_thousand_radio_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/more_than_thirty_thousand"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/more_than_thirty_thousand_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/annual_health_expenditure_radio_group"
+                android:hint="@string/if_more_than_30000_a_year_specify_an_estimate"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/more_than_thirty_thousand_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/annual_education_expenditure_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/more_than_thirty_thousand_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/annual_expenditure_on_education"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/annual_education_expenditure_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/annual_education_expenditure_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/zero_ten_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/ten_twenty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/twenty_forty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/forty_thousand_one_lakh"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/more_than_one_lakh"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/annual_clothing_expenditure_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/annual_education_expenditure_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/annual_expenditure_on_clothing_conveyance_consumables_etc"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/annual_clothing_expenditure_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/annual_clothing_expenditure_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/zero_ten_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/ten_twenty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/twenty_forty_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/forty_thousand_one_lakh"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/more_than_one_lakh"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/monthly_intoxicants_expenditure_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/annual_clothing_expenditure_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/monthly_expenditure_on_intoxicants_such_as_alcohol_and_tobacco"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/monthly_intoxicants_expenditure_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/monthly_intoxicants_expenditure_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/one_to_six_hundred"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/six_hundred_one_thousand"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/thousand_to_fifteen_hundred"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/fifteen_hundred_to_twenty_five_hundred"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/more_than_twenty_five_hundred"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/bpl_card_coupon_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/monthly_intoxicants_expenditure_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/does_this_household_have_a_bpl_card_coupon"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/bpl_card_coupon_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bpl_card_coupon_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_not_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/no_card"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/DO_NOT_KNOW"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/antodaya_card_coupon_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/bpl_card_coupon_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/does_this_household_have_a_antodaya_card"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/antodaya_card_coupon_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/antodaya_card_coupon_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_not_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/no_card"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/DO_NOT_KNOW"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/rsby_card_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/antodaya_card_coupon_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/does_this_household_have_a_rsby_card"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/rsby_card_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rsby_card_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_not_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/no_card"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/DO_NOT_KNOW"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mgnrega_card_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rsby_card_radio_group"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/does_this_household_have_a_mgnrega_card"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/mgnrega_card_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mgnrega_card_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="vertical">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/yes_card_not_seen"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/no_card"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/DO_NOT_KNOW"
+                    android:textSize="13sp" />
+
+            </RadioGroup>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mgnrega_card_radio_group"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/next_button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/next"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/poppins_medium" />
+
+                <ImageButton
+                    android:id="@+id/next_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/rounded_image_button_background"
+                    app:srcCompat="@drawable/ic_arrow_right" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

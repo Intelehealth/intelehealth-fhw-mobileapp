@@ -50,6 +50,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.json.JSONException;
@@ -171,7 +172,7 @@ public class PatientDetailActivity extends AppCompatActivity {
     SQLiteDatabase db = null;
     ImageButton editbtn;
     ImageButton ib_addFamilyMember;
-    Button newVisit;
+    Button newVisit, button_householdSurvey;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
@@ -213,6 +214,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
+        button_householdSurvey = findViewById(R.id.button_householdSurvey);
         rvFamilyMember = findViewById(R.id.rv_familymember);
         tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
@@ -280,6 +282,19 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
+
+        // survey button
+        button_householdSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentsurvey = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentsurvey.putExtra("patientUuid", patientUuid);
+                startActivity(intentsurvey);
+            }
+        });
+        LoadFamilyMembers();
+        // survey button
+
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override

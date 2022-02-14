@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingStart="15sp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/household_cooking_fuel_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/what_type_of_fuel_does_your_household_mainly_use_for_cooking"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/household_cooking_fuel_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_cooking_fuel_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/electricity_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/electricity"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/lpg_natural_gas_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/lpg_natural_gas"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/biogas_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/biogas_checkbox"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/kerosene_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/kerosene"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/coal_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/coal_lignite"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/wood_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/wood"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/charcoal_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/charcoal"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/straw_shrubs_grass_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/straw_shrubs_grass"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/agricultural_crop_waste_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/agricultural_crop_waste"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/dung_cakes_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/dung_cakes"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/other_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/other_specify"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/other_sources_of_fuel_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_cooking_fuel_checkbox_linear_layout"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/others"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/main_source_of_lighting_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/other_sources_of_fuel_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/what_is_the_main_source_of_lighting_in_this_household"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/main_source_of_lighting_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_source_of_lighting_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/lantern_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/lantern"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/kerosene_lamp_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/kerosene_lamp"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/candle_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/candle"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/electric_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/electric"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/lpg_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/lpg"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/solar_energy_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/solar_energy"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/none_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/none"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/other_source_of_lighting_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/other_specify"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/other_sources_of_lighting_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_source_of_lighting_checkbox_linear_layout"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/others"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/main_source_of_drinking_water_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/other_sources_of_lighting_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/what_is_the_main_source_of_drinking_water_for_members_of_your_household"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/main_source_of_drinking_water_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_source_of_drinking_water_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/piped_into_dwelling_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/piped_into_dwelling"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/piped_into_yard_plot_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/piped_into_yard_plot"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/public_tap_standpipe_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/public_tap_standpipe"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/tube_well_borehole_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/tube_well_borehole"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/protected_well_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/protected_well_checkbox"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/unprotected_well_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/unprotected_well"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/protected_spring_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/protected_spring"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/unprotected_spring_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/unprotected_spring"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/rainwater_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/rainwater"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/tanker_truck_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/tanker_truck"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cart_with_small_tank_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/cart_with_small_tank"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/surface_water_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/surface_water"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/common_hand_pump_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/common_hand_pump"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/hand_pump_at_home_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/hand_pump_at_home"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/other_source_of_water_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/other_specify"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/other_sources_of_drinking_water_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_source_of_drinking_water_checkbox_linear_layout"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/others"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/water_source_distance_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/other_sources_of_drinking_water_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/how_far_is_the_water_source_from_the_house"
+                android:textColor="@color/text_color"
+                android:textSize="13sp" />
+
+            <RadioGroup
+                android:id="@+id/water_source_distance_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/water_source_distance_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/meter"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/km"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/water_source_distance_edit_text"
+                android:layout_width="68dp"
+                android:layout_height="31dp"
+                android:layout_below="@id/water_source_distance_radio_group"
+                android:layout_marginTop="13dp"
+                android:background="@drawable/drawable_custom_edit_text_background"
+                android:fontFamily="@font/poppins"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textAlignment="center"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/household_make_safe_water_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/water_source_distance_edit_text"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/what_do_you_usually_do_to_the_water_to_make_it_safer_to_drink"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/household_make_safe_water_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_make_safe_water_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/boil_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/boil"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/use_alum_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/use_alum"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/add_bleach_chlorine_tablets_drops_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/add_bleach_chlorine_tablets_drops"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/strain_through_a_cloth_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/strain_through_a_cloth"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/use_water_filter_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/use_water_filter_ceramic_sand_composite_etc"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/use_electronic_purifier_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/use_electronic_purifier"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/let_it_stand_and_settle_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/let_it_stand_and_settle"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/other_ways_of_purifying_water_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/other_specify"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/other_ways_of_purifying_water_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/household_make_safe_water_checkbox_linear_layout"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="@font/lato_regular"
+                    android:hint="@string/others"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/family_toilet_facility_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/other_ways_of_purifying_water_edit_text"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/what_kind_of_toilet_facility_do_members_of_your_household_usually_use"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/family_toilet_facility_checkbox_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/family_toilet_facility_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flush_to_piped_sewer_system_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/flush_to_piped_sewer_system"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flush_to_septic_tank_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/flush_to_septic_tank"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flush_to_pit_latrine_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/flush_to_pit_latrine"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flush_to_somewhere_else_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/flush_to_somewhere_else"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/flush_dont_know_where_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/flush_dont_know_where"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/ventilated_improved_pit_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/ventilated_improved_pit_biogas_latrine"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/pit_latrine_with_slab_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/pit_latrine_with_slab"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/pit_latrine_without_slab_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/pit_latrine_without_slab_open_pit"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/twin_pit_composting_toilet_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/twin_pit_composting_toilet"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/dry_toilet_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/dry_toilet"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/communal_toilet_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/communal_toilet"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/no_facility_uses_open_field_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="top"
+                    android:paddingStart="4sp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/no_facility_uses_open_space_or_field"
+                    android:textSize="13sp" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/family_toilet_facility_checkbox_linear_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/next_button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/next"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/poppins_medium" />
+
+                <ImageButton
+                    android:id="@+id/next_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/rounded_image_button_background"
+                    app:srcCompat="@drawable/ic_arrow_right" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

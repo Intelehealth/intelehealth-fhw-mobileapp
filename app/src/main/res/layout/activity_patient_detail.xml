@@ -823,6 +823,21 @@
             </androidx.cardview.widget.CardView>
 
             <Button
+                android:id="@+id/button_householdSurvey"
+                style="@style/SelectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="10dp"
+                android:elevation="5dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/lato_bold"
+                tools:foreground="?android:attr/selectableItemBackground"
+                android:background="@color/orange3"
+                android:text="Household Survey" />
+
+
+            <Button
                 android:id="@+id/button_new_visit"
                 style="@style/SelectableItemBackground"
                 android:layout_width="match_parent"
@@ -833,6 +848,7 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/lato_bold"
                 android:foreground="?android:attr/selectableItemBackground"
+                tools:background="@color/orange3"
                 android:text="@string/button_new_visit" />
 
             <androidx.cardview.widget.CardView

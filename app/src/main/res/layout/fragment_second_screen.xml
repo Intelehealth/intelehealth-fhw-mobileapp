@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingStart="15sp"
+        android:paddingEnd="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/head_of_household_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:hint="@string/name_of_head_of_household">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/investigator_name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/head_of_household_gender_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/head_of_household_name_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="20sp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/gender_of_head_of_household"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+            <RadioGroup
+                android:id="@+id/head_of_household_gender_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/head_of_household_gender_text_view"
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/gender_male"
+                    android:textSize="14sp" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:text="@string/gender_female"
+                    android:textSize="14sp" />
+
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/religion_drop_down_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/head_of_household_gender_radio_group"
+                android:layout_marginTop="7dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/religion_drop_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/religion"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/other_religion_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/religion_drop_down_layout"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:visibility="gone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/other_religion_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/religion_others"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="16sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/caste_drop_down_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/other_religion_layout"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/caste_drop_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/caste"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/number_of_smartphones_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/caste_drop_down_layout"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/number_of_smartphones_in_the_household"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/number_of_feature_phones_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/number_of_smartphones_layout"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/number_of_feature_phones_in_the_household"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/number_of_earning_members_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/number_of_feature_phones_layout"
+                android:layout_marginTop="10dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/how_many_earning_members_are_there_in_the_household"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/primary_source_of_income_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/number_of_earning_members_layout"
+                android:layout_marginStart="5sp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/poppins"
+                android:text="@string/what_is_the_primary_source_of_income_in_the_household"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/checkbox_linear_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/primary_source_of_income_text_view"
+                android:layout_marginTop="20sp"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/sale_of_cereal_production_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/poppins"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/sale_of_cereal_production"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/sale_of_animal_products_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/sale_of_animals_or_animal_products"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/agricultural_wage_labor_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/agricultural_wage_labor_employed_for_farm_work"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/salaried_worker_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/salaried_worker_fixed_monthly_salary"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/self_employed_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/self_employed_non_agricultural_petty_business"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/daily_labor_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/daily_labor_unskilled_work_agricultural_non_agricultural"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/nrega_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/nrega"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/seasonal_labor_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/seasonal_labor"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/no_paid_work_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/no_paid_work"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/pension_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/pension"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/remittance_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/remittances_checkbox"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/other_income_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    android:text="@string/other_please_specify"
+                    android:textSize="13sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/other_sources_of_income_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/number_of_feature_phones_layout"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:visibility="gone">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/other_sources_of_income_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:hint="@string/other_sources_of_income"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/checkbox_linear_layout"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="50dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/next_button_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/next"
+                    android:textSize="14sp"
+                    app:fontFamily="@font/poppins_medium" />
+
+                <ImageButton
+                    android:id="@+id/next_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/rounded_image_button_background"
+                    app:srcCompat="@drawable/ic_arrow_right" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>
