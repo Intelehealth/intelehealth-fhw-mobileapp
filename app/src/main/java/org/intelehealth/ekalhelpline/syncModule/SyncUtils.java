@@ -82,7 +82,7 @@ public class SyncUtils {
                 syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity);
                 Logger.logD(TAG, "Pull ended");
             }
-        }, 3000);
+        }, 5000);
 
 //        imagesPushDAO.patientProfileImagesPush();
 //        imagesPushDAO.obsImagesPush();
@@ -100,7 +100,7 @@ public class SyncUtils {
                 imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Image Pull ended");
             }
-        }, 3000);
+        }, 5000);
 
         imagesPushDAO.deleteObsImage();
 

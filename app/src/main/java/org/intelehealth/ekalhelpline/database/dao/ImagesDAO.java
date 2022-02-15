@@ -385,7 +385,7 @@ public class ImagesDAO {
             }
             localdb.setTransactionSuccessful(); //need to set transactionsuccessful for the db object to know that the task is completed...
             idCursor.close();
-            localdb.setTransactionSuccessful();
+            //localdb.setTransactionSuccessful();
         } catch (SQLiteException e) {
             throw new DAOException(e);
         }catch (IllegalStateException e) {

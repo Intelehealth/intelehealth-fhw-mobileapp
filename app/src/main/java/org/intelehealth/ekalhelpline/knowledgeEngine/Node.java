@@ -432,6 +432,7 @@ public class Node implements Serializable {
                     node.setSelected(false);
                 }
                 node.setText(val);
+                callingAdapter.refreshChildAdapter();
                 callingAdapter.notifyDataSetChanged();
                 dialog.dismiss();
                 if (node.anySubSelected() && node.anySubPopUp()) {
@@ -452,6 +453,7 @@ public class Node implements Serializable {
         subQuestion.setView(convertView);
         AlertDialog dialog = subQuestion.show();
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -820,7 +822,7 @@ public class Node implements Serializable {
                         //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                     }
                     node.setSelected(true);
-                }  else {
+                } else {
                     node.setSelected(false);
                     if (node.getLanguage().contains("_")) {
                         node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
@@ -863,6 +865,7 @@ public class Node implements Serializable {
         });
         AlertDialog dialog = textInput.show();
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1022,16 +1025,17 @@ public class Node implements Serializable {
         datePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                if (node.isRequired()) {
-                    node.setSelected(false);
+
+                if (node.getLanguage().contains("_")) {
+                    node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
                 } else {
-                    if (node.getLanguage().contains("_")) {
-                        node.setLanguage(node.getLanguage().replace("_", "Question not answered"));
-                    } else {
-                        node.addLanguage("Question not answered");
-                        //knowledgeEngine.setText(knowledgeEngine.getLanguage());
-                    }
+                    node.addLanguage("Question not answered");
+                    //knowledgeEngine.setText(knowledgeEngine.getLanguage());
                 }
+
+                node.setSelected(false);
+                adapter.refreshChildAdapter();
+                adapter.notifyDataSetChanged();
             }
         });
         datePickerDialog.setTitle(R.string.question_date_picker);
@@ -1040,6 +1044,7 @@ public class Node implements Serializable {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         }
         datePickerDialog.setCanceledOnTouchOutside(false);
+        datePickerDialog.setCancelable(false);
         datePickerDialog.show();
     }
 
@@ -1196,6 +1201,7 @@ public class Node implements Serializable {
         });
         AlertDialog dialog = numberDialog.show();
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1251,6 +1257,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = areaDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1304,6 +1311,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = rangeDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1371,6 +1379,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = frequencyDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -1494,6 +1503,7 @@ public class Node implements Serializable {
         });
         AlertDialog dialog = durationDialog.show();
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1852,6 +1862,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = textInput.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -1897,7 +1908,7 @@ public class Node implements Serializable {
             }
         });
         datePickerDialog.setTitle(R.string.question_date_picker);
-        
+
         if (node.validation.equals("MAX_TODAY")) {
             datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
         }
@@ -1950,6 +1961,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = numberDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -2036,6 +2048,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = areaDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -2087,6 +2100,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = rangeDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 
@@ -2151,6 +2165,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = frequencyDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
 
     }
@@ -2232,6 +2247,7 @@ public class Node implements Serializable {
             }
         });
         AlertDialog dialog = durationDialog.show();
+        dialog.setCancelable(false);
         IntelehealthApplication.setAlertDialogCustomTheme(context, dialog);
     }
 

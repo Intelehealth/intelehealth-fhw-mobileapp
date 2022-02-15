@@ -395,12 +395,14 @@ public class SyncDAO {
         Logger.logD("url", url);
         if (!pushRequestApiCall.getVisits().isEmpty() || !pushRequestApiCall.getPersons().isEmpty() || !pushRequestApiCall.getPatients().isEmpty() || !pushRequestApiCall.getEncounters().isEmpty()) {
             Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
-            pushResponseApiCallObservable.subscribeOn(Schedulers.io())
+            pushResponseApiCallObservable
+                    .retry(2)
+                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
-                            Logger.logD(TAG, "success" + pushResponseApiCall);
+                            Logger.logD(TAG, "success - " + new Gson().toJson(pushResponseApiCall).toString());
                             for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                 try {
                                     patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());

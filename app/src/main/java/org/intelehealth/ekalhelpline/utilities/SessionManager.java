@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.intelehealth.ekalhelpline.app.AppConstants;
+
 import java.util.Set;
 
 public class SessionManager {
@@ -108,12 +110,12 @@ public class SessionManager {
     }
 
     public String getPullExcutedTime() {
-        return pref.getString(PULL_EXECUTED_TIME, "2006-08-22 22:21:48 ");
+        return pref.getString(PULL_EXECUTED_TIME, AppConstants.INITIAL_TIME);
     }
 
     public void setPullExcutedTime(String pullExcutedTime) {
         editor.putString(PULL_EXECUTED_TIME, pullExcutedTime);
-        editor.commit();
+        editor.apply();
     }
 
     public String getAppLanguage() {
@@ -231,7 +233,10 @@ public class SessionManager {
         editor.putString(PROVIDER_PHONENO, providerPhoneNo);
         editor.commit();
     }
-    public String getProviderPhoneno() { return pref.getString(PROVIDER_PHONENO, ""); }
+
+    public String getProviderPhoneno() {
+        return pref.getString(PROVIDER_PHONENO, "");
+    }
 
 
     public String getHouseholdUuid() {

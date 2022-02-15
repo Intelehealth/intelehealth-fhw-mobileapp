@@ -1,6 +1,8 @@
 package org.intelehealth.ekalhelpline.networkApiCalls;
 
 
+import org.intelehealth.ekalhelpline.BuildConfig;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -36,7 +38,7 @@ public class ApiClient {
     public static <S> S createService(Class<S> serviceClass) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        loggingInterceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
         client.connectTimeout(300, TimeUnit.SECONDS);
         client.readTimeout(300, TimeUnit.SECONDS);

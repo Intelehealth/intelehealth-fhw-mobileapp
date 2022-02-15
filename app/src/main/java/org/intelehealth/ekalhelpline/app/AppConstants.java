@@ -107,5 +107,7 @@ public class AppConstants {
     public static ApiInterface ivrApiInterface = ApiClient.createIVRService(ApiInterface.class);
     public static final String SMS_API_KEY = "A39e1e65900618ef9b6e16da473f8894d";
     public static final String SMS_TEMPLATE_ID = "1107162427070618591";
+
+    public static final String INITIAL_TIME = "2006-08-22 22:21:48";
 }
 

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -33,18 +34,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.IntentSender;
 
 import androidx.annotation.Nullable;
-
-import com.google.android.play.core.appupdate.AppUpdateInfo;
-import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
-import com.google.android.play.core.install.model.AppUpdateType;
-import com.google.android.play.core.install.model.UpdateAvailability;
-import com.google.android.play.core.tasks.OnSuccessListener;
-import com.google.android.play.core.tasks.Task;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -53,31 +44,24 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.OnSuccessListener;
+import com.google.android.play.core.tasks.Task;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalhelpline.R;
 import org.intelehealth.ekalhelpline.activities.ClosedVisitsActivity.ClosedVisitsActivity;
+import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ekalhelpline.activities.completedvisits.CompletedVisitsActivity;
-import org.intelehealth.ekalhelpline.activities.completedvisits.Completed_Visits_Activity;
 import org.intelehealth.ekalhelpline.activities.followuppatients.FollowUpPatientActivity;
 import org.intelehealth.ekalhelpline.activities.identificationActivity.IdentificationActivity;
-import org.intelehealth.ekalhelpline.activities.recordings.RecordingsActivity;
 import org.intelehealth.ekalhelpline.activities.ivrCallResponseActivity.IVRCallResponseActivity;
-import org.intelehealth.ekalhelpline.utilities.FollowUpNotificationWorker;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-
-import org.intelehealth.ekalhelpline.R;
-import org.intelehealth.ekalhelpline.activities.activePatientsActivity.ActivePatientActivity;
 import org.intelehealth.ekalhelpline.activities.loginActivity.LoginActivity;
+import org.intelehealth.ekalhelpline.activities.recordings.RecordingsActivity;
 import org.intelehealth.ekalhelpline.activities.searchPatientActivity.SearchPatientActivity;
 import org.intelehealth.ekalhelpline.activities.settingsActivity.SettingsActivity;
 import org.intelehealth.ekalhelpline.activities.todayPatientActivity.TodayPatientActivity;
@@ -90,11 +74,23 @@ import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
 import org.intelehealth.ekalhelpline.syncModule.SyncUtils;
 import org.intelehealth.ekalhelpline.utilities.DownloadMindMaps;
 import org.intelehealth.ekalhelpline.utilities.FileUtils;
+import org.intelehealth.ekalhelpline.utilities.FollowUpNotificationWorker;
 import org.intelehealth.ekalhelpline.utilities.Logger;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.OfflineLogin;
 import org.intelehealth.ekalhelpline.utilities.SessionManager;
 import org.intelehealth.ekalhelpline.widget.materialprogressbar.CustomProgressDialog;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -371,21 +367,26 @@ public class HomeActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
                 }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        syncUtils.syncForeground("home");
+                    }
+                }, 1000);
 
-                syncUtils.syncForeground("home");
 //                if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
 //                        && Locale.getDefault().toString().equalsIgnoreCase("en")) {
 //                    lastSyncAgo.setText(sessionManager.getLastTimeAgo());
 //                }
 
-                final Handler handler = new Handler();
+               /* final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         //Do something after 100ms
                         showFollowUpBadge();
                     }
-                }, 8000);
+                }, 30 * 1000);*/
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
@@ -395,8 +396,14 @@ public class HomeActivity extends AppCompatActivity {
             mSyncProgressDialog.setProgress(i);
 
             mSyncProgressDialog.show();
+            sessionManager.setPullExcutedTime(AppConstants.INITIAL_TIME);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    syncUtils.initialSync("home");
+                }
+            }, 1500);
 
-            syncUtils.initialSync("home");
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
@@ -835,16 +842,24 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         IntentFilter filter = new IntentFilter(AppConstants.SYNC_INTENT_ACTION);
         registerReceiver(syncBroadcastReceiver, filter);
-        showFollowUpBadge();
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (!sessionManager.isFirstTimeLaunched()) {
+            showFollowUpBadge();
+        }
     }
 
     private void showFollowUpBadge() {
         String chwName = sessionManager1.getProviderID();
-        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long activePatientCount = ActivePatientActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
-        long closedPatientCount = ClosedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long completedPatientCount = CompletedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
         long todayPatientCount = TodayPatientActivity.getTodayVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long followUpCount = FollowUpNotificationWorker.getFollowUpCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
+        long closedPatientCount = ClosedVisitsActivity.getActiveVisitsCount(AppConstants.inteleHealthDatabaseHelper.getWriteDb(), chwName);
 
         if (followUpCount > 0) {
             tvFollowUpBadge.setVisibility(View.VISIBLE);
@@ -961,10 +976,20 @@ public class HomeActivity extends AppCompatActivity {
                             hideSyncProgressBar(true);
                         }
                     }
-                    showFollowUpBadge();
+
+                }
+                if (flagType == AppConstants.SYNC_PULL_DATA_DONE) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Do something after 100ms
+                            showFollowUpBadge();
+                        }
+                    }, 1000);
                 }
             }
             lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
+
         }
     };
 
@@ -983,7 +1008,7 @@ public class HomeActivity extends AppCompatActivity {
                     public void run() {
                         WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
                     }
-                }, 10000);
+                }, 20 * 1000);
             }
         }
     }
