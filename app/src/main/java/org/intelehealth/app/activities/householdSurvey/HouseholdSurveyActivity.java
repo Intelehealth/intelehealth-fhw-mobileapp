@@ -9,6 +9,7 @@ package org.intelehealth.app.activities.householdSurvey;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -17,6 +18,7 @@ import org.intelehealth.app.activities.householdSurvey.Fragments.FirstScreenFrag
 
 public class HouseholdSurveyActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +26,11 @@ public class HouseholdSurveyActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.framelayout_container, new FirstScreenFragment())
                 .commit();
+
+       /* Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            patientUuid = intent.getStringExtra("patientUuid");
+        }*/
 
     }
 

@@ -890,7 +890,8 @@ public class IdentificationActivity extends AppCompatActivity {
         //DOB is set using an AlertDialog
         // Locale.setDefault(Locale.ENGLISH);
 
-        mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
+        mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 //Set the DOB calendar to the date selected by the user
@@ -948,7 +949,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 mDOBMonth = monthOfYear;
                 mDOBDay = dayOfMonth;
 
-                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE), today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
+                        today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
                 //get years months days
                 String[] frtData = age.split("-");
 
@@ -3376,6 +3378,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                patientdto.setEconomic(StringUtils.getValue(m));
             patientdto.setState_province(StringUtils.getValue(patientdto.getState_province()));
 //           patientdto.setState_province(StringUtils.getValue(mSwitch_hi_en_te_State(mState.getSelectedItem().toString(),sessionManager.getAppLanguage())));
+
             patientAttributesDTO = new PatientAttributesDTO();
             patientAttributesDTO.setUuid(UUID.randomUUID().toString());
             patientAttributesDTO.setPatientuuid(uuid);
