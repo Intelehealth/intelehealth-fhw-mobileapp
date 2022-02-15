@@ -107,6 +107,45 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_my_cases"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="5dp"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/iv_my_cases"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_centerVertical="true"
+                            android:contentDescription="TODO"
+                            app:srcCompat="@drawable/ic_calendar_intele_24dp" />
+
+                        <TextView
+                            android:id="@+id/myCases_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_my_cases"
+                            android:fontFamily="@font/lato_medium"
+                            android:includeFontPadding="false"
+                            android:text="@string/my_cases"
+                            android:textSize="28sp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_today_patient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
