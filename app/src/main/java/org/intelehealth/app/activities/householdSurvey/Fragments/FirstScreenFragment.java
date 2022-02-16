@@ -7,6 +7,19 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__hi_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__or_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__ta_dob;
+import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
+
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +33,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -39,7 +53,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -51,6 +67,12 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     ImageButton next_button;
     SessionManager sessionManager = null;
     String patientUuid, mhouseStructure, mresultVisit;
+    private DatePickerDialog mDOBPicker;
+    Calendar dob = Calendar.getInstance();
+    Calendar today = Calendar.getInstance();
+    private int mDOBYear;
+    private int mDOBMonth;
+    private int mDOBDay;
     private static final String TAG = FirstScreenFragment.class.getSimpleName();
 
 
@@ -102,6 +124,77 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         // next button
         next_button.setOnClickListener(this);
 
+        mDOBYear = today.get(Calendar.YEAR);
+        mDOBMonth = today.get(Calendar.MONTH);
+        mDOBDay = today.get(Calendar.DAY_OF_MONTH);
+
+        mDOBPicker = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        //Set the DOB calendar to the date selected by the user
+                        dob.set(year, monthOfYear, dayOfMonth);
+                        dateofVisit.setError(null);
+                        //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                        // Locale.setDefault(Locale.ENGLISH);
+                        //Formatted so that it can be read the way the user sets
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                        dob.set(year, monthOfYear, dayOfMonth);
+                        String dobString = simpleDateFormat.format(dob.getTime());
+                       // dob_indexValue = monthOfYear; //fetching the inex value of month selected...
+
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                            String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                            String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                            String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                            String dob_text = en__te_dob(dobString); //to show text of English into telugu...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
+                            dateofVisit.setText(dob_text);
+                        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                            String dob_text = en__as_dob(dobString); //to show text of English into telugu...
+                            dateofVisit.setText(dob_text);
+                        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                            String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
+                            dateofVisit.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                            String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
+                            dateofVisit.setText(dob_text);
+                        }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
+                            dateofVisit.setText(dob_text);
+                        } else {
+                            dateofVisit.setText(dobString);
+                        }
+                        mDOBYear = year;
+                        mDOBMonth = monthOfYear;
+                        mDOBDay = dayOfMonth;
+                    }
+                }, mDOBYear, mDOBMonth, mDOBDay);
+
+
+        //DOB Picker is shown when clicked
+        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dateofVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDOBPicker.show();
+            }
+        });
     }
 
     @Override
@@ -173,12 +266,36 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setValue(nameInvestigator.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        //Village name
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("villageNameSurvey"));
+        patientAttributesDTO.setValue(villageSurvey.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
         //block no
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("blockSurvey"));
         patientAttributesDTO.setValue(blockSurvey.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //District
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("districtSurvey"));
+        patientAttributesDTO.setValue(districtSurvey.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //Date of Visit
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("dateOfVisit"));
+        patientAttributesDTO.setValue(dateofVisit.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         //Name primary respondent

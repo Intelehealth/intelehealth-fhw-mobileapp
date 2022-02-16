@@ -68,20 +68,42 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/block_dropdown"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:drawableEnd="@drawable/ic_keyboard_arrow_down"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="@font/poppins"
-                android:hint="@string/block"
-                android:textSize="14sp" />
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/block_dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:hint="@string/block"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:textSize="14sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/block_dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:fontFamily="@font/poppins"
+                            android:hint="@string/block"
+                            android:textSize="14sp" />
+            -->
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
