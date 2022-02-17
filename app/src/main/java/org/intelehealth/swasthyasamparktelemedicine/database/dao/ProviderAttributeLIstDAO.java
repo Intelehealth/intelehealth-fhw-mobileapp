@@ -100,11 +100,11 @@ public class ProviderAttributeLIstDAO {
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 dto = new ProviderAttributeListDTO();
-                if(!idCursor.getString(idCursor.getColumnIndexOrThrow("value")).isEmpty()){
+//                if(!idCursor.getString(idCursor.getColumnIndexOrThrow("value")).isEmpty()){
                     dto.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
 
                     listDTOArrayList.add(dto.getValue());
-                }
+//                }
 
             }
         }
