@@ -15,9 +15,13 @@ import android.view.MenuItem;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.householdSurvey.Fragments.FirstScreenFragment;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HouseholdSurveyActivity extends AppCompatActivity {
-
+    public static List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -28,7 +28,7 @@
                 android:hint="@string/name_of_head_of_household">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/investigator_name_edit_text"
+                    android:id="@+id/head_of_household_name_EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
@@ -154,6 +154,7 @@
                 android:paddingEnd="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_smartphones"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
@@ -174,6 +175,7 @@
                 android:paddingEnd="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextFeaturePhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
@@ -194,6 +196,7 @@
                 android:paddingEnd="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editText_earningmember"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"

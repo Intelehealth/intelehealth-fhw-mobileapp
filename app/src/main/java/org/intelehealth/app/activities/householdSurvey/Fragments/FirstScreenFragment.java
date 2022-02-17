@@ -7,6 +7,7 @@ package org.intelehealth.app.activities.householdSurvey.Fragments;
  * Github: prajwalmw
  */
 
+import static org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity.patientAttributesDTOList;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
@@ -40,6 +41,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
@@ -256,7 +258,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     private void insertData() throws DAOException {
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
-        List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
+       // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
         //investigator
         patientAttributesDTO = new PatientAttributesDTO();
@@ -330,22 +332,27 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         patientAttributesDTO.setValue(StringUtils.getValue(mresultVisit));
         patientAttributesDTOList.add(patientAttributesDTO);
 
+        /*Gson gson = new Gson();
+        gson.toJson(patientAttributesDTOList);
+        Log.v("firstscreen", "firstscreen: \n"+ gson.toJson(patientAttributesDTOList));*/
 
         Log.v("puuid", "puuid__: "+patientUuid);
-        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
+      //  boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
 
+/*
         if (NetworkConnection.isOnline(getActivity().getApplication())) {
             SyncDAO syncDAO = new SyncDAO();
             ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
             boolean ispush = syncDAO.pushDataApi();
             boolean isPushImage = imagesPushDAO.patientProfileImagesPush();
         }
+*/
 
-        if (isPatientUpdated) {
+      //  if (isPatientUpdated) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.framelayout_container, new SecondScreenFragment())
                     .commit();
-        }
+      //  }
     }
 
     private void initUI(View rootView) {
