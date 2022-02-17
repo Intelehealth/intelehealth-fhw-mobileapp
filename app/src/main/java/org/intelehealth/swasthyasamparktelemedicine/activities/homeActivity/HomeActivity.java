@@ -41,6 +41,7 @@ import androidx.work.WorkManager;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.swasthyasamparktelemedicine.appointment.AppointmentListingActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -100,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
     //IntentFilter filter;
 
     SyncUtils syncUtils = new SyncUtils();
-    CardView c1, c2, c3, c4, c5, c6;
+    CardView c1, c2, c3, c4, c5, c6, c7;
     private String key = null;
     private String licenseUrl = null;
 
@@ -155,6 +156,14 @@ public class HomeActivity extends AppCompatActivity {
         c4 = findViewById(R.id.cardview_active_patients);
         c5 = findViewById(R.id.cardview_video_libraby);
         c6 = findViewById(R.id.cardview_help_whatsapp);
+        c7 = findViewById(R.id.cardview_appointments);
+        c7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, AppointmentListingActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //card textview referrenced to fix bug of localization not working in some cases...
      /*   newPatient_textview = findViewById(R.id.newPatient_textview);

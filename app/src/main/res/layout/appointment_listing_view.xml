@@ -52,10 +52,11 @@
 
         <TextView
             android:id="@+id/tvDoctor"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDay"
-            android:gravity="center"
+            android:layout_toStartOf="@+id/tvStatus"
+            android:gravity="start"
             android:paddingHorizontal="8dip"
             android:text="Demo doctor1 , Neurologist"
             android:textColor="@color/intro_next"
@@ -67,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvDay"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentEnd="true" android:layout_alignParentBottom="true"
             android:gravity="center"
             android:paddingHorizontal="8dip"
             android:text="booked"

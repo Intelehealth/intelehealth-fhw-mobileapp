@@ -1732,6 +1732,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
             }
         });
+        getAppointmentDetails(visitUuid);
     }
 
     private String sms_prescription() {

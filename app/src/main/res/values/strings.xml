@@ -731,4 +731,5 @@
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="doctor_appointments">Doctor Appointments</string>
 </resources>
