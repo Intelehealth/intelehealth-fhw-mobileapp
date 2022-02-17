@@ -1,6 +1,9 @@
 package org.intelehealth.app.networkApiCalls;
 
 
+import android.os.Build;
+import android.os.Debug;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -34,7 +37,7 @@ public class ApiClient {
     public static <S> S createService(Class<S> serviceClass) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
         client.connectTimeout(70, TimeUnit.SECONDS);
         client.readTimeout(70, TimeUnit.SECONDS);

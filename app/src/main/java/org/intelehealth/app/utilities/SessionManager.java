@@ -121,6 +121,17 @@ public class SessionManager {
         editor.commit();
     }
 
+    //HouseHold
+    public String getHouseholdUuid() {
+        return pref.getString(HOUSEHOLD_UUID, "");
+    }
+
+    public void setHouseholdUuid(String UUID) {
+        editor.putString(HOUSEHOLD_UUID, UUID);
+        editor.commit();
+    }
+    //Household
+
     public String getSessionID() {
         return pref.getString(SESSION_ID, "");
     }
@@ -190,15 +201,6 @@ public class SessionManager {
 
     public void setServerUrl(String serverUrl) {
         editor.putString(KEY_PREF_SERVER_URL, serverUrl);
-        editor.commit();
-    }
-
-    public String getHouseholdUuid() {
-        return pref.getString(HOUSEHOLD_UUID, "");
-    }
-
-    public void setHouseholdUuid(String UUID) {
-        editor.putString(HOUSEHOLD_UUID, UUID);
         editor.commit();
     }
 

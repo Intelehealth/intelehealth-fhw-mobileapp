@@ -50,8 +50,12 @@
     <color name="dot_light_screen2">#8cf9eb</color>
     <color name="dot_light_screen3">#93c6fd</color>
     <color name="dot_light_screen4">#e4b5fc</color>
-
     <color name="transparent_tab">#75000000</color>
+
+    <!--NAS Household Survey-->
+    <color name="text_color">#0C0B0B</color>
+    <color name="button_background_color">#2F1E91</color>
+    <color name="edit_text_border">#707070</color>
 
 
 </resources>
