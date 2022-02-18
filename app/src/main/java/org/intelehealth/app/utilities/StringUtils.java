@@ -15,6 +15,9 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -22,6 +25,7 @@ import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.json.JSONArray;
 
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
@@ -3326,5 +3330,19 @@ public static String switch_ru_education(String val) {
             val = switch_hi_en_housestructure(val);*/ //TODO: Add translation support...
         }
         return val;
+    }
+
+    public static String getSelectedCheckboxes(ViewGroup viewGroup) {
+        if (viewGroup == null)
+            return null;
+
+        JSONArray result = new JSONArray();
+        for (int i = 0; i < viewGroup.getChildCount(); i++) {
+            View childAt = viewGroup.getChildAt(i);
+            if (childAt instanceof CheckBox) {
+                result.put(((CheckBox) childAt).getText());
+            }
+        }
+        return result.toString();
     }
 }

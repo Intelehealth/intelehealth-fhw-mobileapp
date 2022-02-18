@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -276,6 +276,8 @@
                 android:fontFamily="@font/poppins"
                 android:text="@string/how_far_is_the_water_source_from_the_house"
                 android:textColor="@color/text_color"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:textSize="14sp" />
 
             <RadioGroup
@@ -284,9 +286,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/water_source_distance_text_view"
                 android:layout_marginTop="13dp"
+                android:visibility="gone"
+                tools:visibility="visible"
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/water_source_distance_meter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -295,6 +300,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/water_source_distance_kilometer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -305,7 +311,7 @@
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/water_source_distance_edit_text"
+                android:id="@+id/water_source_distance_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/water_source_distance_radio_group"
@@ -315,6 +321,7 @@
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/water_source_distance_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins"
@@ -329,7 +336,7 @@
                 android:id="@+id/water_supply_availability_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/water_source_distance_edit_text"
+                android:layout_below="@id/water_source_distance_text_input"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="20sp"
                 android:fontFamily="@font/poppins"
@@ -351,36 +358,36 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/water_supply_availability_text_view_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/water_supply_availability_edit_text"
-                android:layout_marginStart="5sp"
-                android:layout_marginTop="20sp"
-                android:fontFamily="@font/poppins"
-                android:text="@string/available_of_water_supply_hours_per_day"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/water_supply_availability_text_view_2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/water_supply_availability_edit_text"-->
+<!--                android:layout_marginStart="5sp"-->
+<!--                android:layout_marginTop="20sp"-->
+<!--                android:fontFamily="@font/poppins"-->
+<!--                android:text="@string/available_of_water_supply_hours_per_day"-->
+<!--                android:textColor="@color/text_color"-->
+<!--                android:textSize="14sp" />-->
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/water_supply_availability_edit_text_2"
-                android:layout_width="68dp"
-                android:layout_height="31dp"
-                android:layout_below="@id/water_supply_availability_text_view_2"
-                android:layout_marginTop="13dp"
-                android:background="@drawable/drawable_custom_edit_text_background"
-                android:fontFamily="@font/poppins"
-                android:inputType="number"
-                android:textAlignment="center"
-                android:textColor="@color/text_color"
-                android:textSize="14sp" />
+<!--            <androidx.appcompat.widget.AppCompatEditText-->
+<!--                android:id="@+id/water_supply_availability_edit_text_2"-->
+<!--                android:layout_width="68dp"-->
+<!--                android:layout_height="31dp"-->
+<!--                android:layout_below="@id/water_supply_availability_text_view_2"-->
+<!--                android:layout_marginTop="13dp"-->
+<!--                android:background="@drawable/drawable_custom_edit_text_background"-->
+<!--                android:fontFamily="@font/poppins"-->
+<!--                android:inputType="number"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textColor="@color/text_color"-->
+<!--                android:textSize="14sp" />-->
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bank_account_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/water_supply_availability_edit_text_2"
+                android:layout_below="@id/water_supply_availability_edit_text"
                 android:layout_marginStart="5sp"
                 android:layout_marginTop="20sp"
                 android:fontFamily="@font/poppins"
@@ -397,6 +404,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bank_account_yes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -405,6 +413,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/bank_account_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

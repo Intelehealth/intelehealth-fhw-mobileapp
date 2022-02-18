@@ -31,6 +31,8 @@
         android:fontFamily="@font/lato_bold"
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:textAlignment="center"
         android:textSize="36sp" />
     </LinearLayout>
 

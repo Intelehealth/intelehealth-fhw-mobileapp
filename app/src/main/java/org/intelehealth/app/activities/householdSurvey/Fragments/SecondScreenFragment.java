@@ -31,9 +31,11 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.databinding.FragmentSecondScreenBinding;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.Locale;
@@ -51,6 +53,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
     ImageButton next_button;
     private static final String TAG = SecondScreenFragment.class.getSimpleName();
 
+    private FragmentSecondScreenBinding binding;
     public SecondScreenFragment() {
         // Required empty public constructor
     }
@@ -80,7 +83,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_second_screen, container, false);
+//        View rootView =  inflater.inflate(R.layout.fragment_second_screen, container, false);
+        binding = FragmentSecondScreenBinding.inflate(inflater, container, false);
+        View rootView = binding.getRoot();
         initUI(rootView);
         ClickListener();
         
@@ -141,6 +146,9 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         remittancesCheckbox.setOnClickListener(this);
         otherCheckbox.setOnClickListener(this);*/
 
+        binding.otherIncomeCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            binding.otherSourcesOfIncomeLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
     }
 
     @Override
@@ -165,7 +173,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
 
-        //investigator
+        //householdHeadName
         patientAttributesDTO = new PatientAttributesDTO();
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
@@ -173,7 +181,68 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         patientAttributesDTO.setValue(nameHOHEditText.getText().toString());
         patientAttributesDTOList.add(patientAttributesDTO); // have set this variable static so we can use its values throughout the screens...
 
-        // TODO: Generate patientattributes for other fieds similarly...
+
+        //householdHeadGender
+        if (binding.headOfHouseholdGenderRadioGroup.getCheckedRadioButtonId() != -1) {
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadGender"));
+            patientAttributesDTO.setValue(binding.headOfHouseholdGenderRadioGroup.getCheckedRadioButtonId() == binding.headOfHouseholdGenderMale.getId() ? binding.headOfHouseholdGenderMale.getText().toString() : binding.headOfHouseholdGenderFemale.getText().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
+
+        //householdHeadReligion
+        if (binding.religionDropDown.getSelectedItemPosition() != 0) {
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadReligion"));
+            patientAttributesDTO.setValue(binding.religionDropDown.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
+
+        //householdHeadCaste
+        if (binding.casteDropDown.getSelectedItemPosition() != 0) {
+            patientAttributesDTO = new PatientAttributesDTO();
+            patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+            patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+            patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("householdHeadCaste"));
+            patientAttributesDTO.setValue(binding.casteDropDown.getSelectedItem().toString());
+            patientAttributesDTOList.add(patientAttributesDTO);
+        }
+
+        //noOfSmartphones
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfSmartphones"));
+        patientAttributesDTO.setValue(binding.editTextSmartphones.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //noOfEarningMembers
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfEarningMembers"));
+        patientAttributesDTO.setValue(binding.editTextEarningmember.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //noOfFeaturePhones
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("noOfFeaturePhones"));
+        patientAttributesDTO.setValue(binding.editTextFeaturePhone.getText().toString());
+        patientAttributesDTOList.add(patientAttributesDTO);
+
+        //primarySourceOfIncome
+        patientAttributesDTO = new PatientAttributesDTO();
+        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+        patientAttributesDTO.setPatientuuid(patientUuid); // Intent from PatientDetail screen...
+        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("primarySourceOfIncome"));
+        patientAttributesDTO.setValue(StringUtils.getSelectedCheckboxes(binding.checkboxLinearLayout));
+        patientAttributesDTOList.add(patientAttributesDTO);
 
 
         Gson gson = new Gson();
@@ -182,19 +251,23 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
         // TODO: this logic just for testing purpose have added here. Once all screens is done than at the end of 7th screen
         //  by clicking on SUBMIT button add this code on that button clicklistener...
-        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
-        if (NetworkConnection.isOnline(getActivity().getApplication())) {
-            SyncDAO syncDAO = new SyncDAO();
-            boolean ispush = syncDAO.pushDataApi();
+//        boolean isPatientUpdated = patientsDAO.SurveyupdatePatientToDB(patientUuid, patientAttributesDTOList);
+//        if (NetworkConnection.isOnline(getActivity().getApplication())) {
+//            SyncDAO syncDAO = new SyncDAO();
+//            boolean ispush = syncDAO.pushDataApi();
+//
+//        }
+//        // Upto here so that data is stored in localdb and pushed by clicking on FAB...
+//
+//        if (isPatientUpdated) {
+//            getFragmentManager().beginTransaction()
+//                    .replace(R.id.framelayout_container, new ThirdScreenFragment())
+//                    .commit();
+//        }
 
-        }
-        // Upto here so that data is stored in localdb and pushed by clicking on FAB...
-
-        if (isPatientUpdated) {
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.framelayout_container, new ThirdScreenFragment())
-                    .commit();
-        }
+        getFragmentManager().beginTransaction()
+                .replace(R.id.framelayout_container, new ThirdScreenFragment())
+                .commit();
 
     }
 }

@@ -59,6 +59,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/head_of_household_gender_male"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -67,6 +68,7 @@
                     android:textSize="14sp" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/head_of_household_gender_female"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -76,8 +78,9 @@
 
             </RadioGroup>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:id="@+id/religion_drop_down_layout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/head_of_household_gender_radio_group"
@@ -85,19 +88,23 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <TextView
+                    android:text="@string/religion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Spinner
                     android:id="@+id/religion_drop_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
+                    android:entries="@array/householdHeadReligion"
                     android:drawableEnd="@drawable/ic_keyboard_arrow_down"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/religion"
                     android:textSize="14sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/other_religion_layout"
@@ -121,8 +128,9 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:id="@+id/caste_drop_down_layout"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/other_religion_layout"
@@ -130,19 +138,22 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <TextView
+                    android:text="@string/caste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Spinner
                     android:id="@+id/caste_drop_down"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:drawableEnd="@drawable/ic_keyboard_arrow_down"
+                    android:entries="@array/householdHeadCaste"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:fontFamily="@font/poppins"
-                    android:hint="@string/caste"
                     android:textSize="14sp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/number_of_smartphones_layout"
