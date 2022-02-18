@@ -3,23 +3,19 @@ package org.intelehealth.swasthyasamparktelemedicine.models;
 public class MyCasesModel {
 
     String uuid;
-    String patientuuid;
     String openmrs_id;
     String first_name;
     String last_name;
     String date_of_birth;
     String phone_number;
-    String sync;
 
-    public MyCasesModel(String uuid, String patientuuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number, String sync) {
+    public MyCasesModel(String uuid, String openmrs_id, String first_name, String last_name, String date_of_birth, String phone_number) {
         this.uuid = uuid;
-        this.patientuuid = patientuuid;
         this.openmrs_id = openmrs_id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.date_of_birth = date_of_birth;
         this.phone_number = phone_number;
-        this.sync = sync;
     }
 
     public String getUuid() {
@@ -28,14 +24,6 @@ public class MyCasesModel {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public String getPatientuuid() {
-        return patientuuid;
-    }
-
-    public void setPatientuuid(String patientuuid) {
-        this.patientuuid = patientuuid;
     }
 
     public String getOpenmrs_id() {
@@ -77,12 +65,5 @@ public class MyCasesModel {
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
-
-    public String getSync() {
-        return sync;
-    }
-
-    public void setSync(String sync) {
-        this.sync = sync;
-    }
 }
+

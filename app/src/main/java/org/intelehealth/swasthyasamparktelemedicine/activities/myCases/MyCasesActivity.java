@@ -90,7 +90,7 @@ public class MyCasesActivity extends AppCompatActivity {
         if (sessionManager.isPullSyncFinished()) {
             msg.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
-//            firstQuery();
+            firstQuery();
         }
     }
 
@@ -136,20 +136,18 @@ public class MyCasesActivity extends AppCompatActivity {
 
     public List<MyCasesModel> getAllPatientsFromDB(String userUuid, int offset) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id FROM tbl_visit a, tbl_patient b, tbl_patient_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND c.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND d.uuid = o.encounteruuid AND d.provider_uuid = ? AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid ORDER BY a.startdate DESC";
-        final Cursor searchCursor = db.rawQuery(query, new String[]{userUuid, UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value = '1296b0dc-440a-11e6-a65c-00e04c680037'";
+        final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
                 try {
                     modelList.add(new MyCasesModel(
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                            StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"))))));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -220,12 +218,12 @@ public class MyCasesActivity extends AppCompatActivity {
                 Logger.logD(TAG, "onclick" + i);
                 creatorsSelected.clear();
                 creatorsSelected.addAll(selectedCreators);
-//                doQueryWithProviders(selectedCreators,currentDate);
+                doQueryWithProviders(selectedCreators);
             }
         });
 
         dialogBuilder.setNegativeButton(getString(R.string.cancel), null);
-        //dialogBuilder.show();
+
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
 
@@ -234,37 +232,30 @@ public class MyCasesActivity extends AppCompatActivity {
 
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
         negativeButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-        //   IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
         return selectedCreators;
     }
 
-    private List<MyCasesModel> doQueryWithProviders(List<String> providersUuids, String date) {
+    private List<MyCasesModel> doQueryWithProviders(List<String> providersUuids) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT a.uuid, a.sync, a.patientuuid, a.startdate, a.enddate, b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value AS speciality, o.value FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE a.uuid = c.visit_uuid AND  a.enddate is NOT NULL AND a.patientuuid = b.uuid AND a.uuid = d.visituuid AND c.visit_attribute_type_uuid = '3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d' AND d.uuid = o.encounteruuid AND " +
-                "d.provider_uuid in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "') " +
-                "AND o.conceptuuid = ?  AND o.value is NOT NULL GROUP BY a.patientuuid";
-
-        final Cursor searchCursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value in ('" + StringUtils.convertUsingStringBuilder(providersUuids) + "')";
+        final Cursor searchCursor = db.rawQuery(query, null);
         if (searchCursor.moveToFirst()) {
             do {
                 try {
                     modelList.add(new MyCasesModel(
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("patientuuid")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("openmrs_id")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("first_name")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("last_name")),
                             searchCursor.getString(searchCursor.getColumnIndexOrThrow("date_of_birth")),
-                            StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid")))),
-                            searchCursor.getString(searchCursor.getColumnIndexOrThrow("sync"))));
+                            StringUtils.mobileNumberEmpty(phoneNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("uuid"))))));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } while (searchCursor.moveToNext());
         }
         searchCursor.close();
-
         return modelList;
     }
 
