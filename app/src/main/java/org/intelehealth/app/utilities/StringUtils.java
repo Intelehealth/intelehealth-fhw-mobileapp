@@ -3308,4 +3308,23 @@ public static String switch_ru_education(String val) {
 
         return val;
     }
+
+    public static String getSpinnerHi_En(Spinner spinner) {
+        String val = "";
+        val = spinner.getSelectedItem().toString();
+
+        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+           /* val = switch_hi_en_occupation(val);
+            val = switch_hi_en_bankaccount(val);
+            val = switch_hi_en_mobile(val);
+            val = switch_hi_en_whatsapp(val);
+            val = switch_hi_en_sourcewater(val);
+            val = switch_hi_en_watersafe(val);
+            val = switch_hi_en_wateravail(val);
+            val = switch_hi_en_toiletfacil(val);
+            val = switch_hi_en_housestructure(val);*/ //TODO: Add translation support...
+        }
+        return val;
+    }
 }

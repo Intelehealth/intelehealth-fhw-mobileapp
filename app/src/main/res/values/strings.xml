@@ -818,6 +818,7 @@
     <string name="type_to_search">Type to Search..</string>
 
     <!--    Questions for HoH -->
+    <string name="select">Select</string>
 
     <string name="name_of_investigator">Name of Investigator</string>
     <string name="village">Village</string>
@@ -825,7 +826,7 @@
     <string name="district">District</string>
     <string name="district_nashik">Nashik</string>
     <string name="date_of_visit">Date of Visit</string>
-    <string name="name_of_primary_respondent">Name of Primary respondent</string>
+    <string name="name_of_primary_respondent">Name of Primary Respondent</string>
     <string name="household_number">Household No.</string>
     <string name="household_structure_type">Household structure type</string>
     <string name="kucha">Kucha</string>
@@ -838,10 +839,13 @@
     <string name="not_available_on_the_third_visit">Not available on the third visit</string>
     <string name="refused_to_participate">Refused to participate</string>
 
+    <string name="household_identification_for_survey">Household Identification for Survey</string>
+    <string name="nasik_district">Nasik</string>
     <string name="name_of_head_of_household">Name of Head of Household</string>
     <string name="gender_of_head_of_household">Gender of Head of Household</string>
     <string name="religion">Religion</string>
     <string name="religion_others">Religion Others</string>
+
     <string name="religion_hindu">Hindu</string>
     <string name="religion_muslim">Muslim</string>
     <string name="religion_christian">Christian</string>
@@ -885,12 +889,14 @@
     <string name="river">River</string>
     <string name="pond">Pond</string>
     <string name="other">Other</string>
+
     <string name="other_water_sources">Other water sources</string>
     <string name="how_far_is_the_water_source_from_the_house">How far is the water source from the house?</string>
     <string name="meter">Meter</string>
     <string name="km">KM</string>
     <string name="available_of_water_supply_hours_per_day">Availability of water supply (hours per day)</string>
     <string name="does_the_house_have_a_bank_account">Does the household have a bank account?</string>
+
     <string name="amount_of_cultivable_land_owned_by_household">Amount of cultivable land owned by household</string>
     <string name="hectare">Hectare</string>
     <string name="acre">Acre</string>
@@ -909,7 +915,9 @@
     <string name="twenty_five_hundred_five_thousand">2,500 – 5,000</string>
     <string name="five_ten_thousand">5,000 – 10,000</string>
     <string name="more_than_ten_thousand">More than 10,000</string>
+
     <string name="annual_household_expenditure_on_health">Annual household expenditure on health</string>
+    <string name="annual_household_expenditure_on_food">Annual household expenditure on health</string>
     <string name="zero_five_thousand">0 – 5,000</string>
     <string name="five_thousand_one_ten_thousand">5,001 – 10,000</string>
     <string name="ten_thousand_one_twenty_thousand">10,001 – 20,000</string>
@@ -924,17 +932,18 @@
     <string name="more_than_one_lakh">More than 1,00,000</string>
     <string name="annual_expenditure_on_clothing_conveyance_consumables_etc">Annual expenditure on clothing, conveyance, consumables, etc.</string>
     <string name="monthly_expenditure_on_intoxicants_such_as_alcohol_and_tobacco">Monthly expenditure on intoxicants such as alcohol and tobacco</string>
+
     <string name="zero">0</string>
     <string name="one_to_six_hundred">1 – 600</string>
     <string name="six_hundred_one_thousand">600 – 1,000</string>
     <string name="thousand_to_fifteen_hundred">1,000 – 1,500</string>
     <string name="fifteen_hundred_to_twenty_five_hundred">1,500 – 2,500</string>
     <string name="more_than_twenty_five_hundred">More than 2,500</string>
-    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card/coupon?</string>
     <string name="yes_card_seen">YES, CARD SEEN</string>
     <string name="yes_card_not_seen">YES, CARD NOT SEEN</string>
     <string name="no_card">NO CARD</string>
     <string name="DO_NOT_KNOW">DO NOT KNOW</string>
+    <string name="does_this_household_have_a_bpl_card_coupon">Does this household have a BPL card/coupon?</string>
     <string name="does_this_household_have_a_antodaya_card">Does this household have an Antodaya card/coupon?</string>
     <string name="does_this_household_have_a_rsby_card">Does this household have a Rashtriya Swasth Bima Yojana (RSBY) card?</string>
     <string name="does_this_household_have_a_mgnrega_card">Does this household have an MGNREGA card?</string>
@@ -960,7 +969,9 @@
     <string name="lpg">LPG</string>
     <string name="solar_energy">SOLAR ENERGY</string>
     <string name="none">NONE</string>
+
     <string name="nas_what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
+    <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">What is the main source of drinking water for members of your household?</string>
     <string name="piped_into_dwelling">PIPED INTO DWELLING</string>
     <string name="piped_into_yard_plot">PIPED TO YARD/PLOT</string>
     <string name="public_tap_standpipe">PUBLIC TAP/STANDPIPE</string>
@@ -984,7 +995,9 @@
     <string name="use_electronic_purifier">USE ELECTRONIC PURIFIER</string>
     <string name="let_it_stand_and_settle">LET IT STAND AND SETTLE</string>
 
+
     <string name="nas_what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
+    <string name="what_kind_of_toilet_facility_do_members_of_your_household_usually_use">What kind of toilet facility do members of your household usually use?</string>
     <string name="flush_to_piped_sewer_system">FLUSH TO PIPED SEWER SYSTEM</string>
     <string name="flush_to_septic_tank">FLUSH TO SEPTIC TANK</string>
     <string name="flush_to_pit_latrine">FLUSH TO PIT LATRINE</string>
@@ -1029,6 +1042,7 @@
     <string name="ten_to_twenty_kms">10–20 km</string>
     <string name="twenty_to_thirty_kms">20–30 km</string>
     <string name="more_than_thirty_kms">More than 30km</string>
+
     <string name="distance_to_nearest_medical_store">Distance to nearest medical store</string>
     <string name="distance_to_nearest_pathological_lab">Distance to nearest pathological lab</string>
     <string name="distance_to_nearest_private_clinic_with_an_mbbs_doctor">Distance to a nearest private clinic (With an MBBS Doctor)</string>
@@ -1208,4 +1222,6 @@
     <string name="score_good">Good</string>
     <string name="score_very_good">Very Good</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

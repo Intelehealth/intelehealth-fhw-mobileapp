@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
 import android.text.SpannableString;
@@ -48,7 +50,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.activities.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.FamilyMemberRes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -167,15 +171,15 @@ public class PatientDetailActivity extends AppCompatActivity {
     private String encounterAdultIntials = "";
     SQLiteDatabase db = null;
     ImageButton editbtn;
-//    ImageButton ib_addFamilyMember;
-    Button newVisit;
+    ImageButton ib_addFamilyMember;
+    Button newVisit, button_householdSurvey;
     IntentFilter filter;
     Myreceiver reMyreceive;
     ImageView photoView;
     ImagesDAO imagesDAO = new ImagesDAO();
     TextView idView;
-//    RecyclerView rvFamilyMember;
-//    TextView tvNoFamilyMember;
+    RecyclerView rvFamilyMember;
+    TextView tvNoFamilyMember;
 
     String privacy_value_selected;
 
@@ -210,8 +214,9 @@ public class PatientDetailActivity extends AppCompatActivity {
         reMyreceive = new Myreceiver();
         filter = new IntentFilter("OpenmrsID");
         newVisit = findViewById(R.id.button_new_visit);
-//        rvFamilyMember = findViewById(R.id.rv_familymember);
-//        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
+        button_householdSurvey = findViewById(R.id.button_householdSurvey);
+        rvFamilyMember = findViewById(R.id.rv_familymember);
+        tvNoFamilyMember = findViewById(R.id.tv_nofamilymember);
         context = PatientDetailActivity.this;
 
         ivPrescription = findViewById(R.id.iv_prescription);
@@ -235,7 +240,7 @@ public class PatientDetailActivity extends AppCompatActivity {
         }
 
         editbtn = findViewById(R.id.edit_button);
-//        ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
+        ib_addFamilyMember = findViewById(R.id.ic_addFamilyMember);
         editbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -245,25 +250,28 @@ public class PatientDetailActivity extends AppCompatActivity {
 
             }
         });
-//        ib_addFamilyMember.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String houseHoldValue = "";
-//                try {
-//                    houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
-//                } catch (DAOException e) {
-//                    FirebaseCrashlytics.getInstance().recordException(e);
-//                }
-//
-//                Log.e("houseHOLDID", houseHoldValue);
-//
-//                sessionManager.setHouseholdUuid(houseHoldValue);
-//                Intent i = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
-//                i.putExtra("privacy", "Accept");
-//                startActivity(i);
-//            }
-//        });
+
+        // Add Family Member icon click
+        ib_addFamilyMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String houseHoldValue = "";
+                try {
+                    houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+
+                Log.e("houseHOLDID", houseHoldValue);
+
+                sessionManager.setHouseholdUuid(houseHoldValue);
+                Intent i = new Intent(PatientDetailActivity.this, IdentificationActivity.class);
+                i.putExtra("privacy", "Accept");
+                startActivity(i);
+            }
+        });
+        // Add Family Member icon click - End
 
         setDisplay(patientUuid);
 
@@ -274,6 +282,19 @@ public class PatientDetailActivity extends AppCompatActivity {
             //newVisit.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
             //newVisit.setTextColor(getResources().getColor(R.color.white));
         }
+
+        // survey button
+        button_householdSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentsurvey = new Intent(PatientDetailActivity.this, HouseholdSurveyActivity.class);
+                intentsurvey.putExtra("patientUuid", patientUuid);
+                startActivity(intentsurvey);
+            }
+        });
+        LoadFamilyMembers();
+        // survey button
+
 
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -383,49 +404,49 @@ public class PatientDetailActivity extends AppCompatActivity {
             }
         });
 
-//        LoadFamilyMembers();
+        LoadFamilyMembers();
 
     }
 
-//    private void LoadFamilyMembers() {
-//
-//        String houseHoldValue = "";
-//        try {
-//            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
-//        } catch (DAOException e) {
-//            FirebaseCrashlytics.getInstance().recordException(e);
-//        }
-//
-//        if (!houseHoldValue.equalsIgnoreCase("")) {
-//            //Fetch all patient UUID from houseHoldValue
-//            try {
-//                List<FamilyMemberRes> listPatientNames = new ArrayList<>();
-//                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
-//                Log.e("patientUUIDs", "" + patientUUIDs);
-//
-//                for (int i = 0; i < patientUUIDs.size(); i++) {
-//                    if (!patientUUIDs.get(i).equals(patientUuid)) {
-//                        listPatientNames.addAll(patientsDAO.getPatientName(patientUUIDs.get(i)));
-//                    }
-//                }
-//
-//                if (listPatientNames.size() > 0) {
-//                    tvNoFamilyMember.setVisibility(View.GONE);
-//                    rvFamilyMember.setVisibility(View.VISIBLE);
-//                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
-//                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//                    rvFamilyMember.setLayoutManager(linearLayoutManager);
-//                    rvFamilyMember.setAdapter(familyMemberAdapter);
-//                } else {
-//                    tvNoFamilyMember.setVisibility(View.VISIBLE);
-//                    rvFamilyMember.setVisibility(View.GONE);
-//                }
-//
-//            } catch (DAOException e) {
-//                FirebaseCrashlytics.getInstance().recordException(e);
-//            }
-//        }
-//    }
+    private void LoadFamilyMembers() {
+
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        if (!houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+                List<String> patientUUIDs = new ArrayList<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDs", "" + patientUUIDs);
+
+                for (int i = 0; i < patientUUIDs.size(); i++) {
+                    if (!patientUUIDs.get(i).equals(patientUuid)) {
+                        listPatientNames.addAll(patientsDAO.getPatientName(patientUUIDs.get(i)));
+                    }
+                }
+
+                if (listPatientNames.size() > 0) {
+                    tvNoFamilyMember.setVisibility(View.GONE);
+                    rvFamilyMember.setVisibility(View.VISIBLE);
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    rvFamilyMember.setLayoutManager(linearLayoutManager);
+                    rvFamilyMember.setAdapter(familyMemberAdapter);
+                } else {
+                    tvNoFamilyMember.setVisibility(View.VISIBLE);
+                    rvFamilyMember.setVisibility(View.GONE);
+                }
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
 
     @Override
     protected void onStart() {

@@ -236,7 +236,7 @@ public class SearchPatientActivity extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     //Clear HouseHold UUID from Session for new registration
-                    //  sessionManager.setHouseholdUuid("");
+                      sessionManager.setHouseholdUuid("");
                     Intent intent = new Intent(SearchPatientActivity.this, IdentificationActivity.class);
                     startActivity(intent);
                 }

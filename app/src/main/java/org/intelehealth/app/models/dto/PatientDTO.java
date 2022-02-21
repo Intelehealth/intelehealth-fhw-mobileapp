@@ -57,7 +57,6 @@ public class PatientDTO {
     @Expose
     private String gender;
 
-
     private String patientPhoto;
 
     private List<PatientAttributesDTO> patientAttributesDTOList;
