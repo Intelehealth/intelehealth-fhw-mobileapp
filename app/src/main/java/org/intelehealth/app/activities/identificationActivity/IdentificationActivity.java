@@ -222,7 +222,7 @@ public class IdentificationActivity extends AppCompatActivity {
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
             edittext_babyagedied;
 
-
+    private LinearLayout llPORoaster;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -966,6 +966,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mAgeDays + getResources().getString(R.string.days);
                 mAge.setText(ageS);
 
+                updatePORoaster();
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
 
@@ -1030,6 +1031,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);
             mAge.setText(age);
+            updatePORoaster();
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1167,6 +1169,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                    mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dialog.dismiss();
+                    updatePORoaster();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -1187,6 +1190,14 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
         });
+    }
+
+    private void updatePORoaster() {
+        if (mGenderF.isChecked() && mAgeYears >= 15 && mAgeYears <= 50) {
+            llPORoaster.setVisibility(View.VISIBLE);
+        } else {
+            llPORoaster.setVisibility(View.GONE);
+        }
     }
 
     private void editRosterQuestionsUIHandling() {
@@ -1994,6 +2005,8 @@ public class IdentificationActivity extends AppCompatActivity {
                 Log.v(TAG, "gender:" + mGender);
                 break;
         }
+
+        updatePORoaster();
     }
 
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
@@ -3531,7 +3544,7 @@ public class IdentificationActivity extends AppCompatActivity {
         mCountry = findViewById(R.id.spinner_country);
         mGenderM = findViewById(R.id.identification_gender_male);
         mGenderF = findViewById(R.id.identification_gender_female);
-        mGenderO = findViewById(R.id.identification_gender_female);
+        mGenderO = findViewById(R.id.identification_gender_others);
         mRelationship = findViewById(R.id.identification_relationship);
         mRelationship.setFilters(new InputFilter[]{new InputFilter.LengthFilter(25), inputFilter_Others}); //maxlength 25
 
@@ -3589,6 +3602,8 @@ public class IdentificationActivity extends AppCompatActivity {
         edittext_focalfacility = findViewById(R.id.edittext_focalfacility);
         edittext_babyagedied = findViewById(R.id.edittext_babyagedied);
         //Roster EditText
+
+        llPORoaster = findViewById(R.id.llPORoaster);
     }
 
 }
