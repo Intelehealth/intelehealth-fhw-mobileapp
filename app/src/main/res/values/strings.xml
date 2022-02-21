@@ -1075,6 +1075,7 @@
 
     <string name="what_is_the_sex_of_name">What is the sex of %1$s?</string>
     <string name="how_old_is_name">How old is %1$s?</string>
+    <string name="gender_other">Other</string>
     <string name="enter_in_completed_years">ENTER IN COMPLETED YEARS</string>
     <string name="what_is_name_s_marital_status">What is %1$s\'s marital status?</string>
     <string name="currently_married">CURRENTLY MARRIED</string>

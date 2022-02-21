@@ -1042,7 +1042,8 @@
 
     <string name="what_is_the_sex_of_name">%1$s चे लिंग काय आहे?</string>
     <string name="how_old_is_name">%1$s चे वय किती आहे?</string>
-    <string name="enter_in_completed_years">पूर्ण वर्षांमध्ये प्रवेश करा</string>
+    <string name="gender_other">इतर</string>
+    <string name="enter_in_completed_years">पूर्ण वर्षांमध्ये प्रवेश करा/डेटा एंट्री पूर्ण वर्ष मधे करा</string>
     <string name="what_is_name_s_marital_status">%1$s वैवाहिक स्थिती काय आहे?</string>
     <string name="currently_married">सध्या विवाहित</string>
     <string name="married_gauna_not_performed">विवाहित, गौण केले नाही</string>
