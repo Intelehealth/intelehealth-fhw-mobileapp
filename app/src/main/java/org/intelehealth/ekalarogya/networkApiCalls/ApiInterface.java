@@ -7,6 +7,9 @@ import org.intelehealth.ekalarogya.models.Location;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.ekalarogya.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.ekalarogya.models.Results;
+import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
+import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
+import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
 import org.intelehealth.ekalarogya.models.loginModel.LoginModel;
 import org.intelehealth.ekalarogya.models.loginProviderModel.LoginProviderModel;
@@ -104,4 +107,15 @@ public interface ApiInterface {
 
     @GET("/intelehealth/app_update.json")
     Single<CheckAppUpdateRes> checkAppUpdate();
+
+    @GET
+    Observable<MainProfileModel> PERSON_PROFILE_INFO(@Url String url,
+                                                     @Header("Authorization") String authHeader);
+
+    @Headers({"Accept: application/json"})
+    @POST
+    Single<ResponseBody> UserStatus_API_CALL_OBSERVABLE(@Url String url,
+                                                                  @Header("Authorization") String authHeader,
+                                                                  @Body UserStatusUpdateApiCall userStatusUpdateApiCall);
+
 }

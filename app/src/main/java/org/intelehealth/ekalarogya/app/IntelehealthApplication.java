@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -29,13 +33,14 @@ import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks {
+public class IntelehealthApplication extends MultiDexApplication implements Application.ActivityLifecycleCallbacks, LifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
     private static String androidId;
     private Activity currentActivity;
     SessionManager sessionManager;
+    public static boolean isInBackground;
     public static Context getAppContext() {
         return mContext;
     }
@@ -91,6 +96,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
             mDbHelper.onCreate(localdb);
         }
         registerActivityLifecycleCallbacks(this);
+
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
     }
 
     private void configureCrashReporting() {
@@ -158,5 +165,17 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
         alertTitle.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button1.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
         button2.setTypeface(ResourcesCompat.getFont(context, R.font.lato_bold));
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public void onMoveToForeground() {
+        // app moved to foreground
+        isInBackground=false;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onMoveToBackground() {
+        // app moved to background
+        isInBackground =true;
     }
 }

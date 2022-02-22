@@ -680,11 +680,13 @@
     <string name="identification_screen_prompt_village">Village *</string>
 
     //----------hw profile strings--------------------
-    <string name="hw_location">Location</string>
-    <string name="hw_name" translatable="false">Name</string>
-    <string name="hw_totalpatient" translatable="false">Patients Registered</string>
-    <string name="hw_completeconsultation" translatable="false">Completed Consultations</string>
-    <string name="hw_visitprogress" translatable="false">Visit Progress</string>
-    <string name="hw_visits" translatable="false">Total Visits</string>
+    <string name="hw_totalpatient_str" translatable="false">VISIT\nCREATED</string>
+    <string name="hw_completeconsultation_str" translatable="false">COMPLETED\nCONSULTATIONS</string>
+    <string name="hw_visitprogress_str" translatable="false">VISIT IN\nPROGRESS</string>
+    <string name="hw_personal_info_str" translatable="false">Personal Information</string>
+    <string name="hw_state_str" translatable="false">State</string>
+    <string name="hw_mobile_str" translatable="false">Mobile</string>
+    <string name="hw_whatsapp_str" translatable="false">WhatsApp</string>
+    <string name="hw_email_str" translatable="false">Email</string>
 
 </resources>

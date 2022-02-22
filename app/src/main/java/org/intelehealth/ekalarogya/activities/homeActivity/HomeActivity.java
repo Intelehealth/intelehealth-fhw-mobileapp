@@ -44,6 +44,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
 import org.intelehealth.ekalarogya.models.dto.PatientDTO;
 import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.ekalarogya.utilities.StringUtils;
@@ -125,16 +126,12 @@ public class HomeActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
-
-    DrawerLayout mDrawerLayout;
-    NavigationView navView;
     Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_home_activity);
-        //setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -295,9 +292,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         showProgressbar();
-
-        mDrawerLayout = findViewById(R.id.drawer);
-        navView = findViewById(R.id.navView);
     }
 
     //function for handling the video library feature...
@@ -404,9 +398,7 @@ public class HomeActivity extends AppCompatActivity {
 //                refreshDatabases();
 //                return true;
             case R.id.userProfileOption:
-                //------slider menu option-----
-                mDrawerLayout.openDrawer(navView);
-
+                Hw_Profile();
                 return true;
 
             case R.id.settingsOption:
@@ -538,6 +530,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
+     * This method starts intent to another activity to view health worker profile
+     *
+     * @return void
+     */
+    public void Hw_Profile() {
+        Intent intent = new Intent(this, HwProfileActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Logs out the user. It removes user account using AccountManager.
      *
      * @return void
@@ -590,73 +592,8 @@ public class HomeActivity extends AppCompatActivity {
 //                && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
 //        }
-        getHw_Information();
 
         super.onResume();
-    }
-
-    public void getHw_Information(){
-
-        TextView hw_name_value=(TextView)findViewById(R.id.hw_name_value);
-        TextView hw_gender_value=(TextView)findViewById(R.id.hw_gender_value);
-        TextView hw_location_value=(TextView)findViewById(R.id.hw_location_value);
-
-        TextView hw_patientregister_value=(TextView)findViewById(R.id.hw_patientregister_value);
-        TextView hw_visits_value=(TextView)findViewById(R.id.hw_visits_value);
-        TextView hw_completeconsultaion_value=(TextView)findViewById(R.id.hw_completeconsultaion_value);
-        TextView hw_visitprogress_value=(TextView)findViewById(R.id.hw_visitprogress_value);
-        HashMap<String,Integer> hw_details= getHwDetails();
-
-        hw_name_value.setText(": "+sessionManager.getChwname());
-        hw_location_value.setText(": "+sessionManager.getLocationName());
-        hw_patientregister_value.setText(hw_details.get("patientregistered")+"");
-        hw_visits_value.setText(hw_details.get("totalvisits")+"");
-        hw_completeconsultaion_value.setText(hw_details.get("completeconsultation")+"");
-        hw_visitprogress_value.setText(hw_details.get("visitinprogress")+"");
-    }
-
-    public HashMap<String, Integer> getHwDetails(){
-        HashMap<String, Integer> hw_detial=new HashMap<>();
-        int totalpatinet=0, totalactivevisit=0, totalvisit=0,totalcompletevisit=0 ;
-        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        String table = "tbl_patient";
-        Cursor patientCursor = db.rawQuery("SELECT * FROM " + table, null);
-        table="tbl_visit";
-        Cursor visitCursor = db.rawQuery("SELECT enddate FROM " + table, null);
-
-        try {
-            if(patientCursor!=null){
-             totalpatinet=patientCursor.getCount();
-            }
-            patientCursor.close();
-            if(visitCursor!=null){
-                totalvisit=visitCursor.getCount();
-                if (totalvisit != 0) {
-                    while (visitCursor.moveToNext()) {
-                        if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"))!=null){
-                            totalcompletevisit=totalcompletevisit+1;
-                        }else{
-                            totalactivevisit=totalactivevisit+1;
-                        }
-                    }
-                }
-            }
-            visitCursor.close();
-            db.setTransactionSuccessful();
-        } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }finally {
-            if(db != null && db.inTransaction()){
-                db.endTransaction();
-            }
-        }
-        hw_detial.put("patientregistered",totalpatinet);
-        hw_detial.put("totalvisits",totalvisit);
-        hw_detial.put("visitinprogress",totalactivevisit);
-        hw_detial.put("completeconsultation",totalcompletevisit);
-
-        return hw_detial;
     }
 
     @Override

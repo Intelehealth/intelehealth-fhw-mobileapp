@@ -678,11 +678,13 @@
     <string name="identification_screen_prompt_village">गांव *</string>
 
     //----------hw profile strings--------------------
-    <string name="hw_location">स्थान</string>
-    <string name="hw_name">नाम</string>
-    <string name="hw_totalpatient" translatable="false">रोगी पंजीकृत</string>
-    <string name="hw_completeconsultation" translatable="false">पूर्ण परामर्श</string>
-    <string name="hw_visitprogress" translatable="false">विज़िट्स प्रोग्रेस</string>
-    <string name="hw_visits" translatable="false">टोटल विज़िट्स</string>
+    <string name="hw_totalpatient_str" translatable="false">विज़िट्स\nबनाये गऐ</string>
+    <string name="hw_completeconsultation_str" translatable="false">पूर्ण\nपरामर्श</string>
+    <string name="hw_visitprogress_str" translatable="false">विज़िट्स \nप्रोग्रेस में</string>
+    <string name="hw_personal_info_str" translatable="false">व्यक्तिगत जानकारी</string>
+    <string name="hw_state_str" translatable="false">राज्य</string>
+    <string name="hw_mobile_str" translatable="false">मोबाइल</string>
+    <string name="hw_whatsapp_str" translatable="false">व्हाट्सएप</string>
+    <string name="hw_email_str" translatable="false">ईमेल</string>
 
 </resources>
