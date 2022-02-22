@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_government_doctor"
+        android:title="@string/government_doctor" />
+
+    <item
+        android:id="@+id/menu_item_private_doctor"
+        android:title="@string/private_doctor" />
+
+    <item
+        android:id="@+id/menu_item_staff_nurse"
+        android:title="@string/staff_nurse" />
+
+    <item
+        android:id="@+id/menu_item_anm"
+        android:title="@string/anm" />
+
+    <item
+        android:id="@+id/menu_item_asha"
+        android:title="@string/asha" />
+
+    <item
+        android:id="@+id/menu_item_aww"
+        android:title="@string/aww" />
+
+    <item
+        android:id="@+id/menu_item_rmp"
+        android:title="@string/rmp" />
+
+    <item
+        android:id="@+id/menu_item_ayush_doctor"
+        android:title="@string/ayush_doctor" />
+
+    <item
+        android:id="@+id/menu_item_homeopath_doctor"
+        android:title="@string/homeopath_doctor" />
+
+    <item
+        android:id="@+id/menu_item_traditional_healer_quack"
+        android:title="@string/traditional_healer_quack" />
+
+    <item
+        android:id="@+id/menu_item_no_consultation"
+        android:title="@string/did_not_consult_any_health_provider_for_this_issue" />
+
+    <item
+        android:id="@+id/menu_item_other"
+        android:title="@string/other_specify" />
+
+</menu>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_walking"
+        android:title="@string/walking" />
+
+    <item
+        android:id="@+id/menu_item_bus"
+        android:title="@string/bus" />
+
+    <item
+        android:id="@+id/menu_item_private_taxi"
+        android:title="@string/private_taxi" />
+
+    <item
+        android:id="@+id/menu_item_shuttle_taxi"
+        android:title="@string/shuttle_taxi" />
+
+    <item
+        android:id="@+id/menu_item_auto"
+        android:title="@string/auto" />
+
+    <item
+        android:id="@+id/menu_item_own_vehicle"
+        android:title="@string/own_vehicle" />
+
+    <item
+        android:id="@+id/menu_item_friends_neighbours_vehicle"
+        android:title="@string/friends_neighbours_vehicle" />
+
+    <item
+        android:id="@+id/menu_item_ambulance"
+        android:title="@string/ambulance" />
+
+    <item
+        android:id="@+id/other_specify"
+        android:title="@string/other_specify" />
+
+</menu>

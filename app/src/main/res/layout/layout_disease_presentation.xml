@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/name_of_household_member_text_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_medium"-->
+<!--                android:text="@string/name_of_household_member"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
+
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:id="@+id/name_of_household_member_value_text_view"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:fontFamily="@font/poppins_medium"-->
+<!--                android:text="@string/sample_text"-->
+<!--                android:textSize="@dimen/card_content_sub_text_size" />-->
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/health_issues_reported_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/health_issue_reported"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/health_issue_reported_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/number_of_issues_episodes_in_the_last_year_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/number_of_episodes_in_the_last_year"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/number_of_issues_episodes_in_the_last_year_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/primary_health_care_provider_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/primary_health_care_provider_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_location_of_visit_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/first_location_of_visit"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/first_location_of_visit_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/referred_to_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/referred_to"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/referred_to_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mode_of_transportation_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/mode_of_transportation_used_to_reach_facility"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/mode_of_transportation_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_cost_incurred_on_travel_and_stay_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/average_cost_incurred_on_travel_and_stay_per_episode"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_cost_incurred_on_travel_and_stay_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_cost_incurred_on_consultation_fees_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/average_cost_incurred_on_consultation_fees_per_episode"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_cost_incurred_on_consultation_fees_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_cost_incurred_on_medicines_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/average_cost_incurred_on_consultation_fees_per_episode"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/average_cost_incurred_on_medicines_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/score_of_experience_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="@string/score_for_experience_of_treatment"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/score_of_experience_value_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="@dimen/card_content_sub_text_size" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

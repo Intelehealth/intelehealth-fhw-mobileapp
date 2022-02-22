@@ -584,7 +584,7 @@
     <string name="who_is_this_napplication_for">Who is this \napplication for?</string>
     <string name="custom_setup">Setup</string>
     <string name="demo_version">Demo version</string>
-    <string name="sample_text">sample text</string>
+    <string name="sample_text">Sample Text</string>
     <string name="test_2_vibha_onplus_6t_10fke_7">Test 2 Vibha onplus 6T, 10FKE-7</string>
     <string name="age_11_years_5_months">Age: 11 years, 5 months</string>
     <string name="active_defaultTag">Active</string>
@@ -1044,6 +1044,66 @@
     <string name="caste_general">General</string>
     <string name="caste_dont_know">Don’t know</string>
     <string name="caste_refused_to_answer">Refused to answer</string>
+
+    <string name="health_serv_utilization_roster">HealthServUtilization Roster</string>
+    <string name="health_issue_reported">Health Issue Reported</string>
+    <string name="number_of_episodes_in_the_last_year">No. Of Episodes In The Last Year</string>
+    <string name="name_of_household_member">Name Of Household Member</string>
+    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, which is the primary health provider you interacted with for this health issue?</string>
+    <string name="primary_health_care_provider">Primary Healthcare Provider</string>
+    <string name="first_location_of_visit">First Location Of Visit / Interaction</string>
+    <string name="referred_to">Referred To</string>
+    <string name="mode_of_transportation_used_to_reach_facility">Mode Of Transportation Used To Reach Facility</string>
+    <string name="average_cost_incurred_on_travel_and_stay_per_episode">Average Cost Incurred On Travel And Stay Per Episode</string>
+    <string name="average_cost_incurred_on_consultation_fees_per_episode">Average Cost Incurred On Consultation Fees Per Episode</string>
+    <string name="average_cost_incurred_on_medicines_per_episode">Average Cost Incurred On Medicines Per Episode</string>
+    <string name="score_for_experience_of_treatment">Score For Experience Of Treatment</string>
+    <string name="select_health_issue">Select Health Issue</string>
+    <string name="others_specify_lowercase">Others (Specify)</string>
+    <string name="fever">Fever</string>
+    <string name="cough_cold">Cough / Cold</string>
+    <string name="diarrhoea">Diarrhoea</string>
+    <string name="injury">Injury</string>
+    <string name="skin_issues">Skin Issues</string>
+    <string name="eye_vision_issues">Eye / Vision Issues</string>
+    <string name="joint_bone_pain">Joint / Bone Pain</string>
+    <string name="select_primary_health_care_provider">Select Primary Healthcare Provider</string>
+    <string name="government_doctor">"GOVERNMENT DOCTOR "</string>
+    <string name="private_doctor">"PRIVATE DOCTOR "</string>
+    <string name="staff_nurse">"STAFF NURSE "</string>
+    <string name="anm">"ANM "</string>
+    <string name="asha">ASHA</string>
+    <string name="aww">AWW</string>
+    <string name="rmp">RMP</string>
+    <string name="ayush_doctor">AYUSH DOCTOR</string>
+    <string name="homeopath_doctor">HOMEOPATH DOCTOR</string>
+    <string name="traditional_healer_quack">TRADITIONAL HEALER/QUACK</string>
+    <string name="did_not_consult_any_health_provider_for_this_issue">Did not consult any health doctor for this issue</string>
+    <string name="home">HOME</string>
+    <string name="private_clinic">PRIVATE CLINIC</string>
+    <string name="phc">PHC</string>
+    <string name="chc">CHC</string>
+    <string name="dh">DH</string>
+    <string name="private_hospital">PRIVATE HOSPITAL</string>
+    <string name="ayush_center">AYUSH CENTER</string>
+    <string name="pharmacy">PHARMACY</string>
+
+    <string name="not_referred">NOT REFERRED</string>
+    <string name="walking">WALKING</string>
+    <string name="bus">BUS</string>
+    <string name="private_taxi">PRIVATE TAXI</string>
+    <string name="shuttle_taxi">SHUTTLE TAXI</string>
+    <string name="auto">AUTO</string>
+    <string name="own_vehicle">OWN VEHICLE</string>
+    <string name="friends_neighbours_vehicle">FRIENDS\’ / NEIGHBOURS\' VEHICLE</string>
+    <string name="ambulance">AMBULANCE</string>
+    <string name="dissatisfied">Dissatisfied</string>
+    <string name="below_average">Below Average</string>
+    <string name="average">Average</string>
+    <string name="good">Good</string>
+    <string name="very_good">Very Good</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

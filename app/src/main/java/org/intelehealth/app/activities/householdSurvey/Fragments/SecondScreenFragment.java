@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -148,6 +149,22 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
 
         binding.otherIncomeCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             binding.otherSourcesOfIncomeLayout.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
+
+        binding.religionDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 6) {
+                    binding.otherReligionLayout.setVisibility(View.VISIBLE);
+                } else {
+                    binding.otherReligionLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
     }
 

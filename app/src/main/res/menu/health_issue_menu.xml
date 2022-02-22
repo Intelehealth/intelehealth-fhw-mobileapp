@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_fever"
+        android:title="@string/fever" />
+
+    <item
+        android:id="@+id/menu_item_cough_cold"
+        android:title="@string/cough_cold" />
+
+    <item
+        android:id="@+id/menu_item_diarrhoea"
+        android:title="@string/diarrhoea" />
+
+    <item
+        android:id="@+id/menu_item_injury"
+        android:title="@string/injury" />
+
+    <item
+        android:id="@+id/menu_item_skin_issues"
+        android:title="@string/skin_issues" />
+
+    <item
+        android:id="@+id/menu_item_eye_vision_issues"
+        android:title="@string/eye_vision_issues" />
+
+    <item
+        android:id="@+id/menu_item_joint_bone_pain"
+        android:title="@string/joint_bone_pain" />
+
+    <item
+        android:id="@+id/menu_item_other"
+        android:title="@string/other" />
+
+</menu>

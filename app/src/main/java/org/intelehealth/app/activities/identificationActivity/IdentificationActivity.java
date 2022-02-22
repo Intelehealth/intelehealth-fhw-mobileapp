@@ -20,6 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.ViewCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -46,6 +48,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.databinding.ActivityIdentificationBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,14 +93,12 @@ import static org.intelehealth.app.utilities.StringUtils.en__gu_dob;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_gu_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.convertUsingStringBuilder;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__kn_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ml_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__mr_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__ru_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__te_dob;
-import static org.intelehealth.app.utilities.StringUtils.getValue;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_as_education_edit;
@@ -132,10 +133,9 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ru_economic_edit
 import static org.intelehealth.app.utilities.StringUtils.switch_ru_education_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
-import static org.intelehealth.app.utilities.StringUtils.switch_te_education;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
 
-public class IdentificationActivity extends AppCompatActivity {
+public class IdentificationActivity extends AppCompatActivity implements SurveyCallback {
     private static final String TAG = IdentificationActivity.class.getSimpleName();
     SessionManager sessionManager = null;
     private boolean hasLicense = false;
@@ -222,7 +222,11 @@ public class IdentificationActivity extends AppCompatActivity {
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
             edittext_babyagedied;
 
-    private LinearLayout llPORoaster;
+    private LinearLayout llPORoaster, ll18;
+    public ViewPager2 viewPager2;
+    private HouseholdSurveyAdapter adapter;
+    private ActivityIdentificationBinding binding;
+    private final List<HealthIssues> healthIssuesList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -240,7 +244,10 @@ public class IdentificationActivity extends AppCompatActivity {
         }
         //  sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        setContentView(R.layout.activity_identification);
+//        setContentView(R.layout.activity_identification);
+        binding = ActivityIdentificationBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         setTitle(R.string.title_activity_identification);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -966,7 +973,7 @@ public class IdentificationActivity extends AppCompatActivity {
                         mAgeDays + getResources().getString(R.string.days);
                 mAge.setText(ageS);
 
-                updatePORoaster();
+                updateRoaster();
             }
         }, mDOBYear, mDOBMonth, mDOBDay);
 
@@ -1031,7 +1038,7 @@ public class IdentificationActivity extends AppCompatActivity {
                     mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
                     mAgeDays + getResources().getString(R.string.days);
             mAge.setText(age);
-            updatePORoaster();
+            updateRoaster();
         }
         mAge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1169,7 +1176,7 @@ public class IdentificationActivity extends AppCompatActivity {
 //                    mDOB.setText(dobString);
                     mDOBPicker.updateDate(mDOBYear, mDOBMonth, mDOBDay);
                     dialog.dismiss();
-                    updatePORoaster();
+                    updateRoaster();
                 });
                 mAgePicker.setNegativeButton(R.string.generic_cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -1190,13 +1197,109 @@ public class IdentificationActivity extends AppCompatActivity {
                 onPatientCreateClicked();
             }
         });
+
+        setupHealthCard();
     }
 
-    private void updatePORoaster() {
+    private void setupHealthCard() {
+//        if (fragmentList.isEmpty()) {
+//            binding.editHealthIssueButton.setVisibility(View.GONE);
+//        } else {
+//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
+//        }
+
+        binding.addHealthIssueButton.setOnClickListener(v -> {
+            MultipleDiseasesDialog dialog = new MultipleDiseasesDialog();
+            dialog.show(getSupportFragmentManager(), MultipleDiseasesDialog.TAG);
+        });
+
+        binding.editHealthIssueButton.setOnClickListener(v -> {
+            editSurveyData();
+        });
+    }
+
+    @Override
+    public void saveSurveyData(HealthIssues survey) {
+//        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
+//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
+//        }
+        healthIssuesList.add(survey);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList);
+        binding.mainViewPager.setAdapter(adapter);
+        binding.mainViewPager.setCurrentItem(healthIssuesList.size() - 1);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+    }
+
+    @Override
+    public void saveSurveyDataAtPosition(HealthIssues survey, int position) {
+//        if (binding.editHealthIssueButton.getVisibility() == View.GONE) {
+//            binding.editHealthIssueButton.setVisibility(View.VISIBLE);
+//        }
+        healthIssuesList.set(position, survey);
+        adapter = new HouseholdSurveyAdapter(healthIssuesList);
+        binding.mainViewPager.setAdapter(adapter);
+        binding.mainViewPager.setCurrentItem(position);
+        binding.mainViewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        setViewPagerOffset(binding.mainViewPager);
+    }
+
+    private void editSurveyData() {
+        int position = binding.mainViewPager.getCurrentItem();
+        HealthIssues healthIssues = healthIssuesList.get(position);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+//        bundle.putString("householdMemberName", healthIssues.getHouseholdMemberName());
+        bundle.putString("healthIssueReported", healthIssues.getHealthIssueReported());
+        bundle.putString("numberOfEpisodesInTheLastYear", healthIssues.getNumberOfEpisodesInTheLastYear());
+        bundle.putString("primaryHealthcareProviderValue", healthIssues.getPrimaryHealthcareProviderValue());
+        bundle.putString("firstLocationOfVisit", healthIssues.getFirstLocationOfVisit());
+        bundle.putString("referredTo", healthIssues.getReferredTo());
+        bundle.putString("modeOfTransportation", healthIssues.getModeOfTransportation());
+        bundle.putString("averageCostOfTravelAndStayPerEpisode", healthIssues.getAverageCostOfTravelAndStayPerEpisode());
+        bundle.putString("averageCostOfConsultation", healthIssues.getAverageCostOfConsultation());
+        bundle.putString("averageCostOfMedicine", healthIssues.getAverageCostOfMedicine());
+        bundle.putString("scoreForExperienceOfTreatment", healthIssues.getScoreForExperienceOfTreatment());
+
+        MultipleDiseasesDialog dialog = new MultipleDiseasesDialog();
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), MultipleDiseasesDialog.TAG);
+    }
+
+    private void setViewPagerOffset(ViewPager2 viewPager2) {
+        viewPager2.setClipToPadding(false);
+        viewPager2.setClipChildren(false);
+        viewPager2.setOffscreenPageLimit(3);
+
+        int pageMarginPx = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
+        float offsetPx = getResources().getDimensionPixelOffset(R.dimen.offset);
+        viewPager2.setPageTransformer((page, position) -> {
+            ViewPager2 viewPager = (ViewPager2) page.getParent().getParent();
+            float offset = position * -(2 * offsetPx + pageMarginPx);
+            if (viewPager.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
+                if (ViewCompat.getLayoutDirection(viewPager) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+                    page.setTranslationX(-offset);
+                } else {
+                    page.setTranslationX(offset);
+                }
+            } else {
+                page.setTranslationY(offset);
+            }
+        });
+    }
+
+    private void updateRoaster() {
         if (mGenderF.isChecked() && mAgeYears >= 15 && mAgeYears <= 50) {
             llPORoaster.setVisibility(View.VISIBLE);
         } else {
             llPORoaster.setVisibility(View.GONE);
+        }
+
+        if (mAgeYears >= 18) {
+            ll18.setVisibility(View.VISIBLE);
+        } else {
+            ll18.setVisibility(View.VISIBLE);
         }
     }
 
@@ -2006,7 +2109,7 @@ public class IdentificationActivity extends AppCompatActivity {
                 break;
         }
 
-        updatePORoaster();
+        updateRoaster();
     }
 
     private InputFilter inputFilter_Name = new InputFilter() { //filter input for name fields
@@ -2679,94 +2782,94 @@ public class IdentificationActivity extends AppCompatActivity {
         patientAttributesDTO.setUuid(UUID.randomUUID().toString());
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("HealthIssueReported"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_healthissuereported));
+        patientAttributesDTO.setValue(new Gson().toJson(healthIssuesList));
         //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
-        //no episodes
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoofEpisodes"));
-        patientAttributesDTO.setValue(StringUtils.getValue(edittext_noofepisodes.getText().toString()));
-        Log.d("HOH", "total family meme: " + edittext_noofepisodes.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //no episodes
-
-        // primary health provider
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryHealthProvider"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_primaryhealthprovider));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // first location
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FirstLocation"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_firstlocation));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // referred to
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReferredTo"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_referredto));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        // mode of transport
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ModeofTransport"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_modeoftransport));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-
-        //cost travel
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofTravel"));
-        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcosttravel.getText().toString()));
-        Log.d("HOH", "total family meme: " + edittext_avgcosttravel.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //cost travel
-
-        //cost consult
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofConsult"));
-        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostconsult.getText().toString()));
-        Log.d("HOH", "total family meme: " + edittext_avgcostconsult.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //cost consult
-
-        //cost medicines
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofMedicines"));
-        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostmedicines.getText().toString()));
-        Log.d("HOH", "total family meme: " + edittext_avgcostmedicines.getText().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
-        //cost medicines
-
-        // score of experience
-        patientAttributesDTO = new PatientAttributesDTO();
-        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
-        patientAttributesDTO.setPatientuuid(uuid);
-        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ScoreofExperience"));
-        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_experiencerscore));
-        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
-        patientAttributesDTOList.add(patientAttributesDTO);
+//        //no episodes
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("NoofEpisodes"));
+//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_noofepisodes.getText().toString()));
+//        Log.d("HOH", "total family meme: " + edittext_noofepisodes.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//        //no episodes
+//
+//        // primary health provider
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("PrimaryHealthProvider"));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_primaryhealthprovider));
+//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//
+//        // first location
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("FirstLocation"));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_firstlocation));
+//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//
+//        // referred to
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ReferredTo"));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_referredto));
+//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//
+//        // mode of transport
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ModeofTransport"));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_modeoftransport));
+//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//
+//        //cost travel
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofTravel"));
+//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcosttravel.getText().toString()));
+//        Log.d("HOH", "total family meme: " + edittext_avgcosttravel.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//        //cost travel
+//
+//        //cost consult
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofConsult"));
+//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostconsult.getText().toString()));
+//        Log.d("HOH", "total family meme: " + edittext_avgcostconsult.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//        //cost consult
+//
+//        //cost medicines
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("CostofMedicines"));
+//        patientAttributesDTO.setValue(StringUtils.getValue(edittext_avgcostmedicines.getText().toString()));
+//        Log.d("HOH", "total family meme: " + edittext_avgcostmedicines.getText().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
+//        //cost medicines
+//
+//        // score of experience
+//        patientAttributesDTO = new PatientAttributesDTO();
+//        patientAttributesDTO.setUuid(UUID.randomUUID().toString());
+//        patientAttributesDTO.setPatientuuid(uuid);
+//        patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("ScoreofExperience"));
+//        patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_experiencerscore));
+//        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+//        patientAttributesDTOList.add(patientAttributesDTO);
 
         //how many times pregnant
         patientAttributesDTO = new PatientAttributesDTO();
@@ -3581,6 +3684,54 @@ public class IdentificationActivity extends AppCompatActivity {
         spinner_experiencerscore = findViewById(R.id.spinner_experiencerscore);
         spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
         spinner_outcomepregnancy = findViewById(R.id.spinner_outcomepregnancy);
+
+        spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+                    binding.llChildAlive.setVisibility(View.VISIBLE);
+                } else {
+                    binding.llChildAlive.setVisibility(View.GONE);
+                }
+
+                if (position == 2) {
+                    binding.edittextBabyagedied.setVisibility(View.VISIBLE);
+                } else {
+                    binding.edittextBabyagedied.setVisibility(View.GONE);
+                }
+
+                if (position == 5) {
+                    binding.edittextMonthspregnancylast.setVisibility(View.VISIBLE);
+                } else {
+                    binding.edittextMonthspregnancylast.setVisibility(View.GONE);
+                }
+
+
+                if (position == 4 || position == 5) {
+                    binding.llDeliveryPlace.setVisibility(View.GONE);
+                } else {
+                    binding.llDeliveryPlace.setVisibility(View.VISIBLE);
+                }
+
+
+                if (position == 3 || position == 4 || position == 5) {
+                    binding.edittextFocalfacility.setVisibility(View.GONE);
+                    binding.llSingleMultipleBirth.setVisibility(View.GONE);
+                    binding.llBabyGender.setVisibility(View.GONE);
+                    binding.llChildComplications.setVisibility(View.GONE);
+                } else {
+                    binding.edittextFocalfacility.setVisibility(View.VISIBLE);
+                    binding.llSingleMultipleBirth.setVisibility(View.VISIBLE);
+                    binding.llBabyGender.setVisibility(View.VISIBLE);
+                    binding.llChildComplications.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         spinner_childalive = findViewById(R.id.spinner_childalive);
         spinner_placeofdeliverypregnant = findViewById(R.id.spinner_placeofdeliverypregnant);
         spinner_sexofbaby = findViewById(R.id.spinner_sexofbaby);
@@ -3604,6 +3755,7 @@ public class IdentificationActivity extends AppCompatActivity {
         //Roster EditText
 
         llPORoaster = findViewById(R.id.llPORoaster);
+        ll18 = findViewById(R.id.ll18);
     }
 
 }

@@ -42,4 +42,8 @@
 
     <dimen name="text_18sp">18sp</dimen>
 
+    <dimen name="pageMargin">20dp</dimen>
+    <dimen name="offset">30dp</dimen>
+    <dimen name="pageMarginAndOffset">50dp</dimen>
+
 </resources>

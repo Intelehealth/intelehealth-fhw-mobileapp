@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_not_referred"
+        android:title="@string/not_referred" />
+
+    <item
+        android:id="@+id/menu_item_private_clinic"
+        android:title="@string/private_clinic" />
+
+    <item
+        android:id="@+id/menu_item_phc"
+        android:title="@string/phc" />
+
+    <item
+        android:id="@+id/menu_item_chc"
+        android:title="@string/chc" />
+
+    <item
+        android:id="@+id/menu_item_dh"
+        android:title="@string/dh" />
+
+    <item
+        android:id="@+id/menu_item_private_hospital"
+        android:title="@string/private_hospital" />
+
+    <item
+        android:id="@+id/menu_item_ayush_center"
+        android:title="@string/ayush_center" />
+
+    <item
+        android:id="@+id/menu_item_others"
+        android:title="@string/other_specify" />
+
+</menu>

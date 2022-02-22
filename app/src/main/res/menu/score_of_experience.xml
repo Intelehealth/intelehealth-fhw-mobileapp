@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_dissatisfied"
+        android:title="@string/dissatisfied" />
+
+    <item
+        android:id="@+id/menu_item_below_average"
+        android:title="@string/below_average" />
+
+    <item
+        android:id="@+id/menu_item_average"
+        android:title="@string/average" />
+
+    <item
+        android:id="@+id/menu_item_good"
+        android:title="@string/good" />
+
+    <item
+        android:id="@+id/menu_item_very_good"
+        android:title="@string/very_good" />
+
+</menu>
