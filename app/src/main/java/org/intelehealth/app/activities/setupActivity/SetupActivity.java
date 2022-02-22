@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -34,6 +35,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -85,6 +87,10 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import org.intelehealth.app.activities.homeActivity.HomeActivity;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -117,7 +123,8 @@ public class SetupActivity extends AppCompatActivity {
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mAdminPasswordView;
-    private EditText mUrlField;
+    private EditText mUrlField1;
+    private AutoCompleteTextView mUrlField;
     private Button mLoginButton;
     //private Spinner mDropdownLocation;
     private Spinner spinner_state, spinner_district,
@@ -132,16 +139,18 @@ public class SetupActivity extends AppCompatActivity {
     private String mindmapURL = "";
     private DownloadMindMaps mTask;
     CustomProgressDialog customProgressDialog;
-
+    ArrayList<String> user_roles;
     //    private BroadcastReceiver MyReceiver = null;
     //CoordinatorLayout coordinatorLayout;
     HashMap<String, String> hashMap1, hashMap2/*, hashMap3*/, hashMap4;
     boolean value = false;
     String base_url;
     Map.Entry<String, String> village_name;
+    Map.Entry<String, String> state_name;
     int state_count = 0, district_count = 0/*, sanch_count = 0*/, village_count = 0;
     private String selectedState = "";
-
+    List<String> mSetUpLocation;
+    ArrayAdapter<String> setUpURLAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,7 +159,8 @@ public class SetupActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         // Persistent login information
 //        manager = AccountManager.get(SetupActivity.this);
-
+        mSetUpLocation = new ArrayList<>();
+        user_roles = new ArrayList<>();
        // coordinatorLayout = findViewById(R.id.coordinatorLayout);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -171,6 +181,62 @@ public class SetupActivity extends AppCompatActivity {
         mUrlField = findViewById(R.id.editText_URL);
 
         mLoginButton = findViewById(R.id.setup_submit_button);
+        mSetUpLocation.add("trn.digitalhih.net");
+        mSetUpLocation.add("tlm.digitalhih.net");
+        setUpURLAdapter = new ArrayAdapter<String>(SetupActivity.this, android.R.layout.simple_list_item_1, mSetUpLocation);
+        mUrlField.setAdapter(setUpURLAdapter);
+//        mUrlFields.etThreshold(0);
+        mUrlField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus)
+                    mUrlField.showDropDown();
+
+            }
+        });
+        mUrlField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mUrlField.showDropDown();
+            }
+        });
+       /* mUrlField.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedURL = parent.getItemAtPosition(position).toString();
+                if(!selectedURL.trim().isEmpty() ||
+                        !selectedURL.trim().equalsIgnoreCase("")) {
+
+                    isLocationFetched = false;
+                    mEmailView.setError(null);
+
+            *//*LocationArrayAdapter adapter = new LocationArrayAdapter
+                    (SetupActivity.this, new ArrayList<String>());
+            mDropdownLocation.setAdapter(adapter);*//*
+
+                    if (!selectedURL.trim().isEmpty() && mUrlField.getText().toString().length() >= 12) {
+                        if (Patterns.WEB_URL.matcher(mUrlField.getText().toString()).matches()) {
+                            String BASE_URL = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            base_url = "https://" + mUrlField.getText().toString() + "/openmrs/ws/rest/v1/";
+                            if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched)
+                                value = getLocationFromServer(BASE_URL); //state wise locations...
+                                //getLocationFromServer(BASE_URL);
+                            else
+                                Toast.makeText(SetupActivity.this, getString(R.string.url_invalid), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                }
+                else {
+
+                }
+
+
+            }
+        });*/
+
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,8 +300,8 @@ public class SetupActivity extends AppCompatActivity {
 
             }
         });
-        DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
+        //DialogUtils dialogUtils = new DialogUtils();
+        //dialogUtils.showOkDialog(this, getString(R.string.generic_warning), getString(R.string.setup_internet), getString(R.string.generic_ok));
 
         if(!mUrlField.getText().toString().trim().isEmpty() ||
                 !mUrlField.getText().toString().trim().equalsIgnoreCase("")) {
@@ -329,6 +395,7 @@ public class SetupActivity extends AppCompatActivity {
                             // Do things with the list
                             if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
                                 state_uuid = entry.getKey();
+                                state_name = entry;
                             }
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "State");
@@ -341,6 +408,7 @@ public class SetupActivity extends AppCompatActivity {
                             // Do things with the list
                             if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
                                 state_uuid = entry.getKey();
+                                state_name = entry;
                             }
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "State");
@@ -355,6 +423,7 @@ public class SetupActivity extends AppCompatActivity {
                             // Do things with the list
                             if (list.equalsIgnoreCase(parent.getItemAtPosition(position).toString())) {
                                 state_uuid = entry.getKey();
+                                state_name = entry;
                             }
                         }
                         value = getLocationFromServer_District(base_url, state_uuid, "State");
@@ -731,9 +800,9 @@ public class SetupActivity extends AppCompatActivity {
                 Log.d(TAG, "attempting setup");
             }*/
 
-            if (village_name != null) {
+            if (village_name != null && state_name!=null) {
                 String urlString = mUrlField.getText().toString();
-                TestSetup(urlString, email, password, admin_password, village_name);
+                TestSetup(urlString, email, password, admin_password, village_name, state_name);
                 Log.d(TAG, "attempting setup");
             }
         }
@@ -810,7 +879,6 @@ public class SetupActivity extends AppCompatActivity {
                         @Override
                         public void onNext(@NonNull District_Sanch_Village district_sanch_village) {
                             if (!district_sanch_village.getChildLocations().isEmpty()) {
-
 
                                 if (location_wise.equalsIgnoreCase("State")) {
                                     customProgressDialog.dismiss();
@@ -1125,6 +1193,35 @@ public class SetupActivity extends AppCompatActivity {
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
                         alertDialog.show();
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                        AutoCompleteTextView url = promptsView.findViewById(R.id.licenseurl);
+
+                        if(!mUrlField.getText().toString().isEmpty()){
+                            url.setText(mUrlField.getText().toString());
+                        }
+                        else {
+
+                        }
+
+                        url.setAdapter(setUpURLAdapter);
+
+                        url.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                url.showDropDown();
+                            }
+                        });
+                        url.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if (hasFocus)
+                                    url.showDropDown();
+
+                            }
+                        });
+
+
 
                         // Get the alert dialog buttons reference
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
@@ -1137,8 +1234,6 @@ public class SetupActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
 
                                 url.setError(null);
                                 text.setError(null);
@@ -1179,9 +1274,7 @@ public class SetupActivity extends AppCompatActivity {
                                         if (URLUtil.isValidUrl(url_field)) {
                                             key = text.getText().toString().trim();
                                             licenseUrl = url.getText().toString().trim();
-
                                             sessionManager.setMindMapServerUrl(licenseUrl);
-
                                             if (keyVerified(key)) {
                                                 getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
                                                 alertDialog.dismiss();
@@ -1231,7 +1324,7 @@ public class SetupActivity extends AppCompatActivity {
      * If successful cretes a new {@link Account}
      * If unsuccessful details are saved in SharedPreferences.
      */
-    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location) {
+    public void TestSetup(String CLEAN_URL, String USERNAME, String PASSWORD, String ADMIN_PASSWORD, Map.Entry<String, String> location, Map.Entry<String, String> state_location) {
 
         ProgressDialog progress;
 
@@ -1262,6 +1355,12 @@ public class SetupActivity extends AppCompatActivity {
                 sessionManager.setCreatorID(loginModel.getUser().getUuid());
                 sessionManager.setSessionID(loginModel.getSessionId());
                 sessionManager.setProviderID(loginModel.getUser().getPerson().getUuid());
+                for(int i=0; i<loginModel.getUser().getRoles().size();i++)
+                    user_roles.add(loginModel.getUser().getRoles().get(i).getDisplay());
+                if(user_roles.contains("Clinician"))
+                    sessionManager.setChwrole("Clinician");
+                else
+                    sessionManager.setChwrole("Nurse");
                 UrlModifiers urlModifiers = new UrlModifiers();
                 String url = urlModifiers.loginUrlProvider(CLEAN_URL, loginModel.getUser().getUuid());
                 if (authencated) {
@@ -1281,6 +1380,7 @@ public class SetupActivity extends AppCompatActivity {
                                             manager.addAccountExplicitly(account, PASSWORD, null);*/
 
                                             sessionManager.setLocationName(location.getValue());
+                                            sessionManager.setStateLocationName(state_location.getValue());
                                             sessionManager.setLocationUuid(location.getKey());
                                             //  sessionManager.setLocationDescription(location.getDescription());
                                             sessionManager.setServerUrl(CLEAN_URL);
@@ -1291,6 +1391,8 @@ public class SetupActivity extends AppCompatActivity {
 
                                             //Storing State Name
                                             sessionManager.setStateName(selectedState);
+                                            sessionManager.setDistrictName(spinner_district.getSelectedItem().toString());
+                                            sessionManager.setVillageName(spinner_village.getSelectedItem().toString());
 
                                             // OfflineLogin.getOfflineLogin().setUpOfflineLogin(USERNAME, PASSWORD);
                                             AdminPassword.getAdminPassword().setUp(ADMIN_PASSWORD);
@@ -1601,7 +1703,7 @@ public class SetupActivity extends AppCompatActivity {
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
+                                mTask = new DownloadMindMaps(context, mProgressDialog, "setup");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -1674,5 +1776,38 @@ public class SetupActivity extends AppCompatActivity {
         mTask.execute(mindmapURL, context.getFilesDir().getAbsolutePath() + "/mindmaps.zip");
         Log.e("DOWNLOAD", "isSTARTED");
 
+    }
+
+    public void showMindmapFailedAlert(){
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//      MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+        alertDialogBuilder.setMessage(getResources().getString(R.string.protocol_download_failed_alertdialog));
+        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                r1.setChecked(true);
+                r2.setChecked(false);
+                sessionManager.setLicenseKey("");
+            }
+        });
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                if (NetworkConnection.isOnline(SetupActivity.this)) {
+                    getMindmapDownloadURL("https://" + licenseUrl + ":3004/");
+                }else {
+                    dialog.dismiss();
+                    r1.setChecked(true);
+                    r2.setChecked(false);
+                    sessionManager.setLicenseKey("");
+                    Toast.makeText(context, getString(R.string.mindmap_internect_connection), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        //alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 }

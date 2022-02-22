@@ -1,5 +1,7 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import static org.intelehealth.app.activities.textprintactivity.TextPrintESCActivity.curPrinterInterface;
+
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.ActivityManager;
@@ -34,6 +36,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.webkit.URLUtil;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -135,7 +139,7 @@ public class HomeActivity extends AppCompatActivity {
     private DownloadMindMaps mTask;
     ProgressDialog mProgressDialog;
     private ImageView ivSync;
-
+    String userRole;
     private int versionCode = 0;
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
@@ -151,7 +155,7 @@ public class HomeActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
-
+        userRole = sessionManager.getChwrole();
         catchFCMMessageData();
         String language = sessionManager.getAppLanguage();
         if (!language.equalsIgnoreCase("")) {
@@ -191,6 +195,12 @@ public class HomeActivity extends AppCompatActivity {
         c6 = findViewById(R.id.cardview_help_whatsapp);
         c7 = findViewById(R.id.cardview_follow_up);
 
+        if(!userRole.isEmpty() && userRole.equalsIgnoreCase("Clinician"))
+        {
+            c1.setVisibility(View.GONE);
+            c4.setVisibility(View.GONE);
+            c7.setVisibility(View.GONE);
+        }
         //card textview referrenced to fix bug of localization not working in some cases...
         newPatient_textview = findViewById(R.id.newPatients_textview);
         newPatient_textview.setText(R.string.new_patient);
@@ -588,6 +598,37 @@ public class HomeActivity extends AppCompatActivity {
                         alertDialog.show();
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
+                        EditText text = promptsView.findViewById(R.id.licensekey);
+                        AutoCompleteTextView url = promptsView.findViewById(R.id.licenseurl);
+
+                        if(!sessionManager.getServerUrl().isEmpty()){
+                            url.setText(sessionManager.getServerUrl());
+                        }
+                        else{
+                            url.setText("");
+                        }
+
+                        List<String> mSetUpLocation  = new ArrayList<>();
+                        mSetUpLocation.add("trn.digitalhih.net");
+                        mSetUpLocation.add("tlm.digitalhih.net");
+                        ArrayAdapter<String> setUpURLAdapter= new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_list_item_1, mSetUpLocation);
+
+                        url.setAdapter(setUpURLAdapter);
+                        url.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                url.showDropDown();
+                            }
+                        });
+                        url.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                if (hasFocus)
+                                    url.showDropDown();
+
+                            }
+                        });
                         // Get the alert dialog buttons reference
                         Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
                         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
@@ -599,8 +640,6 @@ public class HomeActivity extends AppCompatActivity {
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                EditText text = promptsView.findViewById(R.id.licensekey);
-                                EditText url = promptsView.findViewById(R.id.licenseurl);
 
                                 url.setError(null);
                                 text.setError(null);
@@ -910,11 +949,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        try {
+       /* try {
             unregisterReceiver(syncBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private boolean keyVerified(String key) {
@@ -946,6 +985,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 moveTaskToBack(true);
+               // curPrinterInterface = null;
                 // finish();
             }
         });
@@ -979,11 +1019,13 @@ public class HomeActivity extends AppCompatActivity {
                     .subscribe(new DisposableObserver<DownloadMindMapRes>() {
                         @Override
                         public void onNext(DownloadMindMapRes res) {
-                            customProgressDialog.dismiss();
+                            if (customProgressDialog != null && customProgressDialog.isShowing()) {
+                                customProgressDialog.dismiss();
+                            }
                             if (res.getMessage() != null && res.getMessage().equalsIgnoreCase("Success")) {
 
                                 Log.e("MindMapURL", "Successfully get MindMap URL");
-                                mTask = new DownloadMindMaps(context, mProgressDialog);
+                                mTask = new DownloadMindMaps(context, mProgressDialog,"home");
                                 mindmapURL = res.getMindmap().trim();
                                 sessionManager.setLicenseKey(key);
                                 checkExistingMindMaps();
@@ -995,7 +1037,9 @@ public class HomeActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
-                            customProgressDialog.dismiss();
+                            if (customProgressDialog != null && customProgressDialog.isShowing()) {
+                                customProgressDialog.dismiss();
+                            }
                             Toast.makeText(context, getResources().getString(R.string.unable_to_get_proper_response), Toast.LENGTH_SHORT).show();
                         }
 
@@ -1223,7 +1267,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        try {
+            unregisterReceiver(syncBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

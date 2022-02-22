@@ -181,6 +181,10 @@ public class PatientsFrameJson {
                 encounterList.add(encounter);
             }
 
+            if (medicineprovide_row_exist_check(encounter.getVisit())){
+                encounterList.add(encounter);
+            }
+
     }
 
         pushRequestApiCall.setPatients(patientList);
@@ -223,6 +227,25 @@ public class PatientsFrameJson {
         db.beginTransaction();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
                 new String[]{uuid,"443d91e7-3897-4307-a549-787da32e241e"});
+
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                isExists = true;
+            }
+        }
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return isExists;
+    }
+
+    private boolean medicineprovide_row_exist_check(String uuid) {
+        boolean isExists = false;
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getReadableDatabase();
+        db.beginTransaction();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? AND + visit_attribute_type_uuid = ?",
+                new String[]{uuid,"ba1e259f-8911-439d-abde-fb6c24c1e3c2"});
 
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {

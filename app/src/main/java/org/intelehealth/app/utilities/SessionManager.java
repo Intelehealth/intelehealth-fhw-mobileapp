@@ -19,11 +19,13 @@ public class SessionManager {
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
     private static final String CHWNAME = "chwname";
+    private static final String CHWROLE = "chwrole";
     private static final String KEY_PREF_SERVER_URL_REST = "serverurl";
     private static final String KEY_PREF_SERVER_URL = "url";
     private static final String KEY_PREF_SERVER_URL_BASE = "serverurlbase";
     private static final String KEY_PREF_LOCATION_UUID = "locationuuid";
     private static final String KEY_PREF_LOCATION_NAME = "locationname";
+    private static final String KEY_PREF_STATE_LOCATION_NAME = "statelocationname";
     private static final String KEY_PREF_LOCATION_DESCRIPTION = "locationdesc";
     private static final String LICENSE_KEY = "licensekey";
     private static final String DATE = "date";
@@ -51,6 +53,8 @@ public class SessionManager {
     private static final String IS_LOGOUT = "IS_LOGOUT";
     private static final String HOUSEHOLD_UUID = "HOUSEHOLD_UUID";
     private static final String STATENAME = "STATENAME";
+    private static final String DISTRICTNAME = "DISTRICTNAME";
+    private static final String VILLAGENAME = "VILLAGENAME";
     private static final String COMPLAINT = "complaint_";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
@@ -149,6 +153,15 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getChwrole() {
+        return pref.getString(CHWROLE, "");
+    }
+
+    public void setChwrole(String chwrole) {
+        editor.putString(CHWROLE, chwrole);
+        editor.commit();
+    }
+
     public String getChwname() {
         return pref.getString(CHWNAME, "");
     }
@@ -167,12 +180,39 @@ public class SessionManager {
         editor.commit();
     }
 
+    public String getDistrictName() {
+        return pref.getString(DISTRICTNAME, "");
+    }
+
+    public void setDistrictName(String districtName) {
+        editor.putString(DISTRICTNAME, districtName);
+        editor.commit();
+    }
+
+    public String getVillageName() {
+        return pref.getString(VILLAGENAME, "");
+    }
+
+    public void setVillageName(String villageName) {
+        editor.putString(VILLAGENAME, villageName);
+        editor.commit();
+    }
+
     public String getLocationName() {
         return pref.getString(KEY_PREF_LOCATION_NAME, "");
     }
 
     public void setLocationName(String locationName) {
         editor.putString(KEY_PREF_LOCATION_NAME, locationName);
+        editor.commit();
+    }
+
+    public String getStateLocationName() {
+        return pref.getString(KEY_PREF_STATE_LOCATION_NAME, "");
+    }
+
+    public void setStateLocationName(String statelocationName) {
+        editor.putString(KEY_PREF_STATE_LOCATION_NAME, statelocationName);
         editor.commit();
     }
 

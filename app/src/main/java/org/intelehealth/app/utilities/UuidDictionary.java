@@ -26,6 +26,7 @@ public class UuidDictionary {
     public static final String RHK_MEDICAL_HISTORY_BLURB = "62bff84b-795a-45ad-aae1-80e7f5163a82";
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
+    public static final String REFERRAL_PATIENT = "5f0d1049-4fd6-497e-88c4-ae13a34ae241";
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
@@ -34,6 +35,7 @@ public class UuidDictionary {
     //    public static final String MEDICAL_ADVICE = "0308000d-77a2-46e0-a6fa-a8c1dcbc3141"; //old uuid medical advice
     public static final String MEDICAL_ADVICE = "67a050c1-35e5-451c-a4ab-fff9d57b0db1";
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
+    public static final String REQUESTED_REFERRALS = "5f0d1049-4fd6-497e-88c4-ae13a34ae241";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     public static final String COMPLEX_IMAGE_AD = "07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba";

@@ -1,15 +1,19 @@
 package org.intelehealth.app.activities.vitalActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,12 +25,14 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,6 +66,7 @@ public class VitalsActivity extends AppCompatActivity {
     private String patientUuid;
     private String visitUuid;
     private String encounterVitals;
+    private String userRole, userLoggedInLocation;
     private float float_ageYear_Month;
     int flag_height = 0, flag_weight = 0;
     String heightvalue;
@@ -72,6 +79,7 @@ public class VitalsActivity extends AppCompatActivity {
             mHemoglobin,mSugarRandom, mSugarFasting, mSugarAfterMeal;
     Spinner mBlood_Spinner;
     ArrayAdapter<CharSequence> bloodAdapter;
+    boolean fabClickFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +111,56 @@ public class VitalsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         sessionManager = new SessionManager(this);
-
+        userRole = sessionManager.getChwrole();
+        userLoggedInLocation = sessionManager.getStateLocationName();
 //        Setting the title
         setTitle(getString(R.string.title_activity_vitals));
         setTitle(patientName + ": " + getTitle());
 
+        if(userRole!= null && userRole.equals("Nurse") && (userLoggedInLocation.equals("Jharkhand")||userLoggedInLocation.equals("Bihar")) && (intentTag.equalsIgnoreCase("new") || intentTag.equalsIgnoreCase("today")))
+        {
+            MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(VitalsActivity.this);
+            alertDialogBuilder.setTitle(getResources().getString(R.string.generic_info));
+            alertDialogBuilder.setMessage(getResources().getString(R.string.vitals_for_pathologist));
+            alertDialogBuilder.setNegativeButton(getResources().getString(R.string.skip), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
+                    intent.putExtra("patientUuid", patientUuid);
+                    intent.putExtra("visitUuid", visitUuid);
+                    intent.putExtra("encounterUuidVitals", encounterVitals);
+                    intent.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+                    intent.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+                    intent.putExtra("state", state);
+                    intent.putExtra("name", patientName);
+                    intent.putExtra("gender", patientGender);
+                    intent.putExtra("float_ageYear_Month", float_ageYear_Month);
+                    intent.putExtra("tag", intentTag);
+                    startActivity(intent);
+                }
+            });
+            alertDialogBuilder.setPositiveButton(getResources().getString(R.string.continue_button), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+            pb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            pb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            Button nb = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+            nb.setTextColor(getResources().getColor((R.color.colorPrimary)));
+            nb.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+            IntelehealthApplication.setAlertDialogCustomTheme(VitalsActivity.this, alertDialog);
+
+
+        }
         mHeight = findViewById(R.id.table_height);
         mWeight = findViewById(R.id.table_weight);
         mPulse = findViewById(R.id.table_pulse);
@@ -1064,7 +1117,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        if (intentTag != null && intentTag.equals("edit")) {
+        if ((intentTag != null && intentTag.equals("edit")) || userRole!=null && userRole.equals("Clinician")) {
             try {
                 obsDTO = new ObsDTO();
                 obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
@@ -1376,7 +1429,6 @@ public class VitalsActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(VitalsActivity.this, ComplaintNodeActivity.class);
-
             intent.putExtra("patientUuid", patientUuid);
             intent.putExtra("visitUuid", visitUuid);
             intent.putExtra("encounterUuidVitals", encounterVitals);
