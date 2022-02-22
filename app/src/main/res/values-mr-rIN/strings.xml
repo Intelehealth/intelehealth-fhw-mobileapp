@@ -698,6 +698,7 @@
 
         <string name="complaint_dialog_title">कॉलचे कारण</string>
         <string name="visit_summary_complaint">कॉलचे कारण</string>
+        <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करण्यात अक्षम. प्रोटोकॉल डाउनलोड करण्याचा पुन्हा प्रयत्न करण्यासाठी \'होय\' दाबा. डेमो प्रोटोकॉल सुरू ठेवण्यासाठी \'नाही\'.</string>
 
 
 </resources>

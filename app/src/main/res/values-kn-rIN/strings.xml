@@ -686,5 +686,6 @@
 
     <string name="complaint_dialog_title">ಕರೆಯ ಕಾರಣ</string>
     <string name="visit_summary_complaint">ಕರೆಯ ಕಾರಣ</string>
+    <string name="protocol_download_failed_alertdialog">ಪ್ರೋಟೋಕಾಲ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ. ಪ್ರೋಟೋಕಾಲ್ ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ಮರುಪ್ರಯತ್ನಿಸಲು \'ಹೌದು\' ಒತ್ತಿರಿ. ಡೆಮೊ ಪ್ರೋಟೋಕಾಲ್‌ಗಳೊಂದಿಗೆ ಮುಂದುವರಿಯಲು \'ಇಲ್ಲ\'.</string>
 
 </resources>

@@ -524,12 +524,13 @@
     <string name="managing_eating_drinking">খাওয়া, মদ্যপান এবং পুনরুদ্ধারের পরে গিলতে পরিচালনা করা|</string>
     <string name="dealing_problems">মনোযোগ, স্মৃতি এবং স্পষ্টতার সমস্যার সাথে মোকাবিলা করা</string>
     <string name="managing_mental_health">মানসিক স্বাস্থ্য পরিচালনা করা</string>
-    <string name="exercises">সামরিক ব্যায়াম |</string>
+    <string name="exercises">সামরিক ব্যায়াম</string>
     <string name="txt_additional_info">অতিরিক্ত তথ্য</string>
     <string name="medical_advice">ডাক্তারি পরামর্শ</string>
 
     <string name="complaint_dialog_title">কল করার কারণ</string>
     <string name="visit_summary_complaint">কল করার কারণ</string>
+    <string name="protocol_download_failed_alertdialog">প্রোটোকল ডাউনলোড করতে অক্ষম। প্রোটোকল ডাউনলোড পুনরায় চেষ্টা করতে \'হ্যাঁ\' টিপুন। ডেমো প্রোটোকলের সাথে চালিয়ে যেতে \'না\'।</string>
 
 
 </resources>

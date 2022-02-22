@@ -695,5 +695,6 @@
 
     <string name="complaint_dialog_title">कॉल करने का कारण</string>
     <string name="visit_summary_complaint">कॉल करने का कारण</string>
+    <string name="protocol_download_failed_alertdialog">प्रोटोकॉल डाउनलोड करने में असमर्थ. प्रोटोकॉल डाउनलोड का पुन: प्रयास करने के लिए \'हां\' दबाएं। डेमो प्रोटोकॉल के साथ जारी रखने के लिए \'नहीं\'।</string>
 
 </resources>
