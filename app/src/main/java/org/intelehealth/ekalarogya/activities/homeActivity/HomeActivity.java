@@ -578,6 +578,7 @@ public class HomeActivity extends AppCompatActivity {
         SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
+        sessionManager.setUserProfileDetail("");
         sessionManager.setLogout(true);
     }
 

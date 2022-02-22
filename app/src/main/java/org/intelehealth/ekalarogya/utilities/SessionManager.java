@@ -55,6 +55,8 @@ public class SessionManager {
     private static final String DISTRICTNAME = "DISTRICTNAME";
     private static final String SANCHNAME = "SANCHNAME";
     private static final String VILLAGENAME = "VILLAGENAME";
+
+    private static final String USERDETAILS = "USERDETAILS";
     // LogCat tag
     private static String TAG = SessionManager.class.getSimpleName();
     // Shared Preferences
@@ -504,5 +506,12 @@ public class SessionManager {
         editor.commit();
     }
 
+    public void setUserProfileDetail(String userDetail) {
+        editor.putString(USERDETAILS, userDetail);
+        editor.commit();
+    }
 
+    public String getUserProfileDetail() {
+        return pref.getString(USERDETAILS, "");
+    }
 }

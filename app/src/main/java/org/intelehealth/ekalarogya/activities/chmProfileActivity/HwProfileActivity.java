@@ -15,6 +15,7 @@ import org.intelehealth.ekalarogya.models.UserProfileModel.HwProfileModel;
 import org.intelehealth.ekalarogya.models.UserProfileModel.MainProfileModel;
 import org.intelehealth.ekalarogya.utilities.DownloadFilesUtils;
 import org.intelehealth.ekalarogya.utilities.Logger;
+import org.intelehealth.ekalarogya.utilities.NetworkConnection;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 import org.intelehealth.ekalarogya.utilities.UrlModifiers;
 import org.intelehealth.ekalarogya.utilities.exception.DAOException;
@@ -25,6 +26,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,10 +37,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Locale;
@@ -99,7 +103,11 @@ public class HwProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        getHw_Information();
+        if (NetworkConnection.isOnline(this)) {
+            getHw_Information();
+        }else{
+            DisplayUserDetail();
+        }
         super.onResume();
     }
 
@@ -123,35 +131,10 @@ public class HwProfileActivity extends AppCompatActivity {
                     public void onNext(MainProfileModel mainProfileModel) {
                         System.out.println(mainProfileModel.toString()+"");
                         if(mainProfileModel!=null && mainProfileModel.getStatus()==true) {
-                       /* Glide.with(HwProfileActivity.this)
-                                .load(hwProfileModel.getImage())
-                                .thumbnail(0.3f)
-                                .centerCrop()
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(hw_profile_image);*/
-                           HwProfileModel hwProfileModel=mainProfileModel.getHwProfileModel();
-                           hw_name_value.setText(hwProfileModel.getUserName());
-                           hw_designation_value.setText(hwProfileModel.getDesignation());
-                           hw_aboutme_value.setText(hwProfileModel.getAboutMe());
-
-                           total_patregistered_value.setText(hwProfileModel.getPatientRegistered()+"+");
-                           total_visitprogress_value.setText(hwProfileModel.getVisitInProgress()+"+");
-                           total_consultaion_value.setText(hwProfileModel.getCompletedConsultation()+"+");
-
-                           HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
-
-                           if(personalInformationModel.getGender().equalsIgnoreCase("F")){
-                               hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_female));
-                           }else if(personalInformationModel.getGender().equalsIgnoreCase("M")){
-                               hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_male));
-                           }else{
-                               hw_gender_value.setText(personalInformationModel.getGender());
-                           }
-                           hw_state_value.setText(personalInformationModel.getState());
-                           hw_mobile_value.setText(personalInformationModel.getMobile());
-                           hw_whatsapp_value.setText(personalInformationModel.getWhatsApp());
-                           hw_email_value.setText(personalInformationModel.getEmail());
+                            Gson gson = new Gson();
+                            String userprofile= gson.toJson(mainProfileModel);
+                            sessionManager.setUserProfileDetail(userprofile);
+                            DisplayUserDetail();
                        }
                         progressDialog.dismiss();
                     }
@@ -159,6 +142,7 @@ public class HwProfileActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         Logger.logD("ProfileInfo", e.getMessage());
+                        progressDialog.dismiss();
                     }
 
                     @Override
@@ -185,6 +169,45 @@ public class HwProfileActivity extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void DisplayUserDetail(){
+        Gson gson = new Gson();
+        String userDetail = sessionManager.getUserProfileDetail();
+        if(userDetail!=null && !userDetail.isEmpty()) {
+            MainProfileModel mainProfileModel = gson.fromJson(userDetail, MainProfileModel.class);
+        /* Glide.with(HwProfileActivity.this)
+                                .load(hwProfileModel.getImage())
+                                .thumbnail(0.3f)
+                                .centerCrop()
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
+                                .into(hw_profile_image);*/
+            HwProfileModel hwProfileModel = mainProfileModel.getHwProfileModel();
+            hw_name_value.setText(hwProfileModel.getUserName());
+            hw_designation_value.setText(hwProfileModel.getDesignation());
+            hw_aboutme_value.setText(hwProfileModel.getAboutMe());
+
+            total_patregistered_value.setText(hwProfileModel.getPatientRegistered() + "+");
+            total_visitprogress_value.setText(hwProfileModel.getVisitInProgress() + "+");
+            total_consultaion_value.setText(hwProfileModel.getCompletedConsultation() + "+");
+
+            HwPersonalInformationModel personalInformationModel = hwProfileModel.getPersonalInformation();
+
+            if (personalInformationModel.getGender().equalsIgnoreCase("F")) {
+                hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_female));
+            } else if (personalInformationModel.getGender().equalsIgnoreCase("M")) {
+                hw_gender_value.setText(getResources().getString(R.string.identification_screen_checkbox_male));
+            } else {
+                hw_gender_value.setText(personalInformationModel.getGender());
+            }
+            hw_state_value.setText(personalInformationModel.getState());
+            hw_mobile_value.setText(personalInformationModel.getMobile());
+            hw_whatsapp_value.setText(personalInformationModel.getWhatsApp());
+            hw_email_value.setText(personalInformationModel.getEmail());
+        }else{
+            Toast.makeText(HwProfileActivity.this, HwProfileActivity.this.getString(R.string.please_connect_to_internet), Toast.LENGTH_LONG).show();
         }
     }
 }
