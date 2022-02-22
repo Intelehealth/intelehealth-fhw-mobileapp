@@ -142,6 +142,7 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 saveImage(mCurrentPhotoPath);
             }
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
+            try {
                 Uri selectedImage = data.getData();
                 String[] filePath = {MediaStore.Images.Media.DATA};
                 Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
@@ -157,6 +158,9 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                 final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
                 BitmapUtils.copyFile(picturePath, finalFilePath);
                 compressImageAndSave(finalFilePath);
+            } catch (NullPointerException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 

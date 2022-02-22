@@ -285,7 +285,7 @@ public class VitalsActivity extends AppCompatActivity {
                 if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
                     if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_SPO2) ||
                             Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_SPO2)) {
-                        mSpo2.setError(getResources().getString(R.string.spo_error,AppConstants.MINIMUM_SPO2,AppConstants.MAXIMUM_SPO2));
+                        mSpo2.setError(getResources().getString(R.string.spo_error, AppConstants.MINIMUM_SPO2, AppConstants.MAXIMUM_SPO2));
                     } else {
                         mSpo2.setError(null);
                     }
@@ -312,28 +312,31 @@ public class VitalsActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if (configUtils.celsius()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
-                        } else {
-                            mTemperature.setError(null);
+                try {
+                    if (configUtils.celsius()) {
+                        if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_CELSIUS) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_CELSIUS)) {
+                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_CELSIUS, AppConstants.MAXIMUM_TEMPERATURE_CELSIUS));
+                            } else {
+                                mTemperature.setError(null);
+                            }
+
+                        }
+                    } else if (configUtils.fahrenheit()) {
+                        if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
+                            if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
+                                    Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
+                                mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
+                            } else {
+                                mTemperature.setError(null);
+                            }
                         }
 
                     }
-                } else if (configUtils.fahrenheit()) {
-                    if (s.toString().trim().length() > 0 && !s.toString().startsWith(".")) {
-                        if (Double.valueOf(s.toString()) > Double.valueOf(AppConstants.MAXIMUM_TEMPERATURE_FARHENIT) ||
-                                Double.valueOf(s.toString()) < Double.valueOf(AppConstants.MINIMUM_TEMPERATURE_FARHENIT)) {
-                            mTemperature.setError(getString(R.string.temp_error, AppConstants.MINIMUM_TEMPERATURE_FARHENIT, AppConstants.MAXIMUM_TEMPERATURE_FARHENIT));
-                        } else {
-                            mTemperature.setError(null);
-                        }
-                    }
-
+                } catch (NullPointerException exception) {
+                    exception.printStackTrace();
                 }
-
             }
 
             @Override
@@ -489,9 +492,7 @@ public class VitalsActivity extends AppCompatActivity {
         } else if (flag_height == 0 || flag_weight == 0) {
             // do nothing
             mBMI.getText().clear();
-        }
-        else
-        {
+        } else {
             mBMI.getText().clear();
         }
     }
@@ -506,14 +507,13 @@ public class VitalsActivity extends AppCompatActivity {
             double bmi_value = numerator / denominator;
             DecimalFormat df = new DecimalFormat("0.00");
             mBMI.setText(df.format(bmi_value));
-            Log.d("BMI","BMI: "+mBMI.getText().toString());
+            Log.d("BMI", "BMI: " + mBMI.getText().toString());
             //mBMI.setText(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-        } else  {
+        } else {
             // do nothing
             mBMI.getText().clear();
         }
     }
-
 
 
     public void loadPrevious() {
@@ -573,7 +573,7 @@ public class VitalsActivity extends AppCompatActivity {
 
         }
         //on edit on vs screen, the bmi will be set in vitals bmi edit field.
-        if(mBMI.getText().toString().equalsIgnoreCase("")) {
+        if (mBMI.getText().toString().equalsIgnoreCase("")) {
             calculateBMI_onEdit(mHeight.getText().toString(), mWeight.getText().toString());
         }
     }
@@ -583,14 +583,13 @@ public class VitalsActivity extends AppCompatActivity {
         View focusView = null;
 
         //BP vaidations added by Prajwal.
-        if(mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
+        if (mBpSys.getText().toString().isEmpty() && !mBpDia.getText().toString().isEmpty() ||
                 !mBpSys.getText().toString().isEmpty() && mBpDia.getText().toString().isEmpty()) {
-            if(mBpSys.getText().toString().isEmpty()) {
+            if (mBpSys.getText().toString().isEmpty()) {
                 mBpSys.requestFocus();
                 mBpSys.setError("Enter field");
                 return;
-            }
-            else if(mBpDia.getText().toString().isEmpty()) {
+            } else if (mBpDia.getText().toString().isEmpty()) {
                 mBpDia.requestFocus();
                 mBpDia.setError("Enter field");
                 return;
@@ -1033,7 +1032,7 @@ public class VitalsActivity extends AppCompatActivity {
 
     private String ConvertFtoC(String temperature) {
 
-        if(temperature != null && temperature.length() > 0) {
+        if (temperature != null && temperature.length() > 0) {
 //            String result = "";
 //            double fTemp = Double.parseDouble(temperature);
 //            double cTemp = ((fTemp - 32) * 5 / 9);
