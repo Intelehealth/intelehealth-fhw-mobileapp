@@ -996,30 +996,30 @@ public final class StringUtils {
 
     public static String getTranslatedDays(String val, String locale) {
 
-        if (locale.equalsIgnoreCase("ru")) {
+        if (locale.equalsIgnoreCase("hi")) {
 
             switch (val) {
                 case "Sunday":
-                    val = "Воскресенье";
+                    val = "रविवार";
                     break;
                 case "Monday":
-                    val = "понедельник";
+                    val = "सोमवार";
                     break;
                 case "Tuesday":
-                    val = "вторник";
+                    val = "मंगलवार";
                     break;
                 case "Wednesday":
-                    val = "среда";
+                    val = "बुधवार";
                     break;
 
                 case "Thursday":
-                    val = "Четверг";
+                    val = "गुरूवार";
                     break;
-                case "Friday":
+                case "शुक्रवार":
                     val = "Пятница";
                     break;
                 case "Saturday":
-                    val = "Суббота";
+                    val = "शानिवार";
                     break;
                 default:
                     return val;
@@ -1029,14 +1029,14 @@ public final class StringUtils {
         return val;
     }public static String getAppointmentBookStatus(String val, String locale) {
 
-        if (locale.equalsIgnoreCase("ru")) {
+        if (locale.equalsIgnoreCase("hi")) {
 
             switch (val.toLowerCase()) {
                 case "booked":
-                    val = "забронировано";
+                    val = "बुक";
                     break;
                 case "cancelled":
-                    val = "отменен";
+                    val = "रद्द";
                     break;
                 default:
                     return val;

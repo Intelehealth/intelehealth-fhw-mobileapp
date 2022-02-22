@@ -678,43 +678,43 @@
     <string name="sikkim">Sikkim</string>
 
     <!--appointment module strings -->
-    <string name="book_appointment">Book Appointment</string>
-    <string name="reschedule_appointment">Reschedule Appointment</string>
-    <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
-    <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
-    <string name="cancel_appointment">Cancel Appointment</string>
-    <string name="slot_empty_message">Appointment slot is not available for selected date and speciality!</string>
-    <string name="appointment_empty_message">You don\'t have any appointment!</string>
-    <string name="appointment_listing_title">Appointment Listing</string>
-    <string name="appointment_booking_title">Appointment Booking</string>
-    <string name="appointment_for">Appointment For</string>
-    <string name="please_select_appointment_slot">Please select appointment slot</string>
-    <string name="please_select_speciality">Please select speciality!</string>
+    <string name="book_appointment">ಬುಕಿಂಗ್ ಅಪಾಯಿಂಟ್ಮೆಂಟ್</string>
+    <string name="reschedule_appointment">ನೇಮಕಾತಿಯನ್ನು ಮರುನಿಗದಿ ಮಾಡಿ</string>
+    <string name="appointment_booking_confirmation_txt">ನೀವು ಈ ಸ್ಲಾಟ್ ಅನ್ನು ಬುಕ್ ಮಾಡುವುದು ಖಚಿತವೇ?</string>
+    <string name="appointment_booking_cancel_confirmation_txt">ನೀವು ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ರದ್ದುಮಾಡುವುದು ಖಚಿತವೆ?</string>
+    <string name="cancel_appointment">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ರದ್ದುಮಾಡಿ</string>
+    <string name="slot_empty_message">ಆಯ್ಕೆ ಮಾಡಿದ ದಿನಾಂಕ ಮತ್ತು ವಿಶೇಷತೆಗೆ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಸ್ಲಾಟ್ ಲಭ್ಯವಿಲ್ಲ!</string>
+    <string name="appointment_empty_message">ನಿಮಗೆ ಯಾವುದೇ ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಇಲ್ಲ!</string>
+    <string name="appointment_listing_title">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಪಟ್ಟಿ</string>
+    <string name="appointment_booking_title">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಬುಕಿಂಗ್</string>
+    <string name="appointment_for">ಇದಕ್ಕಾಗಿ ಅಪಾಯಿಂಟ್ಮೆಂಟ್</string>
+    <string name="please_select_appointment_slot">ದಯವಿಟ್ಟು ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಸ್ಲಾಟ್ ಆಯ್ಕೆಮಾಡಿt</string>
+    <string name="please_select_speciality">ದಯವಿಟ್ಟು ವಿಶೇಷತೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ!</string>
 
-    <string name="doctor_appointments">Doctor Appointments</string>
-    <string name="slot_info">Slot info</string>
-    <string name="appointment_booked">Appointment Booked</string>
-    <string name="minutes_txt">minutes</string>
-    <string name="booked_txt">booked</string>
-    <string name="cancelled_txt">cancelled</string>
-    <string name="please_upload_visit">Please upload the visit first before booking appointment.</string>
-    <string name="appointment_booked_successfully">Appointment booked successfully!</string>
-    <string name="appointment_booked_failed">Appointment booked failed!</string>
-    <string name="postal_code_invalid_txt">Please enter valid postal code</string>
-    <string name="failed_to_cancel_appointment">Failed to cancel the appointment!</string>
-    <string name="appointment_cancelled_success_txt">The appointment was canceled successfully!</string>
-    <string name="visit_closed">Visit Closed</string>
+    <string name="doctor_appointments">ವೈದ್ಯರ ನೇಮಕಾತಿಗಳು</string>
+    <string name="slot_info">ಸ್ಲಾಟ್ ಮಾಹಿತಿ</string>
+    <string name="appointment_booked">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಬುಕ್ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="minutes_txt">ನಿಮಿಷಗಳು</string>
+    <string name="booked_txt">ಬುಕ್ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="cancelled_txt">ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
+    <string name="please_upload_visit">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಕಾಯ್ದಿರಿಸುವ ಮೊದಲು ದಯವಿಟ್ಟು ಮೊದಲು ಭೇಟಿಯನ್ನು ಅಪ್ ಲೋಡ್ ಮಾಡಿ.</string>
+    <string name="appointment_booked_successfully">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಯಶಸ್ವಿಯಾಗಿ ಬುಕ್ ಮಾಡಲಾಗಿದೆ!</string>
+    <string name="appointment_booked_failed">ಅಪಾಯಿಂಟ್ಮೆಂಟ್ ಬುಕ್ ಮಾಡಲಾಗಿದೆ ವಿಫಲ!</string>
+    <string name="postal_code_invalid_txt">ದಯವಿಟ್ಟು ಮಾನ್ಯ ಅಂಚೆ ಕೋಡ್ ನಮೂದಿಸಿ</string>
+    <string name="failed_to_cancel_appointment">ನೇಮಕಾತಿ ರದ್ದು ಮಾಡುವಲ್ಲಿ ವಿಫಲ!</string>
+    <string name="appointment_cancelled_success_txt">ನೇಮಕಾತಿ ಯಶಸ್ವಿಯಾಗಿ ರದ್ದು!</string>
+    <string name="visit_closed">ಭೇಟಿ ಮುಚ್ಚಲಾಗಿದೆ</string>
 
-    <string name="please_select_your_reschedule_reason">Please select your reschedule reason</string>
-    <string name="please_select_your_cancel_reason">Please select your cancel reason</string>
-    <string name="doctor_is_not_available">Doctor is not available</string>
-    <string name="patient_is_not_available">Patient is not available</string>
-    <string name="others">Others</string>
-    <string name="please_enter_the_reason_details">Please enter the reason details</string>
-    <string name="save_amp_proceed"><![CDATA[Save & Proceed]]></string>
-    <string name="please_enter_reason_txt">Please enter the reason!</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="doctor_appointments">Doctor Appointments</string>
+    <string name="please_select_your_reschedule_reason">ದಯವಿಟ್ಟು ನಿಮ್ಮ ಮರುನಿಗದಿ ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="please_select_your_cancel_reason">ದಯವಿಟ್ಟು ನಿಮ್ಮ ರದ್ದು ಕಾರಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="doctor_is_not_available">ವೈದ್ಯರು ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="patient_is_not_available">ರೋಗಿ ಲಭ್ಯವಿಲ್ಲ</string>
+    <string name="others">ಇತರರು</string>
+    <string name="please_enter_the_reason_details">ದಯವಿಟ್ಟು ಕಾರಣ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="save_amp_proceed">ಉಳಿಸು (ಮುಂದುವರಿಯಿರಿ)</string>
+    <string name="please_enter_reason_txt">ದಯವಿಟ್ಟು ಕಾರಣವನ್ನು ನಮೂದಿಸಿ!</string>
+    <string name="yes">ಹೌದು</string>
+    <string name="no">ಇಲ್ಲ</string>
+
 
 </resources>

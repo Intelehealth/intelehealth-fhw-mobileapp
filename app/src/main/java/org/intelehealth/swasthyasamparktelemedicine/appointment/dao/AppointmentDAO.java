@@ -6,12 +6,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-
-import org.intelehealth.swasthyasamparktelemedicine.R;
 import org.intelehealth.swasthyasamparktelemedicine.app.AppConstants;
 import org.intelehealth.swasthyasamparktelemedicine.app.IntelehealthApplication;
 import org.intelehealth.swasthyasamparktelemedicine.appointment.model.AppointmentInfo;
 import org.intelehealth.swasthyasamparktelemedicine.database.dao.EncounterDAO;
+import org.intelehealth.swasthyasamparktelemedicine.utilities.SessionManager;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.UuidGenerator;
 import org.intelehealth.swasthyasamparktelemedicine.utilities.exception.DAOException;
 
@@ -126,10 +125,10 @@ public class AppointmentDAO {
                 appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name")));
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
                 try {
-                    if(!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
+                    if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
                         appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
-                    }else{
-                        appointmentInfo.setStatus(IntelehealthApplication.getAppContext().getString(R.string.visit_closed));
+                    } else {
+                        appointmentInfo.setStatus(new SessionManager(IntelehealthApplication.getAppContext()).getAppLanguage().equals("hi") ? "विज़िट बंद" : "Visit Closed");
                     }
                 } catch (DAOException e) {
                     e.printStackTrace();

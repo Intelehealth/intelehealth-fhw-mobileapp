@@ -690,7 +690,7 @@
     <string name="sikkim">Sikkim</string>
 
     <!--appointment module strings -->
-    <string name="book_appointment">Book Appointment</string>
+    <string name="book_appointment">बुकिंग अपॉइंटमेंट</string>
     <string name="reschedule_appointment">Reschedule Appointment</string>
     <string name="appointment_booking_confirmation_txt">Are you sure to book this slot?</string>
     <string name="appointment_booking_cancel_confirmation_txt">Are you sure to cancel appointment?</string>
@@ -727,5 +727,5 @@
     <string name="please_enter_reason_txt">Please enter the reason!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="doctor_appointments">Doctor Appointments</string>
+
 </resources>

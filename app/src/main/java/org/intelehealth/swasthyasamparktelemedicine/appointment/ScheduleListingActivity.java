@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import org.intelehealth.swasthyasamparktelemedicine.R;
 import org.intelehealth.swasthyasamparktelemedicine.appointment.adapter.SlotListingAdapter;
 import org.intelehealth.swasthyasamparktelemedicine.appointment.api.ApiClientAppointment;
@@ -80,17 +79,31 @@ public class ScheduleListingActivity extends AppCompatActivity implements DatePi
         TextView specialityTextView = findViewById(R.id.tvSpeciality);
         specialityTextView.setText(speciality);
 
-        if (sessionManager.getAppLanguage().equals("ru")) {
-            if (speciality.equalsIgnoreCase("Infectionist")) {
-                specialityTextView.setText("Инфекционист");
-            } else if (speciality.equalsIgnoreCase("Neurologist")) {
-                specialityTextView.setText("Невролог");
-            } else if (speciality.equalsIgnoreCase("Family Doctor")) {
-                specialityTextView.setText("Семейный врач");
-            } else if (speciality.equalsIgnoreCase("Pediatrician")) {
-                specialityTextView.setText("Педиатр");
-            } else if (speciality.equalsIgnoreCase("Neonatologist")) {
-                specialityTextView.setText("Неонатолог");
+        if (sessionManager.getAppLanguage().equals("hi")) {
+            if (speciality.equalsIgnoreCase("Allopathy")) {
+                specialityTextView.setText("एलोपैथी");
+            } else if (speciality.equalsIgnoreCase("Ophthalmologist")) {
+                specialityTextView.setText("नेत्र विशेषज्ञ");
+            } else if (speciality.equalsIgnoreCase("Pulmonologist")) {
+                specialityTextView.setText("फुफ्फुसीय रोग विशेषज्ञ");
+            } else if (speciality.equalsIgnoreCase("Medicine")) {
+                specialityTextView.setText("दवा विशेषज्ञ");
+            } else if (speciality.equalsIgnoreCase("Psychologist")) {
+                specialityTextView.setText("मनोविज्ञानी");
+            } else if (speciality.equalsIgnoreCase("ENT")) {
+                specialityTextView.setText("ईएनटी");
+            } else if (speciality.equalsIgnoreCase("Rehabilitative physiotherapy")) {
+                specialityTextView.setText("पुनर्वास भौतिक चिकित्सा");
+            } else if (speciality.equalsIgnoreCase("Dietician/Nutritional Counsellor")) {
+                specialityTextView.setText("आहार विशेषज्ञ/पोषण परामर्शदाता");
+            }  else if (speciality.equalsIgnoreCase("Paediatrician")) {
+                specialityTextView.setText("बच्चों का चिकित्सक");
+            } else if (speciality.equalsIgnoreCase("General Physician")) {
+                specialityTextView.setText("सामान्य चिकित्सक");
+            } else if (speciality.equalsIgnoreCase("Gynaecologist")) {
+                specialityTextView.setText("प्रसूतिशास्री");
+            } else if (speciality.equalsIgnoreCase("Cardiologist")) {
+                specialityTextView.setText("हृदय रोग विशेषज्ञ");
             }
         }
 

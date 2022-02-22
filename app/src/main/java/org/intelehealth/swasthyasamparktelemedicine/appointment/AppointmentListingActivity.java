@@ -49,8 +49,8 @@ public class AppointmentListingActivity extends AppCompatActivity {
         rvAppointments.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         mSelectedStartDate = simpleDateFormat.format(new Date());
         mSelectedEndDate = simpleDateFormat.format(new Date(new Date().getTime() + 30L * 24 * 60 * 60 * 1000));
-        getAppointments();
-        getSlots();
+
+
     }
 
     private void getAppointments() {
@@ -79,6 +79,12 @@ public class AppointmentListingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getSlots();
     }
 
     private void getSlots() {
@@ -134,6 +140,7 @@ public class AppointmentListingActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
+
     }
 
     public Context setLocale(Context context) {
