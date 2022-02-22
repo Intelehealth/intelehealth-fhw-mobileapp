@@ -216,7 +216,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             adapter_hbchecked, adapter_bmi, adapter_healthissuereported, adapter_primaryhealthprovider, adapter_firstlocation, adapter_referredto,
             adapter_modeoftransport, adapter_experiencerscore, adapter_pregnantpasttwoyrs, adapter_outcomepregnancy, adapter_childalive,
             adapter_placeofdeliverypregnant, adapter_sexofbaby, adapter_pregnancyplanned, adapter_pregnancyhighriskcase, adapter_pregnancycomplications,
-    adapter_singlemultiplebirths;
+            adapter_singlemultiplebirths;
 
     EditText edittext_noofepisodes, edittext_avgcosttravel, edittext_avgcostconsult, edittext_avgcostmedicines, edittext_howmanytimmespregnant,
             edittext_yearofpregnancy, edittext_monthspregnancylast, edittext_monthsbeingpregnant, edittext_focalfacility,
@@ -227,6 +227,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private HouseholdSurveyAdapter adapter;
     private ActivityIdentificationBinding binding;
     private final List<HealthIssues> healthIssuesList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -481,23 +482,21 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 if (mGenderO.isChecked())
                     mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
-            } else if(patient1.getGender().equals("F")) {
+            } else if (patient1.getGender().equals("F")) {
                 mGenderF.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
                 if (mGenderO.isChecked())
                     mGenderO.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else if (patient1.getGender().equals("O")) {
+            } else if (patient1.getGender().equals("O")) {
                 mGenderO.setChecked(true);
                 if (mGenderM.isChecked())
                     mGenderM.setChecked(false);
                 if (mGenderF.isChecked())
                     mGenderF.setChecked(false);
                 Log.v(TAG, "yes");
-            }
-            else {
+            } else {
                 // do nothing...
             }
 
@@ -534,19 +533,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String education = switch_as_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String education = switch_gu_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String education = switch_ta_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String education = switch_bn_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
-                }
-                else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String education = switch_ml_education_edit(patient1.getEducation_level());
                     mEducation.setSelection(educationAdapter != null ? educationAdapter.getPosition(education) : 0);
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -580,13 +576,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                     String economic = switch_te_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                     String economic = switch_mr_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                     String economic = switch_as_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String economic = switch_ml_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -595,19 +591,16 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String economic = switch_ru_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String economic = switch_gu_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String economic = switch_bn_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String economic = switch_ta_economic_edit(patient1.getEconomic_status());
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(economic));
-                }
-                else {
+                } else {
                     mEconomicStatus.setSelection(economicStatusAdapter.getPosition(patient1.getEconomic_status()));
                 }
             }
@@ -633,25 +626,22 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                     String caste = switch_ml_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                     String caste = switch_kn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
                 } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                     String caste = switch_ru_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                } else if(sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
                     String caste = switch_gu_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                     String caste = switch_bn_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }
-                else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                     String caste = switch_ta_caste_edit(patient1.getCaste());
                     mCaste.setSelection(casteAdapter.getPosition(caste));
-                }
-                else {
+                } else {
                     mCaste.setSelection(casteAdapter.getPosition(patient1.getCaste()));
                 }
 
@@ -751,46 +741,46 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
                     }*/
 
-                        if (country.matches("India")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_india, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
-                            // setting state according database when user clicks edit details
+                    if (country.matches("India")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_india, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                        // setting state according database when user clicks edit details
 
-                            if (patientID_edit != null)
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            else
-                                mState.setSelection(stateAdapter.getPosition(state));
+                        if (patientID_edit != null)
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        else
+                            mState.setSelection(stateAdapter.getPosition(state));
 
-                        } else if (country.matches("United States")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_us, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
+                    } else if (country.matches("United States")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_us, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
 
-                            if (patientID_edit != null) {
+                        if (patientID_edit != null) {
 
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            }
-                        } else if (country.matches("Philippines")) {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.states_philippines, R.layout.custom_spinner);
-                            stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
-
-                            if (patientID_edit != null) {
-                                mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
-                            } else {
-                                mState.setSelection(stateAdapter.getPosition("Bukidnon"));
-                            }
-
-                        } else {
-                            ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
-                                    R.array.state_error, R.layout.custom_spinner);
-                            // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            mState.setAdapter(stateAdapter);
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
                         }
+                    } else if (country.matches("Philippines")) {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.states_philippines, R.layout.custom_spinner);
+                        stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+
+                        if (patientID_edit != null) {
+                            mState.setSelection(stateAdapter.getPosition(String.valueOf(patient1.getState_province())));
+                        } else {
+                            mState.setSelection(stateAdapter.getPosition("Bukidnon"));
+                        }
+
+                    } else {
+                        ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(IdentificationActivity.this,
+                                R.array.state_error, R.layout.custom_spinner);
+                        // stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        mState.setAdapter(stateAdapter);
+                    }
                 }
 
             }
@@ -899,83 +889,83 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         mDOBPicker = new DatePickerDialog(this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                 new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                //Set the DOB calendar to the date selected by the user
-                dob.set(year, monthOfYear, dayOfMonth);
-                mDOB.setError(null);
-                mAge.setError(null);
-                //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
-                mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
-                // Locale.setDefault(Locale.ENGLISH);
-                //Formatted so that it can be read the way the user sets
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
-                dob.set(year, monthOfYear, dayOfMonth);
-                String dobString = simpleDateFormat.format(dob.getTime());
-                dob_indexValue = monthOfYear; //fetching the inex value of month selected...
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        //Set the DOB calendar to the date selected by the user
+                        dob.set(year, monthOfYear, dayOfMonth);
+                        mDOB.setError(null);
+                        mAge.setError(null);
+                        //Set Maximum date to current date because even after bday is less than current date it goes to check date is set after today
+                        mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis() - 1000);
+                        // Locale.setDefault(Locale.ENGLISH);
+                        //Formatted so that it can be read the way the user sets
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
+                        dob.set(year, monthOfYear, dayOfMonth);
+                        String dobString = simpleDateFormat.format(dob.getTime());
+                        dob_indexValue = monthOfYear; //fetching the inex value of month selected...
 
-                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                    String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
-                    String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
-                    String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
-                    String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
-                    String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
-                    String dob_text = en__te_dob(dobString); //to show text of English into telugu...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
-                    String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
-                    mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
-                    String dob_text = en__as_dob(dobString); //to show text of English into telugu...
-                    mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
-                    String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
-                    mDOB.setText(dob_text);
-                } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
-                    String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
-                    mDOB.setText(dob_text);
-                }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
-                    String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
-                    mDOB.setText(dob_text);
-                } else {
-                    mDOB.setText(dobString);
-                }
+                        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                            String dob_text = en__hi_dob(dobString); //to show text of English into Hindi...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+                            String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                            String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                            String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
+                            String dob_text = en__gu_dob(dobString); //to show text of English into Gujarati...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
+                            String dob_text = en__te_dob(dobString); //to show text of English into telugu...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                            String dob_text = en__mr_dob(dobString); //to show text of English into telugu...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+                            String dob_text = en__as_dob(dobString); //to show text of English into telugu...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                            String dob_text = en__ml_dob(dobString); //to show text of English into telugu...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                            String dob_text = en__kn_dob(dobString); //to show text of English into telugu...
+                            mDOB.setText(dob_text);
+                        } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                            String dob_text = en__ru_dob(dobString); //to show text of English into telugu...
+                            mDOB.setText(dob_text);
+                        } else {
+                            mDOB.setText(dobString);
+                        }
 
-                //  mDOB.setText(dobString);
-                mDOBYear = year;
-                mDOBMonth = monthOfYear;
-                mDOBDay = dayOfMonth;
+                        //  mDOB.setText(dobString);
+                        mDOBYear = year;
+                        mDOBMonth = monthOfYear;
+                        mDOBDay = dayOfMonth;
 
-                String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
-                        today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
-                //get years months days
-                String[] frtData = age.split("-");
+                        String age = getYear(dob.get(Calendar.YEAR), dob.get(Calendar.MONTH), dob.get(Calendar.DATE),
+                                today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
+                        //get years months days
+                        String[] frtData = age.split("-");
 
-                String[] yearData = frtData[0].split(" ");
-                String[] monthData = frtData[1].split(" ");
-                String[] daysData = frtData[2].split(" ");
+                        String[] yearData = frtData[0].split(" ");
+                        String[] monthData = frtData[1].split(" ");
+                        String[] daysData = frtData[2].split(" ");
 
-                mAgeYears = Integer.valueOf(yearData[0]);
-                mAgeMonths = Integer.valueOf(monthData[1]);
-                mAgeDays = Integer.valueOf(daysData[1]);
-                String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
-                        mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
-                        mAgeDays + getResources().getString(R.string.days);
-                mAge.setText(ageS);
+                        mAgeYears = Integer.valueOf(yearData[0]);
+                        mAgeMonths = Integer.valueOf(monthData[1]);
+                        mAgeDays = Integer.valueOf(daysData[1]);
+                        String ageS = mAgeYears + getResources().getString(R.string.identification_screen_text_years) + " - " +
+                                mAgeMonths + getResources().getString(R.string.identification_screen_text_months) + " - " +
+                                mAgeDays + getResources().getString(R.string.days);
+                        mAge.setText(ageS);
 
-                updateRoaster();
-            }
-        }, mDOBYear, mDOBMonth, mDOBDay);
+                        updateRoaster();
+                    }
+                }, mDOBYear, mDOBMonth, mDOBDay);
 
         //DOB Picker is shown when clicked
         mDOBPicker.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -998,13 +988,13 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                 String dob_text = en__te_dob(dob); //to show text of English into Telugu...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                 String dob_text = en__mr_dob(dob); //to show text of English into marathi...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                 String dob_text = en__as_dob(dob); //to show text of English into assame...
                 mDOB.setText(dob_text);
-            }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                 String dob_text = en__ml_dob(dob); //to show text of English into malyalum...
                 mDOB.setText(dob_text);
             } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
@@ -1142,7 +1132,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                         String dob_text = en__or_dob(dobString); //to show text of English into Odiya...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ta")) {
                         String dob_text = en__ta_dob(dobString); //to show text of English into Tamil...
                         mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu")) {
@@ -1151,22 +1141,22 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("te")) {
                         String dob_text = en__te_dob(dobString); //to show text of English into telugu...
                         mDOB.setText(dob_text);
-                    }  else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
                         String dob_text = en__mr_dob(dobString); //to show text of English into marathi...
                         mDOB.setText(dob_text);
                     } else if (sessionManager.getAppLanguage().equalsIgnoreCase("as")) {
                         String dob_text = en__as_dob(dobString); //to show text of English into assame...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml")) {
                         String dob_text = en__ml_dob(dobString);
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn")) {
                         String dob_text = en__kn_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru")) {
                         String dob_text = en__ru_dob(dobString); //to show text of English into kannada...
                         mDOB.setText(dob_text);
-                    }else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
+                    } else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn")) {
                         String dob_text = en__bn_dob(dobString); //to show text of English into Bengali...
                         mDOB.setText(dob_text);
                     } else {
@@ -2622,7 +2612,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             patientAttributesDTO.setValue(AppConstants.dateAndTimeUtils.currentDateTime());
 
             //House Hold Registration
-            if (sessionManager.getHouseholdUuid().equals("")){
+            if (sessionManager.getHouseholdUuid().equals("")) {
 
                 String HouseHold_UUID = UUID.randomUUID().toString();
                 sessionManager.setHouseholdUuid(HouseHold_UUID);
@@ -2720,7 +2710,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         patientAttributesDTO.setPatientuuid(uuid);
         patientAttributesDTO.setPersonAttributeTypeUuid(patientsDAO.getUuidForAttribute("RelationshipStatusHOH"));
         patientAttributesDTO.setValue(StringUtils.getSpinnerHi_En(spinner_whatisyourrelation));
-      //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
+        //  Log.d("HOH", "Bankacc: " + spinner_whatisyourrelation.getSelectedItem().toString());
         patientAttributesDTOList.add(patientAttributesDTO);
 
         // maritual

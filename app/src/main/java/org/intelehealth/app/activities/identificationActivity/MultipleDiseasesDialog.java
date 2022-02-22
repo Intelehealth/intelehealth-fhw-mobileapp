@@ -2,11 +2,14 @@ package org.intelehealth.app.activities.identificationActivity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
@@ -19,8 +22,10 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.databinding.LayoutDiseaseBinding;
+import org.intelehealth.app.utilities.Logger;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MultipleDiseasesDialog extends DialogFragment {
 
@@ -46,6 +51,7 @@ public class MultipleDiseasesDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
+        AtomicReference<HealthIssuesValidationState> state = new AtomicReference<>(new HealthIssuesValidationState());
         binding = LayoutDiseaseBinding.inflate(inflater);
 
         if (bundle != null) {
@@ -54,18 +60,103 @@ public class MultipleDiseasesDialog extends DialogFragment {
 
         builder.setView(binding.getRoot())
                 .setPositiveButton(R.string.ok, (dialog, which) -> {
-                    HealthIssues survey = fetchSurveyData();
-                    if (bundle != null) {
-                        callback.saveSurveyDataAtPosition(survey, bundle.getInt("position"));
-                    } else {
-                        callback.saveSurveyData(survey);
-                    }
                 })
                 .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()));
 
         setMenus();
         setListeners();
-        return builder.create();
+
+        // Overridden setOnShowListener to dismiss the dialog only when all user data is entered
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(dialog1 -> {
+            Button positiveButton = ((AlertDialog) dialog).getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+
+                HealthIssues survey = fetchSurveyData();
+                state.set(validateData(survey));
+
+                if (state.get().getAreDetailsCorrect()) {
+                    if (bundle != null) {
+                        callback.saveSurveyDataAtPosition(survey, bundle.getInt("position"));
+                    } else {
+                        callback.saveSurveyData(survey);
+                    }
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getContext(), state.get().getErrorMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        return dialog;
+    }
+
+    private HealthIssuesValidationState validateData(HealthIssues survey) {
+        HealthIssuesValidationState state = new HealthIssuesValidationState();
+        state.setCorrect(true);
+        String errorString = " field cannot be empty";
+
+        if (survey.getHealthIssueReported() == null || survey.getHealthIssueReported().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.health_issue_reported) + errorString);
+            return state;
+        }
+
+        if (survey.getNumberOfEpisodesInTheLastYear() == null || survey.getNumberOfEpisodesInTheLastYear().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.number_of_episodes_in_the_last_year) + errorString);
+            return state;
+        }
+
+        if (survey.getPrimaryHealthcareProviderValue() == null || survey.getPrimaryHealthcareProviderValue().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.primary_health_care_provider) + errorString);
+            return state;
+        }
+
+        if (survey.getFirstLocationOfVisit() == null || survey.getFirstLocationOfVisit().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.first_location_of_visit) + errorString);
+            return state;
+        }
+
+        if (survey.getReferredTo() == null || survey.getReferredTo().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.referred_to) + errorString);
+            return state;
+        }
+
+        if (survey.getModeOfTransportation() == null || survey.getModeOfTransportation().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.mode_of_transportations_used_to_reach_facility_provider));
+            return state;
+        }
+
+        if (survey.getAverageCostOfTravelAndStayPerEpisode() == null || survey.getAverageCostOfTravelAndStayPerEpisode().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.average_cost_incurred_on_travel_and_stay_per_episode) + errorString);
+            return state;
+        }
+
+        if (survey.getAverageCostOfConsultation() == null || survey.getAverageCostOfConsultation().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.average_cost_incurred_on_consultation_fees_per_episode) + errorString);
+            return state;
+        }
+
+        if (survey.getAverageCostOfMedicine() == null || survey.getAverageCostOfMedicine().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.score_for_experience_of_treatment) + errorString);
+            return state;
+        }
+
+        if (survey.getScoreForExperienceOfTreatment() == null || survey.getScoreForExperienceOfTreatment().isEmpty()) {
+            state.setCorrect(false);
+            state.setErrorMessage(getString(R.string.score_for_experience_of_treatment) + errorString);
+            return state;
+        }
+
+        return state;
     }
 
 
