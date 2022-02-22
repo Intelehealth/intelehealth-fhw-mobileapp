@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.gson.Gson;
@@ -39,6 +40,8 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -55,6 +58,8 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
     private static final String TAG = SecondScreenFragment.class.getSimpleName();
 
     private FragmentSecondScreenBinding binding;
+    private ArrayList<View> mandatoryFields = new ArrayList<>();
+
     public SecondScreenFragment() {
         // Required empty public constructor
     }
@@ -111,6 +116,7 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
         next_button = rootView.findViewById(R.id.next_button);
         // TODO: Similarly init other views
 
+        mandatoryFields.addAll(Arrays.asList(binding.headOfHouseholdNameEditText, binding.headOfHouseholdGenderRadioGroup, binding.religionDropDown, binding.casteDropDown, binding.editTextSmartphones, binding.editTextFeaturePhone, binding.editTextEarningmember));
     }
 
     private void ClickListener() {
@@ -186,6 +192,11 @@ public class SecondScreenFragment extends Fragment implements View.OnClickListen
     }
 
     private void insertData() throws DAOException {
+        if (!StringUtils.validateFields(mandatoryFields)) {
+            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
