@@ -1161,7 +1161,7 @@
 
     <!--    HealthServUtilizationRoster -->
     <string name="name_of_member_of_household">Name of Household member</string>
-    <string name="health_issue_reported">Health issue reported</string>
+<!--    <string name="health_issue_reported">Health issue reported</string>-->
     <string name="health_issue_reported_fever">Fever</string>
     <string name="health_issue_reported_cough_cold">Cough / Cold</string>
     <string name="health_issue_reported_diarrhoea">Diarrhoea</string>
@@ -1172,17 +1172,17 @@
     <string name="health_issue_reported_others_specify">Others (Specify)</string>
 
     <string name="no_of_episodes_in_the_last_year">No. of episodes in the last year</string>
-    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, which is the primary health provider you interacted with for this health issue</string>
-    <string name="government_doctor">GOVERNMENT DOCTOR</string>
-    <string name="private_doctor">PRIVATE DOCTOR</string>
-    <string name="staff_nurse">STAFF NURSE</string>
-    <string name="anm">ANM</string>
-    <string name="asha">ASHA</string>
-    <string name="aww">AWW</string>
-    <string name="rmp">RMP</string>
-    <string name="ayush_doctor">AYUSH DOCTOR</string>
-    <string name="homeopath_doctor">HOMEOPATH DOCTOR</string>
-    <string name="traditional_healer_quack">TRADITIONAL HEALER / QUACK</string>
+<!--    <string name="generally_which_is_the_primary_health_provider_you_interacted_with_for_this_health_issue">Generally, which is the primary health provider you interacted with for this health issue</string>-->
+<!--    <string name="government_doctor">GOVERNMENT DOCTOR</string>-->
+<!--    <string name="private_doctor">PRIVATE DOCTOR</string>-->
+<!--    <string name="staff_nurse">STAFF NURSE</string>-->
+<!--    <string name="anm">ANM</string>-->
+<!--    <string name="asha">ASHA</string>-->
+<!--    <string name="aww">AWW</string>-->
+<!--    <string name="rmp">RMP</string>-->
+<!--    <string name="ayush_doctor">AYUSH DOCTOR</string>-->
+<!--    <string name="homeopath_doctor">HOMEOPATH DOCTOR</string>-->
+<!--    <string name="traditional_healer_quack">TRADITIONAL HEALER / QUACK</string>-->
     <string name="did_not_consult_any_health_provider_for_the_issue">Did not consult any Health Provider for this issue</string>
 
     <string name="first_location_of_visit_interaction">First Location of visit/interaction</string>
@@ -1195,14 +1195,14 @@
     <string name="first_location_of_visit_ayush_center">AYUSH CENTER</string>
     <string name="first_location_of_visit_pharmacy">PHARMACY</string>
 
-    <string name="referred_to">Referred to</string>
-    <string name="not_referred">NOT REFERRED</string>
-    <string name="private_clinic">PRIVATE CLINIC</string>
-    <string name="phc">PHC</string>
-    <string name="chc">CHC</string>
-    <string name="dh">DH</string>
-    <string name="private_hospital">PRIVATE HOSPITAL</string>
-    <string name="ayush_center">AYUSH CENTER</string>
+<!--    <string name="referred_to">Referred to</string>-->
+<!--    <string name="not_referred">NOT REFERRED</string>-->
+<!--    <string name="private_clinic">PRIVATE CLINIC</string>-->
+<!--    <string name="phc">PHC</string>-->
+<!--    <string name="chc">CHC</string>-->
+<!--    <string name="dh">DH</string>-->
+<!--    <string name="private_hospital">PRIVATE HOSPITAL</string>-->
+<!--    <string name="ayush_center">AYUSH CENTER</string>-->
     <string name="others_please_specify">OTHERS (PLEASE SPECIFY)</string>
 
     <string name="mode_of_transportations_used_to_reach_facility_provider">Mode of transportations used to reach facility/provider</string>
@@ -1215,10 +1215,10 @@
     <string name="mode_of_transportation_friends_neighbours_vehicle">FRIENDS\’/ NEIGHBOURS\’ VEHICLE</string>
     <string name="mode_of_transportation_ambulance">AMBULANCE</string>
 
-    <string name="average_cost_incurred_on_travel_and_stay_per_episode">Average Cost incurred on travel and stay per episode</string>
-    <string name="average_cost_incurred_on_consultation_fees_per_episode">Average cost incurred on consultation fees per episode</string>
-    <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>
-    <string name="score_for_experience_of_treatment">Score for experience of treatment</string>
+<!--    <string name="average_cost_incurred_on_travel_and_stay_per_episode">Average Cost incurred on travel and stay per episode</string>-->
+<!--    <string name="average_cost_incurred_on_consultation_fees_per_episode">Average cost incurred on consultation fees per episode</string>-->
+<!--    <string name="average_cost_incurred_on_medicines_per_episode">Average cost incurred on medicines per episode</string>-->
+<!--    <string name="score_for_experience_of_treatment">Score for experience of treatment</string>-->
     <string name="score_dissatisfied">Dissatisfied</string>
     <string name="score_below_average">Below Average</string>
     <string name="score_average">Average</string>
