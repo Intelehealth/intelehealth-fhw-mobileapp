@@ -597,7 +597,7 @@
     <string name="no_history_patient_illness_found">No history of patient\'s illness provided.</string>
     <string name="dr_registration_no">Registration No: </string>
     <string name="dr_phone_number">Phone Number: </string>
-    <string name="dr_email">Email: </string>
+    <string name="dr_email">"Email: "</string>
     <string name="_visit_summary"> Visit Summary</string>
     <string name="patient_id_">Patient Id: </string>
     <string name="patient_name_title">Patient Name: </string>
