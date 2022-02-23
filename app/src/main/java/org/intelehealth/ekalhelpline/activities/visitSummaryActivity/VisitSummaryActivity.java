@@ -79,6 +79,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalhelpline.models.CallingPatient;
+import org.intelehealth.ekalhelpline.models.CallingPatientStatus;
+import org.intelehealth.ekalhelpline.networkApiCalls.ApiInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -132,6 +135,11 @@ import org.intelehealth.ekalhelpline.activities.physcialExamActivity.PhysicalExa
 import org.intelehealth.ekalhelpline.activities.vitalActivity.VitalsActivity;
 import org.intelehealth.ekalhelpline.utilities.NetworkConnection;
 import org.intelehealth.ekalhelpline.utilities.exception.DAOException;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class VisitSummaryActivity extends AppCompatActivity {
 
@@ -232,7 +240,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
     CardView requestedTestsCard;
     CardView additionalCommentsCard;
     CardView followUpDateCard;
-    CardView card_print, card_share;
+    CardView card_print, card_share, card_call_patient, card_call_doctor;
 
 
     TextView diagnosisTextView;
@@ -525,6 +533,27 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         card_print = findViewById(R.id.card_print);
         card_share = findViewById(R.id.card_share);
+        card_call_patient = findViewById(R.id.card_call_patient);
+        card_call_doctor = findViewById(R.id.card_call_doctor);
+
+        UrlModifiers urlModifiers = new UrlModifiers();
+        ApiInterface apiInterface = AppConstants.apiInterface;
+
+        card_call_patient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                apiInterface.callPatient(String.format(urlModifiers.getCallPatientExotelUrl(), "9958392968", "9810266228", "01141236457")).enqueue(new Callback<CallingPatientStatus>() {
+                    @Override
+                    public void onResponse(Call<CallingPatientStatus> call, Response<CallingPatientStatus> response) {
+                        System.out.println(response);
+                    }
+                    @Override
+                    public void onFailure(Call<CallingPatientStatus> call, Throwable t) {
+                        new AlertDialog.Builder(context).setMessage(t.getMessage()).setPositiveButton(R.string.generic_ok, null).show();
+                    }
+                });
+            }
+        });
 
         card_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -617,19 +646,43 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
 //        mDoctorTitle.setVisibility(View.GONE);
 //        mDoctorName.setVisibility(View.GONE);
-        speciality_spinner = findViewById(R.id.speciality_spinner);
-        diagnosisTextView = findViewById(R.id.textView_content_diagnosis);
-        prescriptionTextView = findViewById(R.id.textView_content_rx);
-        medicalAdviceTextView = findViewById(R.id.textView_content_medical_advice);
-        requestedTestsTextView = findViewById(R.id.textView_content_tests);
-        additionalCommentsTextView = findViewById(R.id.textView_content_additional_comments);
-        followUpDateTextView = findViewById(R.id.textView_content_follow_up_date);
+        speciality_spinner =
 
-        ivPrescription = findViewById(R.id.iv_prescription);
+                findViewById(R.id.speciality_spinner);
+
+        diagnosisTextView =
+
+                findViewById(R.id.textView_content_diagnosis);
+
+        prescriptionTextView =
+
+                findViewById(R.id.textView_content_rx);
+
+        medicalAdviceTextView =
+
+                findViewById(R.id.textView_content_medical_advice);
+
+        requestedTestsTextView =
+
+                findViewById(R.id.textView_content_tests);
+
+        additionalCommentsTextView =
+
+                findViewById(R.id.textView_content_additional_comments);
+
+        followUpDateTextView =
+
+                findViewById(R.id.textView_content_follow_up_date);
+
+        ivPrescription =
+
+                findViewById(R.id.iv_prescription);
 
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
         Log.d("visitUUID", "onCreate_uuid: " + visitUuid);
-        isVisitSpecialityExists = speciality_row_exist_check(visitUuid);
+        isVisitSpecialityExists =
+
+                speciality_row_exist_check(visitUuid);
         if (isVisitSpecialityExists)
             speciality_spinner.setEnabled(false);
 
@@ -642,24 +695,23 @@ public class VisitSummaryActivity extends AppCompatActivity {
         Log.d("specc", "spec: " + visitUuid);
         String special_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid);
         //Hashmap to List<String> add all value
-        if(special_value.equalsIgnoreCase("No Doctor Needed")) {
+        if (special_value.equalsIgnoreCase("No Doctor Needed")) {
             card_print.setVisibility(View.GONE);
             card_share.setVisibility(View.GONE);
         }
+
         ArrayAdapter<String> stringArrayAdapter;
 
         if (items != null) {
-            if(sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 items.add(0, "विशेषज्ञता का चयन करें");
-            }
-            else if(sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
+            } else if (sessionManager.getAppLanguage().equalsIgnoreCase("or")) {
                 items.add(0, "ବିଶେଷତା ଚୟନ କରନ୍ତୁ");
-            }
-            else {
+            } else {
                 items.add(0, "Select Specialization");
             }
 
-          //items.add(0, "Select Specialization");
+            //items.add(0, "Select Specialization");
             stringArrayAdapter =
                     new ArrayAdapter<String>
                             (this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -699,10 +751,19 @@ public class VisitSummaryActivity extends AppCompatActivity {
 //            ivPrescription.setImageDrawable(getResources().getDrawable(R.drawable.ic_prescription_green));
 //        }
 
-        baseDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        obsImgdir = new File(AppConstants.IMAGE_PATH);
+        baseDir =
 
-        flag = findViewById(R.id.flaggedcheckbox);
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES).
+
+                        getAbsolutePath();
+
+        obsImgdir = new
+
+                File(AppConstants.IMAGE_PATH);
+
+        flag =
+
+                findViewById(R.id.flaggedcheckbox);
 
 
 //        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) {
@@ -723,27 +784,59 @@ public class VisitSummaryActivity extends AppCompatActivity {
         physicalDoumentsUpdates();
 
         mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager)
 
-        editVitals = findViewById(R.id.imagebutton_edit_vitals);
-        editComplaint = findViewById(R.id.imagebutton_edit_complaint);
-        editPhysical = findViewById(R.id.imagebutton_edit_physexam);
-        editFamHist = findViewById(R.id.imagebutton_edit_famhist);
-        editMedHist = findViewById(R.id.imagebutton_edit_pathist);
-        editAddDocs = findViewById(R.id.imagebutton_edit_additional_document);
-        uploadButton = findViewById(R.id.button_upload);
-        downloadButton = findViewById(R.id.button_download);
+                        getSystemService(Context.NOTIFICATION_SERVICE);
+
+        editVitals =
+
+                findViewById(R.id.imagebutton_edit_vitals);
+
+        editComplaint =
+
+                findViewById(R.id.imagebutton_edit_complaint);
+
+        editPhysical =
+
+                findViewById(R.id.imagebutton_edit_physexam);
+
+        editFamHist =
+
+                findViewById(R.id.imagebutton_edit_famhist);
+
+        editMedHist =
+
+                findViewById(R.id.imagebutton_edit_pathist);
+
+        editAddDocs =
+
+                findViewById(R.id.imagebutton_edit_additional_document);
+
+        uploadButton =
+
+                findViewById(R.id.button_upload);
+
+        downloadButton =
+
+                findViewById(R.id.button_download);
 
         //additionalDocumentsDownlaod = findViewById(R.id.imagebutton_download_additional_document);
-        onExaminationDownload = findViewById(R.id.imagebutton_download_physexam);
+        onExaminationDownload =
+
+                findViewById(R.id.imagebutton_download_physexam);
 
         //additionalDocumentsDownlaod.setVisibility(View.GONE);
 
-        physcialExaminationDownloadText = findViewById(R.id.physcial_examination_download);
+        physcialExaminationDownloadText =
+
+                findViewById(R.id.physcial_examination_download);
         onExaminationDownload.setVisibility(View.GONE);
 
         //image download for additional documents
-        additionalImageDownloadText = findViewById(R.id.additional_documents_download);
+        additionalImageDownloadText =
+
+                findViewById(R.id.additional_documents_download);
+
         Paint p = new Paint();
         p.setColor(Color.BLUE);
         additionalImageDownloadText.setPaintFlags(p.getColor());
@@ -755,6 +848,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
         //image download for physcialExamination documents
         physcialExaminationDownloadText.setPaintFlags(p.getColor());
         physcialExaminationDownloadText.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+
         physcialExaminationImagesDownload();
 
 
@@ -1060,12 +1154,21 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         queryData(String.valueOf(patientUuid));
-        nameView = findViewById(R.id.textView_name_value);
+        nameView =
+
+                findViewById(R.id.textView_name_value);
 
         //OpenMRS Id
-        idView = findViewById(R.id.textView_id_value);
-        visitView = findViewById(R.id.textView_visit_value);
-        if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().isEmpty()) {
+        idView =
+
+                findViewById(R.id.textView_id_value);
+
+        visitView =
+
+                findViewById(R.id.textView_visit_value);
+        if (patient.getOpenmrs_id() != null && !patient.getOpenmrs_id().
+
+                isEmpty()) {
             idView.setText(patient.getOpenmrs_id());
         } else {
             idView.setText(getResources().getString(R.string.patient_not_registered));
@@ -1073,14 +1176,33 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
         nameView.setText(patientName);
 
-        heightView = findViewById(R.id.textView_height_value);
-        weightView = findViewById(R.id.textView_weight_value);
-        pulseView = findViewById(R.id.textView_pulse_value);
-        bpView = findViewById(R.id.textView_bp_value);
-        tempView = findViewById(R.id.textView_temp_value);
+        heightView =
 
-        tempfaren = findViewById(R.id.textView_temp_faren);
-        tempcel = findViewById(R.id.textView_temp);
+                findViewById(R.id.textView_height_value);
+
+        weightView =
+
+                findViewById(R.id.textView_weight_value);
+
+        pulseView =
+
+                findViewById(R.id.textView_pulse_value);
+
+        bpView =
+
+                findViewById(R.id.textView_bp_value);
+
+        tempView =
+
+                findViewById(R.id.textView_temp_value);
+
+        tempfaren =
+
+                findViewById(R.id.textView_temp_faren);
+
+        tempcel =
+
+                findViewById(R.id.textView_temp);
         try {
             JSONObject obj = null;
             if (hasLicense) {
@@ -1103,17 +1225,42 @@ public class VisitSummaryActivity extends AppCompatActivity {
                     Log.d("temp", "temp_F: " + tempView.getText().toString());
                 }
             }
-        } catch (JSONException e) {
+        } catch (
+                JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-        spO2View = findViewById(R.id.textView_pulseox_value);
-        respiratory = findViewById(R.id.textView_respiratory_value);
-        respiratoryText = findViewById(R.id.textView_respiratory);
-        bmiView = findViewById(R.id.textView_bmi_value);
-        complaintView = findViewById(R.id.textView_content_complaint);
-        famHistView = findViewById(R.id.textView_content_famhist);
-        patHistView = findViewById(R.id.textView_content_pathist);
-        physFindingsView = findViewById(R.id.textView_content_physexam);
+
+        spO2View =
+
+                findViewById(R.id.textView_pulseox_value);
+
+        respiratory =
+
+                findViewById(R.id.textView_respiratory_value);
+
+        respiratoryText =
+
+                findViewById(R.id.textView_respiratory);
+
+        bmiView =
+
+                findViewById(R.id.textView_bmi_value);
+
+        complaintView =
+
+                findViewById(R.id.textView_content_complaint);
+
+        famHistView =
+
+                findViewById(R.id.textView_content_famhist);
+
+        patHistView =
+
+                findViewById(R.id.textView_content_pathist);
+
+        physFindingsView =
+
+                findViewById(R.id.textView_content_physexam);
 
         if (isRespiratory) {
             respiratoryText.setVisibility(View.VISIBLE);
@@ -1644,7 +1791,8 @@ public class VisitSummaryActivity extends AppCompatActivity {
         String emergencyUuid = "";
         try {
             emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-        } catch (DAOException e) {
+        } catch (
+                DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
@@ -2096,6 +2244,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
         }
 
         return visitView.getText().toString();
+    }
+
+    void showAlert(int messageRes) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+        alertDialogBuilder.setMessage(messageRes);
+        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
 
 
@@ -4120,6 +4282,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
             downloadPrescriptionDefault();
             downloadDoctorDetails();
         }
+
     }
 
     private void downloadDoctorDetails() {
