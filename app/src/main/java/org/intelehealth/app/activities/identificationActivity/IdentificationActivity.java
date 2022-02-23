@@ -2517,12 +2517,204 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
 
         //Roster Insert Validations - Start
-        rosterValidations(focusView, cancel);
-        // Roster Insert Validations - End
+        if (spinner_whatisyourrelation.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_whatisyourrelation.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_whatisyourrelation;
+            cancel = true;
+            return;
+        }
+        if (spinner_maritualstatus.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_maritualstatus.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_maritualstatus;
+            cancel = true;
+            return;
+        }
 
+        if (spinner_phoneownership.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_phoneownership.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_phoneownership;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_bpchecked.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_bpchecked.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_bpchecked;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_sugarchecked.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_sugarchecked;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_hbchecked.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_hbchecked.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_hbchecked;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_bmi.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_bmi.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_bmi;
+            cancel = true;
+            return;
+        }
+
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
+            if (edittext_howmanytimmespregnant.getVisibility() == View.VISIBLE && edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
+                    edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
+                edittext_howmanytimmespregnant.setError(getString(R.string.select));
+                focusView = edittext_howmanytimmespregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnantpasttwoyrs.getVisibility() == View.VISIBLE && spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnantpasttwoyrs;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_outcomepregnancy.getVisibility() == View.VISIBLE && spinner_outcomepregnancy.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_outcomepregnancy.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_outcomepregnancy;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_childalive.getVisibility() == View.VISIBLE && spinner_childalive.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_childalive.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_childalive;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_yearofpregnancy.getVisibility() == View.VISIBLE && edittext_yearofpregnancy.getText().toString().equalsIgnoreCase("") &&
+                    edittext_yearofpregnancy.getText().toString().isEmpty()) {
+                edittext_yearofpregnancy.setError(getString(R.string.select));
+                focusView = edittext_yearofpregnancy;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_monthspregnancylast.getVisibility() == View.VISIBLE && edittext_monthspregnancylast.getText().toString().equalsIgnoreCase("") &&
+                    edittext_monthspregnancylast.getText().toString().isEmpty()) {
+                edittext_monthspregnancylast.setError(getString(R.string.select));
+                focusView = edittext_monthspregnancylast;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_monthsbeingpregnant.getVisibility() == View.VISIBLE && edittext_monthsbeingpregnant.getText().toString().equalsIgnoreCase("") &&
+                    edittext_monthsbeingpregnant.getText().toString().isEmpty()) {
+                edittext_monthsbeingpregnant.setError(getString(R.string.select));
+                focusView = edittext_monthsbeingpregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_placeofdeliverypregnant.getVisibility() == View.VISIBLE && spinner_placeofdeliverypregnant.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_placeofdeliverypregnant.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_placeofdeliverypregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_singlemultiplebirths.getVisibility() == View.VISIBLE && spinner_singlemultiplebirths.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_singlemultiplebirths.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_singlemultiplebirths;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_focalfacility.getVisibility() == View.VISIBLE && edittext_focalfacility.getText().toString().equalsIgnoreCase("") &&
+                    edittext_focalfacility.getText().toString().isEmpty()) {
+                edittext_focalfacility.setError(getString(R.string.select));
+                focusView = edittext_focalfacility;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_sexofbaby.getVisibility() == View.VISIBLE && spinner_sexofbaby.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_sexofbaby.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_sexofbaby;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_babyagedied.getVisibility() == View.VISIBLE && edittext_babyagedied.getText().toString().equalsIgnoreCase("") &&
+                    edittext_babyagedied.getText().toString().isEmpty()) {
+                edittext_babyagedied.setError(getString(R.string.select));
+                focusView = edittext_babyagedied;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnancyplanned.getVisibility() == View.VISIBLE && spinner_pregnancyplanned.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnancyplanned.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnancyplanned;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnancyhighriskcase.getVisibility() == View.VISIBLE && spinner_pregnancyhighriskcase.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnancyhighriskcase.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnancyhighriskcase;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnancycomplications.getVisibility() == View.VISIBLE && spinner_pregnancycomplications.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnancycomplications.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnancycomplications;
+                cancel = true;
+                return;
+            }
+        }
+
+        // Roster Insert Validations - End
 
         if (cancel) {
             focusView.requestFocus();
+            Toast.makeText(this, "Please enter the required fields", Toast.LENGTH_SHORT).show();
         } else {
 
             patientdto.setFirstname(StringUtils.getValue(mFirstName.getText().toString()));
@@ -3067,91 +3259,91 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (spinner_healthissuereported.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_healthissuereported.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_healthissuereported;
-            cancel = true;
-            return;
-        }
-
-        if (edittext_noofepisodes.getText().toString().equalsIgnoreCase("") &&
-                edittext_noofepisodes.getText().toString().isEmpty()) {
-            edittext_noofepisodes.setError(getString(R.string.select));
-            focusView = edittext_noofepisodes;
-            cancel = true;
-            return;
-        }
-
-        if (spinner_primaryhealthprovider.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_primaryhealthprovider.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_primaryhealthprovider;
-            cancel = true;
-            return;
-        }
-
-        if (spinner_firstlocation.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_firstlocation.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_firstlocation;
-            cancel = true;
-            return;
-        }
-
-        if (spinner_referredto.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_referredto.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_referredto;
-            cancel = true;
-            return;
-        }
-
-        if (spinner_modeoftransport.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_modeoftransport.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_modeoftransport;
-            cancel = true;
-            return;
-        }
-
-        if (edittext_avgcosttravel.getText().toString().equalsIgnoreCase("") &&
-                edittext_avgcosttravel.getText().toString().isEmpty()) {
-            edittext_avgcosttravel.setError(getString(R.string.select));
-            focusView = edittext_avgcosttravel;
-            cancel = true;
-            return;
-        }
-
-        if (edittext_avgcostconsult.getText().toString().equalsIgnoreCase("") &&
-                edittext_avgcostconsult.getText().toString().isEmpty()) {
-            edittext_avgcostconsult.setError(getString(R.string.select));
-            focusView = edittext_avgcostconsult;
-            cancel = true;
-            return;
-        }
-
-        if (edittext_avgcostmedicines.getText().toString().equalsIgnoreCase("") &&
-                edittext_avgcostmedicines.getText().toString().isEmpty()) {
-            edittext_avgcostmedicines.setError(getString(R.string.select));
-            focusView = edittext_avgcostmedicines;
-            cancel = true;
-            return;
-        }
-
-        if (spinner_experiencerscore.getSelectedItemPosition() == 0) {
-            TextView t = (TextView) spinner_experiencerscore.getSelectedView();
-            t.setError(getString(R.string.select));
-            t.setTextColor(Color.RED);
-            focusView = spinner_experiencerscore;
-            cancel = true;
-            return;
-        }
+//        if (spinner_healthissuereported.getSelectedItemPosition() == 0) {
+//            TextView t = (TextView) spinner_healthissuereported.getSelectedView();
+//            t.setError(getString(R.string.select));
+//            t.setTextColor(Color.RED);
+//            focusView = spinner_healthissuereported;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (edittext_noofepisodes.getText().toString().equalsIgnoreCase("") &&
+//                edittext_noofepisodes.getText().toString().isEmpty()) {
+//            edittext_noofepisodes.setError(getString(R.string.select));
+//            focusView = edittext_noofepisodes;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (spinner_primaryhealthprovider.getSelectedItemPosition() == 0) {
+//            TextView t = (TextView) spinner_primaryhealthprovider.getSelectedView();
+//            t.setError(getString(R.string.select));
+//            t.setTextColor(Color.RED);
+//            focusView = spinner_primaryhealthprovider;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (spinner_firstlocation.getSelectedItemPosition() == 0) {
+//            TextView t = (TextView) spinner_firstlocation.getSelectedView();
+//            t.setError(getString(R.string.select));
+//            t.setTextColor(Color.RED);
+//            focusView = spinner_firstlocation;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (spinner_referredto.getSelectedItemPosition() == 0) {
+//            TextView t = (TextView) spinner_referredto.getSelectedView();
+//            t.setError(getString(R.string.select));
+//            t.setTextColor(Color.RED);
+//            focusView = spinner_referredto;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (spinner_modeoftransport.getSelectedItemPosition() == 0) {
+//            TextView t = (TextView) spinner_modeoftransport.getSelectedView();
+//            t.setError(getString(R.string.select));
+//            t.setTextColor(Color.RED);
+//            focusView = spinner_modeoftransport;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (edittext_avgcosttravel.getText().toString().equalsIgnoreCase("") &&
+//                edittext_avgcosttravel.getText().toString().isEmpty()) {
+//            edittext_avgcosttravel.setError(getString(R.string.select));
+//            focusView = edittext_avgcosttravel;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (edittext_avgcostconsult.getText().toString().equalsIgnoreCase("") &&
+//                edittext_avgcostconsult.getText().toString().isEmpty()) {
+//            edittext_avgcostconsult.setError(getString(R.string.select));
+//            focusView = edittext_avgcostconsult;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (edittext_avgcostmedicines.getText().toString().equalsIgnoreCase("") &&
+//                edittext_avgcostmedicines.getText().toString().isEmpty()) {
+//            edittext_avgcostmedicines.setError(getString(R.string.select));
+//            focusView = edittext_avgcostmedicines;
+//            cancel = true;
+//            return;
+//        }
+//
+//        if (spinner_experiencerscore.getSelectedItemPosition() == 0) {
+//            TextView t = (TextView) spinner_experiencerscore.getSelectedView();
+//            t.setError(getString(R.string.select));
+//            t.setTextColor(Color.RED);
+//            focusView = spinner_experiencerscore;
+//            cancel = true;
+//            return;
+//        }
 
         if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
                 edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
@@ -3179,7 +3371,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (spinner_childalive.getSelectedItemPosition() == 0) {
+        if (spinner_childalive.getVisibility() == View.VISIBLE && spinner_childalive.getSelectedItemPosition() == 0) {
             TextView t = (TextView) spinner_childalive.getSelectedView();
             t.setError(getString(R.string.select));
             t.setTextColor(Color.RED);
@@ -3204,7 +3396,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
             return;
         }
 
-        if (edittext_monthsbeingpregnant.getText().toString().equalsIgnoreCase("") &&
+        if (edittext_monthsbeingpregnant.getVisibility() == View.VISIBLE &&
+                edittext_monthsbeingpregnant.getText().toString().equalsIgnoreCase("") &&
                 edittext_monthsbeingpregnant.getText().toString().isEmpty()) {
             edittext_monthsbeingpregnant.setError(getString(R.string.select));
             focusView = edittext_monthsbeingpregnant;
@@ -3437,11 +3630,205 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         }
 
         //Roster Insert Validations - Start
-        rosterValidations(focusView, cancel);
+
+        if (spinner_whatisyourrelation.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_whatisyourrelation.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_whatisyourrelation;
+            cancel = true;
+            return;
+        }
+        if (spinner_maritualstatus.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_maritualstatus.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_maritualstatus;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_phoneownership.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_phoneownership.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_phoneownership;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_bpchecked.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_bpchecked.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_bpchecked;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_sugarchecked.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_sugarchecked.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_sugarchecked;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_hbchecked.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_hbchecked.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_hbchecked;
+            cancel = true;
+            return;
+        }
+
+        if (spinner_bmi.getSelectedItemPosition() == 0) {
+            TextView t = (TextView) spinner_bmi.getSelectedView();
+            t.setError(getString(R.string.select));
+            t.setTextColor(Color.RED);
+            focusView = spinner_bmi;
+            cancel = true;
+            return;
+        }
+
+        if (llPORoaster.getVisibility() == View.VISIBLE) {
+            if (edittext_howmanytimmespregnant.getText().toString().equalsIgnoreCase("") &&
+                    edittext_howmanytimmespregnant.getText().toString().isEmpty()) {
+                edittext_howmanytimmespregnant.setError(getString(R.string.select));
+                focusView = edittext_howmanytimmespregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnantpasttwoyrs.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnantpasttwoyrs.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnantpasttwoyrs;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_outcomepregnancy.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_outcomepregnancy.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_outcomepregnancy;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_childalive.getVisibility() == View.VISIBLE && spinner_childalive.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_childalive.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_childalive;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_yearofpregnancy.getText().toString().equalsIgnoreCase("") &&
+                    edittext_yearofpregnancy.getText().toString().isEmpty()) {
+                edittext_yearofpregnancy.setError(getString(R.string.select));
+                focusView = edittext_yearofpregnancy;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_monthspregnancylast.getText().toString().equalsIgnoreCase("") &&
+                    edittext_monthspregnancylast.getText().toString().isEmpty()) {
+                edittext_monthspregnancylast.setError(getString(R.string.select));
+                focusView = edittext_monthspregnancylast;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_monthsbeingpregnant.getVisibility() == View.VISIBLE && edittext_monthsbeingpregnant.getText().toString().equalsIgnoreCase("") &&
+                    edittext_monthsbeingpregnant.getText().toString().isEmpty()) {
+                edittext_monthsbeingpregnant.setError(getString(R.string.select));
+                focusView = edittext_monthsbeingpregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_placeofdeliverypregnant.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_placeofdeliverypregnant.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_placeofdeliverypregnant;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_singlemultiplebirths.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_singlemultiplebirths.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_singlemultiplebirths;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_focalfacility.getText().toString().equalsIgnoreCase("") &&
+                    edittext_focalfacility.getText().toString().isEmpty()) {
+                edittext_focalfacility.setError(getString(R.string.select));
+                focusView = edittext_focalfacility;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_sexofbaby.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_sexofbaby.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_sexofbaby;
+                cancel = true;
+                return;
+            }
+
+            if (edittext_babyagedied.getText().toString().equalsIgnoreCase("") &&
+                    edittext_babyagedied.getText().toString().isEmpty()) {
+                edittext_babyagedied.setError(getString(R.string.select));
+                focusView = edittext_babyagedied;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnancyplanned.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnancyplanned.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnancyplanned;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnancyhighriskcase.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnancyhighriskcase.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnancyhighriskcase;
+                cancel = true;
+                return;
+            }
+
+            if (spinner_pregnancycomplications.getSelectedItemPosition() == 0) {
+                TextView t = (TextView) spinner_pregnancycomplications.getSelectedView();
+                t.setError(getString(R.string.select));
+                t.setTextColor(Color.RED);
+                focusView = spinner_pregnancycomplications;
+                cancel = true;
+                return;
+            }
+        }
+
         // Roster Insert Validations - End
 
         if (cancel) {
             focusView.requestFocus();
+            Toast.makeText(this, "Please fill the required fields", Toast.LENGTH_SHORT).show();
         } else {
             if (mCurrentPhotoPath == null)
                 mCurrentPhotoPath = patientdto.getPatient_photo();
