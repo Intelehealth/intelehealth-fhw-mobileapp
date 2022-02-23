@@ -58,7 +58,7 @@ public class MyCasesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_active_patient);
+        setContentView(R.layout.activity_my_cases);
         setTitle(getResources().getString(R.string.my_cases));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -98,7 +98,7 @@ public class MyCasesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         // inflater.inflate(R.menu.menu_today_patient, menu);
-        inflater.inflate(R.menu.today_filter, menu);
+        inflater.inflate(R.menu.my_cases_filter, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -136,8 +136,8 @@ public class MyCasesActivity extends AppCompatActivity {
 
     public List<MyCasesModel> getAllPatientsFromDB(String userUuid, int offset) {
         List<MyCasesModel> modelList = new ArrayList<MyCasesModel>();
-        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value = '1296b0dc-440a-11e6-a65c-00e04c680037'";
-        final Cursor searchCursor = db.rawQuery(query, null);
+        String query = "SELECT b.uuid, b.first_name, b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, c.value FROM tbl_patient b, tbl_patient_attribute c WHERE b.uuid = c.patientuuid AND c.person_attribute_type_uuid = '29456b35-23bb-46f9-b2d1-e6c241c653ba' AND c.value = ?";
+        final Cursor searchCursor = db.rawQuery(query,new String[]{userUuid} );
         if (searchCursor.moveToFirst()) {
             do {
                 try {
@@ -218,7 +218,19 @@ public class MyCasesActivity extends AppCompatActivity {
                 Logger.logD(TAG, "onclick" + i);
                 creatorsSelected.clear();
                 creatorsSelected.addAll(selectedCreators);
-                doQueryWithProviders(selectedCreators);
+                List<MyCasesModel> requiredCases = doQueryWithProviders(selectedCreators);
+                if (requiredCases.size() > 0) {
+                    myCasesAdapter = new MyCasesAdapter(requiredCases, MyCasesActivity.this);
+                    recyclerView.setAdapter(myCasesAdapter);
+                    no_records_found_textview.setVisibility(View.GONE);
+                    myCasesAdapter.notifyDataSetChanged();
+                } else {
+                    myCasesAdapter = new MyCasesAdapter(requiredCases, MyCasesActivity.this);
+                    recyclerView.setAdapter(myCasesAdapter);
+                    no_records_found_textview.setVisibility(View.VISIBLE);
+                    no_records_found_textview.setHint(R.string.no_cases);
+                    myCasesAdapter.notifyDataSetChanged();
+                }
             }
         });
 
