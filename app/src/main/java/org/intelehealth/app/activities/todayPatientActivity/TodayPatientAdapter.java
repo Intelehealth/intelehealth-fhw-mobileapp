@@ -133,8 +133,12 @@ public class TodayPatientAdapter extends RecyclerView.Adapter<TodayPatientAdapte
                 if (visitCursor.getCount() >= 1) {
                     if (visitCursor.moveToLast() && visitCursor != null) {
                         do {
+                            if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase(""+todayPatientModel.getUuid())){
                             end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));}
+                            else{
+
+                            }
                         } while (visitCursor.moveToPrevious());
                     }
                 }

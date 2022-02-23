@@ -147,8 +147,12 @@ public class ActivePatientAdapter extends RecyclerView.Adapter<ActivePatientAdap
                 if (visitCursor.getCount() >= 1) {
                     if (visitCursor.moveToLast() && visitCursor != null) {
                         do {
-                            end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
-                            visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
+                            if(visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid")).equalsIgnoreCase(""+activePatientModel.getUuid())){
+                                end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
+                                visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));}
+                            else{
+
+                            }
                         } while (visitCursor.moveToPrevious());
                     }
                 }
