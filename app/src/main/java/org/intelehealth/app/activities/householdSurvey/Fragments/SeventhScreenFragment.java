@@ -101,10 +101,10 @@ public class SeventhScreenFragment extends Fragment {
     }
 
     private void insertData() throws DAOException {
-        if (!StringUtils.validateFields(mandatoryFields)) {
-            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (!StringUtils.validateFields(mandatoryFields)) {
+//            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
 
         PatientsDAO patientsDAO = new PatientsDAO();

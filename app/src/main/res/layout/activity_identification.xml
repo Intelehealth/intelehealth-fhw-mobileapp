@@ -890,7 +890,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
-                            android:text="What is your Maritual Status"
+                            android:text="@string/what_is_your_marital_status"
                             android:textSize="@dimen/card_content_sub_text_size" />
 
                         <Space
