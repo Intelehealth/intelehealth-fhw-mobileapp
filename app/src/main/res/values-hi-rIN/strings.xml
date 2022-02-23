@@ -687,4 +687,8 @@
     <string name="hw_whatsapp_str" translatable="false">व्हाट्सएप</string>
     <string name="hw_email_str" translatable="false">ईमेल</string>
 
+    //-----------start new visit confirmation dialog string-----------
+    <string name="start_newvisit_confirmation_msg">क्या आप वाकई विज़िट शुरू करना चाहते हैं?</string>
+    <string name="prescription_notprovided_msg">डॉक्टर ने प्रिस्क्रिप्शन नहीं दिया है। कृपया यात्रा समाप्त करने के लिए प्रिस्क्रिप्शन की प्रतीक्षा करें।</string>
+
 </resources>

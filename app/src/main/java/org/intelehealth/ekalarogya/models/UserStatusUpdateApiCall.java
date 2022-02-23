@@ -26,6 +26,10 @@ public class UserStatusUpdateApiCall {
     @Expose
     private String device;
 
+    @SerializedName("deviceModel")
+    @Expose
+    private String deviceModel;
+
     @SerializedName("name")
     @Expose
     private String name;
@@ -72,6 +76,14 @@ public class UserStatusUpdateApiCall {
 
     public void setAndroidVersion(String androidVersion) {
         this.androidVersion = androidVersion;
+    }
+
+    public String getDeviceModel() {
+        return deviceModel;
+    }
+
+    public void setDeviceModel(String deviceModel) {
+        this.deviceModel = deviceModel;
     }
 
     public String getDevice() {

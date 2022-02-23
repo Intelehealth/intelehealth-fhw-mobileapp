@@ -2,6 +2,7 @@ package org.intelehealth.ekalarogya.activities.patientDetailActivity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -13,6 +14,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
@@ -40,10 +42,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -230,112 +234,134 @@ public class PatientDetailActivity extends AppCompatActivity {
         newVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // before starting, we determine if it is new visit for a returning patient
-                // extract both FH and PMH
-                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
-                Date todayDate = new Date();
-                String thisDate = currentDate.format(todayDate);
 
-
-                String uuid = UUID.randomUUID().toString();
-                EncounterDAO encounterDAO = new EncounterDAO();
-                encounterDTO = new EncounterDTO();
-                encounterDTO.setUuid(UUID.randomUUID().toString());
-                encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
-                encounterDTO.setEncounterTime(thisDate);
-                encounterDTO.setVisituuid(uuid);
-                encounterDTO.setSyncd(false);
-                encounterDTO.setProvideruuid(sessionManager.getProviderID());
-                Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
-                encounterDTO.setVoided(0);
-                encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
-
-                try {
-                    encounterDAO.createEncountersToDB(encounterDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-
-                InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
-                SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
-
-                String CREATOR_ID = sessionManager.getCreatorID();
-                returning = false;
-                sessionManager.setReturning(returning);
-
-                String[] cols = {"value"};
-                Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
-                        new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
-                        null, null, null);
-
-                if (cursor.moveToFirst()) {
-                    // rows present
-                    do {
-                        // so that null data is not appended
-                        phistory = phistory + cursor.getString(0);
-
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(PatientDetailActivity.this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+                alertDialogBuilder.setMessage(getResources().getString(R.string.start_newvisit_confirmation_msg));
+                alertDialogBuilder.setNegativeButton(getResources().getString(R.string.generic_no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
                     }
-                    while (cursor.moveToNext());
-                    returning = true;
-                    sessionManager.setReturning(returning);
-                }
-                cursor.close();
-
-                Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
-                        new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
-                        null, null, null);
-                if (cursor1.moveToFirst()) {
-                    // rows present
-                    do {
-                        fhistory = fhistory + cursor1.getString(0);
+                });
+                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        startNewVisit();
                     }
-                    while (cursor1.moveToNext());
-                    returning = true;
-                    sessionManager.setReturning(returning);
-                }
-                cursor1.close();
-
-                // Will display data for patient as it is present in database
-                // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
-                // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
-
-                Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
-                String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
-                intent2.putExtra("patientUuid", patientUuid);
-
-                VisitDTO visitDTO = new VisitDTO();
-
-                visitDTO.setUuid(uuid);
-                visitDTO.setPatientuuid(patient_new.getUuid());
-                visitDTO.setStartdate(thisDate);
-                visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
-                visitDTO.setLocationuuid(sessionManager.getLocationUuid());
-                visitDTO.setSyncd(false);
-                visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
-                VisitsDAO visitsDAO = new VisitsDAO();
-
-                try {
-                    visitsDAO.insertPatientToDB(visitDTO);
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
-
-                // visitUuid = String.valueOf(visitLong);
-//                localdb.close();
-                intent2.putExtra("patientUuid", patientUuid);
-                intent2.putExtra("visitUuid", uuid);
-                intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
-                intent2.putExtra("encounterUuidAdultIntial", "");
-                intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
-                intent2.putExtra("name", fullName);
-                intent2.putExtra("tag", "new");
-                intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-                startActivity(intent2);
+                });
+                AlertDialog alertDialog = alertDialogBuilder.show();
+                //alertDialog.show();
+                IntelehealthApplication.setAlertDialogCustomTheme(PatientDetailActivity.this, alertDialog);
             }
         });
 
         LoadFamilyMembers();
 
+    }
+
+    private void startNewVisit(){
+        // before starting, we determine if it is new visit for a returning patient
+        // extract both FH and PMH
+        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.getDefault());
+        Date todayDate = new Date();
+        String thisDate = currentDate.format(todayDate);
+
+        String uuid = UUID.randomUUID().toString();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        encounterDTO = new EncounterDTO();
+        encounterDTO.setUuid(UUID.randomUUID().toString());
+        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS"));
+        encounterDTO.setEncounterTime(thisDate);
+        encounterDTO.setVisituuid(uuid);
+        encounterDTO.setSyncd(false);
+        encounterDTO.setProvideruuid(sessionManager.getProviderID());
+        Log.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
+        encounterDTO.setVoided(0);
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+
+        try {
+            encounterDAO.createEncountersToDB(encounterDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity.this);
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        String CREATOR_ID = sessionManager.getCreatorID();
+        returning = false;
+        sessionManager.setReturning(returning);
+
+        String[] cols = {"value"};
+        Cursor cursor = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for PMH (Past Medical History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB},
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            // rows present
+            do {
+                // so that null data is not appended
+                phistory = phistory + cursor.getString(0);
+
+            }
+            while (cursor.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor.close();
+
+        Cursor cursor1 = sqLiteDatabase.query("tbl_obs", cols, "encounteruuid=? and conceptuuid=?",// querying for FH (Family History)
+                new String[]{encounterAdultIntials, UuidDictionary.RHK_FAMILY_HISTORY_BLURB},
+                null, null, null);
+        if (cursor1.moveToFirst()) {
+            // rows present
+            do {
+                fhistory = fhistory + cursor1.getString(0);
+            }
+            while (cursor1.moveToNext());
+            returning = true;
+            sessionManager.setReturning(returning);
+        }
+        cursor1.close();
+
+        // Will display data for patient as it is present in database
+        // Toast.makeText(PatientDetailActivity.this,"PMH: "+phistory,Toast.LENGTH_SHORT).sƒhow();
+        // Toast.makeText(PatientDetailActivity.this,"FH: "+fhistory,Toast.LENGTH_SHORT).show();
+
+        Intent intent2 = new Intent(PatientDetailActivity.this, VitalsActivity.class);
+        String fullName = patient_new.getFirst_name() + " " + patient_new.getLast_name();
+        intent2.putExtra("patientUuid", patientUuid);
+
+        VisitDTO visitDTO = new VisitDTO();
+
+        visitDTO.setUuid(uuid);
+        visitDTO.setPatientuuid(patient_new.getUuid());
+        visitDTO.setStartdate(thisDate);
+        visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
+        visitDTO.setLocationuuid(sessionManager.getLocationUuid());
+        visitDTO.setSyncd(false);
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        VisitsDAO visitsDAO = new VisitsDAO();
+
+        try {
+            visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // visitUuid = String.valueOf(visitLong);
+//                localdb.close();
+        intent2.putExtra("patientUuid", patientUuid);
+        intent2.putExtra("visitUuid", uuid);
+        intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
+        intent2.putExtra("encounterUuidAdultIntial", "");
+        intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
+        intent2.putExtra("name", fullName);
+        intent2.putExtra("tag", "new");
+        intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
+        startActivity(intent2);
     }
 
     private void LoadFamilyMembers() {
