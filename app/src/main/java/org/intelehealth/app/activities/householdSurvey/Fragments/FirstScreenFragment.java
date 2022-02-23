@@ -29,6 +29,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +40,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -57,6 +60,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -76,7 +80,7 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     private int mDOBMonth;
     private int mDOBDay;
     private static final String TAG = FirstScreenFragment.class.getSimpleName();
-
+    private List<View> mandatoryFields = new ArrayList<>();
 
     public FirstScreenFragment() {
         // Required empty public constructor
@@ -256,6 +260,11 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
     }
 
     private void insertData() throws DAOException {
+        if (!StringUtils.validateFields(mandatoryFields)) {
+            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
        // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();
@@ -372,6 +381,10 @@ public class FirstScreenFragment extends Fragment implements View.OnClickListene
         notavailableThirdVisit = rootView.findViewById(R.id.notavailableThirdVisit);
         refusedParticipate = rootView.findViewById(R.id.RefusedParticipate);
         next_button = rootView.findViewById(R.id.next_button);
-    }
 
+        RadioGroup household_structure_radio_group = rootView.findViewById(R.id.household_structure_radio_group);
+        RadioGroup result_of_visit_radio_group = rootView.findViewById(R.id.result_of_visit_radio_group);
+        mandatoryFields.addAll(Arrays.asList(nameInvestigator, villageSurvey, blockSurvey, districtSurvey, dateofVisit, namePerson, householdNumber
+                , household_structure_radio_group, result_of_visit_radio_group));
+    }
 }

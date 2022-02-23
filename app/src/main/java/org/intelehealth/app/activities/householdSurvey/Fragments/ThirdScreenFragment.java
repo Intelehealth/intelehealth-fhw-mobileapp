@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -31,6 +32,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -51,6 +55,7 @@ public class ThirdScreenFragment extends Fragment {
     private FragmentThirdScreenBinding binding;
     private String patientUuid;
     private SessionManager sessionManager;
+    private List<View> mandatoryFields = new ArrayList<>();
 
     public ThirdScreenFragment() {
         // Required empty public constructor
@@ -119,10 +124,17 @@ public class ThirdScreenFragment extends Fragment {
             }
         });
 
+        mandatoryFields.addAll(Arrays.asList(binding.householdElectricityRadioGroup, binding.waterSourceDistanceRadioGroup, binding.bankAccountRadioGroup));
+
         return rootView;
     }
 
     private void insertData() throws DAOException {
+        if (!StringUtils.validateFields(mandatoryFields)) {
+            Toast.makeText(getContext(), R.string.fill_required_fields, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         PatientsDAO patientsDAO = new PatientsDAO();
         PatientAttributesDTO patientAttributesDTO = new PatientAttributesDTO();
         // List<PatientAttributesDTO> patientAttributesDTOList = new ArrayList<>();

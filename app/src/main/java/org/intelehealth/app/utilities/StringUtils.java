@@ -15,9 +15,12 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import java.io.File;
@@ -3344,5 +3347,21 @@ public static String switch_ru_education(String val) {
             }
         }
         return result.toString();
+    }
+
+    public static boolean validateFields(List<View> mandatoryFields) {
+        boolean result = true;
+        for (View mandatoryField : mandatoryFields) {
+            if (mandatoryField instanceof EditText) {
+                if (TextUtils.isEmpty(((EditText) mandatoryField).getText())) {
+                    result = false;
+                }
+            } else if (mandatoryField instanceof RadioGroup) {
+                result = ((RadioGroup) mandatoryField).getCheckedRadioButtonId() != -1;
+            } else if (mandatoryField instanceof Spinner) {
+                result = ((Spinner) mandatoryField).getSelectedItemPosition() != 0;
+            }
+        }
+        return result;
     }
 }
