@@ -73,6 +73,7 @@
     <string name="menu_option_settings">सेट्टिंग्स</string>
     <string name="menu_option_end_of_day">दिन के अंत मे</string>
     <string name="menu_option_logout">लॉग आउट</string>
+    <string name="menu_option_hw_profile" translatable="false">उपयोगकर्ता प्रोफ़ाइल</string>
 
 
     //Identification Screen
@@ -692,5 +693,16 @@
     <string name="table_bld_grp" translatable="false">रक्त वर्ग</string>
     <string name="table_sugar_level" translatable="false">शुगर लेवल-मिलीग्राम/डीएल (रैंडम)</string>
 
+
+
+    //----------hw profile strings--------------------
+    <string name="hw_totalpatient_str" translatable="false">विज़िट्स\nबनाये गऐ</string>
+    <string name="hw_completeconsultation_str" translatable="false">पूर्ण\nपरामर्श</string>
+    <string name="hw_visitprogress_str" translatable="false">विज़िट्स \nप्रोग्रेस में</string>
+    <string name="hw_personal_info_str" translatable="false">व्यक्तिगत जानकारी</string>
+    <string name="hw_state_str" translatable="false">राज्य</string>
+    <string name="hw_mobile_str" translatable="false">मोबाइल</string>
+    <string name="hw_whatsapp_str" translatable="false">व्हाट्सएप</string>
+    <string name="hw_email_str" translatable="false">ईमेल</string>
 
 </resources>

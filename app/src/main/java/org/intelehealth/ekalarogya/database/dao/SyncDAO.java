@@ -5,24 +5,30 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.intelehealth.ekalarogya.BuildConfig;
 import org.intelehealth.ekalarogya.R;
 import org.intelehealth.ekalarogya.app.AppConstants;
 import org.intelehealth.ekalarogya.app.IntelehealthApplication;
 import org.intelehealth.ekalarogya.database.InteleHealthDatabaseHelper;
 import org.intelehealth.ekalarogya.models.ActivePatientModel;
+import org.intelehealth.ekalarogya.models.UserStatusUpdateApiCall;
 import org.intelehealth.ekalarogya.models.dto.ResponseDTO;
 import org.intelehealth.ekalarogya.models.dto.VisitDTO;
 import org.intelehealth.ekalarogya.models.pushRequestApiCall.PushRequestApiCall;
@@ -36,6 +42,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -389,6 +396,7 @@ public class SyncDAO {
         Gson gson = new Gson();
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         Log.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        String request= gson.toJson(pushRequestApiCall);
         String url = "https://" + sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
 //      String url = "https://" + sessionManager.getServerUrl() + "/pushdata";
 //      push only happen if any one data exists.
@@ -444,6 +452,64 @@ public class SyncDAO {
         }
 
         return isSucess[0];
+    }
+
+    public void syncUserStatus(){
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        if(!IntelehealthApplication.isInBackground && !sessionManager.getProviderID().isEmpty()) {
+            String userUuid=sessionManager.getProviderID();
+            String userName=sessionManager.getChwname();
+            String currentActivity=getClass().getSimpleName();
+            String appVersionName = BuildConfig.VERSION_NAME;
+            String currentDeviceVersion = Build.VERSION.RELEASE;
+            String deviceName = android.os.Build.MODEL;
+            Calendar calendar = Calendar.getInstance();
+            long currentTime= calendar.getTimeInMillis();
+            long lastSyncTime=0;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                if(!sessionManager.getPullExcutedTime().isEmpty()) {
+                    String datetime=sessionManager.getPullExcutedTime();
+                    Date date = dateFormat.parse(datetime);
+                    lastSyncTime = date.getTime();
+                }
+            }catch (Exception e){
+               e.printStackTrace();
+            }
+
+            UserStatusUpdateApiCall userStatusUpdateApiCall = new UserStatusUpdateApiCall();
+            userStatusUpdateApiCall.setUserUuid(userUuid);
+            userStatusUpdateApiCall.setAndroidVersion(currentDeviceVersion);
+            userStatusUpdateApiCall.setVersion(appVersionName);
+            userStatusUpdateApiCall.setCurrentTimestamp(currentTime);
+            userStatusUpdateApiCall.setDevice(deviceName);
+            userStatusUpdateApiCall.setLastActivity(currentActivity);
+            userStatusUpdateApiCall.setLastSyncTimestamp(lastSyncTime);
+            userStatusUpdateApiCall.setName(userName);
+            userStatusUpdateApiCall.setStatus("Active");
+            String encoded = sessionManager.getEncoded();
+            Gson gson = new Gson();
+            Logger.logD(TAG, "push request model" + gson.toJson(userStatusUpdateApiCall));
+            Log.e(TAG, "push request model" + gson.toJson(userStatusUpdateApiCall));
+            String request=gson.toJson(userStatusUpdateApiCall);
+            String url = "https://" + sessionManager.getServerUrl() + ":3004/api/user/createUpdateStatus";
+
+            Single<ResponseBody> userStatusUpdateApiCallObservable = AppConstants.apiInterface.UserStatus_API_CALL_OBSERVABLE(url, "Basic " + encoded, userStatusUpdateApiCall);
+            userStatusUpdateApiCallObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<ResponseBody>() {
+                        @Override
+                        public void onSuccess(ResponseBody responseBody) {
+                            Logger.logD(TAG, "success" + responseBody);
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                        }
+                    });
+        }
     }
 
     private void CalculateAgoTime(Context context) {

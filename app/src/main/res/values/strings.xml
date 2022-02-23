@@ -73,6 +73,7 @@
     <string name="menu_option_settings" translatable="false">Settings</string>
     <string name="menu_option_end_of_day" translatable="false">End of Day</string>
     <string name="menu_option_logout" translatable="false">Logout</string>
+    <string name="menu_option_hw_profile" translatable="false">User Profile</string>
 
 
     //Identification Screen
@@ -693,4 +694,15 @@
     <string name="table_hemoglobin" translatable="false">Hemoglobin</string>
     <string name="table_bld_grp" translatable="false">Blood Group</string>
     <string name="table_sugar_level" translatable="false">Sugar Level -mg/dL(Random)</string>
+
+    //----------hw profile strings--------------------
+    <string name="hw_totalpatient_str" translatable="false">VISIT\nCREATED</string>
+    <string name="hw_completeconsultation_str" translatable="false">COMPLETED\nCONSULTATIONS</string>
+    <string name="hw_visitprogress_str" translatable="false">VISIT IN\nPROGRESS</string>
+    <string name="hw_personal_info_str" translatable="false">Personal Information</string>
+    <string name="hw_state_str" translatable="false">State</string>
+    <string name="hw_mobile_str" translatable="false">Mobile</string>
+    <string name="hw_whatsapp_str" translatable="false">WhatsApp</string>
+    <string name="hw_email_str" translatable="false">Email</string>
+
 </resources>

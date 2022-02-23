@@ -95,6 +95,8 @@
     <string name="menu_option_logout">"ଲଗ ଅାଉଟ୍ କରିବା "</string>
     <string name="menu_option_settings">"ସେଟିଙ୍ଗ "</string>
     <string name="menu_option_sync">ସମନ୍ବତି ପନ୍ଥା</string>
+    <string name="menu_option_hw_profile" translatable="false">User Profile</string>
+
     <string name="new_patient">ନୂତନ ରୋଗୀ</string>
     <string name="offline_authentication_not_possible">ଫଲାଇନ୍ ପ୍ରମାଣକରିବାରେ ଅସମର୍ଥ</string>
     <string name="offline_credentials_unavailable">"ନ୍ ଲଗିନ୍ ଉପଲବ୍ଧ ନାହିଁ "</string>

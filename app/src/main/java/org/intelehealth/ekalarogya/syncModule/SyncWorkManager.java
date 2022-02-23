@@ -10,7 +10,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 
-
+import org.intelehealth.ekalarogya.database.dao.SyncDAO;
 import org.intelehealth.ekalarogya.utilities.Logger;
 import org.intelehealth.ekalarogya.utilities.SessionManager;
 
@@ -39,6 +39,10 @@ public class SyncWorkManager extends Worker {
 
         SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
+
+        //---------Health Worker Status-----------
+        SyncDAO syncDAO = new SyncDAO();
+        syncDAO.syncUserStatus();
 
         return Result.success();
     }

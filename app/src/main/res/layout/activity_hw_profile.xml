@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none"
+    android:overScrollMode="never">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/hw_profile_bg"
+        android:paddingBottom="50dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <FrameLayout
+            android:id="@+id/hw_header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="320dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/hw_cardview"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="10sp"
+                app:cardElevation="3dp"
+                app:cardPreventCornerOverlap="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_margin="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/include">
+
+                    <TextView
+                        android:id="@+id/hw_name_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_horizontal"
+                        android:textSize="@dimen/card_content_sub_text_size"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/hw_designation_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/lato_bold"
+                        android:gravity="center_horizontal"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <TextView
+                        android:id="@+id/hw_aboutme_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="center_horizontal"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/hw_profile_image"
+                android:layout_width="200dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:elevation="65dp"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/ic_person_camera_intele"
+                app:civ_border_color="#fff"
+                app:civ_border_width="2dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="#fff"
+                app:civ_shadow_radius="10dp" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/hw_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="16dp"
+            android:background="@drawable/hw_profileinfo_bg"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/hw_header_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="1dp">
+
+                <TextView
+                    android:id="@+id/total_patregistered_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:text="@string/hw_totalpatient_str"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_small_text_size" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="1dp">
+
+                <TextView
+                    android:id="@+id/total_visitprogress_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:text="@string/hw_visitprogress_str"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_small_text_size" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="1dp">
+
+                <TextView
+                    android:id="@+id/total_consultaion_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_text_size"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/lato_bold"
+                    android:gravity="center"
+                    android:text="@string/hw_completeconsultation_str"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/card_content_small_text_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/personal_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/hw_info_layout">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center"
+                android:text="@string/hw_personal_info_str"
+                android:textSize="@dimen/card_content_sub_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="2dp"
+                android:background="@drawable/hw_profileinfo_bg"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/hw_detail_cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="10sp"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintTop_toBottomOf="@+id/personal_info_layout">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/gray"
+                android:padding="10dp"
+                android:showDividers="middle">
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/gender"
+                        android:drawableLeft="@drawable/ic_profile_gender"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <TextView
+                        android:id="@+id/hw_gender_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="fill"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:id="@+id/hw_patientregister"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ic_profile_state"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@color/gray"
+                        android:text="@string/hw_state_str"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <TextView
+                        android:id="@+id/hw_state_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="fill"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawablePadding="10dp"
+                        android:drawableLeft="@drawable/ic_profile_mobile"
+                        android:fontFamily="@font/lato_regular"
+                        android:textColor="@color/gray"
+                        android:text="@string/hw_mobile_str"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <TextView
+                        android:id="@+id/hw_mobile_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="fill"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/gray"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:drawableLeft="@drawable/ic_profile_whatsapp"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/hw_whatsapp_str"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <TextView
+                        android:id="@+id/hw_whatsapp_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="fill"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:text="@string/hw_email_str"
+                        android:textColor="@color/gray"
+                        android:gravity="center_vertical"
+                        android:drawablePadding="10dp"
+                        android:drawableLeft="@drawable/ic_profile_email"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                    <TextView
+                        android:id="@+id/hw_email_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/lato_regular"
+                        android:gravity="fill"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/card_content_normal_text_size" />
+
+                </TableRow>
+            </TableLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

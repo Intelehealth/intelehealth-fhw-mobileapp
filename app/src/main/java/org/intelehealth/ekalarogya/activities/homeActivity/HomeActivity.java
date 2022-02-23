@@ -11,6 +11,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -29,16 +31,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.WorkManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.ekalarogya.activities.chmProfileActivity.HwProfileActivity;
+import org.intelehealth.ekalarogya.models.dto.PatientDTO;
+import org.intelehealth.ekalarogya.models.statewise_location.Setup_LocationModel;
+import org.intelehealth.ekalarogya.utilities.StringUtils;
+import org.intelehealth.ekalarogya.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +57,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -115,13 +126,14 @@ public class HomeActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     TextView newPatient_textview, findPatients_textview, todaysVisits_textview,
             activeVisits_textview, videoLibrary_textview, help_textview;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         sessionManager = new SessionManager(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitleTextAppearance(this, R.style.ToolbarTheme);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -143,7 +155,7 @@ public class HomeActivity extends AppCompatActivity {
 
         sessionManager.setCurrentLang(getResources().getConfiguration().locale.toString());
 
-        checkAppVer();  //auto-update feature.
+        //checkAppVer();  //auto-update feature.
 
         Logger.logD(TAG, "onCreate: " + getFilesDir().toString());
         lastSyncTextView = findViewById(R.id.lastsynctextview);
@@ -279,7 +291,6 @@ public class HomeActivity extends AppCompatActivity {
             WorkManager.getInstance().enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
         }
 
-
         showProgressbar();
     }
 
@@ -386,6 +397,10 @@ public class HomeActivity extends AppCompatActivity {
 //            case R.id.syncOption:
 //                refreshDatabases();
 //                return true;
+            case R.id.userProfileOption:
+                Hw_Profile();
+                return true;
+
             case R.id.settingsOption:
                 settings();
                 return true;
@@ -515,6 +530,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     /**
+     * This method starts intent to another activity to view health worker profile
+     *
+     * @return void
+     */
+    public void Hw_Profile() {
+        Intent intent = new Intent(this, HwProfileActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Logs out the user. It removes user account using AccountManager.
      *
      * @return void
@@ -553,6 +578,7 @@ public class HomeActivity extends AppCompatActivity {
         SyncUtils syncUtils = new SyncUtils();
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
+        sessionManager.setUserProfileDetail("");
         sessionManager.setLogout(true);
     }
 
@@ -563,10 +589,11 @@ public class HomeActivity extends AppCompatActivity {
         //registerReceiver(syncBroadcastReceiver, filter);
         checkAppVer();  //auto-update feature.
 //        lastSyncTextView.setText(getString(R.string.last_synced) + " \n" + sessionManager.getLastSyncDateTime());
-        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-                && Locale.getDefault().toString().equals("en")) {
+//        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
+//                && Locale.getDefault().toString().equals("en")) {
 //            lastSyncAgo.setText(CalculateAgoTime());
-        }
+//        }
+
         super.onResume();
     }
 
@@ -789,6 +816,7 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+
         disposable.add((Disposable) AppConstants.apiInterface.checkAppUpdate()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -845,6 +873,5 @@ public class HomeActivity extends AppCompatActivity {
         );
 
     }
-
 
 }

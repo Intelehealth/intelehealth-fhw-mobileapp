@@ -35,6 +35,7 @@
     <dimen name="card_content_text_size">18sp</dimen>
     <dimen name="card_content_sub_text_size">16sp</dimen>
     <dimen name="card_content_normal_text_size">14sp</dimen>
+    <dimen name="card_content_small_text_size">11sp</dimen>
     <dimen name="edit_icon_height">28dp</dimen>
     <dimen name="edit_icon_width">28dp</dimen>
     <dimen name="appbar_padding_top">8dp</dimen>

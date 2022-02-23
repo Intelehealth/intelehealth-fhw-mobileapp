@@ -117,6 +117,10 @@ dependencies {
     implementation "androidx.camera:camera-extensions:1.0.0-alpha12"
 
     implementation 'com.google.firebase:firebase-config'
+    implementation 'com.mikhaellopez:circularimageview:4.3.0'
+
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "android.arch.lifecycle:common-java8:1.1.1"
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin
 
