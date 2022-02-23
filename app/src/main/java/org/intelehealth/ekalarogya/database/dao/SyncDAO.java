@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -46,8 +47,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-;
 
 public class SyncDAO {
     public static String TAG = "SyncDAO";
@@ -454,7 +453,7 @@ public class SyncDAO {
         return isSucess[0];
     }
 
-    public void syncUserStatus(){
+    public void syncUserStatus(Context context){
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         if(!IntelehealthApplication.isInBackground && !sessionManager.getProviderID().isEmpty()) {
             String userUuid=sessionManager.getProviderID();
@@ -462,9 +461,10 @@ public class SyncDAO {
             String currentActivity=getClass().getSimpleName();
             String appVersionName = BuildConfig.VERSION_NAME;
             String currentDeviceVersion = Build.VERSION.RELEASE;
-            String deviceName = android.os.Build.MODEL;
+            String deviceModel = android.os.Build.MODEL;
+            String deviceName = Settings.Global.getString(context.getContentResolver(), "device_name");
             Calendar calendar = Calendar.getInstance();
-            long currentTime= calendar.getTimeInMillis();
+            long currentTime = calendar.getTimeInMillis();
             long lastSyncTime=0;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
@@ -483,6 +483,7 @@ public class SyncDAO {
             userStatusUpdateApiCall.setVersion(appVersionName);
             userStatusUpdateApiCall.setCurrentTimestamp(currentTime);
             userStatusUpdateApiCall.setDevice(deviceName);
+            userStatusUpdateApiCall.setDeviceModel(deviceModel);
             userStatusUpdateApiCall.setLastActivity(currentActivity);
             userStatusUpdateApiCall.setLastSyncTimestamp(lastSyncTime);
             userStatusUpdateApiCall.setName(userName);

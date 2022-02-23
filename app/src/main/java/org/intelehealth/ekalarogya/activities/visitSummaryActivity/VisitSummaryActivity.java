@@ -47,6 +47,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -375,33 +376,48 @@ public class VisitSummaryActivity extends AppCompatActivity {
             }
             case R.id.summary_endVisit: {
                 //meera
-                if (downloaded) {
-                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+                if (hasPrescription.equalsIgnoreCase("true")) {
+                    if (downloaded) {
+                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
-                    alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            endVisit();
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.show();
-                    //alertDialog.show();
-                    IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                        alertDialogBuilder.setMessage(getResources().getString(R.string.end_visit_msg));
+                        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.generic_ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                endVisit();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.show();
+                        //alertDialog.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
 
-                } else {
+                    } else {
+                        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
+//                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
+                        alertDialogBuilder.setMessage(R.string.error_no_data);
+                        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        AlertDialog alertDialog = alertDialogBuilder.show();
+                        //alertDialog.show();
+                        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
+                    }
+                }else{
                     MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
 //                    MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this,R.style.AlertDialogStyle);
-                    alertDialogBuilder.setMessage(R.string.error_no_data);
-                    alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setMessage(R.string.prescription_notprovided_msg);
+                    alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -949,7 +965,7 @@ public class VisitSummaryActivity extends AppCompatActivity {
 
                             }
                             uploaded = true;
-
+                            editComplaint.setVisibility(View.GONE);
                         }
                     }, 4000);
                 } else {
@@ -1222,6 +1238,20 @@ public class VisitSummaryActivity extends AppCompatActivity {
                 IntelehealthApplication.setAlertDialogCustomTheme(VisitSummaryActivity.this, alertDialog);
             }
         });
+
+        //-----after upload edit complaint disabled-------
+        String visitIDSelection = "uuid = ?";
+        String[] visitIDArgs = {visitUuid};
+        final Cursor visitCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+        if (visitCursor != null && visitCursor.moveToFirst()) {
+            String val = visitCursor.getString(visitCursor.getColumnIndexOrThrow("sync"));
+            if (val.equalsIgnoreCase("1")){
+                editComplaint.setVisibility(View.GONE);
+            }
+        }
+        if (visitCursor != null)
+            visitCursor.close();
+        //--------------------------------------------------
 
         editComplaint.setOnClickListener(new View.OnClickListener() {
             @Override

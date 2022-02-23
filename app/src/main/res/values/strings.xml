@@ -705,4 +705,8 @@
     <string name="hw_whatsapp_str" translatable="false">WhatsApp</string>
     <string name="hw_email_str" translatable="false">Email</string>
 
+    //-----------start new visit confirmation dialog string-----------
+    <string name="start_newvisit_confirmation_msg">Are you sure you want to start a visit?</string>
+    <string name="prescription_notprovided_msg">Doctor has not given prescription. Please wait for prescription to end the visit.</string>
+
 </resources>

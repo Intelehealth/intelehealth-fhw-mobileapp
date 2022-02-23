@@ -18,10 +18,12 @@ public class SyncWorkManager extends Worker {
 
     private SessionManager sessionManager = null;
     private String TAG = SyncWorkManager.class.getSimpleName();
+    private Context context;
 
     public SyncWorkManager(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         sessionManager = new SessionManager(context);
+        this.context=context;
     }
 
 
@@ -42,7 +44,7 @@ public class SyncWorkManager extends Worker {
 
         //---------Health Worker Status-----------
         SyncDAO syncDAO = new SyncDAO();
-        syncDAO.syncUserStatus();
+        syncDAO.syncUserStatus(context);
 
         return Result.success();
     }
