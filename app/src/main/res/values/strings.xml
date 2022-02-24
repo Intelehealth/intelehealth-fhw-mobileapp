@@ -1132,7 +1132,7 @@
 
     <!--    PO Roster -->
     <string name="how_many_times_have_you_been_pregnant">How many times have you been pregnant?</string>
-    <string name="have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had a pregnancy outcomes in the past two years?</string>
+    <string name="have_you_had_a_pregnancy_outcomes_in_the_past_two_years">Have you had a pregnancy outcomes in the past two years? (January 1st, 2020 - December 31st, 2021)</string>
     <string name="what_was_the_outcome_of_your_pregnancy">What was the outcome of your ……pregnancy?</string>
     <string name="born_alive">BORN ALIVE </string>
     <string name="still_birth">STILL BIRTH </string>
@@ -1288,4 +1288,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fill_required_fields">please fill all required fields</string>
     <string name="identification_screen_prompt_district" />
+    <string name="how_many_times_have_you_been_pregnant_in_your_lifetime">How many times have you been pregnant in your lifetime?</string>
 </resources>

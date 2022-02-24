@@ -142,6 +142,7 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
     private ArrayAdapter<CharSequence> educationAdapter;
     private ArrayAdapter<CharSequence> occupationAdapter;
     private ArrayAdapter<CharSequence> casteAdapter;
+    private LinearLayout pregnancyQuestionsLinearLayout;
     //    private ArrayAdapter<CharSequence> economicStatusAdapter;
     UuidGenerator uuidGenerator = new UuidGenerator();
     Calendar today = Calendar.getInstance();
@@ -423,6 +424,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         ArrayAdapter<CharSequence> countryAdapter = ArrayAdapter.createFromResource(this,
                 R.array.countries, R.layout.custom_spinner);
 
+        mCountry.setClickable(false);
+        mCountry.setEnabled(false);
         mCountry.setAdapter(countryAdapter);
 
         try {
@@ -668,6 +671,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         ArrayAdapter<CharSequence> stateAdapter = ArrayAdapter.createFromResource(this, R.array.states_india, R.layout.custom_spinner);
         //  stateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mState.setEnabled(false);
+        mState.setClickable(false);
         mState.setAdapter(stateAdapter);
 
         ArrayAdapter<CharSequence> cityAdapter = ArrayAdapter.createFromResource(this, R.array.city_nashik, R.layout.custom_spinner);
@@ -4060,6 +4065,8 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
 
         TextView maritalStatus = findViewById(R.id.textview_marital_status);
 
+        pregnancyQuestionsLinearLayout = findViewById(R.id.pregnancy_questions_linear_layout);
+
         //Roaster Spinner
         spinner_whatisyourrelation = findViewById(R.id.spinner_whatisyourrelation);
         spinner_maritualstatus = findViewById(R.id.spinner_maritualstatus);
@@ -4077,6 +4084,21 @@ public class IdentificationActivity extends AppCompatActivity implements SurveyC
         spinner_experiencerscore = findViewById(R.id.spinner_experiencerscore);
         spinner_pregnantpasttwoyrs = findViewById(R.id.spinner_pregnantpasttwoyrs);
         spinner_outcomepregnancy = findViewById(R.id.spinner_outcomepregnancy);
+
+        spinner_pregnantpasttwoyrs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1)
+                    pregnancyQuestionsLinearLayout.setVisibility(View.VISIBLE);
+                else
+                    pregnancyQuestionsLinearLayout.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         spinner_outcomepregnancy.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

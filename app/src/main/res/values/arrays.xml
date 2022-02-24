@@ -1794,9 +1794,9 @@
     <string-array name="placedelivery_en">
         <item>Select</item>
         <item>HOME</item>
-        <item>SUB CEBTER</item>
+        <item>SUB CENTER</item>
         <item>CHC/ CIVIL HOSPITAL AT BLOCK LEVEL</item>
-        <item>DISTRICT HOSPTIAL/ CIVIL HOSPITAL AT DISTRICT LEVEL</item>
+        <item>DISTRICT HOSPITAL / CIVIL HOSPITAL AT DISTRICT LEVEL</item>
         <item>PRIVATE CLINIC</item>
         <item>PRIVATE HOSPITAL</item>
     </string-array>

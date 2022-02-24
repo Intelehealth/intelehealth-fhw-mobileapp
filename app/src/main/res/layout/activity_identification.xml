@@ -1366,7 +1366,8 @@
                     android:id="@+id/llPORoaster"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1404,25 +1405,33 @@
                         app:cardCornerRadius="10sp"
                         app:cardElevation="3dp"
                         app:cardPreventCornerOverlap="false">
-
-
+                        
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
                             android:orientation="vertical"
                             android:padding="8dp">
-
-                            <EditText
-                                android:id="@+id/edittext_howmanytimmespregnant"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="How many times have you been pregnant?" />
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="5dp"
-                                android:text="Have you had a pregnancy outcomes in the past two years?"
+                                android:text="@string/how_many_times_have_you_been_pregnant_in_your_lifetime"
+                                android:textSize="@dimen/card_content_sub_text_size" />
+
+                            <EditText
+                                android:id="@+id/edittext_howmanytimmespregnant"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:paddingStart="5dp"
+                                android:text="@string/have_you_had_a_pregnancy_outcomes_in_the_past_two_years"
                                 android:textSize="@dimen/card_content_sub_text_size" />
 
                             <Space
@@ -1446,36 +1455,8 @@
                                 android:layout_marginBottom="10dp"
                                 android:background="?android:attr/listDivider" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="What was the outcome of your pregnancy?"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_outcomepregnancy"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/outcomepregnancy_en" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-
                             <LinearLayout
-                                android:id="@+id/llChildAlive"
+                                android:id="@+id/pregnancy_questions_linear_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
@@ -1484,7 +1465,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="Is the child alive?"
+                                    android:text="What was the outcome of your pregnancy?"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space
@@ -1492,10 +1473,10 @@
                                     android:layout_height="10dp" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_childalive"
+                                    android:id="@+id/spinner_outcomepregnancy"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:entries="@array/childalive_en" />
+                                    android:entries="@array/outcomepregnancy_en" />
 
                                 <Space
                                     android:layout_width="10dp"
@@ -1507,37 +1488,191 @@
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
                                     android:background="?android:attr/listDivider" />
-                            </LinearLayout>
 
-                            <EditText
-                                android:id="@+id/edittext_yearofpregnancy"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="What was the year of pregnancy outcome?" />
+                                <LinearLayout
+                                    android:id="@+id/llChildAlive"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
 
-                            <EditText
-                                android:id="@+id/edittext_monthspregnancylast"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="How many months did this pregnancy last?" />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:text="Is the child alive?"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
 
-                            <EditText
-                                android:id="@+id/edittext_monthsbeingpregnant"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="How many months have you been pregnant" />
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
 
-                            <LinearLayout
-                                android:id="@+id/llDeliveryPlace"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                    <Spinner
+                                        android:id="@+id/spinner_childalive"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:entries="@array/childalive_en" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="?android:attr/listDivider" />
+                                </LinearLayout>
+
+                                <EditText
+                                    android:id="@+id/edittext_yearofpregnancy"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="What was the year of pregnancy outcome?"
+                                    android:textSize="15sp" />
+
+                                <EditText
+                                    android:id="@+id/edittext_monthspregnancylast"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="How many months did this pregnancy last?"
+                                    android:textSize="15sp" />
+
+                                <EditText
+                                    android:id="@+id/edittext_monthsbeingpregnant"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="How many months have you been pregnant"
+                                    android:textSize="15sp" />
+
+                                <LinearLayout
+                                    android:id="@+id/llDeliveryPlace"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:text="What is the Place of Delivery?"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <Spinner
+                                        android:id="@+id/spinner_placeofdeliverypregnant"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:entries="@array/placedelivery_en" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="?android:attr/listDivider" />
+                                </LinearLayout>
+
+                                <EditText
+                                    android:id="@+id/edittext_focalfacility"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Focal Facility for this pregnancy" />
+
+                                <!-- <EditText
+                                    android:id="@+id/edittext_singlemultiplebirths"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Was this a single/multiple births?"/>-->
+                                <LinearLayout
+                                    android:id="@+id/llSingleMultipleBirth"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:text="Was this a single/multiple births?"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <Spinner
+                                        android:id="@+id/spinner_singlemultiplebirths"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:entries="@array/singlemultiplebirths_en" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="?android:attr/listDivider" />
+                                    <!--                        single/multiple-->
+                                </LinearLayout>
+
+                                <EditText
+                                    android:id="@+id/edittext_babyagedied"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="How old was the baby when he/she died?" />
+
+                                <LinearLayout
+                                    android:id="@+id/llBabyGender"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:text="What is/was the sex of the baby?"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <Spinner
+                                        android:id="@+id/spinner_sexofbaby"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:entries="@array/sexofbaby_en" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="?android:attr/listDivider" />
+                                </LinearLayout>
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="What is the Place of Delivery?"
+                                    android:text="Was this pregnancy planned?"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space
@@ -1545,10 +1680,10 @@
                                     android:layout_height="10dp" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_placeofdeliverypregnant"
+                                    android:id="@+id/spinner_pregnancyplanned"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:entries="@array/placedelivery_en" />
+                                    android:entries="@array/pregnancyplanned_en" />
 
                                 <Space
                                     android:layout_width="10dp"
@@ -1560,30 +1695,12 @@
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
                                     android:background="?android:attr/listDivider" />
-                            </LinearLayout>
-
-                            <EditText
-                                android:id="@+id/edittext_focalfacility"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Focal Facility for this pregnancy" />
-
-                            <!-- <EditText
-                                android:id="@+id/edittext_singlemultiplebirths"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="Was this a single/multiple births?"/>-->
-                            <LinearLayout
-                                android:id="@+id/llSingleMultipleBirth"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:paddingStart="5dp"
-                                    android:text="Was this a single/multiple births?"
+                                    android:text="Were you identified as a High-Risk Pregnancy case?"
                                     android:textSize="@dimen/card_content_sub_text_size" />
 
                                 <Space
@@ -1591,10 +1708,10 @@
                                     android:layout_height="10dp" />
 
                                 <Spinner
-                                    android:id="@+id/spinner_singlemultiplebirths"
+                                    android:id="@+id/spinner_pregnancyhighriskcase"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:entries="@array/singlemultiplebirths_en" />
+                                    android:entries="@array/highriskpregnancy_en" />
 
                                 <Space
                                     android:layout_width="10dp"
@@ -1606,144 +1723,48 @@
                                     android:layout_marginTop="5dp"
                                     android:layout_marginBottom="10dp"
                                     android:background="?android:attr/listDivider" />
-                                <!--                        single/multiple-->
+
+                                <LinearLayout
+                                    android:id="@+id/llChildComplications"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:paddingStart="5dp"
+                                        android:text="Were any complications identified at the time of delivery?"
+                                        android:textSize="@dimen/card_content_sub_text_size" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <Spinner
+                                        android:id="@+id/spinner_pregnancycomplications"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:entries="@array/complications_en" />
+
+                                    <Space
+                                        android:layout_width="10dp"
+                                        android:layout_height="10dp" />
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_marginBottom="10dp"
+                                        android:background="?android:attr/listDivider" />
+                                </LinearLayout>
+
                             </LinearLayout>
-
-                            <EditText
-                                android:id="@+id/edittext_babyagedied"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="How old was the baby when he/she died?" />
-
-                            <LinearLayout
-                                android:id="@+id/llBabyGender"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:paddingStart="5dp"
-                                    android:text="What is/was the sex of the baby?"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                                <Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp" />
-
-                                <Spinner
-                                    android:id="@+id/spinner_sexofbaby"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:entries="@array/sexofbaby_en" />
-
-                                <Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="?android:attr/listDivider" />
-                            </LinearLayout>
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="Was this pregnancy planned?"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_pregnancyplanned"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/pregnancyplanned_en" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="5dp"
-                                android:text="Were you identified as a High-Risk Pregnancy case?"
-                                android:textSize="@dimen/card_content_sub_text_size" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <Spinner
-                                android:id="@+id/spinner_pregnancyhighriskcase"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:entries="@array/highriskpregnancy_en" />
-
-                            <Space
-                                android:layout_width="10dp"
-                                android:layout_height="10dp" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginBottom="10dp"
-                                android:background="?android:attr/listDivider" />
-
-                            <LinearLayout
-                                android:id="@+id/llChildComplications"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:paddingStart="5dp"
-                                    android:text="Were any complications identified at the time of delivery?"
-                                    android:textSize="@dimen/card_content_sub_text_size" />
-
-                                <Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp" />
-
-                                <Spinner
-                                    android:id="@+id/spinner_pregnancycomplications"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:entries="@array/complications_en" />
-
-                                <Space
-                                    android:layout_width="10dp"
-                                    android:layout_height="10dp" />
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="1dp"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginBottom="10dp"
-                                    android:background="?android:attr/listDivider" />
-                            </LinearLayout>
-
 
                         </LinearLayout>
+
                     </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
 
 
@@ -1766,7 +1787,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp">
 
                         <RelativeLayout
                             android:id="@+id/main_relative_layout"
